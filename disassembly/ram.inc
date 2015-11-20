@@ -7,10 +7,18 @@ byte_1:
 		.BYTE	0
 byte_3:
 		.BYTE	0
-word_4:
-		.BYTE	0,0
+;----------------------------------------------
+; used oftentimes as a u16 temporary value (i call this "temp16")
+; occasionally as a u24 temporary value
+; also used as the beginning of: u8[4] inventoryReport, containing values analyzed from a PCs inventory (see sub_inv_AnalyzeEquipped)
+; also: struct { u8 weapon, armor, shield, helm; } ; see sub_classifyItemType_returnA
+word_4: 
+		.BYTE	0
+word_5
+		.BYTE	0
 word_6:
 		.BYTE	0,0
+;----------------------------------------------
 byte_8:
 		.BYTE	0
 byte_9:
@@ -19,10 +27,13 @@ byte_A:
 		.BYTE	0
 byte_B:
 		.BYTE	0
+;----------------------------------------------
+; u16 mdec_dptr
 byte_C:
 		.BYTE	0
 byte_D:
 		.BYTE	0
+;----------------------------------------------
 byte_E:
 		.BYTE	0
 byte_F:
@@ -42,17 +53,17 @@ byte_1C:
 		.BYTE	0
 byte_1D:
 		.BYTE	0
-byte_1E:
+_ppuByteToWrite:
 		.BYTE	0
-byte_1F:
+byte_1F: ; ppuDMAList{low}
 		.BYTE	0
-byte_20:
+byte_20: ; ppuDMAList{high}
 		.BYTE	0
 _tmp21:
 		.BYTE	0,0,0
 byte_24:
 		.BYTE	0
-byte_25:
+byte_25: ; "tileListCursor_25" - as the map loads its TileList, this cursor increments
 		.BYTE	0
 byte_26:
 		.BYTE	0
@@ -74,9 +85,9 @@ byte_2E:
 		.BYTE	0
 byte_2F:
 		.BYTE	0
-byte_30:
+byte_30: ; "playerMapX"
 		.BYTE	0
-byte_31:
+byte_31: ; "playerMapY"
 		.BYTE	0
 byte_32:
 		.BYTE	0
@@ -100,7 +111,7 @@ word_3C:
 		.BYTE	0,0
 word_3E:
 		.BYTE	0,0
-word_40:
+word_40: ; 41 - "previousMapNumber?"
 		.BYTE	0,0
 byte_42:
 		.BYTE	0
@@ -108,7 +119,7 @@ byte_43:
 		.BYTE	0
 byte_44:
 		.BYTE	0
-byte_45:
+byte_45: ; "itemSelectedInBattle"
 		.BYTE	0
 byte_46:
 		.BYTE	0
@@ -116,12 +127,16 @@ byte_47:
 		.BYTE	0
 byte_48:
 		.BYTE	0
-byte_49:
+byte_49: ; a dialog box parameter?
 		.BYTE	0
+;----------------------------------------------
 word_4A:
 		.BYTE	0,0
 byte_4C:
 		.BYTE	0
+; 4B - "tileReadingRelatedX"
+; 4C - "tileReadingRelatedY"
+;----------------------------------------------
 byte_4D:
 		.BYTE	0
 byte_4E:
@@ -136,15 +151,15 @@ byte_52:
 		.BYTE	0
 byte_53:
 		.BYTE	0
-byte_54:
+byte_54: ;"numTilesInTileGroup"
 		.BYTE	0
-byte_55:
+byte_55: ;"bankForTilePtrnLoad"
 		.BYTE	0
 byte_56:
 		.BYTE	0
-byte_57:
+byte_57: ;"tileNumberForTileLoad_57"
 		.BYTE	0
-byte_58:
+byte_58: ;"tileNumberForTileLoadHi_58"
 		.BYTE	0
 byte_59:
 		.BYTE	0
@@ -164,9 +179,9 @@ byte_62:
 		.BYTE	0
 byte_63:
 		.BYTE	0
-byte_64:
+byte_64: ; "actingEnemy" - contains the index of the acting enemy?
 		.BYTE	0
-byte_65:
+byte_65: ; "actionCost" - the cost (MP or otherwise) of the current action?
 		.BYTE	0
 byte_66:
 		.BYTE	0
@@ -180,34 +195,42 @@ byte_6A:
 		.BYTE	0
 byte_6B:
 		.BYTE	0
-word_6C:
+;----------------------------------------------
+; various temporary pointers
+word_6C: ; "mapEngineTempPtr_6c"
 		.BYTE	0,0
+;----------------------------------------------
+; a tempory pointer
 word_6E:
 		.BYTE	0,0
+;----------------------------------------------
 byte_70:
 		.BYTE	0
 byte_71:
 		.BYTE	0
 word_72:
 		.BYTE	0,0
-byte_74:
+byte_74: ; "mdec_bitstreamCounter_74"
 		.BYTE	0
-byte_75:
+byte_75: ; "mdec_75_orflag" - controls whether tile writes overwrite the top 3 bits of the byte instead of the whole byte
 		.BYTE	0
-byte_76:
+byte_76: ; "mdec_metatileSize" - nonzero means a 32x32 metatile
 		.BYTE	0
-byte_77:
+byte_77: ; "mdec_ptrSize_77" - this is used for reading xy pointers from the bitstream
 		.BYTE	0
-byte_78:
+byte_78: ; "mdec_deltaDir" - used to control direction of framebuffer increment/decrement
 		.BYTE	0
-byte_79:
+byte_79: ; "mdec_79_tilenum"
 		.BYTE	0
-byte_7A:
+byte_7A: ; "mdec_7a_tilenum[1]"
 		.BYTE	0
-byte_7B:
+byte_7B: ; "mdec_7b_tilenum[2]"
 		.BYTE	0
-word_7C:
+;----------------------------------------------
+word_7C: ; "mdec_7c_tilenum"
 		.BYTE	0,0
+; 7d - "mdec_7d_stackptr"
+;----------------------------------------------
 byte_7E:
 		.BYTE	0
 byte_7F:
@@ -216,7 +239,7 @@ byte_80:
 		.BYTE	0
 byte_81:
 		.BYTE	0
-byte_82:
+byte_82: ; something printing related
 		.BYTE	0
 byte_83:
 		.BYTE	0
@@ -225,25 +248,25 @@ byte_85:
 		.BYTE	0
 byte_86:
 		.BYTE	0
-byte_87:
+byte_87: ; "heroTileMovePixelsRemain" - set to $0F to track movement in direction tracked elsewhere
 		.BYTE	0
-byte_88:
+byte_88: ; "mapWidth"
 		.BYTE	0
-byte_89:
+byte_89: ; "mapHeight"
 		.BYTE	0
-byte_8A:
+byte_8A: ; "tilemapOOBtile_8A" - this value is extracted during mdec init from bottom 5 bits of header[2] (OOB = out of bounds)
 		.BYTE	0
-byte_8B:
+byte_8B: ; "mapNumber"
 		.BYTE	0
 byte_8C:
 		.BYTE	0
-byte_8D:
+byte_8D: ; "mdec_bitsPerTile"
 		.BYTE	0
 byte_8E:
 		.BYTE	0
-byte_8F:
+byte_8F: ; "blockPlayerInputDuringMap" - nonzero blocks player input. $01 is frozen forever. $02 and up counts until overflow and unfreezes
 		.BYTE	0
-byte_90:
+byte_90: ; "EntityUpdateCycle_90" - used to only allow player DPad once per 16 frames?
 		.BYTE	0
 byte_91:
 		.BYTE	0
@@ -259,11 +282,11 @@ byte_96:
 		.BYTE	0
 byte_97:
 		.BYTE	0
-byte_98:
+byte_98: ; "mapStatePointer" - "block for the current mapStateIndex, in bank 6"
 		.BYTE	0
-byte_99:
+byte_99: ; "contained in GlobalFileID $79"
 		.BYTE	0
-byte_9A:
+byte_9A: ; "tilesetNumber_9A"
 		.BYTE	0
 byte_9B:
 		.BYTE	0
@@ -282,7 +305,7 @@ byte_A1:
 byte_A2:
 		.BYTE	0
 		.BYTE	0
-byte_A4:
+byte_A4: ;RNG related
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -346,17 +369,20 @@ byte_C9:
 		.BYTE	0
 _pads_tmp:
 		.BYTE	0,0,0,0
-byte_CE:
+byte_CE: ; "target" - current target for many AI and inventory functions
 		.BYTE	0
-byte_CF:
+;----------------------------------------------
+; "u16 tempdamage" stores temporary damage values, including MP costs; and many, many other things
+byte_CF: 
 		.BYTE	0
 byte_D0:
 		.BYTE	0
+;----------------------------------------------
 byte_D1:
 		.BYTE	0
-byte_D2:
+byte_D2: ; contains the target of a move in battle
 		.BYTE	0
-byte_D3:
+byte_D3: ; a dialog box parameter?
 		.BYTE	0
 byte_D4:
 		.BYTE	0
@@ -588,7 +614,10 @@ _spr_ram:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-byte_300:
+;----------------------------------------------
+;format: struct ppu_queue_entry { u16 address; u8 value }; .. right?
+;rename to ppu_queue_data
+byte_300: ; "ppuDMAList" -- contents of ppu queue (how large?)
 		.BYTE	0
 byte_301:
 		.BYTE	0
@@ -837,7 +866,7 @@ byte_315:
 		.BYTE	0
 byte_3E6:
 		.BYTE	0
-_ram_pal_buf:
+_ram_pal_buf: ;current logical unfaded palette
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -1226,6 +1255,8 @@ byte_531:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u8[12] someBattleActionTable - contains something like targets? 12 entries for 4 PC + 8 monsters
 byte_540:
 		.BYTE	0
 		.BYTE	0
@@ -1239,6 +1270,7 @@ byte_540:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
 byte_54C:
 		.BYTE	0
 		.BYTE	0
@@ -1253,7 +1285,7 @@ byte_550:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_558:
+byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -1283,14 +1315,19 @@ byte_56B:
 		.BYTE	0
 byte_56C:
 		.BYTE	0
+;----------------------------------------------
+; u8[4]
 _enemy_roster_index_list:
 		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8 enemyGroupCount[4]
 byte_571:
 		.BYTE	0
 byte_572:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
 byte_575:
 		.BYTE	0
 byte_576:
@@ -1508,33 +1545,38 @@ byte_635:
 byte_636:
 		.BYTE	0
 		.BYTE	0
-byte_638:
+;----------------------------------------------
+; well, these are kind of jumbled. do i have them right?
+byte_638: ; "s8_topmostMapTileVisible"
 		.BYTE	0
-byte_639:
+byte_639: ; "s8_leftmostMapTileVisible"
 		.BYTE	0
-byte_63A:
+byte_63A: ; "leftmostMapTileAccessible"
 		.BYTE	0
-byte_63B:
+byte_63B: ; "rightmostMapTileVisible"
 		.BYTE	0
-byte_63C:
+byte_63C: ; "topmostTileAccessible"
 		.BYTE	0
-byte_63D:
+byte_63D: ; "bottommostTileVisible"
 		.BYTE	0
 byte_63E:
 		.BYTE	0
+;----------------------------------------------
+; u24 u25AttackDisplayDamage - this numeric parameter is displayed in attack messages
 byte_63F:
 		.BYTE	0
 byte_640:
 		.BYTE	0
 byte_641:
 		.BYTE	0
+;----------------------------------------------
 byte_642:
 		.BYTE	0
 byte_643:
 		.BYTE	0
-byte_644:
+byte_644: ;"playerFacingDir" - 0=up,1=right,2=down,3=left
 		.BYTE	0
-byte_645:
+byte_645: ;"playerAnimTimer"
 		.BYTE	0
 		.BYTE	0
 byte_647:
@@ -1675,7 +1717,7 @@ byte_6BA:
 		.BYTE	0
 byte_6BB:
 		.BYTE	0
-byte_6BC:
+byte_6BC: ; "mapEntryFacingRelated"
 		.BYTE	0
 byte_6BD:
 		.BYTE	0
@@ -1702,15 +1744,18 @@ byte_6C9:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_6D0:
+;----------------------------------------------
+byte_6D0: ; "ntxscroll" - pixel X scroll 
 		.BYTE	0
-byte_6D1:
+byte_6D1: ; "ntyscroll" - pixel Y scroll
 		.BYTE	0
-_nmi_counter:
+;----------------------------------------------
+_nmi_counter: ; used for text system solely? not sure.
 		.BYTE	0
+;----------------------------------------------
 byte_6D3:
 		.BYTE	0
-byte_6D4:
+byte_6D4: ; "current_2001_setting?"
 		.BYTE	0
 _mmc_cur_prg_bank:
 		.BYTE	0
@@ -1772,42 +1817,38 @@ _apu_chan_ret_pc:
 		.BYTE	0,0,0,0,0,0,0,0
 byte_6FF:
 		.BYTE	0
+;----------------------------------------------
+; u8[] pc.level - LEVEL stat for 4 PCs
 byte_700:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.str - STR stat for 4 PCs
 byte_704:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.agi - AGI stat for 4 PCs
 byte_708:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.int - INT stat for 4 PCs
 byte_70C:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.luck - LUCK stat for 4 PCs
 byte_710:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.vit - VIT stat for 4 PCs
 byte_714:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.classgender - class and gender flag for 4 PCs
+; classes: (hero,wizard,pilgrim,sage,soldier,merchant,fighter,goof-off)
 byte_718:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_71C:
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u16[] pc.hp - HP for 4 PCs
+byte_71C: ;
 		.BYTE	0
 byte_71D:
 		.BYTE	0
@@ -1817,6 +1858,8 @@ byte_71D:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u16[] pc.mhp - MHP for 4 PCs
 byte_724:
 		.BYTE	0
 byte_725:
@@ -1827,6 +1870,8 @@ byte_725:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u16[] pc.mp - MP for 4 PCs
 byte_72C:
 		.BYTE	0
 byte_72D:
@@ -1837,6 +1882,8 @@ byte_72D:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u16[] pc.mmp - MMP for 4 PCs
 byte_734:
 		.BYTE	0
 byte_735:
@@ -1847,6 +1894,8 @@ byte_735:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; something like the status of PCs. u16s, probably 4 of them
 byte_73C:
 		.BYTE	0
 byte_73D:
@@ -1932,6 +1981,8 @@ byte_75C:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u8[4][8] PC_inventory - 8 entries for 4 PCs
 byte_77C:
 		.BYTE	0
 		.BYTE	0
@@ -1969,6 +2020,7 @@ byte_781:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
 byte_79C:
 		.BYTE	0
 		.BYTE	0
@@ -2079,6 +2131,8 @@ byte_7C2:
 		.BYTE	0
 		.BYTE	0
 
+;$0C73#apuCurrentSq1Pitch#
+;$0C75#apuCurrSq2Pitch#
 		ORG $2000
 
 _PPU_CTRL:
@@ -2379,9 +2433,9 @@ byte_60C8:
 		.BYTE	0
 byte_60C9:
 		.BYTE	0
-byte_60CA:
+byte_60CA: ; "someQuestFlags_60ca" - fiddling with values here can make aliahan look like baramos is dead
 		.BYTE	0
-byte_60CB:
+byte_60CB: ; "someQuestFlags_60Cb" - fiddling with values here can make aliahan look like baramos is dead
 		.BYTE	0
 byte_60CC:
 		.BYTE	0
@@ -4707,7 +4761,7 @@ _sram_signature1:
 word_6A2F:
 		.BYTE	0,0
 		.BYTE	0
-byte_6A32:
+byte_6A32: ;"printingState" - some kind of printing status, maybe just for actions or maybe for others
 		.BYTE	0
 byte_6A33:
 		.BYTE	0
@@ -4803,7 +4857,7 @@ byte_6A6F:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_6A73:
+byte_6A73: ; "unk_EnemyStatusPXFieldLookup" - the PX field of enemy status is used to index this table
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -4856,6 +4910,8 @@ byte_6A9F:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u16[] pc.def - DEF for 4 players
 byte_6AA3:
 		.BYTE	0
 byte_6AA4:
@@ -4866,6 +4922,7 @@ byte_6AA4:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
 byte_6AAB:
 		.BYTE	0
 byte_6AAC:
@@ -6840,7 +6897,7 @@ byte_7280:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_7300:
+byte_7300: ; "tileListMetatilingSizeTbl" - How many HWTiles are in each Tile in the map's TileList
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -7098,7 +7155,7 @@ byte_7320:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_7400:
+byte_7400: ;"areaTileMap"
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
