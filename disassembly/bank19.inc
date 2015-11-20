@@ -30,8 +30,7 @@ _b19_s0:
 		LDA		off_2667D5+1
 		STA		word_6C+1
 		JSR		sub_264077
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		LDA		off_2667D7
 		STA		word_6C
 		LDA		off_2667D7+1
@@ -42,8 +41,7 @@ _b19_s0:
 		STA		word_6
 		LDA		#$32
 		STA		word_6+1
-		BRK
-		.BYTE 1, $8F		; ofs 0x0024c002, -> dst _b18_s1
+		FAR		1, $8F		; _b18_s1
 		LDA		word_6
 		BEQ		locret_264076
 		LDA		off_2679DD
@@ -61,8 +59,7 @@ sub_264077:
 		JSR		sub_265019
 		BCS		locret_264088
 		BVS		sub_264077
-		BRK
-		.BYTE 1, $8F		; ofs 0x0024c002, -> dst _b18_s1
+		FAR		1, $8F		; _b18_s1
 		LDA		word_6
 		BEQ		loc_264089
 		JMP		sub_264077

@@ -650,8 +650,7 @@ loc_1743A4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B5:
-		BRK
-		.BYTE 0, $6F		; ofs 0x0021c000, -> dst _b16_s0
+		FAR		0, $6F		; _b16_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B8:
@@ -785,11 +784,11 @@ loc_17445B:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-;sub_174468:
+;_syscall1_param1:
 ;		JSR		_get_param_byte_set_exit_to_next
 
 ; =============== S U B	R O U T	I N E =======================================
-_syscall01_safe:
+_sys01_safe:
 		STA		_irq_a_saved
 		STX		_irq_x_saved
 		LDA		_mmc_cur_prg_bank
@@ -825,7 +824,7 @@ _syscall0_param1:
 		JSR		_get_param_byte_set_exit_to_next
 
 ; =============== S U B	R O U T	I N E =======================================
-_syscall00_safe:
+_sys00_safe:
 		STA		_irq_a_saved
 		STX		_irq_x_saved
 		LDA		_mmc_cur_prg_bank
@@ -853,13 +852,13 @@ _syscall_exec_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
-_syscall1_unsafe:
-		LDA		#$4C
-		STA		_tmp21
-		LDX		#_tmp21+1
-		JSR		_get_syscall1_bank_ptr
-		JMP		_tmp21
+; unreferenced code
+;_syscall1_unsafe:
+;		LDA		#$4C
+;		STA		_tmp21
+;		LDX		#_tmp21+1
+;		JSR		_get_syscall1_bank_ptr
+;		JMP		_tmp21
 
 ; =============== S U B	R O U T	I N E =======================================
 _syscall0_unsafe:
@@ -886,101 +885,102 @@ _syscall0_unsafe:
 _get_syscall1_bank_ptr:
 		LDA		_get_syscall1_sub_idx,Y
 		PHA
-		TYA
-		AND		#1
-		BNE		loc_17450D
-		TYA
-		LSR
-		TAY
+;		TYA
+;		AND		#1
+;		BNE		loc_17450D
+;		TYA
+;		LSR
+;		TAY
 		LDA		_get_syscall1_sub_table_banks,Y
-		LSR
-		LSR
-		LSR
-		LSR
-		JMP		_get_syscall_bank_and_ptr
-loc_17450D:
-		TYA
-		LSR
-		TAY
-		LDA		_get_syscall1_sub_table_banks,Y
-		AND		#$F
+;		LSR
+;		LSR
+;		LSR
+;		LSR
+;		JMP		_get_syscall_bank_and_ptr
+;loc_17450D:
+;		TYA
+;		LSR
+;		TAY
+;		LDA		_get_syscall1_sub_table_banks,Y
+;		AND		#$F
 		JMP		_get_syscall_bank_and_ptr
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall0_bank_ptr:
 		LDA		_get_syscall0_sub_idx,Y
 		PHA
-		TYA
-		AND		#1
-		BNE		loc_17452E
-		TYA
-		LSR
-		TAY
+;		TYA
+;		AND		#1
+;		BNE		loc_17452E
+;		TYA
+;		LSR
+;		TAY
 		LDA		_get_syscall0_sub_table_banks,Y
-		LSR
-		LSR
-		LSR
-		LSR
-		JMP		_get_syscall_bank_and_ptr
-loc_17452E:
-		TYA
-		LSR
-		TAY
-		LDA		_get_syscall0_sub_table_banks,Y
-		AND		#$F
+;		LSR
+;		LSR
+;		LSR
+;		LSR
+;		JMP		_get_syscall_bank_and_ptr
+;loc_17452E:
+;		TYA
+;		LSR
+;		TAY
+;		LDA		_get_syscall0_sub_table_banks,Y
+;		AND		#$F
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall_bank_and_ptr:
-		STA		2,X
+		STA		2,X						; сохраняет требуемый банк рядом с опкодом перехода, но никак не используется
 		JSR		_mmc1_prg_set
 		PLA
 		ASL
 		TAY
-		LDA		off_8000,Y
+		LDA		$8000,Y
 		STA		0,X
-		LDA		off_8000+1,Y
+		LDA		$8000+1,Y
 		STA		1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_get_syscall0_bank_ptr_no_prg_change:
-		STY		_irq_y_saved
-		TAY
-		LDA		_mmc_cur_prg_bank
-		PHA
-		LDA		_get_syscall0_sub_idx,Y
-		PHA
-		TYA
-		AND		#1
-		BNE		loc_174566
-		TYA
-		LSR
-		TAY
-		LDA		_get_syscall0_sub_table_banks,Y
-		LSR
-		LSR
-		LSR
-		LSR
-		JMP		loc_17456E
-loc_174566:
-		TYA
-		LSR
-		TAY
-		LDA		_get_syscall0_sub_table_banks,Y
-		AND		#$F
-loc_17456E:
-		JSR		_mmc1_prg_set
-		PLA
-		ASL
-		TAY
-		LDA		off_8000,Y
-		STA		0,X
-		LDA		off_8000+1,Y
-		STA		1,X
-		PLA
-		JSR		_mmc1_prg_set
-		LDY		_irq_y_saved
-		RTS
+; unused anymore
+;_get_syscall0_bank_ptr_safe:
+;		STY		_irq_y_saved
+;		TAY
+;		LDA		_mmc_cur_prg_bank
+;		PHA
+;		LDA		_get_syscall0_sub_idx,Y
+;		PHA
+;;		TYA
+;;		AND		#1
+;;		BNE		loc_174566
+;;		TYA
+;;		LSR
+;;		TAY
+;		LDA		_get_syscall0_sub_table_banks,Y
+;;		LSR
+;;		LSR
+;;		LSR
+;;		LSR
+;;		JMP		loc_17456E
+;;loc_174566:
+;;		TYA
+;;		LSR
+;;		TAY
+;;		LDA		_get_syscall0_sub_table_banks,Y
+;;		AND		#$F
+;;loc_17456E:
+;		JSR		_mmc1_prg_set
+;		PLA
+;		ASL
+;		TAY
+;		LDA		$8000,Y
+;		STA		0,X
+;		LDA		$8000+1,Y
+;		STA		1,X
+;		PLA
+;		JSR		_mmc1_prg_set
+;		LDY		_irq_y_saved
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall0_data_byte_Y:
@@ -1082,7 +1082,7 @@ _get_far_ptr_byte_safe:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-;sub_174625:
+;_mask_far_ptr_byte_safe:
 ;		STA		_irq_a_saved
 ;		LDA		_mmc_cur_prg_bank
 ;		PHA
@@ -1106,45 +1106,48 @@ _get_far_ptr_byte_safe:
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_mmc1_cmd:
-		STA		_cur_mmc_cmd
-		STA		$9FFF
-		LSR
-		STA		$9FFF
-		LSR
-		STA		$9FFF
-		LSR
-		STA		$9FFF
-		LSR
-		STA		$9FFF
-		RTS
+; redundant
+;_mmc1_cmd:
+;		STA		_cur_mmc_cmd
+;		STA		$9FFF
+;		LSR
+;		STA		$9FFF
+;		LSR
+;		STA		$9FFF
+;		LSR
+;		STA		$9FFF
+;		LSR
+;		STA		$9FFF
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_mmc1_chr0:
-		STA		_cur_chr0_bank_prg_hi
-		STA		$BFFF
-		LSR
-		STA		$BFFF
-		LSR
-		STA		$BFFF
-		LSR
-		STA		$BFFF
-		LSR
-		STA		$BFFF
-		RTS
+; redundant
+;_mmc1_chr0:
+;		STA		_cur_chr0_bank_prg_hi
+;		STA		$BFFF
+;		LSR
+;		STA		$BFFF
+;		LSR
+;		STA		$BFFF
+;		LSR
+;		STA		$BFFF
+;		LSR
+;		STA		$BFFF
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_mmc1_chr1:
-		STA		$DFFF
-		LSR
-		STA		$DFFF
-		LSR
-		STA		$DFFF
-		LSR
-		STA		$DFFF
-		LSR
-		STA		$DFFF
-		RTS
+; redundant
+;_mmc1_chr1:
+;		STA		$DFFF
+;		LSR
+;		STA		$DFFF
+;		LSR
+;		STA		$DFFF
+;		LSR
+;		STA		$DFFF
+;		LSR
+;		STA		$DFFF
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174690:
@@ -1657,12 +1660,14 @@ NMI:
 		JSR		sub_174A5C
 loc_17497E:
 		INC		_mmc_reset_byte
-		LDA		#$1E
+;		LDA		#$1E
+;		JSR		_mmc1_prg_cmd
+;		LDA		#$10
+;		JSR		_mmc1_chr0
+;		LDA		#$10
+;		JSR		_mmc1_chr0
+		LDA		#$B
 		JSR		_mmc1_prg_cmd
-		LDA		#$10
-		JSR		_mmc1_chr0
-		LDA		#$10
-		JSR		_mmc1_chr0
 		JSR		_apu_play
 		LDA		_mmc_cur_prg_bank
 		JSR		_mmc1_prg_cmd
@@ -1680,7 +1685,7 @@ loc_17497E:
 		BCS		loc_1749C3
 		LDA		#$D5
 		STA		$105,X
-		JSR		_mmc1_chr_set
+		JSR		_mmc1_reinit
 		LDA		_mmc_cur_prg_bank
 		JSR		_mmc1_prg_cmd
 loc_1749C3:
@@ -1708,19 +1713,44 @@ loc_1749E2:
 		PLA
 		TAY
 		PLA
-		JMP		_far_call	; byte name
+		JMP		_far_call
 
 ; =============== S U B	R O U T	I N E =======================================
-_mmc1_chr_set:
+_mmc1_reinit:
 		INC		_mmc_reset_byte
 		LDA		_cur_mmc_cmd
-		JSR		_mmc1_cmd
+;		JSR		_mmc1_cmd
+		STA		$9FFF
+		LSR
+		STA		$9FFF
+		LSR
+		STA		$9FFF
+		LSR
+		STA		$9FFF
+		LSR
+		STA		$9FFF
 		LDA		_cur_chr0_bank_prg_hi
-		JSR		_mmc1_chr0
+;		JSR		_mmc1_chr0
+		STA		$BFFF
+		LSR
+		STA		$BFFF
+		LSR
+		STA		$BFFF
+		LSR
+		STA		$BFFF
+		LSR
+		STA		$BFFF
 		LDA		#0
-		JMP		_mmc1_chr1
-
-; =============== S U B	R O U T	I N E =======================================
+;		JSR		_mmc1_chr1
+		STA		$DFFF
+		LSR
+		STA		$DFFF
+		LSR
+		STA		$DFFF
+		LSR
+		STA		$DFFF
+		LSR
+		STA		$DFFF
 nullsub_2:
 		RTS
 
@@ -1880,8 +1910,9 @@ loc_174B0A:
 		LDA		byte_6D1
 		STA		_PPU_SCROLL
 		RTS
-_unused_29:
-		.BYTE $22,$65,$22,$85,$22,$A5,$22,$C5,$22,$E5,$23,  5,$23,$25,$23,$45
+		
+;_unused_29:
+;		.BYTE $22,$65,$22,$85,$22,$A5,$22,$C5,$22,$E5,$23,  5,$23,$25,$23,$45
 
 ; =============== S U B	R O U T	I N E =======================================
 __pause_or_skip:
@@ -1992,46 +2023,37 @@ sub_174BB3:
 		BEQ		loc_174BC7
 loc_174BBB:
 		JSR		__pause_or_skip
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		JSR		sub_174369
 		JSR		sub_1743B5
 loc_174BC7:
 		LDA		byte_6A58
 		BNE		loc_174BF2
-		BRK
-		.BYTE 0, $7F		; ofs 0x00234000, -> dst _b17_s0_copyrights_screen
+		FAR		0, $7F		; _b17_s0_copyrights_screen
 loc_174BCF:
-		BRK
-		.BYTE 1, $7F		; ofs 0x00234002, -> dst _b17_s1
+		FAR		1, $7F		; _b17_s1
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_174BCF
-		BRK
-		.BYTE $19, 7		; ofs 0x000b0010, -> dst _b7_s8
-		BRK
-		.BYTE $62, $17		; ofs 0x000b0014, -> dst _b7_sA_sram_test_and_init
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$19, 7		; _b7_s8
+		FAR		$62, $17		; _b7_sA_sram_test_and_init
+		FAR		$A1, 7		; _bB_s4
 		LDA		byte_60C7
 		BMI		loc_174BFC
 		ORA		#$80
 		STA		byte_60C7
-		BRK
-		.BYTE $60, $17		; ofs 0x000f801e, -> dst _bA_sF
+		FAR		$60, $17		; _bA_sF
 		JMP		loc_174C5C
 loc_174BF2:
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_174BFC
-		BRK
-		.BYTE $2E, $17		; ofs 0x000080c8, -> dst _b0_s64
+		FAR		$2E, $17		; _b0_s64
 loc_174BFC:
 		LDA		#$50
 		STA		byte_60C6
 		JSR		_vblank_and_render_off_flag10_set
-		BRK
-		.BYTE $21, $17		; ofs 0x0015801e, -> dst _bE_sF
+		FAR		$21, $17		; _bE_sF
 		JSR		__render_on_flag10_clear_reinit
 		LDA		byte_60B8
 		AND		#$BF
@@ -2045,32 +2067,27 @@ loc_174BFC:
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		BRK
-		.BYTE $90, $17		; ofs 0x00140040, -> dst _bD_s20_npc_hndl31
+		FAR		$90, $17		; _bD_s20_npc_hndl31
 		JMP		loc_174C5C
 loc_174C2F:
-		BRK
-		.BYTE $50, $17		; ofs 0x0015806c, -> dst _bE_s36
+		FAR		$50, $17		; _bE_s36
 		LDA		byte_2F
 		ORA		#1
 		STA		byte_2F
 		LDA		byte_6A58
 		BNE		loc_174C51
 		DEC		byte_6A58
-		BRK
-		.BYTE $2F, $17		; ofs 0x00140050, -> dst _bD_s28
+		FAR		$2F, $17		; _bD_s28
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		BRK
-		.BYTE $8D, $17		; ofs 0x00140048, -> dst _bD_s24
+		FAR		$8D, $17		; _bD_s24
 		JMP		loc_174C5C
 loc_174C51:
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		BRK
-		.BYTE $8C, $17		; ofs 0x00140046, -> dst _bD_s23
+		FAR		$8C, $17		; _bD_s23
 loc_174C5C:
 		JSR		sub_174D56
 		JMP		loc_174C5C
@@ -2086,27 +2103,21 @@ sub_174C62:
 		LDA		byte_60BA
 		AND		#1
 		BEQ		loc_174C84
-		BRK
-		.BYTE $46, $17		; ofs 0x0000809e, -> dst _b0_s4F
-		BRK
-		.BYTE $51, $17		; ofs 0x00158030, -> dst _bE_s18
-		BRK
-		.BYTE $45, $17		; ofs 0x0000809c, -> dst _b0_s4E
+		FAR		$46, $17		; _b0_s4F
+		FAR		$51, $17		; _bE_s18
+		FAR		$45, $17		; _b0_s4E
 		JMP		loc_174C87
 loc_174C84:
-		BRK
-		.BYTE $51, $17		; ofs 0x00158030, -> dst _bE_s18
+		FAR		$51, $17		; _bE_s18
 loc_174C87:
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_174C93
 		JSR		sub_177CFC
-		BRK
-		.BYTE $47, $17		; ofs 0x0012804e, -> dst _bC_s27
+		FAR		$47, $17		; _bC_s27
 loc_174C93:
 		JSR		_set_nmi_flag_10
-		BRK
-		.BYTE $93, $17		; ofs 0x00158022, -> dst _bE_s11
+		FAR		$93, $17		; _bE_s11
 		JSR		_set_nmi_flag_10
 		LDA		byte_2C
 		BNE		loc_174CCA
@@ -2122,18 +2133,15 @@ loc_174CAD:
 loc_174CB1:
 		STX		byte_100
 		STY		byte_101
-		BRK
-		.BYTE $5A, $17		; ofs 0x0012806a, -> dst _bC_s35
+		FAR		$5A, $17		; _bC_s35
 		JMP		loc_174CCA
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CBD:
 		LDA		_mmc_cur_prg_bank
 		PHA
-		BRK
-		.BYTE $F1, 7		; ofs 0x00080012, -> dst _b5_s9
-		BRK
-		.BYTE $5A, $17		; ofs 0x0012806a, -> dst _bC_s35
+		FAR		$F1, 7		; _b5_s9
+		FAR		$5A, $17		; _bC_s35
 		JSR		sub_175B0E
 loc_174CCA:
 		PLA
@@ -2146,8 +2154,7 @@ loc_174CCA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CCF:
-		BRK
-		.BYTE $21, 7		; ofs 0x0015801a, -> dst _bE_sD
+		FAR		$21, 7		; _bE_sD
 		JMP		sub_174DF2
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2165,10 +2172,8 @@ sub_174CE2:
 		JSR		sub_175A32
 		JSR		sub_1762FC
 		JSR		sub_1754AD
-		BRK
-		.BYTE $C, $17		; ofs 0x000b0038, -> dst _b7_s1C
-		BRK
-		.BYTE $F1, 7		; ofs 0x00080012, -> dst _b5_s9
+		FAR		$C, $17		; _b7_s1C
+		FAR		$F1, 7		; _b5_s9
 		JSR		sub_1743B5
 		JSR		sub_17578E
 		LDA		#7
@@ -2194,30 +2199,31 @@ sub_174D0D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_174D1B:
-		LDA		#8
-		JSR		_mmc1_prg_set
-		JSR		sub_CBF80
-		JMP		sub_174D39
-
+; moved back to bank C from bank 8, doesn't need anymore
+;sub_174D1B:
+;		LDA		#8
+;		JSR		_mmc1_prg_set
+;		JSR		sub_CBF80
+;		JMP		sub_174D39
+;
 ; =============== S U B	R O U T	I N E =======================================
-sub_174D26:
-		LDA		#8
-		JSR		_mmc1_prg_set
-		JSR		sub_CBF97
-		JMP		sub_174D39
-
+;sub_174D26:
+;		LDA		#8
+;		JSR		_mmc1_prg_set
+;		JSR		sub_CBF97
+;		JMP		sub_174D39
+;
 ; =============== S U B	R O U T	I N E =======================================
-sub_174D31:
-		LDA		#8
-		JSR		_mmc1_prg_set
-		JSR		sub_CBFAE
-
+;sub_174D31:
+;		LDA		#8
+;		JSR		_mmc1_prg_set
+;		JSR		sub_CBFAE
+;
 ; =============== S U B	R O U T	I N E =======================================
-sub_174D39:
-		LDA		#$C
-		JSR		_mmc1_prg_set
-		RTS
+;sub_174D39:
+;		LDA		#$C
+;		JSR		_mmc1_prg_set
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D3F:
@@ -2232,35 +2238,27 @@ sub_174D3F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D4F:
-		BRK
-		.BYTE $70, $17		; ofs 0x0012805c, -> dst _bC_s2E_vblank_count_50_wait_50_or_skip
-		BRK
-		.BYTE $71, $17		; ofs 0x00128040, -> dst _bC_s20
+		FAR		$70, $17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FAR		$71, $17		; _bC_s20
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D56:
-		BRK
-		.BYTE 1, 7		; ofs 0x00158002, -> dst _bE_s1
+		FAR		1, 7		; _bE_s1
 		JSR		sub_174E52
 		JSR		sub_174E1A
-		BRK
-		.BYTE $A, 7		; ofs 0x00140004, -> dst _bD_s2
+		FAR		$A, 7		; _bD_s2
 		JSR		sub_174D89
-		BRK
-		.BYTE $57, $17		; ofs 0x00128002, -> dst _bC_s1
+		FAR		$57, $17		; _bC_s1
 		JSR		sub_174DCF
 		JSR		sub_175AF7
-		BRK
-		.BYTE $11, 7		; ofs 0x00140012, -> dst _bD_s9
-		BRK
-		.BYTE $E, 7		; ofs 0x0014000c, -> dst _bD_s6
+		FAR		$11, 7		; _bD_s9
+		FAR		$E, 7		; _bD_s6
 		JSR		sub_174DC0
 		JSR		sub_177116
 		JSR		_vblank
 		JSR		sub_1755AB
-		BRK
-		.BYTE $10, 7		; ofs 0x000f8002, -> dst _bA_s1
+		FAR		$10, 7		; _bA_s1
 		JSR		sub_174E10
 		INC		byte_90
 		RTS
@@ -2325,8 +2323,7 @@ loc_174DDA:
 		AND		#1
 		BEQ		locret_174DF1
 loc_174DE0:
-		BRK
-		.BYTE $88, 7		; ofs 0x00098010, -> dst _b6_s8
+		FAR		$88, 7		; _b6_s8
 		LDA		byte_87
 		BNE		locret_174DF1
 		LDA		byte_6D9
@@ -2338,8 +2335,7 @@ locret_174DF1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174DF2:
-		BRK
-		.BYTE $3E, $D7		; _syscall0D
+		FAR		$3E, $D7		; _sys0D
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2373,8 +2369,7 @@ sub_174E1A:
 		BCS		loc_174E21
 		RTS
 loc_174E21:
-		BRK
-		.BYTE $C3, 7		; ofs 0x0015804c, -> dst _bE_s26
+		FAR		$C3, 7		; _bE_s26
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2431,16 +2426,14 @@ loc_174E78:
 		LDA		byte_86
 		BNE		loc_174E95
 		INC		byte_6ACE
-		BRK
-		.BYTE $C8, 7		; ofs 0x00128028, -> dst _bC_s14
+		FAR		$C8, 7		; _bC_s14
 		JSR		sub_175049
 		LDA		byte_8F
 		BNE		locret_174E77
 		LDA		byte_2C
 		CMP		#2
 		BEQ		loc_174E92
-		BRK
-		.BYTE $67, 7		; ofs 0x00008000, -> dst _b0_s0_world_map_random_enounter_test
+		FAR		$67, 7		; _b0_s0_world_map_random_enounter_test
 loc_174E92:
 		JMP		loc_174E99
 loc_174E95:
@@ -2510,8 +2503,7 @@ loc_174F04:
 		BEQ		loc_174F53
 		RTS
 loc_174F1A:
-		BRK
-		.BYTE $A4, $17		; ofs 0x000f800c, -> dst _bA_s6
+		FAR		$A4, $17		; _bA_s6
 		BCS		loc_174F3B
 		LDA		byte_6EB
 		BNE		loc_174F43
@@ -2520,8 +2512,7 @@ loc_174F1A:
 		LDA		byte_174FF2,X
 		CMP		#$FF
 		BNE		loc_174F3E
-		BRK
-		.BYTE $A4, $17		; ofs 0x000f800c, -> dst _bA_s6
+		FAR		$A4, $17		; _bA_s6
 		BCS		loc_174F3B
 		LDA		#0
 		STA		byte_6E1
@@ -2616,13 +2607,11 @@ loc_174FBB:
 		ADC		#$10
 		STA		byte_8E
 		BPL		locret_174FF1
-		BRK
-		.BYTE $21, 7		; ofs 0x0015801a, -> dst _bE_sD
+		FAR		$21, 7		; _bE_sD
 		JSR		_sram_b0_s31
 		DEC		word_4
 		LDA		word_4
-		BRK
-		.BYTE $20, 7		; ofs 0x00158018, -> dst _bE_sC
+		FAR		$20, 7		; _bE_sC
 locret_174FF1:
 		RTS
 byte_174FF2:
@@ -2728,8 +2717,7 @@ loc_17509F:
 		BCC		sub_1750D0
 		CMP		#$FF
 		BEQ		sub_1750BC
-		BRK
-		.BYTE 0, $17		; ofs 0x00128054, -> dst _bC_s2A
+		FAR		0, $17		; _bC_s2A
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2748,11 +2736,9 @@ locret_1750CF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1750D0:
 		LDA		byte_8B
-		BRK
-		.BYTE $AB, 7		; ofs 0x0015803a, -> dst _bE_s1D
+		FAR		$AB, 7		; _bE_s1D
 loc_1750D5:
-		BRK
-		.BYTE $AC, 7		; ofs 0x00158032, -> dst _bE_s19
+		FAR		$AC, 7		; _bE_s19
 		BCC		loc_1750DC
 		INC		word_4
 loc_1750DC:
@@ -2801,8 +2787,7 @@ loc_175123:
 		LDA		byte_8B
 		CMP		#$41
 		BCC		loc_175185
-		BRK
-		.BYTE $BF, 7		; ofs 0x00158044, -> dst _bE_s22
+		FAR		$BF, 7		; _bE_s22
 		JMP		loc_175185
 loc_17513A:
 		LDA		byte_31
@@ -2844,8 +2829,7 @@ loc_175181:
 		LDA		#$23
 		STA		byte_2A
 loc_175185:
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		JSR		sub_175917
 loc_17518B:
 		LDA		#$FF
@@ -2875,10 +2859,8 @@ loc_1751AA:
 		STA		byte_60BA
 		JSR		sub_1743B5
 		JSR		_vblank_and_render_off_flag10_set
-		BRK
-		.BYTE $21, $17		; ofs 0x0015801e, -> dst _bE_sF
-		BRK
-		.BYTE $F1, 7		; ofs 0x00080012, -> dst _b5_s9
+		FAR		$21, $17		; _bE_sF
+		FAR		$F1, 7		; _b5_s9
 		LDA		byte_2C
 		BEQ		loc_1751E5
 		LDA		byte_2A
@@ -2887,12 +2869,10 @@ loc_1751AA:
 		LDA		byte_2B
 		STA		byte_101
 		STA		byte_2E
-		BRK
-		.BYTE $35, $17		; ofs 0x00140036, -> dst _bD_s1B
+		FAR		$35, $17		; _bD_s1B
 		JMP		loc_1751F7
 loc_1751E5:
-		BRK
-		.BYTE $82, 7		; ofs 0x00128006, -> dst _bC_s3
+		FAR		$82, 7		; _bC_s3
 		LDA		byte_60C5
 		BPL		loc_1751F4
 		LDA		byte_60CB
@@ -2904,24 +2884,20 @@ loc_1751F7:
 		JSR		sub_175B0E
 		LDA		#6
 		JSR		_mmc1_prg_set
-		BRK
-		.BYTE $64, $17		; ofs 0x000080cc, -> dst _b0_s66
+		FAR		$64, $17		; _b0_s66
 		LDA		byte_60C5
 		BPL		locret_175211
 		LDA		byte_60CB
 		AND		#$20
 		BNE		locret_175211
-		BRK
-		.BYTE $7C, $17		; ofs 0x000b0032, -> dst _b7_s19
+		FAR		$7C, $17		; _b7_s19
 locret_175211:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175212:
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$E9, 7		; _bE_s31
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2942,8 +2918,7 @@ locret_175228:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175229:
-		BRK
-		.BYTE $C2, 7		; ofs 0x0015804a, -> dst _bE_s25
+		FAR		$C2, 7		; _bE_s25
 locret_17522C:
 		RTS
 
@@ -2990,15 +2965,13 @@ sub_17522D:
 		BNE		loc_17527F
 		JMP		sub_175342
 loc_17527F:
-		BRK
-		.BYTE $C0, 7		; ofs 0x00158046, -> dst _bE_s23
+		FAR		$C0, 7		; _bE_s23
 		LDA		#0
 		STA		byte_6B9
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		BRK
-		.BYTE 4, $2F		; _syscall12
+		FAR		4, $2F		; _sys12
 locret_175291:
 		RTS
 loc_175292:
@@ -3045,10 +3018,8 @@ loc_1752D9:
 		LDA		byte_2F
 		ORA		#1
 		STA		byte_2F
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
-		BRK
-		.BYTE $82, $2F		; _syscall12
+		FAR		$A1, 7		; _bB_s4
+		FAR		$82, $2F		; _sys12
 		JSR		sub_174369
 		JSR		sub_1759B8
 loc_1752EB:
@@ -3059,10 +3030,8 @@ loc_1752EB:
 loc_1752F5:
 		PLA
 		JSR		sub_17530A
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$E9, 7		; _bE_s31
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		LDA		byte_6AE6
 		AND		#$FE
 		STA		byte_6AE6
@@ -3075,8 +3044,7 @@ sub_17530A:
 		JSR		sub_17578E
 		PLA
 		BNE		loc_175324
-		BRK
-		.BYTE $83, 7		; ofs 0x00128008, -> dst _bC_s4
+		FAR		$83, 7		; _bC_s4
 		BIT		byte_60C5
 		BVC		loc_17531E
 		PLA
@@ -3086,8 +3054,7 @@ loc_17531E:
 		JSR		_mmc1_prg_set
 		RTS
 loc_175324:
-		BRK
-		.BYTE $84, 7		; ofs 0x0012800a, -> dst _bC_s5
+		FAR		$84, 7		; _bC_s5
 		LDA		#$C
 		JSR		_mmc1_prg_set
 		RTS
@@ -3101,16 +3068,13 @@ sub_17532D:
 		STA		byte_92
 		AND		#$E0
 		STA		byte_8C
-		BRK
-		.BYTE $F1, 7		; ofs 0x00080012, -> dst _b5_s9
+		FAR		$F1, 7		; _b5_s9
 		JMP		sub_1743B5
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175342:
-		BRK
-		.BYTE $EB, 7		; ofs 0x00158064, -> dst _bE_s32
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$EB, 7		; _bE_s32
+		FAR		$A1, 7		; _bB_s4
 		JSR		sub_174369
 		LDA		#$9C
 		STA		byte_8B
@@ -3126,21 +3090,18 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		BRK
-		.BYTE $11, $2F		; _syscall12
+		FAR		$11, $2F		; _sys12
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17536E:
 		LDA		byte_8F
 		BEQ		loc_175376
-		BRK
-		.BYTE $C2, 7		; ofs 0x0015804a, -> dst _bE_s25
+		FAR		$C2, 7		; _bE_s25
 		RTS
 loc_175376:
 		LDA		byte_92
-		BRK
-		.BYTE $AD, 7		; ofs 0x00158034, -> dst _bE_s1A
+		FAR		$AD, 7		; _bE_s1A
 		BCS		loc_175397
 		CMP		#2
 		BEQ		loc_17538D
@@ -3148,8 +3109,7 @@ loc_175376:
 		BEQ		loc_1753DF
 		CMP		#8
 		BEQ		sub_1753AA
-		BRK
-		.BYTE $C1, 7		; ofs 0x00158048, -> dst _bE_s24
+		FAR		$C1, 7		; _bE_s24
 locret_17538C:
 		RTS
 loc_17538D:
@@ -3181,27 +3141,22 @@ sub_1753AA:
 		LDA		#$E
 		STA		word_4+1
 		LDA		#$21
-		BRK
-		.BYTE $9D, 7		; ofs 0x00128014, -> dst _bC_sA
+		FAR		$9D, 7		; _bC_sA
 		JSR		sub_1742B0
 loc_1753C0:
 		LDA		byte_8B
 		CMP		#$C5
 		BNE		loc_1753CA
-		BRK
-		.BYTE $F7, 7		; ofs 0x00128042, -> dst _bC_s21
+		FAR		$F7, 7		; _bC_s21
 		RTS
 loc_1753CA:
 		CMP		#$A6
 		BNE		loc_1753D4
-		BRK
-		.BYTE $BF, 7		; ofs 0x00158044, -> dst _bE_s22
+		FAR		$BF, 7		; _bE_s22
 		JMP		loc_174E9C
 loc_1753D4:
-		BRK
-		.BYTE $BF, 7		; ofs 0x00158044, -> dst _bE_s22
-		BRK
-		.BYTE $A8, 7		; ofs 0x0015801c, -> dst _bE_sE
+		FAR		$BF, 7		; _bE_s22
+		FAR		$A8, 7		; _bE_sE
 		BCC		loc_1753E6
 		JMP		loc_1752EB
 loc_1753DF:
@@ -3246,8 +3201,7 @@ loc_17541D:
 		PLA
 		LDA		#0
 		STA		byte_6B9
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		JSR		sub_174369
 		JMP		loc_175195
 
@@ -3264,14 +3218,12 @@ sub_17542F:
 		STA		word_4
 		JSR		sub_175219
 loc_17543E:
-		BRK
-		.BYTE $AC, 7		; ofs 0x00158032, -> dst _bE_s19
+		FAR		$AC, 7		; _bE_s19
 		BCS		loc_175449
 		JSR		sub_175222
 		JMP		loc_17543E
 loc_175449:
-		BRK
-		.BYTE $AE, 7		; ofs 0x00158040, -> dst _bE_s20
+		FAR		$AE, 7		; _bE_s20
 		CPX		byte_30
 		BNE		loc_175454
 		CPY		byte_31
@@ -3318,8 +3270,7 @@ loc_175488:
 		AND		#$F
 		CMP		#$F
 		BNE		loc_1754A7
-		BRK
-		.BYTE $2B, $17		; ofs 0x0012806e, -> dst _bC_s37
+		FAR		$2B, $17		; _bC_s37
 		LDX		byte_30
 		LDY		byte_31
 		JSR		sub_177CC8
@@ -3346,8 +3297,7 @@ sub_1754B6:
 		LDA		#0
 		STA		word_4+1
 loc_1754CA:
-		BRK
-		.BYTE $AC, 7		; ofs 0x00158032, -> dst _bE_s19
+		FAR		$AC, 7		; _bE_s19
 		BCS		loc_1754D5
 loc_1754CF:
 		JSR		sub_175222
@@ -3361,8 +3311,7 @@ loc_1754D5:
 loc_1754E0:
 		STX		byte_644
 		STX		byte_6BC
-		BRK
-		.BYTE $AE, 7		; ofs 0x00158040, -> dst _bE_s20
+		FAR		$AE, 7		; _bE_s20
 		STX		byte_30
 		STY		byte_31
 		RTS
@@ -3372,8 +3321,20 @@ sub_1754EE:
 		JSR		sub_175917
 		SEC
 		SBC		#$80
-		LDY		#$7E
-		JSR		_calc_6C_mul_3_add_syscall0_word
+; --
+;		LDY		#$7E
+;		JSR		_calc_6C_mul_3_add_syscall0_word
+; --
+		STA		word_6C
+		ASL
+		CLC
+		ADC		word_6C
+		ADC		#<[_b6_d1]
+		STA		word_6C
+		LDA		#>[_b6_d1]
+		ADC		#0
+		STA		word_6C+1
+; --
 		LDY		#0
 		LDA		(word_6C),Y
 		STA		byte_30
@@ -3393,8 +3354,20 @@ sub_1754EE:
 sub_175516:
 		SEC
 		SBC		#$C0
-		LDY		#$7F
-		JSR		_calc_6C_mul_3_add_syscall0_word
+; --
+;		LDY		#$7F
+;		JSR		_calc_6C_mul_3_add_syscall0_word
+; --
+		STA		word_6C
+		ASL
+		CLC
+		ADC		word_6C
+		ADC		#<[_b6_d2]
+		STA		word_6C
+		LDA		#>[_b6_d2]
+		ADC		#0
+		STA		word_6C+1
+; --
 		LDY		#0
 		LDA		(word_6C),Y
 		PHA
@@ -3406,59 +3379,48 @@ sub_175516:
 		STA		byte_2B
 		PLA
 		PHA
-		BRK
-		.BYTE $8C, 7		; ofs 0x000f8018, -> dst _bA_sC
+		FAR		$8C, 7		; _bA_sC
 		PLA
 		JSR		sub_1754B6
 		JSR		sub_17532D
-		BRK
-		.BYTE $8D, 7		; ofs 0x000f801a, -> dst _bA_sD
+		FAR		$8D, 7		; _bA_sD
 		LDA		#2
 		STA		byte_644
 		STA		byte_6BC
-		BRK
-		.BYTE $84, 7		; ofs 0x0012800a, -> dst _bC_s5
-		BRK
-		.BYTE $DD, 7		; ofs 0x0014001a, -> dst _bD_sD
+		FAR		$84, 7		; _bC_s5
+		FAR		$DD, 7		; _bD_sD
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_calc_6C_mul_3_add_syscall0_word:
-		STA		word_6C
-		ASL
-		CLC
-		ADC		word_6C
-		PHA
-		TYA
-		JSR		_get_syscall0_data_cur_byte0
-		STA		word_6C
-		TYA
-		JSR		_get_syscall0_data_cur_byte1
-		STA		word_6C+1
-		PLA
-		CLC
-		ADC		word_6C
-		STA		word_6C
-		BCC		locret_175568
-		INC		word_6C+1
-locret_175568:
-		RTS
+; not needed anymore
+;_calc_6C_mul_3_add_syscall0_word:
+;		STA		word_6C
+;		ASL
+;		CLC
+;		ADC		word_6C
+;		PHA
+;		TYA
+;		JSR		_get_syscall0_data_cur_byte0
+;		STA		word_6C
+;		TYA
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		word_6C+1
+;		PLA
+;		CLC
+;		ADC		word_6C
+;		STA		word_6C
+;		BCC		locret_175568
+;		INC		word_6C+1
+;locret_175568:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175569:
 		SEC
 		SBC		#$F0
 		ASL
-		STA		word_6C
-; here is just loading of data offset in external bank, but with this source we know
-; all offsets at assembly time, so no need in this weird methods
-; syscall 80 is bank6, offset 3 (byte_9851B)
-		CLC
-		ADC		#<[byte_9851B]
-		STA		word_6C
-		LDA		#>[byte_9851B]
-		ADC		#0
-		STA		word_6C+1
+; --
+;		STA		word_6C
 ;		LDA		#$80
 ;		JSR		_get_syscall0_data_cur_byte0
 ;		CLC
@@ -3471,10 +3433,22 @@ sub_175569:
 ;		ADC		#0
 ;		STA		word_6C+1
 ;		PHA				; why?
+;		LDA		#6
+;		JSR		_mmc1_prg_set
+;		PLA				; A is overwritten with next opcode
+; here is just loading of data offset in external bank, but with this source we know
+; all offsets at assembly time, so no need in this weird methods
+; syscall 80 is bank6, offset 3 (_b6_d3)
+		CLC
+		ADC		#<[_b6_d3]
+		STA		word_6C
+		LDA		#>[_b6_d3]
+		ADC		#0
+		STA		word_6C+1
 		LDA		#6
 		JSR		_mmc1_prg_set
-;		PLA
-		LDY		#0		; A is overwritten with next opcode
+; --
+		LDY		#0
 		LDA		(word_6C),Y
 		STA		byte_2A
 		INY
@@ -3483,15 +3457,12 @@ sub_175569:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175596:
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
+		FAR		$E9, 7		; _bE_s31
 		CMP		#$11
 		BEQ		loc_1755A0
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 loc_1755A0:
-		BRK
-		.BYTE $82, $2F		; _syscall12
+		FAR		$82, $2F		; _sys12
 		JSR		sub_174369
 		PLA
 		PLA
@@ -3569,8 +3540,7 @@ loc_175624:
 		JMP		sub_17574F
 loc_175638:
 		JSR		sub_17574F
-		BRK
-		.BYTE $C, 7		; ofs 0x00140008, -> dst _bD_s4
+		FAR		$C, 7		; _bD_s4
 		LDA		#$10
 		STA		byte_87
 		LDA		#0
@@ -3771,8 +3741,7 @@ sub_1757A4:
 		LDA		#0
 		STA		byte_8E
 		LDA		#4
-		BRK
-		.BYTE $1F, 7		; ofs 0x00158016, -> dst _bE_sB
+		FAR		$1F, 7		; _bE_sB
 loc_1757B3:
 		PLA
 		TAX
@@ -3839,16 +3808,14 @@ loc_17580C:
 		CMP		byte_2B
 		BEQ		loc_175824
 loc_175818:
-		BRK
-		.BYTE $A2, $2F		; _syscall12
+		FAR		$A2, $2F		; _sys12
 loc_17581B:
 		SEC
 		RTS
 loc_17581D:
 		LDA		#0
 		STA		byte_2C
-		BRK
-		.BYTE $85, 7		; ofs 0x0012800c, -> dst _bC_s6
+		FAR		$85, 7		; _bC_s6
 loc_175824:
 		CLC
 		RTS
@@ -3873,11 +3840,9 @@ loc_175838:
 		BCS		loc_175818
 		LDA		#0
 		STA		byte_2C
-		BRK
-		.BYTE $85, 7		; ofs 0x0012800c, -> dst _bC_s6
+		FAR		$85, 7		; _bC_s6
 		JSR		sub_175212
-		BRK
-		.BYTE $32, $17		; ofs 0x00140030, -> dst _bD_s18
+		FAR		$32, $17		; _bD_s18
 		CLC
 		RTS
 
@@ -3891,12 +3856,10 @@ sub_175853:
 		CMP		#$18
 		BNE		loc_175877
 		JSR		sub_174CCF
-		BRK
-		.BYTE $87, $77		; _msg_m00_arg1
+		FAR		$87, $77		; _sys07_msg_m00_arg1
 		DEC		byte_101
 		DEC		byte_31
-		BRK
-		.BYTE $F4, 7		; ofs 0x00158066, -> dst _bE_s33
+		FAR		$F4, 7		; _bE_s33
 		INC		byte_101
 		INC		byte_31
 		SEC
@@ -3916,14 +3879,12 @@ loc_17588B:
 		LDA		word_7C
 		STA		byte_92
 		AND		#$1F
-		BRK
-		.BYTE $B, 7		; ofs 0x00140006, -> dst _bD_s3
+		FAR		$B, 7		; _bD_s3
 		BCC		loc_1758C3
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		BRK
-		.BYTE $A2, $2F		; _syscall12
+		FAR		$A2, $2F		; _sys12
 loc_17589F:
 		SEC
 		RTS
@@ -3969,12 +3930,9 @@ loc_1758DF:
 		BEQ		loc_1758F0
 		LDA		#0
 		STA		byte_2C
-		BRK
-		.BYTE $1D, $17		; ofs 0x00128062, -> dst _bC_s31
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$1D, $17		; _bC_s31
+		FAR		$E9, 7		; _bE_s31
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 loc_1758F0:
 		CLC
 		RTS
@@ -3992,8 +3950,7 @@ loc_175900:
 		LDA		(word_72),Y
 		CMP		byte_31
 		BNE		loc_1758F6
-		BRK
-		.BYTE $AF, 7		; ofs 0x00158042, -> dst _bE_s21
+		FAR		$AF, 7		; _bE_s21
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4003,18 +3960,15 @@ sub_17590B:
 		STA		byte_B
 		PLA
 		STA		byte_8C
-		BRK
-		.BYTE $5E, 7		; ofs 0x00128004, -> dst _bC_s2
+		FAR		$5E, 7		; _bC_s2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		BRK
-		.BYTE $82, $2F		; _syscall12
+		FAR		$82, $2F		; _sys12
 		JSR		sub_174369
-		BRK
-		.BYTE $F9, 7		; ofs 0x00158036, -> dst _bE_s1B
+		FAR		$F9, 7		; _bE_s1B
 		PLA
 		RTS
 
@@ -4029,9 +3983,16 @@ sub_175923:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17592E:
-		LDA		#$5D
-		LDX		#word_6C
-		JSR		_get_syscall0_bank_ptr_no_prg_change
+; --
+;		LDA		#$5D
+;		LDX		#word_6C
+;		JSR		_get_syscall0_bank_ptr_safe
+; --
+		LDA		#<[_b6_d5]
+		STA		word_6C
+		LDA		#>[_b6_d5]
+		STA		word_6C+1
+; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 loc_17593A:
@@ -4107,12 +4068,19 @@ word_1759B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1759B8:
-		LDA		#$1D
-		JSR		_get_syscall0_data_cur_byte0
+; --
+;		LDA		#$1D
+;		JSR		_get_syscall0_data_cur_byte0
+;		STA		word_6C
+;		LDA		#$1D
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		word_6C+1
+; --
+		LDA		#<[_b6_d4]
 		STA		word_6C
-		LDA		#$1D
-		JSR		_get_syscall0_data_cur_byte1
+		LDA		#>[_b6_d4]
 		STA		word_6C+1
+; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		#0
@@ -4191,19 +4159,29 @@ sub_175A32:
 		LDA		#0
 		ADC		word_6E+1
 		STA		word_6E+1
-		LDA		#$1E
-		JSR		_get_syscall0_data_cur_byte1
-		CLC
-		ADC		word_6E+1
-		STA		word_6E+1
-		LDA		#$1E
-		JSR		_get_syscall0_data_cur_byte0
+;-
+;		LDA		#$1E
+;		JSR		_get_syscall0_data_cur_byte1
+;		CLC
+;		ADC		word_6E+1
+;		STA		word_6E+1
+;		LDA		#$1E
+;		JSR		_get_syscall0_data_cur_byte0
+;		CLC
+;		ADC		word_6E
+;		STA		word_6E
+;		BCC		loc_175A5E
+;		INC		word_6E+1
+;loc_175A5E:
+;-
+		LDA		#<[_map_data_lib]
 		CLC
 		ADC		word_6E
 		STA		word_6E
-		BCC		loc_175A5E
-		INC		word_6E+1
-loc_175A5E:
+		LDA		#>[_map_data_lib]
+		ADC		word_6E+1
+		STA		word_6E+1
+; --		
 		LDA		#7
 		JSR		_mmc1_prg_set
 		LDA		byte_9A
@@ -4264,17 +4242,19 @@ loc_175AB2:
 		TXA
 		AND		#$1F
 		STA		byte_8A
-; the same, bank 6, ofs 0
-		LDA		#<[byte_9804A]
-		STA		byte_98
-		LDA		#>[byte_9804A]
-		STA		byte_99
+; --
 ;		LDA		#$7D
 ;		JSR		_get_syscall0_data_cur_byte0
 ;		STA		byte_98
 ;		LDA		#$7D
 ;		JSR		_get_syscall0_data_cur_byte1
 ;		STA		byte_99
+; -- the same, bank 6, ofs 0
+		LDA		#<[_b6_d0]
+		STA		byte_98
+		LDA		#>[_b6_d0]
+		STA		byte_99
+; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		byte_8B
@@ -4304,8 +4284,7 @@ sub_175AF7:
 		LDA		#5
 		JSR		_mmc1_prg_set
 		JSR		sub_175B17
-		BRK
-		.BYTE $12, 7		; ofs 0x0008000e, -> dst _b5_s7
+		FAR		$12, 7		; _b5_s7
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6223,8 +6202,7 @@ loc_176729:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17673A:
-		BRK
-		.BYTE $5F, $17		; ofs 0x00080016, -> dst _b5_sB_ppu_font_load
+		FAR		$5F, $17		; _b5_sB_ppu_font_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6284,26 +6262,26 @@ word_1767B0:
 		.WORD $2523
 		.WORD $4523
 _syscall_lib:
-		.WORD _syscall00_safe
-		.WORD _syscall01_safe
-		.WORD _msg_m00_b3
-		.WORD _msg_m00_b4
-		.WORD _msg_m00_b3_break
-		.WORD _msg_m00_b4_break
-		.WORD _msg_m00_arg0
-		.WORD _msg_m00_arg1
-		.WORD _msg_m00_arg2
-		.WORD _msg_m00_break_arg0
-		.WORD _msg_m00_break_arg1
-		.WORD _msg_m00_break_arg2
-		.WORD _msg_m00_arg8
-		.WORD _syscall0D
-		.WORD _syscall0E
-		.WORD _syscall0F
-		.WORD _syscall10
-		.WORD _msg_m00_arg7
-		.WORD _syscall12
-		.WORD _msg_m00_arg6
+		.WORD _sys00_safe
+		.WORD _sys01_safe
+		.WORD _sys02_msg_m00_b3
+		.WORD _sys03_msg_m00_b4
+		.WORD _sys04_msg_m00_b3_break
+		.WORD _sys05_msg_m00_b4_break
+		.WORD _sys06_msg_m00_arg0
+		.WORD _sys07_msg_m00_arg1
+		.WORD _sys08_msg_m00_arg2
+		.WORD _sys09_msg_m00_arg0_break
+		.WORD _sys0A_msg_m00_arg1_break
+		.WORD _sys0B_msg_m00_arg2_break
+		.WORD _sys0C_msg_m00_arg8
+		.WORD _sys0D
+		.WORD _sys0E
+		.WORD _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		.WORD _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		.WORD _sys11_msg_m00_arg7
+		.WORD _sys12
+		.WORD _sys13_msg_m00_arg6
 
 ; =============== S U B	R O U T	I N E =======================================
 _RESET:
@@ -6331,14 +6309,13 @@ loc_1767F8:
 		STA		_cur_mmc_cmd
 		LDA		#$10
 		STA		_cur_chr0_bank_prg_hi
-		JSR		_mmc1_chr_set
+		JSR		_mmc1_reinit
 		LDA		#1
 		JSR		_mmc1_prg_set
 		LDA		#0
 		STA		_APU_STATUS
 		STA		byte_6A3D
-		BRK
-		.BYTE $9F, 7		; ofs 0x00020004, -> dst _b1_s2
+		FAR		$9F, 7		; _bB_s2
 		LDA		_PPU_STATUS
 		LDA		#$10
 		STA		_PPU_ADDR
@@ -6350,8 +6327,7 @@ loc_17683B:
 		STA		_PPU_DATA
 		DEX
 		BNE		loc_17683B
-		BRK
-		.BYTE $63, $17		; ofs 0x000080ca, -> dst _b0_s65
+		FAR		$63, $17		; _b0_s65
 		JSR		sub_174000
 		LDA		#$F
 		LDX		#$19
@@ -6460,9 +6436,9 @@ _direct_calls:
 		LDA		_tmp21+1
 		ASL
 		TAX
-		LDA		off_8000,X
+		LDA		$8000,X
 		STA		_tmp21+1
-		LDA		off_8000+1,X
+		LDA		$8000+1,X
 		STA		_tmp21+2
 		LDA		#$4C
 		STA		_tmp21
@@ -6486,58 +6462,487 @@ _direct_calls:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_17690A:
+; see notes for _npc_hndl47_exp_info_and_progress_save handler in bank D
+_mmc1_sram_disable:
 		PHA
 		LDA		_cur_chr0_bank_prg_hi
 		AND		#$EF
 		STA		_cur_chr0_bank_prg_hi
 		PLA
-		JMP		loc_177FAC
+		JMP		_mmc1_prg_direct
+		
 _get_syscall0_sub_table_banks:
-		.BYTE $EE,$EE,$EE,$EE,$EE,$DD,$DD,$DD,$AD,$55,$55,$CC,$87,$AA,$E6,$7E
-		.BYTE $EE,$50,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	6,$C2
-		.BYTE $22,$22,$22,$20,	2,  4,$44,$44,$44,$44,$44,$44,$42,  0,$46,$66
-		.BYTE $6A,$CC,$CC,$AE,$66,$66,$AA,  0,	1,  7,$77,$7C,$A5,$7C, $C,$11
-		.BYTE $11,$1D,$21,$E4,$E0, $E,$EE,$EE,$44,  4,$44,$AA,$CC,$CC,$C6,$CE
-		.BYTE $EE,$EE,$66,$66,$CC,$C2,	0,$CC,$44,$44,$44,$44,$11,$11,$1D,$60
-		.BYTE	0,$C6, $A,$EE,$EE,$2E,	4,$44,$15,$5C,$EC,$7C,$CE,$CC,$AD,$CD
+;		.BYTE $EE,$EE,$EE,$EE,$EE,$DD,$DD,$DD,$AD,$55,$55,$CC,$87,$AA,$E6,$7E
+;		.BYTE $EE,$50,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
+;		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	6,$C2
+;		.BYTE $22,$22,$22,$20,	2,  4,$44,$44,$44,$44,$44,$44,$42,  0,$46,$66
+;		.BYTE $6A,$CC,$CC,$AE,$66,$66,$AA,  0,	1,  7,$77,$7C,$A5,$7C, $C,$1B
+;		.BYTE $BB,$BD,$2B,$E4,$E0, $E,$EE,$EE,$44,  4,$44,$AA,$CC,$CC,$C6,$CE
+;		.BYTE $EE,$EE,$66,$66,$CC,$C2,	0,$CC,$44,$44,$44,$44,$11,$11,$1D,$60
+;		.BYTE	0,$C6, $A,$EE,$EE,$2E,	4,$44,$B5,$5C,$EC,$7C,$CE,$CC,$AD,$CD
+		.BYTE $E,$E,$E,$E,$E,$E,$E,$E,$E,$E,$D,$D,$D,$D,$D,$D
+		.BYTE $A,$D,$5,$5,$5,$5,$C,$C,$8,$7,$A,$A,$E,$6,$7,$E
+		.BYTE $E,$E,$5,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$6,$C,$2
+		.BYTE $2,$2,$2,$2,$2,$2,$2,$0,$0,$2,$0,$4,$4,$4,$4,$4
+		.BYTE $4,$4,$4,$4,$4,$4,$4,$4,$4,$2,$0,$0,$4,$6,$6,$6
+		.BYTE $6,$A,$C,$C,$C,$C,$A,$E,$6,$6,$6,$6,$A,$A,$0,$0
+		.BYTE $0,$1,$0,$7,$7,$7,$7,$C,$A,$5,$7,$C,$0,$C,$1,$B
+		.BYTE $B,$B,$B,$D,$2,$B,$E,$4,$E,$0,$0,$E,$E,$E,$E,$E
+		.BYTE $4,$4,$0,$4,$4,$4,$A,$A,$C,$C,$C,$C,$C,$6,$C,$E
+		.BYTE $E,$E,$E,$E,$6,$6,$6,$6,$C,$C,$C,$2,$0,$0,$C,$C
+		.BYTE $4,$4,$4,$4,$4,$4,$4,$4,$1,$1,$1,$1,$1,$D,$6,$0
+		.BYTE $0,$0,$C,$6,$0,$A,$E,$E,$E,$E,$2,$E,$0,$4,$4,$4
+		.BYTE $B,$5,$5,$C,$E,$C,$7,$C,$C,$E,$C,$C,$A,$D,$C,$D
+
 _get_syscall1_sub_table_banks:
-		.BYTE $CC,$DD,$C6,$DE,  0, $A,$7D,$DC,  0,$66,$11,$11,$1E,$EE,$EC,$EE
-		.BYTE $EE, $C,$EE,$CD,$D0, $C, $D, $D,	4,$DD,$DD,$DD,$DC,$CC,$D5,$D1
-		.BYTE $4C,$6C,$D0, $C,$C0,$CC,	0,  0,$EE,$E6,$40,$5C,$DC,$CC,$44,$C5
-		.BYTE $A6,$70,	7,$77,$77,$77,$7C,$67,$CC,$C0,$5A,$AC,$A5,$D0,$7D,$76
-		.BYTE $46,$DD,$D6,$26,$66,$CD,$DD,$CA,$D6,$CE,$67,$6A,$20,$6A,$A4,$44
-		.BYTE $44,$AA,$AA,$A7,$AA,$FF
+;		.BYTE $CC,$DD,$C6,$DE,  0, $A,$7D,$DC,  0,$66,$11,$11,$1E,$EE,$EC,$EE
+;		.BYTE $EE, $C,$EE,$CD,$D0, $C, $D, $D,	4,$DD,$DD,$DD,$DC,$CC,$D5,$D1
+;		.BYTE $4C,$6C,$D0, $C,$C0,$CC,	0,  0,$EE,$E6,$40,$5C,$DC,$CC,$44,$C5
+;		.BYTE $A6,$70,	7,$77,$77,$77,$7C,$67,$CC,$C0,$5A,$AC,$A5,$D0,$7D,$76
+;		.BYTE $46,$DD,$D6,$26,$66,$CD,$DD,$CA,$D6,$CE,$67,$6A,$20,$6A,$A4,$44
+;		.BYTE $44,$AA,$AA,$A7,$AA
+		.BYTE $C,$C,$D,$D,$C,$6,$D,$E,$0,$0,$0,$A,$7,$D,$D,$C
+		.BYTE $0,$0,$6,$6,$1,$1,$1,$1,$1,$E,$E,$E,$E,$C,$E,$E
+		.BYTE $E,$E,$0,$C,$E,$E,$C,$D,$D,$0,$0,$C,$0,$D,$0,$D
+		.BYTE $0,$4,$D,$D,$D,$D,$D,$D,$D,$C,$C,$C,$D,$5,$D,$1
+		.BYTE $4,$C,$6,$C,$D,$0,$0,$C,$C,$0,$C,$C,$0,$0,$0,$0
+		.BYTE $E,$E,$E,$6,$4,$0,$5,$C,$D,$C,$C,$C,$4,$4,$C,$5
+		.BYTE $A,$6,$7,$0,$0,$7,$7,$7,$7,$7,$7,$7,$7,$C,$6,$7
+		.BYTE $C,$C,$C,$0,$5,$A,$A,$C,$A,$5,$D,$0,$7,$D,$7,$6
+		.BYTE $4,$6,$D,$D,$D,$6,$2,$6,$6,$6,$C,$D,$D,$D,$C,$A
+		.BYTE $D,$6,$C,$E,$6,$7,$6,$A,$2,$0,$6,$A,$A,$4,$4,$4
+		.BYTE $4,$4,$A,$A,$A,$A,$A,$7,$A,$A
 _get_syscall0_sub_idx:
-		.BYTE   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  2,  3,  4,  5,  6,  7
-		.BYTE	1,  9,	7,  4,	0,  1,$1D,$1F,	0,  8,	0,  1, $A,  4,	0, $B
-		.BYTE  $C, $D,	2,  2,	3,  4,	5,  6,	7,  8,	9, $A, $B, $C, $D, $E
-		.BYTE  $F,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1A,$1B,$1C,$1D,$1E
-		.BYTE $1F,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2A,$2B,$2C,$2D,$2E
-		.BYTE $2F,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$3A,$3B,  5,	2,  0
-		.BYTE	1,  2,	3,  4,	5,  6,	7,  0,$3C, $A,$43,  0,	1,  2,	3,  4
-		.BYTE	5,  6,	7,  8,	9, $A, $B, $C, $D, $B,$3D,$3E, $F,  0,	1,  2
-		.BYTE	3,  2,	3,  4,	5,  6,	3,$1E,	8,  9, $A, $B, $C, $D,$40,$41
-		.BYTE $42, $F,$44,  1,	3,  4,	2,  0,	6,  3,	5,  9,$45, $A,	1,  2
-		.BYTE	3,  4,	5,$27, $C,  7,$10, $E, $E,$46,$47,$1D,$19,$1A,$20,$21
-		.BYTE $10,$12,$3F,$13,$14,$15,$14,$15, $D, $E, $F,$10,$11,$1F,$13,$22
-		.BYTE $23,$24,$25,$26, $C, $D, $E, $F,$14,$15,$16,  9,$4C,$4D,$17,$18
-		.BYTE $16,$17,$18,$19,$1A,$1B,$1C,$1D,	9, $A, $B, $C, $D, $D,$10,$58
-		.BYTE $59,$5A,$2D,$11,$5B, $A,$2E,$2F,$30,$31,	8,$32,$5D,$1E,$1F,$20
-		.BYTE $10,  9, $A,$1C,$33,$1E,$1B,$21,$22,$1B,$38,$25,	5,$19,$2C,  1
+		.BYTE 0			; FAR $00,$07 (_bE_s0)
+		.BYTE 1			; FAR $01,$07 (_bE_s1)
+		.BYTE 2			; FAR $02,$07 (_bE_s2)
+		.BYTE 3			; FAR $03,$07 (_bE_s3)
+		.BYTE 4			; FAR $04,$07 (_bE_s4_msg_m00)
+		.BYTE 5			; FAR $05,$07 (_bE_s5)
+		.BYTE 6			; FAR $06,$07 (_bE_s6_msg_mFF)
+		.BYTE 7			; FAR $07,$07 (_bE_s6_msg_mFF)
+		.BYTE 8			; FAR $08,$07 (_bE_s4_msg_m00)
+		.BYTE 9			; FAR $09,$07 (_bE_s9)
+		.BYTE 2			; FAR $0A,$07 (_bD_s2)
+		.BYTE 3			; FAR $0B,$07 (_bD_s3)
+		.BYTE 4			; FAR $0C,$07 (_bD_s4)
+		.BYTE 5			; FAR $0D,$07 (_bD_s5)
+		.BYTE 6			; FAR $0E,$07 (_bD_s6)
+		.BYTE 7			; FAR $0F,$07 (_bD_s7)
+		.BYTE 1			; FAR $10,$07 (_bA_s1)
+		.BYTE 9			; FAR $11,$07 (_bD_s9)
+		.BYTE 7			; FAR $12,$07 (_b5_s7)
+		.BYTE 4			; FAR $13,$07 (_b5_s4)
+		.BYTE 0			; FAR $14,$07 (_b5_d0_world_map_data)
+		.BYTE 1			; FAR $15,$07 (_b5_d1_world_map_data)
+		.BYTE $1D		; FAR $16,$07 (_bC_s1D)
+		.BYTE $1F		; FAR $17,$07 (_bC_s1F)
+		.BYTE 0			; bank 08, idx 00
+		.BYTE 8			; FAR $19,$07 (_b7_s8)
+		.BYTE 0			; FAR $1A,$07 (bank 0a,	idx 00,	empty)
+		.BYTE 1			; FAR $1B,$07 (_bA_s1)
+		.BYTE $A		; FAR $1C,$07 (_bE_sA)
+		.BYTE 4			; FAR $1D,$07 (_b6_d4)
+		.BYTE 0			; FAR $1E,$07 (_b7_d0_map_data_lib_ofs)
+		.BYTE $B		; FAR $1F,$07 (_bE_sB)
+		.BYTE $C		; FAR $20,$07 (_bE_sC)
+		.BYTE $D		; FAR $21,$07 (_bE_sD)
+		.BYTE 2			; FAR $22,$07 (_b5_d2_world_map_data)
+		.BYTE 2			; FAR $23,$07 (_b0_s2)
+		.BYTE 3			; FAR $24,$07 (_b0_s3)
+		.BYTE 4			; FAR $25,$07 (_b0_s4)
+		.BYTE 5			; FAR $26,$07 (_b0_s5)
+		.BYTE 6			; FAR $27,$07 (_b0_s6)
+		.BYTE 7			; FAR $28,$07 (_b0_s7)
+		.BYTE 8			; FAR $29,$07 (_b0_s8)
+		.BYTE 9			; FAR $2A,$07 (_b0_s9)
+		.BYTE $A		; FAR $2B,$07 (_b0_sA)
+		.BYTE $B		; FAR $2C,$07 (_b0_sB)
+		.BYTE $C		; FAR $2D,$07 (_b0_sC)
+		.BYTE $D		; FAR $2E,$07 (_b0_sD)
+		.BYTE $E		; FAR $2F,$07 (_b0_sE)
+		.BYTE $F		; FAR $30,$07 (_b0_sF)
+		.BYTE $10		; FAR $31,$07 (_b0_s10)
+		.BYTE $11		; FAR $32,$07 (_b0_s11)
+		.BYTE $12		; FAR $33,$07 (_b0_s12)
+		.BYTE $13		; FAR $34,$07 (_b0_s13)
+		.BYTE $14		; FAR $35,$07 (_b0_s14)
+		.BYTE $15		; FAR $36,$07 (_b0_s15)
+		.BYTE $16		; FAR $37,$07 (_b0_s16)
+		.BYTE $17		; FAR $38,$07 (_b0_s17)
+		.BYTE $18		; FAR $39,$07 (_b0_s18)
+		.BYTE $19		; FAR $3A,$07 (_b0_s19)
+		.BYTE $1A		; FAR $3B,$07 (_b0_s1A)
+		.BYTE $1B		; FAR $3C,$07 (_b0_s1B)
+		.BYTE $1C		; FAR $3D,$07 (_b0_s1C)
+		.BYTE $1D		; FAR $3E,$07 (_b0_s1D)
+		.BYTE $1E		; FAR $3F,$07 (_b0_s1E)
+		.BYTE $1F		; FAR $40,$07 (_b0_s1F)
+		.BYTE $20		; FAR $41,$07 (_b0_s20)
+		.BYTE $21		; FAR $42,$07 (_b0_s21)
+		.BYTE $22		; FAR $43,$07 (_b0_s22)
+		.BYTE $23		; FAR $44,$07 (_b0_s23)
+		.BYTE $24		; FAR $45,$07 (_b0_s24)
+		.BYTE $25		; FAR $46,$07 (_b0_s25)
+		.BYTE $26		; FAR $47,$07 (_b0_s26)
+		.BYTE $27		; FAR $48,$07 (_b0_s27)
+		.BYTE $28		; FAR $49,$07 (_b0_s28)
+		.BYTE $29		; FAR $4A,$07 (_b0_s29)
+		.BYTE $2A		; FAR $4B,$07 (_b0_s2A)
+		.BYTE $2B		; FAR $4C,$07 (_b0_s2B)
+		.BYTE $2C		; FAR $4D,$07 (_b0_s2C)
+		.BYTE $2D		; FAR $4E,$07 (_b0_s2D)
+		.BYTE $2E		; FAR $4F,$07 (_b0_s2E)
+		.BYTE $2F		; FAR $50,$07 (_b0_s2F)
+		.BYTE $30		; FAR $51,$07 (_b0_s30)
+		.BYTE $31		; FAR $52,$07 (_b0_s31)
+		.BYTE $32		; FAR $53,$07 (_b0_s32)
+		.BYTE $33		; FAR $54,$07 (_b0_s33)
+		.BYTE $34		; FAR $55,$07 (_b0_s34)
+		.BYTE $35		; FAR $56,$07 (_b0_s35)
+		.BYTE $36		; FAR $57,$07 (_b0_s36)
+		.BYTE $37		; FAR $58,$07 (_b0_s37)
+		.BYTE $38		; FAR $59,$07 (_b0_s38)
+		.BYTE $39		; FAR $5A,$07 (_b0_s39)
+		.BYTE $3A		; FAR $5B,$07 (_b0_s3A)
+		.BYTE $3B		; FAR $5C,$07 (_b0_s3B)
+		.BYTE 5			; FAR $5D,$07 (_b6_d5)
+		.BYTE 2			; FAR $5E,$07 (_bC_s2)
+		.BYTE 0			; FAR $5F,$07 (_b2_s0)
+		.BYTE 1			; FAR $60,$07 (_b2_s1)
+		.BYTE 2			; FAR $61,$07 (_b2_s2)
+		.BYTE 3			; FAR $62,$07 (_b2_s3)
+		.BYTE 4			; FAR $63,$07 (_b2_s4)
+		.BYTE 5			; FAR $64,$07 (_b2_s5)
+		.BYTE 6			; FAR $65,$07 (_b2_s6_screen_damage_shake)
+		.BYTE 7			; FAR $66,$07 (_b2_s7_screen_spell_blink)
+		.BYTE 0			; FAR $67,$07 (_b0_s0_world_map_random_enounter_test)
+		.BYTE $3C		; FAR $68,$07 (_b0_s3C)
+		.BYTE $A		; FAR $69,$07 (_b2_sA)
+		.BYTE $43		; FAR $6A,$07 (_b0_d43_enemies_lib)
+		.BYTE 0			; FAR $6B,$07 (_b4_s0)
+		.BYTE 1			; FAR $6C,$07 (_b4_s1)
+		.BYTE 2			; FAR $6D,$07 (_b4_s2)
+		.BYTE 3			; FAR $6E,$07 (_b4_s3)
+		.BYTE 4			; FAR $6F,$07 (_b4_s4)
+		.BYTE 5			; FAR $70,$07 (_b4_s5_do_message_speed_delay)
+		.BYTE 6			; FAR $71,$07 (_b4_s6)
+		.BYTE 7			; FAR $72,$07 (_b4_s7_window_display_safe)
+		.BYTE 8			; FAR $73,$07 (_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress)
+		.BYTE 9			; FAR $74,$07 (_b4_s9)
+		.BYTE $A		; FAR $75,$07 (_b4_sA)
+		.BYTE $B		; FAR $76,$07 (_b4_sB)
+		.BYTE $C		; FAR $77,$07 (_b4_sC)
+		.BYTE $D		; FAR $78,$07 (_b4_dD_spells_list)
+		.BYTE $B		; FAR $79,$07 (_b2_sB)
+		.BYTE $3D		; FAR $7A,$07 (_b0_s3D)
+		.BYTE $3E		; FAR $7B,$07 (_b0_s3E)
+		.BYTE $F		; FAR $7C,$07 (_b4_sF)
+		.BYTE 0			; FAR $7D,$07 (0 ; _b6_d0_ofs)
+		.BYTE 1			; FAR $7E,$07 (0 ; _b6_d1_ofs)
+		.BYTE 2			; FAR $7F,$07 (0 ; _b6_d2_ofs)
+		.BYTE 3			; FAR $80,$07 (0 ; _b6_d3_ofs)
+		.BYTE 2			; FAR $81,$07 (_bA_s2)
+		.BYTE 3			; FAR $82,$07 (_bC_s3)
+		.BYTE 4			; FAR $83,$07 (_bC_s4)
+		.BYTE 5			; FAR $84,$07 (_bC_s5)
+		.BYTE 6			; FAR $85,$07 (_bC_s6)
+		.BYTE 3			; FAR $86,$07 (_bA_s3)
+		.BYTE $1E		; FAR $87,$07 (bank 0e,	idx 1e,	empty)
+		.BYTE 8			; FAR $88,$07 (_b6_s8)
+		.BYTE 9			; FAR $89,$07 (_b6_d9)
+		.BYTE $A		; FAR $8A,$07 (_b6_dA)
+		.BYTE $B		; FAR $8B,$07 (_b6_dB)
+		.BYTE $C		; FAR $8C,$07 (_bA_sC)
+		.BYTE $D		; FAR $8D,$07 (_bA_sD)
+		.BYTE $40		; FAR $8E,$07 (_b0_d40_weapon_power_list)
+		.BYTE $41		; FAR $8F,$07 (_b0_d41_equip_list)
+		.BYTE $42		; FAR $90,$07 (_b0_d42_effects_list)
+		.BYTE $F		; FAR $91,$07 (bank 01,	idx 0f,	empty)
+		.BYTE $44		; FAR $92,$07 (_b0_d44)
+		.BYTE 1			; FAR $93,$07 (_b7_d1)
+		.BYTE 3			; FAR $94,$07 (_b7_d3)
+		.BYTE 4			; FAR $95,$07 (_b7_d4)
+		.BYTE 2			; FAR $96,$07 (0 ; _b7_d2_ofs)
+		.BYTE 0			; FAR $97,$07 (_bC_s0)
+		.BYTE 6			; FAR $98,$07 (_bA_s6)
+		.BYTE 3			; FAR $99,$07 (_b5_s3)
+		.BYTE 5			; FAR $9A,$07 (_b7_d5)
+		.BYTE 9			; FAR $9B,$07 (_bC_s9)
+		.BYTE $45		; FAR $9C,$07 (_b0_s45)
+		.BYTE $A		; FAR $9D,$07 (_bC_sA)
+		.BYTE 1			; FAR $9E,$07 (bank 01,	idx 01,	empty)
+		.BYTE 2			; FAR $9F,$07 (_bB_s2)
+		.BYTE 3			; FAR $A0,$07 (_bB_s3_far_apu_load)
+		.BYTE 4			; FAR $A1,$07 (_bB_s4)
+		.BYTE 5			; FAR $A2,$07 (_bB_s5)
+		.BYTE $27		; FAR $A3,$07 (_bD_s27)
+		.BYTE $C		; FAR $A4,$07 (_b2_sC)
+		.BYTE 6			; FAR $A5,$07 (_bB_s6)
+		.BYTE $10		; FAR $A6,$07 (_bE_s10)
+		.BYTE $E		; FAR $A7,$07 (_b4_sE)
+		.BYTE $E		; FAR $A8,$07 (_bE_sE)
+		.BYTE $46		; FAR $A9,$07 (_b0_s46)
+		.BYTE $47		; FAR $AA,$07 (_b0_s47)
+		.BYTE $1D		; FAR $AB,$07 (_bE_s1D)
+		.BYTE $19		; FAR $AC,$07 (_bE_s19)
+		.BYTE $1A		; FAR $AD,$07 (_bE_s1A)
+		.BYTE $20		; FAR $AE,$07 (_bE_s20)
+		.BYTE $21		; FAR $AF,$07 (_bE_s21)
+		.BYTE $10		; FAR $B0,$07 (_b4_s10)
+		.BYTE $12		; FAR $B1,$07 (_b4_s12)
+		.BYTE $3F		; FAR $B2,$07 (_b0_d3F)
+		.BYTE $13		; FAR $B3,$07 (_b4_s13)
+		.BYTE $14		; FAR $B4,$07 (_b4_s14)
+		.BYTE $15		; FAR $B5,$07 (_b4_d15)
+		.BYTE $14		; FAR $B6,$07 (_bA_d14)
+		.BYTE $15		; FAR $B7,$07 (_bA_d15)
+		.BYTE $D		; FAR $B8,$07 (_bC_sD)
+		.BYTE $E		; FAR $B9,$07 (_bC_sE)
+		.BYTE $F		; FAR $BA,$07 (_bC_sF)
+		.BYTE $10		; FAR $BB,$07 (_bC_s10)
+		.BYTE $11		; FAR $BC,$07 (_bC_s11)
+		.BYTE $1F		; FAR $BD,$07 (_b6_s1F)
+		.BYTE $13		; FAR $BE,$07 (_bC_s13)
+		.BYTE $22		; FAR $BF,$07 (_bE_s22)
+		.BYTE $23		; FAR $C0,$07 (_bE_s23)
+		.BYTE $24		; FAR $C1,$07 (_bE_s24)
+		.BYTE $25		; FAR $C2,$07 (_bE_s25)
+		.BYTE $26		; FAR $C3,$07 (_bE_s26)
+		.BYTE $C		; FAR $C4,$07 (_b6_sC)
+		.BYTE $D		; FAR $C5,$07 (_b6_sD)
+		.BYTE $E		; FAR $C6,$07 (_b6_sE)
+		.BYTE $F		; FAR $C7,$07 (_b6_sF)
+		.BYTE $14		; FAR $C8,$07 (_bC_s14)
+		.BYTE $15		; FAR $C9,$07 (_bC_s15)
+		.BYTE $16		; FAR $CA,$07 (_bC_s16)
+		.BYTE 9			; FAR $CB,$07 (_b2_s9)
+		.BYTE $4C		; FAR $CC,$07 (bank 00,	idx 4c,	empty)
+		.BYTE $4D		; FAR $CD,$07 (_b0_s4D)
+		.BYTE $17		; FAR $CE,$07 (_bC_s17)
+		.BYTE $18		; FAR $CF,$07 (_bC_s18)
+		.BYTE $16		; FAR $D0,$07 (_b4_s16_do_half_message_speed_delay)
+		.BYTE $17		; FAR $D1,$07 (_b4_s17)
+		.BYTE $18		; FAR $D2,$07 (_b4_s18)
+		.BYTE $19		; FAR $D3,$07 (_b4_s19)
+		.BYTE $1A		; FAR $D4,$07 (_b4_s1A)
+		.BYTE $1B		; FAR $D5,$07 (_b4_s1B)
+		.BYTE $1C		; FAR $D6,$07 (_b4_s1C)
+		.BYTE $1D		; FAR $D7,$07 (_b4_s1D)
+		.BYTE 9			; FAR $D8,$07 (_b1_s9)
+		.BYTE $A		; FAR $D9,$07 (_b1_sA)
+		.BYTE $B		; FAR $DA,$07 (_b1_sB)
+		.BYTE $C		; FAR $DB,$07 (_b1_sC)
+		.BYTE $D		; FAR $DC,$07 (_b1_sD)
+		.BYTE $D		; FAR $DD,$07 (_bD_sD)
+		.BYTE $10		; FAR $DE,$07 (_b6_s10)
+		.BYTE $58		; FAR $DF,$07 (_b0_d58)
+		.BYTE $59		; FAR $E0,$07 (_b0_d59)
+		.BYTE $5A		; FAR $E1,$07 (_b0_d5A)
+		.BYTE $2D		; FAR $E2,$07 (_bC_s2D)
+		.BYTE $11		; FAR $E3,$07 (_b6_s11)
+		.BYTE $5B		; FAR $E4,$07 (_b0_s5B)
+		.BYTE $A		; FAR $E5,$07 (_bA_sA)
+		.BYTE $2E		; FAR $E6,$07 (_bE_s2E)
+		.BYTE $2F		; FAR $E7,$07 (_bE_s2F)
+		.BYTE $30		; FAR $E8,$07 (_bE_s30)
+		.BYTE $31		; FAR $E9,$07 (_bE_s31)
+		.BYTE 8			; FAR $EA,$07 (_b2_s8_screen_hit_blink)
+		.BYTE $32		; FAR $EB,$07 (_bE_s32)
+		.BYTE $5D		; FAR $EC,$07 (_b0_s5D)
+		.BYTE $1E		; FAR $ED,$07 (_b4_s1E)
+		.BYTE $1F		; FAR $EE,$07 (_b4_s1F)
+		.BYTE $20		; FAR $EF,$07 (_b4_s20)
+		.BYTE 7			; FAR $F0,$07 (_bB_s7)
+		.BYTE 9			; FAR $F1,$07 (_b5_s9)
+		.BYTE $A		; FAR $F2,$07 (_b5_sA)
+		.BYTE $1C		; FAR $F3,$07 (_bC_s1C)
+		.BYTE $33		; FAR $F4,$07 (_bE_s33)
+		.BYTE $1E		; FAR $F5,$07 (_bC_s1E)
+		.BYTE $1B		; FAR $F6,$07 (_b7_s1B)
+		.BYTE $21		; FAR $F7,$07 (_bC_s21)
+		.BYTE $22		; FAR $F8,$07 (_bC_s22)
+		.BYTE $1B		; FAR $F9,$07 (_bE_s1B)
+		.BYTE $38		; FAR $FA,$07 (_bC_s38)
+		.BYTE $25		; FAR $FB,$07 (_bC_s25)
+		.BYTE 5			; FAR $FC,$07 (_bA_s5_add16_to_24)
+		.BYTE $19		; FAR $FD,$07 (_bD_s19)
+		.BYTE $2C		; FAR $FE,$07 (_bC_s2C)
+		.BYTE 1			; FAR $FF,$07 (_bD_d1_ofs)
 _get_syscall1_sub_idx:
-		.BYTE $2A,$12,$12,$13,$29,$17, $E,$2B,$5E,$5F,$60,$12,$1C,$14,$15,$26
-		.BYTE $48,$49,	6,  7,$14,$15,$16,$17,$13,$12,$13,$14,$15,$31,$16,$17
-		.BYTE $1C, $F,$61,$32,$10,$34,$33,$16,$17,$5C,$62,$37,$4D,$26,$64,$28
-		.BYTE $63,$21,$18,$19,$1A,$1B,$1C,$1D,$1E,$24,$39,$3A,$1F,  8,$21, $E
-		.BYTE $22,$3B,$12,$19,$22,$4E,$4F,$27,$28,$50,$2F,$30,$51,$52,	1,$53
-		.BYTE $36,$18,$38,$13,$23,$54,	5,  1, $A,$34,$35,$1A,$24,$25,$1B, $B
-		.BYTE  $F,$14, $A,$65,$66, $D, $E, $F,$10,$11,$12,$13,$14, $C,$15,$15
-		.BYTE $2E,$20, $B,$55,	6,$10,$11,$36,	8,  8,$29,$56,$19, $B,$1A,$18
-		.BYTE $26,$19, $F, $C,$10,$16, $D,$1D,$1C,$1B,$26,$11,$23,$24,$2B,  9
-		.BYTE $20,$16,$23,$11,$1A,$1D,$1E, $B, $E,$67,$20,  2,	3,$27,$28,$29
-		.BYTE $2A,$2B,	4,  5,	6,  7, $E,$1E,$16,$17,$FF
+		.BYTE $2A		; FAR $00,$17 (_bC_s2A)
+		.BYTE $12		; FAR $01,$17 (_bC_s12_vblank_count_50)
+		.BYTE $12		; FAR $02,$17 (_bD_s12)
+		.BYTE $13		; FAR $03,$17 (_bD_s13)
+		.BYTE $29		; FAR $04,$17 (_bC_s29)
+		.BYTE $17		; FAR $05,$17 (_b6_s17)
+		.BYTE $E		; FAR $06,$17 (_bD_sE)
+		.BYTE $2B		; FAR $07,$17 (_bE_s2B)
+		.BYTE $5E		; FAR $08,$17 (_b0_s5E)
+		.BYTE $5F		; FAR $09,$17 (_b0_s5F)
+		.BYTE $60		; FAR $0A,$17 (_b0_s60)
+		.BYTE $12		; FAR $0B,$17 (_bA_s12)
+		.BYTE $1C		; FAR $0C,$17 (_b7_s1C)
+		.BYTE $14		; FAR $0D,$17 (_bD_s14)
+		.BYTE $15		; FAR $0E,$17 (_bD_s15)
+		.BYTE $26		; FAR $0F,$17 (_bC_s26)
+		.BYTE $48		; FAR $10,$17 (_b0_s48)
+		.BYTE $49		; FAR $11,$17 (_b0_s49)
+		.BYTE 6			; FAR $12,$17 (_b6_s6)
+		.BYTE 7			; FAR $13,$17 (_b6_s6)
+		.BYTE $14		; FAR $14,$17 (_b1_s14)
+		.BYTE $15		; FAR $15,$17 (_b1_s15)
+		.BYTE $16		; FAR $16,$17 (_b1_s16)
+		.BYTE $17		; FAR $17,$17 (_b1_s17)
+		.BYTE $13		; FAR $18,$17 (_b1_s13)
+		.BYTE $12		; FAR $19,$17 (_bE_s12)
+		.BYTE $13		; FAR $1A,$17 (_bE_s13)
+		.BYTE $14		; FAR $1B,$17 (_bE_s14)
+		.BYTE $15		; FAR $1C,$17 (bank 0e,	idx 15,	empty)
+		.BYTE $31		; FAR $1D,$17 (_bC_s31)
+		.BYTE $16		; FAR $1E,$17 (_bE_s16)
+		.BYTE $17		; FAR $1F,$17 (_bE_s1C)
+		.BYTE $1C		; FAR $20,$17 (_bE_s1C)
+		.BYTE $F		; FAR $21,$17 (_bE_sF)
+		.BYTE $61		; FAR $22,$17 (_b0_s61_sram_b0_syscall_shortcuts_load)
+		.BYTE $32		; FAR $23,$17 (_bC_s32)
+		.BYTE $10		; FAR $24,$17 (_bE_s10)
+		.BYTE $34		; FAR $25,$17 (_bE_s34)
+		.BYTE $33		; FAR $26,$17 (_bC_s33)
+		.BYTE $16		; FAR $27,$17 (_bD_s16)
+		.BYTE $17		; FAR $28,$17 (_bD_s17)
+		.BYTE $5C		; FAR $29,$17 (_b0_s5C)
+		.BYTE $62		; FAR $2A,$17 (_b0_s62)
+		.BYTE $37		; FAR $2B,$17 (_bC_s37)
+		.BYTE $4D		; FAR $2C,$17 (_b0_s4D)
+		.BYTE $26		; FAR $2D,$17 (_bD_s26)
+		.BYTE $64		; FAR $2E,$17 (_b0_s64)
+		.BYTE $28		; FAR $2F,$17 (_bD_s28)
+		.BYTE $63		; FAR $30,$17 (_b0_s63)
+		.BYTE $21		; FAR $31,$17 (_b4_s21_message_half_delay_or_wait_for_keypress)
+		.BYTE $18		; FAR $32,$17 (_bD_s18)
+		.BYTE $19		; FAR $33,$17 (_bD_s19)
+		.BYTE $1A		; FAR $34,$17 (_bD_s1A)
+		.BYTE $1B		; FAR $35,$17 (_bD_s1B)
+		.BYTE $1C		; FAR $36,$17 (_bD_s1C)
+		.BYTE $1D		; FAR $37,$17 (_bD_s1D)
+		.BYTE $1E		; FAR $38,$17 (_bD_s1E)
+		.BYTE $24		; FAR $39,$17 (_bC_s24)
+		.BYTE $39		; FAR $3A,$17 (_bC_s39)
+		.BYTE $3A		; FAR $3B,$17 (_bC_s3A)
+		.BYTE $1F		; FAR $3C,$17 (_bD_s1F)
+		.BYTE 8			; FAR $3D,$17 (_b5_s8)
+		.BYTE $21		; FAR $3E,$17 (_bD_s21)
+		.BYTE $E		; FAR $3F,$17 (_b1_sE)
+		.BYTE $22		; FAR $40,$17 (_b4_s22)
+		.BYTE $3B		; FAR $41,$17 (_bC_s3B)
+		.BYTE $12		; FAR $42,$17 (_b6_s12)
+		.BYTE $19		; FAR $43,$17 (_bC_s19)
+		.BYTE $22		; FAR $44,$17 (_bD_s22)
+		.BYTE $4E		; FAR $45,$17 (_b0_s4E)
+		.BYTE $4F		; FAR $46,$17 (_b0_s4F)
+		.BYTE $27		; FAR $47,$17 (_bC_s27)
+		.BYTE $28		; FAR $48,$17 (_bC_s28)
+		.BYTE $50		; FAR $49,$17 (_b0_s50)
+		.BYTE $2F		; FAR $4A,$17 (_bC_s2F)
+		.BYTE $30		; FAR $4B,$17 (_bC_s30)
+		.BYTE $51		; FAR $4C,$17 (_b0_s51)
+		.BYTE $52		; FAR $4D,$17 (_b0_s52)
+		.BYTE 1			; FAR $4E,$17 (_b0_s1)
+		.BYTE $53		; FAR $4F,$17 (_b0_s53)
+		.BYTE $36		; FAR $50,$17 (_bE_s36)
+		.BYTE $18		; FAR $51,$17 (_bE_s18)
+		.BYTE $38		; FAR $52,$17 (_bE_s38)
+		.BYTE $13		; FAR $53,$17 (_b6_s13)
+		.BYTE $23		; FAR $54,$17 (_b4_s23)
+		.BYTE $54		; FAR $55,$17 (_b0_s54)
+		.BYTE 5			; FAR $56,$17 (_b5_s5)
+		.BYTE 1			; FAR $57,$17 (_bC_s1)
+		.BYTE $A		; FAR $58,$17 (_bD_sA)
+		.BYTE $34		; FAR $59,$17 (_bC_s34)
+		.BYTE $35		; FAR $5A,$17 (_bC_s35)
+		.BYTE $1A		; FAR $5B,$17 (_bC_s1A)
+		.BYTE $24		; FAR $5C,$17 (_b4_s24)
+		.BYTE $25		; FAR $5D,$17 (_b4_s25)
+		.BYTE $1B		; FAR $5E,$17 (_bC_s1B)
+		.BYTE $B		; FAR $5F,$17 (_b5_sB_ppu_font_load)
+		.BYTE $F		; FAR $60,$17 (_bA_sF)
+		.BYTE $14		; FAR $61,$17 (_b6_s14_name_entry_screen)
+		.BYTE $A		; FAR $62,$17 (_b7_sA_sram_test_and_init)
+		.BYTE $65		; FAR $63,$17 (_b0_s65)
+		.BYTE $66		; FAR $64,$17 (_b0_s66)
+		.BYTE $D		; FAR $65,$17 (_b7_sD)
+		.BYTE $E		; FAR $66,$17 (_b7_sE)
+		.BYTE $F		; FAR $67,$17 (_b7_sF)
+		.BYTE $10		; FAR $68,$17 (_b7_s10)
+		.BYTE $11		; FAR $69,$17 (_b7_s11)
+		.BYTE $12		; FAR $6A,$17 (_b7_s12)
+		.BYTE $13		; FAR $6B,$17 (_b7_s13)
+		.BYTE $14		; FAR $6C,$17 (_b7_s14)
+		.BYTE $C		; FAR $6D,$17 (_bC_sC)
+		.BYTE $15		; FAR $6E,$17 (_b6_s15)
+		.BYTE $15		; FAR $6F,$17 (_b7_s15)
+		.BYTE $2E		; FAR $70,$17 (_bC_s2E_vblank_count_50_wait_50_or_skip)
+		.BYTE $20		; FAR $71,$17 (_bC_s20)
+		.BYTE $B		; FAR $72,$17 (_bC_sB)
+		.BYTE $55		; FAR $73,$17 (_b0_s55)
+		.BYTE 6			; FAR $74,$17 (_b5_s6_ppu_send_8_empty_bytes)
+		.BYTE $10		; FAR $75,$17 (_bA_s10)
+		.BYTE $11		; FAR $76,$17 (_bA_s11)
+		.BYTE $36		; FAR $77,$17 (_bC_s36)
+		.BYTE 8			; FAR $78,$17 (_bA_s8)
+		.BYTE 8			; FAR $79,$17 (_b5_s8)
+		.BYTE $29		; FAR $7A,$17 (_bD_s29)
+		.BYTE $56		; FAR $7B,$17 (_b0_s56)
+		.BYTE $19		; FAR $7C,$17 (_b7_s19)
+		.BYTE $B		; FAR $7D,$17 (_bD_sB)
+		.BYTE $1A		; FAR $7E,$17 (_b7_s1A)
+		.BYTE $18		; FAR $7F,$17 (_b6_s18)
+		.BYTE $26		; FAR $80,$17 (_b4_s26)
+		.BYTE $19		; FAR $81,$17 (_b6_s19)
+		.BYTE $F		; FAR $82,$17 (_bD_sF)
+		.BYTE $C		; FAR $83,$17 (_bD_sC)
+		.BYTE $10		; FAR $84,$17 (_bD_s10)
+		.BYTE $16		; FAR $85,$17 (_b6_s16)
+		.BYTE $D		; FAR $86,$17 (_b2_sD)
+		.BYTE $1D		; FAR $87,$17 (_b6_s1D)
+		.BYTE $1C		; FAR $88,$17 (_b6_s1C)
+		.BYTE $1B		; FAR $89,$17 (_b6_s1B)
+		.BYTE $26		; FAR $8A,$17 (_bC_s26)
+		.BYTE $11		; FAR $8B,$17 (_bD_s11)
+		.BYTE $23		; FAR $8C,$17 (_bD_s23)
+		.BYTE $24		; FAR $8D,$17 (_bD_s24)
+		.BYTE $2B		; FAR $8E,$17 (_bC_s2B)
+		.BYTE 9			; FAR $8F,$17 (_bA_s9_nullsub)
+		.BYTE $20		; FAR $90,$17 (_bD_s20_npc_hndl31)
+		.BYTE $16		; FAR $91,$17 (_b6_s16)
+		.BYTE $23		; FAR $92,$17 (_bC_s23)
+		.BYTE $11		; FAR $93,$17 (_bE_s11)
+		.BYTE $1A		; FAR $94,$17 (_b6_s1A)
+		.BYTE $1D		; FAR $95,$17 (_b7_s1D)
+		.BYTE $1E		; FAR $96,$17 (_b6_s1E)
+		.BYTE $B		; FAR $97,$17 (_bA_sB)
+		.BYTE $E		; FAR $98,$17 (_b2_sE)
+		.BYTE $67		; FAR $99,$17 (_b0_s67)
+		.BYTE $20		; FAR $9A,$17 (_b6_s20_player_name_veryfy)
+		.BYTE 2			; FAR $9B,$17 (_bA_s2)
+		.BYTE 3			; FAR $9C,$17 (_bA_s3)
+		.BYTE $27		; FAR $9D,$17 (_b4_s27)
+		.BYTE $28		; FAR $9E,$17 (_b4_s28)
+		.BYTE $29		; FAR $9F,$17 (_b4_s29)
+		.BYTE $2A		; FAR $A0,$17 (_b4_s2A)
+		.BYTE $2B		; FAR $A1,$17 (_b4_s2B)
+		.BYTE 4			; FAR $A2,$17 (_bA_s4_div24_to_8)
+		.BYTE 5			; FAR $A3,$17 (_bA_s5_add16_to_24)
+		.BYTE 6			; FAR $A4,$17 (_bA_s6)
+		.BYTE 7			; FAR $A5,$17 (_bA_s7_nullsub)
+		.BYTE $E		; FAR $A6,$17 (_bA_sE)
+		.BYTE $1E		; FAR $A7,$17 (_b7_s1E)
+		.BYTE $16		; FAR $A8,$17 (_bA_s16)
+		.BYTE $17		; FAR $A9,$17 (_bA_s17)
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_msg_ptr_by_idx:
@@ -6580,76 +6985,72 @@ loc_176BCF:
 		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
-_syscall0D:
+_sys0D:
 		TYA
-		BRK
-		.BYTE $20, 7		; ofs 0x00158018, -> dst _bE_sC
+		FAR		$20, 7		; _bE_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_syscall0E:
+_sys0E:
 		TYA
-		BRK
-		.BYTE 0, 7		; ofs 0x00158000, -> dst _bE_s0
+		FAR		0, 7		; _bE_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg0:
+_sys06_msg_m00_arg0:
 		LDX		#0
 		BEQ		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg1:
+_sys07_msg_m00_arg1:
 		LDX		#1
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg2:
+_sys08_msg_m00_arg2:
 		LDX		#2
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg6:
+_sys13_msg_m00_arg6:
 		LDX		#6
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg7:
+_sys11_msg_m00_arg7:
 		LDX		#7
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_arg8:
+_sys0C_msg_m00_arg8:
 		LDX		#8
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_break_arg0:
+_sys09_msg_m00_arg0_break:
 		LDX		#0
 		BEQ		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_break_arg1:
+_sys0A_msg_m00_arg1_break:
 		LDX		#1
 		BNE		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_break_arg2:
+_sys0B_msg_m00_arg2_break:
 		LDX		#2
 		BNE		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_syscall12:
+_sys12:
 		TYA
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _far_bE_s4_msg_m00:
 		TYA
-		BRK
-		.BYTE 4, 7		; ofs 0x00158008, -> dst _bE_s4_msg_m00
+		FAR		4, 7		; _bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6713,8 +7114,7 @@ loc_176C5B:
 		PHA
 		JSR		sub_175A32
 		JSR		sub_1762FC
-		BRK
-		.BYTE $F9, 7		; ofs 0x00158036, -> dst _bE_s1B
+		FAR		$F9, 7		; _bE_s1B
 		JSR		_bE_sA		; function not fit into	bank E so moved	to bank	F
 		PLA
 		JMP		sub_17530A
@@ -6730,8 +7130,7 @@ sub_176C70:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C72:
-		BRK
-		.BYTE 4, 7		; ofs 0x00158008, -> dst _bE_s4_msg_m00
+		FAR		4, 7		; _bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

@@ -345,10 +345,7 @@ byte_C8:
 byte_C9:
 		.BYTE 0
 _pads_tmp:
-		.BYTE 0
-		.BYTE 0
-		.BYTE 0
-		.BYTE 0
+		.BYTE 0,0,0,0
 byte_CE:
 		.BYTE 0
 byte_CF:
@@ -1428,7 +1425,7 @@ byte_575:
 		.BYTE 0
 byte_576:
 		.BYTE 0
-byte_577:
+_prev_pads:
 		.BYTE 0
 		.BYTE 0
 		.BYTE 0
@@ -1859,7 +1856,7 @@ byte_6DA:
 		.BYTE 0
 		.BYTE 0
 		.BYTE 0
-byte_6DD:
+_cur_message_speed:
 		.BYTE 0
 byte_6DE:
 		.BYTE 0

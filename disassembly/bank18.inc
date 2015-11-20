@@ -1,11 +1,11 @@
 
 		ORG $8000
 
-		.WORD _b18_s0
+		.WORD _b18_s0_intro_animation
 		.WORD _b18_s1
 
 ; =============== S U B	R O U T	I N E =======================================
-_b18_s0:
+_b18_s0_intro_animation:
 		JSR		sub_24C156
 		JSR		sub_24C0CC
 		JSR		sub_24C097
@@ -17,8 +17,7 @@ loc_24C019:
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		sub_24C227
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		LDA		#0
 		STA		byte_F
 		LDA		#4
@@ -49,11 +48,9 @@ loc_24C042:
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C055:
 		LDA		#0
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
+		FAR		$A5, 7		; _bB_s6
 		LDA		#0
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		LDX		#0
 		LDA		#$F
 loc_24C063:
@@ -81,10 +78,8 @@ sub_24C084:
 		LDX		#$14
 		JSR		sub_24C0F3
 		LDA		#$10
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A5, 7		; _bB_s6
+		FAR		$A1, 7		; _bB_s4
 		JMP		sub_24C055
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -214,7 +209,7 @@ sub_24C17A:
 		STA		_cur_mmc_cmd
 		LDA		#$10
 		STA		_cur_chr0_bank_prg_hi
-		JSR		_mmc1_chr_set
+		JSR		_mmc1_reinit
 		JSR		__render_on_flag10_clear_reinit
 		LDA		#$1E
 		STA		byte_6D4
@@ -365,8 +360,8 @@ loc_24C281:
 		TAX
 		PLA
 		RTS
-_unused_30:
-		.BYTE $30,  0,$23,$C0
+;_unused_30:
+;		.BYTE $30,  0,$23,$C0
 byte_24C28B:
 		.BYTE	3,  7, $F,  7
 byte_24C28F:
@@ -396,13 +391,12 @@ sub_24C2B1:
 		BEQ		locret_24C2BC
 		CMP		#$FF
 		BEQ		locret_24C2BC
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 locret_24C2BC:
 		RTS
-_unused_31:
-		.BYTE $FF,$27,$18,  8,$1B,$18,	8,$1B, $C,$1C, $F,$18,	8,$11,$37,$30
-		.BYTE  $B,$2B,$30,$16,$27,$37,$30,$2B,$30
+;_unused_31:
+;		.BYTE $FF,$27,$18,  8,$1B,$18,	8,$1B, $C,$1C, $F,$18,	8,$11,$37,$30
+;		.BYTE  $B,$2B,$30,$16,$27,$37,$30,$2B,$30
 byte_24C2D6:
 		.BYTE  $F,  7,	6,$16,$15,$15,$15,$16,	6,  7, $F
 byte_24C2E1:
@@ -1015,15 +1009,12 @@ loc_24E74D:
 		JMP		loc_24E7E8
 loc_24E761:
 		LDA		#$10
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		LDA		#0
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
+		FAR		$A5, 7		; _bB_s6
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		BRK
-		.BYTE $A6, $2F		; _syscall12
+		FAR		$A6, $2F		; _sys12
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1035,19 +1026,16 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		BRK
-		.BYTE $A6, $2F		; _syscall12
+		FAR		$A6, $2F		; _sys12
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		BRK
-		.BYTE $A6, $2F		; _syscall12
+		FAR		$A6, $2F		; _sys12
 		LDY		#0
 loc_24E7A0:
 		TYA
 		PHA
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
+		FAR		$A5, 7		; _bB_s6
 		PLA
 		TAY
 		LDX		#7
@@ -1132,8 +1120,7 @@ loc_24E829:
 		BEQ		loc_24E848
 		CMP		#$FF
 		BEQ		loc_24E848
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 loc_24E848:
 		LDA		_nmi_counter
 		AND		#7
@@ -1141,8 +1128,7 @@ loc_24E848:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E85A
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
+		FAR		$A5, 7		; _bB_s6
 		INC		byte_8
 loc_24E85A:
 		LDX		#1
@@ -1165,8 +1151,7 @@ loc_24E86A:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E88A
-		BRK
-		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
+		FAR		$A5, 7		; _bB_s6
 		INC		byte_8
 loc_24E88A:
 		JMP		loc_24E86A
@@ -1279,8 +1264,7 @@ nullsub_1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E91A:
-		BRK
-		.BYTE 0, $9F		; ofs 0x00264000, -> dst _b19_s0
+		FAR		0, $9F		; _b19_s0
 		LDA		word_6
 		BEQ		loc_24E922
 		RTS
@@ -1290,9 +1274,9 @@ loc_24E922:
 		PLA
 		PLA
 		JMP		loc_24C019
-_unused_32:
-		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F
-		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F
+;_unused_32:
+;		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F
+;		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F
 byte_24E945:
 		.BYTE $30,  0,$23,$C0,$78,  9,	0,$A8,$80,$19,	0,$A8,$80,$35,	0,$B0
 		.BYTE $88,$44,	0,$A8,$88,$45,	0,$B0,$90,$54,	0,$A8,$90,$55,	0,$B0

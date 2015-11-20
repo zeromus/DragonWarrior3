@@ -46,7 +46,7 @@ loc_176CCD:
 		BCC		loc_176CFA
 		CPY		#$FC
 		BCS		loc_176CFA
-		JSR		sub_176D7D
+		JSR		_get_world_map_data_ptr
 		JMP		sub_176DC9
 loc_176CE3:
 		CPX		#3
@@ -57,7 +57,7 @@ loc_176CE3:
 		BCC		loc_176CFD
 		CPY		#$83
 		BCS		loc_176CFD
-		JSR		sub_176D7D
+		JSR		_get_world_map_data_ptr
 		JSR		sub_176DC9
 		RTS
 loc_176CFA:
@@ -90,7 +90,7 @@ sub_176D12:
 		BCC		loc_176D34
 		CPY		#$83
 		BCS		loc_176D34
-		JSR		sub_176D7D
+		JSR		_get_world_map_data_ptr
 		JSR		sub_176E01
 		TYA
 		STA		word_7C
@@ -128,7 +128,7 @@ sub_176D3F:
 		PHA
 		LDA		#$FF
 		STA		byte_4C
-		JSR		sub_176D7D
+		JSR		_get_world_map_data_ptr
 		JSR		sub_176E01
 		PLA
 		STA		word_4A+1
@@ -140,7 +140,7 @@ sub_176D3F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176D7D:
+_get_world_map_data_ptr:
 		LDA		byte_2F
 		AND		#2
 		BNE		loc_176D9E
@@ -148,33 +148,33 @@ sub_176D7D:
 		ASL
 		TAX
 		BCS		loc_176D93
-		LDA		$8018,X
+		LDA		_b5_d0_world_map_data,X
 		STA		word_6C
-		LDA		$8019,X
+		LDA		_b5_d0_world_map_data+1,X
 		STA		word_6C+1
 		RTS
 loc_176D93:
-		LDA		$8118,X
+		LDA		_b5_d1_world_map_data,X
 		STA		word_6C
-		LDA		$8119,X
+		LDA		_b5_d1_world_map_data+1,X
 		STA		word_6C+1
 		RTS
 loc_176D9E:
 		TYA
 		ASL
 		TAX
-		BCS		loc_176DAE
-		LDA		$9A95,X
+;		BCS		loc_176DAE
+		LDA		_b5_d2_world_map_data,X
 		STA		word_6C
-		LDA		$9A96,X
+		LDA		_b5_d2_world_map_data+1,X
 		STA		word_6C+1
 		RTS
-loc_176DAE:
-		LDA		$9A95,X
-		STA		word_6C
-		LDA		$9A96,X
-		STA		word_6C+1
-		RTS
+;loc_176DAE:
+;		LDA		_b5_d2_world_map_data,X	; un case of extra indexes, dummy, never used here
+;		STA		word_6C
+;		LDA		_b5_d2_world_map_data+1,X
+;		STA		word_6C+1
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176DB9:
@@ -207,7 +207,7 @@ loc_176DE3:
 		JSR		sub_176DB9
 		LDY		byte_77
 		INY
-		JSR		sub_176D7D
+		JSR		_get_world_map_data_ptr
 		SEC
 		LDA		word_6C
 		SBC		byte_642
@@ -864,8 +864,7 @@ loc_1771C5:
 		CLC
 		ADC		#7
 		STA		word_4+1
-		BRK
-		.BYTE 9, 7		; ofs 0x00158012, -> dst _bE_s9
+		FAR		9, 7		; _bE_s9
 		BCS		sub_1771F8
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1516,8 +1515,7 @@ loc_177650:
 		ORA		byte_6BB
 		STA		(word_6C),Y
 		LDA		byte_6BB
-		BRK
-		.BYTE $13, 7		; ofs 0x00080008, -> dst _b5_s4
+		FAR		$13, 7		; _b5_s4
 		JSR		sub_1773E9
 		JMP		sub_177613
 		RTS				; pcm data
@@ -2015,16 +2013,11 @@ loc_177930:
 		JSR		sub_177960
 		JSR		sub_177981
 		JSR		sub_177CFC
-		BRK
-		.BYTE $E6, 7		; ofs 0x0015805c, -> dst _bE_s2E
-		BRK
-		.BYTE $E7, 7		; ofs 0x0015805e, -> dst _bE_s2F
-		BRK
-		.BYTE $E8, 7		; ofs 0x00158060, -> dst _bE_s30
-		BRK
-		.BYTE $1E, $17		; ofs 0x0015802c, -> dst _bE_s16
-		BRK
-		.BYTE $11, $17		; ofs 0x00008092, -> dst _b0_s49
+		FAR		$E6, 7		; _bE_s2E
+		FAR		$E7, 7		; _bE_s2F
+		FAR		$E8, 7		; _bE_s30
+		FAR		$1E, $17		; _bE_s16
+		FAR		$11, $17		; _b0_s49
 		LDX		#0
 		LDA		#$80
 loc_177950:
@@ -2032,8 +2025,7 @@ loc_177950:
 		INX
 		CPX		#$10
 		BNE		loc_177950
-		BRK
-		.BYTE $47, $17		; ofs 0x0012804e, -> dst _bC_s27
+		FAR		$47, $17		; _bC_s27
 		LDA		#0
 		STA		byte_8E
 		RTS
@@ -2841,12 +2833,19 @@ sub_177E23:
 		JSR		sub_E3C80
 		LDA		#$D
 		JSR		_mmc1_prg_set
-		LDA		#$FF
-		JSR		_get_syscall0_data_cur_byte0
+; --
+;		LDA		#$FF
+;		JSR		_get_syscall0_data_cur_byte0
+;		STA		word_6C
+;		LDA		#$FF
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		word_6C+1
+; --
+		LDA		#<[_bD_d1]
 		STA		word_6C
-		LDA		#$FF
-		JSR		_get_syscall0_data_cur_byte1
+		LDA		#>[_bD_d1]
 		STA		word_6C+1
+; --		
 		LDA		byte_8B
 		BEQ		locret_177E5D
 		LDA		word_3E

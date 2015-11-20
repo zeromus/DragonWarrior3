@@ -2,7 +2,7 @@
 		ORG $8000
 
 		.WORD _b17_s0_copyrights_screen
-		.WORD _b17_s1
+		.WORD _b17_s1_title_screen
 
 ; =============== S U B	R O U T	I N E =======================================
 _b17_s0_copyrights_screen:
@@ -50,8 +50,7 @@ loc_234049:
 		BCC		loc_234049
 		JSR		_pal_fade_in
 		LDA		#$27
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -576,7 +575,7 @@ _chr_copyright_spr_data_ofs:
 		.WORD _chr_copyright_spr_data
 
 ; =============== S U B	R O U T	I N E =======================================
-_b17_s1:
+_b17_s1_title_screen:
 		JSR		sub_23587B
 		JSR		sub_2358FB
 		JSR		sub_235930
@@ -605,12 +604,10 @@ loc_23580A:
 		STA		_ram_pal_buf
 		JSR		sub_17435B
 		JSR		sub_174369
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		LDX		#$64
 		JSR		_vblank_count
-		BRK
-		.BYTE 0, $8F		; ofs 0x0024c000, -> dst _b18_s0
+		FAR		0, $8F		; _b18_s0
 		LDX		#$64
 		JSR		_vblank_count
 		LDX		#0
@@ -626,7 +623,7 @@ loc_23582C:
 		STA		_cur_mmc_cmd
 		LDA		#$10
 		STA		_cur_chr0_bank_prg_hi
-		JSR		_mmc1_chr_set
+		JSR		_mmc1_reinit
 		INC		byte_6A36
 		JSR		__render_on_flag10_clear_reinit
 		RTS
@@ -643,8 +640,7 @@ loc_235861:
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_235856
-		BRK
-		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
+		FAR		$A1, 7		; _bB_s4
 		JSR		sub_174369
 		LDX		#$3C
 		JSR		_vblank_count

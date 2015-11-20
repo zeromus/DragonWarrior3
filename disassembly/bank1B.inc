@@ -21,11 +21,9 @@ loc_29400F:
 loc_29401C:
 		INY
 		TYA
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		STA		byte_6A6D
-		BRK
-		.BYTE $80, $17		; ofs 0x0006804c, -> dst _b4_s26
+		FAR		$80, $17		; _b4_s26
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -33,8 +31,7 @@ sub_294028:
 		LDA		byte_60B7
 		LSR
 		BCS		loc_294065
-		BRK
-		.BYTE $7D, $17		; ofs 0x00140016, -> dst _bD_sB
+		FAR		$7D, $17		; _bD_sB
 		LDA		byte_D2
 		CMP		#4
 		BCC		loc_294039
@@ -65,8 +62,7 @@ loc_29405C:
 loc_294065:
 		LDA		byte_294070
 loc_294068:
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		RTS
 byte_29406C:
 		.BYTE $A
@@ -152,8 +148,7 @@ sub_2940D5:
 		CMP		#$65
 		BCC		loc_294160
 		LDA		#$65
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -182,8 +177,7 @@ loc_29411D:
 		RTS
 loc_294121:
 		LDA		#4
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -224,8 +218,7 @@ loc_294160:
 		JMP		loc_2941C3
 loc_294163:
 		LDA		#8
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -250,8 +243,7 @@ loc_294183:
 		RTS
 loc_29418C:
 		LDA		#$15
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -280,8 +272,7 @@ loc_2941BF:
 		RTS
 loc_2941C3:
 		LDA		#$33
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -312,8 +303,7 @@ loc_2941F6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_2941FA:
 		LDA		#2
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		TAX
 		BNE		loc_294204
 		CLC
