@@ -294,25 +294,25 @@ loc_174196:
 		PLA
 		JMP		_mmc1_prg_set
 off_1741BC:
-		.WORD _chr_data_unk0
+		.WORD	_chr_data_unk0
 byte_1741BE:
-		.BYTE $A
-		.WORD _chr_data_unk1
-		.BYTE $A
-		.WORD _chr_data_unk2
-		.BYTE $A
-		.WORD _chr_data_unk3
-		.BYTE $A
-		.WORD _chr_data_unk4
-		.BYTE $A
-		.WORD _chr_data_unk5
-		.BYTE 9
-		.WORD _chr_data_unk6
-		.BYTE 9
-		.WORD _chr_data_unk7
-		.BYTE 9
-		.WORD _chr_terrain_bg_data1+$470
-		.BYTE 9
+		.BYTE	$A
+		.WORD	_chr_data_unk1
+		.BYTE	$A
+		.WORD	_chr_data_unk2
+		.BYTE	$A
+		.WORD	_chr_data_unk3
+		.BYTE	$A
+		.WORD	_chr_data_unk4
+		.BYTE	$A
+		.WORD	_chr_data_unk5
+		.BYTE	  9
+		.WORD	_chr_data_unk6
+		.BYTE	  9
+		.WORD	_chr_data_unk7
+		.BYTE	  9
+		.WORD	_chr_terrain_bg_data1+$470
+		.BYTE	  9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1741D7:
@@ -468,7 +468,7 @@ loc_17429B:
 		TAX
 		RTS
 byte_1742AB:
-		.BYTE	4,$10,$1C,$28,$34 
+		.BYTE	  4,$10,$1C,$28,$34
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1742B0:
@@ -1623,7 +1623,7 @@ loc_17494B:
 locret_17494E:
 		RTS
 byte_17494F:
-		.BYTE $D0,$A0,$70
+		.BYTE	$D0,$A0,$70
 
 ; =============== S U B	R O U T	I N E =======================================
 ; swap 12 sprites at X and Y pos
@@ -1910,9 +1910,9 @@ loc_174B0A:
 		LDA		byte_6D1
 		STA		_PPU_SCROLL
 		RTS
-		
+
 ;_unused_29:
-;		.BYTE $22,$65,$22,$85,$22,$A5,$22,$C5,$22,$E5,$23,  5,$23,$25,$23,$45
+;		.BYTE	$22,$65,$22,$85,$22,$A5,$22,$C5,$22,$E5,$23,  5,$23,$25,$23,$45
 
 ; =============== S U B	R O U T	I N E =======================================
 __pause_or_skip:
@@ -2615,9 +2615,9 @@ loc_174FBB:
 locret_174FF1:
 		RTS
 byte_174FF2:
-		.BYTE $28,  2,$4B,  2,$1F,$14,	4,$41,$28,  1,$86,  7,$FF,$85,$FF,$15
-		.BYTE	8,$FF,$11,$82,	1,$42,$16,$82,$13,$89,$17,  2,$FF,$43,$1F,$12
-		.BYTE $FF,$84,$12,$FF
+		.BYTE	$28,  2,$4B,  2,$1F,$14,  4,$41,$28,  1,$86,  7,$FF,$85,$FF,$15
+		.BYTE	  8,$FF,$11,$82,  1,$42,$16,$82,$13,$89,$17,  2,$FF,$43,$1F,$12
+		.BYTE	$FF,$84,$12,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175016:
@@ -4060,11 +4060,11 @@ loc_175999:
 		LDX		#$A6
 		BNE		loc_1759ED
 byte_1759A6:
-		.BYTE	3, $F,$3F,$FF,$FF 
+		.BYTE	  3, $F,$3F,$FF,$FF
 byte_1759AB:
-		.BYTE	3, $F,$3F,$FF,$FF 
+		.BYTE	  3, $F,$3F,$FF,$FF
 word_1759B0:
-		.WORD  $612, $914, $D1F, $F2A 
+		.WORD	 $612, $914, $D1F, $F2A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1759B8:
@@ -4181,7 +4181,7 @@ sub_175A32:
 		LDA		#>[_map_data_lib]
 		ADC		word_6E+1
 		STA		word_6E+1
-; --		
+; --
 		LDA		#7
 		JSR		_mmc1_prg_set
 		LDA		byte_9A
@@ -6253,35 +6253,35 @@ loc_176745:
 		STX		byte_28
 		RTS
 word_1767B0:
-		.WORD $6522
-		.WORD $8522
-		.WORD $A522
-		.WORD $C522
-		.WORD $E522
-		.WORD $523
-		.WORD $2523
-		.WORD $4523
+		.WORD	$6522
+		.WORD	$8522
+		.WORD	$A522
+		.WORD	$C522
+		.WORD	$E522
+		.WORD	$523
+		.WORD	$2523
+		.WORD	$4523
 _syscall_lib:
-		.WORD _sys00_safe
-		.WORD _sys01_safe
-		.WORD _sys02_msg_m00_b3
-		.WORD _sys03_msg_m00_b4
-		.WORD _sys04_msg_m00_b3_break
-		.WORD _sys05_msg_m00_b4_break
-		.WORD _sys06_msg_m00_arg0
-		.WORD _sys07_msg_m00_arg1
-		.WORD _sys08_msg_m00_arg2
-		.WORD _sys09_msg_m00_arg0_break
-		.WORD _sys0A_msg_m00_arg1_break
-		.WORD _sys0B_msg_m00_arg2_break
-		.WORD _sys0C_msg_m00_arg8
-		.WORD _sys0D
-		.WORD _sys0E
-		.WORD _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		.WORD _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
-		.WORD _sys11_msg_m00_arg7
-		.WORD _sys12
-		.WORD _sys13_msg_m00_arg6
+		.WORD	_sys00_safe
+		.WORD	_sys01_safe
+		.WORD	_sys02_msg_m00_b3
+		.WORD	_sys03_msg_m00_b4
+		.WORD	_sys04_msg_m00_b3_break
+		.WORD	_sys05_msg_m00_b4_break
+		.WORD	_sys06_msg_m00_arg0
+		.WORD	_sys07_msg_m00_arg1
+		.WORD	_sys08_msg_m00_arg2
+		.WORD	_sys09_msg_m00_arg0_break
+		.WORD	_sys0A_msg_m00_arg1_break
+		.WORD	_sys0B_msg_m00_arg2_break
+		.WORD	_sys0C_msg_m00_arg8
+		.WORD	_sys0D
+		.WORD	_sys0E
+		.WORD	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		.WORD	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		.WORD	_sys11_msg_m00_arg7
+		.WORD	_sys12
+		.WORD	_sys13_msg_m00_arg6
 
 ; =============== S U B	R O U T	I N E =======================================
 _RESET:
@@ -6470,479 +6470,479 @@ _mmc1_sram_disable:
 		STA		_cur_chr0_bank_prg_hi
 		PLA
 		JMP		_mmc1_prg_direct
-		
+
 _get_syscall0_sub_table_banks:
-;		.BYTE $EE,$EE,$EE,$EE,$EE,$DD,$DD,$DD,$AD,$55,$55,$CC,$87,$AA,$E6,$7E
-;		.BYTE $EE,$50,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
-;		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	6,$C2
-;		.BYTE $22,$22,$22,$20,	2,  4,$44,$44,$44,$44,$44,$44,$42,  0,$46,$66
-;		.BYTE $6A,$CC,$CC,$AE,$66,$66,$AA,  0,	1,  7,$77,$7C,$A5,$7C, $C,$1B
-;		.BYTE $BB,$BD,$2B,$E4,$E0, $E,$EE,$EE,$44,  4,$44,$AA,$CC,$CC,$C6,$CE
-;		.BYTE $EE,$EE,$66,$66,$CC,$C2,	0,$CC,$44,$44,$44,$44,$11,$11,$1D,$60
-;		.BYTE	0,$C6, $A,$EE,$EE,$2E,	4,$44,$B5,$5C,$EC,$7C,$CE,$CC,$AD,$CD
-		.BYTE $E,$E,$E,$E,$E,$E,$E,$E,$E,$E,$D,$D,$D,$D,$D,$D
-		.BYTE $A,$D,$5,$5,$5,$5,$C,$C,$8,$7,$A,$A,$E,$6,$7,$E
-		.BYTE $E,$E,$5,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE $0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$6,$C,$2
-		.BYTE $2,$2,$2,$2,$2,$2,$2,$0,$0,$2,$0,$4,$4,$4,$4,$4
-		.BYTE $4,$4,$4,$4,$4,$4,$4,$4,$4,$2,$0,$0,$4,$6,$6,$6
-		.BYTE $6,$A,$C,$C,$C,$C,$A,$E,$6,$6,$6,$6,$A,$A,$0,$0
-		.BYTE $0,$1,$0,$7,$7,$7,$7,$C,$A,$5,$7,$C,$0,$C,$1,$B
-		.BYTE $B,$B,$B,$D,$2,$B,$E,$4,$E,$0,$0,$E,$E,$E,$E,$E
-		.BYTE $4,$4,$0,$4,$4,$4,$A,$A,$C,$C,$C,$C,$C,$6,$C,$E
-		.BYTE $E,$E,$E,$E,$6,$6,$6,$6,$C,$C,$C,$2,$0,$0,$C,$C
-		.BYTE $4,$4,$4,$4,$4,$4,$4,$4,$1,$1,$1,$1,$1,$D,$6,$0
-		.BYTE $0,$0,$C,$6,$0,$A,$E,$E,$E,$E,$2,$E,$0,$4,$4,$4
-		.BYTE $B,$5,$5,$C,$E,$C,$7,$C,$C,$E,$C,$C,$A,$D,$C,$D
+;		.BYTE	$EE,$EE,$EE,$EE,$EE,$DD,$DD,$DD,$AD,$55,$55,$CC,$87,$AA,$E6,$7E
+;		.BYTE	$EE,$50,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+;		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,$C2
+;		.BYTE	$22,$22,$22,$20,  2,  4,$44,$44,$44,$44,$44,$44,$42,  0,$46,$66
+;		.BYTE	$6A,$CC,$CC,$AE,$66,$66,$AA,  0,  1,  7,$77,$7C,$A5,$7C, $C,$1B
+;		.BYTE	$BB,$BD,$2B,$E4,$E0, $E,$EE,$EE,$44,  4,$44,$AA,$CC,$CC,$C6,$CE
+;		.BYTE	$EE,$EE,$66,$66,$CC,$C2,  0,$CC,$44,$44,$44,$44,$11,$11,$1D,$60
+;		.BYTE	  0,$C6, $A,$EE,$EE,$2E,  4,$44,$B5,$5C,$EC,$7C,$CE,$CC,$AD,$CD
+		.BYTE	$E,$E,$E,$E,$E,$E,$E,$E,$E,$E,$D,$D,$D,$D,$D,$D
+		.BYTE	$A,$D,$5,$5,$5,$5,$C,$C,$8,$7,$A,$A,$E,$6,$7,$E
+		.BYTE	$E,$E,$5,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$6,$C,$2
+		.BYTE	$2,$2,$2,$2,$2,$2,$2,$0,$0,$2,$0,$4,$4,$4,$4,$4
+		.BYTE	$4,$4,$4,$4,$4,$4,$4,$4,$4,$2,$0,$0,$4,$6,$6,$6
+		.BYTE	$6,$A,$C,$C,$C,$C,$A,$E,$6,$6,$6,$6,$A,$A,$0,$0
+		.BYTE	$0,$1,$0,$7,$7,$7,$7,$C,$A,$5,$7,$C,$0,$C,$1,$B
+		.BYTE	$B,$B,$B,$D,$2,$B,$E,$4,$E,$0,$0,$E,$E,$E,$E,$E
+		.BYTE	$4,$4,$0,$4,$4,$4,$A,$A,$C,$C,$C,$C,$C,$6,$C,$E
+		.BYTE	$E,$E,$E,$E,$6,$6,$6,$6,$C,$C,$C,$2,$0,$0,$C,$C
+		.BYTE	$4,$4,$4,$4,$4,$4,$4,$4,$1,$1,$1,$1,$1,$D,$6,$0
+		.BYTE	$0,$0,$C,$6,$0,$A,$E,$E,$E,$E,$2,$E,$0,$4,$4,$4
+		.BYTE	$B,$5,$5,$C,$E,$C,$7,$C,$C,$E,$C,$C,$A,$D,$C,$D
 
 _get_syscall1_sub_table_banks:
-;		.BYTE $CC,$DD,$C6,$DE,  0, $A,$7D,$DC,  0,$66,$11,$11,$1E,$EE,$EC,$EE
-;		.BYTE $EE, $C,$EE,$CD,$D0, $C, $D, $D,	4,$DD,$DD,$DD,$DC,$CC,$D5,$D1
-;		.BYTE $4C,$6C,$D0, $C,$C0,$CC,	0,  0,$EE,$E6,$40,$5C,$DC,$CC,$44,$C5
-;		.BYTE $A6,$70,	7,$77,$77,$77,$7C,$67,$CC,$C0,$5A,$AC,$A5,$D0,$7D,$76
-;		.BYTE $46,$DD,$D6,$26,$66,$CD,$DD,$CA,$D6,$CE,$67,$6A,$20,$6A,$A4,$44
-;		.BYTE $44,$AA,$AA,$A7,$AA
-		.BYTE $C,$C,$D,$D,$C,$6,$D,$E,$0,$0,$0,$A,$7,$D,$D,$C
-		.BYTE $0,$0,$6,$6,$1,$1,$1,$1,$1,$E,$E,$E,$E,$C,$E,$E
-		.BYTE $E,$E,$0,$C,$E,$E,$C,$D,$D,$0,$0,$C,$0,$D,$0,$D
-		.BYTE $0,$4,$D,$D,$D,$D,$D,$D,$D,$C,$C,$C,$D,$5,$D,$1
-		.BYTE $4,$C,$6,$C,$D,$0,$0,$C,$C,$0,$C,$C,$0,$0,$0,$0
-		.BYTE $E,$E,$E,$6,$4,$0,$5,$C,$D,$C,$C,$C,$4,$4,$C,$5
-		.BYTE $A,$6,$7,$0,$0,$7,$7,$7,$7,$7,$7,$7,$7,$C,$6,$7
-		.BYTE $C,$C,$C,$0,$5,$A,$A,$C,$A,$5,$D,$0,$7,$D,$7,$6
-		.BYTE $4,$6,$D,$D,$D,$6,$2,$6,$6,$6,$C,$D,$D,$D,$C,$A
-		.BYTE $D,$6,$C,$E,$6,$7,$6,$A,$2,$0,$6,$A,$A,$4,$4,$4
-		.BYTE $4,$4,$A,$A,$A,$A,$A,$7,$A,$A
+;		.BYTE	$CC,$DD,$C6,$DE,  0, $A,$7D,$DC,  0,$66,$11,$11,$1E,$EE,$EC,$EE
+;		.BYTE	$EE, $C,$EE,$CD,$D0, $C, $D, $D,  4,$DD,$DD,$DD,$DC,$CC,$D5,$D1
+;		.BYTE	$4C,$6C,$D0, $C,$C0,$CC,  0,  0,$EE,$E6,$40,$5C,$DC,$CC,$44,$C5
+;		.BYTE	$A6,$70,  7,$77,$77,$77,$7C,$67,$CC,$C0,$5A,$AC,$A5,$D0,$7D,$76
+;		.BYTE	$46,$DD,$D6,$26,$66,$CD,$DD,$CA,$D6,$CE,$67,$6A,$20,$6A,$A4,$44
+;		.BYTE	$44,$AA,$AA,$A7,$AA
+		.BYTE	$C,$C,$D,$D,$C,$6,$D,$E,$0,$0,$0,$A,$7,$D,$D,$C
+		.BYTE	$0,$0,$6,$6,$1,$1,$1,$1,$1,$E,$E,$E,$E,$C,$E,$E
+		.BYTE	$E,$E,$0,$C,$E,$E,$C,$D,$D,$0,$0,$C,$0,$D,$0,$D
+		.BYTE	$0,$4,$D,$D,$D,$D,$D,$D,$D,$C,$C,$C,$D,$5,$D,$1
+		.BYTE	$4,$C,$6,$C,$D,$0,$0,$C,$C,$0,$C,$C,$0,$0,$0,$0
+		.BYTE	$E,$E,$E,$6,$4,$0,$5,$C,$D,$C,$C,$C,$4,$4,$C,$5
+		.BYTE	$A,$6,$7,$0,$0,$7,$7,$7,$7,$7,$7,$7,$7,$C,$6,$7
+		.BYTE	$C,$C,$C,$0,$5,$A,$A,$C,$A,$5,$D,$0,$7,$D,$7,$6
+		.BYTE	$4,$6,$D,$D,$D,$6,$2,$6,$6,$6,$C,$D,$D,$D,$C,$A
+		.BYTE	$D,$6,$C,$E,$6,$7,$6,$A,$2,$0,$6,$A,$A,$4,$4,$4
+		.BYTE	$4,$4,$A,$A,$A,$A,$A,$7,$A,$A
 _get_syscall0_sub_idx:
-		.BYTE 0			; FAR $00,$07 (_bE_s0)
-		.BYTE 1			; FAR $01,$07 (_bE_s1)
-		.BYTE 2			; FAR $02,$07 (_bE_s2)
-		.BYTE 3			; FAR $03,$07 (_bE_s3)
-		.BYTE 4			; FAR $04,$07 (_bE_s4_msg_m00)
-		.BYTE 5			; FAR $05,$07 (_bE_s5)
-		.BYTE 6			; FAR $06,$07 (_bE_s6_msg_mFF)
-		.BYTE 7			; FAR $07,$07 (_bE_s6_msg_mFF)
-		.BYTE 8			; FAR $08,$07 (_bE_s4_msg_m00)
-		.BYTE 9			; FAR $09,$07 (_bE_s9)
-		.BYTE 2			; FAR $0A,$07 (_bD_s2)
-		.BYTE 3			; FAR $0B,$07 (_bD_s3)
-		.BYTE 4			; FAR $0C,$07 (_bD_s4)
-		.BYTE 5			; FAR $0D,$07 (_bD_s5)
-		.BYTE 6			; FAR $0E,$07 (_bD_s6)
-		.BYTE 7			; FAR $0F,$07 (_bD_s7)
-		.BYTE 1			; FAR $10,$07 (_bA_s1)
-		.BYTE 9			; FAR $11,$07 (_bD_s9)
-		.BYTE 7			; FAR $12,$07 (_b5_s7)
-		.BYTE 4			; FAR $13,$07 (_b5_s4)
-		.BYTE 0			; FAR $14,$07 (_b5_d0_world_map_data)
-		.BYTE 1			; FAR $15,$07 (_b5_d1_world_map_data)
-		.BYTE $1D		; FAR $16,$07 (_bC_s1D)
-		.BYTE $1F		; FAR $17,$07 (_bC_s1F)
-		.BYTE 0			; bank 08, idx 00
-		.BYTE 8			; FAR $19,$07 (_b7_s8)
-		.BYTE 0			; FAR $1A,$07 (bank 0a,	idx 00,	empty)
-		.BYTE 1			; FAR $1B,$07 (_bA_s1)
-		.BYTE $A		; FAR $1C,$07 (_bE_sA)
-		.BYTE 4			; FAR $1D,$07 (_b6_d4)
-		.BYTE 0			; FAR $1E,$07 (_b7_d0_map_data_lib_ofs)
-		.BYTE $B		; FAR $1F,$07 (_bE_sB)
-		.BYTE $C		; FAR $20,$07 (_bE_sC)
-		.BYTE $D		; FAR $21,$07 (_bE_sD)
-		.BYTE 2			; FAR $22,$07 (_b5_d2_world_map_data)
-		.BYTE 2			; FAR $23,$07 (_b0_s2)
-		.BYTE 3			; FAR $24,$07 (_b0_s3)
-		.BYTE 4			; FAR $25,$07 (_b0_s4)
-		.BYTE 5			; FAR $26,$07 (_b0_s5)
-		.BYTE 6			; FAR $27,$07 (_b0_s6)
-		.BYTE 7			; FAR $28,$07 (_b0_s7)
-		.BYTE 8			; FAR $29,$07 (_b0_s8)
-		.BYTE 9			; FAR $2A,$07 (_b0_s9)
-		.BYTE $A		; FAR $2B,$07 (_b0_sA)
-		.BYTE $B		; FAR $2C,$07 (_b0_sB)
-		.BYTE $C		; FAR $2D,$07 (_b0_sC)
-		.BYTE $D		; FAR $2E,$07 (_b0_sD)
-		.BYTE $E		; FAR $2F,$07 (_b0_sE)
-		.BYTE $F		; FAR $30,$07 (_b0_sF)
-		.BYTE $10		; FAR $31,$07 (_b0_s10)
-		.BYTE $11		; FAR $32,$07 (_b0_s11)
-		.BYTE $12		; FAR $33,$07 (_b0_s12)
-		.BYTE $13		; FAR $34,$07 (_b0_s13)
-		.BYTE $14		; FAR $35,$07 (_b0_s14)
-		.BYTE $15		; FAR $36,$07 (_b0_s15)
-		.BYTE $16		; FAR $37,$07 (_b0_s16)
-		.BYTE $17		; FAR $38,$07 (_b0_s17)
-		.BYTE $18		; FAR $39,$07 (_b0_s18)
-		.BYTE $19		; FAR $3A,$07 (_b0_s19)
-		.BYTE $1A		; FAR $3B,$07 (_b0_s1A)
-		.BYTE $1B		; FAR $3C,$07 (_b0_s1B)
-		.BYTE $1C		; FAR $3D,$07 (_b0_s1C)
-		.BYTE $1D		; FAR $3E,$07 (_b0_s1D)
-		.BYTE $1E		; FAR $3F,$07 (_b0_s1E)
-		.BYTE $1F		; FAR $40,$07 (_b0_s1F)
-		.BYTE $20		; FAR $41,$07 (_b0_s20)
-		.BYTE $21		; FAR $42,$07 (_b0_s21)
-		.BYTE $22		; FAR $43,$07 (_b0_s22)
-		.BYTE $23		; FAR $44,$07 (_b0_s23)
-		.BYTE $24		; FAR $45,$07 (_b0_s24)
-		.BYTE $25		; FAR $46,$07 (_b0_s25)
-		.BYTE $26		; FAR $47,$07 (_b0_s26)
-		.BYTE $27		; FAR $48,$07 (_b0_s27)
-		.BYTE $28		; FAR $49,$07 (_b0_s28)
-		.BYTE $29		; FAR $4A,$07 (_b0_s29)
-		.BYTE $2A		; FAR $4B,$07 (_b0_s2A)
-		.BYTE $2B		; FAR $4C,$07 (_b0_s2B)
-		.BYTE $2C		; FAR $4D,$07 (_b0_s2C)
-		.BYTE $2D		; FAR $4E,$07 (_b0_s2D)
-		.BYTE $2E		; FAR $4F,$07 (_b0_s2E)
-		.BYTE $2F		; FAR $50,$07 (_b0_s2F)
-		.BYTE $30		; FAR $51,$07 (_b0_s30)
-		.BYTE $31		; FAR $52,$07 (_b0_s31)
-		.BYTE $32		; FAR $53,$07 (_b0_s32)
-		.BYTE $33		; FAR $54,$07 (_b0_s33)
-		.BYTE $34		; FAR $55,$07 (_b0_s34)
-		.BYTE $35		; FAR $56,$07 (_b0_s35)
-		.BYTE $36		; FAR $57,$07 (_b0_s36)
-		.BYTE $37		; FAR $58,$07 (_b0_s37)
-		.BYTE $38		; FAR $59,$07 (_b0_s38)
-		.BYTE $39		; FAR $5A,$07 (_b0_s39)
-		.BYTE $3A		; FAR $5B,$07 (_b0_s3A)
-		.BYTE $3B		; FAR $5C,$07 (_b0_s3B)
-		.BYTE 5			; FAR $5D,$07 (_b6_d5)
-		.BYTE 2			; FAR $5E,$07 (_bC_s2)
-		.BYTE 0			; FAR $5F,$07 (_b2_s0)
-		.BYTE 1			; FAR $60,$07 (_b2_s1)
-		.BYTE 2			; FAR $61,$07 (_b2_s2)
-		.BYTE 3			; FAR $62,$07 (_b2_s3)
-		.BYTE 4			; FAR $63,$07 (_b2_s4)
-		.BYTE 5			; FAR $64,$07 (_b2_s5)
-		.BYTE 6			; FAR $65,$07 (_b2_s6_screen_damage_shake)
-		.BYTE 7			; FAR $66,$07 (_b2_s7_screen_spell_blink)
-		.BYTE 0			; FAR $67,$07 (_b0_s0_world_map_random_enounter_test)
-		.BYTE $3C		; FAR $68,$07 (_b0_s3C)
-		.BYTE $A		; FAR $69,$07 (_b2_sA)
-		.BYTE $43		; FAR $6A,$07 (_b0_d43_enemies_lib)
-		.BYTE 0			; FAR $6B,$07 (_b4_s0)
-		.BYTE 1			; FAR $6C,$07 (_b4_s1)
-		.BYTE 2			; FAR $6D,$07 (_b4_s2)
-		.BYTE 3			; FAR $6E,$07 (_b4_s3)
-		.BYTE 4			; FAR $6F,$07 (_b4_s4)
-		.BYTE 5			; FAR $70,$07 (_b4_s5_do_message_speed_delay)
-		.BYTE 6			; FAR $71,$07 (_b4_s6)
-		.BYTE 7			; FAR $72,$07 (_b4_s7_window_display_safe)
-		.BYTE 8			; FAR $73,$07 (_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress)
-		.BYTE 9			; FAR $74,$07 (_b4_s9)
-		.BYTE $A		; FAR $75,$07 (_b4_sA)
-		.BYTE $B		; FAR $76,$07 (_b4_sB)
-		.BYTE $C		; FAR $77,$07 (_b4_sC)
-		.BYTE $D		; FAR $78,$07 (_b4_dD_spells_list)
-		.BYTE $B		; FAR $79,$07 (_b2_sB)
-		.BYTE $3D		; FAR $7A,$07 (_b0_s3D)
-		.BYTE $3E		; FAR $7B,$07 (_b0_s3E)
-		.BYTE $F		; FAR $7C,$07 (_b4_sF)
-		.BYTE 0			; FAR $7D,$07 (0 ; _b6_d0_ofs)
-		.BYTE 1			; FAR $7E,$07 (0 ; _b6_d1_ofs)
-		.BYTE 2			; FAR $7F,$07 (0 ; _b6_d2_ofs)
-		.BYTE 3			; FAR $80,$07 (0 ; _b6_d3_ofs)
-		.BYTE 2			; FAR $81,$07 (_bA_s2)
-		.BYTE 3			; FAR $82,$07 (_bC_s3)
-		.BYTE 4			; FAR $83,$07 (_bC_s4)
-		.BYTE 5			; FAR $84,$07 (_bC_s5)
-		.BYTE 6			; FAR $85,$07 (_bC_s6)
-		.BYTE 3			; FAR $86,$07 (_bA_s3)
-		.BYTE $1E		; FAR $87,$07 (bank 0e,	idx 1e,	empty)
-		.BYTE 8			; FAR $88,$07 (_b6_s8)
-		.BYTE 9			; FAR $89,$07 (_b6_d9)
-		.BYTE $A		; FAR $8A,$07 (_b6_dA)
-		.BYTE $B		; FAR $8B,$07 (_b6_dB)
-		.BYTE $C		; FAR $8C,$07 (_bA_sC)
-		.BYTE $D		; FAR $8D,$07 (_bA_sD)
-		.BYTE $40		; FAR $8E,$07 (_b0_d40_weapon_power_list)
-		.BYTE $41		; FAR $8F,$07 (_b0_d41_equip_list)
-		.BYTE $42		; FAR $90,$07 (_b0_d42_effects_list)
-		.BYTE $F		; FAR $91,$07 (bank 01,	idx 0f,	empty)
-		.BYTE $44		; FAR $92,$07 (_b0_d44)
-		.BYTE 1			; FAR $93,$07 (_b7_d1)
-		.BYTE 3			; FAR $94,$07 (_b7_d3)
-		.BYTE 4			; FAR $95,$07 (_b7_d4)
-		.BYTE 2			; FAR $96,$07 (0 ; _b7_d2_ofs)
-		.BYTE 0			; FAR $97,$07 (_bC_s0)
-		.BYTE 6			; FAR $98,$07 (_bA_s6)
-		.BYTE 3			; FAR $99,$07 (_b5_s3)
-		.BYTE 5			; FAR $9A,$07 (_b7_d5)
-		.BYTE 9			; FAR $9B,$07 (_bC_s9)
-		.BYTE $45		; FAR $9C,$07 (_b0_s45)
-		.BYTE $A		; FAR $9D,$07 (_bC_sA)
-		.BYTE 1			; FAR $9E,$07 (bank 01,	idx 01,	empty)
-		.BYTE 2			; FAR $9F,$07 (_bB_s2)
-		.BYTE 3			; FAR $A0,$07 (_bB_s3_far_apu_load)
-		.BYTE 4			; FAR $A1,$07 (_bB_s4)
-		.BYTE 5			; FAR $A2,$07 (_bB_s5)
-		.BYTE $27		; FAR $A3,$07 (_bD_s27)
-		.BYTE $C		; FAR $A4,$07 (_b2_sC)
-		.BYTE 6			; FAR $A5,$07 (_bB_s6)
-		.BYTE $10		; FAR $A6,$07 (_bE_s10)
-		.BYTE $E		; FAR $A7,$07 (_b4_sE)
-		.BYTE $E		; FAR $A8,$07 (_bE_sE)
-		.BYTE $46		; FAR $A9,$07 (_b0_s46)
-		.BYTE $47		; FAR $AA,$07 (_b0_s47)
-		.BYTE $1D		; FAR $AB,$07 (_bE_s1D)
-		.BYTE $19		; FAR $AC,$07 (_bE_s19)
-		.BYTE $1A		; FAR $AD,$07 (_bE_s1A)
-		.BYTE $20		; FAR $AE,$07 (_bE_s20)
-		.BYTE $21		; FAR $AF,$07 (_bE_s21)
-		.BYTE $10		; FAR $B0,$07 (_b4_s10)
-		.BYTE $12		; FAR $B1,$07 (_b4_s12)
-		.BYTE $3F		; FAR $B2,$07 (_b0_d3F)
-		.BYTE $13		; FAR $B3,$07 (_b4_s13)
-		.BYTE $14		; FAR $B4,$07 (_b4_s14)
-		.BYTE $15		; FAR $B5,$07 (_b4_d15)
-		.BYTE $14		; FAR $B6,$07 (_bA_d14)
-		.BYTE $15		; FAR $B7,$07 (_bA_d15)
-		.BYTE $D		; FAR $B8,$07 (_bC_sD)
-		.BYTE $E		; FAR $B9,$07 (_bC_sE)
-		.BYTE $F		; FAR $BA,$07 (_bC_sF)
-		.BYTE $10		; FAR $BB,$07 (_bC_s10)
-		.BYTE $11		; FAR $BC,$07 (_bC_s11)
-		.BYTE $1F		; FAR $BD,$07 (_b6_s1F)
-		.BYTE $13		; FAR $BE,$07 (_bC_s13)
-		.BYTE $22		; FAR $BF,$07 (_bE_s22)
-		.BYTE $23		; FAR $C0,$07 (_bE_s23)
-		.BYTE $24		; FAR $C1,$07 (_bE_s24)
-		.BYTE $25		; FAR $C2,$07 (_bE_s25)
-		.BYTE $26		; FAR $C3,$07 (_bE_s26)
-		.BYTE $C		; FAR $C4,$07 (_b6_sC)
-		.BYTE $D		; FAR $C5,$07 (_b6_sD)
-		.BYTE $E		; FAR $C6,$07 (_b6_sE)
-		.BYTE $F		; FAR $C7,$07 (_b6_sF)
-		.BYTE $14		; FAR $C8,$07 (_bC_s14)
-		.BYTE $15		; FAR $C9,$07 (_bC_s15)
-		.BYTE $16		; FAR $CA,$07 (_bC_s16)
-		.BYTE 9			; FAR $CB,$07 (_b2_s9)
-		.BYTE $4C		; FAR $CC,$07 (bank 00,	idx 4c,	empty)
-		.BYTE $4D		; FAR $CD,$07 (_b0_s4D)
-		.BYTE $17		; FAR $CE,$07 (_bC_s17)
-		.BYTE $18		; FAR $CF,$07 (_bC_s18)
-		.BYTE $16		; FAR $D0,$07 (_b4_s16_do_half_message_speed_delay)
-		.BYTE $17		; FAR $D1,$07 (_b4_s17)
-		.BYTE $18		; FAR $D2,$07 (_b4_s18)
-		.BYTE $19		; FAR $D3,$07 (_b4_s19)
-		.BYTE $1A		; FAR $D4,$07 (_b4_s1A)
-		.BYTE $1B		; FAR $D5,$07 (_b4_s1B)
-		.BYTE $1C		; FAR $D6,$07 (_b4_s1C)
-		.BYTE $1D		; FAR $D7,$07 (_b4_s1D)
-		.BYTE 9			; FAR $D8,$07 (_b1_s9)
-		.BYTE $A		; FAR $D9,$07 (_b1_sA)
-		.BYTE $B		; FAR $DA,$07 (_b1_sB)
-		.BYTE $C		; FAR $DB,$07 (_b1_sC)
-		.BYTE $D		; FAR $DC,$07 (_b1_sD)
-		.BYTE $D		; FAR $DD,$07 (_bD_sD)
-		.BYTE $10		; FAR $DE,$07 (_b6_s10)
-		.BYTE $58		; FAR $DF,$07 (_b0_d58)
-		.BYTE $59		; FAR $E0,$07 (_b0_d59)
-		.BYTE $5A		; FAR $E1,$07 (_b0_d5A)
-		.BYTE $2D		; FAR $E2,$07 (_bC_s2D)
-		.BYTE $11		; FAR $E3,$07 (_b6_s11)
-		.BYTE $5B		; FAR $E4,$07 (_b0_s5B)
-		.BYTE $A		; FAR $E5,$07 (_bA_sA)
-		.BYTE $2E		; FAR $E6,$07 (_bE_s2E)
-		.BYTE $2F		; FAR $E7,$07 (_bE_s2F)
-		.BYTE $30		; FAR $E8,$07 (_bE_s30)
-		.BYTE $31		; FAR $E9,$07 (_bE_s31)
-		.BYTE 8			; FAR $EA,$07 (_b2_s8_screen_hit_blink)
-		.BYTE $32		; FAR $EB,$07 (_bE_s32)
-		.BYTE $5D		; FAR $EC,$07 (_b0_s5D)
-		.BYTE $1E		; FAR $ED,$07 (_b4_s1E)
-		.BYTE $1F		; FAR $EE,$07 (_b4_s1F)
-		.BYTE $20		; FAR $EF,$07 (_b4_s20)
-		.BYTE 7			; FAR $F0,$07 (_bB_s7)
-		.BYTE 9			; FAR $F1,$07 (_b5_s9)
-		.BYTE $A		; FAR $F2,$07 (_b5_sA)
-		.BYTE $1C		; FAR $F3,$07 (_bC_s1C)
-		.BYTE $33		; FAR $F4,$07 (_bE_s33)
-		.BYTE $1E		; FAR $F5,$07 (_bC_s1E)
-		.BYTE $1B		; FAR $F6,$07 (_b7_s1B)
-		.BYTE $21		; FAR $F7,$07 (_bC_s21)
-		.BYTE $22		; FAR $F8,$07 (_bC_s22)
-		.BYTE $1B		; FAR $F9,$07 (_bE_s1B)
-		.BYTE $38		; FAR $FA,$07 (_bC_s38)
-		.BYTE $25		; FAR $FB,$07 (_bC_s25)
-		.BYTE 5			; FAR $FC,$07 (_bA_s5_add16_to_24)
-		.BYTE $19		; FAR $FD,$07 (_bD_s19)
-		.BYTE $2C		; FAR $FE,$07 (_bC_s2C)
-		.BYTE 1			; FAR $FF,$07 (_bD_d1_ofs)
+		.BYTE	  0			; FAR $00,$07 (_bE_s0)
+		.BYTE	  1			; FAR $01,$07 (_bE_s1)
+		.BYTE	  2			; FAR $02,$07 (_bE_s2)
+		.BYTE	  3			; FAR $03,$07 (_bE_s3)
+		.BYTE	  4			; FAR $04,$07 (_bE_s4_msg_m00)
+		.BYTE	  5			; FAR $05,$07 (_bE_s5)
+		.BYTE	  6			; FAR $06,$07 (_bE_s6_msg_mFF)
+		.BYTE	  7			; FAR $07,$07 (_bE_s6_msg_mFF)
+		.BYTE	  8			; FAR $08,$07 (_bE_s4_msg_m00)
+		.BYTE	  9			; FAR $09,$07 (_bE_s9)
+		.BYTE	  2			; FAR $0A,$07 (_bD_s2)
+		.BYTE	  3			; FAR $0B,$07 (_bD_s3)
+		.BYTE	  4			; FAR $0C,$07 (_bD_s4)
+		.BYTE	  5			; FAR $0D,$07 (_bD_s5)
+		.BYTE	  6			; FAR $0E,$07 (_bD_s6)
+		.BYTE	  7			; FAR $0F,$07 (_bD_s7)
+		.BYTE	  1			; FAR $10,$07 (_bA_s1)
+		.BYTE	  9			; FAR $11,$07 (_bD_s9)
+		.BYTE	  7			; FAR $12,$07 (_b5_s7)
+		.BYTE	  4			; FAR $13,$07 (_b5_s4)
+		.BYTE	  0			; FAR $14,$07 (_b5_d0_world_map_data)
+		.BYTE	  1			; FAR $15,$07 (_b5_d1_world_map_data)
+		.BYTE	$1D		; FAR $16,$07 (_bC_s1D)
+		.BYTE	$1F		; FAR $17,$07 (_bC_s1F)
+		.BYTE	  0			; bank 08, idx 00
+		.BYTE	  8			; FAR $19,$07 (_b7_s8)
+		.BYTE	  0			; FAR $1A,$07 (bank 0a,  idx 00,  empty)
+		.BYTE	  1			; FAR $1B,$07 (_bA_s1)
+		.BYTE	$A		; FAR $1C,$07 (_bE_sA)
+		.BYTE	  4			; FAR $1D,$07 (_b6_d4)
+		.BYTE	  0			; FAR $1E,$07 (_b7_d0_map_data_lib_ofs)
+		.BYTE	$B		; FAR $1F,$07 (_bE_sB)
+		.BYTE	$C		; FAR $20,$07 (_bE_sC)
+		.BYTE	$D		; FAR $21,$07 (_bE_sD)
+		.BYTE	  2			; FAR $22,$07 (_b5_d2_world_map_data)
+		.BYTE	  2			; FAR $23,$07 (_b0_s2)
+		.BYTE	  3			; FAR $24,$07 (_b0_s3)
+		.BYTE	  4			; FAR $25,$07 (_b0_s4)
+		.BYTE	  5			; FAR $26,$07 (_b0_s5)
+		.BYTE	  6			; FAR $27,$07 (_b0_s6)
+		.BYTE	  7			; FAR $28,$07 (_b0_s7)
+		.BYTE	  8			; FAR $29,$07 (_b0_s8)
+		.BYTE	  9			; FAR $2A,$07 (_b0_s9)
+		.BYTE	$A		; FAR $2B,$07 (_b0_sA)
+		.BYTE	$B		; FAR $2C,$07 (_b0_sB)
+		.BYTE	$C		; FAR $2D,$07 (_b0_sC)
+		.BYTE	$D		; FAR $2E,$07 (_b0_sD)
+		.BYTE	$E		; FAR $2F,$07 (_b0_sE)
+		.BYTE	$F		; FAR $30,$07 (_b0_sF)
+		.BYTE	$10		; FAR $31,$07 (_b0_s10)
+		.BYTE	$11		; FAR $32,$07 (_b0_s11)
+		.BYTE	$12		; FAR $33,$07 (_b0_s12)
+		.BYTE	$13		; FAR $34,$07 (_b0_s13)
+		.BYTE	$14		; FAR $35,$07 (_b0_s14)
+		.BYTE	$15		; FAR $36,$07 (_b0_s15)
+		.BYTE	$16		; FAR $37,$07 (_b0_s16)
+		.BYTE	$17		; FAR $38,$07 (_b0_s17)
+		.BYTE	$18		; FAR $39,$07 (_b0_s18)
+		.BYTE	$19		; FAR $3A,$07 (_b0_s19)
+		.BYTE	$1A		; FAR $3B,$07 (_b0_s1A)
+		.BYTE	$1B		; FAR $3C,$07 (_b0_s1B)
+		.BYTE	$1C		; FAR $3D,$07 (_b0_s1C)
+		.BYTE	$1D		; FAR $3E,$07 (_b0_s1D)
+		.BYTE	$1E		; FAR $3F,$07 (_b0_s1E)
+		.BYTE	$1F		; FAR $40,$07 (_b0_s1F)
+		.BYTE	$20		; FAR $41,$07 (_b0_s20)
+		.BYTE	$21		; FAR $42,$07 (_b0_s21)
+		.BYTE	$22		; FAR $43,$07 (_b0_s22)
+		.BYTE	$23		; FAR $44,$07 (_b0_s23)
+		.BYTE	$24		; FAR $45,$07 (_b0_s24)
+		.BYTE	$25		; FAR $46,$07 (_b0_s25)
+		.BYTE	$26		; FAR $47,$07 (_b0_s26)
+		.BYTE	$27		; FAR $48,$07 (_b0_s27)
+		.BYTE	$28		; FAR $49,$07 (_b0_s28)
+		.BYTE	$29		; FAR $4A,$07 (_b0_s29)
+		.BYTE	$2A		; FAR $4B,$07 (_b0_s2A)
+		.BYTE	$2B		; FAR $4C,$07 (_b0_s2B)
+		.BYTE	$2C		; FAR $4D,$07 (_b0_s2C)
+		.BYTE	$2D		; FAR $4E,$07 (_b0_s2D)
+		.BYTE	$2E		; FAR $4F,$07 (_b0_s2E)
+		.BYTE	$2F		; FAR $50,$07 (_b0_s2F)
+		.BYTE	$30		; FAR $51,$07 (_b0_s30)
+		.BYTE	$31		; FAR $52,$07 (_b0_s31)
+		.BYTE	$32		; FAR $53,$07 (_b0_s32)
+		.BYTE	$33		; FAR $54,$07 (_b0_s33)
+		.BYTE	$34		; FAR $55,$07 (_b0_s34)
+		.BYTE	$35		; FAR $56,$07 (_b0_s35)
+		.BYTE	$36		; FAR $57,$07 (_b0_s36)
+		.BYTE	$37		; FAR $58,$07 (_b0_s37)
+		.BYTE	$38		; FAR $59,$07 (_b0_s38)
+		.BYTE	$39		; FAR $5A,$07 (_b0_s39)
+		.BYTE	$3A		; FAR $5B,$07 (_b0_s3A)
+		.BYTE	$3B		; FAR $5C,$07 (_b0_s3B)
+		.BYTE	  5			; FAR $5D,$07 (_b6_d5)
+		.BYTE	  2			; FAR $5E,$07 (_bC_s2)
+		.BYTE	  0			; FAR $5F,$07 (_b2_s0)
+		.BYTE	  1			; FAR $60,$07 (_b2_s1)
+		.BYTE	  2			; FAR $61,$07 (_b2_s2)
+		.BYTE	  3			; FAR $62,$07 (_b2_s3)
+		.BYTE	  4			; FAR $63,$07 (_b2_s4)
+		.BYTE	  5			; FAR $64,$07 (_b2_s5)
+		.BYTE	  6			; FAR $65,$07 (_b2_s6_screen_damage_shake)
+		.BYTE	  7			; FAR $66,$07 (_b2_s7_screen_spell_blink)
+		.BYTE	  0			; FAR $67,$07 (_b0_s0_world_map_random_enounter_test)
+		.BYTE	$3C		; FAR $68,$07 (_b0_s3C)
+		.BYTE	$A		; FAR $69,$07 (_b2_sA)
+		.BYTE	$43		; FAR $6A,$07 (_b0_d43_enemies_lib)
+		.BYTE	  0			; FAR $6B,$07 (_b4_s0)
+		.BYTE	  1			; FAR $6C,$07 (_b4_s1)
+		.BYTE	  2			; FAR $6D,$07 (_b4_s2)
+		.BYTE	  3			; FAR $6E,$07 (_b4_s3)
+		.BYTE	  4			; FAR $6F,$07 (_b4_s4)
+		.BYTE	  5			; FAR $70,$07 (_b4_s5_do_message_speed_delay)
+		.BYTE	  6			; FAR $71,$07 (_b4_s6)
+		.BYTE	  7			; FAR $72,$07 (_b4_s7_window_display_safe)
+		.BYTE	  8			; FAR $73,$07 (_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress)
+		.BYTE	  9			; FAR $74,$07 (_b4_s9)
+		.BYTE	$A		; FAR $75,$07 (_b4_sA)
+		.BYTE	$B		; FAR $76,$07 (_b4_sB)
+		.BYTE	$C		; FAR $77,$07 (_b4_sC)
+		.BYTE	$D		; FAR $78,$07 (_b4_dD_spells_list)
+		.BYTE	$B		; FAR $79,$07 (_b2_sB)
+		.BYTE	$3D		; FAR $7A,$07 (_b0_s3D)
+		.BYTE	$3E		; FAR $7B,$07 (_b0_s3E)
+		.BYTE	$F		; FAR $7C,$07 (_b4_sF)
+		.BYTE	  0			; FAR $7D,$07 (0 ; _b6_d0_ofs)
+		.BYTE	  1			; FAR $7E,$07 (0 ; _b6_d1_ofs)
+		.BYTE	  2			; FAR $7F,$07 (0 ; _b6_d2_ofs)
+		.BYTE	  3			; FAR $80,$07 (0 ; _b6_d3_ofs)
+		.BYTE	  2			; FAR $81,$07 (_bA_s2)
+		.BYTE	  3			; FAR $82,$07 (_bC_s3)
+		.BYTE	  4			; FAR $83,$07 (_bC_s4)
+		.BYTE	  5			; FAR $84,$07 (_bC_s5)
+		.BYTE	  6			; FAR $85,$07 (_bC_s6)
+		.BYTE	  3			; FAR $86,$07 (_bA_s3)
+		.BYTE	$1E		; FAR $87,$07 (bank 0e,  idx 1e,  empty)
+		.BYTE	  8			; FAR $88,$07 (_b6_s8)
+		.BYTE	  9			; FAR $89,$07 (_b6_d9)
+		.BYTE	$A		; FAR $8A,$07 (_b6_dA)
+		.BYTE	$B		; FAR $8B,$07 (_b6_dB)
+		.BYTE	$C		; FAR $8C,$07 (_bA_sC)
+		.BYTE	$D		; FAR $8D,$07 (_bA_sD)
+		.BYTE	$40		; FAR $8E,$07 (_b0_d40_weapon_power_list)
+		.BYTE	$41		; FAR $8F,$07 (_b0_d41_equip_list)
+		.BYTE	$42		; FAR $90,$07 (_b0_d42_effects_list)
+		.BYTE	$F		; FAR $91,$07 (bank 01,  idx 0f,  empty)
+		.BYTE	$44		; FAR $92,$07 (_b0_d44)
+		.BYTE	  1			; FAR $93,$07 (_b7_d1)
+		.BYTE	  3			; FAR $94,$07 (_b7_d3)
+		.BYTE	  4			; FAR $95,$07 (_b7_d4)
+		.BYTE	  2			; FAR $96,$07 (0 ; _b7_d2_ofs)
+		.BYTE	  0			; FAR $97,$07 (_bC_s0)
+		.BYTE	  6			; FAR $98,$07 (_bA_s6)
+		.BYTE	  3			; FAR $99,$07 (_b5_s3)
+		.BYTE	  5			; FAR $9A,$07 (_b7_d5)
+		.BYTE	  9			; FAR $9B,$07 (_bC_s9)
+		.BYTE	$45		; FAR $9C,$07 (_b0_s45)
+		.BYTE	$A		; FAR $9D,$07 (_bC_sA)
+		.BYTE	  1			; FAR $9E,$07 (bank 01,  idx 01,  empty)
+		.BYTE	  2			; FAR $9F,$07 (_bB_s2)
+		.BYTE	  3			; FAR $A0,$07 (_bB_s3_far_apu_load)
+		.BYTE	  4			; FAR $A1,$07 (_bB_s4)
+		.BYTE	  5			; FAR $A2,$07 (_bB_s5)
+		.BYTE	$27		; FAR $A3,$07 (_bD_s27)
+		.BYTE	$C		; FAR $A4,$07 (_b2_sC)
+		.BYTE	  6			; FAR $A5,$07 (_bB_s6)
+		.BYTE	$10		; FAR $A6,$07 (_bE_s10)
+		.BYTE	$E		; FAR $A7,$07 (_b4_sE)
+		.BYTE	$E		; FAR $A8,$07 (_bE_sE)
+		.BYTE	$46		; FAR $A9,$07 (_b0_s46)
+		.BYTE	$47		; FAR $AA,$07 (_b0_s47)
+		.BYTE	$1D		; FAR $AB,$07 (_bE_s1D)
+		.BYTE	$19		; FAR $AC,$07 (_bE_s19)
+		.BYTE	$1A		; FAR $AD,$07 (_bE_s1A)
+		.BYTE	$20		; FAR $AE,$07 (_bE_s20)
+		.BYTE	$21		; FAR $AF,$07 (_bE_s21)
+		.BYTE	$10		; FAR $B0,$07 (_b4_s10)
+		.BYTE	$12		; FAR $B1,$07 (_b4_s12)
+		.BYTE	$3F		; FAR $B2,$07 (_b0_d3F)
+		.BYTE	$13		; FAR $B3,$07 (_b4_s13)
+		.BYTE	$14		; FAR $B4,$07 (_b4_s14)
+		.BYTE	$15		; FAR $B5,$07 (_b4_d15)
+		.BYTE	$14		; FAR $B6,$07 (_bA_d14)
+		.BYTE	$15		; FAR $B7,$07 (_bA_d15)
+		.BYTE	$D		; FAR $B8,$07 (_bC_sD)
+		.BYTE	$E		; FAR $B9,$07 (_bC_sE)
+		.BYTE	$F		; FAR $BA,$07 (_bC_sF)
+		.BYTE	$10		; FAR $BB,$07 (_bC_s10)
+		.BYTE	$11		; FAR $BC,$07 (_bC_s11)
+		.BYTE	$1F		; FAR $BD,$07 (_b6_s1F)
+		.BYTE	$13		; FAR $BE,$07 (_bC_s13)
+		.BYTE	$22		; FAR $BF,$07 (_bE_s22)
+		.BYTE	$23		; FAR $C0,$07 (_bE_s23)
+		.BYTE	$24		; FAR $C1,$07 (_bE_s24)
+		.BYTE	$25		; FAR $C2,$07 (_bE_s25)
+		.BYTE	$26		; FAR $C3,$07 (_bE_s26)
+		.BYTE	$C		; FAR $C4,$07 (_b6_sC)
+		.BYTE	$D		; FAR $C5,$07 (_b6_sD)
+		.BYTE	$E		; FAR $C6,$07 (_b6_sE)
+		.BYTE	$F		; FAR $C7,$07 (_b6_sF)
+		.BYTE	$14		; FAR $C8,$07 (_bC_s14)
+		.BYTE	$15		; FAR $C9,$07 (_bC_s15)
+		.BYTE	$16		; FAR $CA,$07 (_bC_s16)
+		.BYTE	  9			; FAR $CB,$07 (_b2_s9)
+		.BYTE	$4C		; FAR $CC,$07 (bank 00,  idx 4c,  empty)
+		.BYTE	$4D		; FAR $CD,$07 (_b0_s4D)
+		.BYTE	$17		; FAR $CE,$07 (_bC_s17)
+		.BYTE	$18		; FAR $CF,$07 (_bC_s18)
+		.BYTE	$16		; FAR $D0,$07 (_b4_s16_do_half_message_speed_delay)
+		.BYTE	$17		; FAR $D1,$07 (_b4_s17)
+		.BYTE	$18		; FAR $D2,$07 (_b4_s18)
+		.BYTE	$19		; FAR $D3,$07 (_b4_s19)
+		.BYTE	$1A		; FAR $D4,$07 (_b4_s1A)
+		.BYTE	$1B		; FAR $D5,$07 (_b4_s1B)
+		.BYTE	$1C		; FAR $D6,$07 (_b4_s1C)
+		.BYTE	$1D		; FAR $D7,$07 (_b4_s1D)
+		.BYTE	  9			; FAR $D8,$07 (_b1_s9)
+		.BYTE	$A		; FAR $D9,$07 (_b1_sA)
+		.BYTE	$B		; FAR $DA,$07 (_b1_sB)
+		.BYTE	$C		; FAR $DB,$07 (_b1_sC)
+		.BYTE	$D		; FAR $DC,$07 (_b1_sD)
+		.BYTE	$D		; FAR $DD,$07 (_bD_sD)
+		.BYTE	$10		; FAR $DE,$07 (_b6_s10)
+		.BYTE	$58		; FAR $DF,$07 (_b0_d58)
+		.BYTE	$59		; FAR $E0,$07 (_b0_d59)
+		.BYTE	$5A		; FAR $E1,$07 (_b0_d5A)
+		.BYTE	$2D		; FAR $E2,$07 (_bC_s2D)
+		.BYTE	$11		; FAR $E3,$07 (_b6_s11)
+		.BYTE	$5B		; FAR $E4,$07 (_b0_s5B)
+		.BYTE	$A		; FAR $E5,$07 (_bA_sA)
+		.BYTE	$2E		; FAR $E6,$07 (_bE_s2E)
+		.BYTE	$2F		; FAR $E7,$07 (_bE_s2F)
+		.BYTE	$30		; FAR $E8,$07 (_bE_s30)
+		.BYTE	$31		; FAR $E9,$07 (_bE_s31)
+		.BYTE	  8			; FAR $EA,$07 (_b2_s8_screen_hit_blink)
+		.BYTE	$32		; FAR $EB,$07 (_bE_s32)
+		.BYTE	$5D		; FAR $EC,$07 (_b0_s5D)
+		.BYTE	$1E		; FAR $ED,$07 (_b4_s1E)
+		.BYTE	$1F		; FAR $EE,$07 (_b4_s1F)
+		.BYTE	$20		; FAR $EF,$07 (_b4_s20)
+		.BYTE	  7			; FAR $F0,$07 (_bB_s7)
+		.BYTE	  9			; FAR $F1,$07 (_b5_s9)
+		.BYTE	$A		; FAR $F2,$07 (_b5_sA)
+		.BYTE	$1C		; FAR $F3,$07 (_bC_s1C)
+		.BYTE	$33		; FAR $F4,$07 (_bE_s33)
+		.BYTE	$1E		; FAR $F5,$07 (_bC_s1E)
+		.BYTE	$1B		; FAR $F6,$07 (_b7_s1B)
+		.BYTE	$21		; FAR $F7,$07 (_bC_s21)
+		.BYTE	$22		; FAR $F8,$07 (_bC_s22)
+		.BYTE	$1B		; FAR $F9,$07 (_bE_s1B)
+		.BYTE	$38		; FAR $FA,$07 (_bC_s38)
+		.BYTE	$25		; FAR $FB,$07 (_bC_s25)
+		.BYTE	  5			; FAR $FC,$07 (_bA_s5_add16_to_24)
+		.BYTE	$19		; FAR $FD,$07 (_bD_s19)
+		.BYTE	$2C		; FAR $FE,$07 (_bC_s2C)
+		.BYTE	  1			; FAR $FF,$07 (_bD_d1_ofs)
 _get_syscall1_sub_idx:
-		.BYTE $2A		; FAR $00,$17 (_bC_s2A)
-		.BYTE $12		; FAR $01,$17 (_bC_s12_vblank_count_50)
-		.BYTE $12		; FAR $02,$17 (_bD_s12)
-		.BYTE $13		; FAR $03,$17 (_bD_s13)
-		.BYTE $29		; FAR $04,$17 (_bC_s29)
-		.BYTE $17		; FAR $05,$17 (_b6_s17)
-		.BYTE $E		; FAR $06,$17 (_bD_sE)
-		.BYTE $2B		; FAR $07,$17 (_bE_s2B)
-		.BYTE $5E		; FAR $08,$17 (_b0_s5E)
-		.BYTE $5F		; FAR $09,$17 (_b0_s5F)
-		.BYTE $60		; FAR $0A,$17 (_b0_s60)
-		.BYTE $12		; FAR $0B,$17 (_bA_s12)
-		.BYTE $1C		; FAR $0C,$17 (_b7_s1C)
-		.BYTE $14		; FAR $0D,$17 (_bD_s14)
-		.BYTE $15		; FAR $0E,$17 (_bD_s15)
-		.BYTE $26		; FAR $0F,$17 (_bC_s26)
-		.BYTE $48		; FAR $10,$17 (_b0_s48)
-		.BYTE $49		; FAR $11,$17 (_b0_s49)
-		.BYTE 6			; FAR $12,$17 (_b6_s6)
-		.BYTE 7			; FAR $13,$17 (_b6_s6)
-		.BYTE $14		; FAR $14,$17 (_b1_s14)
-		.BYTE $15		; FAR $15,$17 (_b1_s15)
-		.BYTE $16		; FAR $16,$17 (_b1_s16)
-		.BYTE $17		; FAR $17,$17 (_b1_s17)
-		.BYTE $13		; FAR $18,$17 (_b1_s13)
-		.BYTE $12		; FAR $19,$17 (_bE_s12)
-		.BYTE $13		; FAR $1A,$17 (_bE_s13)
-		.BYTE $14		; FAR $1B,$17 (_bE_s14)
-		.BYTE $15		; FAR $1C,$17 (bank 0e,	idx 15,	empty)
-		.BYTE $31		; FAR $1D,$17 (_bC_s31)
-		.BYTE $16		; FAR $1E,$17 (_bE_s16)
-		.BYTE $17		; FAR $1F,$17 (_bE_s1C)
-		.BYTE $1C		; FAR $20,$17 (_bE_s1C)
-		.BYTE $F		; FAR $21,$17 (_bE_sF)
-		.BYTE $61		; FAR $22,$17 (_b0_s61_sram_b0_syscall_shortcuts_load)
-		.BYTE $32		; FAR $23,$17 (_bC_s32)
-		.BYTE $10		; FAR $24,$17 (_bE_s10)
-		.BYTE $34		; FAR $25,$17 (_bE_s34)
-		.BYTE $33		; FAR $26,$17 (_bC_s33)
-		.BYTE $16		; FAR $27,$17 (_bD_s16)
-		.BYTE $17		; FAR $28,$17 (_bD_s17)
-		.BYTE $5C		; FAR $29,$17 (_b0_s5C)
-		.BYTE $62		; FAR $2A,$17 (_b0_s62)
-		.BYTE $37		; FAR $2B,$17 (_bC_s37)
-		.BYTE $4D		; FAR $2C,$17 (_b0_s4D)
-		.BYTE $26		; FAR $2D,$17 (_bD_s26)
-		.BYTE $64		; FAR $2E,$17 (_b0_s64)
-		.BYTE $28		; FAR $2F,$17 (_bD_s28)
-		.BYTE $63		; FAR $30,$17 (_b0_s63)
-		.BYTE $21		; FAR $31,$17 (_b4_s21_message_half_delay_or_wait_for_keypress)
-		.BYTE $18		; FAR $32,$17 (_bD_s18)
-		.BYTE $19		; FAR $33,$17 (_bD_s19)
-		.BYTE $1A		; FAR $34,$17 (_bD_s1A)
-		.BYTE $1B		; FAR $35,$17 (_bD_s1B)
-		.BYTE $1C		; FAR $36,$17 (_bD_s1C)
-		.BYTE $1D		; FAR $37,$17 (_bD_s1D)
-		.BYTE $1E		; FAR $38,$17 (_bD_s1E)
-		.BYTE $24		; FAR $39,$17 (_bC_s24)
-		.BYTE $39		; FAR $3A,$17 (_bC_s39)
-		.BYTE $3A		; FAR $3B,$17 (_bC_s3A)
-		.BYTE $1F		; FAR $3C,$17 (_bD_s1F)
-		.BYTE 8			; FAR $3D,$17 (_b5_s8)
-		.BYTE $21		; FAR $3E,$17 (_bD_s21)
-		.BYTE $E		; FAR $3F,$17 (_b1_sE)
-		.BYTE $22		; FAR $40,$17 (_b4_s22)
-		.BYTE $3B		; FAR $41,$17 (_bC_s3B)
-		.BYTE $12		; FAR $42,$17 (_b6_s12)
-		.BYTE $19		; FAR $43,$17 (_bC_s19)
-		.BYTE $22		; FAR $44,$17 (_bD_s22)
-		.BYTE $4E		; FAR $45,$17 (_b0_s4E)
-		.BYTE $4F		; FAR $46,$17 (_b0_s4F)
-		.BYTE $27		; FAR $47,$17 (_bC_s27)
-		.BYTE $28		; FAR $48,$17 (_bC_s28)
-		.BYTE $50		; FAR $49,$17 (_b0_s50)
-		.BYTE $2F		; FAR $4A,$17 (_bC_s2F)
-		.BYTE $30		; FAR $4B,$17 (_bC_s30)
-		.BYTE $51		; FAR $4C,$17 (_b0_s51)
-		.BYTE $52		; FAR $4D,$17 (_b0_s52)
-		.BYTE 1			; FAR $4E,$17 (_b0_s1)
-		.BYTE $53		; FAR $4F,$17 (_b0_s53)
-		.BYTE $36		; FAR $50,$17 (_bE_s36)
-		.BYTE $18		; FAR $51,$17 (_bE_s18)
-		.BYTE $38		; FAR $52,$17 (_bE_s38)
-		.BYTE $13		; FAR $53,$17 (_b6_s13)
-		.BYTE $23		; FAR $54,$17 (_b4_s23)
-		.BYTE $54		; FAR $55,$17 (_b0_s54)
-		.BYTE 5			; FAR $56,$17 (_b5_s5)
-		.BYTE 1			; FAR $57,$17 (_bC_s1)
-		.BYTE $A		; FAR $58,$17 (_bD_sA)
-		.BYTE $34		; FAR $59,$17 (_bC_s34)
-		.BYTE $35		; FAR $5A,$17 (_bC_s35)
-		.BYTE $1A		; FAR $5B,$17 (_bC_s1A)
-		.BYTE $24		; FAR $5C,$17 (_b4_s24)
-		.BYTE $25		; FAR $5D,$17 (_b4_s25)
-		.BYTE $1B		; FAR $5E,$17 (_bC_s1B)
-		.BYTE $B		; FAR $5F,$17 (_b5_sB_ppu_font_load)
-		.BYTE $F		; FAR $60,$17 (_bA_sF)
-		.BYTE $14		; FAR $61,$17 (_b6_s14_name_entry_screen)
-		.BYTE $A		; FAR $62,$17 (_b7_sA_sram_test_and_init)
-		.BYTE $65		; FAR $63,$17 (_b0_s65)
-		.BYTE $66		; FAR $64,$17 (_b0_s66)
-		.BYTE $D		; FAR $65,$17 (_b7_sD)
-		.BYTE $E		; FAR $66,$17 (_b7_sE)
-		.BYTE $F		; FAR $67,$17 (_b7_sF)
-		.BYTE $10		; FAR $68,$17 (_b7_s10)
-		.BYTE $11		; FAR $69,$17 (_b7_s11)
-		.BYTE $12		; FAR $6A,$17 (_b7_s12)
-		.BYTE $13		; FAR $6B,$17 (_b7_s13)
-		.BYTE $14		; FAR $6C,$17 (_b7_s14)
-		.BYTE $C		; FAR $6D,$17 (_bC_sC)
-		.BYTE $15		; FAR $6E,$17 (_b6_s15)
-		.BYTE $15		; FAR $6F,$17 (_b7_s15)
-		.BYTE $2E		; FAR $70,$17 (_bC_s2E_vblank_count_50_wait_50_or_skip)
-		.BYTE $20		; FAR $71,$17 (_bC_s20)
-		.BYTE $B		; FAR $72,$17 (_bC_sB)
-		.BYTE $55		; FAR $73,$17 (_b0_s55)
-		.BYTE 6			; FAR $74,$17 (_b5_s6_ppu_send_8_empty_bytes)
-		.BYTE $10		; FAR $75,$17 (_bA_s10)
-		.BYTE $11		; FAR $76,$17 (_bA_s11)
-		.BYTE $36		; FAR $77,$17 (_bC_s36)
-		.BYTE 8			; FAR $78,$17 (_bA_s8)
-		.BYTE 8			; FAR $79,$17 (_b5_s8)
-		.BYTE $29		; FAR $7A,$17 (_bD_s29)
-		.BYTE $56		; FAR $7B,$17 (_b0_s56)
-		.BYTE $19		; FAR $7C,$17 (_b7_s19)
-		.BYTE $B		; FAR $7D,$17 (_bD_sB)
-		.BYTE $1A		; FAR $7E,$17 (_b7_s1A)
-		.BYTE $18		; FAR $7F,$17 (_b6_s18)
-		.BYTE $26		; FAR $80,$17 (_b4_s26)
-		.BYTE $19		; FAR $81,$17 (_b6_s19)
-		.BYTE $F		; FAR $82,$17 (_bD_sF)
-		.BYTE $C		; FAR $83,$17 (_bD_sC)
-		.BYTE $10		; FAR $84,$17 (_bD_s10)
-		.BYTE $16		; FAR $85,$17 (_b6_s16)
-		.BYTE $D		; FAR $86,$17 (_b2_sD)
-		.BYTE $1D		; FAR $87,$17 (_b6_s1D)
-		.BYTE $1C		; FAR $88,$17 (_b6_s1C)
-		.BYTE $1B		; FAR $89,$17 (_b6_s1B)
-		.BYTE $26		; FAR $8A,$17 (_bC_s26)
-		.BYTE $11		; FAR $8B,$17 (_bD_s11)
-		.BYTE $23		; FAR $8C,$17 (_bD_s23)
-		.BYTE $24		; FAR $8D,$17 (_bD_s24)
-		.BYTE $2B		; FAR $8E,$17 (_bC_s2B)
-		.BYTE 9			; FAR $8F,$17 (_bA_s9_nullsub)
-		.BYTE $20		; FAR $90,$17 (_bD_s20_npc_hndl31)
-		.BYTE $16		; FAR $91,$17 (_b6_s16)
-		.BYTE $23		; FAR $92,$17 (_bC_s23)
-		.BYTE $11		; FAR $93,$17 (_bE_s11)
-		.BYTE $1A		; FAR $94,$17 (_b6_s1A)
-		.BYTE $1D		; FAR $95,$17 (_b7_s1D)
-		.BYTE $1E		; FAR $96,$17 (_b6_s1E)
-		.BYTE $B		; FAR $97,$17 (_bA_sB)
-		.BYTE $E		; FAR $98,$17 (_b2_sE)
-		.BYTE $67		; FAR $99,$17 (_b0_s67)
-		.BYTE $20		; FAR $9A,$17 (_b6_s20_player_name_veryfy)
-		.BYTE 2			; FAR $9B,$17 (_bA_s2)
-		.BYTE 3			; FAR $9C,$17 (_bA_s3)
-		.BYTE $27		; FAR $9D,$17 (_b4_s27)
-		.BYTE $28		; FAR $9E,$17 (_b4_s28)
-		.BYTE $29		; FAR $9F,$17 (_b4_s29)
-		.BYTE $2A		; FAR $A0,$17 (_b4_s2A)
-		.BYTE $2B		; FAR $A1,$17 (_b4_s2B)
-		.BYTE 4			; FAR $A2,$17 (_bA_s4_div24_to_8)
-		.BYTE 5			; FAR $A3,$17 (_bA_s5_add16_to_24)
-		.BYTE 6			; FAR $A4,$17 (_bA_s6)
-		.BYTE 7			; FAR $A5,$17 (_bA_s7_nullsub)
-		.BYTE $E		; FAR $A6,$17 (_bA_sE)
-		.BYTE $1E		; FAR $A7,$17 (_b7_s1E)
-		.BYTE $16		; FAR $A8,$17 (_bA_s16)
-		.BYTE $17		; FAR $A9,$17 (_bA_s17)
+		.BYTE	$2A		; FAR $00,$17 (_bC_s2A)
+		.BYTE	$12		; FAR $01,$17 (_bC_s12_vblank_count_50)
+		.BYTE	$12		; FAR $02,$17 (_bD_s12)
+		.BYTE	$13		; FAR $03,$17 (_bD_s13)
+		.BYTE	$29		; FAR $04,$17 (_bC_s29)
+		.BYTE	$17		; FAR $05,$17 (_b6_s17)
+		.BYTE	$E		; FAR $06,$17 (_bD_sE)
+		.BYTE	$2B		; FAR $07,$17 (_bE_s2B)
+		.BYTE	$5E		; FAR $08,$17 (_b0_s5E)
+		.BYTE	$5F		; FAR $09,$17 (_b0_s5F)
+		.BYTE	$60		; FAR $0A,$17 (_b0_s60)
+		.BYTE	$12		; FAR $0B,$17 (_bA_s12)
+		.BYTE	$1C		; FAR $0C,$17 (_b7_s1C)
+		.BYTE	$14		; FAR $0D,$17 (_bD_s14)
+		.BYTE	$15		; FAR $0E,$17 (_bD_s15)
+		.BYTE	$26		; FAR $0F,$17 (_bC_s26)
+		.BYTE	$48		; FAR $10,$17 (_b0_s48)
+		.BYTE	$49		; FAR $11,$17 (_b0_s49)
+		.BYTE	  6			; FAR $12,$17 (_b6_s6)
+		.BYTE	  7			; FAR $13,$17 (_b6_s6)
+		.BYTE	$14		; FAR $14,$17 (_b1_s14)
+		.BYTE	$15		; FAR $15,$17 (_b1_s15)
+		.BYTE	$16		; FAR $16,$17 (_b1_s16)
+		.BYTE	$17		; FAR $17,$17 (_b1_s17)
+		.BYTE	$13		; FAR $18,$17 (_b1_s13)
+		.BYTE	$12		; FAR $19,$17 (_bE_s12)
+		.BYTE	$13		; FAR $1A,$17 (_bE_s13)
+		.BYTE	$14		; FAR $1B,$17 (_bE_s14)
+		.BYTE	$15		; FAR $1C,$17 (bank 0e,  idx 15,  empty)
+		.BYTE	$31		; FAR $1D,$17 (_bC_s31)
+		.BYTE	$16		; FAR $1E,$17 (_bE_s16)
+		.BYTE	$17		; FAR $1F,$17 (_bE_s1C)
+		.BYTE	$1C		; FAR $20,$17 (_bE_s1C)
+		.BYTE	$F		; FAR $21,$17 (_bE_sF)
+		.BYTE	$61		; FAR $22,$17 (_b0_s61_sram_b0_syscall_shortcuts_load)
+		.BYTE	$32		; FAR $23,$17 (_bC_s32)
+		.BYTE	$10		; FAR $24,$17 (_bE_s10)
+		.BYTE	$34		; FAR $25,$17 (_bE_s34)
+		.BYTE	$33		; FAR $26,$17 (_bC_s33)
+		.BYTE	$16		; FAR $27,$17 (_bD_s16)
+		.BYTE	$17		; FAR $28,$17 (_bD_s17)
+		.BYTE	$5C		; FAR $29,$17 (_b0_s5C)
+		.BYTE	$62		; FAR $2A,$17 (_b0_s62)
+		.BYTE	$37		; FAR $2B,$17 (_bC_s37)
+		.BYTE	$4D		; FAR $2C,$17 (_b0_s4D)
+		.BYTE	$26		; FAR $2D,$17 (_bD_s26)
+		.BYTE	$64		; FAR $2E,$17 (_b0_s64)
+		.BYTE	$28		; FAR $2F,$17 (_bD_s28)
+		.BYTE	$63		; FAR $30,$17 (_b0_s63)
+		.BYTE	$21		; FAR $31,$17 (_b4_s21_message_half_delay_or_wait_for_keypress)
+		.BYTE	$18		; FAR $32,$17 (_bD_s18)
+		.BYTE	$19		; FAR $33,$17 (_bD_s19)
+		.BYTE	$1A		; FAR $34,$17 (_bD_s1A)
+		.BYTE	$1B		; FAR $35,$17 (_bD_s1B)
+		.BYTE	$1C		; FAR $36,$17 (_bD_s1C)
+		.BYTE	$1D		; FAR $37,$17 (_bD_s1D)
+		.BYTE	$1E		; FAR $38,$17 (_bD_s1E)
+		.BYTE	$24		; FAR $39,$17 (_bC_s24)
+		.BYTE	$39		; FAR $3A,$17 (_bC_s39)
+		.BYTE	$3A		; FAR $3B,$17 (_bC_s3A)
+		.BYTE	$1F		; FAR $3C,$17 (_bD_s1F)
+		.BYTE	  8			; FAR $3D,$17 (_b5_s8)
+		.BYTE	$21		; FAR $3E,$17 (_bD_s21)
+		.BYTE	$E		; FAR $3F,$17 (_b1_sE)
+		.BYTE	$22		; FAR $40,$17 (_b4_s22)
+		.BYTE	$3B		; FAR $41,$17 (_bC_s3B)
+		.BYTE	$12		; FAR $42,$17 (_b6_s12)
+		.BYTE	$19		; FAR $43,$17 (_bC_s19)
+		.BYTE	$22		; FAR $44,$17 (_bD_s22)
+		.BYTE	$4E		; FAR $45,$17 (_b0_s4E)
+		.BYTE	$4F		; FAR $46,$17 (_b0_s4F)
+		.BYTE	$27		; FAR $47,$17 (_bC_s27)
+		.BYTE	$28		; FAR $48,$17 (_bC_s28)
+		.BYTE	$50		; FAR $49,$17 (_b0_s50)
+		.BYTE	$2F		; FAR $4A,$17 (_bC_s2F)
+		.BYTE	$30		; FAR $4B,$17 (_bC_s30)
+		.BYTE	$51		; FAR $4C,$17 (_b0_s51)
+		.BYTE	$52		; FAR $4D,$17 (_b0_s52)
+		.BYTE	  1			; FAR $4E,$17 (_b0_s1)
+		.BYTE	$53		; FAR $4F,$17 (_b0_s53)
+		.BYTE	$36		; FAR $50,$17 (_bE_s36)
+		.BYTE	$18		; FAR $51,$17 (_bE_s18)
+		.BYTE	$38		; FAR $52,$17 (_bE_s38)
+		.BYTE	$13		; FAR $53,$17 (_b6_s13)
+		.BYTE	$23		; FAR $54,$17 (_b4_s23)
+		.BYTE	$54		; FAR $55,$17 (_b0_s54)
+		.BYTE	  5			; FAR $56,$17 (_b5_s5)
+		.BYTE	  1			; FAR $57,$17 (_bC_s1)
+		.BYTE	$A		; FAR $58,$17 (_bD_sA)
+		.BYTE	$34		; FAR $59,$17 (_bC_s34)
+		.BYTE	$35		; FAR $5A,$17 (_bC_s35)
+		.BYTE	$1A		; FAR $5B,$17 (_bC_s1A)
+		.BYTE	$24		; FAR $5C,$17 (_b4_s24)
+		.BYTE	$25		; FAR $5D,$17 (_b4_s25)
+		.BYTE	$1B		; FAR $5E,$17 (_bC_s1B)
+		.BYTE	$B		; FAR $5F,$17 (_b5_sB_ppu_font_load)
+		.BYTE	$F		; FAR $60,$17 (_bA_sF)
+		.BYTE	$14		; FAR $61,$17 (_b6_s14_name_entry_screen)
+		.BYTE	$A		; FAR $62,$17 (_b7_sA_sram_test_and_init)
+		.BYTE	$65		; FAR $63,$17 (_b0_s65)
+		.BYTE	$66		; FAR $64,$17 (_b0_s66)
+		.BYTE	$D		; FAR $65,$17 (_b7_sD)
+		.BYTE	$E		; FAR $66,$17 (_b7_sE)
+		.BYTE	$F		; FAR $67,$17 (_b7_sF)
+		.BYTE	$10		; FAR $68,$17 (_b7_s10)
+		.BYTE	$11		; FAR $69,$17 (_b7_s11)
+		.BYTE	$12		; FAR $6A,$17 (_b7_s12)
+		.BYTE	$13		; FAR $6B,$17 (_b7_s13)
+		.BYTE	$14		; FAR $6C,$17 (_b7_s14)
+		.BYTE	$C		; FAR $6D,$17 (_bC_sC)
+		.BYTE	$15		; FAR $6E,$17 (_b6_s15)
+		.BYTE	$15		; FAR $6F,$17 (_b7_s15)
+		.BYTE	$2E		; FAR $70,$17 (_bC_s2E_vblank_count_50_wait_50_or_skip)
+		.BYTE	$20		; FAR $71,$17 (_bC_s20)
+		.BYTE	$B		; FAR $72,$17 (_bC_sB)
+		.BYTE	$55		; FAR $73,$17 (_b0_s55)
+		.BYTE	  6			; FAR $74,$17 (_b5_s6_ppu_send_8_empty_bytes)
+		.BYTE	$10		; FAR $75,$17 (_bA_s10)
+		.BYTE	$11		; FAR $76,$17 (_bA_s11)
+		.BYTE	$36		; FAR $77,$17 (_bC_s36)
+		.BYTE	  8			; FAR $78,$17 (_bA_s8)
+		.BYTE	  8			; FAR $79,$17 (_b5_s8)
+		.BYTE	$29		; FAR $7A,$17 (_bD_s29)
+		.BYTE	$56		; FAR $7B,$17 (_b0_s56)
+		.BYTE	$19		; FAR $7C,$17 (_b7_s19)
+		.BYTE	$B		; FAR $7D,$17 (_bD_sB)
+		.BYTE	$1A		; FAR $7E,$17 (_b7_s1A)
+		.BYTE	$18		; FAR $7F,$17 (_b6_s18)
+		.BYTE	$26		; FAR $80,$17 (_b4_s26)
+		.BYTE	$19		; FAR $81,$17 (_b6_s19)
+		.BYTE	$F		; FAR $82,$17 (_bD_sF)
+		.BYTE	$C		; FAR $83,$17 (_bD_sC)
+		.BYTE	$10		; FAR $84,$17 (_bD_s10)
+		.BYTE	$16		; FAR $85,$17 (_b6_s16)
+		.BYTE	$D		; FAR $86,$17 (_b2_sD)
+		.BYTE	$1D		; FAR $87,$17 (_b6_s1D)
+		.BYTE	$1C		; FAR $88,$17 (_b6_s1C)
+		.BYTE	$1B		; FAR $89,$17 (_b6_s1B)
+		.BYTE	$26		; FAR $8A,$17 (_bC_s26)
+		.BYTE	$11		; FAR $8B,$17 (_bD_s11)
+		.BYTE	$23		; FAR $8C,$17 (_bD_s23)
+		.BYTE	$24		; FAR $8D,$17 (_bD_s24)
+		.BYTE	$2B		; FAR $8E,$17 (_bC_s2B)
+		.BYTE	  9			; FAR $8F,$17 (_bA_s9_nullsub)
+		.BYTE	$20		; FAR $90,$17 (_bD_s20_npc_hndl31)
+		.BYTE	$16		; FAR $91,$17 (_b6_s16)
+		.BYTE	$23		; FAR $92,$17 (_bC_s23)
+		.BYTE	$11		; FAR $93,$17 (_bE_s11)
+		.BYTE	$1A		; FAR $94,$17 (_b6_s1A)
+		.BYTE	$1D		; FAR $95,$17 (_b7_s1D)
+		.BYTE	$1E		; FAR $96,$17 (_b6_s1E)
+		.BYTE	$B		; FAR $97,$17 (_bA_sB)
+		.BYTE	$E		; FAR $98,$17 (_b2_sE)
+		.BYTE	$67		; FAR $99,$17 (_b0_s67)
+		.BYTE	$20		; FAR $9A,$17 (_b6_s20_player_name_veryfy)
+		.BYTE	  2			; FAR $9B,$17 (_bA_s2)
+		.BYTE	  3			; FAR $9C,$17 (_bA_s3)
+		.BYTE	$27		; FAR $9D,$17 (_b4_s27)
+		.BYTE	$28		; FAR $9E,$17 (_b4_s28)
+		.BYTE	$29		; FAR $9F,$17 (_b4_s29)
+		.BYTE	$2A		; FAR $A0,$17 (_b4_s2A)
+		.BYTE	$2B		; FAR $A1,$17 (_b4_s2B)
+		.BYTE	  4			; FAR $A2,$17 (_bA_s4_div24_to_8)
+		.BYTE	  5			; FAR $A3,$17 (_bA_s5_add16_to_24)
+		.BYTE	  6			; FAR $A4,$17 (_bA_s6)
+		.BYTE	  7			; FAR $A5,$17 (_bA_s7_nullsub)
+		.BYTE	$E		; FAR $A6,$17 (_bA_sE)
+		.BYTE	$1E		; FAR $A7,$17 (_b7_s1E)
+		.BYTE	$16		; FAR $A8,$17 (_bA_s16)
+		.BYTE	$17		; FAR $A9,$17 (_bA_s17)
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_msg_ptr_by_idx:

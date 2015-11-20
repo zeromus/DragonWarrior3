@@ -56,4 +56,4 @@ RESET:
 		INC		_mmc_reset_byte
 		JMP		_RESET
 _mmc_reset_byte:
-		.BYTE $80
+		.BYTE	$80

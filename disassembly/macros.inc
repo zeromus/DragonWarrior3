@@ -93,6 +93,6 @@ _col = $75
 
 	MAC FAR
 		BRK
-		.BYTE {1}
-		.BYTE {2}
+		.BYTE	  {1}
+		.BYTE	  {2}
 	ENDM

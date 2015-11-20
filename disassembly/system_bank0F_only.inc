@@ -492,9 +492,9 @@ loc_176F9F:
 		LDA		byte_8A
 		RTS
 byte_176FA2:
-		.BYTE	1,  2,	4,  8,$10,$20,$40,$80 
+		.BYTE	  1,  2,  4,  8,$10,$20,$40,$80
 byte_176FAA:
-		.BYTE $44,$EE,$EE,$44,$11,$BB,$BB,$11 
+		.BYTE	$44,$EE,$EE,$44,$11,$BB,$BB,$11
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176FB2:
@@ -566,66 +566,66 @@ loc_176FFA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17701E:
-		CPX		#$9D       ; pcm data
-		BEQ		loc_177026	; pcm data
-		BCS		loc_177037	; pcm data
-		BCC		loc_17703A	; pcm data
+		CPX		#$9D
+		BEQ		loc_177026
+		BCS		loc_177037
+		BCC		loc_17703A
 loc_177026:
-		LDA		#$31       ; pcm data
-		CPY		#0		; pcm data
-		BEQ		locret_177036	; pcm data
-		LDA		#$36       ; pcm data
-		CPY		#$85       ; pcm data
-		BEQ		locret_177036	; pcm data
-		BCS		loc_177037	; pcm data
-		LDA		#$33       ; pcm data
+		LDA		#$31
+		CPY		#0
+		BEQ		locret_177036
+		LDA		#$36
+		CPY		#$85
+		BEQ		locret_177036
+		BCS		loc_177037
+		LDA		#$33
 locret_177036:
-		RTS				; pcm data
+		RTS
 loc_177037:
-		LDA		#$1D		; pcm data
-		RTS				; pcm data
+		LDA		#$1D
+		RTS
 loc_17703A:
-		CPY		#$85       ; pcm data
-		BEQ		loc_177042	; pcm data
-		BCS		loc_177037	; pcm data
-		BCC		loc_177051	; pcm data
+		CPY		#$85
+		BEQ		loc_177042
+		BCS		loc_177037
+		BCC		loc_177051
 loc_177042:
-		LDA		#$34       ; pcm data
-		CPX		#0		; pcm data
-		BEQ		locret_177050	; pcm data
-		LDA		#$36       ; pcm data
-		CPX		#$9D       ; pcm data
-		BEQ		locret_177050	; pcm data
-		LDA		#$35       ; pcm data
+		LDA		#$34
+		CPX		#0
+		BEQ		locret_177050
+		LDA		#$36
+		CPX		#$9D
+		BEQ		locret_177050
+		LDA		#$35
 locret_177050:
-		RTS				; pcm data
+		RTS
 loc_177051:
-		CPX		#0		; pcm data
-		BNE		loc_177064	; pcm data
-		LDA		#$2F       ; pcm data
-		CPY		#0		; pcm data
-		BEQ		locret_177063	; pcm data
-		LDA		#$34       ; pcm data
-		CPY		#$85       ; pcm data
-		BEQ		locret_177063	; pcm data
-		LDA		#$32       ; pcm data
+		CPX		#0
+		BNE		loc_177064
+		LDA		#$2F
+		CPY		#0
+		BEQ		locret_177063
+		LDA		#$34
+		CPY		#$85
+		BEQ		locret_177063
+		LDA		#$32
 locret_177063:
-		RTS				; pcm data
+		RTS
 loc_177064:
-		CPY		#0		; pcm data
-		BNE		loc_177077	; pcm data
-		LDA		#$2F       ; pcm data
-		CPX		#0		; pcm data
-		BEQ		locret_177076	; pcm data
-		LDA		#$31       ; pcm data
-		CPX		#$9D       ; pcm data
-		BEQ		locret_177076	; pcm data
-		LDA		#$30       ; pcm data
+		CPY		#0
+		BNE		loc_177077
+		LDA		#$2F
+		CPX		#0
+		BEQ		locret_177076
+		LDA		#$31
+		CPX		#$9D
+		BEQ		locret_177076
+		LDA		#$30
 locret_177076:
-		RTS				; pcm data
+		RTS
 loc_177077:
-		LDA		#0		; pcm data
-		RTS				; pcm data
+		LDA		#0
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17707A:
@@ -638,20 +638,20 @@ loc_177082:
 locret_177083:
 		RTS
 loc_177084:
-		PLA				; pcm data
-		BNE		locret_177083	; pcm data
-		PHA				; pcm data
-		LDA		word_4A+1	; pcm data
-		CMP		#$46       ; pcm data
-		BCC		loc_177082	; pcm data
-		CMP		#$49       ; pcm data
-		BCS		loc_177082	; pcm data
-		LDA		byte_77		; pcm data
-		CMP		#$91       ; pcm data
-		BCC		loc_177082	; pcm data
-		CMP		#$95       ; pcm data
-		BCS		loc_177082	; pcm data
-		PLA				; pcm data
+		PLA
+		BNE		locret_177083
+		PHA
+		LDA		word_4A+1
+		CMP		#$46
+		BCC		loc_177082
+		CMP		#$49
+		BCS		loc_177082
+		LDA		byte_77
+		CMP		#$91
+		BCC		loc_177082
+		CMP		#$95
+		BCS		loc_177082
+		PLA
 loc_17709D:
 		LDA		#1
 		RTS
@@ -665,32 +665,32 @@ sub_1770A0:
 		PLA
 		RTS
 loc_1770AA:
-		PLA				; pcm data
-		CMP		#$17		; pcm data
-		BEQ		loc_1770B0	; pcm data
-		RTS				; pcm data
+		PLA
+		CMP		#$17
+		BEQ		loc_1770B0
+		RTS
 loc_1770B0:
-		LDA		byte_77		; pcm data
-		CMP		#$39       ; pcm data
-		BEQ		loc_1770CA	; pcm data
-		CMP		#$3B       ; pcm data
-		BEQ		loc_1770CD	; pcm data
-		CMP		#$3A       ; pcm data
-		BNE		loc_1770C7	; pcm data
-		LDA		word_4A+1	; pcm data
-		CMP		#$A2       ; pcm data
-		BNE		loc_1770CA	; pcm data
-		LDA		#$15		; pcm data
-		RTS				; pcm data
+		LDA		byte_77
+		CMP		#$39
+		BEQ		loc_1770CA
+		CMP		#$3B
+		BEQ		loc_1770CD
+		CMP		#$3A
+		BNE		loc_1770C7
+		LDA		word_4A+1
+		CMP		#$A2
+		BNE		loc_1770CA
+		LDA		#$15
+		RTS
 loc_1770C7:
-		LDA		#$17		; pcm data
-		RTS				; pcm data
+		LDA		#$17
+		RTS
 loc_1770CA:
-		LDA		#6		; pcm data
-		RTS				; pcm data
+		LDA		#6
+		RTS
 loc_1770CD:
-		LDA		#0		; pcm data
-		RTS				; pcm data
+		LDA		#0
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1770D0:
@@ -728,7 +728,7 @@ loc_1770FA:
 		LDA		byte_AC
 		AND		#$1F
 		BEQ		loc_177109
-		JMP		sub_177295	; pcm data
+		JMP		sub_177295
 loc_177109:
 		JSR		sub_177113
 		JSR		sub_177113
@@ -815,14 +815,14 @@ loc_17718A:
 		BNE		sub_1771F8
 		LDA		byte_2C
 		BEQ		loc_1771A4
-		LDA		byte_8F		; pcm data
-		BNE		loc_1771A4	; pcm data
-		LDA		word_72		; pcm data
-		CMP		#4		; pcm data
-		BNE		sub_1771F8	; pcm data
-		LDA		#$10		; pcm data
-		STA		word_72		; pcm data
-		BNE		loc_1771C5	; pcm data
+		LDA		byte_8F
+		BNE		loc_1771A4
+		LDA		word_72
+		CMP		#4
+		BNE		sub_1771F8
+		LDA		#$10
+		STA		word_72
+		BNE		loc_1771C5
 loc_1771A4:
 		LDA		word_72
 		LSR
@@ -881,8 +881,8 @@ sub_1771F8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177200:
-		PLA				; pcm data
-		JMP		sub_1771F8	; pcm data
+		PLA
+		JMP		sub_1771F8
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177204:
@@ -943,7 +943,7 @@ sub_177259:
 		BCC		loc_177274
 		CPY		#$A
 		BCS		loc_177274
-		LDA		#2		; pcm data
+		LDA		#2
 loc_177274:
 		JSR		sub_177909
 		PLA
@@ -960,7 +960,7 @@ loc_177282:
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 nullsub_21:
-		RTS				; pcm data
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177289:
@@ -969,7 +969,7 @@ sub_177289:
 		ADC		#4
 		STA		word_6C
 		BCC		locret_177294
-		INC		word_6C+1	; pcm data
+		INC		word_6C+1
 locret_177294:
 		RTS
 
@@ -985,17 +985,17 @@ sub_177295:
 		JSR		sub_1777B7
 		BCC		loc_1772C3
 loc_1772A8:
-		LDA		byte_2A		; pcm data
-		STA		byte_80		; pcm data
-		LDA		byte_2B		; pcm data
-		STA		byte_81		; pcm data
-		LDA		#4		; pcm data
-		JSR		sub_1778D7	; pcm data
-		LDA		byte_6BA	; pcm data
-		JSR		sub_177909	; pcm data
-		JSR		sub_177385	; pcm data
-		LDY		#$10		; pcm data
-		JSR		sub_17732F	; pcm data
+		LDA		byte_2A
+		STA		byte_80
+		LDA		byte_2B
+		STA		byte_81
+		LDA		#4
+		JSR		sub_1778D7
+		LDA		byte_6BA
+		JSR		sub_177909
+		JSR		sub_177385
+		LDY		#$10
+		JSR		sub_17732F
 loc_1772C3:
 		JSR		sub_1772F4
 		JSR		sub_1772CC
@@ -1013,14 +1013,14 @@ sub_1772CC:
 		JSR		sub_1777B7
 		BCC		locret_1772F3
 loc_1772DF:
-		LDA		word_3C		; pcm data
-		JSR		sub_1778D7	; pcm data
-		LDA		word_3E		; pcm data
-		AND		#3		; pcm data
-		JSR		sub_177909	; pcm data
-		JSR		sub_177385	; pcm data
-		LDY		word_3C+1	; pcm data
-		JSR		sub_17732F	; pcm data
+		LDA		word_3C
+		JSR		sub_1778D7
+		LDA		word_3E
+		AND		#3
+		JSR		sub_177909
+		JSR		sub_177385
+		LDY		word_3C+1
+		JSR		sub_17732F
 locret_1772F3:
 		RTS
 
@@ -1044,7 +1044,7 @@ sub_177305:
 		LDA		byte_2C
 		CMP		#2
 		BNE		loc_177313
-		LDX		#0		; pcm data
+		LDX		#0
 loc_177313:
 		STX		word_3C+1
 		LDX		byte_9E
@@ -1325,10 +1325,10 @@ loc_1774F3:
 		INY
 		JMP		loc_1774B0
 off_17750F:
-		.WORD sub_177570
-		.WORD sub_1775C4	; pcm data
-		.WORD sub_1775A3	; pcm data
-		.WORD sub_1775F6	; pcm data
+		.WORD	sub_177570
+		.WORD	sub_1775C4
+		.WORD	sub_1775A3
+		.WORD	sub_1775F6
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177517:
@@ -1518,7 +1518,7 @@ loc_177650:
 		FAR		$13, 7		; _b5_s4
 		JSR		sub_1773E9
 		JMP		sub_177613
-		RTS				; pcm data
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177668:
@@ -1644,9 +1644,9 @@ loc_17771E:
 		BEQ		loc_17772A
 		BNE		loc_17771E
 loc_17772A:
-		LDA		#$10		; pcm data
-		STA		byte_6BB	; pcm data
-		RTS				; pcm data
+		LDA		#$10
+		STA		byte_6BB
+		RTS
 loc_177730:
 		LDA		byte_6BB
 		TAY
@@ -1694,17 +1694,17 @@ loc_17776E:
 		BEQ		loc_177799
 		CMP		#1
 		BEQ		loc_17778A
-		CMP		#2		; pcm data
-		BEQ		loc_1777A8	; pcm data
-		LDA		word_6+1	; pcm data
-		CLC				; pcm data
-		ADC		byte_87		; pcm data
-		STA		word_6+1	; pcm data
-		LDA		byte_B		; pcm data
-		CLC				; pcm data
-		ADC		byte_87		; pcm data
-		STA		byte_B		; pcm data
-		RTS				; pcm data
+		CMP		#2
+		BEQ		loc_1777A8
+		LDA		word_6+1
+		CLC
+		ADC		byte_87
+		STA		word_6+1
+		LDA		byte_B
+		CLC
+		ADC		byte_87
+		STA		byte_B
+		RTS
 loc_17778A:
 		LDA		word_6+1
 		SEC
@@ -1716,25 +1716,25 @@ loc_17778A:
 		STA		byte_B
 		RTS
 loc_177799:
-		LDA		word_4		; pcm data
-		CLC				; pcm data
-		ADC		byte_87		; pcm data
-		STA		word_4		; pcm data
-		LDA		byte_8		; pcm data
-		CLC				; pcm data
-		ADC		byte_87		; pcm data
-		STA		byte_8		; pcm data
-		RTS				; pcm data
+		LDA		word_4
+		CLC
+		ADC		byte_87
+		STA		word_4
+		LDA		byte_8
+		CLC
+		ADC		byte_87
+		STA		byte_8
+		RTS
 loc_1777A8:
-		LDA		word_4		; pcm data
-		SEC				; pcm data
-		SBC		byte_87		; pcm data
-		STA		word_4		; pcm data
-		LDA		byte_8		; pcm data
-		SEC				; pcm data
-		SBC		byte_87		; pcm data
-		STA		byte_8		; pcm data
-		RTS				; pcm data
+		LDA		word_4
+		SEC
+		SBC		byte_87
+		STA		word_4
+		LDA		byte_8
+		SEC
+		SBC		byte_87
+		STA		byte_8
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1777B7:
@@ -1790,7 +1790,7 @@ loc_1777FD:
 		CLC
 		ADC		byte_9
 		BCC		loc_177806
-		LDA		#$FF		; pcm data
+		LDA		#$FF
 loc_177806:
 		CMP		word_4
 		BCC		locret_1777FC
@@ -1810,7 +1810,7 @@ loc_17781B:
 		CLC
 		ADC		byte_9
 		BCC		loc_177824
-		LDA		#$FF		; pcm data
+		LDA		#$FF
 loc_177824:
 		CMP		word_4+1
 		RTS
@@ -1818,11 +1818,11 @@ loc_177824:
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 sub_177827:
-		LDA		byte_30		; pcm data
-		STA		word_6		; pcm data
-		LDA		byte_31		; pcm data
-		STA		word_6+1	; pcm data
-		JMP		loc_17783A	; pcm data
+		LDA		byte_30
+		STA		word_6
+		LDA		byte_31
+		STA		word_6+1
+		JMP		loc_17783A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177832:
@@ -2845,7 +2845,7 @@ sub_177E23:
 		STA		word_6C
 		LDA		#>[_bD_d1]
 		STA		word_6C+1
-; --		
+; --
 		LDA		byte_8B
 		BEQ		locret_177E5D
 		LDA		word_3E
@@ -2906,13 +2906,13 @@ sub_177E87:
 locret_177E9A:
 		RTS
 byte_177E9B:
-		.BYTE	5,  6,	6,  7,	7,  8,	8,  9 
+		.BYTE	  5,  6,  6,  7,  7,  8,  8,  9
 byte_177EA3:
-		.BYTE	1,  5
+		.BYTE	  1,  5
 byte_177EA5:
-		.BYTE	3,  3,	3,  3,	5,  6,	6,  7 
+		.BYTE	  3,  3,  3,  3,  5,  6,  6,  7
 byte_177EAD:
-		.BYTE	2,  2,	5,  6
+		.BYTE	  2,  2,  5,  6
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177EB1:
@@ -3047,6 +3047,6 @@ loc_177F78:
 		PLA
 		JMP		_mmc1_prg_set
 _unused_2:
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 _debug_flags:
-		.BYTE $FF
+		.BYTE	$FF
