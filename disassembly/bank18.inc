@@ -247,8 +247,8 @@ sub_24C17A:
 ;		INX
 ;		CPY		#7
 ;		BCC		loc_24C1B7
-;		STY		byte_6D8
-;		INC		byte_6D9
+;		STY		_ppu_queue_pos
+;		INC		_ppu_queue_tiles_count
 ;		LDA		#$A2
 ;		STA		byte_300,Y
 ;		INY
@@ -269,9 +269,9 @@ sub_24C17A:
 ;		INX
 ;		CPY		#$E
 ;		BCC		loc_24C1E1
-;		STY		byte_6D8
-;		INC		byte_6D9
-;		JSR		sub_1742BA
+;		STY		_ppu_queue_pos
+;		INC		_ppu_queue_tiles_count
+;		JSR		_nmi_set_flag_04
 ;		RTS
 ;byte_24C1F7:
 ;		.BYTE	$13,$14,$15,$16,$23,$24,$25,$26,  8,  9, $E, $F,$18,$19,$1E,$1F

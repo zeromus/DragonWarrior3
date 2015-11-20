@@ -1683,7 +1683,7 @@ loc_141C46:
 		STA		byte_7470
 		FARX	_bC_sA
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
-		JMP		sub_1742BA
+		JMP		_nmi_set_flag_04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141C7E:
@@ -2095,14 +2095,14 @@ loc_141F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s12:
-		LDA		#[_b0_d44_idx-_sys_idx_lib]
+		LDA		#[_b0_d44_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$7F
 		STA		byte_C0
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#3
 		TAX
@@ -2690,7 +2690,7 @@ loc_142303:
 		CMP		#$5E
 		BEQ		loc_142333
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_14233A
@@ -2741,7 +2741,7 @@ loc_142377:
 		AND		#$80
 		BEQ		loc_1423AA
 		LDX		byte_C5
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
@@ -3030,7 +3030,7 @@ loc_1425AA:
 		AND		#$A0
 		CMP		#$A0
 		BNE		loc_142605
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		LSR
 		LSR
@@ -3089,7 +3089,7 @@ loc_142629:
 		BCC		loc_142684
 		LDA		word_4
 		STA		byte_BD
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		STA		byte_C0
 		LDA		#0
@@ -3141,7 +3141,7 @@ loc_1426AC:
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		STA		byte_C0
 		LDX		#byte_C0
@@ -3210,7 +3210,7 @@ loc_142722:
 ;		LDA		word_4
 ;		ORA		word_4+1
 ;		BEQ		loc_14273A
-;		JSR		_sram_b0_sC
+;		JSR		_sram_b0_sC_char_get_level
 ;		CLC
 ;		LDA		byte_C0
 ;		ADC		word_4
@@ -3544,7 +3544,7 @@ loc_142A1B:
 		BPL		loc_142A41
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
@@ -3816,7 +3816,7 @@ loc_142C44:
 		STA		byte_C6
 		STA		byte_D3
 		STA		byte_CF
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		CMP		#$14
 		BCS		loc_142C60
@@ -4164,7 +4164,7 @@ _bD_sF:
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		STA		byte_C0
 		JSR		sub_141F44
@@ -6555,7 +6555,7 @@ sub_143E67:
 loc_143E75:
 		LDA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		CMP		#$63
 		BNE		loc_143E88

@@ -1718,9 +1718,9 @@ byte_6D6:
 		.BYTE	0
 byte_6D7:
 		.BYTE	0
-byte_6D8:
+_ppu_queue_pos:
 		.BYTE	0
-byte_6D9:
+_ppu_queue_tiles_count:
 		.BYTE	0
 byte_6DA:
 		.BYTE	0
@@ -5046,7 +5046,7 @@ _sram_b0_sA:
 		.BYTE	0,0,0,0,0
 _sram_b0_sB:
 		.BYTE	0,0,0,0,0
-_sram_b0_sC:
+_sram_b0_sC_char_get_level:
 		.BYTE	0,0,0,0,0
 _sram_b0_sD:
 		.BYTE	0,0,0,0,0

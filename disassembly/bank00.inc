@@ -25,8 +25,8 @@ _b0_sA_ptr:
 		.WORD	_b0_sA
 _b0_sB_ptr:
 		.WORD	_b0_sB
-_b0_sC_ptr:
-		.WORD	_b0_sC
+_b0_sC_char_get_level_ptr:
+		.WORD	_b0_sC_char_get_level
 _b0_sD_ptr:
 		.WORD	_b0_sD
 _b0_sE_ptr:
@@ -1086,7 +1086,7 @@ loc_86F5:
 		FARX	_b2_s2
 		LDA		#$40
 		STA		_tmp21
-		JSR		sub_174383
+		JSR		_pal_fade
 		JSR		sub_872B
 		JSR		sub_17443A
 		JSR		_pal_fade_in
@@ -1727,7 +1727,7 @@ locret_93CF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_sC:
+_b0_sC_char_get_level:
 		JSR		_b0_sE
 		BIT		word_4+1
 		BPL		loc_9403
@@ -3620,7 +3620,7 @@ loc_9EF3:
 		BEQ		sub_9E8B
 		STA		byte_49
 		TAX
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
@@ -3633,7 +3633,7 @@ loc_9F13:
 		STX		byte_D3
 		CPX		#$26
 		BEQ		loc_9F2A
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
 		LDA		#$2B
@@ -3652,7 +3652,7 @@ loc_9F34:
 		STA		byte_D2
 		STA		byte_CE
 		LDX		byte_49
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
@@ -4125,7 +4125,7 @@ _b0_s61_sram_b0_syscall_shortcuts_load:
 		STA		word_4
 		LDA		#>[_sram_b0_s2]
 		STA		word_4+1
-		LDX		#[_b0_s2_idx-_sys_idx_lib]	; first sub idx in lib
+		LDX		#[_b0_s2_idx-_sys_idx_lib]>>1	; first sub idx in lib
 loc_A208a:
 		LDY		#0
 loc_A208:
@@ -4145,7 +4145,7 @@ loc_A208:
 		ADC		#0
 		STA		word_4+1
 		INX
-		CPX		#[_b0_s3B_idx-_sys_idx_lib+1]	; last sub idx in lib
+		CPX		#[_b0_s3B_idx-_sys_idx_lib+1]>>1	; last sub idx in lib
 		BNE		loc_A208a
 		RTS
 

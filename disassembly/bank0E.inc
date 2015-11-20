@@ -778,7 +778,7 @@ sub_15851F:
 		PLA
 		TAX
 		BCC		loc_158550
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
@@ -849,7 +849,7 @@ sub_15858D:
 		AND		#$7F
 		STA		byte_D2
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BNE		loc_1585A5
@@ -1344,28 +1344,28 @@ loc_1588AF:
 		PHA
 		JSR		_sys_safe_select
 		PLA
-		JSR		sub_158F55
+		JSR		_char_special_status_display
 loc_1588BA:
 		JSR		sub_158BA1
 		JSR		sub_158E72
 		JMP		loc_15883A
 _sys_idx_list0:
-		.BYTE	[_b0_s2_idx-_sys_idx_lib]
-		.BYTE	[_b0_s6_idx-_sys_idx_lib]
-		.BYTE	[_b0_s3_idx-_sys_idx_lib]
-		.BYTE	[_b0_s7_idx-_sys_idx_lib]
-		.BYTE	[_b0_s11_idx-_sys_idx_lib]
-		.BYTE	[_b0_s12_idx-_sys_idx_lib]
-		.BYTE	[_b0_s13_idx-_sys_idx_lib]
-		.BYTE	[_b0_s14_idx-_sys_idx_lib]
-		.BYTE	[_b0_s15_idx-_sys_idx_lib]
-		.BYTE	[_b0_s16_idx-_sys_idx_lib]
-		.BYTE	[_b0_s18_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1B_idx-_sys_idx_lib]
-		.BYTE	[_b0_s19_idx-_sys_idx_lib]
-		.BYTE	[_b0_sC_idx-_sys_idx_lib]
-		.BYTE	[_b0_sD_idx-_sys_idx_lib]
-		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib-256]&$FF
+		.BYTE	[_b0_s2_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s6_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s3_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s7_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s11_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s12_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s13_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s14_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s15_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s16_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s18_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1B_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s19_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_sC_char_get_level_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_sD_idx-_sys_idx_lib]>>1
+		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
 loc_1588D3:
 		LDA		byte_C9
 		BNE		loc_1588DD
@@ -1454,11 +1454,11 @@ loc_158970:
 		JMP		sub_158B52
 loc_15897F:
 		LDX		#5
-		LDA		#[_b0_s2D_idx-_sys_idx_lib]
+		LDA		#[_b0_s2D_idx-_sys_idx_lib]>>1
 		BNE		loc_158989
 loc_158985:
 		LDX		#6
-		LDA		#[_b0_s2F_idx-_sys_idx_lib]
+		LDA		#[_b0_s2F_idx-_sys_idx_lib]>>1
 loc_158989:
 		STX		byte_6AC5
 		PHA
@@ -1578,15 +1578,15 @@ loc_158A5E:
 byte_158A61:
 		.BYTE	$32,$33,$32,  0,$29,$35,$39,$2D,$34,$34,$29,$28
 _sys_idx_list1:
-		.BYTE	[_b0_s1F_idx-_sys_idx_lib]
-		.BYTE	[_b0_s21_idx-_sys_idx_lib]
-		.BYTE	[_b0_s20_idx-_sys_idx_lib]
-		.BYTE	[_b0_s22_idx-_sys_idx_lib]
-		.BYTE	[_b0_s28_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]
+		.BYTE	[_b0_s1F_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s20_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s22_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s28_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -1694,8 +1694,8 @@ loc_158B40:
 		LDY		#9
 		JMP		sub_158B8A
 _sys_idx_list2:
-		.BYTE	[_b0_s34_idx-_sys_idx_lib]
-		.BYTE	[_b0_s35_idx-_sys_idx_lib]
+		.BYTE	[_b0_s34_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s35_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B47:
@@ -2079,13 +2079,13 @@ loc_158DA7:
 		INC		byte_6AEA
 		RTS
 _sys_idx_list3:
-		.BYTE	[_b0_s31_idx-_sys_idx_lib]
-		.BYTE	[_b0_s28_idx-_sys_idx_lib]
-		.BYTE	[_b0_s1F_idx-_sys_idx_lib]
-		.BYTE	[_b0_s21_idx-_sys_idx_lib]
-		.BYTE	[_b0_s20_idx-_sys_idx_lib]
-		.BYTE	[_b0_s22_idx-_sys_idx_lib]
-		.BYTE	[_b0_s31_idx-_sys_idx_lib]
+		.BYTE	[_b0_s31_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s28_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1F_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s20_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s22_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s31_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DB9:
@@ -2377,8 +2377,8 @@ byte_158F53:
 		.BYTE	  0,$FE
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158F55:
-		CMP		#$A
+_char_special_status_display:
+		CMP		#[_b0_sC_char_get_level_idx-_sys_idx_lib]>>1
 		BNE		locret_158F79
 		LDX		word_4+1
 		BEQ		locret_158F79
@@ -2386,11 +2386,11 @@ sub_158F55:
 		TXA
 		ASL
 		TAX
-		LDA		byte_158F7A,X
+		LDA		_char_status_abbreviations_list,X
 		STX		word_4+1
 		JSR		sub_158DB9
 		LDX		word_4+1
-		LDA		byte_158F7A+1,X
+		LDA		_char_status_abbreviations_list+1,X
 		JSR		sub_158DB9
 		JSR		sub_158BA1
 		PLA
@@ -2398,8 +2398,13 @@ sub_158F55:
 		JMP		loc_15883A
 locret_158F79:
 		RTS
-byte_158F7A:
-		.BYTE	$34,$33,$32,$31,$28,$29,$37,$30,$27,$2A
+		
+_char_status_abbreviations_list:
+		.BYTE	_P,_O
+		.BYTE	_N,_M
+		.BYTE	_D,_E
+		.BYTE	_S,_L
+		.BYTE	_C,_F
 
 _windows_lib:
 		.WORD	_wnd00
@@ -3153,7 +3158,7 @@ _bE_s38:
 		PHA
 		LDA		word_6+1
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		LDA		#2
 		STA		byte_6D6
 		JSR		_vblank
@@ -4891,7 +4896,7 @@ sub_15AA51:
 		JSR		sub_15A999
 		BCC		locret_15AA5E
 loc_15AA56:
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		locret_15AA5E
 		JSR		sub_1742B0
 locret_15AA5E:

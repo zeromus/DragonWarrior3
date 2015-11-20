@@ -6322,7 +6322,7 @@ sub_6A9FF:
 		STA		word_4+1
 		PLA
 		JSR		sub_1742C7
-		JMP		sub_1742BA
+		JMP		_nmi_set_flag_04
 
 ; =============== S U B	R O U T	I N E =======================================
 _test_for_keypress:
@@ -6356,17 +6356,17 @@ _pads_copy_to_tmp:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA34:
-		LDA		#[_b2_s3_idx-_sys_idx_lib]
+		LDA		#[_b2_s3_idx-_sys_idx_lib]>>1
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA38:
-		LDA		#[_b2_s4_idx-_sys_idx_lib]
+		LDA		#[_b2_s4_idx-_sys_idx_lib]>>1
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3C:
-		LDA		#[_b2_s5_idx-_sys_idx_lib]
+		LDA		#[_b2_s5_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3E:
@@ -7076,7 +7076,7 @@ loc_6AEA2:
 		LDX		#0
 		LDY		#0
 loc_6AEA6:
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$80
 		BMI		loc_6AEBA
@@ -7104,7 +7104,7 @@ loc_6AED0:
 loc_6AED7:
 		LDA		byte_6B270,Y
 		STA		byte_49
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#4
 		BEQ		loc_6AEEC

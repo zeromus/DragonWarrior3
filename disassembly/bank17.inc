@@ -1100,8 +1100,8 @@ loc_235B5A:
 		INX
 		CPY		#7
 		BCC		loc_235B5A
-		STY		byte_6D8
-		INC		byte_6D9
+		STY		_ppu_queue_pos
+		INC		_ppu_queue_tiles_count
 		LDA		#$E1
 		STA		byte_300,Y
 		INY
@@ -1123,11 +1123,11 @@ loc_235B86:
 		INX
 		CPY		#$E
 		BCC		loc_235B86
-		STY		byte_6D8
-		INC		byte_6D9
+		STY		_ppu_queue_pos
+		INC		_ppu_queue_tiles_count
 		LDA		#2
 		JSR		sub_1740E9
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		sub_235C8C
 		RTS
 
