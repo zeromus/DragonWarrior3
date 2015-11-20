@@ -45,7 +45,7 @@ loc_21C041:
 loc_21C047:
 		STY		_tmp_pak_data_bank
 		LDA		#$8B
-		JSR		_get_syscall0_data_byte_X
+		JSR		_sys0_byte_read_x
 		PHA
 		LDA		byte_21C152,Y
 		TAY

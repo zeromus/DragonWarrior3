@@ -6,9 +6,9 @@
 		.WORD	0 ; _b6_d2_ofs
 		.WORD	0 ; _b6_d3_ofs
 _b6_d4_ptr:
-		.WORD	_b6_d4
+		.WORD	0 ; _b6_d4
 _b6_d5_ptr:
-		.WORD	_b6_d5
+		.WORD	0 ; _b6_d5
 _b6_s6_0_ptr:
 		.WORD	_b6_s6
 _b6_s6_1_ptr:
@@ -1142,7 +1142,7 @@ loc_9B417:
 		STY		word_3C
 		INY
 		STY		word_3C+1
-		FAR		$CE,$07		; _bC_s17
+		FARX	_bC_s17
 loc_9B431:
 		SEC
 		RTS
@@ -1267,7 +1267,7 @@ loc_9B4D8:
 		AND		#$FC
 		ORA		word_3E
 		STA		(word_72),Y
-		FAR		$06,$17		; _bD_sE
+		FARX	_bD_sE
 		LDY		#3
 		LDA		(word_72),Y
 		AND		#$40
@@ -1338,9 +1338,9 @@ loc_9B545:
 loc_9B557:
 		LDA		byte_50
 		STA		byte_CF
-		FAR		$10,$17		; _b0_s48
+		FARX	_b0_s48
 		JSR		_b6_s13
-		FAR		$F9,$07		; _bE_s1B
+		FARX	_bE_s1B
 		FAR		$64,$17		; _b0_s66
 		LDA		#2
 		STA		byte_644
@@ -1353,11 +1353,11 @@ loc_9B557:
 		STA		byte_9A
 		JSR		sub_1762FC
 		JSR		sub_1743B5
-		FAR		$21,$17		; _bE_sF
-		FAR		$F1,$07		; _b5_s9
-		FAR		$82,$07		; _bC_s3
-		FAR		$E9,$07		; _bE_s31
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bE_sF
+		FARX	_b5_s9
+		FARX	_bC_s3
+		FARX	_bE_s31
+		FARX	_bB_s3_apu_load
 		JSR		sub_175B0E
 		LDA		#0
 		STA		byte_6B9
@@ -1491,7 +1491,7 @@ loc_9B6A1:
 loc_9B6A7:
 		LDA		#$14
 		STA		byte_60C9
-		FAR		$24,$17		; _bE_s10
+		FARX	_bE_s10
 		SEC
 		RTS
 loc_9B6B1:
@@ -2021,7 +2021,7 @@ locret_9BA5A:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s16:
 		FAR		$4C,$87		; _sys08_msg_m00_arg2
-		FAR		$20,$17		; _bE_s1C
+		FARX	_bE_s1C
 		BEQ		sub_9BA66
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2031,7 +2031,7 @@ sub_9BA63:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA66:
 		FAR		$96,$87		; _sys08_msg_m00_arg2
-		FAR		$20,$17		; _bE_s1C
+		FARX	_bE_s1C
 		BNE		sub_9BA63
 		FAR		$65,$17		; _b7_sD
 		JSR		_sram_b0_s31
@@ -2048,7 +2048,7 @@ sub_9BA66:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA85:
 		FAR		$4D,$87		; _sys08_msg_m00_arg2
-		FAR		$20,$17		; _bE_s1C
+		FARX	_bE_s1C
 		BEQ		sub_9BA90
 		JMP		sub_9BB1F
 
@@ -2097,7 +2097,7 @@ sub_9BADD:
 		LDA		byte_C4
 		STA		byte_630F
 		FAR		$6C,$17		; _b7_s14
-		FAR		$20,$17		; _bE_s1C
+		FARX	_bE_s1C
 		BNE		sub_9BB17
 		LDA		byte_C6
 		STA		byte_630F
@@ -2229,7 +2229,7 @@ loc_9BBDC:
 		JSR		sub_9BBED
 loc_9BBDF:
 		FAR		$57,$87		; _sys08_msg_m00_arg2
-		FAR		$20,$17		; _bE_s1C
+		FARX	_bE_s1C
 		BNE		loc_9BBEA
 		JMP		sub_9BA66
 loc_9BBEA:
@@ -2384,7 +2384,7 @@ loc_9BCC8:
 		INX
 		CPX		#$10
 		BNE		loc_9BCC8
-		LDY		#1
+		LDY		#>[byte_100]
 		STY		word_6C+1
 		DEY
 		STY		word_6C
@@ -2404,7 +2404,7 @@ loc_9BCE3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s18:
-		LDA		#$10
+		LDA		#<[byte_110]
 		STA		word_6C
 		LDA		byte_111
 		CMP		#1
@@ -2425,18 +2425,18 @@ loc_9BD0B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s19:
-		LDA		#$10
+		LDA		#<[byte_110]
 		STA		word_6C
-		FAR		$FA,$07		; _bC_s38
+		FARX	_bC_s38
 		LDA		#$80
 		STA		byte_110
 		LDA		#$19
 		STA		byte_125
 		LDA		#$90
 		STA		byte_127
-		LDA		#$24
+		LDA		#<[byte_124]
 		STA		word_6C
-		FAR		$FD,$07		; _bD_s19
+		FARX	_bD_s19_0
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2481,12 +2481,12 @@ loc_9BD6A:
 		BNE		loc_9BD6A
 		JSR		sub_174D4F
 		FAR		$22,$2F		; _sys12
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		LDA		#$A
 		STA		byte_6ABE
 loc_9BD94:
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
 		DEC		byte_6ABE
 		BNE		loc_9BD94
 		LDA		#0
@@ -2498,7 +2498,7 @@ loc_9BDA0:
 		TAX
 		LDA		#$80
 		STA		byte_100,X
-		FAR		$FA,$07		; _bC_s38
+		FARX	_bC_s38
 		FAR		$95,$2F		; _sys12
 		LDX		#$1E
 		JSR		_vblank_count
@@ -2507,7 +2507,7 @@ loc_9BDA0:
 		CMP		#6
 		BNE		loc_9BDA0
 		LDA		#0
-		FAR		$A5,$07		; _bB_s6
+		FARX	_bB_s6
 		LDX		#$C
 loc_9BDC7:
 		LDA		byte_9BDDE,X
@@ -2564,7 +2564,7 @@ _b6_s1D:
 		LDA		#2
 		STA		byte_644
 		STA		byte_6BC
-		FAR		$F0,$07		; _bB_s7
+		FARX	_bB_s7
 		LDA		#0
 		STA		byte_6DF
 		JMP		sub_174CD5
@@ -2573,8 +2573,8 @@ _b6_s1D:
 _b6_s1E:
 		JSR		sub_9BE69
 		BCS		loc_9BE5A
-		FAR		$24,$17		; _bE_s10
-		FAR		$AA,$07		; _b0_s47
+		FARX	_bE_s10
+		FARX	_b0_s47
 		JSR		__pause_or_skip
 loc_9BE5A:
 		LDA		#0
@@ -2815,7 +2815,7 @@ sub_9BFC3:
 		STA		word_4
 		STA		word_4+1
 		LDA		#$1B
-		FAR		$9D,$07		; _bC_sA
+		FARX	_bC_sA
 		RTS
 
 		ECHO "bank 06 free space", [$BFD8-.]

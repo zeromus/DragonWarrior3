@@ -2,11 +2,11 @@
 		ORG $8000
 
 _b5_d0_world_map_data_ptr:
-		.WORD	_b5_d0_world_map_data
+		.WORD	0 ; _b5_d0_world_map_data
 _b5_d1_world_map_data_ptr:
-		.WORD	_b5_d1_world_map_data
+		.WORD	0 ; _b5_d1_world_map_data
 _b5_d2_world_map_data_ptr:
-		.WORD	_b5_d2_world_map_data
+		.WORD	0 ; _b5_d2_world_map_data
 _b5_s3_ptr:
 		.WORD	_b5_s3
 _b5_s4_ptr:
@@ -2036,10 +2036,10 @@ sub_83A7A:
 		STA		word_72
 		LDA		off_83A72+1,X
 		STA		word_72+1
-		LDA		#$10
+		LDA		#<[_spr_ram+$10]
 		TAX
 		STA		word_6C
-		LDA		#2
+		LDA		#>[_spr_ram+$10]
 		STA		word_6C+1
 loc_83A92:
 		LDA		_spr_ram+2,X
@@ -2426,7 +2426,7 @@ loc_83CD7:
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_83CF8
-		FAR		$DD,$07		; _bD_sD
+		FARX	_bD_sD
 		RTS
 loc_83CF8:
 		LDX		#$10
@@ -2727,7 +2727,7 @@ loc_83ED2:
 _b5_s5:
 		FAR		$AA,$77		; _sys07_msg_m00_arg1
 		JSR		sub_174D4F
-		LDA		#$14
+		LDA		#<[byte_114]
 		STA		word_6C
 		LDX		#2
 		FAR		$72,$17		; _bC_sB

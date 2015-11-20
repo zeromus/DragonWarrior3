@@ -22,7 +22,7 @@ _bE_s4_msg_m00_1_ptr:
 _bE_s9_ptr:
 		.WORD	_bE_s9
 _bE_sA_ptr:
-		.WORD	_bE_sA		; function not fit into	bank E so moved	to bank	F
+		.WORD	0 ; _bE_sA		; function not fit into	bank E so moved	to bank	F
 _bE_sB_ptr:
 		.WORD	_bE_sB
 _bE_sC_ptr:
@@ -56,7 +56,7 @@ _bE_s1A_ptr:
 		.WORD	_bE_s1A
 _bE_s1B_ptr:
 		.WORD	_bE_s1B
-_bE_s1C_1_ptr:
+_bE_s1C_ptr:
 		.WORD	_bE_s1C
 _bE_s1D_ptr:
 		.WORD	_bE_s1D
@@ -192,7 +192,7 @@ loc_1580EB:
 		JSR		sub_174204
 		LDA		#0
 		STA		byte_2C
-		FAR		$23,$17		; _bC_s32
+		FARX	_bC_s32
 		FAR		$32,$17		; _bD_s18
 		FAR		$04,$2F		; _sys12
 locret_15811A:
@@ -237,7 +237,7 @@ loc_158153:
 		LDA		byte_2F
 		BNE		sub_15819F
 		JSR		sub_1580A1
-		FAR		$EB,$07		; _bE_s32
+		FARX	_bE_s32
 		LDX		#$10
 loc_15816B:
 		LDA		_spr_ram,X
@@ -296,12 +296,12 @@ loc_1581B8:
 		FARX	_bC_s1D
 		RTS
 loc_1581D0:
-		FAR		$E4,$07		; _b0_s5B
+		FARX	_b0_s5B
 		RTS
 loc_1581D4:
 		JMP		sub_158377
 loc_1581D7:
-		FAR		$EC,$07		; _b0_s5D
+		FARX	_b0_s5D
 		FAR		$49,$17		; _b0_s50
 		RTS
 
@@ -355,9 +355,9 @@ loc_158227:
 		INC		byte_8
 		JSR		sub_1582F8
 loc_158238:
-		LDA		#$10
+		LDA		#<[byte_110]
 		STA		word_6C
-		LDA		#1
+		LDA		#>[byte_110]
 		STA		word_6C+1
 loc_158240:
 		LDY		#0
@@ -462,7 +462,7 @@ loc_1582D6:
 		STA		word_4+1
 		PLA
 		STA		word_4
-		FAR		$27,$17		; _bD_s16
+		FARX	_bD_s16
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -759,7 +759,7 @@ sub_1584ED:
 		JSR		sub_15850B
 		BNE		loc_158507
 loc_158504:
-		FAR		$24,$17		; _bE_s10
+		FARX	_bE_s10
 loc_158507:
 		FAR		$49,$17		; _b0_s50
 		RTS
@@ -795,14 +795,14 @@ sub_15851F:
 		LDA		byte_CF
 		PHA
 		STX		byte_CF
-		FAR		$08,$17		; _b0_s5E
+		FARX	_b0_s5E
 		PLA
 		STA		byte_CF
 		PLA
 		TAX
 		BCC		loc_158550
-		LDA		#$90
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
 		FAR		$3E,$D7		; _sys0D
@@ -872,8 +872,8 @@ sub_15858D:
 		AND		#$7F
 		STA		byte_D2
 		TAX
-		LDA		#$90
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		AND		#8
 		BNE		loc_1585A5
 		CLC
@@ -996,13 +996,13 @@ sub_158643:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158655:
-		LDA		#1
+		LDA		#>[byte_100]
 		STA		word_6C+1
-		LDX		#0
+		LDX		#<[byte_100]
 		LDA		byte_AC
 		AND		#$1F
 		BEQ		loc_158663
-		LDX		#$10
+		LDX		#<[byte_110]
 loc_158663:
 		STX		word_6C
 		RTS
@@ -1116,7 +1116,7 @@ loc_1586F5:
 sub_1586FE:
 		LDA		byte_2C
 		BEQ		loc_158706
-		LDA		#$10
+		LDA		#<[byte_110]
 		STA		word_6C
 loc_158706:
 		LDY		#2
@@ -1363,17 +1363,32 @@ loc_1588A3:
 		PLA
 		TAX
 loc_1588AF:
-		LDA		_sram_bank0_sel_list0,X
+		LDA		_sys_idx_list0,X
 		PHA
-		JSR		_sram_bank0_select_ex
+		JSR		_sys_safe_select
 		PLA
 		JSR		sub_158F55
 loc_1588BA:
 		JSR		sub_158BA1
 		JSR		sub_158E72
 		JMP		loc_15883A
-_sram_bank0_sel_list0:
-		.BYTE	  0,  4,  1,  5, $F,$10,$11,$12,$13,$14,$16,$19,$17, $A, $B,$67
+_sys_idx_list0:
+		.BYTE	[_b0_s2_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s6_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s3_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s7_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s11_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s12_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s13_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s14_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s15_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s16_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s18_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1B_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s19_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_sC_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_sD_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b7_sF_player_log_read_idx-_sys0_sub_idx_lib-256]&$FF
 loc_1588D3:
 		LDA		byte_C9
 		BNE		loc_1588DD
@@ -1383,9 +1398,9 @@ loc_1588DD:
 		LDA		byte_6AC1
 		LSR
 		TAX
-		FAR		$0E,$17		; _bD_s15
+		FARX	_bD_s15
 		TAX
-		FAR		$02,$17		; _bD_s12
+		FARX	_bD_s12
 		LDX		#2
 loc_1588EB:
 		LDA		byte_C0,X
@@ -1462,11 +1477,11 @@ loc_158970:
 		JMP		sub_158B52
 loc_15897F:
 		LDX		#5
-		LDA		#$2B			; sram sub idx
+		LDA		#[_b0_s2D_idx-_sys0_sub_idx_lib]
 		BNE		loc_158989
 loc_158985:
 		LDX		#6
-		LDA		#$2D			; sram sub idx
+		LDA		#[_b0_s2F_idx-_sys0_sub_idx_lib]
 loc_158989:
 		STX		byte_6AC5
 		PHA
@@ -1484,7 +1499,7 @@ loc_1589A0:
 loc_1589A6:
 		PLA
 		PHA
-		JSR		_sram_bank0_select_ex
+		JSR		_sys_safe_select
 		LDA		word_4
 		PHA
 		LDX		byte_6AC5
@@ -1524,7 +1539,7 @@ loc_1589E8:
 		CPX		#9
 		BCC		loc_158A04
 		TAX
-		FAR		$0E,$17		; _bD_s15
+		FARX	_bD_s15
 		STA		word_4
 		JMP		loc_158A15
 loc_158A04:
@@ -1534,8 +1549,8 @@ loc_158A04:
 		CLC
 		ADC		(word_6C),Y
 		STA		byte_CF
-		LDA		_sram_bank0_sel_list1,X
-		JSR		_sram_bank0_select_ex
+		LDA		_sys_idx_list1,X
+		JSR		_sys_safe_select
 loc_158A15:
 		PLA
 		TAX
@@ -1585,8 +1600,16 @@ loc_158A5E:
 		JMP		loc_15883A
 byte_158A61:
 		.BYTE	$32,$33,$32,  0,$29,$35,$39,$2D,$34,$34,$29,$28
-_sram_bank0_sel_list1:
-		.BYTE	$1D,$1F,$1E,$20,$26,$1C,$1C,$1C,$1C
+_sys_idx_list1:
+		.BYTE	[_b0_s1F_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s21_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s20_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s22_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s28_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1E_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1E_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1E_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1E_idx-_sys0_sub_idx_lib]
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -1630,7 +1653,7 @@ sub_158AA6:
 		JMP		loc_158AC8
 loc_158AC3:
 		STA		byte_64
-		FAR		$6D,$07		; _b4_s2
+		FARX	_b4_s2
 loc_158AC8:
 		LDA		byte_6AC4
 		JSR		sub_158B95
@@ -1639,7 +1662,7 @@ loc_158AC8:
 		ADC		#2
 		TAX
 		LDA		byte_59
-		FAR		$A4,$07		; _b2_sC
+		FARX	_b2_sC
 		JSR		sub_158BA1
 		JSR		sub_158B5B
 		PLA
@@ -1682,8 +1705,8 @@ loc_158B26:
 		JSR		sub_158BA1
 		AND		#1
 		TAX
-		LDA		_sram_bank0_sel_list2,X
-		JSR		_sram_bank0_select_ex
+		LDA		_sys_idx_list2,X
+		JSR		_sys_safe_select
 		LDA		word_4
 		CMP		#$FF
 		BEQ		loc_158B40
@@ -1693,8 +1716,9 @@ loc_158B26:
 loc_158B40:
 		LDY		#9
 		JMP		sub_158B8A
-_sram_bank0_sel_list2:
-		.BYTE	$32,$33
+_sys_idx_list2:
+		.BYTE	[_b0_s34_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s35_idx-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B47:
@@ -1766,7 +1790,7 @@ sub_158B95:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B9D:
-		FAR		$A4,$07		; _b2_sC
+		FARX	_b2_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2031,11 +2055,11 @@ loc_158D4C:
 		BEQ		loc_158D85
 		BNE		loc_158D98
 loc_158D60:
-		FAR		$0D,$17		; _bD_s14
+		FARX	_bD_s14
 		STA		word_4
 		JMP		loc_158DA7
 loc_158D68:
-		FAR		$6C,$07		; _b4_s1
+		FARX	_b4_s1
 		LDA		byte_59
 		STA		word_4
 		JMP		loc_158DA7
@@ -2065,8 +2089,8 @@ loc_158D95:
 loc_158D98:
 		PHA
 		TAX
-		LDA		_sram_bank0_sel_list3,X
-		JSR		_sram_bank0_select_ex
+		LDA		_sys_idx_list3,X
+		JSR		_sys_safe_select
 		PLA
 		CMP		#2
 		BCC		loc_158DA7
@@ -2077,8 +2101,14 @@ loc_158DA7:
 		STA		word_7C+1
 		INC		byte_6AEA
 		RTS
-_sram_bank0_sel_list3:
-		.BYTE	$2F,$26,$1D,$1F,$1E,$20,$2F
+_sys_idx_list3:
+		.BYTE	[_b0_s31_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s28_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s1F_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s21_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s20_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s22_idx-_sys0_sub_idx_lib]
+		.BYTE	[_b0_s31_idx-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DB9:
@@ -4550,7 +4580,7 @@ loc_15A849:
 		BPL		loc_15A8B1
 		AND		#3
 		STA		byte_64
-		FAR		$6D,$07		; _b4_s2
+		FARX	_b4_s2
 		LDA		byte_59
 		LDX		#2
 		JSR		sub_15A96C
@@ -5679,7 +5709,7 @@ sub_15AF01:
 		LDA		word_7C
 		LDX		#word_72
 		LDY		#0
-		JSR		_get_far_ptr_byte_safe
+		JSR		_far_byte_read_by_ptr
 		INC		word_72
 		BNE		loc_15AF1B
 		INC		word_72+1
@@ -5944,7 +5974,7 @@ loc_15B0A9:
 		LDA		byte_60B6
 		AND		#4
 		BEQ		locret_15B0D4
-		FAR		$FB,$07		; _bC_s25
+		FARX	_bC_s25
 locret_15B0D4:
 		RTS
 
@@ -6191,7 +6221,7 @@ sub_15B265:
 loc_15B26F:
 		TXA
 		STA		byte_62
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bB_s3_apu_load
 locret_15B275:
 		RTS
 
@@ -6213,7 +6243,7 @@ sub_15B288:
 		STA		byte_CF
 		JSR		_sram_b0_s5
 		PHA
-		FAR		$D4,$07		; _b4_s1A
+		FARX	_b4_s1A
 		PLA
 		BNE		locret_15B275
 		LDA		byte_CE
@@ -6223,9 +6253,9 @@ sub_15B288:
 		LDA		#0
 		STA		byte_73D,X
 		DEC		byte_48
-		FAR		$D4,$07		; _b4_s1A
+		FARX	_b4_s1A
 		JSR		_bE_sD
-		FAR		$24,$17		; _bE_s10
+		FARX	_bE_s10
 		JSR		_bE_s34
 		JSR		sub_174DF2
 		LDA		byte_48
@@ -6242,7 +6272,7 @@ loc_15B2C7:
 		TXA
 		LDX		#0
 		JSR		_bE_s4_msg_m00
-		JMP		sub_174BB3
+		JMP		_MAIN_ENTRY
 loc_15B2D0:
 		FAR		$27,$67		; _sys06_msg_m00_arg0
 		JSR		_bE_s33
@@ -6258,7 +6288,7 @@ _bE_s31:
 		CMP		#$6B
 		BNE		loc_15B2F5
 		LDA		#$32
-		FAR		$97,$07		; _bC_s0
+		FARX	_bC_s0
 		LDA		#$1C
 		STA		byte_6EF
 		LDA		#0
@@ -6326,6 +6356,7 @@ byte_15B388:
 		.BYTE	 $A,  7,  6,  3, $F,  6,  3,  7,  3, $D, $D, $D,  0
 
 ; =============== S U B	R O U T	I N E =======================================
+; unused
 _bE_s2B:
 		ASL
 		ASL
@@ -6587,7 +6618,7 @@ loc_15B538:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s30:
-		FAR		$AB,$07		; _bE_s1D
+		FARX	_bE_s1D
 		LDA		#<[byte_6D40]
 		STA		word_3C
 		LDA		#>[byte_6D40]
@@ -6616,7 +6647,7 @@ loc_15B561:
 		BNE		loc_15B549
 		RTS
 loc_15B572:
-		FAR		$AE,$07		; _bE_s20
+		FARX	_bE_s20
 		STX		word_3E
 		STY		word_3E+1
 		LDY		#0
@@ -6658,7 +6689,7 @@ loc_15B58F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s16:
-		FAR		$AB,$07		; _bE_s1D
+		FARX	_bE_s1D
 		LDA		#<[byte_7400]
 		STA		word_6E
 		LDA		#>[byte_7400]
@@ -7218,7 +7249,7 @@ sub_15B9FA:
 		JSR		_vblank
 		PLA
 		STA		byte_90
-		FAR		$25,$17		; _bE_s34
+		FARX	_bE_s34
 		INC		byte_6AC0
 		RTS
 

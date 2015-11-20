@@ -52,7 +52,7 @@ loc_234049:
 		BCC		loc_234049
 		JSR		_pal_fade_in
 		LDA		#$27
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bB_s3_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -606,7 +606,7 @@ loc_23580A:
 		STA		_ram_pal_buf
 		JSR		sub_17435B
 		JSR		sub_174369
-		FAR		$A1,$07		; _bB_s4
+		FARX	_bB_s4
 		LDX		#$64
 		JSR		_vblank_count
 		FAR		$00,$8F		; _b18_s0
@@ -642,7 +642,7 @@ loc_235861:
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_235856
-		FAR		$A1,$07		; _bB_s4
+		FARX	_bB_s4
 		JSR		sub_174369
 		LDX		#$3C
 		JSR		_vblank_count
