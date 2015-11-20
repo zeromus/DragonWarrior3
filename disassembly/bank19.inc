@@ -807,18 +807,18 @@ loc_265342:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_265371:
-		JMP		sub_265524
+;sub_265371:
+;		JMP		sub_265524
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_265374:
-		JMP		sub_265541
+;sub_265374:
+;		JMP		sub_265541
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_265377:
-		JMP		sub_26555E
+;sub_265377:
+;		JMP		sub_26555E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_26537A:
@@ -961,21 +961,21 @@ loc_265448:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_26545A:
-		PHA
-loc_26545B:
-		LDA		_spr_ram,X
-		SEC
-		SBC		4
-		STA		_spr_ram,X
-		INX
-		INX
-		INX
-		INX
-		DEY
-		BNE		loc_26545B
-		PLA
-		RTS
+;sub_26545A:
+;		PHA
+;loc_26545B:
+;		LDA		_spr_ram,X
+;		SEC
+;		SBC		4
+;		STA		_spr_ram,X
+;		INX
+;		INX
+;		INX
+;		INX
+;		DEY
+;		BNE		loc_26545B
+;		PLA
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_26546D:
@@ -1447,35 +1447,35 @@ loc_265740:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_265746:
-		LDX		#0
-loc_265748:
-		LDA		_spr_ram+$A8,X
-		PHA
-		INX
-		CPX		#$10
-		BCC		loc_265748
-		LDX		#0
-		LDY		#$F
-loc_265755:
-		LDA		_spr_ram+$54,X
-		STA		_spr_ram+$A8,Y
-		PLA
-		STA		_spr_ram+$54,X
-		DEY
-		INX
-		CPX		#$10
-		BCC		loc_265755
-		LDY		#0
-		LDA		(word_6C),Y
-		INC		word_6C
-		BNE		loc_26576F
-		INC		word_6C+1
-loc_26576F:
-		STA		word_4
-		BIT		word_4
-		CLC
-		RTS
+;sub_265746:
+;		LDX		#0
+;loc_265748:
+;		LDA		_spr_ram+$A8,X
+;		PHA
+;		INX
+;		CPX		#$10
+;		BCC		loc_265748
+;		LDX		#0
+;		LDY		#$F
+;loc_265755:
+;		LDA		_spr_ram+$54,X
+;		STA		_spr_ram+$A8,Y
+;		PLA
+;		STA		_spr_ram+$54,X
+;		DEY
+;		INX
+;		CPX		#$10
+;		BCC		loc_265755
+;		LDY		#0
+;		LDA		(word_6C),Y
+;		INC		word_6C
+;		BNE		loc_26576F
+;		INC		word_6C+1
+;loc_26576F:
+;		STA		word_4
+;		BIT		word_4
+;		CLC
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_265775:
@@ -2200,7 +2200,7 @@ byte_2679DF:
 		.BYTE $98,$CF,$8E,$41,$90,$CF,$8D,$41,$98,$D7,$9E,$41,$90,$D7,$9D,$41
 		.BYTE $98,  2,	1,  0,$78,  2,$FF
 
-		ECHO "bank 19 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 19 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

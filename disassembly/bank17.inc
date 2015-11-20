@@ -790,17 +790,17 @@ locret_235966:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_235967:
-		LDY		#0
-loc_235969:
-		LDA		byte_236236,Y
-		CMP		#$FF
-		BEQ		locret_235976
-		STA		_spr_ram+$98,Y
-		INY
-		BNE		loc_235969
-locret_235976:
-		RTS
+;sub_235967:
+;		LDY		#0
+;loc_235969:
+;		LDA		byte_236236,Y
+;		CMP		#$FF
+;		BEQ		locret_235976
+;		STA		_spr_ram+$98,Y
+;		INY
+;		BNE		loc_235969
+;locret_235976:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_235977:
@@ -996,70 +996,70 @@ loc_235AA5:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_235AA9:
-		LDY		#0
-loc_235AAB:
-		LDX		#0
-loc_235AAD:
-		LDA		byte_235AD3,Y
-		STA		_ram_pal_buf+$10,X
-		INY
-		INX
-		CPX		#3
-		BCC		loc_235AAD
-		TXA
-		PHA
-		TYA
-		PHA
-		JSR		sub_17435B
-		PLA
-		TAY
-		PLA
-		TAX
-		LDX		#$C
-		JSR		sub_235C60
-		BCC		loc_235ACE
-		JMP		loc_2358BD
-loc_235ACE:
-		CPY		#9
-		BCC		loc_235AAB
-		RTS
-byte_235AD3:
-		.BYTE	6,  7,	7,$16,$17,$17,$26,$27,$37
+;sub_235AA9:
+;		LDY		#0
+;loc_235AAB:
+;		LDX		#0
+;loc_235AAD:
+;		LDA		byte_235AD3,Y
+;		STA		_ram_pal_buf+$10,X
+;		INY
+;		INX
+;		CPX		#3
+;		BCC		loc_235AAD
+;		TXA
+;		PHA
+;		TYA
+;		PHA
+;		JSR		sub_17435B
+;		PLA
+;		TAY
+;		PLA
+;		TAX
+;		LDX		#$C
+;		JSR		sub_235C60
+;		BCC		loc_235ACE
+;		JMP		loc_2358BD
+;loc_235ACE:
+;		CPY		#9
+;		BCC		loc_235AAB
+;		RTS
+;byte_235AD3:
+;		.BYTE	6,  7,	7,$16,$17,$17,$26,$27,$37
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_235ADC:
-		LDY		#0
-loc_235ADE:
-		LDX		#0
-loc_235AE0:
-		LDA		byte_235B09,Y
-		STA		_ram_pal_buf+$A,X
-		STA		_ram_pal_buf+$16,X
-		INY
-		INX
-		CPX		#3
-		BCC		loc_235AE0
-		TXA
-		PHA
-		TYA
-		PHA
-		JSR		sub_17435B
-		PLA
-		TAY
-		PLA
-		TAX
-		LDX		#$C
-		JSR		sub_235C60
-		BCC		loc_235B04
-		JMP		sub_2359D8
-loc_235B04:
-		CPY		#9
-		BCC		loc_235ADE
-		RTS
-byte_235B09:
-		.BYTE	0,  0,	0,  0,$10,$10,	0,$10,$20,$4C,$67,$99
+;sub_235ADC:
+;		LDY		#0
+;loc_235ADE:
+;		LDX		#0
+;loc_235AE0:
+;		LDA		byte_235B09,Y
+;		STA		_ram_pal_buf+$A,X
+;		STA		_ram_pal_buf+$16,X
+;		INY
+;		INX
+;		CPX		#3
+;		BCC		loc_235AE0
+;		TXA
+;		PHA
+;		TYA
+;		PHA
+;		JSR		sub_17435B
+;		PLA
+;		TAY
+;		PLA
+;		TAX
+;		LDX		#$C
+;		JSR		sub_235C60
+;		BCC		loc_235B04
+;		JMP		sub_2359D8
+;loc_235B04:
+;		CPY		#9
+;		BCC		loc_235ADE
+;		RTS
+;byte_235B09:
+;		.BYTE	0,  0,	0,  0,$10,$10,	0,$10,$20,$4C,$67,$99
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_235B15:
@@ -1883,7 +1883,7 @@ byte_237F23:
 		.BYTE $8D,$2C,	0,$8D,$7E,$7F,$7D,$2C,$9C,$9D,$9E,$9F,$3B,$3C,$AC,$AD
 		.BYTE $AE,$AD,$AD,$4C,$FF
 
-		ECHO "bank 17 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 17 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

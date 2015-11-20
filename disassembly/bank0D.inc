@@ -873,32 +873,32 @@ locret_1417B8:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_1417B9:
-		JSR		sub_141831
-		BCS		locret_1417B8
-		LDA		byte_87
-		BEQ		loc_1417C9
-		LDA		byte_644
-		AND		#1
-		BNE		loc_1417DB
-loc_1417C9:
-		CLC
-locret_1417CA:
-		RTS
+;sub_1417B9:
+;		JSR		sub_141831
+;		BCS		locret_1417B8
+;		LDA		byte_87
+;		BEQ		loc_1417C9
+;		LDA		byte_644
+;		AND		#1
+;		BNE		loc_1417DB
+;loc_1417C9:
+;		CLC
+;locret_1417CA:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_1417CB:
-		JSR		sub_141831
-		BCS		locret_1417CA
-		LDA		byte_87
-		BEQ		loc_1417C9
-		LDA		byte_644
-		AND		#1
-		BNE		loc_1417C9
-loc_1417DB:
-		SEC
-		RTS
+;sub_1417CB:
+;		JSR		sub_141831
+;		BCS		locret_1417CA
+;		LDA		byte_87
+;		BEQ		loc_1417C9
+;		LDA		byte_644
+;		AND		#1
+;		BNE		loc_1417C9
+;loc_1417DB:
+;		SEC
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1417DD:
@@ -926,40 +926,40 @@ locret_141801:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_141802:
-		JSR		sub_141831
-		BCS		locret_141801
-		LDY		#1
-loc_141809:
-		LDA		(word_72),Y
-		AND		#7
-		CMP		#7
-		RTS
+;sub_141802:
+;		JSR		sub_141831
+;		BCS		locret_141801
+;		LDY		#1
+;loc_141809:
+;		LDA		(word_72),Y
+;		AND		#7
+;		CMP		#7
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_141810:
-		JSR		sub_141831
-		BCS		locret_141801
-		LDY		#0
-		BEQ		loc_141820
-		JSR		sub_141831
-		BCS		locret_141801
-		LDY		#1
-loc_141820:
-		LDA		(word_72),Y
-		AND		#7
-		BEQ		loc_1417DB
-		CLC
-		RTS
+;sub_141810:
+;		JSR		sub_141831
+;		BCS		locret_141801
+;		LDY		#0
+;		BEQ		loc_141820
+;		JSR		sub_141831
+;		BCS		locret_141801
+;		LDY		#1
+;loc_141820:
+;		LDA		(word_72),Y
+;		AND		#7
+;		BEQ		loc_1417DB
+;		CLC
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_141828:
-		JSR		sub_141831
-		BCS		locret_141801
-		LDY		#0
-		BEQ		loc_141809
+;sub_141828:
+;		JSR		sub_141831
+;		BCS		locret_141801
+;		LDY		#0
+;		BEQ		loc_141809
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141831:
@@ -2063,14 +2063,15 @@ loc_141F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_141F1A:
-		LDA		#1
-		INX
-loc_141F1D:
-		DEX
-		BEQ		locret_141F23
-		ASL
-		BCC		loc_141F1D
+;sub_141F1A:
+;		LDA		#1
+;		INX
+;loc_141F1D:
+;		DEX
+;		BEQ		locret_141F23
+;		ASL
+;		BCC		loc_141F1D
+
 locret_141F23:
 		RTS
 
@@ -2161,7 +2162,7 @@ loc_141F94:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141FB1:
-		JSR		_sram_bank0_sub1B
+		JSR		_sram_b0_s1B
 		SEC
 		LDA		word_4
 		SBC		byte_C0
@@ -2220,7 +2221,7 @@ loc_141FF4:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_bank0_sub1D
+		JSR		_sram_b0_s1D
 		BRK
 		.BYTE $68, $D7		; _syscall0D
 		JMP		sub_142129
@@ -2233,9 +2234,9 @@ loc_14200A:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JMP		_sram_bank0_sub1C
+		JMP		_sram_b0_s1C
 loc_142019:
-		JSR		_sram_bank0_sub1B
+		JSR		_sram_b0_s1B
 		CLC
 		LDA		byte_C0
 		ADC		word_4
@@ -2365,13 +2366,13 @@ sub_1420CC:
 		LDA		#0
 		STA		byte_CF
 loc_1420D0:
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		BEQ		locret_1420CB
 		LDA		word_4+1
 		AND		#$7F
 		JSR		sub_141EEE
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		JMP		loc_1420D0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2410,18 +2411,18 @@ locret_142103:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142104:
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		STA		byte_CF
 loc_14210B:
 		DEC		byte_CF
 		BMI		locret_142103
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		CMP		byte_C5
 		BNE		loc_14210B
-		JMP		_sram_bank0_sub2A
+		JMP		_sram_b0_s2A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14211D:
@@ -2490,7 +2491,7 @@ loc_142177:
 		BCS		loc_14215A
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		CMP		#8
 		BCC		loc_1421AA
@@ -2546,7 +2547,7 @@ loc_1421E0:
 		BRK
 		.BYTE $29, $87		; _msg_m00_arg2
 loc_1421E3:
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 loc_1421E6:
 		BRK
 		.BYTE $2A, $87		; _msg_m00_arg2
@@ -2628,7 +2629,7 @@ loc_142265:
 loc_14226F:
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142293
@@ -2679,7 +2680,7 @@ loc_1422C6:
 loc_1422CB:
 		LDA		byte_C5
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 loc_1422D2:
 		BRK
 		.BYTE $36, $87		; _msg_m00_arg2
@@ -2700,7 +2701,7 @@ sub_1422E1:
 		STA		byte_CE
 		STA		byte_CF
 		STA		byte_D2
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		BNE		loc_142303
 		BRK
@@ -2721,7 +2722,7 @@ loc_142303:
 		BCS		loc_1422DD
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -2783,7 +2784,7 @@ loc_142377:
 		STA		byte_CE
 		LDA		byte_BD
 		STA		byte_CF
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$80
 		BEQ		loc_1423AA
@@ -2796,14 +2797,14 @@ loc_142377:
 		.BYTE $17, $2F		; _syscall12
 		JSR		_bD_s22
 		LDA		byte_C5
-		STA.W		byte_D2
+		STA		byte_D2
 		BRK
 		.BYTE $52, $77		; _msg_m00_arg1
 		BRK
 		.BYTE $3D, $87		; _msg_m00_arg2
 		JMP		loc_14235E
 loc_1423AA:
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		JSR		loc_14200A
 		BRK
 		.BYTE $12, $D7		; _syscall0D
@@ -2889,7 +2890,7 @@ loc_142426:
 		STA		byte_CE
 		LDA		byte_C5
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 		BRK
 		.BYTE $3C, $47		; _msg_m00_b3_break
 loc_142446:
@@ -2931,7 +2932,7 @@ sub_14246C:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_bank0_sub1D
+		JSR		_sram_b0_s1D
 		BRK
 		.BYTE $12, $D7		; _syscall0D
 		RTS
@@ -2965,7 +2966,7 @@ loc_142496:
 		STA		byte_C2
 		STA		byte_640
 		STA		byte_641
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		LDA		word_4
 		LDX		#byte_C0
 		JSR		_mul16_to_8
@@ -3039,8 +3040,8 @@ loc_142515:
 		LDA		byte_73D,X
 		AND		#$BF
 		STA		byte_73D,X
-		JSR		_sram_bank0_sub4
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s4
+		JSR		_sram_b0_s8
 loc_142531:
 		LDX		byte_CE
 		CPX		#0
@@ -3127,7 +3128,7 @@ loc_1425AA:
 		AND		#$A0
 		CMP		#$A0
 		BNE		loc_142605
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		LSR
 		LSR
@@ -3199,7 +3200,7 @@ loc_142629:
 		BCC		loc_142684
 		LDA		word_4
 		STA		byte_BD
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		STA		byte_C0
 		LDA		#0
@@ -3230,7 +3231,7 @@ loc_142629:
 		.BYTE $15, $2F		; _syscall12
 		LDA		byte_BD
 		STA		byte_CF
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		JMP		loc_1425A4
 loc_142684:
 		BRK
@@ -3259,7 +3260,7 @@ loc_1426AC:
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		STA		byte_C0
 		LDX		#byte_C0
@@ -3305,8 +3306,8 @@ loc_1426F1:
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JSR		_sram_bank0_sub4
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s4
+		JSR		_sram_b0_s8
 		JSR		_bD_s22
 		JSR		sub_142780
 		BRK
@@ -3319,42 +3320,42 @@ loc_142722:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_142728:
-		JSR		_sram_b0_s31
-		LDA		word_4
-		STA		byte_CE
-		LDA		#0
-		STA		byte_C0
-		STA		byte_C1
-		STA		byte_C2
-		STA		byte_641
-loc_14273A:
-		LDX		byte_CE
-		DEX
-		BMI		loc_14275C
-		STX		byte_CE
-		JSR		_sram_bank0_sub7
-		LDA		word_4
-		ORA		word_4+1
-		BEQ		loc_14273A
-		JSR		_sram_bank0_subC
-		CLC
-		LDA		byte_C0
-		ADC		word_4
-		STA		byte_C0
-		LDA		byte_C1
-		ADC		#0
-		STA		byte_C1
-		BCC		loc_14273A
-loc_14275C:
-		LDX		#byte_C0
-		LDA		#3
-		JSR		_mul16_to_8
-		LDA		byte_C0
-		STA		byte_63F
-		LDA		byte_C1
-		STA		byte_640
-		RTS
+;sub_142728:
+;		JSR		_sram_b0_s31
+;		LDA		word_4
+;		STA		byte_CE
+;		LDA		#0
+;		STA		byte_C0
+;		STA		byte_C1
+;		STA		byte_C2
+;		STA		byte_641
+;loc_14273A:
+;		LDX		byte_CE
+;		DEX
+;		BMI		loc_14275C
+;		STX		byte_CE
+;		JSR		_sram_b0_s7
+;		LDA		word_4
+;		ORA		word_4+1
+;		BEQ		loc_14273A
+;		JSR		_sram_b0_sC
+;		CLC
+;		LDA		byte_C0
+;		ADC		word_4
+;		STA		byte_C0
+;		LDA		byte_C1
+;		ADC		#0
+;		STA		byte_C1
+;		BCC		loc_14273A
+;loc_14275C:
+;		LDX		#byte_C0
+;		LDA		#3
+;		JSR		_mul16_to_8
+;		LDA		byte_C0
+;		STA		byte_63F
+;		LDA		byte_C1
+;		STA		byte_640
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s10:
@@ -3397,7 +3398,7 @@ loc_14279B:
 		DEX
 		STX		byte_C4
 		STX		byte_CE
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s8
 		LDX		byte_C4
 		BNE		loc_14279B
 		RTS
@@ -3615,7 +3616,7 @@ loc_14297E:
 loc_14298E:
 		BRK
 		.BYTE $6D, $87		; _msg_m00_arg2
-		JSR		_sram_bank0_sub1D
+		JSR		_sram_b0_s1D
 		BRK
 		.BYTE $68, $D7		; _syscall0D
 		CLC
@@ -3636,7 +3637,7 @@ loc_1429B0:
 		BCS		loc_1429C7
 		STA		byte_CE
 loc_1429B9:
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		BNE		loc_1429CA
 		LDA		byte_C3
@@ -3658,7 +3659,7 @@ loc_1429CA:
 		BCS		loc_1429C7
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -3690,7 +3691,7 @@ loc_142A02:
 		.BYTE $71, $87		; _msg_m00_arg2
 		JMP		loc_142A6B
 loc_142A1B:
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		BPL		loc_142A41
 		AND		#$7F
@@ -3714,7 +3715,7 @@ loc_142A41:
 		.BYTE $73, $87		; _msg_m00_arg2
 		LDA		byte_C5
 		JSR		sub_141EEE
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		LDA		byte_C5
 		AND		#$7F
 		CMP		#$2A
@@ -3800,7 +3801,7 @@ loc_142ACC:
 loc_142ADC:
 		BRK
 		.BYTE $79, $87		; _msg_m00_arg2
-		JSR		_sram_bank0_sub1C
+		JSR		_sram_b0_s1C
 		BRK
 		.BYTE $68, $D7		; _syscall0D
 		SEC
@@ -3870,7 +3871,7 @@ loc_142B50:
 loc_142B5A:
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142B82
@@ -3913,7 +3914,7 @@ loc_142BA4:
 		LDX		byte_BD
 		JSR		sub_141F03
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 loc_142BAE:
 		LDA		byte_600D
 		CMP		#$7F
@@ -4012,7 +4013,7 @@ loc_142C44:
 		STA		byte_C6
 		STA		byte_D3
 		STA		byte_CF
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		CMP		#$14
 		BCS		loc_142C60
@@ -4138,7 +4139,7 @@ loc_142D05:
 		.BYTE $5B, $87		; _msg_m00_arg2
 		JMP		sub_142E22
 loc_142D14:
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		word_4
 		BNE		loc_142D21
 		BRK
@@ -4159,7 +4160,7 @@ loc_142D21:
 		JMP		sub_142E22
 loc_142D3A:
 		STA		byte_BD
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		byte_BD
 		CMP		word_4
 		BCC		loc_142D50
@@ -4234,7 +4235,7 @@ loc_142DAE:
 		.BYTE $64, $87		; _msg_m00_arg2
 		JMP		sub_142E22
 loc_142DD0:
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		LDX		word_4
 		DEX
 		BNE		loc_142DE7
@@ -4341,7 +4342,7 @@ loc_142E49:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E69:
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		word_4
 		BNE		loc_142E76
 		BRK
@@ -4362,7 +4363,7 @@ loc_142E76:
 		JMP		sub_142E22
 loc_142E8F:
 		STA		byte_C3
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDX		byte_C3
 		LDA		word_4+1,X
 		STA		byte_C3
@@ -4409,11 +4410,11 @@ sub_142ECB:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sF:
 		LDA		#0
-		STA.W		byte_CE
+		STA		byte_CE
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		STA		byte_C0
 		JSR		sub_141F44
@@ -4622,13 +4623,13 @@ __msg_m00_param_b2:
 		BNE		__msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_b3:
+_msg_m00_b3:
 		TYA
 		LDY		#6
 		BNE		__msg_m00_select
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_b4:
+_msg_m00_b4:
 		TYA
 		LDY		#8
 		BNE		__msg_m00_select
@@ -4649,14 +4650,14 @@ ___msg_m00_param_break_b2:
 		BNE		___msg_m00_select_param_break
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_b3_break:
+_msg_m00_b3_break:
 		TYA
 		LDY		#6
 		JSR		__msg_m00_select
 		BCS		_break
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_b4_break:
+_msg_m00_b4_break:
 		TYA
 		LDY		#8
 		JSR		__msg_m00_select
@@ -4809,12 +4810,12 @@ sub_14311A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143126:
 		STA		byte_CE
-		JMP		_sram_bank0_sub29
+		JMP		_sram_b0_s29
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14312B:
 		STA		byte_CE
-		JMP		_sram_bank0_sub2B
+		JMP		_sram_b0_s2B
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143130:
@@ -4822,7 +4823,7 @@ sub_143130:
 		STA		byte_CE
 		LDA		word_4+1
 		STA		byte_CF
-		JMP		_sram_bank0_sub2A
+		JMP		_sram_b0_s2A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14313B:
@@ -5154,133 +5155,133 @@ loc_143425:
 off_14342B:
 		.WORD _npc_hndl0
 byte_14342D:
-		.BYTE 0
-		.BYTE $F		; .BYTE	_npc_hndl1-_npc_hndl0
-		.BYTE $55		; .BYTE	_npc_hndl2-_npc_hndl1
-		.BYTE $23		; .BYTE	_npc_hndl3-_npc_hndl2
-		.BYTE $82		; .BYTE	_npc_hndl4-_npc_hndl3
-		.BYTE 4			; .BYTE	_npc_hndl5-_npc_hndl4
-		.BYTE 7			; .BYTE	_npc_hndl6-_npc_hndl5
-		.BYTE 6			; .BYTE	_npc_hndl7-_npc_hndl6
-		.BYTE 6			; .BYTE	_npc_hndl8-_npc_hndl7
-		.BYTE 6			; .BYTE	_npc_hndl9-_npc_hndl8
-		.BYTE 6			; .BYTE	_npc_hndlA-_npc_hndl9
-		.BYTE $14		; .BYTE	_npc_hndlB-_npc_hndlA
-		.BYTE 6			; .BYTE	_npc_hndlC-_npc_hndlB
-		.BYTE 9			; .BYTE	_npc_hndlD-_npc_hndlC
-		.BYTE $19		; .BYTE	_npc_hndlE-_npc_hndlD
-		.BYTE $40		; .BYTE	_npc_hndlF-_npc_hndlE
-		.BYTE $D		; .BYTE	_npc_hndl10-_npc_hndlF
-		.BYTE $16		; .BYTE	_npc_hndl11-_npc_hndl10
-		.BYTE 7			; .BYTE	_npc_hndl12-_npc_hndl11
-		.BYTE $20		; .BYTE	_npc_hndl13-_npc_hndl12
-		.BYTE $1A		; .BYTE	_npc_hndl14-_npc_hndl13
-		.BYTE $B		; .BYTE	_npc_hndl15-_npc_hndl14
-		.BYTE $C		; .BYTE	_npc_hndl16-_npc_hndl15
-		.BYTE $47		; .BYTE	_npc_hndl17-_npc_hndl16
-		.BYTE $D		; .BYTE	_npc_hndl18-_npc_hndl17
-		.BYTE $1B		; .BYTE	_npc_hndl19-_npc_hndl18
-		.BYTE $20		; .BYTE	_npc_hndl1A-_npc_hndl19
-		.BYTE 6			; .BYTE	_npc_hndl1B-_npc_hndl1A
-		.BYTE 5			; .BYTE	_npc_hndl1C-_npc_hndl1B
-		.BYTE $13		; .BYTE	_npc_hndl1D-_npc_hndl1C
-		.BYTE $18		; .BYTE	_npc_hndl1E-_npc_hndl1D
-		.BYTE $1D		; .BYTE	_npc_hndl1F-_npc_hndl1E
-		.BYTE $28		; .BYTE	_npc_hndl20-_npc_hndl1F
-		.BYTE 4			; .BYTE	_npc_hndl21-_npc_hndl20
-		.BYTE $A		; .BYTE	_npc_hndl22-_npc_hndl21
-		.BYTE $5C		; .BYTE	_npc_hndl23-_npc_hndl22
-		.BYTE $B		; .BYTE	_npc_hndl24-_npc_hndl23
-		.BYTE $20		; .BYTE	_npc_hndl25-_npc_hndl24
-		.BYTE $22		; .BYTE	_npc_hndl26-_npc_hndl25
-		.BYTE $F		; .BYTE	_npc_hndl27-_npc_hndl26
-		.BYTE $16		; .BYTE	_npc_hndl28-_npc_hndl27
-		.BYTE $58		; .BYTE	_npc_hndl29-_npc_hndl28
-		.BYTE $3C		; .BYTE	_npc_hndl2A-_npc_hndl29
-		.BYTE 3			; .BYTE	_npc_hndl2B-_npc_hndl2A
-		.BYTE $1C		; .BYTE	_npc_hndl2C-_npc_hndl2B
-		.BYTE $26		; .BYTE	_npc_hndl2D-_npc_hndl2C
-		.BYTE $1D		; .BYTE	_npc_hndl2E-_npc_hndl2D
-		.BYTE $29		; .BYTE	_npc_hndl2F-_npc_hndl2E
-		.BYTE 4			; .BYTE	_npc_hndl30-_npc_hndl2F
-		.BYTE 4			; .BYTE	_bD_s20_npc_hndl31-_npc_hndl30
-		.BYTE $19		; .BYTE	_bD_s20_npc_hndl32-_bD_s20_npc_hndl31
-		.BYTE $E		; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl32
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE 0			; .BYTE	_bD_s20_npc_hndl33-_bD_s20_npc_hndl33
-		.BYTE $2A		; .BYTE	_npc_hndl3E-_bD_s20_npc_hndl33
-		.BYTE 4			; .BYTE	_npc_hndl3F-_npc_hndl3E
-		.BYTE 4			; .BYTE	_npc_hndl40-_npc_hndl3F
-		.BYTE $E		; .BYTE	_npc_hndl41-_npc_hndl40
-		.BYTE 4			; .BYTE	_npc_hndl42-_npc_hndl41
-		.BYTE $4C		; .BYTE	_npc_hndl43-_npc_hndl42
-		.BYTE $25		; .BYTE	_npc_hndl44-_npc_hndl43
-		.BYTE 7			; .BYTE	_npc_hndl45-_npc_hndl44
-		.BYTE $C		; .BYTE	_npc_hndl46-_npc_hndl45
-		.BYTE $19		; .BYTE	_npc_hndl47-_npc_hndl46
-		.BYTE 0			; .BYTE	_npc_hndl47-_npc_hndl47
-		.BYTE 0			; .BYTE	_npc_hndl47-_npc_hndl47
-		.BYTE 0			; .BYTE	_npc_hndl47-_npc_hndl47
-		.BYTE 0			; .BYTE	_npc_hndl47-_npc_hndl47
-		.BYTE 0			; .BYTE	_npc_hndl47-_npc_hndl47
-		.BYTE $76		; .BYTE	_npc_hndl4D-_npc_hndl47
-		.BYTE $2C		; .BYTE	_npc_hndl4E-_npc_hndl4D
-		.BYTE $A		; .BYTE	_npc_hndl4F-_npc_hndl4E
-		.BYTE $B		; .BYTE	_npc_hndl50-_npc_hndl4F
-		.BYTE $D		; .BYTE	_npc_hndl51-_npc_hndl50
-		.BYTE $C		; .BYTE	_npc_hndl52-_npc_hndl51
-		.BYTE $10		; .BYTE	_npc_hndl53-_npc_hndl52
-		.BYTE 7			; .BYTE	_npc_hndl54-_npc_hndl53
-		.BYTE $C		; .BYTE	_npc_hndl55-_npc_hndl54
-		.BYTE 6			; .BYTE	_npc_hndl56-_npc_hndl55
-		.BYTE 6			; .BYTE	_npc_hndl57-_npc_hndl56
-		.BYTE 6			; .BYTE	_npc_hndl58-_npc_hndl57
-		.BYTE 6			; .BYTE	_npc_hndl59-_npc_hndl58
-		.BYTE 6			; .BYTE	_npc_hndl5A-_npc_hndl59
-		.BYTE 5			; .BYTE	_npc_hndl5B-_npc_hndl5A
-		.BYTE 5			; .BYTE	_npc_hndl5C-_npc_hndl5B
-		.BYTE $44		; .BYTE	_npc_hndl5D-_npc_hndl5C
-		.BYTE 6			; .BYTE	_npc_hndl5E-_npc_hndl5D
-		.BYTE 5			; .BYTE	_npc_hndl5F-_npc_hndl5E
-		.BYTE $11		; .BYTE	_npc_hndl60-_npc_hndl5F
-		.BYTE 4			; .BYTE	_npc_hndl61-_npc_hndl60
-		.BYTE 4			; .BYTE	_npc_hndl62-_npc_hndl61
-		.BYTE 9			; .BYTE	_npc_hndl63-_npc_hndl62
-		.BYTE $C		; .BYTE	_npc_hndl64-_npc_hndl63
-		.BYTE $19		; .BYTE	_npc_hndl65-_npc_hndl64
-		.BYTE $25		; .BYTE	_npc_hndl66-_npc_hndl65
-		.BYTE $C		; .BYTE	_npc_hndl67-_npc_hndl66
-		.BYTE $43		; .BYTE	_npc_hndl68-_npc_hndl67
-		.BYTE $1A		; .BYTE	_npc_hndl69-_npc_hndl68
-		.BYTE $D		; .BYTE	_npc_hndl6A-_npc_hndl69
-		.BYTE $E		; .BYTE	_npc_hndl6B-_npc_hndl6A
-		.BYTE $D		; .BYTE	_npc_hndl6C-_npc_hndl6B
-		.BYTE $33		; .BYTE	_npc_hndl6D-_npc_hndl6C
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
-		.BYTE 0			; .BYTE	_npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl0-_npc_hndl0
+		.BYTE _npc_hndl1-_npc_hndl0
+		.BYTE _npc_hndl2-_npc_hndl1
+		.BYTE _npc_hndl3-_npc_hndl2
+		.BYTE _npc_hndl4-_npc_hndl3
+		.BYTE _npc_hndl5-_npc_hndl4
+		.BYTE _npc_hndl6-_npc_hndl5
+		.BYTE _npc_hndl7-_npc_hndl6
+		.BYTE _npc_hndl8-_npc_hndl7
+		.BYTE _npc_hndl9-_npc_hndl8
+		.BYTE _npc_hndlA-_npc_hndl9
+		.BYTE _npc_hndlB-_npc_hndlA
+		.BYTE _npc_hndlC-_npc_hndlB
+		.BYTE _npc_hndlD-_npc_hndlC
+		.BYTE _npc_hndlE-_npc_hndlD
+		.BYTE _npc_hndlF-_npc_hndlE
+		.BYTE _npc_hndl10-_npc_hndlF
+		.BYTE _npc_hndl11-_npc_hndl10
+		.BYTE _npc_hndl12-_npc_hndl11
+		.BYTE _npc_hndl13-_npc_hndl12
+		.BYTE _npc_hndl14-_npc_hndl13
+		.BYTE _npc_hndl15-_npc_hndl14
+		.BYTE _npc_hndl16-_npc_hndl15
+		.BYTE _npc_hndl17-_npc_hndl16
+		.BYTE _npc_hndl18-_npc_hndl17
+		.BYTE _npc_hndl19-_npc_hndl18
+		.BYTE _npc_hndl1A-_npc_hndl19
+		.BYTE _npc_hndl1B-_npc_hndl1A
+		.BYTE _npc_hndl1C-_npc_hndl1B
+		.BYTE _npc_hndl1D-_npc_hndl1C
+		.BYTE _npc_hndl1E-_npc_hndl1D
+		.BYTE _npc_hndl1F-_npc_hndl1E
+		.BYTE _npc_hndl20-_npc_hndl1F
+		.BYTE _npc_hndl21-_npc_hndl20
+		.BYTE _npc_hndl22-_npc_hndl21
+		.BYTE _npc_hndl23-_npc_hndl22
+		.BYTE _npc_hndl24-_npc_hndl23
+		.BYTE _npc_hndl25-_npc_hndl24
+		.BYTE _npc_hndl26-_npc_hndl25
+		.BYTE _npc_hndl27-_npc_hndl26
+		.BYTE _npc_hndl28-_npc_hndl27
+		.BYTE _npc_hndl29-_npc_hndl28
+		.BYTE _npc_hndl2A-_npc_hndl29
+		.BYTE _npc_hndl2B-_npc_hndl2A
+		.BYTE _npc_hndl2C-_npc_hndl2B
+		.BYTE _npc_hndl2D-_npc_hndl2C
+		.BYTE _npc_hndl2E-_npc_hndl2D
+		.BYTE _npc_hndl2F-_npc_hndl2E
+		.BYTE _npc_hndl30-_npc_hndl2F
+		.BYTE _bD_s20_npc_hndl31-_npc_hndl30
+		.BYTE _bD_s20_npc_hndl32-_bD_s20_npc_hndl31
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl32
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _bD_s20_npc_hndl33-_bD_s20_npc_hndl33
+		.BYTE _npc_hndl3E-_bD_s20_npc_hndl33
+		.BYTE _npc_hndl3F-_npc_hndl3E
+		.BYTE _npc_hndl40-_npc_hndl3F
+		.BYTE _npc_hndl41-_npc_hndl40
+		.BYTE _npc_hndl42-_npc_hndl41
+		.BYTE _npc_hndl43-_npc_hndl42
+		.BYTE _npc_hndl44-_npc_hndl43
+		.BYTE _npc_hndl45-_npc_hndl44
+		.BYTE _npc_hndl46-_npc_hndl45
+		.BYTE _npc_hndl47-_npc_hndl46
+		.BYTE _npc_hndl47-_npc_hndl47
+		.BYTE _npc_hndl47-_npc_hndl47
+		.BYTE _npc_hndl47-_npc_hndl47
+		.BYTE _npc_hndl47-_npc_hndl47
+		.BYTE _npc_hndl47-_npc_hndl47
+		.BYTE _npc_hndl4D-_npc_hndl47
+		.BYTE _npc_hndl4E-_npc_hndl4D
+		.BYTE _npc_hndl4F-_npc_hndl4E
+		.BYTE _npc_hndl50-_npc_hndl4F
+		.BYTE _npc_hndl51-_npc_hndl50
+		.BYTE _npc_hndl52-_npc_hndl51
+		.BYTE _npc_hndl53-_npc_hndl52
+		.BYTE _npc_hndl54-_npc_hndl53
+		.BYTE _npc_hndl55-_npc_hndl54
+		.BYTE _npc_hndl56-_npc_hndl55
+		.BYTE _npc_hndl57-_npc_hndl56
+		.BYTE _npc_hndl58-_npc_hndl57
+		.BYTE _npc_hndl59-_npc_hndl58
+		.BYTE _npc_hndl5A-_npc_hndl59
+		.BYTE _npc_hndl5B-_npc_hndl5A
+		.BYTE _npc_hndl5C-_npc_hndl5B
+		.BYTE _npc_hndl5D-_npc_hndl5C
+		.BYTE _npc_hndl5E-_npc_hndl5D
+		.BYTE _npc_hndl5F-_npc_hndl5E
+		.BYTE _npc_hndl60-_npc_hndl5F
+		.BYTE _npc_hndl61-_npc_hndl60
+		.BYTE _npc_hndl62-_npc_hndl61
+		.BYTE _npc_hndl63-_npc_hndl62
+		.BYTE _npc_hndl64-_npc_hndl63
+		.BYTE _npc_hndl65-_npc_hndl64
+		.BYTE _npc_hndl66-_npc_hndl65
+		.BYTE _npc_hndl67-_npc_hndl66
+		.BYTE _npc_hndl68-_npc_hndl67
+		.BYTE _npc_hndl69-_npc_hndl68
+		.BYTE _npc_hndl6A-_npc_hndl69
+		.BYTE _npc_hndl6B-_npc_hndl6A
+		.BYTE _npc_hndl6C-_npc_hndl6B
+		.BYTE _npc_hndl6D-_npc_hndl6C
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
+		.BYTE _npc_hndl6D-_npc_hndl6D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434AC:
@@ -5391,13 +5392,15 @@ _far_bE_s4_msg_m00_delta3:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143515:
 		JSR		__far_bE_s4_msg_m00_delta3_arg5C
-		JMP		loc_14351E
+		JMP		sub_14351E
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_14351B:
-		JSR		_far_bE_s4_msg_m00_delta3
-loc_14351E:
+;sub_14351B:
+;		JSR		_far_bE_s4_msg_m00_delta3
+
+; =============== S U B	R O U T	I N E =======================================
+sub_14351E:
 		BRK
 		.BYTE $20, $17		; ofs 0x00158038, -> dst _bE_s1C
 		RTS
@@ -5500,7 +5503,7 @@ _npc_hndl3:
 loc_1435B3:
 		BRK
 		.BYTE $17, $27		; _msg_m00_b3
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		LDA		word_4
 		CMP		#2
 		BCC		loc_1435E2
@@ -5543,7 +5546,7 @@ loc_1435E5:
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_CE
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		LDX		#7
 loc_143607:
 		LDA		word_4,X
@@ -5822,7 +5825,7 @@ loc_143772:
 		JSR		sub_143130
 		LDA		#$5C
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 		BRK
 		.BYTE $54, $47		; _msg_m00_b3_break
 loc_14377F:
@@ -6035,7 +6038,7 @@ loc_14388F:
 		JSR		sub_143130
 		LDA		#$6E
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 		LDA		#$17
 		JSR		sub_143F9E
 		LDA		#$23
@@ -6858,7 +6861,7 @@ loc_143D19:
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s8
 loc_143D2B:
 		DEC		byte_CE
 		BPL		loc_143D19
@@ -7078,7 +7081,7 @@ sub_143E67:
 loc_143E75:
 		LDA		byte_D2
 		STA		byte_CE
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		CMP		#$63
 		BNE		loc_143E88
@@ -7239,26 +7242,8 @@ sub_143F9E:
 		RTS
 byte_143FBD:
 		.BYTE	1,  2,	4,  8,$10,$20,$40,$80 
-_unused_19:
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF
 
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_b3:
-		JMP		__msg_m00_b3
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_b4:
-		JMP		__msg_m00_b4
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_b3_break:
-		JMP		__msg_m00_b3_break
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_b4_break:
-		JMP		__msg_m00_b4_break
-
-		ECHO "bank 0D size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 0D free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

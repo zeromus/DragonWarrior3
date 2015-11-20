@@ -1085,7 +1085,7 @@ _pak_data85:
 		.BYTE $70,$A0,$36,$11,$16,$33,$61,$E6,$44,$8C,$88,$18,$26,$C7,$ED,$EE
 		.BYTE $5C,$BC,$B8,$78
 
-		ECHO "bank 03 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 03 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

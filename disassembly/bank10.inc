@@ -1,6 +1,9 @@
 
 		ORG $8000
 
+; need to be separated by EE terminated strings, every block contains 16
+; different strings
+;
 _b10_txt_block0:
 		.BYTE $F5,$F2,$60,$13,$1D,$60, $B,$1D,$1D, $F,$1D,$1D,$13,$18,$11,$60
 		.BYTE $1E,$12, $F,$60,$1D,$13,$1E,$1F, $B,$1E,$13,$19,$18,$6C,$EE,$F5
@@ -1062,7 +1065,7 @@ _b10_txt_block19:
 		.BYTE $70,$67,$EB,$EF,$66,$38,$1F,$1C,$18,$60, $C, $B, $D,$15,$70,$67
 		.BYTE $EF
 
-		ECHO "bank 10 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 10 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

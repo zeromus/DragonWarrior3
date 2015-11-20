@@ -552,7 +552,7 @@ _b15_txt_block9:
 		.BYTE $EE,$F7,$60,$F5,$6A,$EE,$F7,$60,$F5,$60, $B,$18, $E,$EE,$F7,$60
 		.BYTE $F5,$60, $B,$1A,$1A, $F, $B,$1C,$1D,$70,$EE,$FD,$EE,$FD
 
-		ECHO "bank 15 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 15 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

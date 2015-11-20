@@ -1,9 +1,9 @@
 
 		ORG $8000
 
-		.BYTE $FF
+		ECHO "bank 0B free space", [$BFD8-.]
 
-		ECHO "bank 0B size", [.-$8000], "free space", [$BFD8-.]
+		.BYTE $FF	; need here to fill empty space by dasm
 
 		ORG $BFD8
 		SEI

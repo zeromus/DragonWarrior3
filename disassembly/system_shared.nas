@@ -55,6 +55,7 @@
 		INCLUDE "system_shared.inc"
 		SEG.u BANKFb
 		INCLUDE "system_bank0F_only.inc"
+		ECHO "bank 0F free space", [SYSTEM_FOOTER_ORG-.]
 		SEG.u BANKFc
 		INCLUDE "system_footer.inc"
 

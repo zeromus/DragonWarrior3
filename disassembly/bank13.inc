@@ -1046,7 +1046,7 @@ _b13_txt_block15:
 		.BYTE  $D,$12,$70,$67,$EF,$66,$33,$12,$70,$60,$38,$12, $B,$1E,$68,$1D
 		.BYTE $60,$11,$1C, $F, $B,$1E,$70,$67,$EF
 
-		ECHO "bank 13 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 13 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

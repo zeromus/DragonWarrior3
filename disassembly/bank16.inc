@@ -276,7 +276,7 @@ byte_21C3A3:
 byte_21C3AA:
 		.BYTE	0,$1E,$3C,$5A,$78,$96,$B4 
 
-		ECHO "bank 16 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 16 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

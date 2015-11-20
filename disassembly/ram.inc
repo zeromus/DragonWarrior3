@@ -5162,121 +5162,121 @@ byte_6B1F:
 		.BYTE 0
 		.BYTE 0
 		.BYTE 0
-_sram_bank0_sub2:
+_sram_b0_s2:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub3:
+_sram_b0_s3:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub4:
+_sram_b0_s4:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub5:
+_sram_b0_s5:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub6:
+_sram_b0_s6:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub7:
+_sram_b0_s7:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub8:
+_sram_b0_s8:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub9:
+_sram_b0_s9:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_subA:
+_sram_b0_sA:
 		.BYTE 0,0,0,0,0
-_sram_bank0_subB:
+_sram_b0_sB:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_subC:
+_sram_b0_sC:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_subD:
+_sram_b0_sD:
 		.BYTE 0,0,0,0,0
 _sram_b0_sE:
 		.BYTE 0,0,0,0,0	 
-_sram_bank0_subF:
+_sram_b0_sF:
 		.BYTE 0,0,0,0,0  
-_sram_bank0_sub10:
+_sram_b0_s10:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub11:
+_sram_b0_s11:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub12:
+_sram_b0_s12:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub13:
+_sram_b0_s13:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub14:
+_sram_b0_s14:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub15:
+_sram_b0_s15:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub16:
+_sram_b0_s16:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub17:
+_sram_b0_s17:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub18:
+_sram_b0_s18:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub19:
+_sram_b0_s19:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub1A:
+_sram_b0_s1A:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub1B:
+_sram_b0_s1B:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub1C:
+_sram_b0_s1C:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub1D:
+_sram_b0_s1D:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub1E:
+_sram_b0_s1E:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub1F:
+_sram_b0_s1F:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub20:
+_sram_b0_s20:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub21:
+_sram_b0_s21:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub22:
+_sram_b0_s22:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub23:
+_sram_b0_s23:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub24:
+_sram_b0_s24:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub25:
+_sram_b0_s25:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub26:
+_sram_b0_s26:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub27:
+_sram_b0_s27:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub28:
+_sram_b0_s28:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub29:
+_sram_b0_s29:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub2A:
+_sram_b0_s2A:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub2B:
+_sram_b0_s2B:
 		.BYTE	0,0,0,0,0  
 _sram_b0_s2C:
 		.BYTE 0,0,0,0,0	 
-_sram_bank0_sub2D:
+_sram_b0_s2D:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub2E:
+_sram_b0_s2E:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2F:
 		.BYTE 0,0,0,0,0	 
-_sram_bank0_sub30:
+_sram_b0_s30:
 		.BYTE	0,0,0,0,0
 _sram_b0_s31:
 		.BYTE 0,0,0,0,0	 
-_sram_bank0_sub32:
+_sram_b0_s32:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub33:
+_sram_b0_s33:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub34:
+_sram_b0_s34:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub35:
+_sram_b0_s35:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub36:
+_sram_b0_s36:
 		.BYTE	0,0,0,0,0
-_sram_bank0_sub37:
+_sram_b0_s37:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub38:
+_sram_b0_s38:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub39:
+_sram_b0_s39:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub3A:
+_sram_b0_s3A:
 		.BYTE	0,0,0,0,0  
-_sram_bank0_sub3B:
+_sram_b0_s3B:
 		.BYTE	0,0,0,0,0  
 _sram_bank0_select_ex:
 		.BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

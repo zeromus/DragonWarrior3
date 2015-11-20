@@ -1005,10 +1005,6 @@ _pak_param89:
 		.BYTE $11,$37,$10,$13,$15,$12,$2A 
 _pak_param8A:
 		.BYTE $11,$2A, $F, $F,$27,$37,$18 
-_pak_data_lib_ofs:
-		.WORD	_pak_data_lib
-off_397AB:
-		.WORD byte_400
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_far_pak_data_ptr_byte_safe:
@@ -1580,9 +1576,9 @@ loc_39AE0:
 		INC		_pak_data_ptr+1
 loc_39AEE:
 		CLC
-		ADC		_pak_data_lib_ofs
+		ADC		#<[_pak_data_lib]
 		STA		_pak_data_ptr
-		LDA		_pak_data_lib_ofs+1
+		LDA		#>[_pak_data_lib]
 		ADC		_pak_data_ptr+1
 		STA		_pak_data_ptr+1
 		LDY		byte_BB
@@ -1928,10 +1924,10 @@ loc_39D32:
 		ASL
 		ASL
 		CLC
-		ADC		off_397AB
+		ADC		#<[byte_400]
 		STA		_tmp21
 		LDA		#0
-		ADC		off_397AB+1
+		ADC		#>[byte_400]
 		STA		_tmp21+1
 		LDA		#$10
 		CLC
@@ -3026,7 +3022,7 @@ loc_3A473:
 		LDA		byte_6A9B,X
 		AND		#3
 		STA		byte_CE
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDY		#0
 		LDA		byte_8
 		BEQ		loc_3A48A
@@ -3035,7 +3031,7 @@ loc_3A48A:
 		INC		byte_D0
 		TYA
 		PHA
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		PLA
 		TAY
 		LDA		byte_8
@@ -3058,7 +3054,7 @@ loc_3A4A8:
 loc_3A4B0:
 		LDA		#1
 		STA		byte_D0
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		byte_8
 		BNE		loc_3A4BD
 		INC		byte_D0
@@ -3145,7 +3141,7 @@ loc_3A536:
 		PHA
 		LDA		byte_51
 		STA		byte_CE
-		JSR		_sram_bank0_subB
+		JSR		_sram_b0_sB
 		PLA
 		STA		byte_CE
 		PLA
@@ -3211,7 +3207,7 @@ loc_3A5A5:
 loc_3A5A8:
 		LDA		byte_51
 		STA		byte_CE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		BNE		loc_3A5C9
 		LDA		#$3D
@@ -3236,7 +3232,7 @@ loc_3A5D5:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_46
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_CF
@@ -3417,11 +3413,11 @@ sub_3A6FD:
 		BEQ		loc_3A721
 		LDA		#1
 		STA		byte_D0
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		byte_8
 		PHA
 		INC		byte_D0
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		PLA
 		ORA		byte_8
 		BNE		loc_3A725
@@ -3719,7 +3715,7 @@ loc_3A8E6:
 		BNE		loc_3A8C5
 		LDA		word_4+1
 		PHA
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		DEC		word_4
 		PLA
 		SEC
@@ -3876,9 +3872,9 @@ sub_3A9E8:
 		LDA		byte_60B7
 		LSR
 		BCC		loc_3AA0A
-		LDA		_str_lib_erdrick_ofs
+		LDA		#<[_str_lib_erdrick]
 		STA		word_6E
-		LDA		_str_lib_erdrick_ofs+1
+		LDA		#>[_str_lib_erdrick]
 		STA		word_6E+1
 		LDX		#$FF
 		LDY		#0
@@ -3905,16 +3901,13 @@ _str_libs_list:
 		.WORD _str_lib9_items_hi1
 		.WORD _str_libA_enemy_hi0
 		.WORD _str_libB_enemy_hi1
-_str_lib_erdrick_ofs:
 		.WORD _str_lib_erdrick 
 _str_lib5_classes:
 		.BYTE	$2C, $F,$1C,$19,$FF 
 		.BYTE $3B,$13,$24, $B,$1C, $E,$FF
 		.BYTE $34,$13,$16,$11,$1C,$13,$17,$FF
 		.BYTE $37, $B,$11, $F,$FF
-; [00000008 BYTES: BEGIN OF AREA BANK2:AA41. PRESS KEYPAD "-" TO COLLAPSE]
 		.BYTE $37,$19,$16, $E,$13, $F,$1C,$FF
-; [00000008 BYTES: END OF AREA BANK2:AA41. PRESS KEYPAD	"-" TO COLLAPSE]
 		.BYTE $31, $F,$1C, $D,$12, $B,$18,$1E,$FF
 		.BYTE $2A,$13,$11,$12,$1E, $F,$1C,$FF
 		.BYTE $2B,$19,$19,$10,$6B,$19,$10,$10,$FF
@@ -3929,9 +3922,7 @@ _str_lib7_locations:
 		.BYTE $2F, $B,$18, $B,$20, $F,$61,$FF
 		.BYTE $32,$19, $B,$18,$13, $F,$16,$1D,$FF
 		.BYTE $25,$1D,$1D, $B,$1C, $B,$17,$FF
-; [00000008 BYTES: BEGIN OF AREA BANK2:AAA9. PRESS KEYPAD "-" TO COLLAPSE]
 		.BYTE $2D,$1D,$13,$1D,$61,$61,$61,$FF
-; [00000008 BYTES: END OF AREA BANK2:AAA9. PRESS KEYPAD	"-" TO COLLAPSE]
 		.BYTE $34,$19,$1C,$1E,$19,$11, $B,$61,$FF
 		.BYTE $26, $B,$12, $B,$1C, $B,$1E, $B,$FF
 		.BYTE $28,$12, $B,$17, $B,$61,$61,$FF
@@ -3997,827 +3988,427 @@ byte_3ABF6:
 		.BYTE $39,$1A,$1A, $F,$1C,$FF
 		.BYTE $2D,$18, $D,$1C, $F, $B,$1D, $F,$FF
 		.BYTE $2D,$18, $D,$1C, $F, $B,$1D, $F,$FF
-		.BYTE $26,$19,$1F,$18, $D, $F
-		.BYTE $FF
-		.BYTE $26, $B,$1C,$1C,$13, $F,$1C
-		.BYTE $FF
-		.BYTE $26,$13,$15,$13,$16,$16
-		.BYTE $FF
-		.BYTE $27,$12, $B,$18, $D, $F
-		.BYTE $FF
-		.BYTE $25,$18,$1E,$13, $E,$19,$1E, $F
-		.BYTE $FF
-		.BYTE $32,$1F,$17, $C,$33,$10,$10
-		.BYTE $FF
-		.BYTE $27,$1F,$1C,$1D, $F,$33,$10,$10
-		.BYTE $FF
-		.BYTE $36, $F,$1A, $F,$16
-		.BYTE $FF
-		.BYTE $28, $B,$23,$6B,$32,$13,$11,$12,$1E
-		.BYTE $FF
-		.BYTE $33,$1A, $F,$18
-		.BYTE $FF
-		.BYTE $3C,$6B,$36, $B,$23
-		.BYTE $FF
-		.BYTE $33,$1F,$1E,$1D,$13, $E, $F
-		.BYTE $FF
-		.BYTE $2D,$18,$20,$13,$1D,$13, $C,$16, $F
-		.BYTE $FF
-		.BYTE $37,$1E, $F,$1A,$2B,$1F, $B,$1C, $E
-		.BYTE $FF
+		.BYTE $26,$19,$1F,$18, $D, $F,$FF
+		.BYTE $26, $B,$1C,$1C,$13, $F,$1C,$FF
+		.BYTE $26,$13,$15,$13,$16,$16,$FF
+		.BYTE $27,$12, $B,$18, $D, $F,$FF
+		.BYTE $25,$18,$1E,$13, $E,$19,$1E, $F,$FF
+		.BYTE $32,$1F,$17, $C,$33,$10,$10,$FF
+		.BYTE $27,$1F,$1C,$1D, $F,$33,$10,$10,$FF
+		.BYTE $36, $F,$1A, $F,$16,$FF
+		.BYTE $28, $B,$23,$6B,$32,$13,$11,$12,$1E,$FF
+		.BYTE $33,$1A, $F,$18,$FF
+		.BYTE $3C,$6B,$36, $B,$23,$FF
+		.BYTE $33,$1F,$1E,$1D,$13, $E, $F,$FF
+		.BYTE $2D,$18,$20,$13,$1D,$13, $C,$16, $F,$FF
+		.BYTE $37,$1E, $F,$1A,$2B,$1F, $B,$1C, $E,$FF
 _str_lib0_items_low0:
-		.BYTE $27,$23,$1A,$1C, $F,$1D,$1D 
-		.BYTE $FF
-		.BYTE $27,$16,$1F, $C
-		.BYTE $FF
-		.BYTE $27,$19,$1A,$1A, $F,$1C
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D
-		.BYTE $FF
-		.BYTE $2D,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $26, $B,$1E,$1E,$16, $F
-		.BYTE $FF
-		.BYTE $26,$1C,$19, $B, $E
-		.BYTE $FF
-		.BYTE $3B,$13,$24, $B,$1C, $E,$68,$1D
-		.BYTE $FF
-		.BYTE $34,$19,$13,$1D,$19,$18
-		.BYTE $FF
-		.BYTE $2D,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $38,$12,$19,$1C,$18
-		.BYTE $FF
-		.BYTE $2B,$13, $B,$18,$1E
-		.BYTE $FF
-		.BYTE $27,$12, $B,$13,$18
-		.BYTE $FF
-		.BYTE $38,$12,$19,$1C,$68,$1D
-		.BYTE $FF
-		.BYTE $37,$18,$19,$21, $C,$16, $B,$1D,$1E
-		.BYTE $FF
-		.BYTE $28, $F,$17,$19,$18
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $31,$1F,$16,$1E,$13,$6B, $F, $E,$11, $F
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $3E,$19,$17, $C,$13, $F
-		.BYTE $FF
-		.BYTE $2A, $B,$16, $D,$19,$18
-		.BYTE $FF
-		.BYTE $37,$16, $F, $E,$11, $F
-		.BYTE $FF
-		.BYTE $38,$12,$1F,$18, $E, $F,$1C
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $33,$1C,$19, $D,$12,$13
-		.BYTE $FF
-		.BYTE $28,$1C, $B,$11,$19,$18
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $27,$16,$19,$1E,$12, $F,$1D
-		.BYTE $FF
-		.BYTE $38,$1C, $B,$13,$18,$13,$18,$11
-		.BYTE $FF
-		.BYTE $30, $F, $B,$1E,$12, $F,$1C
-		.BYTE $FF
-		.BYTE $2A,$16, $B,$1D,$12,$23
-		.BYTE $FF
-		.BYTE $2C, $B,$16,$10,$50,$34,$16, $B,$1E, $F
-		.BYTE $FF
-		.BYTE $2A,$1F,$16,$16,$50,$34,$16, $B,$1E, $F
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D
-		.BYTE $FF
-		.BYTE $27,$16,$19, $B,$15,$50,$19,$10
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10
-		.BYTE $FF
-		.BYTE $2D,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $25,$18,$13,$17, $B,$16
-		.BYTE $FF
-		.BYTE $2A,$13,$11,$12,$1E,$13,$18,$11
-		.BYTE $FF
-		.BYTE $37, $B, $D,$1C, $F, $E
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10
-		.BYTE $FF
-		.BYTE $3B, $B,$1E, $F,$1C,$50,$2A,$16,$23,$13,$18,$11
-		.BYTE $FF
-		.BYTE $27,$12, $B,$13,$18
-		.BYTE $FF
-		.BYTE $3B, $B,$23,$10, $B,$1C, $F,$1C,$68,$1D
-		.BYTE $FF
-		.BYTE $36, $F,$20, $F, $B,$16,$13,$18,$11
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D
-		.BYTE $FF
-		.BYTE $37,$12, $F,$16,$16
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10
-		.BYTE $FF
-		.BYTE $28,$1C, $B,$11,$19,$18
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E, $F, $E,$11, $F
-		.BYTE $FF
-		.BYTE $25,$18,$11, $F,$16,$68,$1D
-		.BYTE $FF
-		.BYTE $30, $F, $B,$1E,$12, $F,$1C
-		.BYTE $FF
-		.BYTE $2D,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $26,$1C,$19,$18,$24, $F
-		.BYTE $FF
-		.BYTE $37,$13,$16,$20, $F,$1C
-		.BYTE $FF
-		.BYTE $2B,$19,$16, $E, $F,$18
-		.BYTE $FF
+		.BYTE $27,$23,$1A,$1C, $F,$1D,$1D ,$FF
+		.BYTE $27,$16,$1F, $C,$FF
+		.BYTE $27,$19,$1A,$1A, $F,$1C,$FF
+		.BYTE $31, $B,$11,$13, $D,$FF
+		.BYTE $2D,$1C,$19,$18,$FF
+		.BYTE $26, $B,$1E,$1E,$16, $F,$FF
+		.BYTE $26,$1C,$19, $B, $E,$FF
+		.BYTE $3B,$13,$24, $B,$1C, $E,$68,$1D,$FF
+		.BYTE $34,$19,$13,$1D,$19,$18,$FF
+		.BYTE $2D,$1C,$19,$18,$FF
+		.BYTE $38,$12,$19,$1C,$18,$FF
+		.BYTE $2B,$13, $B,$18,$1E,$FF
+		.BYTE $27,$12, $B,$13,$18,$FF
+		.BYTE $38,$12,$19,$1C,$68,$1D,$FF
+		.BYTE $37,$18,$19,$21, $C,$16, $B,$1D,$1E,$FF
+		.BYTE $28, $F,$17,$19,$18,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10,$FF
+		.BYTE $31,$1F,$16,$1E,$13,$6B, $F, $E,$11, $F,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10,$FF
+		.BYTE $3E,$19,$17, $C,$13, $F,$FF
+		.BYTE $2A, $B,$16, $D,$19,$18,$FF
+		.BYTE $37,$16, $F, $E,$11, $F,$FF
+		.BYTE $38,$12,$1F,$18, $E, $F,$1C,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $37,$21,$19,$1C, $E,$50,$19,$10,$FF
+		.BYTE $33,$1C,$19, $D,$12,$13,$FF
+		.BYTE $28,$1C, $B,$11,$19,$18,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $27,$16,$19,$1E,$12, $F,$1D,$FF
+		.BYTE $38,$1C, $B,$13,$18,$13,$18,$11,$FF
+		.BYTE $30, $F, $B,$1E,$12, $F,$1C,$FF
+		.BYTE $2A,$16, $B,$1D,$12,$23,$FF
+		.BYTE $2C, $B,$16,$10,$50,$34,$16, $B,$1E, $F,$FF
+		.BYTE $2A,$1F,$16,$16,$50,$34,$16, $B,$1E, $F,$FF
+		.BYTE $31, $B,$11,$13, $D,$FF
+		.BYTE $27,$16,$19, $B,$15,$50,$19,$10,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10,$FF
+		.BYTE $2D,$1C,$19,$18,$FF
+		.BYTE $25,$18,$13,$17, $B,$16,$FF
+		.BYTE $2A,$13,$11,$12,$1E,$13,$18,$11,$FF
+		.BYTE $37, $B, $D,$1C, $F, $E,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10,$FF
+		.BYTE $3B, $B,$1E, $F,$1C,$50,$2A,$16,$23,$13,$18,$11,$FF
+		.BYTE $27,$12, $B,$13,$18,$FF
+		.BYTE $3B, $B,$23,$10, $B,$1C, $F,$1C,$68,$1D,$FF
+		.BYTE $36, $F,$20, $F, $B,$16,$13,$18,$11,$FF
+		.BYTE $31, $B,$11,$13, $D,$FF
+		.BYTE $37,$12, $F,$16,$16,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$50,$19,$10,$FF
+		.BYTE $28,$1C, $B,$11,$19,$18,$FF
+		.BYTE $37,$21,$19,$1C, $E, $F, $E,$11, $F,$FF
+		.BYTE $25,$18,$11, $F,$16,$68,$1D,$FF
+		.BYTE $30, $F, $B,$1E,$12, $F,$1C,$FF
+		.BYTE $2D,$1C,$19,$18,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$50,$19,$10,$FF
+		.BYTE $26,$1C,$19,$18,$24, $F,$FF
+		.BYTE $37,$13,$16,$20, $F,$1C,$FF
+		.BYTE $2B,$19,$16, $E, $F,$18,$FF
 _str_lib8_items_hi0:
-		.BYTE $2D,$1C,$19,$18 
-		.BYTE $FF
-		.BYTE $31,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D
-		.BYTE $FF
-		.BYTE $39,$18,$16,$1F, $D,$15,$23
-		.BYTE $FF
-		.BYTE $38,$1F,$1C, $C, $B,$18
-		.BYTE $FF
-		.BYTE $32,$19,$12
-		.BYTE $FF
-		.BYTE $30, $F, $B,$1E,$12, $F,$1C
-		.BYTE $FF
-		.BYTE $2D,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $37, $B, $D,$1C, $F, $E
-		.BYTE $FF
-		.BYTE $36,$13,$18,$11,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$12,$19, $F,$1D,$50,$19,$10
-		.BYTE $FF
-		.BYTE $2B,$19,$16, $E, $F,$18
-		.BYTE $FF
-		.BYTE $31, $F,$1E, $F,$19,$1C,$13,$1E, $F
-		.BYTE $FF
-		.BYTE $26,$19,$19,$15,$50,$19,$10
-		.BYTE $FF
-		.BYTE $50,$50
-		.BYTE $FF
-		.BYTE $3B,$13,$24, $B,$1C, $E,$68,$1D
-		.BYTE $FF
-		.BYTE $26,$16, $B, $D,$15
-		.BYTE $FF
-		.BYTE $37, $B,$11, $F,$68,$1D
-		.BYTE $FF
-		.BYTE $31,$13,$1C,$1C,$19,$1C,$50,$19,$10
-		.BYTE $FF
-		.BYTE $3A, $B,$1D, $F,$50,$19,$10
-		.BYTE $FF
-		.BYTE $30, $B,$17,$1A,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $37,$1E,$19,$18, $F,$50,$19,$10
-		.BYTE $FF
-		.BYTE $2D,$18,$20,$13,$1D,$13, $C,$13,$16,$13,$1E,$23
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D
-		.BYTE $FF
-		.BYTE $38,$12,$13, $F,$10,$68,$1D
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D
-		.BYTE $FF
-		.BYTE $2A,$13,$18, $B,$16
-		.BYTE $FF
-		.BYTE $28,$1C, $F, $B,$17
-		.BYTE $FF
-		.BYTE $3B, $B,$15, $F,$50,$39,$1A
-		.BYTE $FF
-		.BYTE $36,$19,$23, $B,$16
-		.BYTE $FF
-		.BYTE $33,$1C,$13, $D,$19,$18
-		.BYTE $FF
-		.BYTE $37,$1E,$1C, $F,$18,$11,$1E,$12
-		.BYTE $FF
-		.BYTE $25,$11,$13,$16,$13,$1E,$23
-		.BYTE $FF
-		.BYTE $3A,$13,$1E, $B,$16,$13,$1E,$23
-		.BYTE $FF
-		.BYTE $30,$1F, $D,$15
-		.BYTE $FF
-		.BYTE $2D,$18,$1E, $F,$16,$16,$13,$11, $F,$18, $D, $F
-		.BYTE $FF
-		.BYTE $25, $D,$19,$1C,$18,$1D,$50,$19,$10
-		.BYTE $FF
-		.BYTE $31, $F, $E,$13, $D, $B,$16
-		.BYTE $FF
-		.BYTE $25,$18,$1E,$13, $E,$19,$1E, $F
-		.BYTE $FF
-		.BYTE $2A, $B,$13,$1C,$23
-		.BYTE $FF
-		.BYTE $3B,$13,$18,$11,$50,$19,$10
-		.BYTE $FF
-		.BYTE $30, $F, $B,$10,$50,$19,$10
-		.BYTE $FF
-		.BYTE $50,$50,$50
-		.BYTE $FF
-		.BYTE $30,$19, $D,$15, $F,$1E,$50,$19,$10
-		.BYTE $FF
-		.BYTE $2A,$1F,$16,$16,$50,$31,$19,$19,$18
-		.BYTE $FF
-		.BYTE $3B, $B,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $37, $B,$13,$16,$19,$1C,$68,$1D
-		.BYTE $FF
-		.BYTE $29, $D,$12,$19,$13,$18,$11
-		.BYTE $FF
-		.BYTE $2A, $B,$13,$1C,$23
-		.BYTE $FF
-		.BYTE $37,$13,$16,$20, $F,$1C
-		.BYTE $FF
-		.BYTE $37,$1A,$12, $F,$1C, $F,$50,$19,$10
-		.BYTE $FF
-		.BYTE $34,$19,$13,$1D,$19,$18,$50,$31,$19,$1E,$12
-		.BYTE $FF
-		.BYTE $37,$1A,$13, $E, $F,$1C,$68,$1D
-		.BYTE $FF
-		.BYTE $37,$1E,$19,$18, $F,$50,$19,$10
-		.BYTE $FF
-		.BYTE $36, $B,$13,$18, $C,$19,$21
-		.BYTE $FF
-		.BYTE $37,$13,$16,$20, $F,$1C
-		.BYTE $FF
-		.BYTE $36, $F, $E
-		.BYTE $FF
-		.BYTE $3D, $F,$16,$16,$19,$21
-		.BYTE $FF
-		.BYTE $34,$1F,$1C,$1A,$16, $F
-		.BYTE $FF
-		.BYTE $26,$16,$1F, $F
-		.BYTE $FF
-		.BYTE $2B,$1C, $F, $F,$18
-		.BYTE $FF
+		.BYTE $2D,$1C,$19,$18 ,$FF
+		.BYTE $31,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$FF
+		.BYTE $39,$18,$16,$1F, $D,$15,$23,$FF
+		.BYTE $38,$1F,$1C, $C, $B,$18,$FF
+		.BYTE $32,$19,$12,$FF
+		.BYTE $30, $F, $B,$1E,$12, $F,$1C,$FF
+		.BYTE $2D,$1C,$19,$18,$FF
+		.BYTE $37, $B, $D,$1C, $F, $E,$FF
+		.BYTE $36,$13,$18,$11,$50,$19,$10,$FF
+		.BYTE $37,$12,$19, $F,$1D,$50,$19,$10,$FF
+		.BYTE $2B,$19,$16, $E, $F,$18,$FF
+		.BYTE $31, $F,$1E, $F,$19,$1C,$13,$1E, $F,$FF
+		.BYTE $26,$19,$19,$15,$50,$19,$10,$FF
+		.BYTE $50,$50,$FF
+		.BYTE $3B,$13,$24, $B,$1C, $E,$68,$1D,$FF
+		.BYTE $26,$16, $B, $D,$15,$FF
+		.BYTE $37, $B,$11, $F,$68,$1D,$FF
+		.BYTE $31,$13,$1C,$1C,$19,$1C,$50,$19,$10,$FF
+		.BYTE $3A, $B,$1D, $F,$50,$19,$10,$FF
+		.BYTE $30, $B,$17,$1A,$50,$19,$10,$FF
+		.BYTE $37,$1E, $B,$10,$10,$50,$19,$10,$FF
+		.BYTE $37,$1E,$19,$18, $F,$50,$19,$10,$FF
+		.BYTE $2D,$18,$20,$13,$1D,$13, $C,$13,$16,$13,$1E,$23,$FF
+		.BYTE $31, $B,$11,$13, $D,$FF
+		.BYTE $38,$12,$13, $F,$10,$68,$1D,$FF
+		.BYTE $31, $B,$11,$13, $D,$FF
+		.BYTE $2A,$13,$18, $B,$16,$FF
+		.BYTE $28,$1C, $F, $B,$17,$FF
+		.BYTE $3B, $B,$15, $F,$50,$39,$1A,$FF
+		.BYTE $36,$19,$23, $B,$16,$FF
+		.BYTE $33,$1C,$13, $D,$19,$18,$FF
+		.BYTE $37,$1E,$1C, $F,$18,$11,$1E,$12,$FF
+		.BYTE $25,$11,$13,$16,$13,$1E,$23,$FF
+		.BYTE $3A,$13,$1E, $B,$16,$13,$1E,$23,$FF
+		.BYTE $30,$1F, $D,$15,$FF
+		.BYTE $2D,$18,$1E, $F,$16,$16,$13,$11, $F,$18, $D, $F,$FF
+		.BYTE $25, $D,$19,$1C,$18,$1D,$50,$19,$10,$FF
+		.BYTE $31, $F, $E,$13, $D, $B,$16,$FF
+		.BYTE $25,$18,$1E,$13, $E,$19,$1E, $F,$FF
+		.BYTE $2A, $B,$13,$1C,$23,$FF
+		.BYTE $3B,$13,$18,$11,$50,$19,$10,$FF
+		.BYTE $30, $F, $B,$10,$50,$19,$10,$FF
+		.BYTE $50,$50,$50,$FF
+		.BYTE $30,$19, $D,$15, $F,$1E,$50,$19,$10,$FF
+		.BYTE $2A,$1F,$16,$16,$50,$31,$19,$19,$18,$FF
+		.BYTE $3B, $B,$1E, $F,$1C,$FF
+		.BYTE $37, $B,$13,$16,$19,$1C,$68,$1D,$FF
+		.BYTE $29, $D,$12,$19,$13,$18,$11,$FF
+		.BYTE $2A, $B,$13,$1C,$23,$FF
+		.BYTE $37,$13,$16,$20, $F,$1C,$FF
+		.BYTE $37,$1A,$12, $F,$1C, $F,$50,$19,$10,$FF
+		.BYTE $34,$19,$13,$1D,$19,$18,$50,$31,$19,$1E,$12,$FF
+		.BYTE $37,$1A,$13, $E, $F,$1C,$68,$1D,$FF
+		.BYTE $37,$1E,$19,$18, $F,$50,$19,$10,$FF
+		.BYTE $36, $B,$13,$18, $C,$19,$21,$FF
+		.BYTE $37,$13,$16,$20, $F,$1C,$FF
+		.BYTE $36, $F, $E,$FF
+		.BYTE $3D, $F,$16,$16,$19,$21,$FF
+		.BYTE $34,$1F,$1C,$1A,$16, $F,$FF
+		.BYTE $26,$16,$1F, $F,$FF
+		.BYTE $2B,$1C, $F, $F,$18,$FF
 _str_lib1_items_low1:
-		.BYTE $37,$1E,$13,	$D,$15 
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $2F,$18,$13,$10, $F
-		.BYTE $FF
-		.BYTE $37,$1A, $F, $B,$1C
-		.BYTE $FF
-		.BYTE $25,$22, $F
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $3B, $B,$18, $E
-		.BYTE $FF
-		.BYTE $32, $F, $F, $E,$16, $F
-		.BYTE $FF
-		.BYTE $27,$16, $B,$21
-		.BYTE $FF
-		.BYTE $3B,$12,$13,$1A
-		.BYTE $FF
-		.BYTE $37,$12, $F, $B,$1C,$1D
-		.BYTE $FF
-		.BYTE $37,$13, $D,$15,$16, $F
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $25,$22, $F
-		.BYTE $FF
-		.BYTE $36, $B,$13,$18
-		.BYTE $FF
-		.BYTE $2B, $B,$13, $B
-		.BYTE $FF
-		.BYTE $36, $F,$10,$16, $F, $D,$1E,$13,$19,$18
-		.BYTE $FF
-		.BYTE $28, $F,$1D,$1E,$1C,$1F, $D,$1E,$13,$19,$18
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $2A,$19,$1C, $D, $F
-		.BYTE $FF
-		.BYTE $2D,$16,$16,$1F,$1D,$13,$19,$18
-		.BYTE $FF
-		.BYTE $37,$16, $B,$1D,$12, $F,$1C
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $2C, $B,$17,$17, $F,$1C
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $38,$12,$1F,$18, $E, $F,$1C
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11,$1D
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E
-		.BYTE $FF
-		.BYTE $2F,$13,$16,$16, $F,$1C
-		.BYTE $FF
-		.BYTE $2E,$1F, $E,$11,$17, $F,$18,$1E
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $37,$1F,$13,$1E
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $27,$16,$19,$1E,$12, $F,$1D
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $29,$20, $B,$1D,$13,$19,$18
-		.BYTE $FF
-		.BYTE $36, $B, $E,$13, $B,$18, $D, $F
-		.BYTE $FF
-		.BYTE $25,$1A,$1C,$19,$18
-		.BYTE $FF
-		.BYTE $37,$1F,$13,$1E
-		.BYTE $FF
-		.BYTE $37,$1F,$13,$1E
-		.BYTE $FF
-		.BYTE $36,$19, $C, $F
-		.BYTE $FF
-		.BYTE $2C, $B, $E, $F,$1D
-		.BYTE $FF
-		.BYTE $27,$16,$19,$1E,$12
-		.BYTE $FF
-		.BYTE $31, $B,$13,$16
-		.BYTE $FF
-		.BYTE $27,$16,$19,$1E,$12, $F,$1D
-		.BYTE $FF
-		.BYTE $37,$21,$13,$17,$1D,$1F,$13,$1E
-		.BYTE $FF
-		.BYTE $26,$13,$15,$13,$18,$13
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $38, $F,$1C,$1C, $B,$10,$13,$1C,$17, $B
-		.BYTE $FF
-		.BYTE $31, $B,$13,$16
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C
-		.BYTE $FF
-		.BYTE $36,$19, $C, $F
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E
-		.BYTE $FF
-		.BYTE $37,$1E,$1C, $F,$18,$11,$1E,$12
-		.BYTE $FF
-		.BYTE $2C, $F,$1C,$19, $F,$1D
-		.BYTE $FF
-		.BYTE $37,$19,$1C,$1C,$19,$21
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E
-		.BYTE $FF
-		.BYTE $37,$12,$13, $F,$16, $E
-		.BYTE $FF
-		.BYTE $27,$1C,$19,$21,$18
-		.BYTE $FF
+		.BYTE $37,$1E,$13,	$D,$15,$FF
+		.BYTE $FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $2F,$18,$13,$10, $F,$FF
+		.BYTE $37,$1A, $F, $B,$1C,$FF
+		.BYTE $25,$22, $F,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $3B, $B,$18, $E,$FF
+		.BYTE $32, $F, $F, $E,$16, $F,$FF
+		.BYTE $27,$16, $B,$21,$FF
+		.BYTE $3B,$12,$13,$1A,$FF
+		.BYTE $37,$12, $F, $B,$1C,$1D,$FF
+		.BYTE $37,$13, $D,$15,$16, $F,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $25,$22, $F,$FF
+		.BYTE $36, $B,$13,$18,$FF
+		.BYTE $2B, $B,$13, $B,$FF
+		.BYTE $36, $F,$10,$16, $F, $D,$1E,$13,$19,$18,$FF
+		.BYTE $28, $F,$1D,$1E,$1C,$1F, $D,$1E,$13,$19,$18,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $2A,$19,$1C, $D, $F,$FF
+		.BYTE $2D,$16,$16,$1F,$1D,$13,$19,$18,$FF
+		.BYTE $37,$16, $B,$1D,$12, $F,$1C,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $2C, $B,$17,$17, $F,$1C,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $38,$12,$1F,$18, $E, $F,$1C,$FF
+		.BYTE $2F,$13,$18,$11,$1D,$FF
+		.BYTE $37,$21,$19,$1C, $E,$FF
+		.BYTE $2F,$13,$16,$16, $F,$1C,$FF
+		.BYTE $2E,$1F, $E,$11,$17, $F,$18,$1E,$FF
+		.BYTE $FF
+		.BYTE $37,$1F,$13,$1E,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $27,$16,$19,$1E,$12, $F,$1D,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $29,$20, $B,$1D,$13,$19,$18,$FF
+		.BYTE $36, $B, $E,$13, $B,$18, $D, $F,$FF
+		.BYTE $25,$1A,$1C,$19,$18,$FF
+		.BYTE $37,$1F,$13,$1E,$FF
+		.BYTE $37,$1F,$13,$1E,$FF
+		.BYTE $36,$19, $C, $F,$FF
+		.BYTE $2C, $B, $E, $F,$1D,$FF
+		.BYTE $27,$16,$19,$1E,$12,$FF
+		.BYTE $31, $B,$13,$16,$FF
+		.BYTE $27,$16,$19,$1E,$12, $F,$1D,$FF
+		.BYTE $37,$21,$13,$17,$1D,$1F,$13,$1E,$FF
+		.BYTE $26,$13,$15,$13,$18,$13,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $38, $F,$1C,$1C, $B,$10,$13,$1C,$17, $B,$FF
+		.BYTE $31, $B,$13,$16,$FF
+		.BYTE $25,$1C,$17,$19,$1C,$FF
+		.BYTE $36,$19, $C, $F,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$FF
+		.BYTE $37,$1E,$1C, $F,$18,$11,$1E,$12,$FF
+		.BYTE $2C, $F,$1C,$19, $F,$1D,$FF
+		.BYTE $37,$19,$1C,$1C,$19,$21,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$FF
+		.BYTE $37,$12,$13, $F,$16, $E,$FF
+		.BYTE $27,$1C,$19,$21,$18,$FF
 _str_lib9_items_hi1:
-		.BYTE $2C, $F,$16,$17, $F,$1E 
+		.BYTE $2C, $F,$16,$17, $F,$1E ,$FF
+		.BYTE $2C, $B,$1E,$FF
+		.BYTE $2C, $F,$16,$17, $F,$1E,$FF
 		.BYTE $FF
-		.BYTE $2C, $B,$1E
+		.BYTE $31, $B,$1D,$15,$FF
+		.BYTE $2C, $F,$16,$17, $F,$1E,$FF
+		.BYTE $31, $B,$1D,$15,$FF
+		.BYTE $25,$17,$1F,$16, $F,$1E,$FF
+		.BYTE $30,$13,$10, $F,$FF
+		.BYTE $2C, $B,$1A,$1A,$13,$18, $F,$1D,$1D,$FF
+		.BYTE $27,$16, $B,$21,$FF
+		.BYTE $25,$1C,$17, $C, $B,$18, $E,$FF
+		.BYTE $37, $B,$1E,$19,$1C,$13,$FF
 		.BYTE $FF
-		.BYTE $2C, $F,$16,$17, $F,$1E
+		.BYTE $36,$13,$18,$11,$FF
+		.BYTE $34, $F,$1A,$1A, $F,$1C,$FF
+		.BYTE $37,$1E,$19,$18, $F,$FF
+		.BYTE $36, $B,$FF
+		.BYTE $28,$1C,$19,$1F,$11,$12,$1E,$FF
+		.BYTE $28, $B,$1C,$15,$18, $F,$1D,$1D,$FF
+		.BYTE $27,$12, $B,$18,$11, $F,$FF
+		.BYTE $30,$13,$10, $F,$FF
+		.BYTE $2C, $F,$1C, $C,$FF
+		.BYTE $26, $B,$16,$16,$FF
+		.BYTE $2F, $F,$23,$FF
+		.BYTE $2F, $F,$23,$FF
+		.BYTE $2F, $F,$23,$FF
+		.BYTE $36,$1F, $C,$23,$FF
+		.BYTE $34,$19,$21, $E, $F,$1C,$FF
+		.BYTE $37, $D,$1C,$19,$16,$16,$FF
 		.BYTE $FF
+		.BYTE $37, $F, $F, $E,$FF
+		.BYTE $37, $F, $F, $E,$FF
+		.BYTE $37, $F, $F, $E,$FF
+		.BYTE $37, $F, $F, $E,$FF
+		.BYTE $37, $F, $F, $E,$FF
+		.BYTE $30,$13,$10, $F,$FF
+		.BYTE $2C, $F,$1C, $C,$FF
+		.BYTE $2C, $F,$1C, $C,$FF
+		.BYTE $3B, $B,$1E, $F,$1C,$FF
+		.BYTE $3B,$23,$20, $F,$1C,$18,$FF
+		.BYTE $3B,$19,$1C,$16, $E,$50,$38,$1C, $F, $F,$FF
 		.BYTE $FF
-		.BYTE $31, $B,$1D,$15
-		.BYTE $FF
-		.BYTE $2C, $F,$16,$17, $F,$1E
-		.BYTE $FF
-		.BYTE $31, $B,$1D,$15
-		.BYTE $FF
-		.BYTE $25,$17,$1F,$16, $F,$1E
-		.BYTE $FF
-		.BYTE $30,$13,$10, $F
-		.BYTE $FF
-		.BYTE $2C, $B,$1A,$1A,$13,$18, $F,$1D,$1D
-		.BYTE $FF
-		.BYTE $27,$16, $B,$21
-		.BYTE $FF
-		.BYTE $25,$1C,$17, $C, $B,$18, $E
-		.BYTE $FF
-		.BYTE $37, $B,$1E,$19,$1C,$13
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $36,$13,$18,$11
-		.BYTE $FF
-		.BYTE $34, $F,$1A,$1A, $F,$1C
-		.BYTE $FF
-		.BYTE $37,$1E,$19,$18, $F
-		.BYTE $FF
-		.BYTE $36, $B
-		.BYTE $FF
-		.BYTE $28,$1C,$19,$1F,$11,$12,$1E
-		.BYTE $FF
-		.BYTE $28, $B,$1C,$15,$18, $F,$1D,$1D
-		.BYTE $FF
-		.BYTE $27,$12, $B,$18,$11, $F
-		.BYTE $FF
-		.BYTE $30,$13,$10, $F
-		.BYTE $FF
-		.BYTE $2C, $F,$1C, $C
-		.BYTE $FF
-		.BYTE $26, $B,$16,$16
-		.BYTE $FF
-		.BYTE $2F, $F,$23
-		.BYTE $FF
-		.BYTE $2F, $F,$23
-		.BYTE $FF
-		.BYTE $2F, $F,$23
-		.BYTE $FF
-		.BYTE $36,$1F, $C,$23
-		.BYTE $FF
-		.BYTE $34,$19,$21, $E, $F,$1C
-		.BYTE $FF
-		.BYTE $37, $D,$1C,$19,$16,$16
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $37, $F, $F, $E
-		.BYTE $FF
-		.BYTE $37, $F, $F, $E
-		.BYTE $FF
-		.BYTE $37, $F, $F, $E
-		.BYTE $FF
-		.BYTE $37, $F, $F, $E
-		.BYTE $FF
-		.BYTE $37, $F, $F, $E
-		.BYTE $FF
-		.BYTE $30,$13,$10, $F
-		.BYTE $FF
-		.BYTE $2C, $F,$1C, $C
-		.BYTE $FF
-		.BYTE $2C, $F,$1C, $C
-		.BYTE $FF
-		.BYTE $3B, $B,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $3B,$23,$20, $F,$1C,$18
-		.BYTE $FF
-		.BYTE $3B,$19,$1C,$16, $E,$50,$38,$1C, $F, $F
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $30,$19,$20, $F
-		.BYTE $FF
-		.BYTE $2C, $F,$1C, $C
-		.BYTE $FF
-		.BYTE $26,$16, $B,$1D,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $38,$12,$13,$11,$12,$50,$26,$19,$18, $F
-		.BYTE $FF
-		.BYTE $2A,$16,$1F,$1E, $F
-		.BYTE $FF
-		.BYTE $2A,$16,$1F,$1E, $F
-		.BYTE $FF
-		.BYTE $2C, $B,$1C,$1A
-		.BYTE $FF
-		.BYTE $30,$13,$11,$12,$1E
-		.BYTE $FF
-		.BYTE $34,$19,$21, $E, $F,$1C
-		.BYTE $FF
-		.BYTE $3B, $F, $C
-		.BYTE $FF
-		.BYTE $37,$1F,$18,$16,$13,$11,$12,$1E
-		.BYTE $FF
-		.BYTE $28,$1C,$19,$1A
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
-		.BYTE $33,$1C, $C
-		.BYTE $FF
+		.BYTE $30,$19,$20, $F,$FF
+		.BYTE $2C, $F,$1C, $C,$FF
+		.BYTE $26,$16, $B,$1D,$1E, $F,$1C,$FF
+		.BYTE $38,$12,$13,$11,$12,$50,$26,$19,$18, $F,$FF
+		.BYTE $2A,$16,$1F,$1E, $F,$FF
+		.BYTE $2A,$16,$1F,$1E, $F,$FF
+		.BYTE $2C, $B,$1C,$1A,$FF
+		.BYTE $30,$13,$11,$12,$1E,$FF
+		.BYTE $34,$19,$21, $E, $F,$1C,$FF
+		.BYTE $3B, $F, $C,$FF
+		.BYTE $37,$1F,$18,$16,$13,$11,$12,$1E,$FF
+		.BYTE $28,$1C,$19,$1A,$FF
+		.BYTE $33,$1C, $C,$FF
+		.BYTE $33,$1C, $C,$FF
+		.BYTE $33,$1C, $C,$FF
+		.BYTE $33,$1C, $C,$FF
+		.BYTE $33,$1C, $C,$FF
+		.BYTE $33,$1C, $C,$FF
 _str_lib2_enemy_low0:
-		.BYTE $37,$16,$13,$17, $F,$A5 
-		.BYTE $FF
-		.BYTE $26,$16, $B, $D,$15,$50,$36, $B,$20, $F,$18,$A5
-		.BYTE $FF
-		.BYTE $2C,$19,$1C,$18, $F, $E
-		.BYTE $FF
-		.BYTE $2B,$13, $B,$18,$1E
-		.BYTE $FF
-		.BYTE $31, $B,$1D,$15, $F, $E,$50,$31,$19,$1E,$12,$A5
-		.BYTE $FF
-		.BYTE $2A,$1C,$19,$11,$11,$19,$1C, $F,$A5
-		.BYTE $FF
-		.BYTE $26, $B, $C, $C,$16, $F,$A5
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13, $D,$13, $B,$18,$A5
-		.BYTE $FF
-		.BYTE $37, $D,$19,$1C,$1A,$13,$19,$18
-		.BYTE $FF
-		.BYTE $2C, $F, $B,$16, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $28, $F,$17,$19,$18
-		.BYTE $FF
-		.BYTE $37,$1A,$13,$15, $F, $E,$50,$2C, $B,$1C, $F,$A5
-		.BYTE $FF
-		.BYTE $34,$19,$13,$1D,$19,$18,$50,$38,$19, $B, $E,$A5
-		.BYTE $FF
-		.BYTE $27, $B,$1E, $F,$1C,$1A,$13,$16,$16, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $2C,$1F,$17, $B,$18, $B, $C, $B,$1E,$A5
-		.BYTE $FF
-		.BYTE $34,$1F,$1E,$1C, $F,$1A,$1F,$1A,$A5
-		.BYTE $FF
-		.BYTE $2F,$13,$16,$16, $F,$1C,$50,$26, $F, $F,$A5
-		.BYTE $FF
-		.BYTE $25,$1C,$17,$23,$50,$27,$1C, $B, $C,$A5
-		.BYTE $FF
-		.BYTE $2B, $B,$1D,$50,$27,$16,$19,$1F, $E,$A5
-		.BYTE $FF
-		.BYTE $28, $F,$17,$19,$18,$50,$38,$19, $B, $E,$1D,$1E,$19,$19,$16,$A5
-		.BYTE $FF
-		.BYTE $34,$19,$13,$1D,$19,$18
-		.BYTE $FF
-		.BYTE $25,$20, $F,$18,$11, $F,$1C
-		.BYTE $FF
-		.BYTE $31, $B, $E,$12,$19,$1F,$18, $E,$A5
-		.BYTE $FF
-		.BYTE $28, $F, $B, $E,$16,$23
-		.BYTE $FF
-		.BYTE $37,$12, $B, $E,$19,$21,$A5
-		.BYTE $FF
-		.BYTE $3A, $B,$17,$1A,$13,$1C, $F,$A5
-		.BYTE $FF
-		.BYTE $31, $B,$18,$6B,$29, $B,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $36,$19,$11,$1F, $F
-		.BYTE $FF
-		.BYTE $3A, $B,$17,$1A,$13,$1C, $F,$50,$27, $B,$1E,$A5
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11
-		.BYTE $FF
-		.BYTE $3B,$13,$16, $E,$50,$25,$1A, $F,$A5
-		.BYTE $FF
-		.BYTE $38,$1C,$13, $D,$15,$50,$26, $B,$11,$A5
-		.BYTE $FF
-		.BYTE $31,$1F,$17,$17,$23,$50,$31,$A1
-		.BYTE $FF
-		.BYTE $2D,$18,$10, $F,$1C,$18,$1F,$1D
-		.BYTE $FF
-		.BYTE $30,$1F,$17,$1A,$1F,$1D,$A7
-		.BYTE $FF
-		.BYTE $2A,$16, $B,$17, $B,$1A, $F, $E, $F,$A5
-		.BYTE $FF
-		.BYTE $31,$1F,$17,$17,$A0
-		.BYTE $FF
-		.BYTE $31, $B,$11, $F
-		.BYTE $FF
-		.BYTE $2C,$1F,$18,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $25,$20, $F,$18,$11, $F,$1C
-		.BYTE $FF
-		.BYTE $32, $F,$20,$A5
-		.BYTE $FF
-		.BYTE $2C, $F, $B,$1E,$50,$27,$16,$19,$1F, $E,$A5
-		.BYTE $FF
-		.BYTE $38,$19,$18,$11,$1F, $F, $C, $F, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $27,$1F,$1C, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $36, $B,$17,$17,$19,$1C, $F,$A5
-		.BYTE $FF
-		.BYTE $27, $B,$1E,$1F,$16, $B,$A5
-		.BYTE $FF
-		.BYTE $29,$20,$13,$16,$50,$31, $B,$11, $F,$A5
-		.BYTE $FF
-		.BYTE $37,$13,$17,$13, $B, $D,$A5
-		.BYTE $FF
-		.BYTE $2B, $B,$1C,$1F, $E, $B,$A5
-		.BYTE $FF
-		.BYTE $31, $F,$1E, $B,$16,$50,$37,$16,$13,$17, $F,$A5
-		.BYTE $FF
-		.BYTE $2B,$19, $B,$1E, $F,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $29,$22, $F, $D,$1F,$1E,$13,$19,$18, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $28, $F,$17,$19,$18,$13,$1E, $F,$A5
-		.BYTE $FF
-		.BYTE $28, $F,$1C, $B,$18,$11, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $31, $B,$18,$6B,$29, $B,$1E, $F,$1C
-		.BYTE $FF
-		.BYTE $29,$16,$13,$17,$13,$18, $B,$1E,$19,$1C,$A5
-		.BYTE $FF
-		.BYTE $2B,$1C, $F, $B,$1E,$50,$26, $F, $B,$15,$A5
-		.BYTE $FF
-		.BYTE $37,$16,$13,$17, $F,$50,$37,$18, $B,$13,$A3
-		.BYTE $FF
-		.BYTE $37,$15,$23,$50,$28,$1C, $B,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $26, $B,$1C,$18, $B, $C, $B,$1D,$A7
-		.BYTE $FF
-		.BYTE $3B,$13,$1E, $D,$12,$A4
-		.BYTE $FF
-		.BYTE $25,$20, $F,$18,$11, $F,$1C
-		.BYTE $FF
-		.BYTE $2D,$18,$10, $F,$1C,$18,$1F,$1D
-		.BYTE $FF
-		.BYTE $31, $B,$1C,$13,$18, $F
-		.BYTE $FF
+		.BYTE $37,$16,$13,$17, $F,$A5 ,$FF
+		.BYTE $26,$16, $B, $D,$15,$50,$36, $B,$20, $F,$18,$A5,$FF
+		.BYTE $2C,$19,$1C,$18, $F, $E,$FF
+		.BYTE $2B,$13, $B,$18,$1E,$FF
+		.BYTE $31, $B,$1D,$15, $F, $E,$50,$31,$19,$1E,$12,$A5,$FF
+		.BYTE $2A,$1C,$19,$11,$11,$19,$1C, $F,$A5,$FF
+		.BYTE $26, $B, $C, $C,$16, $F,$A5,$FF
+		.BYTE $31, $B,$11,$13, $D,$13, $B,$18,$A5,$FF
+		.BYTE $37, $D,$19,$1C,$1A,$13,$19,$18,$FF
+		.BYTE $2C, $F, $B,$16, $F,$1C,$A5,$FF
+		.BYTE $28, $F,$17,$19,$18,$FF
+		.BYTE $37,$1A,$13,$15, $F, $E,$50,$2C, $B,$1C, $F,$A5,$FF
+		.BYTE $34,$19,$13,$1D,$19,$18,$50,$38,$19, $B, $E,$A5,$FF
+		.BYTE $27, $B,$1E, $F,$1C,$1A,$13,$16,$16, $B,$1C,$A5,$FF
+		.BYTE $2C,$1F,$17, $B,$18, $B, $C, $B,$1E,$A5,$FF
+		.BYTE $34,$1F,$1E,$1C, $F,$1A,$1F,$1A,$A5,$FF
+		.BYTE $2F,$13,$16,$16, $F,$1C,$50,$26, $F, $F,$A5,$FF
+		.BYTE $25,$1C,$17,$23,$50,$27,$1C, $B, $C,$A5,$FF
+		.BYTE $2B, $B,$1D,$50,$27,$16,$19,$1F, $E,$A5,$FF
+		.BYTE $28, $F,$17,$19,$18,$50,$38,$19, $B, $E,$1D,$1E,$19,$19,$16,$A5,$FF
+		.BYTE $34,$19,$13,$1D,$19,$18,$FF
+		.BYTE $25,$20, $F,$18,$11, $F,$1C,$FF
+		.BYTE $31, $B, $E,$12,$19,$1F,$18, $E,$A5,$FF
+		.BYTE $28, $F, $B, $E,$16,$23,$FF
+		.BYTE $37,$12, $B, $E,$19,$21,$A5,$FF
+		.BYTE $3A, $B,$17,$1A,$13,$1C, $F,$A5,$FF
+		.BYTE $31, $B,$18,$6B,$29, $B,$1E, $F,$1C,$FF
+		.BYTE $36,$19,$11,$1F, $F,$FF
+		.BYTE $3A, $B,$17,$1A,$13,$1C, $F,$50,$27, $B,$1E,$A5,$FF
+		.BYTE $2F,$13,$18,$11,$FF
+		.BYTE $3B,$13,$16, $E,$50,$25,$1A, $F,$A5,$FF
+		.BYTE $38,$1C,$13, $D,$15,$50,$26, $B,$11,$A5,$FF
+		.BYTE $31,$1F,$17,$17,$23,$50,$31,$A1,$FF
+		.BYTE $2D,$18,$10, $F,$1C,$18,$1F,$1D,$FF
+		.BYTE $30,$1F,$17,$1A,$1F,$1D,$A7,$FF
+		.BYTE $2A,$16, $B,$17, $B,$1A, $F, $E, $F,$A5,$FF
+		.BYTE $31,$1F,$17,$17,$A0,$FF
+		.BYTE $31, $B,$11, $F,$FF
+		.BYTE $2C,$1F,$18,$1E, $F,$1C,$FF
+		.BYTE $25,$20, $F,$18,$11, $F,$1C,$FF
+		.BYTE $32, $F,$20,$A5,$FF
+		.BYTE $2C, $F, $B,$1E,$50,$27,$16,$19,$1F, $E,$A5,$FF
+		.BYTE $38,$19,$18,$11,$1F, $F, $C, $F, $B,$1C,$A5,$FF
+		.BYTE $27,$1F,$1C, $F,$1C,$A5,$FF
+		.BYTE $36, $B,$17,$17,$19,$1C, $F,$A5,$FF
+		.BYTE $27, $B,$1E,$1F,$16, $B,$A5,$FF
+		.BYTE $29,$20,$13,$16,$50,$31, $B,$11, $F,$A5,$FF
+		.BYTE $37,$13,$17,$13, $B, $D,$A5,$FF
+		.BYTE $2B, $B,$1C,$1F, $E, $B,$A5,$FF
+		.BYTE $31, $F,$1E, $B,$16,$50,$37,$16,$13,$17, $F,$A5,$FF
+		.BYTE $2B,$19, $B,$1E, $F,$11,$19,$18,$A5,$FF
+		.BYTE $29,$22, $F, $D,$1F,$1E,$13,$19,$18, $F,$1C,$A5,$FF
+		.BYTE $28, $F,$17,$19,$18,$13,$1E, $F,$A5,$FF
+		.BYTE $28, $F,$1C, $B,$18,$11, $F,$1C,$A5,$FF
+		.BYTE $31, $B,$18,$6B,$29, $B,$1E, $F,$1C,$FF
+		.BYTE $29,$16,$13,$17,$13,$18, $B,$1E,$19,$1C,$A5,$FF
+		.BYTE $2B,$1C, $F, $B,$1E,$50,$26, $F, $B,$15,$A5,$FF
+		.BYTE $37,$16,$13,$17, $F,$50,$37,$18, $B,$13,$A3,$FF
+		.BYTE $37,$15,$23,$50,$28,$1C, $B,$11,$19,$18,$A5,$FF
+		.BYTE $26, $B,$1C,$18, $B, $C, $B,$1D,$A7,$FF
+		.BYTE $3B,$13,$1E, $D,$12,$A4,$FF
+		.BYTE $25,$20, $F,$18,$11, $F,$1C,$FF
+		.BYTE $2D,$18,$10, $F,$1C,$18,$1F,$1D,$FF
+		.BYTE $31, $B,$1C,$13,$18, $F,$FF
 _str_libA_enemy_hi0:
-		.BYTE $31, $B,$18,$50,$33,$68,$50,$3B, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $31, $F,$1C,$24,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11,$50,$37,$1B,$1F,$13, $E,$A5
-		.BYTE $FF
-		.BYTE $27,$1C, $B, $C,$1F,$1D,$A7
-		.BYTE $FF
-		.BYTE $31, $F,$1C,$24,$19,$18, $D,$13, $B,$18,$A5
-		.BYTE $FF
-		.BYTE $2C, $B, $E, $F,$1D,$68
-		.BYTE $FF
-		.BYTE $2A,$13, $F,$1C, $D, $F,$50,$26, $F, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $2C,$19,$1C,$15,$A5
-		.BYTE $FF
-		.BYTE $26,$13,$11,$12,$19,$1C,$18,$A5
-		.BYTE $FF
-		.BYTE $37,$1E,$13,$18,$11,$21,$13,$18,$11,$A5
-		.BYTE $FF
-		.BYTE $3A, $F,$18,$19,$17
-		.BYTE $FF
-		.BYTE $26,$16,$1F, $F,$50,$26, $F, $B,$15,$A5
-		.BYTE $FF
-		.BYTE $30, $F,$1E,$12, $B,$16
-		.BYTE $FF
-		.BYTE $25,$20, $F,$18,$11, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $30, $B,$20,$A6
-		.BYTE $FF
-		.BYTE $3B,$13,$1E, $D,$12
-		.BYTE $FF
-		.BYTE $33,$16, $E,$50,$2C, $B,$11,$A5
-		.BYTE $FF
-		.BYTE $38, $F,$1C,$1C,$19,$1C
-		.BYTE $FF
-		.BYTE $2B,$16, $B, $D,$13, $F,$1C
-		.BYTE $FF
-		.BYTE $3B,$23,$20, $F,$1C,$18,$A5
-		.BYTE $FF
-		.BYTE $2F,$19,$18,$11,$A5
-		.BYTE $FF
-		.BYTE $38,$19,$1C,$1E,$1C, $B,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $29,$16,$23,$1D,$13,$1F,$17
-		.BYTE $FF
-		.BYTE $26,$19,$17, $C,$50,$27,$1C, $B,$11,$A5
-		.BYTE $FF
-		.BYTE $2B,$1C,$13,$24,$24,$16,$A0
-		.BYTE $FF
-		.BYTE $3A,$19,$19, $E,$19,$19
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11
-		.BYTE $FF
-		.BYTE $37,$18,$19,$21,$50,$28,$1C, $B,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $38,$1C,$19,$16,$16,$A5
-		.BYTE $FF
-		.BYTE $2A,$1C,$19,$1D,$1E,$50,$27,$16,$19,$1F, $E,$A5
-		.BYTE $FF
-		.BYTE $28, $B,$18, $D,$13,$18,$11
-		.BYTE $FF
-		.BYTE $31,$13,$18,$13, $E, $F,$17,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $38, $F,$18,$1E, $B, $D,$16, $F,$1D,$A7
-		.BYTE $FF
-		.BYTE $37,$15, $F,$16, $F,$1E,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $31,$13,$17,$13, $D,$A5
-		.BYTE $FF
-		.BYTE $31, $B,$1C, $B,$1F, $E, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $2C,$19,$16,$19,$11,$12,$19,$1D,$1E,$A5
-		.BYTE $FF
-		.BYTE $33,$1C,$19, $D,$12,$13,$A5
-		.BYTE $FF
-		.BYTE $37,$1E,$19,$18, $F
-		.BYTE $FF
-		.BYTE $37, $B,$16, $B,$17, $B,$18, $E, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $36, $F, $E,$50,$37,$16,$13,$17, $F,$A5
-		.BYTE $FF
-		.BYTE $2B,$19,$19,$1A,$13,$A4
-		.BYTE $FF
-		.BYTE $3A,$13,$16, $F,$50,$37,$12, $B, $E,$19,$21,$A5
-		.BYTE $FF
-		.BYTE $3A,$19,$19, $E,$19,$19
-		.BYTE $FF
-		.BYTE $31, $F,$1E, $B,$16
-		.BYTE $FF
-		.BYTE $2B,$12,$19,$1F,$16,$A5
-		.BYTE $FF
-		.BYTE $30,$13,$19,$18,$12, $F, $B, $E,$A5
-		.BYTE $FF
-		.BYTE $26,$19,$1D,$1D,$50,$38,$1C,$19,$16,$16,$A5
-		.BYTE $FF
-		.BYTE $2B,$19,$16, $E,$50,$26, $B,$1D,$12, $F,$1C,$A5
-		.BYTE $FF
-		.BYTE $37, $D, $B,$16,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11,$50,$31, $F,$1C,$24,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $2F,$1C, $B,$11, $B, $D,$16, $F,$1D,$A7
-		.BYTE $FF
-		.BYTE $28, $B,$1C,$1E,$12, $C, $F, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $2B,$1C, $B,$18,$13,$1E, $F
-		.BYTE $FF
-		.BYTE $30, $F,$19,$18, $B,$A5
-		.BYTE $FF
-		.BYTE $25,$1C, $D,$12,$17, $B,$11, $F,$A5
-		.BYTE $FF
-		.BYTE $31, $B,$11,$13,$21,$23,$20, $F,$1C,$18,$A5
-		.BYTE $FF
-		.BYTE $3B,$13,$18,$11, $F, $E
-		.BYTE $FF
-		.BYTE $2C,$23, $E,$1C, $B,$A5
-		.BYTE $FF
-		.BYTE $38,$1C,$19,$16,$16,$50,$2F,$13,$18,$11,$A5
-		.BYTE $FF
-		.BYTE $2B,$1C, $F, $F,$18
-		.BYTE $FF
-		.BYTE $26, $B,$1C,$19,$11,$A5
-		.BYTE $FF
-		.BYTE $34,$1F,$1E,$1C, $F,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $30,$13,$19,$18,$1C,$19, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $37,$21,$19,$1C, $E,$19,$13, $E,$A5
-		.BYTE $FF
-		.BYTE $2F,$13,$18,$11,$50,$2C,$23, $E,$1C, $B,$A5
-		.BYTE $FF
-		.BYTE $26, $B,$1C, $B,$17,$19,$1D
-		.BYTE $FF
-		.BYTE $26, $B,$1C, $B,$17,$19,$1D
-		.BYTE $FF
-		.BYTE $26, $B,$1C, $B,$17,$19,$1D,$A5
-		.BYTE $FF
-		.BYTE $3E,$19,$17, $B,$A5
-		.BYTE $FF
-		.BYTE $3E,$19,$17, $B,$A5
-		.BYTE $FF
-		.BYTE $33,$1C,$1E, $F,$11, $B,$A5
-		.BYTE $FF
-		.BYTE $2F, $B,$18, $E, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $2F, $B,$18, $E, $B,$1C,$A5
-		.BYTE $FF
-		.BYTE $2F, $B,$18, $E, $B,$1C
-		.BYTE $FF
+		.BYTE $31, $B,$18,$50,$33,$68,$50,$3B, $B,$1C,$A5,$FF
+		.BYTE $31, $F,$1C,$24,$19,$18,$A5,$FF
+		.BYTE $2F,$13,$18,$11,$50,$37,$1B,$1F,$13, $E,$A5,$FF
+		.BYTE $27,$1C, $B, $C,$1F,$1D,$A7,$FF
+		.BYTE $31, $F,$1C,$24,$19,$18, $D,$13, $B,$18,$A5,$FF
+		.BYTE $2C, $B, $E, $F,$1D,$68,$FF
+		.BYTE $2A,$13, $F,$1C, $D, $F,$50,$26, $F, $B,$1C,$A5,$FF
+		.BYTE $2C,$19,$1C,$15,$A5,$FF
+		.BYTE $26,$13,$11,$12,$19,$1C,$18,$A5,$FF
+		.BYTE $37,$1E,$13,$18,$11,$21,$13,$18,$11,$A5,$FF
+		.BYTE $3A, $F,$18,$19,$17,$FF
+		.BYTE $26,$16,$1F, $F,$50,$26, $F, $B,$15,$A5,$FF
+		.BYTE $30, $F,$1E,$12, $B,$16,$FF
+		.BYTE $25,$20, $F,$18,$11, $F,$1C,$A5,$FF
+		.BYTE $30, $B,$20,$A6,$FF
+		.BYTE $3B,$13,$1E, $D,$12,$FF
+		.BYTE $33,$16, $E,$50,$2C, $B,$11,$A5,$FF
+		.BYTE $38, $F,$1C,$1C,$19,$1C,$FF
+		.BYTE $2B,$16, $B, $D,$13, $F,$1C,$FF
+		.BYTE $3B,$23,$20, $F,$1C,$18,$A5,$FF
+		.BYTE $2F,$19,$18,$11,$A5,$FF
+		.BYTE $38,$19,$1C,$1E,$1C, $B,$11,$19,$18,$A5,$FF
+		.BYTE $29,$16,$23,$1D,$13,$1F,$17,$FF
+		.BYTE $26,$19,$17, $C,$50,$27,$1C, $B,$11,$A5,$FF
+		.BYTE $2B,$1C,$13,$24,$24,$16,$A0,$FF
+		.BYTE $3A,$19,$19, $E,$19,$19,$FF
+		.BYTE $2F,$13,$18,$11,$FF
+		.BYTE $37,$18,$19,$21,$50,$28,$1C, $B,$11,$19,$18,$A5,$FF
+		.BYTE $38,$1C,$19,$16,$16,$A5,$FF
+		.BYTE $2A,$1C,$19,$1D,$1E,$50,$27,$16,$19,$1F, $E,$A5,$FF
+		.BYTE $28, $B,$18, $D,$13,$18,$11,$FF
+		.BYTE $31,$13,$18,$13, $E, $F,$17,$19,$18,$A5,$FF
+		.BYTE $38, $F,$18,$1E, $B, $D,$16, $F,$1D,$A7,$FF
+		.BYTE $37,$15, $F,$16, $F,$1E,$19,$18,$A5,$FF
+		.BYTE $31,$13,$17,$13, $D,$A5,$FF
+		.BYTE $31, $B,$1C, $B,$1F, $E, $F,$1C,$A5,$FF
+		.BYTE $2C,$19,$16,$19,$11,$12,$19,$1D,$1E,$A5,$FF
+		.BYTE $33,$1C,$19, $D,$12,$13,$A5,$FF
+		.BYTE $37,$1E,$19,$18, $F,$FF
+		.BYTE $37, $B,$16, $B,$17, $B,$18, $E, $F,$1C,$A5,$FF
+		.BYTE $36, $F, $E,$50,$37,$16,$13,$17, $F,$A5,$FF
+		.BYTE $2B,$19,$19,$1A,$13,$A4,$FF
+		.BYTE $3A,$13,$16, $F,$50,$37,$12, $B, $E,$19,$21,$A5,$FF
+		.BYTE $3A,$19,$19, $E,$19,$19,$FF
+		.BYTE $31, $F,$1E, $B,$16,$FF
+		.BYTE $2B,$12,$19,$1F,$16,$A5,$FF
+		.BYTE $30,$13,$19,$18,$12, $F, $B, $E,$A5,$FF
+		.BYTE $26,$19,$1D,$1D,$50,$38,$1C,$19,$16,$16,$A5,$FF
+		.BYTE $2B,$19,$16, $E,$50,$26, $B,$1D,$12, $F,$1C,$A5,$FF
+		.BYTE $37, $D, $B,$16,$11,$19,$18,$A5,$FF
+		.BYTE $2F,$13,$18,$11,$50,$31, $F,$1C,$24,$19,$18,$A5,$FF
+		.BYTE $2F,$1C, $B,$11, $B, $D,$16, $F,$1D,$A7,$FF
+		.BYTE $28, $B,$1C,$1E,$12, $C, $F, $B,$1C,$A5,$FF
+		.BYTE $2B,$1C, $B,$18,$13,$1E, $F,$FF
+		.BYTE $30, $F,$19,$18, $B,$A5,$FF
+		.BYTE $25,$1C, $D,$12,$17, $B,$11, $F,$A5,$FF
+		.BYTE $31, $B,$11,$13,$21,$23,$20, $F,$1C,$18,$A5,$FF
+		.BYTE $3B,$13,$18,$11, $F, $E,$FF
+		.BYTE $2C,$23, $E,$1C, $B,$A5,$FF
+		.BYTE $38,$1C,$19,$16,$16,$50,$2F,$13,$18,$11,$A5,$FF
+		.BYTE $2B,$1C, $F, $F,$18,$FF
+		.BYTE $26, $B,$1C,$19,$11,$A5,$FF
+		.BYTE $34,$1F,$1E,$1C, $F,$11,$19,$18,$A5,$FF
+		.BYTE $30,$13,$19,$18,$1C,$19, $B,$1C,$A5,$FF
+		.BYTE $37,$21,$19,$1C, $E,$19,$13, $E,$A5,$FF
+		.BYTE $2F,$13,$18,$11,$50,$2C,$23, $E,$1C, $B,$A5,$FF
+		.BYTE $26, $B,$1C, $B,$17,$19,$1D,$FF
+		.BYTE $26, $B,$1C, $B,$17,$19,$1D,$FF
+		.BYTE $26, $B,$1C, $B,$17,$19,$1D,$A5,$FF
+		.BYTE $3E,$19,$17, $B,$A5,$FF
+		.BYTE $3E,$19,$17, $B,$A5,$FF
+		.BYTE $33,$1C,$1E, $F,$11, $B,$A5,$FF
+		.BYTE $2F, $B,$18, $E, $B,$1C,$A5,$FF
+		.BYTE $2F, $B,$18, $E, $B,$1C,$A5,$FF
+		.BYTE $2F, $B,$18, $E, $B,$1C,$FF
 _str_lib3_enemy_low1:
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $36, $B, $C, $C,$13,$1E,$A5
-		.BYTE $FF
-		.BYTE $25,$18,$1E, $F, $B,$1E, $F,$1C,$A5
-		.BYTE $FF
+		.BYTE $36, $B, $C, $C,$13,$1E,$A5,$FF
+		.BYTE $25,$18,$1E, $F, $B,$1E, $F,$1C,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $3B, $B,$1D,$1A,$A5
+		.BYTE $3B, $B,$1D,$1A,$A5,$FF
 		.BYTE $FF
-		.BYTE $FF
-		.BYTE $25,$18,$1E, $F, $B,$1E, $F,$1C,$A5
+		.BYTE $25,$18,$1E, $F, $B,$1E, $F,$1C,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
@@ -4827,36 +4418,25 @@ _str_lib3_enemy_low1:
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
+		.BYTE $37,$13,$16,$15,$21,$19,$1C,$17,$A5,$FF
+		.BYTE $36, $B,$20, $F,$18,$A5,$FF
 		.BYTE $FF
-		.BYTE $37,$13,$16,$15,$21,$19,$1C,$17,$A5
-		.BYTE $FF
-		.BYTE $36, $B,$20, $F,$18,$A5
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $38,$19, $B, $E,$1D,$1E,$19,$19,$16,$A5
+		.BYTE $38,$19, $B, $E,$1D,$1E,$19,$19,$16,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $FF
-		.BYTE $31,$19,$1E,$12,$A5
-		.BYTE $FF
-		.BYTE $2F,$18,$13,$11,$12,$1E,$A5
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $2A,$1C,$19,$11,$11,$19,$1C, $F,$A5
+		.BYTE $31,$19,$1E,$12,$A5,$FF
+		.BYTE $2F,$18,$13,$11,$12,$1E,$A5,$FF,$FF
+		.BYTE $2A,$1C,$19,$11,$11,$19,$1C, $F,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $FF
-		.BYTE $27,$1C, $B, $C,$A5
-		.BYTE $FF
+		.BYTE $27,$1C, $B, $C,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $38,$19, $B, $E,$1D,$1E,$19,$A2
-		.BYTE $FF
-		.BYTE $2A,$16,$A0
-		.BYTE $FF
-		.BYTE $2E, $B, $D,$15, $B,$16,$A5
+		.BYTE $38,$19, $B, $E,$1D,$1E,$19,$A2,$FF
+		.BYTE $2A,$16,$A0,$FF
+		.BYTE $2E, $B, $D,$15, $B,$16,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
@@ -4871,64 +4451,62 @@ _str_lib3_enemy_low1:
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $FF
-		.BYTE $27,$12, $F,$1D,$1E,$A5
-		.BYTE $FF
+		.BYTE $27,$12, $F,$1D,$1E,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $26, $F, $B,$15,$A5
-		.BYTE $FF
-		.BYTE $2F,$18,$13,$11,$12,$1E,$A5
-		.BYTE $FF
-		.BYTE $37,$16,$13,$17, $F,$A5
-		.BYTE $FF
+		.BYTE $26, $F, $B,$15,$A5,$FF
+		.BYTE $2F,$18,$13,$11,$12,$1E,$A5,$FF
+		.BYTE $37,$16,$13,$17, $F,$A5,$FF
 _str_libB_enemy_hi1:
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $27,$19,$18, $E,$19,$1C,$A5
+		.BYTE $27,$19,$18, $E,$19,$1C,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
+		.BYTE $3E,$19,$17, $C,$13, $F,$A5,$FF
 		.BYTE $FF
-		.BYTE $3E,$19,$17, $C,$13, $F,$A5
+		.BYTE $25,$1C,$17,$19,$1C,$A5,$FF
 		.BYTE $FF
+		.BYTE $26, $B,$1D,$12, $F,$1C,$FF
+		.BYTE $28,$19, $D,$1E,$19,$1C,$A5,$FF
 		.BYTE $FF
-		.BYTE $25,$1C,$17,$19,$1C,$A5
+		.BYTE $37,$12, $B, $E,$19,$21,$A5,$FF
+		.BYTE $26, $B,$1D,$12, $F,$1C,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $26, $B,$1D,$12, $F,$1C
 		.BYTE $FF
-		.BYTE $28,$19, $D,$1E,$19,$1C,$A5
+		.BYTE $26,$13,$1C, $E,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $37,$12, $B, $E,$19,$21,$A5
+		.BYTE $37,$12, $B,$17, $B,$18,$A5,$FF
+		.BYTE $38,$19,$1C,$1E,$1C, $B,$11,$19,$18,$A5,$FF
 		.BYTE $FF
-		.BYTE $26, $B,$1D,$12, $F,$1C,$A5
 		.BYTE $FF
 		.BYTE $FF
+		.BYTE $2E, $F,$21, $F,$16,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $26,$13,$1C, $E,$A5
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $37,$12, $B,$17, $B,$18,$A5
 		.BYTE $FF
-		.BYTE $38,$19,$1C,$1E,$1C, $B,$11,$19,$18,$A5
 		.BYTE $FF
+		.BYTE $2C,$1F,$16,$15,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $2E, $F,$21, $F,$16,$A5
 		.BYTE $FF
+		.BYTE $3B, $B,$1C,$16,$19, $D,$15,$A5,$FF
+		.BYTE $26, $B, $C, $C,$16, $F,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
@@ -4936,52 +4514,29 @@ _str_libB_enemy_hi1:
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $2C,$1F,$16,$15,$A5
 		.BYTE $FF
+		.BYTE $38,$13,$1E, $B,$18,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
+		.BYTE $28, $F,$17,$19,$18,$A5,$FF
 		.BYTE $FF
-		.BYTE $3B, $B,$1C,$16,$19, $D,$15,$A5
 		.BYTE $FF
-		.BYTE $26, $B, $C, $C,$16, $F,$A5
+		.BYTE $28,$1C, $B,$11,$19,$18,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
+		.BYTE $26,$19,$17,$1F,$1D,$A5,$FF
+		.BYTE $2B,$19,$18,$1F,$1D,$A5,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $38,$13,$1E, $B,$18,$A5
 		.BYTE $FF
 		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $28, $F,$17,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $28,$1C, $B,$11,$19,$18,$A5
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $26,$19,$17,$1F,$1D,$A5
-		.BYTE $FF
-		.BYTE $2B,$19,$18,$1F,$1D,$A5
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $FF
-		.BYTE $2C, $F,$18, $D,$12,$17,$A1
-		.BYTE $FF
+		.BYTE $2C, $F,$18, $D,$12,$17,$A1,$FF
 		.BYTE $FF
 		.BYTE $FF
 		.BYTE $FF
@@ -5061,7 +4616,7 @@ _str_libB_enemy_hi1:
 		.BYTE $FF
 		.BYTE $FF
 
-		ECHO "bank 02 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 02 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI
