@@ -6,7 +6,9 @@ SYSTEM_DPCM_ORG     =   $F000
 
 ; == FONTS ==
 
+___ = $50
 _  = $60
+__ = $61
 _0 = $01
 _1 = $02
 _2 = $03
@@ -80,6 +82,8 @@ _apu = $66
 _apd = $67
 ; apostrophe right down
 _apo = $68
+; semicolon
+_smc = $69
 _sem = $6A
 _str = $6B
 ; leftmost dot
@@ -88,6 +92,8 @@ _que = $6F
 _exc = $70
 ; colon
 _col = $75
+; dot dot
+_ddt = $76
 
 ; == OPCODES ==
 

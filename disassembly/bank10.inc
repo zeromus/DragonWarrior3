@@ -53,7 +53,7 @@ _b10_txt_block2:
 		.BYTE	  _Y,_o,_u,_,_o,_b,_t,_a,_i,_n,_,$F8,_,_p,_i,_e,_c,_e,$C0,_,_o,_f,_,_g,_o,_l,_d,_dot,$EE
 		.BYTE	$F5,$F2,_,_i,_s,_,_d,_e,_a,_d,_dot,$EE
 		.BYTE	  _I,_t,_,_h,_a,_s,_,_n,_o,_,_e,_f,_f,_e,_c,_t,_,_o,_n,_,$F5,$F2,_dot,$EE
-		.BYTE	  _A,_n,_d,_,_s,_o,_,_t,_h,_e,_,_d,_a,_y,_,_b,_r,_e,_a,_k,_s,$76,_dot,$EE
+		.BYTE	  _A,_n,_d,_,_s,_o,_,_t,_h,_e,_,_d,_a,_y,_,_b,_r,_e,_a,_k,_s,_ddt,_dot,$EE
 		.BYTE	$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _T,_h,_e,_,_f,_a,_l,_s,_e,_,_k,_i,_n,_g,_,_i,_s,_,_n,_o,_,_m,_o,_r,_e,_exc,$FD,$EB
@@ -176,7 +176,7 @@ _b10_txt_block8:
 		.BYTE	$F5,_,_f,_a,_i,_n,_t,_s,_dot,$EE
 		.BYTE	$F5,_apo,_s,_,_s,_t,_r,_e,_n,_g,_t,_h,_,_i,_s,_,_s,_a,_p,_p,_e,_d,_,_b,_y,_,_p,_o,_i,_s,_o,_n,_dot,$EE
 		.BYTE	$F9,_apo,_s,_,_p,_a,_r,_t,_y,_,_c,_h,_a,_n,_g,_e,_s,_,_i,_t,_s,_,_f,_o,_r,_m,_a,_t,_i,_o,_n,_dot,$EE
-		.BYTE	  _apa,$57,$76,_C,_h,_a,_n,_c,_e,$76,_dot,_,_c,_h,_a,_n,_c,_e,$76,_dot,_,_c,_h,_a,_n,_c,_e,$76,$69,_sem,$EB
+		.BYTE	  _apa,_ldt,_ddt,_C,_h,_a,_n,_c,_e,_ddt,_dot,_,_c,_h,_a,_n,_c,_e,_ddt,_dot,_,_c,_h,_a,_n,_c,_e,_ddt,_smc,_sem,$EB
 		.BYTE	  _t,_h,_e,_,_e,_c,_h,_o,_,_o,_f,_,$F5,_apo,_s,_,_v,_o,_i,_c,_e,_,_r,_e,_s,_o,_u,_n,_d,_e,_d,_,_a,_l,_l,_,_t,_h,_r,_o,_u,_g,_h,_,_t,_h,_e,_,_a,_r,_e,_a,_dot,$EE
 		.BYTE	$F5,$F2,_apo,_s,_,_l,_i,_f,_e,_,_c,_o,_m,_e,_s,_,_t,_o,_,_a,_n,_,_e,_n,_d,_dot,$EE
 		.BYTE	$F5,_,_r,_a,_i,_s,_e,_s,_,_t,_h,_e,_,$F4,_,_o,_v,_e,_r,_h,_e,_a,_d,_dot,$EE
@@ -248,7 +248,7 @@ _b10_txt_blockC:
 		.BYTE	$EF
 		.BYTE	  _apu,_O,_h,_sem,_,_c,_a,_l,_l,_i,_n,_g,_,_i,_t,_,_q,_u,_i,_t,_s,_que,$EB
 		.BYTE	  _I,_s,_,_i,_t,_,_O,_K,_,_w,_i,_t,_h,_,_y,_o,_u,_,_t,_o,_,_l,_o,_s,_e,_,_y,_o,_u,_r,_,_b,_e,_t,_que,_apd,$EF
-		.BYTE	  _apu,_V,_e,_r,_y,_,_w,_e,_l,_l,_dot,_,_P,_l,_e,_a,_s,_e,_,_c,_o,_m,_e,_,_a,_g,_a,_i,_n,$69,$EF
+		.BYTE	  _apu,_V,_e,_r,_y,_,_w,_e,_l,_l,_dot,_,_P,_l,_e,_a,_s,_e,_,_c,_o,_m,_e,_,_a,_g,_a,_i,_n,_smc,$EF
 		.BYTE	  _apu,_O,_h,_sem,_,_p,_a,_c,_k,_i,_n,_g,_,_i,_t,_,_i,_n,_que,$EB
 		.BYTE	  _W,_h,_a,_t,_,_a,_,_s,_h,_a,_m,_e,_exc,_apd,$EF
 		.BYTE	$F5,$F2,_,_c,_o,_m,_e,_s,_,_o,_u,_t,_,_o,_n,_,_t,_o,_p,_exc,$EB
@@ -256,9 +256,9 @@ _b10_txt_blockC:
 		.BYTE	$F5,$F2,_,_c,_o,_m,_e,_s,_,_o,_u,_t,_,_a,_,_w,_i,_n,_n,_e,_r,_dot,$EB
 		.BYTE	$F9,_apo,_s,_,_b,_e,_t,_,_i,_s,_,_l,_o,_s,_t,_dot,$EE
 _b10_txt_blockD:
-		.BYTE	  _apu,_L,_a,_d,_i,_e,_s,_,_a,_n,_d,_,_g,_e,_n,_t,_l,_e,_m,_e,_n,_,_o,_f,_,_t,_h,_e,_,_c,_o,_u,_r,_t,_sem,_,_n,_o,_w,_,_h,_e,_a,_r,_,_y,_e,$69,$FD,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_m,_a,_t,_c,_h,_,_h,_a,_s,_,_e,_n,_d,_e,_d,_,_i,_n,_,_a,_,_d,_r,_a,_w,$69,$FD,$EB
-		.BYTE	  _apu,_T,_h,_y,_,_b,_e,_t,_s,_,_s,_h,_a,_l,_t,_,_b,_e,_,_r,_e,_t,_u,_r,_n,_e,_d,_,_a,_n,_d,_,_w,_e,_,_p,_r,_i,_t,_h,_e,_e,_,_e,_n,_j,_o,_y,_,_t,_h,_e,_,_c,_o,_m,_i,_n,_g,_,_m,_a,_t,_c,_h,$69,$EF
+		.BYTE	  _apu,_L,_a,_d,_i,_e,_s,_,_a,_n,_d,_,_g,_e,_n,_t,_l,_e,_m,_e,_n,_,_o,_f,_,_t,_h,_e,_,_c,_o,_u,_r,_t,_sem,_,_n,_o,_w,_,_h,_e,_a,_r,_,_y,_e,_smc,$FD,$EB
+		.BYTE	  _apu,_T,_h,_i,_s,_,_m,_a,_t,_c,_h,_,_h,_a,_s,_,_e,_n,_d,_e,_d,_,_i,_n,_,_a,_,_d,_r,_a,_w,_smc,$FD,$EB
+		.BYTE	  _apu,_T,_h,_y,_,_b,_e,_t,_s,_,_s,_h,_a,_l,_t,_,_b,_e,_,_r,_e,_t,_u,_r,_n,_e,_d,_,_a,_n,_d,_,_w,_e,_,_p,_r,_i,_t,_h,_e,_e,_,_e,_n,_j,_o,_y,_,_t,_h,_e,_,_c,_o,_m,_i,_n,_g,_,_m,_a,_t,_c,_h,_smc,$EF
 		.BYTE	$F5,_,_d,_o,_e,_s,_,_n,_o,_t,_,_h,_a,_v,_e,_,_i,_t,_e,_m,_s,_dot,$EE
 		.BYTE	$F5,_,_i,_s,_,_n,_u,_m,_b,_,_a,_n,_d,_,_c,_a,_n,_n,_o,_t,_,_c,_a,_s,_t,_,_t,_h,_e,_,_s,_p,_e,_l,_l,_dot,$EE
 		.BYTE	$EF
@@ -267,7 +267,7 @@ _b10_txt_blockD:
 		.BYTE	$F5,_,_s,_u,_d,_d,_e,_n,_l,_y,_,_s,_t,_a,_r,_t,_s,_,_t,_o,_,_f,_l,_e,_e,_dot,$EE
 		.BYTE	$F5,_,_c,_a,_t,_c,_h,_e,_s,_,_a,_,_w,_h,_i,_f,_f,_,_o,_f,_,_t,_h,_e,_,_s,_o,_c,_k,_s,_dot,$EE
 		.BYTE	$F5,_,_b,_e,_g,_i,_n,_s,_,_t,_o,_,_m,_i,_m,_i,_c,_,_t,_h,_e,_,_a,_r,_m,_s,_,_s,_h,_o,_p,_k,_e,_e,_p,_e,_r,_col,$EB
-		.BYTE	  _apa,_T,_h,_i,_s,_,_s,_t,_o,_r,_e,_,_d,_e,_a,_l,_s,_,_i,_n,_,_w,_e,_a,_p,_o,_n,_s,_,_a,_n,_d,_,_a,_r,_m,_o,_r,$76,$69,$EE
+		.BYTE	  _apa,_T,_h,_i,_s,_,_s,_t,_o,_r,_e,_,_d,_e,_a,_l,_s,_,_i,_n,_,_w,_e,_a,_p,_o,_n,_s,_,_a,_n,_d,_,_a,_r,_m,_o,_r,_ddt,_smc,$EE
 		.BYTE	$F5,_,_c,_a,_s,_t,_s,_,_t,_h,_e,_,_s,_p,_e,_l,_l,_sem,_,_E,_x,_p,_l,_o,_d,_e,_t,_dot,$EE
 		.BYTE	$F5,_,_s,_p,_e,_a,_k,_s,_,_i,_l,_l,_,_o,_f,_,$F5,$F2,_dot,$EE
 		.BYTE	$F5,$F2,_,_b,_e,_c,_o,_m,_e,_s,_,_e,_n,_r,_a,_g,_e,_d,_dot,$EE
@@ -280,7 +280,7 @@ _b10_txt_blockE:
 		.BYTE	$F5,_,_g,_e,_t,_s,_,_t,_a,_n,_g,_l,_e,_d,_,_u,_p,_,_i,_n,_,_h,_i,_s,_,_o,_w,_n,_,_l,_e,_g,_s,_,_a,_n,_d,_,_f,_a,_l,_l,_s,_,_d,_o,_w,_n,_dot,$EE
 		.BYTE	$F5,_,_p,_o,_k,_e,_s,_,_a,_t,_,_t,_h,_e,_,_d,_e,_a,_d,_,_m,_o,_n,_s,_t,_e,_r,_dot,$EE
 		.BYTE	$F5,_,_r,_e,_m,_a,_r,_k,_s,_,_s,_m,_u,_g,_l,_y,_col,$EB
-		.BYTE	  _apa,_I,_,_w,_o,_u,_l,_d,_n,_apo,_t,_,_f,_i,_g,_h,_t,_,_i,_f,_,_I,_,_w,_e,_r,_e,_,_y,_o,_u,_dot,_,_E,_v,_e,_n,_,_a,_,_v,_i,_c,_t,_o,_r,_y,_,_w,_o,_u,_l,_d,_,_b,_e,_,_h,_o,_l,_l,_o,_w,$69,$EE
+		.BYTE	  _apa,_I,_,_w,_o,_u,_l,_d,_n,_apo,_t,_,_f,_i,_g,_h,_t,_,_i,_f,_,_I,_,_w,_e,_r,_e,_,_y,_o,_u,_dot,_,_E,_v,_e,_n,_,_a,_,_v,_i,_c,_t,_o,_r,_y,_,_w,_o,_u,_l,_d,_,_b,_e,_,_h,_o,_l,_l,_o,_w,_smc,$EE
 		.BYTE	$F5,_,_i,_s,_,_c,_o,_n,_f,_u,_s,_e,_d,_,_f,_o,_r,_,_s,_o,_m,_e,_,_r,_e,_a,_s,_o,_n,_dot,$EE
 		.BYTE	$F5,_,_l,_i,_e,_s,_,_d,_o,_w,_n,_,_f,_o,_r,_,_a,_,_n,_a,_p,_dot,$EE
 		.BYTE	$F5,_,_s,_p,_r,_u,_c,_e,_s,_,$B1,_,_u,_p,_dot,$EE
@@ -307,7 +307,7 @@ _b10_txt_blockF:
 		.BYTE	  _T,_h,_e,_,_s,_t,_r,_o,_n,_g,_,_s,_m,_e,_l,_l,_,_i,_s,_,_d,_r,_i,_f,_t,_i,_n,_g,_,_e,_v,_e,_r,_y,_w,_h,_e,_r,_e,_dot,$EE
 		.BYTE	$F5,_,_b,_l,_o,_w,_s,_,_a,_,_k,_i,_s,_s,_dot,$EE
 		.BYTE	$F5,_,_s,_u,_d,_d,_e,_n,_l,_y,_,_t,_u,_r,_n,_s,_,_a,_r,_o,_u,_n,_d,_,_a,_n,_d,_,_r,_o,_l,_l,_s,_,_u,_p,_,_a,_,_s,_l,_e,_e,_v,_e,_dot,$EE
-		.BYTE	$57,$76,_e,_x,_p,_o,_s,_i,_n,_g,_,_a,_,_s,_m,_a,_l,_l,_,_t,_a,_t,_o,_o,_exc,$EE
+		.BYTE	_ldt,_ddt,_e,_x,_p,_o,_s,_i,_n,_g,_,_a,_,_s,_m,_a,_l,_l,_,_t,_a,_t,_o,_o,_exc,$EE
 		.BYTE	$F5,_,_i,_s,_,_m,_o,_m,_e,_n,_t,_a,_r,_i,_l,_y,_,_t,_r,_a,_n,_s,_f,_i,_x,_e,_d,_dot,$EE
 		.BYTE	$F5,_,_s,_i,_n,_g,_s,_,_a,_,_s,_o,_n,_g,_dot,$EE
 		.BYTE	$F5,_,_m,_a,_k,_e,_s,_,_a,_n,_,_a,_w,_f,_u,_l,_,_p,_u,_n,_dot,$EE
@@ -318,7 +318,7 @@ _b10_txt_block10:
 		.BYTE	  _B,_u,_t,_,_n,_o,_t,_h,_i,_n,_g,_,_i,_s,_,_h,_a,_p,_p,_e,_n,_i,_n,_g,_,_h,_e,_r,_e,_dot,$EE
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _B,_u,_t,_,_n,_o,_t,_h,_i,_n,_g,_,_i,_s,_,_h,_a,_p,_p,_e,_n,_i,_n,_g,_,_n,_o,_w,_dot,$EE
-		.BYTE	  _apu,_W,_a,_k,_e,_,_u,_p,_,_d,_e,_a,_r,_exc,_,_W,_a,_k,_e,_,_u,_p,_,$F5,$69,$EF
+		.BYTE	  _apu,_W,_a,_k,_e,_,_u,_p,_,_d,_e,_a,_r,_exc,_,_W,_a,_k,_e,_,_u,_p,_,$F5,_smc,$EF
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _A,_,_d,_a,_r,_k,_n,_e,_s,_s,_,_o,_o,_z,_e,_s,_,_o,_u,_t,_,_f,_r,_o,_m,_,_t,_h,_e,_,_l,_a,_m,_p,_,_a,_n,_d,_,_c,_o,_v,_e,_r,_s,_,_e,_v,_e,_r,_y,_t,_h,_i,_n,_g,_,_w,_i,_t,_h,_,_t,_h,_e,_,_b,_l,_a,_c,_k,_n,_e,_s,_s,_,_o,_f,_,_n,_i,_g,_h,_t,_dot,$EE
 		.BYTE	  _T,_h,_e,_,_e,_f,_f,_e,_c,_t,_,_o,_f,_,_t,_h,_e,_,_I,_n,_v,_i,_s,_i,_b,_i,_l,_i,_t,_y,_,_H,_e,_r,_b,_,_h,_a,_s,_,_w,_o,_r,_n,_,_o,_f,_f,_dot,$EE
@@ -329,7 +329,7 @@ _b10_txt_block10:
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _T,_h,_e,_,_s,_p,_i,_r,_i,_t,_,_o,_f,_,_E,_r,_r,_o,_l,_,_a,_n,_d,_,_O,_l,_i,_v,_i,_a,_apo,_s,_,_d,_e,_v,_o,_t,_i,_o,_n,_,_t,_o,_,_e,_a,_c,_h,_,_o,_t,_h,_e,_r,_,_r,_a,_d,_i,_a,_t,_e,_s,_,_f,_r,_o,_m,_,_t,_h,_e,_,_a,_r,_e,_a,_dot,$FD,$EE
 		.BYTE	  _T,_h,_e,_,_c,_u,_r,_s,_e,_,_o,_n,_,_O,_l,_i,_v,_i,_a,_,_i,_s,_,_b,_r,_o,_k,_e,_n,_dot,$EE
-		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_a,_,_p,_l,_a,_i,_n,_t,_i,_v,_e,_,_v,_o,_i,_c,_e,_,_i,_s,_,_h,_e,_a,_r,_d,$76,_dot,$EE
+		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_a,_,_p,_l,_a,_i,_n,_t,_i,_v,_e,_,_v,_o,_i,_c,_e,_,_i,_s,_,_h,_e,_a,_r,_d,_ddt,_dot,$EE
 		.BYTE	  _apu,_O,_h,_sem,_,_E,_r,_r,_o,_l,_sem,_,_m,_y,_,_b,_e,_l,_o,_v,_e,_d,_exc,_,_I,_apo,_v,_e,_,_b,_e,_e,_n,_,_w,_a,_i,_t,_i,_n,_g,_,_f,_o,_r,_,_y,_o,_u,_,_s,_u,_c,_h,_,_a,_,_l,_o,_n,_g,_,_t,_i,_m,_e,_exc,_apd,$FD,$EB
 		.BYTE	  _apu,_M,_y,_,_d,_e,_a,_r,_,_O,_l,_i,_v,_i,_a,_dot,_,_N,_e,_v,_e,_r,_,_a,_g,_a,_i,_n,_,_s,_h,_a,_l,_l,_,_w,_e,_,_b,_e,_,_p,_a,_r,_t,_e,_d,_exc,_apd,$FD,$EB
 		.BYTE	  _apu,_E,_r,_r,_o,_l,_exc,_apd,$FD,$EF
@@ -348,10 +348,10 @@ _b10_txt_block11:
 		.BYTE	$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_I,_t,_,_d,_o,_e,_s,_n,_apo,_t,_,_l,_o,_o,_k,_,_e,_s,_p,_e,_c,_i,_a,_l,_l,_y,_,_c,_u,_r,_s,_e,_d,$69,$EF
+		.BYTE	  _apu,_I,_t,_,_d,_o,_e,_s,_n,_apo,_t,_,_l,_o,_o,_k,_,_e,_s,_p,_e,_c,_i,_a,_l,_l,_y,_,_c,_u,_r,_s,_e,_d,_smc,$EF
 		.BYTE	$F5,_,_s,_e,_t,_s,_,_u,_p,_,_t,_h,_e,_,$F4,_,_o,_n,_,_t,_h,_e,_,_w,_a,_l,_l,_dot,$EE
 		.BYTE	  _T,_h,_e,_,_M,_a,_g,_i,_c,_,_B,_a,_l,_l,_,_c,_a,_n,_apo,_t,_,_b,_e,_,_u,_s,_e,_d,_,_h,_e,_r,_e,_dot,$EE
-		.BYTE	  _T,_h,_e,_,_p,_o,_w,_d,_e,_r,_,_r,_i,_d,_e,_s,_,_o,_n,_,_t,_h,_e,_,_w,_i,_n,_d,_,_a,_n,_d,_,_s,_p,_r,_e,_a,_d,_s,_,_t,_h,_r,_o,_u,_g,_h,_o,_u,_t,_,_t,_h,_e,_,_a,_r,_e,_a,$76,_dot,$FD,$EB
+		.BYTE	  _T,_h,_e,_,_p,_o,_w,_d,_e,_r,_,_r,_i,_d,_e,_s,_,_o,_n,_,_t,_h,_e,_,_w,_i,_n,_d,_,_a,_n,_d,_,_s,_p,_r,_e,_a,_d,_s,_,_t,_h,_r,_o,_u,_g,_h,_o,_u,_t,_,_t,_h,_e,_,_a,_r,_e,_a,_ddt,_dot,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	$EE
 		.BYTE	  _L,_o,_o,_k,_exc,_,_T,_h,_e,_,_v,_i,_l,_l,_a,_g,_e,_r,_s,_,_a,_r,_e,_,_s,_t,_a,_r,_t,_i,_n,_g,_,_t,_o,_,_w,_a,_k,_e,_,_u,_p,_exc,$EE
@@ -362,24 +362,24 @@ _b10_txt_block11:
 		.BYTE	  _,_,_,$EB
 		.BYTE	$EE
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_w,_e,_a,_p,_o,_n,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_w,_e,_a,_p,_o,_n,_smc,$EF
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_r,_m,_o,_r,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_r,_m,_o,_r,_smc,$EF
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_s,_h,_i,_e,_l,_d,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_s,_h,_i,_e,_l,_d,_smc,$EF
 _b10_txt_block12:
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_h,_e,_l,_m,_e,_t,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_h,_e,_l,_m,_e,_t,_smc,$EF
 		.BYTE	$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_i,_s,_,_w,_o,_r,_t,_h,_,$F8,_,_p,_i,_e,_c,_e,$C0,_,_o,_f,_,_g,_o,_l,_d,_,_i,_f,_,_s,_o,_l,_d,_,_t,_o,_,_a,_n,_,_i,_t,_e,_m,_,_s,_t,_o,_r,_e,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_i,_s,_,_w,_o,_r,_t,_h,_,$F8,_,_p,_i,_e,_c,_e,$C0,_,_o,_f,_,_g,_o,_l,_d,_,_i,_f,_,_s,_o,_l,_d,_,_t,_o,_,_a,_n,_,_i,_t,_e,_m,_,_s,_t,_o,_r,_e,_smc,$EF
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_u,_s,_e,_f,_u,_l,_,_i,_t,_e,_m,$69,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_l,_o,_o,_k,_s,_,_l,_i,_k,_e,_,_a,_,_u,_s,_e,_f,_u,_l,_,_i,_t,_e,_m,_smc,$EF
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_i,_s,_,_i,_s,_,_a,_,_n,_i,_c,_e,_,_p,_i,_e,_c,_e,_,_o,_f,_,_w,_o,_r,_k,_sem,_,_i,_s,_n,_apo,_t,_,_i,_t,$69,$FD,$EF
+		.BYTE	  _apu,_T,_h,_i,_s,_,_i,_s,_,_a,_,_n,_i,_c,_e,_,_p,_i,_e,_c,_e,_,_o,_f,_,_w,_o,_r,_k,_sem,_,_i,_s,_n,_apo,_t,_,_i,_t,_smc,$FD,$EF
 		.BYTE	$F5,_,_col,$EB
-		.BYTE	  _apu,_I,_,_d,_o,_u,_b,_t,_,_e,_v,_e,_n,_,_t,_h,_e,_,_s,_h,_o,_p,_k,_e,_e,_p,_e,_r,_,_c,_o,_u,_l,_d,_,_p,_u,_t,_,_a,_,_p,_r,_i,_c,_e,_,_o,_n,_,_t,_h,_i,_s,$69,$EF
+		.BYTE	  _apu,_I,_,_d,_o,_u,_b,_t,_,_e,_v,_e,_n,_,_t,_h,_e,_,_s,_h,_o,_p,_k,_e,_e,_p,_e,_r,_,_c,_o,_u,_l,_d,_,_p,_u,_t,_,_a,_,_p,_r,_i,_c,_e,_,_o,_n,_,_t,_h,_i,_s,_smc,$EF
 		.BYTE	$F5,_,_i,_s,_,_u,_n,_a,_b,_l,_e,_,_t,_o,_,_m,_o,_v,_e,_,_a,_n,_d,_,_c,_a,_n,_apo,_t,_,_u,_s,_e,_,_t,_h,_e,_,_i,_t,_e,_m,_dot,$EE
 		.BYTE	$F5,_,_i,_s,_,_d,_e,_a,_d,_,_a,_n,_d,_,_c,_a,_n,_apo,_t,_,_u,_s,_e,_,_t,_h,_e,_,_i,_t,_e,_m,_dot,$EE
 		.BYTE	$F5,_,_t,_h,_r,_o,_w,_s,_,_a,_w,_a,_y,_,_t,_h,_e,_,$F4,_dot,$EE
@@ -408,7 +408,7 @@ _b10_txt_block13:
 		.BYTE	$EE
 		.BYTE	$F5,_,_t,_h,_r,_o,_w,_s,_,_t,_h,_e,_,$F4,_,_i,_n,_,_t,_h,_e,_,_c,_r,_a,_t,_e,_r,_exc,$EE
 		.BYTE	  _apu,_C,_u,_r,_s,_e,_d,_,_b,_e,_,_t,_h,_o,_s,_e,_,_w,_h,_o,_,_d,_i,_s,_t,_u,_r,_b,_,_m,_y,_,_s,_l,_e,_e,_p,_exc,_apd,$EF
-		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_e,_e,_r,_i,_e,_,_v,_o,_i,_c,_e,_s,_,_a,_r,_e,_,_h,_e,_a,_r,_d,$76,_dot,$FD,$EB
+		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_e,_e,_r,_i,_e,_,_v,_o,_i,_c,_e,_s,_,_a,_r,_e,_,_h,_e,_a,_r,_d,_ddt,_dot,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _col,$EB
 		.BYTE	  _apu,_W,_h,_o,_,_d,_a,_r,_e,_s,_,_t,_o,_,_r,_a,_i,_d,_,_t,_h,_e,_,_K,_i,_n,_g,_apo,_s,_,_t,_r,_e,_a,_s,_u,_r,_e,_que,_apd,$FD,$EB
@@ -437,9 +437,9 @@ _b10_txt_block14:
 		.BYTE	$F5,_,_d,_i,_s,_c,_a,_r,_d,_s,_,_t,_h,_e,_,$F4,_,_a,_n,_d,_,_o,_b,_t,_a,_i,_n,_s,_,_t,_h,_e,_,$F4,_dot,$EE
 		.BYTE	$FD,_A,_,_m,_e,_s,_s,_a,_g,_e,_,_i,_s,_,_a,_l,_s,_o,_,_f,_o,_u,_n,_d,_,_i,_n,_,_t,_h,_e,_,_t,_r,_e,_a,_s,_u,_r,_e,_,_c,_h,_e,_s,_t,_dot,$EB
 		.BYTE	$F5,_,_r,_e,_a,_d,_s,_,_t,_h,_e,_,_m,_e,_s,_s,_a,_g,_e,_dot,$FD,$EB
-		.BYTE	  _apu,_F,_o,_r,_g,_i,_v,_e,_,_m,_e,_sem,_,_m,_o,_t,_h,_e,_r,_sem,_,_f,_o,_r,_,_d,_e,_p,_a,_r,_t,_i,_n,_g,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_,_a,_h,_e,_a,_d,_,_o,_f,_,_y,_o,_u,$69,$FD,$EB
-		.BYTE	  _apu,_I,_f,_,_m,_y,_,_l,_o,_v,_e,_,_f,_o,_r,_,_h,_i,_m,_sem,_,_t,_h,_a,_t,_,_o,_f,_,_e,_l,_f,_,_f,_o,_r,_,_h,_u,_m,_a,_n,_sem,_,_i,_s,_,_f,_o,_r,_b,_i,_d,_d,_e,_n,_,_i,_n,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,$69,$FD,$EB
-		.BYTE	  _apu,_A,_t,_,_l,_e,_a,_s,_t,_,_I,_,_c,_a,_n,_,_b,_e,_,_w,_i,_t,_h,_,_h,_i,_m,_,_i,_n,_,_t,_h,_e,_,_o,_n,_e,_,_b,_e,_y,_o,_n,_d,$76,_dot,_,_A,_n,_n,_e,_apd,$EF
+		.BYTE	  _apu,_F,_o,_r,_g,_i,_v,_e,_,_m,_e,_sem,_,_m,_o,_t,_h,_e,_r,_sem,_,_f,_o,_r,_,_d,_e,_p,_a,_r,_t,_i,_n,_g,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_,_a,_h,_e,_a,_d,_,_o,_f,_,_y,_o,_u,_smc,$FD,$EB
+		.BYTE	  _apu,_I,_f,_,_m,_y,_,_l,_o,_v,_e,_,_f,_o,_r,_,_h,_i,_m,_sem,_,_t,_h,_a,_t,_,_o,_f,_,_e,_l,_f,_,_f,_o,_r,_,_h,_u,_m,_a,_n,_sem,_,_i,_s,_,_f,_o,_r,_b,_i,_d,_d,_e,_n,_,_i,_n,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_smc,$FD,$EB
+		.BYTE	  _apu,_A,_t,_,_l,_e,_a,_s,_t,_,_I,_,_c,_a,_n,_,_b,_e,_,_w,_i,_t,_h,_,_h,_i,_m,_,_i,_n,_,_t,_h,_e,_,_o,_n,_e,_,_b,_e,_y,_o,_n,_d,_ddt,_dot,_,_A,_n,_n,_e,_apd,$EF
 		.BYTE	  _H,_o,_w,_e,_v,_e,_r,_sem,_,$F5,_,_c,_a,_n,_n,_o,_t,_,_h,_a,_v,_e,_,_o,_n,_e,_,_t,_h,_i,_n,_g,_,_m,_o,_r,_e,_dot,$EE
 		.BYTE	$F5,_,_g,_i,_v,_e,_s,_,_u,_p,_,_t,_h,_e,_,$F4,_dot,$EE
 		.BYTE	  _W,_h,_a,_t,_,_d,_o,_,_y,_o,_u,_,_w,_a,_n,_t,_,_t,_o,_,_d,_i,_s,_c,_a,_r,_d,_que,$EE
@@ -460,10 +460,10 @@ _b10_txt_block15:
 		.BYTE	  _apu,_M,_y,_,_d,_e,_a,_r,_,_N,_o,_r,_u,_d,_apd,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _col,$EB
-		.BYTE	  _apu,_P,_l,_e,_a,_s,_e,_,_g,_u,_i,_d,_e,_,_t,_h,_e,_,_b,_e,_a,_r,_e,_r,_s,_,_o,_f,_,_t,_h,_i,_s,_,_s,_c,_r,_o,_l,_l,_,_t,_o,_,_t,_h,_e,_,_s,_e,_c,_r,_e,_t,_,_p,_a,_s,_s,_a,_g,_e,_,_c,_a,_l,_l,_e,_d,_,_B,_o,_l,_e,_f,_apo,_s,_,_P,_a,_t,_h,$69,$FD,$EB
+		.BYTE	  _apu,_P,_l,_e,_a,_s,_e,_,_g,_u,_i,_d,_e,_,_t,_h,_e,_,_b,_e,_a,_r,_e,_r,_s,_,_o,_f,_,_t,_h,_i,_s,_,_s,_c,_r,_o,_l,_l,_,_t,_o,_,_t,_h,_e,_,_s,_e,_c,_r,_e,_t,_,_p,_a,_s,_s,_a,_g,_e,_,_c,_a,_l,_l,_e,_d,_,_B,_o,_l,_e,_f,_apo,_s,_,_P,_a,_t,_h,_smc,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _col,$EB
-		.BYTE	  _apu,_s,_i,_g,_n,_e,_d,_sem,_,_K,_i,_n,_g,_,_o,_f,_,_P,_o,_r,_t,_o,_g,_a,$69,$EF
+		.BYTE	  _apu,_s,_i,_g,_n,_e,_d,_sem,_,_K,_i,_n,_g,_,_o,_f,_,_P,_o,_r,_t,_o,_g,_a,_smc,$EF
 		.BYTE	$F5,_,_b,_l,_o,_w,_s,_,_t,_h,_e,_,$F4,_dot,$EE
 		.BYTE	$EF
 		.BYTE	$F5,_,_s,_h,_o,_o,_t,_s,_,_t,_h,_e,_,$F4,_exc,$EE
@@ -502,8 +502,8 @@ _b10_txt_block17:
 		.BYTE	  _apu,_G,_e,_t,_,_apo,_e,_m,_exc,_apd,$EF
 		.BYTE	  _apu,_T,_h,_e,_,_b,_o,_s,_s,_,_i,_s,_,_o,_u,_t,_,_n,_o,_w,_dot,_,_C,_o,_m,_e,_,_b,_a,_c,_k,_,_l,_a,_t,_e,_r,_exc,_apd,$EF
 		.BYTE	  _apu,_O,_h,_sem,_,_b,_r,_a,_v,_e,_,_h,_e,_r,_o,_exc,_,_S,_a,_v,_e,_,_m,_e,_exc,_apd,$EB
-		.BYTE	  _apu,_I,_,_a,_m,_,_T,_a,_n,_i,_a,_sem,_,_k,_i,_d,_n,_a,_p,_p,_e,_d,_,_f,_r,_o,_m,_,_t,_h,_e,_,_t,_o,_w,_n,_,_o,_f,_,_B,_a,_h,_a,_r,_a,_t,_a,$69,$EF
-		.BYTE	  _apu,_T,_h,_e,_,_b,_u,_t,_t,_o,_n,_,_t,_h,_a,_t,_,_o,_p,_e,_n,_s,_,_t,_h,_i,_s,_,_d,_o,_o,_r,_,_s,_h,_o,_u,_l,_d,_,_b,_e,_,_n,_e,_a,_r,_,_t,_h,_e,_,_t,_a,_b,_l,_e,_,_a,_t,_,_t,_h,_e,_,_e,_n,_d,_,_o,_f,_,_t,_h,_e,_,_c,_o,_r,_r,_i,_d,_o,_r,$69,$EF
+		.BYTE	  _apu,_I,_,_a,_m,_,_T,_a,_n,_i,_a,_sem,_,_k,_i,_d,_n,_a,_p,_p,_e,_d,_,_f,_r,_o,_m,_,_t,_h,_e,_,_t,_o,_w,_n,_,_o,_f,_,_B,_a,_h,_a,_r,_a,_t,_a,_smc,$EF
+		.BYTE	  _apu,_T,_h,_e,_,_b,_u,_t,_t,_o,_n,_,_t,_h,_a,_t,_,_o,_p,_e,_n,_s,_,_t,_h,_i,_s,_,_d,_o,_o,_r,_,_s,_h,_o,_u,_l,_d,_,_b,_e,_,_n,_e,_a,_r,_,_t,_h,_e,_,_t,_a,_b,_l,_e,_,_a,_t,_,_t,_h,_e,_,_e,_n,_d,_,_o,_f,_,_t,_h,_e,_,_c,_o,_r,_r,_i,_d,_o,_r,_smc,$EF
 		.BYTE	  _G,_a,_l,_e,_n,_,_col,$EB
 		.BYTE	  _apu,_O,_h,_sem,_,_T,_a,_n,_i,_a,_exc,_apd,$EB
 		.BYTE	  _,_,_,$EB
@@ -518,7 +518,7 @@ _b10_txt_block17:
 		.BYTE	  _T,_a,_n,_i,_a,_,_col,$EB
 		.BYTE	  _apu,_O,_h,_sem,_,_m,_y,_,_d,_a,_r,_l,_i,_n,_g,_exc,_apd,$EF
 		.BYTE	  _T,_a,_n,_i,_a,_,_col,$EB
-		.BYTE	  _apu,_T,_h,_a,_n,_k,_,_y,_o,_u,_sem,_,_b,_r,_a,_v,_e,_,_h,_e,_r,_o,$69,$EF
+		.BYTE	  _apu,_T,_h,_a,_n,_k,_,_y,_o,_u,_sem,_,_b,_r,_a,_v,_e,_,_h,_e,_r,_o,_smc,$EF
 		.BYTE	  _T,_a,_n,_i,_a,_,_col,$EB
 		.BYTE	  _apu,_A,_a,_a,_h,_exc,_exc,_apd,$FD,$EB
 		.BYTE	  _,_,_,$EB
@@ -536,14 +536,14 @@ _b10_txt_block17:
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
 		.BYTE	  _apu,_Y,_o,_u,_,_a,_g,_a,_i,_n,_que,_,_W,_h,_o,_,_a,_r,_e,_,_y,_o,_u,_,_g,_u,_y,_s,_,_a,_n,_y,_w,_a,_y,_que,_,_T,_h,_i,_s,_,_t,_i,_m,_e,_,_I,_apo,_l,_l,_,_f,_i,_n,_i,_s,_h,_,_y,_o,_u,_,_o,_f,_f,_exc,_apd,$EF
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
-		.BYTE	  _apu,_C,_u,_r,_s,_e,_s,_exc,_,_I,_apo,_m,_,_n,_o,_,_m,_a,_t,_c,_h,_,_f,_o,_r,_,_y,_o,_u,$69,$FD,$EF
+		.BYTE	  _apu,_C,_u,_r,_s,_e,_s,_exc,_,_I,_apo,_m,_,_n,_o,_,_m,_a,_t,_c,_h,_,_f,_o,_r,_,_y,_o,_u,_smc,$FD,$EF
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
 		.BYTE	  _apu,_I,_,_b,_e,_g,_,_o,_f,_,_y,_o,_u,_exc,_,_I,_,_p,_r,_o,_m,_i,_s,_e,_,_y,_o,_u,_,_I,_apo,_l,_l,_,_c,_h,_a,_n,_g,_e,_exc,_,_I,_apo,_v,_e,_,_s,_e,_e,_n,_,_t,_h,_e,_,_e,_r,_r,_o,_r,_,_o,_f,_,_m,_y,_,_w,_a,_y,_s,_exc,_,_S,_p,_a,_r,_e,_,_m,_e,_exc,_,_I,_,_b,_e,_g,_,_y,_o,_u,_exc,_apd,$EF
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
 		.BYTE	  _apu,_D,_o,_n,_apo,_t,_,_b,_e,_,_s,_o,_,_c,_o,_l,_d,_str,_h,_e,_a,_r,_t,_e,_d,_exc,_,_D,_o,_n,_apo,_t,_,_s,_a,_y,_,_t,_h,_i,_n,_g,_s,_,_l,_i,_k,_e,_,_t,_h,_a,_t,_exc,_,_C,_apo,_m,_o,_n,_exc,_,_P,_l,_e,_a,_s,_e,_exc,_apd,$FD,$EF
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
 		.BYTE	  _apu,_T,_h,_a,_n,_k,_s,_exc,_,_T,_h,_a,_n,_k,_s,_exc,_,_I,_,_r,_e,_a,_l,_l,_y,_,_m,_e,_a,_n,_,_i,_t,_exc,_,_B,_e,_,_w,_e,_l,_l,_exc,_,_U,_n,_t,_i,_l,_,_w,_e,_,_m,_e,_e,_t,_,_a,_g,_a,_i,_n,_exc,_apd,$EF
-		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_o,_m,_i,_n,_o,_u,_s,_,_v,_o,_i,_c,_e,_s,_,_a,_r,_e,_,_h,_e,_a,_r,_d,$76,_dot,$FD,$EB
+		.BYTE	  _F,_r,_o,_m,_,_o,_u,_t,_,_o,_f,_,_n,_o,_w,_h,_e,_r,_e,_sem,_,_o,_m,_i,_n,_o,_u,_s,_,_v,_o,_i,_c,_e,_s,_,_a,_r,_e,_,_h,_e,_a,_r,_d,_ddt,_dot,$FD,$EB
 		.BYTE	  _apu,_W,_e,_,_a,_r,_e,_,_t,_h,_e,_,_g,_u,_a,_r,_d,_s,_,_o,_f,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_apo,_s,_,_C,_h,_a,_m,_b,_e,_r,_exc,_,_T,_o,_,_e,_n,_t,_e,_r,_,_y,_o,_u,_apo,_l,_l,_,_h,_a,_v,_e,_,_t,_o,_,_d,_e,_f,_e,_a,_t,_,_u,_s,_,_f,_i,_r,_s,_t,_exc,_apd,$EF
 _b10_txt_block18:
 		.BYTE	$F5,_,_p,_u,_s,_h,_e,_s,_,_t,_h,_e,_,_b,_u,_t,_t,_o,_n,$FD,$EB
@@ -556,13 +556,13 @@ _b10_txt_block18:
 		.BYTE	  _apu,_I,_t,_,_i,_s,_,_I,_,_w,_h,_o,_,_w,_i,_l,_l,_,_b,_r,_i,_n,_g,_,_a,_b,_o,_u,_t,_,_t,_h,_e,_,_d,_e,_s,_t,_r,_u,_c,_t,_i,_o,_n,_,_o,_f,_,_a,_l,_l,_,_t,_h,_i,_n,_g,_s,_exc,_apd,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _Z,_o,_m,_a,_,_col,$EB
-		.BYTE	  _apu,_A,_l,_l,_,_l,_i,_v,_i,_n,_g,_,_b,_e,_i,_n,_g,_s,_,_s,_h,_a,_l,_l,_,_b,_e,_,_d,_e,_m,_o,_l,_i,_s,_h,_e,_d,_,_b,_y,_,_m,_e,_,_a,_n,_d,_,_t,_h,_e,_,_e,_n,_t,_i,_r,_e,_,_w,_o,_r,_l,_d,_,_s,_h,_a,_l,_l,_,_s,_i,_n,_k,_,_i,_n,_t,_o,_,_d,_e,_s,_p,_a,_i,_r,$69,$FD,$EB
+		.BYTE	  _apu,_A,_l,_l,_,_l,_i,_v,_i,_n,_g,_,_b,_e,_i,_n,_g,_s,_,_s,_h,_a,_l,_l,_,_b,_e,_,_d,_e,_m,_o,_l,_i,_s,_h,_e,_d,_,_b,_y,_,_m,_e,_,_a,_n,_d,_,_t,_h,_e,_,_e,_n,_t,_i,_r,_e,_,_w,_o,_r,_l,_d,_,_s,_h,_a,_l,_l,_,_s,_i,_n,_k,_,_i,_n,_t,_o,_,_d,_e,_s,_p,_a,_i,_r,_smc,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _Z,_o,_m,_a,_,_col,$EB
 		.BYTE	  _apu,_C,_o,_m,_m,_e,_n,_c,_i,_n,_g,_,_w,_i,_t,_h,_,_t,_h,_i,_n,_e,_,_o,_w,_n,_,_d,_e,_m,_i,_s,_e,_sem,_,$F5,_exc,_apd,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	  _Z,_o,_m,_a,_,_col,$EB
-		.BYTE	  _apu,_C,_o,_m,_e,_sem,_,_m,_y,_,_s,_e,_r,_v,_a,_n,_t,_s,_dot,_,_D,_e,_s,_t,_r,_o,_y,_,_t,_h,_e,_m,_,_s,_o,_,_t,_h,_a,_t,_,_I,_,_m,_a,_y,_,_t,_h,_r,_i,_v,_e,_,_o,_n,_,_t,_h,_e,_i,_r,_,_s,_u,_f,_f,_e,_r,_i,_n,_g,$69,$EF
+		.BYTE	  _apu,_C,_o,_m,_e,_sem,_,_m,_y,_,_s,_e,_r,_v,_a,_n,_t,_s,_dot,_,_D,_e,_s,_t,_r,_o,_y,_,_t,_h,_e,_m,_,_s,_o,_,_t,_h,_a,_t,_,_I,_,_m,_a,_y,_,_t,_h,_r,_i,_v,_e,_,_o,_n,_,_t,_h,_e,_i,_r,_,_s,_u,_f,_f,_e,_r,_i,_n,_g,_smc,$EF
 		.BYTE	  _Z,_o,_m,_a,_,_col,$EB
 		.BYTE	  _apu,$F5,_exc,_apd,$EB
 		.BYTE	  _apu,_W,_h,_y,_,_d,_o,_,_y,_o,_u,_,_s,_t,_r,_u,_g,_g,_l,_e,_,_t,_o,_,_l,_i,_v,_e,_que,_apd,$FD,$EB
@@ -576,35 +576,35 @@ _b10_txt_block18:
 		.BYTE	  _apu,_W,_a,_k,_e,_,_u,_p,_sem,_,$F9,_dot,$EB
 		.BYTE	  _I,_t,_apo,_s,_,_m,_o,_r,_n,_i,_n,_g,_exc,_apd,$FD,$EB
 		.BYTE	  _apu,_T,_o,_d,_a,_y,_,_i,_s,_,_a,_,_v,_e,_r,_y,_,_i,_m,_p,_o,_r,_t,_a,_n,_t,_,_d,_a,_y,_dot,_,$EB
-		.BYTE	  _T,_h,_i,_s,_,_i,_s,_,_t,_h,_e,_,_f,_i,_r,_s,_t,_,_t,_i,_m,_e,_,_t,_h,_a,_t,_,_y,_o,_u,_sem,_,$F9,_sem,_,_s,_h,_a,_l,_l,_,_g,_o,_,_t,_o,_,_t,_h,_e,_,_c,_a,_s,_t,_l,_e,$69,$FD,$EB
-		.BYTE	  _apu,_I,_,_h,_a,_v,_e,_,_r,_a,_i,_s,_e,_d,_,_y,_o,_u,_,_a,_s,_,_a,_,_b,_r,_a,_v,_e,_,_y,_o,_u,_n,_g,_,_l,_a,_d,_,_f,_o,_r,_,_t,_h,_i,_s,_,_v,_e,_r,_y,_,_d,_a,_y,$69,$EF
-		.BYTE	  _apu,_S,_o,_sem,_,_c,_o,_m,_e,_,_w,_i,_t,_h,_,_y,_o,_u,_r,_,_m,_o,_t,_h,_e,_r,$69,$EF
-		.BYTE	  _apu,_I,_f,_,_y,_o,_u,_,_g,_o,_,_s,_t,_r,_a,_i,_g,_h,_t,_sem,_,_y,_o,_u,_apo,_l,_l,_,_c,_o,_m,_e,_,_t,_o,_,_t,_h,_e,_,_c,_a,_s,_t,_l,_e,$69,$FD,$EB
-		.BYTE	  _apu,_R,_e,_m,_e,_m,_b,_e,_r,_,_y,_o,_u,_r,_,_m,_a,_n,_n,_e,_r,_s,_,_i,_n,_,_f,_r,_o,_n,_t,_,_o,_f,_,_t,_h,_e,_,_k,_i,_n,_g,_dot,_,_A,_l,_l,_,_r,_i,_g,_h,_t,_sem,_,_b,_e,_,_o,_n,_,_y,_o,_u,_r,_,_w,_a,_y,_,_n,_o,_w,$69,$EF
-		.BYTE	  _apu,_W,_h,_a,_t,_apo,_s,_,_t,_h,_e,_,_m,_a,_t,_t,_e,_r,_sem,_,$F9,_dot,_,_G,_o,_,_a,_l,_o,_n,_g,_,_a,_n,_d,_,_m,_e,_e,_t,_,_t,_h,_e,_,_k,_i,_n,_g,$69,$EF
+		.BYTE	  _T,_h,_i,_s,_,_i,_s,_,_t,_h,_e,_,_f,_i,_r,_s,_t,_,_t,_i,_m,_e,_,_t,_h,_a,_t,_,_y,_o,_u,_sem,_,$F9,_sem,_,_s,_h,_a,_l,_l,_,_g,_o,_,_t,_o,_,_t,_h,_e,_,_c,_a,_s,_t,_l,_e,_smc,$FD,$EB
+		.BYTE	  _apu,_I,_,_h,_a,_v,_e,_,_r,_a,_i,_s,_e,_d,_,_y,_o,_u,_,_a,_s,_,_a,_,_b,_r,_a,_v,_e,_,_y,_o,_u,_n,_g,_,_l,_a,_d,_,_f,_o,_r,_,_t,_h,_i,_s,_,_v,_e,_r,_y,_,_d,_a,_y,_smc,$EF
+		.BYTE	  _apu,_S,_o,_sem,_,_c,_o,_m,_e,_,_w,_i,_t,_h,_,_y,_o,_u,_r,_,_m,_o,_t,_h,_e,_r,_smc,$EF
+		.BYTE	  _apu,_I,_f,_,_y,_o,_u,_,_g,_o,_,_s,_t,_r,_a,_i,_g,_h,_t,_sem,_,_y,_o,_u,_apo,_l,_l,_,_c,_o,_m,_e,_,_t,_o,_,_t,_h,_e,_,_c,_a,_s,_t,_l,_e,_smc,$FD,$EB
+		.BYTE	  _apu,_R,_e,_m,_e,_m,_b,_e,_r,_,_y,_o,_u,_r,_,_m,_a,_n,_n,_e,_r,_s,_,_i,_n,_,_f,_r,_o,_n,_t,_,_o,_f,_,_t,_h,_e,_,_k,_i,_n,_g,_dot,_,_A,_l,_l,_,_r,_i,_g,_h,_t,_sem,_,_b,_e,_,_o,_n,_,_y,_o,_u,_r,_,_w,_a,_y,_,_n,_o,_w,_smc,$EF
+		.BYTE	  _apu,_W,_h,_a,_t,_apo,_s,_,_t,_h,_e,_,_m,_a,_t,_t,_e,_r,_sem,_,$F9,_dot,_,_G,_o,_,_a,_l,_o,_n,_g,_,_a,_n,_d,_,_m,_e,_e,_t,_,_t,_h,_e,_,_k,_i,_n,_g,_smc,$EF
 		.BYTE	  _apu,_W,_e,_l,_c,_o,_m,_e,_,_u,_n,_t,_o,_,_t,_h,_e,_e,_sem,_,$F9,_sem,_,_s,_o,_n,_,_o,_f,_,_t,_h,_e,_,_b,_r,_a,_v,_e,_,_O,_r,_t,_e,_g,_a,_exc,_apd,$FD,$EB
-		.BYTE	  _apu,_I,_t,_,_i,_s,_,_s,_a,_i,_d,_,_t,_h,_a,_t,_,_t,_h,_y,_,_f,_a,_t,_h,_e,_r,_,_O,_r,_t,_e,_g,_a,_,_m,_e,_t,_,_h,_i,_s,_,_e,_n,_d,_,_w,_h,_e,_n,_,_h,_e,_,_f,_e,_l,_l,_,_i,_n,_t,_o,_,_a,_,_v,_o,_l,_c,_a,_n,_o,_apo,_s,_,_c,_r,_a,_t,_e,_r,_,_a,_t,_,_t,_h,_e,_,_e,_n,_d,_,_o,_f,_,_a,_,_b,_a,_t,_t,_l,_e,$69,$FD,$EB
-		.BYTE	  _apu,_W,_e,_,_d,_o,_,_h,_e,_r,_e,_b,_y,_,_a,_c,_c,_e,_p,_t,_,_y,_o,_u,_r,_,_p,_e,_t,_i,_t,_i,_o,_n,_,_t,_o,_,_f,_o,_l,_l,_o,_w,_,_i,_n,_,_t,_h,_e,_,_f,_o,_o,_t,_s,_t,_e,_p,_s,_,_o,_f,_,_y,_o,_u,_r,_,_b,_r,_a,_v,_e,_,_f,_a,_t,_h,_e,_r,$69,$FD,$EB
-		.BYTE	  _apu,_T,_h,_y,_,_e,_n,_e,_m,_y,_,_s,_h,_a,_l,_l,_,_b,_e,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_,_B,_a,_r,_a,_m,_o,_s,$69,$FD,$EB
-		.BYTE	  _apu,_T,_h,_e,_,_n,_a,_m,_e,_,_o,_f,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_,_B,_a,_r,_a,_m,_o,_s,_,_i,_s,_,_y,_e,_t,_,_u,_n,_k,_n,_o,_w,_n,_,_i,_n,_,_t,_h,_e,_,_w,_o,_r,_l,_d,_,_o,_f,_,_m,_e,_n,$69,$FD,$FF
+		.BYTE	  _apu,_I,_t,_,_i,_s,_,_s,_a,_i,_d,_,_t,_h,_a,_t,_,_t,_h,_y,_,_f,_a,_t,_h,_e,_r,_,_O,_r,_t,_e,_g,_a,_,_m,_e,_t,_,_h,_i,_s,_,_e,_n,_d,_,_w,_h,_e,_n,_,_h,_e,_,_f,_e,_l,_l,_,_i,_n,_t,_o,_,_a,_,_v,_o,_l,_c,_a,_n,_o,_apo,_s,_,_c,_r,_a,_t,_e,_r,_,_a,_t,_,_t,_h,_e,_,_e,_n,_d,_,_o,_f,_,_a,_,_b,_a,_t,_t,_l,_e,_smc,$FD,$EB
+		.BYTE	  _apu,_W,_e,_,_d,_o,_,_h,_e,_r,_e,_b,_y,_,_a,_c,_c,_e,_p,_t,_,_y,_o,_u,_r,_,_p,_e,_t,_i,_t,_i,_o,_n,_,_t,_o,_,_f,_o,_l,_l,_o,_w,_,_i,_n,_,_t,_h,_e,_,_f,_o,_o,_t,_s,_t,_e,_p,_s,_,_o,_f,_,_y,_o,_u,_r,_,_b,_r,_a,_v,_e,_,_f,_a,_t,_h,_e,_r,_smc,$FD,$EB
+		.BYTE	  _apu,_T,_h,_y,_,_e,_n,_e,_m,_y,_,_s,_h,_a,_l,_l,_,_b,_e,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_,_B,_a,_r,_a,_m,_o,_s,_smc,$FD,$EB
+		.BYTE	  _apu,_T,_h,_e,_,_n,_a,_m,_e,_,_o,_f,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_,_B,_a,_r,_a,_m,_o,_s,_,_i,_s,_,_y,_e,_t,_,_u,_n,_k,_n,_o,_w,_n,_,_i,_n,_,_t,_h,_e,_,_w,_o,_r,_l,_d,_,_o,_f,_,_m,_e,_n,_smc,$FD,$FF
 		.BYTE	  _apu,_F,_a,_r,_e,_w,_e,_l,_l,_exc,_,_U,_n,_t,_i,_l,_,_w,_e,_,_m,_e,_e,_t,_,_o,_n,_c,_e,_,_m,_o,_r,_e,_sem,_,$F9,_exc,_apd,$EF
 		.BYTE	  _L,_o,_o,_k,_exc,_,_A,_,_h,_e,_r,_o,_,_i,_s,_,_f,_i,_g,_h,_t,_i,_n,_g,_,_a,_,_m,_o,_n,_s,_t,_e,_r,_,_a,_l,_o,_n,_e,_exc,$EF
-		.BYTE	  _apu,_T,_h,_e,_,_h,_e,_r,_o,_,_h,_a,_s,_,_w,_o,_n,_sem,_,_b,_u,_t,_,_i,_n,_,_w,_i,_n,_n,_i,_n,_g,_,_s,_e,_e,_m,_s,_,_t,_o,_,_h,_a,_v,_e,_,_s,_p,_e,_n,_t,_,_h,_i,_s,_,_l,_a,_s,_t,_,_o,_u,_n,_c,_e,_,_o,_f,_,_p,_o,_w,_e,_r,$69,$FD,$EF
-		.BYTE	  _apu,_I,_t,_apo,_s,_,_a,_l,_l,_,_o,_v,_e,_r,_,_f,_o,_r,_,_m,_e,$76,$69,$EB
-		.BYTE	  _apu,_O,_h,_sem,_,_t,_r,_a,_v,_e,_l,_e,_r,_dot,_,_P,_l,_e,_a,_s,_e,_,_h,_e,_a,_r,_,_m,_y,_,_d,_y,_i,_n,_g,_,_w,_o,_r,_d,_s,$69,$FD,$EB
-		.BYTE	  _apu,_I,_,_a,_m,_,_O,_r,_t,_e,_g,_a,_,_o,_f,_,_A,_l,_i,_a,_h,_a,_n,$69,$FD,$EB
-		.BYTE	  _apu,_I,_f,_,_y,_o,_u,_,_h,_a,_p,_p,_e,_n,_,_t,_o,_,_g,_o,_,_t,_o,_,_A,_l,_i,_a,_h,_a,_n,_,_i,_n,_,_y,_o,_u,_r,_,_t,_r,_a,_v,_e,_l,_s,_sem,_,_p,_l,_e,_a,_s,_e,_,_v,_i,_s,_i,_t,_,$F5,_,_a,_n,_d,_,_t,_e,_l,_l,_,_o,_f,_,_w,_h,_a,_t,_,_t,_r,_a,_n,_s,_p,_i,_r,_e,_d,_,_h,_e,_r,_e,$69,$FD,$EB
-		.BYTE	  _apu,_A,_s,_k,_,$B3,_,_t,_o,_,_f,_o,_r,_g,_i,_v,_e,_,$B0,_,_f,_a,_t,_h,_e,_r,_,_w,_h,_o,_,_c,_o,_u,_l,_d,_,_n,_o,_t,_,_b,_r,_i,_n,_g,_,_p,_e,_a,_c,_e,_,_t,_o,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_dot,_,_T,_e,_l,_l,_,_h,$76,_A,_a,_a,_h,_exc,_apd,$EF
-		.BYTE	  _apu,_I,_f,_,_t,_h,_i,_n,_g,_s,_,_r,_e,_m,_a,_i,_n,_,_u,_n,_c,_h,_a,_n,_g,_e,_d,_sem,_,_b,_e,_f,_o,_r,_e,_,_l,_o,_n,_g,_,_t,_h,_e,_,_w,_o,_r,_l,_d,_,_w,_i,_l,_l,_,_b,_e,_,_d,_e,_s,_t,_r,_o,_y,_e,_d,_,_b,_y,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,$69,$FD,$EB
+		.BYTE	  _apu,_T,_h,_e,_,_h,_e,_r,_o,_,_h,_a,_s,_,_w,_o,_n,_sem,_,_b,_u,_t,_,_i,_n,_,_w,_i,_n,_n,_i,_n,_g,_,_s,_e,_e,_m,_s,_,_t,_o,_,_h,_a,_v,_e,_,_s,_p,_e,_n,_t,_,_h,_i,_s,_,_l,_a,_s,_t,_,_o,_u,_n,_c,_e,_,_o,_f,_,_p,_o,_w,_e,_r,_smc,$FD,$EF
+		.BYTE	  _apu,_I,_t,_apo,_s,_,_a,_l,_l,_,_o,_v,_e,_r,_,_f,_o,_r,_,_m,_e,_ddt,_smc,$EB
+		.BYTE	  _apu,_O,_h,_sem,_,_t,_r,_a,_v,_e,_l,_e,_r,_dot,_,_P,_l,_e,_a,_s,_e,_,_h,_e,_a,_r,_,_m,_y,_,_d,_y,_i,_n,_g,_,_w,_o,_r,_d,_s,_smc,$FD,$EB
+		.BYTE	  _apu,_I,_,_a,_m,_,_O,_r,_t,_e,_g,_a,_,_o,_f,_,_A,_l,_i,_a,_h,_a,_n,_smc,$FD,$EB
+		.BYTE	  _apu,_I,_f,_,_y,_o,_u,_,_h,_a,_p,_p,_e,_n,_,_t,_o,_,_g,_o,_,_t,_o,_,_A,_l,_i,_a,_h,_a,_n,_,_i,_n,_,_y,_o,_u,_r,_,_t,_r,_a,_v,_e,_l,_s,_sem,_,_p,_l,_e,_a,_s,_e,_,_v,_i,_s,_i,_t,_,$F5,_,_a,_n,_d,_,_t,_e,_l,_l,_,_o,_f,_,_w,_h,_a,_t,_,_t,_r,_a,_n,_s,_p,_i,_r,_e,_d,_,_h,_e,_r,_e,_smc,$FD,$EB
+		.BYTE	  _apu,_A,_s,_k,_,$B3,_,_t,_o,_,_f,_o,_r,_g,_i,_v,_e,_,$B0,_,_f,_a,_t,_h,_e,_r,_,_w,_h,_o,_,_c,_o,_u,_l,_d,_,_n,_o,_t,_,_b,_r,_i,_n,_g,_,_p,_e,_a,_c,_e,_,_t,_o,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_dot,_,_T,_e,_l,_l,_,_h,_ddt,_A,_a,_a,_h,_exc,_apd,$EF
+		.BYTE	  _apu,_I,_f,_,_t,_h,_i,_n,_g,_s,_,_r,_e,_m,_a,_i,_n,_,_u,_n,_c,_h,_a,_n,_g,_e,_d,_sem,_,_b,_e,_f,_o,_r,_e,_,_l,_o,_n,_g,_,_t,_h,_e,_,_w,_o,_r,_l,_d,_,_w,_i,_l,_l,_,_b,_e,_,_d,_e,_s,_t,_r,_o,_y,_e,_d,_,_b,_y,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_smc,$FD,$EB
 		.BYTE	  _apu,_B,_a,_r,_a,_m,_o,_s,_,_m,_u,_s,_t,_,_b,_e,_,_d,_e,_f,_e,_a,_t,_e,_d,_exc,_apd,$FD,$EB
-		.BYTE	  _apu,_S,_e,_e,_k,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_,_a,_t,_,_t,_h,_e,_,_l,_o,_c,_a,_l,_,_e,_a,_t,_e,_r,_y,_,_a,_n,_d,_,_s,_t,_a,_r,_t,_,_y,_o,_u,_r,_,_q,_u,_e,_s,_t,$69,$FD,$EB
+		.BYTE	  _apu,_S,_e,_e,_k,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_,_a,_t,_,_t,_h,_e,_,_l,_o,_c,_a,_l,_,_e,_a,_t,_e,_r,_y,_,_a,_n,_d,_,_s,_t,_a,_r,_t,_,_y,_o,_u,_r,_,_q,_u,_e,_s,_t,_smc,$FD,$EB
 		.BYTE	  _,_,_,$EB
 		.BYTE	$F5,_,_r,_e,_c,_e,_i,_v,_e,_s,_,_m,_o,_n,_e,_y,_,_f,_o,_r,_,_h,_i,_s,_,_p,_a,_r,_t,_y,_dot,$FD,$FF
 		.BYTE	  _apu,_W,_h,_o,_a,_exc,_,_G,_e,_t,_,_a,_,_l,_o,_a,_d,_,_o,_f,_,_t,_h,_e,_s,_e,_,_w,_e,_i,_r,_d,_o,_s,_exc,_apd,$FD,$EF
-		.BYTE	  _apu,_Y,_e,_p,_exc,_,_W,_e,_,_b,_e,_t,_t,_e,_r,_,_g,_o,_,_t,_e,_l,_l,_,_t,_h,_e,_,_b,_o,_s,_s,$69,$EF
+		.BYTE	  _apu,_Y,_e,_p,_exc,_,_W,_e,_,_b,_e,_t,_t,_e,_r,_,_g,_o,_,_t,_e,_l,_l,_,_t,_h,_e,_,_b,_o,_s,_s,_smc,$EF
 _b10_txt_block19:
-		.BYTE	  _apu,_Y,_o,_u,_,_d,_o,_n,_e,_,_w,_e,_l,_l,_,_t,_o,_,_g,_e,_t,_,_t,_h,_i,_s,_,_f,_a,_r,_dot,_,_I,_,_g,_o,_t,_t,_a,_,_h,_a,_n,_d,_,_i,_t,_,_t,_o,_,_y,_a,$69,$FD,$EB
-		.BYTE	  _apu,_J,_u,_s,_t,_,_o,_n,_e,_,_t,_h,_i,_n,_g,_dot,_,_A,_i,_n,_apo,_t,_,_n,_o,_,_o,_n,_e,_,_c,_a,_n,_,_c,_a,_t,_c,_h,_,_u,_s,_exc,_,_S,_e,_e,_,_y,_a,_sem,_,_s,_u,_c,_k,_e,_r,_s,_exc,_,_H,_a,_sem,_,_h,_a,_sem,_,_h,_a,$69,$EF
+		.BYTE	  _apu,_Y,_o,_u,_,_d,_o,_n,_e,_,_w,_e,_l,_l,_,_t,_o,_,_g,_e,_t,_,_t,_h,_i,_s,_,_f,_a,_r,_dot,_,_I,_,_g,_o,_t,_t,_a,_,_h,_a,_n,_d,_,_i,_t,_,_t,_o,_,_y,_a,_smc,$FD,$EB
+		.BYTE	  _apu,_J,_u,_s,_t,_,_o,_n,_e,_,_t,_h,_i,_n,_g,_dot,_,_A,_i,_n,_apo,_t,_,_n,_o,_,_o,_n,_e,_,_c,_a,_n,_,_c,_a,_t,_c,_h,_,_u,_s,_exc,_,_S,_e,_e,_,_y,_a,_sem,_,_s,_u,_c,_k,_e,_r,_s,_exc,_,_H,_a,_sem,_,_h,_a,_sem,_,_h,_a,_smc,$EF
 		.BYTE	  _K,_a,_n,_d,_a,_r,_,_col,$EB
 		.BYTE	  _apu,_D,_o,_n,_apo,_t,_,_t,_a,_l,_k,_,_l,_i,_k,_e,_,_t,_h,_a,_t,_exc,_,_F,_o,_r,_g,_i,_v,_e,_,_m,_e,_exc,_,_I,_,_b,_e,_g,_,_y,_o,_u,_exc,_,_P,_l,_e,_a,_s,_e,_exc,_apd,$EB
 		.BYTE	$EF

@@ -2011,7 +2011,7 @@ loc_174BA4:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-;_delay_n_n:
+;_delay_n,_n:
 ;		PHA
 ;		JMP		_delay_ex
 
