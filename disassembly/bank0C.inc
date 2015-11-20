@@ -1,8 +1,8 @@
 
 		ORG $8000
 
-_bC_s0_ptr:
-		.WORD	_bC_s0
+_bC_s0_npc_anim_script_init_ptr:
+		.WORD	_bC_s0_npc_anim_script_init
 _bC_s1_ptr:
 		.WORD	_bC_s1
 _bC_s2_ptr:
@@ -15,8 +15,6 @@ _bC_s5_ptr:
 		.WORD	_bC_s5
 _bC_s6_ptr:
 		.WORD	_bC_s6
-;		.WORD	  0
-;		.WORD	  0
 _bC_s9_ptr:
 		.WORD	_bC_s9
 _bC_sA_ptr:
@@ -81,8 +79,6 @@ _bC_s27_ptr:
 		.WORD	_bC_s27
 _bC_s28_ptr:
 		.WORD	_bC_s28
-;_bC_s29_ptr:
-;		.WORD	_bC_s29
 _bC_s2A_ptr:
 		.WORD	_bC_s2A
 _bC_s2B_ptr:
@@ -107,8 +103,6 @@ _bC_s34_ptr:
 		.WORD	_bC_s34
 _bC_s35_ptr:
 		.WORD	_bC_s35
-;_bC_s36_ptr:
-;		.WORD	_bC_s36
 _bC_s37_ptr:
 		.WORD	_bC_s37
 _bC_s38_ptr:
@@ -122,7 +116,7 @@ _bC_s3B_ptr:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s1:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BEQ		locret_128081
 		CMP		#$40
 		BCC		loc_128082
@@ -136,7 +130,7 @@ loc_128089:
 		LDA		byte_90
 		AND		#$F
 		BNE		locret_128081
-		LDA		byte_6E3
+		LDA		_npc_anim_script_phase_count
 		STA		word_3C
 		LDX		#0
 loc_128096:
@@ -164,7 +158,7 @@ sub_1280A6:
 		BEQ		loc_1280B8
 		JMP		loc_1282BB
 loc_1280B8:
-		LDA		byte_6E2
+		LDA		_npc_anim_script_flags
 		AND		#8
 		BEQ		loc_1280CA
 		JSR		sub_128375
@@ -173,7 +167,7 @@ loc_1280B8:
 		ORA		#$80
 		STA		(word_6C),Y
 loc_1280CA:
-		LDA		byte_6E2
+		LDA		_npc_anim_script_flags
 		AND		#$10
 		BEQ		loc_1280F5
 		JSR		sub_128375
@@ -187,7 +181,7 @@ loc_1280CA:
 		BCC		loc_1280E5
 		JSR		sub_12837F
 loc_1280E5:
-		LDA		byte_6E2
+		LDA		_npc_anim_script_flags
 		AND		#4
 		BNE		loc_1280F5
 		LDY		#0
@@ -196,15 +190,15 @@ loc_1280E5:
 		INY
 		STA		(word_6C),Y
 loc_1280F5:
-		DEC		byte_6E3
+		DEC		_npc_anim_script_phase_count
 		BEQ		loc_1280FB
 		RTS
 loc_1280FB:
-		LDA		byte_6E2
+		LDA		_npc_anim_script_flags
 		AND		#2
 		BEQ		loc_128119
-		INC		byte_6E1
-		LDA		byte_6E1
+		INC		_npc_anim_script_idx
+		LDA		_npc_anim_script_idx
 		CMP		#8
 		BCC		loc_128113
 		CMP		#$B
@@ -215,7 +209,7 @@ loc_128113:
 loc_128116:
 		JMP		loc_1281FA
 loc_128119:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$1F
 		BNE		loc_128154
 		JSR		sub_174CCF
@@ -225,13 +219,13 @@ loc_128119:
 		SYSX	_sys07_msg_m00_arg1,$72
 		JSR		sub_174D4F
 		LDA		#$20
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		JMP		loc_12814E
 loc_128139:
 		SYSX	_sys07_msg_m00_arg1,$73
 		JSR		sub_174D4F
 		LDA		#$21
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		LDA		#0
 		STA		byte_6EB
 		LDA		#$E
@@ -250,20 +244,20 @@ loc_128154:
 		ORA		#$40
 		STA		byte_60BA
 		LDA		#$80
-		STA		byte_110
-		STA		byte_114
-		STA		byte_118
-		STA		byte_11C
+		STA		_npcs_pos_list
+		STA		_npcs_pos_list+4
+		STA		_npcs_pos_list+8
+		STA		_npcs_pos_list+$C
 		BNE		loc_1281BE
 loc_128175:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$23
 		BNE		loc_128185
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$75
 		JSR		sub_174D4F
 loc_128185:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$2C
 		BNE		loc_12819A
 		LDA		#$C0
@@ -272,7 +266,7 @@ loc_128185:
 		SYSX	_sys07_msg_m00_arg1,$86
 		JSR		sub_174D4F
 loc_12819A:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BNE		loc_1281C4
 		JSR		sub_174CCF
@@ -292,32 +286,32 @@ loc_1281BE:
 		PLA
 		PLA
 loc_1281C4:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$32
 		BNE		loc_1281D3
 		LDA		byte_60CC
 		ORA		#$40
 		STA		byte_60CC
 loc_1281D3:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#2
 		BNE		loc_1281E4
 		LDA		#0
-		STA		byte_6E1
-		LDY		#[_b7_s1B_idx-_sys0_sub_idx_lib]
+		STA		_npc_anim_script_idx
+		LDY		#[_b7_s1B_idx-_sys_idx_lib]
 		JMP		_sys0_unsafe
 loc_1281E4:
 		CMP		#$33
 		BNE		loc_1281F4
 		FARX	_b0_s52
-		FARX	_b0_s51_wrapper_for_b1B_s0
+		FARX	_b1B_s0
 		JSR		sub_174CBD
 		PLA
 		PLA
 		PLA
 loc_1281F4:
 		LDA		#0
-		STA		byte_6E1
+		STA		_npc_anim_script_idx
 		RTS
 loc_1281FA:
 		CMP		#$D
@@ -326,7 +320,7 @@ loc_1281FA:
 		SYSX	_sys07_msg_m00_arg1,$6C
 		JSR		sub_174D4F
 		LDA		#$D
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		JMP		loc_128275
 loc_12820F:
 		CMP		#$18
@@ -364,13 +358,13 @@ loc_128242:
 loc_128251:
 		CMP		#$2C
 		BNE		loc_12825F
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		LDA		#$14
 		STA		byte_6EF
 		BNE		loc_128275
 loc_12825F:
-		JSR		_bC_s0
-		LDA		byte_6E1
+		JSR		_bC_s0_npc_anim_script_init
+		LDA		_npc_anim_script_idx
 		CMP		#$E
 		BEQ		loc_1282B2
 		CMP		#$F
@@ -431,7 +425,7 @@ loc_1282BB:
 		PHA
 		JSR		sub_128375
 		LDY		#3
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BEQ		loc_1282E5
 		LDA		#$7C
@@ -458,7 +452,7 @@ loc_1282F3:
 		TXA
 		PHA
 		LDX		#$40
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$2C
 		BEQ		loc_12831F
 		CMP		#$28
@@ -482,7 +476,7 @@ loc_12831F:
 		STA		(word_6C),Y
 		PLA
 		TAX
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BEQ		loc_128368
 		LDY		#3
@@ -532,9 +526,9 @@ loc_128371:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128375:
-		LDA		byte_6E4,X
+		LDA		_npc_anim_script_phase_slot_list,X
 		STA		word_6C
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		RTS
 
@@ -607,7 +601,7 @@ loc_1283CA:
 		JSR		sub_12841D
 		DEX
 		BNE		loc_1283CA
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$A
 		BNE		locret_1283C2
 		LDA		#$27
@@ -617,7 +611,7 @@ loc_1283CA:
 		SEC
 		SBC		#$2F
 		TAX
-		LDA		byte_128435,X
+		LDA		_npcs_pos_list+$18435,X
 		STA		word_4
 		LDA		#$18
 		STA		word_4+1
@@ -651,33 +645,31 @@ sub_12841D:
 		ADC		word_3C+1
 		STA		byte_6D1
 		JMP		_vblank
-byte_128435:
+_npcs_pos_list+$18435:
 		.BYTE	$14,$12,$10, $E, $C
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s0:
-		STA		byte_6E1
+_bC_s0_npc_anim_script_init:
+		STA		_npc_anim_script_idx
 		ASL
 		TAX
-		DEX
-		DEX
-		LDA		off_12849C,X
+		LDA		_anim_scr_lib-2,X
 		STA		word_6C
-		LDA		off_12849C+1,X
+		LDA		_anim_scr_lib-1,X
 		STA		word_6C+1
 		LDY		#0
 		LDA		(word_6C),Y
-		STA		byte_6E2
+		STA		_npc_anim_script_flags
 		INY
 		LDA		(word_6C),Y
-		STA		byte_6E3
+		STA		_npc_anim_script_phase_count
 		LDX		#0
 loc_12845A:
 		INY
 		LDA		(word_6C),Y
-		STA		byte_6E4,X
+		STA		_npc_anim_script_phase_slot_list,X
 		INX
-		CPX		byte_6E3
+		CPX		_npc_anim_script_phase_count
 		BNE		loc_12845A
 		INY
 		TYA
@@ -700,7 +692,7 @@ loc_128480:
 		INX
 		CPX		#8
 		BNE		loc_128480
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$2B
 		BNE		locret_12849B
 		LDX		#$11
@@ -712,182 +704,340 @@ loc_128498:
 		STX		byte_6EF
 locret_12849B:
 		RTS
-off_12849C:
-		.WORD	byte_128510
-		.WORD	byte_12851C
-		.WORD	byte_128534
-		.WORD	byte_128534
-		.WORD	byte_12853C
-		.WORD	byte_128548
-		.WORD	byte_12854D
-		.WORD	byte_128556
-		.WORD	byte_12855F
-		.WORD	byte_128568
-		.WORD	byte_12856E
-		.WORD	byte_12857A
-		.WORD	byte_128582
-		.WORD	byte_128592
-		.WORD	byte_128598
-		.WORD	byte_12859E
-		.WORD	byte_1285A3
-		.WORD	byte_1285A8
-		.WORD	byte_1285B2
-		.WORD	byte_1285B9
-		.WORD	byte_1285BF
-		.WORD	byte_1285C5
-		.WORD	byte_1285CF
-		.WORD	byte_1285D5
-		.WORD	byte_1285DB
-		.WORD	byte_1285E1
-		.WORD	byte_1285E8
-		.WORD	byte_1285EE
-		.WORD	byte_1285F4
-		.WORD	byte_1285F9
-		.WORD	byte_1285FF
-		.WORD	byte_128609
-		.WORD	byte_128612
-		.WORD	byte_12861C
-		.WORD	byte_128628
-		.WORD	byte_12862D
-		.WORD	byte_128635
-		.WORD	byte_12864B
-		.WORD	byte_128653
-		.WORD	byte_12865B
-		.WORD	byte_128666
-		.WORD	byte_12866D
-		.WORD	byte_128672
-		.WORD	byte_128678
-		.WORD	byte_128684
-		.WORD	byte_12868A
-		.WORD	byte_128693
-		.WORD	byte_1286A8
-		.WORD	byte_1286A8
-		.WORD	byte_1286D6
-		.WORD	byte_1286DB
-		.WORD	byte_1286E0
-		.WORD	byte_1286EA
-		.WORD	byte_1286F0
-		.WORD	byte_1286F6
-		.WORD	byte_1286FC
-		.WORD	byte_128702
-		.WORD	byte_128708
-byte_128510:
-		.BYTE	$58,  1,$28,$C2,  2,$41,  5,$C1,  6,$4F,$46,$FF
-byte_12851C:
-		.BYTE	$CC,  4,  4,  8, $C,$10,$C1,  1,$23,$FF,  1,$41,  1,$22,$FF,  2
-		.BYTE	$C2,  1,$FF,$41,  1,$E1,$A2,$FF
-byte_128534:
-		.BYTE	$CA,  1,$10,$42,  1,$44,$81,$FF
-byte_12853C:
-		.BYTE	$5E,  1,$10,$41,$81,$41,$81,$41,$82,$41,$83,$FF
-byte_128548:
-		.BYTE	$48,  1,$10,$88,$FF
-byte_12854D:
-		.BYTE	$CA,  1,$10,  1,$21,  1,$21,$82,$FF
-byte_128556:
-		.BYTE	$CA,  1,$10,  1,$21,  1,$21,$82,$FF
-byte_12855F:
-		.BYTE	$CA,  1,$10,  1,$21,  1,$21,$82,$FF
-byte_128568:
-		.BYTE	$C8,  1,$10,$41,$E1,$FF
-byte_12856E:
-		.BYTE	$D8,  1,$2C,$41,$81,$C2,  4,$45,$86,$C8, $A,$FF
-byte_12857A:
-		.BYTE	$C2,  2,$3C,$40,$81,$FF,$81,$FF
-byte_128582:
-		.BYTE	$E2,  2,$3C,$40,$A1,$87,$E4,$C9,$24,$12,$FF,$A1,$89,$CD,$14,$FF
-byte_128592:
-		.BYTE	$E2,  1,$18,  2,$62,$FF
-byte_128598:
-		.BYTE	$E2,  1,$18,$89,$A1,$FF
-byte_12859E:
-		.BYTE	$E2,  1,$18,$28,$FF
-byte_1285A3:
-		.BYTE	$E8,  1,$18,  7,$FF
-byte_1285A8:
-		.BYTE	$CC,  2,$14,$10,$C1,$A1,$FF,$41,$A1,$FF
-byte_1285B2:
-		.BYTE	$4C,  1,$10,$81,$42,$21,$FF
-byte_1285B9:
-		.BYTE	$CC,  1,$14,$41,$A1,$FF
-byte_1285BF:
-		.BYTE	$CC,  1,$14,$C1,$A1,$FF
-byte_1285C5:
-		.BYTE	$CC,  2,$28,$20,$41,$21,$FF,$C1,$21,$FF
-byte_1285CF:
-		.BYTE	$CE,  1,$18,$81,$61,$FF
-byte_1285D5:
-		.BYTE	$CC,  1,$18,  1,$A1,$FF
-byte_1285DB:
-		.BYTE	$5E,  1,$10,$21,  1,$FF
-byte_1285E1:
-		.BYTE	$4C,  1,$10,  7,$41,$E1,$FF
-byte_1285E8:
-		.BYTE	$CC,  1,$44,$C6,  2,$FF
-byte_1285EE:
-		.BYTE	$D8,  1,$44,  1,$41,$FF
-byte_1285F4:
-		.BYTE	$DE,  1,$10,$C2,$FF
-byte_1285F9:
-		.BYTE	$CC,  1,$10,$C3,$81,$FF
-byte_1285FF:
-		.BYTE	$CC,  2,$10,$14,$41,$21,$FF,$C1,$21,$FF
-byte_128609:
-		.BYTE	$CC,  2,$18,$1C,  3,$21,$FF,  4,$FF
-byte_128612:
-		.BYTE	$FE,  2,$10,$14,  5,$82,$FF,  5,$82,$FF
-byte_12861C:
-		.BYTE	$CC,  2,$10,$14,$83,$C1,$61,$FF,$83,$41,$E1,$FF
-byte_128628:
-		.BYTE	$CC,  1,$28,$43,$FF
-byte_12862D:
-		.BYTE	$CE,  2,$28,$24,$41,$FF,$C1,$FF
-byte_128635:
-		.BYTE	$CE,  2,$28,$24,  1,$43,$81,$C1,  1,$41,$81,$E1,$FF,$C2,$81,$C1
-		.BYTE	  1,$41,$81,$C1,$62,$FF
-byte_12864B:
-		.BYTE	$CE,  2,$28,$24,$A1,$FF,$A1,$FF
-byte_128653:
-		.BYTE	$4C,  2,$28,$24, $B,$FF, $B,$FF
-byte_12865B:
-		.BYTE	$58,  3,$20,$2C,$30,  2,$FF,  2,$FF,  2,$FF
-byte_128666:
-		.BYTE	$CC,  1,$10,$C3,$83,$47,$FF
-byte_12866D:
-		.BYTE	$D8,  1,$10,$41,$FF
-byte_128672:
-		.BYTE	$EA,  1,$10,$41,$61,$FF
-byte_128678:
-		.BYTE	$EC,  1,$20,$61,$C1,  6,$42,  3,$4A,  7,$E1,$FF
-byte_128684:
-		.BYTE	$CC,  1,$10,$82,$C1,$FF
-byte_12868A:
-		.BYTE	$D8,  2,$14,$10,$85,$41,$FF,$84,$FF
-byte_128693:
-		.BYTE	$58,  4,$10,$14,$18,$1C,$81,$47,$FF,$62,$46,$FF,$21,  1,$61,$45
-		.BYTE	$FF,  1,$61,$46,$FF
-byte_1286A8:
-		.BYTE	$CC,  4,$38,$3C,$40,$44,$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
-		.BYTE	$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF,$81,$A1,$81,$A1,$81,$A1
-		.BYTE	$81,$A1,$81,$FF,$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
-byte_1286D6:
-		.BYTE	$EC,  1,$10,$B3,$FF
-byte_1286DB:
-		.BYTE	$E4,  1,$10,$A5,$FF
-byte_1286E0:
-		.BYTE	$CC,  2,$14,$10,$C1,$A1,$FF,$41,$A1,$FF
-byte_1286EA:
-		.BYTE	$CC,  1,$14,$41,$A1,$FF
-byte_1286F0:
-		.BYTE	$CC,  1,$14,$C1,$A1,$FF
-byte_1286F6:
-		.BYTE	$CE,  1,$18,$81,$61,$FF
-byte_1286FC:
-		.BYTE	$CC,  1,$18,  1,$A1,$FF
-byte_128702:
-		.BYTE	$5E,  1,$10,$21,  1,$FF
-byte_128708:
-		.BYTE	$4C,  1,$10,  7,$41,$E1,$FF
+
+_anim_scr_lib:
+		.WORD	_anim_scr01
+		.WORD	_anim_scr02
+		.WORD	_anim_scr04
+		.WORD	_anim_scr04
+		.WORD	_anim_scr05
+		.WORD	_anim_scr06
+		.WORD	_anim_scr07
+		.WORD	_anim_scr08
+		.WORD	_anim_scr09
+		.WORD	_anim_scr0A
+		.WORD	_anim_scr0B
+		.WORD	_anim_scr0C
+		.WORD	_anim_scr0D
+		.WORD	_anim_scr0E
+		.WORD	_anim_scr0F
+		.WORD	_anim_scr10
+		.WORD	_anim_scr11
+		.WORD	_anim_scr12
+		.WORD	_anim_scr13
+		.WORD	_anim_scr14
+		.WORD	_anim_scr15
+		.WORD	_anim_scr16
+		.WORD	_anim_scr17
+		.WORD	_anim_scr18
+		.WORD	_anim_scr19
+		.WORD	_anim_scr1A
+		.WORD	_anim_scr1B
+		.WORD	_anim_scr1C
+		.WORD	_anim_scr1D
+		.WORD	_anim_scr1E
+		.WORD	_anim_scr1F
+		.WORD	_anim_scr20
+		.WORD	_anim_scr21
+		.WORD	_anim_scr22
+		.WORD	_anim_scr23
+		.WORD	_anim_scr24
+		.WORD	_anim_scr25
+		.WORD	_anim_scr26
+		.WORD	_anim_scr27
+		.WORD	_anim_scr28
+		.WORD	_anim_scr29
+		.WORD	_anim_scr2A
+		.WORD	_anim_scr2B
+		.WORD	_anim_scr2C
+		.WORD	_anim_scr2D
+		.WORD	_anim_scr2E
+		.WORD	_anim_scr2F
+		.WORD	_anim_scr30
+		.WORD	_anim_scr30
+		.WORD	_anim_scr32
+		.WORD	_anim_scr33
+		.WORD	_anim_scr34
+		.WORD	_anim_scr35
+		.WORD	_anim_scr36
+		.WORD	_anim_scr37
+		.WORD	_anim_scr38
+		.WORD	_anim_scr39
+		.WORD	_anim_scr3A
+_anim_scr01:
+		.BYTE	$58,  1
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	$C2,  2,$41,  5,$C1,  6,$4F,$46,$FF
+_anim_scr02:
+		.BYTE	$CC,  4
+		.BYTE	<[_players_pos_list+4]
+		.BYTE	<[_players_pos_list+8]
+		.BYTE	<[_players_pos_list+$C]
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$C1,  1,$23,$FF
+		.BYTE	1,$41,  1,$22,$FF
+		.BYTE	2,$C2,  1,$FF
+		.BYTE	$41,  1,$E1,$A2,$FF
+_anim_scr04:
+		.BYTE	$CA,  1
+		.WORD	<[_npcs_pos_list]
+		.BYTE	1,$44,$81,$FF
+_anim_scr05:
+		.BYTE	$5E,  1
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$81,$41,$81,$41,$82,$41,$83,$FF
+_anim_scr06:
+		.BYTE	$48,  1
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$FF
+_anim_scr07:
+		.BYTE	$CA,  1
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$21,  1,$21,$82,$FF
+_anim_scr08:
+		.BYTE	$CA,  1
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$21,  1,$21,$82,$FF
+_anim_scr09:
+		.BYTE	$CA,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	1,$21,  1,$21,$82,$FF
+_anim_scr0A:
+		.BYTE	$C8,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$41,$E1,$FF
+_anim_scr0B:
+		.BYTE	$D8,  1
+		.BYTE	<[_npcs_pos_list+$1C]
+		.BYTE	$41,$81,$C2,  4,$45,$86,$C8, $A,$FF
+_anim_scr0C:
+		.BYTE	$C2,  2
+		.BYTE	<[_npcs_pos_list+$2C]
+		.BYTE	<[_npcs_pos_list+$30]
+		.BYTE	$81,$FF
+		.BYTE	$81,$FF
+_anim_scr0D:
+		.BYTE	$E2,  2
+		.BYTE	<[_npcs_pos_list+$2C]
+		.BYTE	<[_npcs_pos_list+$30]
+		.BYTE	$A1,$87,$E4,$C9,$24,$12,$FF
+		.BYTE	$A1,$89,$CD,$14,$FF
+_anim_scr0E:
+		.BYTE	$E2,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	2,$62,$FF
+_anim_scr0F:
+		.BYTE	$E2,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	$89,$A1,$FF
+_anim_scr10:
+		.BYTE	$E2,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	$28,$FF
+_anim_scr11:
+		.BYTE	$E8,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	7,$FF
+_anim_scr12:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list+4]
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$A1,$FF
+		.BYTE	$41,$A1,$FF
+_anim_scr13:
+		.BYTE	$4C,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$81,$42,$21,$FF
+_anim_scr14:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$41,$A1,$FF
+_anim_scr15:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$C1,$A1,$FF
+_anim_scr16:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	<[_npcs_pos_list+$10]
+		.BYTE	$41,$21,$FF
+		.BYTE	$C1,$21,$FF
+_anim_scr17:
+		.BYTE	$CE,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	$81,$61,$FF
+_anim_scr18:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	1,$A1,$FF
+_anim_scr19:
+		.BYTE	$5E,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$21,  1,$FF
+_anim_scr1A:
+		.BYTE	$4C,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	7,$41,$E1,$FF
+_anim_scr1B:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+$34]
+		.BYTE	$C6,  2,$FF
+_anim_scr1C:
+		.BYTE	$D8,  1
+		.BYTE	<[_npcs_pos_list+$34]
+		.BYTE	1,$41,$FF
+_anim_scr1D:
+		.BYTE	$DE,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$C2,$FF
+_anim_scr1E:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$C3,$81,$FF
+_anim_scr1F:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$41,$21,$FF
+		.BYTE	$C1,$21,$FF
+_anim_scr20:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	<[_npcs_pos_list+$C]
+		.BYTE	3,$21,$FF
+		.BYTE	4,$FF
+_anim_scr21:
+		.BYTE	$FE,  2
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	5,$82,$FF
+		.BYTE	5,$82,$FF
+_anim_scr22:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$83,$C1,$61,$FF
+		.BYTE	$83,$41,$E1,$FF
+_anim_scr23:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	$43,$FF
+_anim_scr24:
+		.BYTE	$CE,  2
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	<[_npcs_pos_list+$14]
+		.BYTE	$41,$FF
+		.BYTE	$C1,$FF
+_anim_scr25:
+		.BYTE	$CE,  2
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	<[_npcs_pos_list+$14]
+		.BYTE	1,$43,$81,$C1,  1,$41,$81,$E1,$FF
+		.BYTE	$C2,$81,$C1,  1,$41,$81,$C1,$62,$FF
+_anim_scr26:
+		.BYTE	$CE,  2
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	<[_npcs_pos_list+$14]
+		.BYTE	$A1,$FF
+		.BYTE	$A1,$FF
+_anim_scr27:
+		.BYTE	$4C,  2
+		.BYTE	<[_npcs_pos_list+$18]
+		.BYTE	<[_npcs_pos_list+$14]
+		.BYTE	 $B,$FF
+		.BYTE	 $B,$FF
+_anim_scr28:
+		.BYTE	$58,  3
+		.BYTE	<[_npcs_pos_list+$10]
+		.BYTE	<[_npcs_pos_list+$1C]
+		.BYTE	<[_npcs_pos_list+$20]
+		.BYTE	2,$FF
+		.BYTE	2,$FF
+		.BYTE	2,$FF
+_anim_scr29:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$C3,$83,$47,$FF
+_anim_scr2A:
+		.BYTE	$D8,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$41,$FF
+_anim_scr2B:
+		.BYTE	$EA,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$41,$61,$FF
+_anim_scr2C:
+		.BYTE	$EC,  1
+		.BYTE	<[_npcs_pos_list+$10]
+		.BYTE	$61,$C1,  6,$42,  3,$4A,  7,$E1,$FF
+_anim_scr2D:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$82,$C1,$FF
+_anim_scr2E:
+		.BYTE	$D8,  2
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$85,$41,$FF
+		.BYTE	$84,$FF
+_anim_scr2F:
+		.BYTE	$58,  4
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	<[_npcs_pos_list+$C]
+		.BYTE	$81,$47,$FF
+		.BYTE	$62,$46,$FF
+		.BYTE	$21,  1,$61,$45,$FF
+		.BYTE	1,$61,$46,$FF
+_anim_scr30:
+		.BYTE	$CC,  4
+		.BYTE	<[_npcs_pos_list+$28]
+		.BYTE	<[_npcs_pos_list+$2C]
+		.BYTE	<[_npcs_pos_list+$30]
+		.BYTE	<[_npcs_pos_list+$34]
+		.BYTE	$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
+		.BYTE	$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
+		.BYTE	$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
+		.BYTE	$81,$A1,$81,$A1,$81,$A1,$81,$A1,$81,$FF
+_anim_scr32:
+		.BYTE	$EC,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$B3,$FF
+_anim_scr33:
+		.BYTE	$E4,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$A5,$FF
+_anim_scr34:
+		.BYTE	$CC,  2
+		.BYTE	<[_npcs_pos_list+4]
+		.WORD	<[_npcs_pos_list]
+		.BYTE	$A1,$FF
+		.BYTE	$41,$A1,$FF
+_anim_scr35:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$41,$A1,$FF
+_anim_scr36:
+		.BYTE	$CC,  1
+		.BYTE	<[_npcs_pos_list+4]
+		.BYTE	$C1,$A1,$FF
+_anim_scr37:
+		.BYTE	$CE,  1
+		.BYTE	<[_npcs_pos_list+8]
+		.BYTE	$81,$61,$FF
+_anim_scr38:
+		.BYTE	$CC,  1
+		.WORD	<[_npcs_pos_list+8]
+		.BYTE	$A1,$FF
+_anim_scr39:
+		.BYTE	$5E,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	$21,  1,$FF
+_anim_scr3A:
+		.BYTE	$4C,  1
+		.BYTE	<[_npcs_pos_list]
+		.BYTE	7,$41,$E1,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_sA:
@@ -1675,11 +1825,11 @@ sub_128BF0:
 loc_128BF8:
 		LDA		byte_30
 		AND		#$FE
-		CMP		byte_128C2B,X
+		CMP		_npcs_pos_list+$18C2B,X
 		BNE		loc_128C0A
 		LDA		byte_31
 		AND		#$FE
-		CMP		byte_128C2B-1,X
+		CMP		_npcs_pos_list+$18C2B-1,X
 		BEQ		loc_128C0F
 loc_128C0A:
 		DEX
@@ -1689,22 +1839,22 @@ loc_128C0A:
 loc_128C0F:
 		LDA		byte_31
 		AND		#1
-		ORA		byte_128C45-1,X
+		ORA		_npcs_pos_list+$18C45-1,X
 		STA		byte_31
 		TAY
 		LDA		byte_30
 		AND		#1
-		ORA		byte_128C45,X
+		ORA		_npcs_pos_list+$18C45,X
 		STA		byte_30
 		TAX
 		JSR		sub_176F34
 		AND		#$E0
 		STA		byte_8C
 		RTS
-byte_128C2B:
+_npcs_pos_list+$18C2B:
 		.BYTE	  0,  8,  8,  0,  8,$10, $E,  8,$10,  8,$14,  2,$14, $E,$20,  0
 		.BYTE	$26,  8,$28,  8,$2C,  2,$2C, $E,$32,  8
-byte_128C45:
+_npcs_pos_list+$18C45:
 		.BYTE	$18,  8,$14, $C,$14,  4,$26,  8,$28,  8,  8, $E,  8,  2,$2C, $C
 		.BYTE	 $E,  8,$10,  8,$20, $E,$20,  2,  2,  8
 
@@ -1734,10 +1884,10 @@ sub_128C77:
 		JSR		sub_128CC1
 		LDA		word_3C+1
 		STA		byte_2B
-		STA		byte_101
+		STA		_players_pos_list+1
 		LDA		word_3C
 		STA		byte_2A
-		STA		byte_100
+		STA		_players_pos_list
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1753,10 +1903,10 @@ _bC_s31:
 		JSR		sub_128CC1
 		PLA
 		STA		byte_31
-		STA		byte_101
+		STA		_players_pos_list+1
 		PLA
 		STA		byte_30
-		STA		byte_100
+		STA		_players_pos_list
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1778,46 +1928,46 @@ _bC_s3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128CC1:
-		STX		byte_100
-		STY		byte_101
+		STX		_players_pos_list
+		STY		_players_pos_list+1
 		LDA		byte_73E
 		BPL		loc_128CD5
-		STX		byte_104
-		STY		byte_105
+		STX		_players_pos_list+4
+		STY		_players_pos_list+5
 		JMP		loc_128CE1
 loc_128CD5:
 		TXA
 		EOR		#$80
-		STA		byte_104
+		STA		_players_pos_list+4
 		TYA
 		EOR		#$80
-		STA		byte_105
+		STA		_players_pos_list+5
 loc_128CE1:
 		LDA		byte_740
 		BPL		loc_128CEF
-		STX		byte_108
-		STY		byte_109
+		STX		_players_pos_list+8
+		STY		_players_pos_list+9
 		JMP		loc_128CFB
 loc_128CEF:
 		TXA
 		EOR		#$80
-		STA		byte_108
+		STA		_players_pos_list+8
 		TYA
 		EOR		#$80
-		STA		byte_109
+		STA		_players_pos_list+9
 loc_128CFB:
 		LDA		byte_742
 		BPL		loc_128D09
-		STX		byte_10C
-		STY		byte_10D
+		STX		_players_pos_list+$C
+		STY		_players_pos_list+$D
 		JMP		loc_128D15
 loc_128D09:
 		TXA
 		EOR		#$80
-		STA		byte_10C
+		STA		_players_pos_list+$C
 		TYA
 		EOR		#$80
-		STA		byte_10D
+		STA		_players_pos_list+$D
 loc_128D15:
 		LDA		byte_92
 		STA		byte_93
@@ -1825,30 +1975,30 @@ loc_128D15:
 		STA		byte_95
 		STA		byte_96
 		LDA		byte_644
-		STA		byte_103
+		STA		_players_pos_list+3
 		STA		byte_6BC
 		LDA		#4
 		ORA		byte_644
-		STA		byte_107
+		STA		_players_pos_list+7
 		LDA		#8
 		ORA		byte_644
-		STA		byte_10B
+		STA		_players_pos_list+$B
 		LDA		#$C
 		ORA		byte_644
-		STA		byte_10F
+		STA		_players_pos_list+$F
 		LDA		#0
 		STA		byte_97
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128D44:
 		LDA		#0
-		STA		byte_102
+		STA		_players_pos_list+2
 		LDA		#1
-		STA		byte_106
+		STA		_players_pos_list+6
 		LDA		#2
-		STA		byte_10A
+		STA		_players_pos_list+$A
 		LDA		#3
-		STA		byte_10E
+		STA		_players_pos_list+$E
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s35:
@@ -1859,32 +2009,30 @@ _bC_s35:
 		BVS		locret_128D96
 		LDA		byte_2C
 		BNE		locret_128D96
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
-		LDA		#<[byte_100]
+		LDA		#<[_players_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
 		LDA		byte_73E
 		BPL		loc_128D7E
-		LDA		#<[byte_104]
+		LDA		#<[_players_pos_list+4]
 		STA		word_6C
 		FARX	_bD_s19
 loc_128D7E:
 		LDA		byte_740
 		BPL		loc_128D8A
-		LDA		#<[byte_108]
+		LDA		#<[_players_pos_list+8]
 		STA		word_6C
 		FARX	_bD_s19
 loc_128D8A:
 		LDA		byte_742
 		BPL		locret_128D96
-		LDA		#<[byte_10C]
+		LDA		#<[_players_pos_list+$C]
 		STA		word_6C
 		FARX	_bD_s19
 locret_128D96:
 		RTS
-; unused
-;		.BYTE	$6F,  0,  0,$80,$6F,  0,  0,$88,$77,  0,  0,$80,$77,  0,  0,$88
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s4:
@@ -1898,110 +2046,110 @@ _bC_s4:
 		BEQ		loc_128DFD
 		JSR		sub_128E92
 		LDX		byte_30
-		STX		byte_100
+		STX		_players_pos_list
 		INX
-		STX		byte_104
+		STX		_players_pos_list+4
 		INX
-		STX		byte_108
+		STX		_players_pos_list+8
 		INX
-		STX		byte_10C
+		STX		_players_pos_list+$C
 		JMP		loc_128E11
 loc_128DCF:
 		JSR		sub_128E92
 		LDX		byte_30
-		STX		byte_100
+		STX		_players_pos_list
 		DEX
-		STX		byte_104
+		STX		_players_pos_list+4
 		DEX
-		STX		byte_108
+		STX		_players_pos_list+8
 		DEX
-		STX		byte_10C
+		STX		_players_pos_list+$C
 		JMP		loc_128E11
 loc_128DE6:
 		JSR		sub_128E83
 		LDY		byte_31
-		STY		byte_101
+		STY		_players_pos_list+1
 		INY
-		STY		byte_105
+		STY		_players_pos_list+5
 		INY
-		STY		byte_109
+		STY		_players_pos_list+9
 		INY
-		STY		byte_10D
+		STY		_players_pos_list+$D
 		JMP		loc_128E11
 loc_128DFD:
 		JSR		sub_128E83
 		LDY		byte_31
-		STY		byte_101
+		STY		_players_pos_list+1
 		DEY
-		STY		byte_105
+		STY		_players_pos_list+5
 		DEY
-		STY		byte_109
+		STY		_players_pos_list+9
 		DEY
-		STY		byte_10D
+		STY		_players_pos_list+$D
 loc_128E11:
 		LDA		#4
 		ORA		byte_644
-		STA		byte_107
+		STA		_players_pos_list+7
 		LDA		#8
 		ORA		byte_644
-		STA		byte_10B
+		STA		_players_pos_list+$B
 		LDA		#$C
 		ORA		byte_644
-		STA		byte_10F
+		STA		_players_pos_list+$F
 		LDA		#$F0
 		STA		byte_97
-		LDX		byte_100
-		LDY		byte_101
+		LDX		_players_pos_list
+		LDY		_players_pos_list+1
 		JSR		sub_176F34
 		STA		byte_93
-		LDX		byte_104
-		LDY		byte_105
+		LDX		_players_pos_list+4
+		LDY		_players_pos_list+5
 		JSR		sub_176F34
 		STA		byte_94
-		LDX		byte_108
-		LDY		byte_109
+		LDX		_players_pos_list+8
+		LDY		_players_pos_list+9
 		JSR		sub_176F34
 		STA		byte_95
-		LDX		byte_10C
-		LDY		byte_10D
+		LDX		_players_pos_list+$C
+		LDY		_players_pos_list+$D
 		JSR		sub_176F34
 		STA		byte_96
 		LDA		byte_73E
 		BMI		loc_128E66
 		LDA		#$80
-		STA		byte_104
-		STA		byte_105
+		STA		_players_pos_list+4
+		STA		_players_pos_list+5
 loc_128E66:
 		LDA		byte_740
 		BMI		loc_128E73
 		LDA		#$80
-		STA		byte_108
-		STA		byte_109
+		STA		_players_pos_list+8
+		STA		_players_pos_list+9
 loc_128E73:
 		LDA		byte_742
 		BMI		loc_128E80
 		LDA		#$80
-		STA		byte_10C
-		STA		byte_10D
+		STA		_players_pos_list+$C
+		STA		_players_pos_list+$D
 loc_128E80:
 		JMP		sub_128D44
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128E83:
 		LDX		byte_30
-		STX		byte_100
-		STX		byte_104
-		STX		byte_108
-		STX		byte_10C
+		STX		_players_pos_list
+		STX		_players_pos_list+4
+		STX		_players_pos_list+8
+		STX		_players_pos_list+$C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128E92:
 		LDY		byte_31
-		STY		byte_101
-		STY		byte_105
-		STY		byte_109
-		STY		byte_10D
+		STY		_players_pos_list+1
+		STY		_players_pos_list+5
+		STY		_players_pos_list+9
+		STY		_players_pos_list+$D
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2150,10 +2298,10 @@ sub_128F89:
 ; =============== S U B	R O U T	I N E =======================================
 sub_128F97:
 		LDX		#0
-		LDA		byte_128FB9,Y
+		LDA		_npcs_pos_list+$18FB9,Y
 		JSR		sub_128FA4
 		LDX		#2
-		LDA		byte_128FCE,Y
+		LDA		_npcs_pos_list+$18FCE,Y
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128FA4:
@@ -2171,10 +2319,10 @@ loc_128FB4:
 		INC		word_3C,X
 		INC		word_3C,X
 		RTS
-byte_128FB9:
+_npcs_pos_list+$18FB9:
 		.BYTE	  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  1,  0,  0,  0,  1
 		.BYTE	  0,  0,  0,  1,  0
-byte_128FCE:
+_npcs_pos_list+$18FCE:
 		.BYTE	  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  3,  0,  0,  0
 		.BYTE	  3,  0,  0,  3,  3
 
@@ -2343,7 +2491,7 @@ loc_1290FF:
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$2E
 loc_129117:
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12911A:
@@ -2408,7 +2556,7 @@ sub_129162:
 		JSR		sub_174CBD
 		JSR		_bC_s12_vblank_count_50
 		LDA		#$2A
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 locret_129198:
 		RTS
 loc_129199:
@@ -2504,7 +2652,7 @@ sub_12923C:
 		BNE		sub_1292B0
 		LDX		#6
 loc_129246:
-		LDA		#[_b6_d9_idx-_sys0_sub_idx_lib]
+		LDA		#[_b6_d9_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		CMP		byte_C5
 		BCC		loc_129254
@@ -2513,7 +2661,7 @@ loc_129246:
 		BNE		loc_129246
 loc_129254:
 		STX		byte_C5
-		LDA		#[_b6_dA_idx-_sys0_sub_idx_lib]
+		LDA		#[_b6_dA_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		TAY
 		CPX		#4
@@ -2532,7 +2680,7 @@ loc_12926C:
 		PHA
 		TYA
 		PHA
-		LDA		#[_b6_dB_idx-_sys0_sub_idx_lib]
+		LDA		#[_b6_dB_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_y
 		PHA
 		LDA		byte_1292A4,X
@@ -3119,7 +3267,7 @@ sub_129616:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s1D:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		LDA		byte_60B7
 		AND		#$40
 		BNE		sub_129610
@@ -3150,7 +3298,7 @@ loc_129647:
 		ASL
 		ADC		word_4
 		TAY
-		LDA		#[_bA_d15_idx-_sys0_sub_idx_lib]
+		LDA		#[_bA_d15_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_y
 		STA		_pak_data_ptr
 		LDY		word_4
@@ -3315,20 +3463,20 @@ loc_129777:
 loc_12978A:
 		LDA		byte_60B9
 		BMI		loc_129801
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CMP		#5
 		BEQ		loc_129801
 		SYSX	_sys07_msg_m00_arg1,$B2
 		JSR		sub_176C3C
 		LDA		#$92
-		STA		byte_113
+		STA		_npcs_pos_list+3
 		LDA		#5
-		STA		byte_110
+		STA		_npcs_pos_list
 		LSR
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		LSR
 		STA		word_6C+1
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
 		JMP		loc_129745
@@ -3338,7 +3486,7 @@ loc_1297B7:
 		SYSX	_sys07_msg_m00_arg1,$3B
 		LDA		#$3D
 loc_1297C1:
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		JMP		loc_129745
 loc_1297C7:
 		LDA		byte_644
@@ -3460,7 +3608,7 @@ loc_129888:
 		DEY
 loc_12988F:
 		TYA
-		JSR		sub_176C6C
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		SYSX	_sys07_msg_m00_arg1,$45
 		FARX	_bE_s1C
 		BNE		loc_1298D1
@@ -3483,7 +3631,7 @@ loc_1298A9:
 		LDA		word_4+1
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
@@ -3549,7 +3697,7 @@ loc_12992D:
 		LSR
 		STA		byte_D2
 		TYA
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 loc_129935:
 		LDA		_tmp_pak_data_bank
 		STA		byte_CE
@@ -3681,12 +3829,12 @@ loc_1299FD:
 		STA		word_4
 		LDX		#0
 loc_129A02:
-		LDA		#[_bA_d14_idx-_sys0_sub_idx_lib]
+		LDA		#[_bA_d14_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		INX
 		CMP		byte_8B
 		BEQ		loc_129A1B
-		LDA		#[_bA_d14_idx-_sys0_sub_idx_lib]
+		LDA		#[_bA_d14_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		INX
 		CLC
@@ -3905,7 +4053,7 @@ loc_129AFE:
 		ASL
 		ADC		word_4
 		TAX
-		LDA		#[_bA_d15_idx-_sys0_sub_idx_lib]
+		LDA		#[_bA_d15_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		TAX
 		LDA		byte_8B
@@ -3925,7 +4073,7 @@ loc_129B1C:
 		DEY
 loc_129B1D:
 		TYA
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		SEC
 		RTS
 loc_129B23:
@@ -4014,7 +4162,7 @@ _bC_s22:
 		EOR		#1
 		CLC
 		ADC		#$5D
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		LDA		byte_2F
 		LSR
 		BCS		loc_129C0E
@@ -5049,9 +5197,9 @@ sub_12A312:
 		FARX	_bE_sD
 		LDA		byte_2C
 		BNE		loc_12A326
-		LDX		#[_bC_s16_idx-_sys0_sub_idx_lib]
+		LDX		#[_bC_s16_idx-_sys_idx_lib]
 		STX		word_3C
-		LDX		#[_bC_s15_idx-_sys0_sub_idx_lib]
+		LDX		#[_bC_s15_idx-_sys_idx_lib]
 		STX		word_3C+1
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9F
 		JSR		_bC_s17_sys0_spr_effects_call
@@ -5077,9 +5225,9 @@ loc_12A341:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A34B:
-		LDA		#<[byte_138]
+		LDA		#<[_npcs_pos_list+$28]
 		STA		word_6C
-		LDA		#>[byte_138]
+		LDA		#>[_npcs_pos_list+$28]
 		STA		word_6C+1
 		RTS
 
@@ -5139,9 +5287,9 @@ sub_12A392:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A39D:
-		LDA		#<[byte_100]
+		LDA		#<[_players_pos_list]
 		STA		word_6C
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		RTS
 
@@ -5159,14 +5307,14 @@ loc_12A3B4:
 		LDY		#0
 		LDA		(word_6C),Y
 		SEC
-		SBC		byte_100
+		SBC		_players_pos_list
 		CLC
 		ADC		#8
 		STA		word_4
 		INY
 		LDA		(word_6C),Y
 		SEC
-		SBC		byte_101
+		SBC		_players_pos_list+1
 		CLC
 		ADC		#7
 		STA		word_4+1
@@ -5175,7 +5323,7 @@ loc_12A3B4:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s38:
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		LDY		#3
 		LDA		(word_6C),Y
@@ -5211,52 +5359,52 @@ loc_12A3E0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s39:
-		LDA		#<[byte_138]
+		LDA		#<[_npcs_pos_list+$28]
 		STA		word_6C
 		LDX		#2
 		JSR		_bC_sB
 		LDA		#$80
-		STA		byte_138
+		STA		_npcs_pos_list+$28
 locret_12A40D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s3B:
 		PHA
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		LDX		#2
 		JSR		_bC_sB
 		LDA		#$80
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		PLA
 		BEQ		locret_12A40D
 		LDA		#3
 		STA		byte_7673
 		LDA		#7
 		STA		byte_7697
-		LDA		#[_bC_s2D_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s2D_idx-_sys_idx_lib]
 		STA		word_3C
-		LDA		#[_bC_s2C_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s2C_idx-_sys_idx_lib]
 		STA		word_3C+1
 		JMP		_bC_s17_sys0_spr_effects_call
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s3A:
-		LDA		#[_bC_s2C_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s2C_idx-_sys_idx_lib]
 		STA		word_3C
-		LDA		#[_bC_s2D_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s2D_idx-_sys_idx_lib]
 		STA		word_3C+1
 		JSR		_bC_s17_sys0_spr_effects_call
 		LDA		#$13
 		STA		byte_7673
 		STA		byte_7697
 		LDA		#$F
-		STA		byte_110
+		STA		_npcs_pos_list
 		LDA		#$12
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		LDA		#$92
-		STA		byte_113
+		STA		_npcs_pos_list+3
 		LDA		#$10
 		STA		word_6C
 		ASL
@@ -5266,7 +5414,7 @@ _bC_s3A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_sB:
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		LDA		byte_12A47B,X
 		STA		word_3C
@@ -5278,10 +5426,10 @@ _bC_sB:
 locret_12A47A:
 		RTS
 byte_12A47B:
-		.BYTE	[_bC_s38_idx-_sys0_sub_idx_lib]
-		.BYTE	[_bD_s19_idx-_sys0_sub_idx_lib]
-		.BYTE	[_bD_s19_idx-_sys0_sub_idx_lib]
-		.BYTE	[_bC_s38_idx-_sys0_sub_idx_lib]
+		.BYTE	[_bC_s38_idx-_sys_idx_lib]
+		.BYTE	[_bD_s19_idx-_sys_idx_lib]
+		.BYTE	[_bD_s19_idx-_sys_idx_lib]
+		.BYTE	[_bC_s38_idx-_sys_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2C:
@@ -5381,9 +5529,9 @@ byte_12A4F8:
 _bC_s33:
 		JSR		sub_177668
 		LDA		byte_6BB
-		ORA		byte_12F
+		ORA		_npcs_pos_list+$1F
 		AND		#$FC
-		STA		byte_12F
+		STA		_npcs_pos_list+$1F
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9E
 		JSR		sub_12A55D
 		JSR		sub_12A58F
@@ -5392,9 +5540,9 @@ _bC_s33:
 		JSR		sub_12A5CA
 		JSR		sub_12A5DB
 		LDA		#$B
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		LDA		#$80
-		STA		byte_118
+		STA		_npcs_pos_list+8
 		LDA		#$35
 		STA		byte_9E
 		LDA		#$F4
@@ -5442,8 +5590,8 @@ loc_12A572:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A58F:
 		LDA		#7
-		STA		byte_12C
-		STA		byte_12D
+		STA		_npcs_pos_list+$1C
+		STA		_npcs_pos_list+$1D
 		LDA		#$2C
 		STA		word_6C
 		FARX	_bD_s19
@@ -5478,7 +5626,7 @@ sub_12A5CA:
 loc_12A5CD:
 		LDX		#$1E
 		JSR		_vblank_count
-		INC		byte_12F
+		INC		_npcs_pos_list+$1F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A5D5:
@@ -5505,7 +5653,7 @@ sub_12A5E7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A5F3:
-		LDA		byte_11B
+		LDA		_npcs_pos_list+$B
 		AND		#$3C
 		TAY
 		LDX		#$3C
@@ -5519,7 +5667,7 @@ sub_12A5F3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A60A:
-		LDA		byte_11B
+		LDA		_npcs_pos_list+$B
 		AND		#$3C
 		TAY
 		LDX		#$3C
@@ -5562,13 +5710,13 @@ _bC_s19:
 		JSR		sub_1762A8
 		LDA		#2
 		STA		byte_644
-		STA		byte_103
+		STA		_players_pos_list+3
 		LDA		#$12
 		STA		byte_30
-		STA		byte_100
+		STA		_players_pos_list
 		LDA		#3
 		STA		byte_31
-		STA		byte_101
+		STA		_players_pos_list+1
 		JSR		sub_12A6F1
 		FARX	_b5_s9
 		LDA		#0
@@ -5608,7 +5756,7 @@ _bC_s28:
 		LDY		#$39
 loc_12A6C4:
 		TYA
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A6C8:
@@ -5616,7 +5764,7 @@ sub_12A6C8:
 		JSR		sub_12A6FD
 		LDY		#4
 loc_12A6D0:
-		LDA		byte_100,Y
+		LDA		_players_pos_list,Y
 		PHA
 		TYA
 		AND		#3
@@ -5628,11 +5776,11 @@ loc_12A6D0:
 		BNE		loc_12A6E8
 loc_12A6E2:
 		LDA		#$80
-		STA		byte_100,Y
+		STA		_players_pos_list,Y
 loc_12A6E7:
 		PLA
 loc_12A6E8:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		INY
 		CPY		#$10
@@ -5641,16 +5789,16 @@ loc_12A6E8:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A6F1:
 		LDA		#$80
-		STA		byte_104
-		STA		byte_108
-		STA		byte_10C
+		STA		_players_pos_list+4
+		STA		_players_pos_list+8
+		STA		_players_pos_list+$C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A6FD:
 		LDX		#$10
 loc_12A6FF:
-		LDA		byte_102,X
+		LDA		_players_pos_list+2,X
 		CMP		#$FF
 		BEQ		locret_12A70C
 		INX
@@ -5688,7 +5836,7 @@ _bC_s30:
 		ORA		#$80
 		STA		byte_60B7
 		LDA		#$1B
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s21:
@@ -5947,7 +6095,7 @@ sub_12A8C5:
 		JSR		sub_12A90F
 		ADC		byte_30
 		STA		byte_30
-		STA		byte_100
+		STA		_players_pos_list
 		RTS
 loc_12A8EE:
 		JSR		sub_12A900
@@ -5956,7 +6104,7 @@ loc_12A8EE:
 		JSR		sub_12A90F
 		ADC		byte_31
 		STA		byte_31
-		STA		byte_101
+		STA		_players_pos_list+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6145,9 +6293,9 @@ loc_12AA00:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12AA18:
-		LDA		#<[byte_100]
+		LDA		#<[_players_pos_list]
 		STA		word_6C
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		LDA		#2
 		STA		byte_644
@@ -6904,7 +7052,7 @@ loc_12AF88:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s14:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BNE		loc_12AFA9
 		JSR		sub_12B041
 		JSR		sub_12B080
@@ -7151,9 +7299,9 @@ _bC_s29:
 		LDA		#$C
 		STA		byte_6EF
 		LDA		#$40
-		STA		byte_6E1
+		STA		_npc_anim_script_idx
 		LDA		#$A8
-		STA		byte_6E2
+		STA		_npc_anim_script_flags
 locret_12B163:
 		RTS
 
@@ -7165,15 +7313,15 @@ _bC_s2A:
 		LDA		byte_31
 		CMP		#$11
 		BNE		locret_12B163
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CMP		#$31
 		BNE		locret_12B163
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$A4
 		JSR		sub_174D4F
 		LDA		#7
-		STA		byte_6E1
-		FARX	_bC_s0
+		STA		_npc_anim_script_idx
+		FARX	_bC_s0_npc_anim_script_init
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7274,7 +7422,7 @@ loc_12B22B:
 loc_12B236:
 		SYSX	_sys07_msg_m00_arg1,$6B
 		LDA		#$C
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 		JMP		sub_174D4F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7286,14 +7434,14 @@ sub_12B241:
 		AND		#$FE
 		CMP		#$A
 		BNE		locret_12B262
-		LDA		byte_111
+		LDA		_npcs_pos_list+1
 		CMP		#7
 		BNE		locret_12B262
 		LDA		byte_6DF
 		CMP		#$78
 		BCC		locret_12B262
 		LDA		#$13
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 locret_12B262:
 		RTS
 
@@ -7317,18 +7465,18 @@ sub_12B263:
 		LDY		#$35
 loc_12B285:
 		LDA		byte_30
-		CMP		byte_100,X
+		CMP		_players_pos_list,X
 		BEQ		locret_12B262
 		CMP		#$D
 		BEQ		loc_12B298
 		CMP		#$E
 		BNE		locret_12B262
 		TYA
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 loc_12B298:
 		INY
 		TYA
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B29D:
@@ -7341,11 +7489,11 @@ sub_12B29D:
 		LDA		byte_31
 		CMP		#$2D
 		BNE		locret_12B2BC
-		LDA		byte_128
+		LDA		_npcs_pos_list+$18
 		CMP		#$F
 		BNE		locret_12B2BC
 		LDA		#$16
-		JSR		_bC_s0
+		JSR		_bC_s0_npc_anim_script_init
 locret_12B2BC:
 		RTS
 
@@ -7373,7 +7521,7 @@ loc_12B2D0:
 		LDY		#$37
 loc_12B2E7:
 		TYA
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B2EB:
@@ -7434,7 +7582,7 @@ sub_12B353:
 		STA		word_6E
 		LDA		off_12B3CD+1,X
 		STA		word_6E+1
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		JSR		_sram_b0_s31
 		JSR		sub_12A6FD
@@ -7478,7 +7626,7 @@ loc_12B39F:
 		STA		word_FE+1,X
 		LDA		(word_6E),Y
 		AND		#$7F
-		STA		byte_104,Y
+		STA		_players_pos_list+4,Y
 		DEX
 		DEY
 		BPL		loc_12B39F
@@ -7516,7 +7664,7 @@ sub_12B3D1:
 		LDA		byte_60BA
 		AND		#$10
 		BNE		loc_12B453
-		LDA		byte_144
+		LDA		_npcs_pos_list+$34
 		BMI		locret_12B42D
 		JSR		_sram_b0_s31
 		LDA		word_4
@@ -7526,19 +7674,19 @@ sub_12B3D1:
 		FARX	_bE_sD
 		LDA		#$44
 		STA		word_6C
-		LDA		byte_147
+		LDA		_npcs_pos_list+$37
 		AND		#3
 		BNE		loc_12B41C
-		LDA		byte_147
+		LDA		_npcs_pos_list+$37
 		AND		#$FC
 		ORA		#1
 		JSR		loc_12B448
-		LDA		byte_147
+		LDA		_npcs_pos_list+$37
 		AND		#$FC
 		ORA		#2
 		JSR		loc_12B448
 loc_12B41C:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		SYSX	_sys13_msg_m00_arg6,$99
 		FARX	_bE_s1C
 		BEQ		loc_12B42E
@@ -7558,9 +7706,9 @@ loc_12B42E:
 		JSR		_bC_s20
 loc_12B443:
 		LDA		#$1C
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 loc_12B448:
-		STA		byte_147
+		STA		_npcs_pos_list+$37
 		FARX	_bD_s19
 		LDX		#$A
 		JMP		_vblank_count
@@ -7603,7 +7751,7 @@ sub_12B493:
 		LDA		byte_30
 		CMP		#7
 		BNE		locret_12B492
-		LDA		byte_114
+		LDA		_npcs_pos_list+4
 		BMI		locret_12B492
 		LDA		byte_60BA
 		ORA		#$10
@@ -7620,26 +7768,26 @@ loc_12B4BE:
 		JSR		sub_174369
 		JSR		_ppu_screen_clear
 		FARX	_bC_s1A
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		JSR		_pal_fade_in
 		SYSX	_sys13_msg_m00_arg6,$A1
 		JSR		sub_174369
 		LDA		#8
 		STA		byte_30
-		STA		byte_100
+		STA		_players_pos_list
 		LDA		#3
 		STA		byte_31
-		STA		byte_101
+		STA		_players_pos_list+1
 		LDA		#7
-		STA		byte_110
-		DEC		byte_111
-		DEC		byte_115
-		LDA		byte_113
+		STA		_npcs_pos_list
+		DEC		_npcs_pos_list+1
+		DEC		_npcs_pos_list+5
+		LDA		_npcs_pos_list+3
 		AND		#$FC
 		ORA		#1
-		STA		byte_113
+		STA		_npcs_pos_list+3
 		FARX	_b5_s9
-		LDA		#<[byte_100]
+		LDA		#<[_players_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
 		JSR		sub_175B0E
@@ -7647,7 +7795,7 @@ loc_12B4BE:
 		SYSX	_sys13_msg_m00_arg6,$A2
 		JSR		sub_174D4F
 		LDA		#$1D
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 locret_12B517:
 		RTS
 
@@ -7675,11 +7823,11 @@ sub_12B518:
 		PLA
 		STA		_cur_message_speed
 		LDA		#$80
-		STA		byte_110
-		STA		byte_114
+		STA		_npcs_pos_list
+		STA		_npcs_pos_list+4
 		LDY		byte_31
 		INY
-		STY		byte_119
+		STY		_npcs_pos_list+9
 		JSR		sub_174CBD
 		JSR		sub_174CCF
 		LDA		byte_6A65
@@ -7689,26 +7837,26 @@ loc_12B564:
 		FARX	_bD_sB
 		SYSX	_sys07_msg_m00_arg1,$8C
 		LDA		#$80
-		STA		byte_118
-		LDA		#>[byte_118]
+		STA		_npcs_pos_list+8
+		LDA		#>[_npcs_pos_list+8]
 		STA		word_6C+1
-		LDA		#<[byte_118]
+		LDA		#<[_npcs_pos_list+8]
 		STA		word_6C
 		JSR		_bC_s38
 		LDY		byte_31
 		INY
-		STY		byte_11D
-		LDA		#>[byte_100]
+		STY		_npcs_pos_list+$D
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
-		LDA		#<[byte_100]
+		LDA		#<[_players_pos_list]
 		STA		word_6C
 		FARX	_bD_sD
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$80
-		STA		byte_11C
-		LDA		#>[byte_11C]
+		STA		_npcs_pos_list+$C
+		LDA		#>[_npcs_pos_list+$C]
 		STA		word_6C+1
-		LDA		#<[byte_11C]
+		LDA		#<[_npcs_pos_list+$C]
 		STA		word_6C
 		JSR		_bC_s38
 		LDA		byte_60B9
@@ -7868,9 +8016,9 @@ sub_12B6AF:
 		CMP		#$C
 		BNE		locret_12B6AE
 		LDA		#$1F
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 loc_12B6C9:
-		LDA		byte_124
+		LDA		_npcs_pos_list+$14
 		CMP		#$C
 		BNE		locret_12B6AE
 		LDA		byte_31
@@ -7890,8 +8038,8 @@ loc_12B6C9:
 		LDA		#3
 		FARX	_b0_s1
 		LDA		#$80
-		STA		byte_124
-		STA		byte_128
+		STA		_npcs_pos_list+$14
+		STA		_npcs_pos_list+$18
 		ORA		byte_60BA
 		STA		byte_60BA
 		JSR		sub_12B7AD
@@ -7911,7 +8059,7 @@ loc_12B71C:
 		LDA		byte_31
 		CMP		#$17
 		BNE		loc_12B757
-		LDA		byte_124
+		LDA		_npcs_pos_list+$14
 		CMP		#$10
 		BNE		locret_12B739
 		JSR		sub_174CCF
@@ -7935,19 +8083,19 @@ loc_12B74D:
 loc_12B757:
 		CMP		#$18
 		BNE		loc_12B767
-		LDA		byte_128
+		LDA		_npcs_pos_list+$18
 		CMP		#6
 		BNE		locret_12B739
 		LDA		#$23
 loc_12B764:
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 loc_12B767:
 		CMP		#$1D
 		BNE		locret_12B739
 		LDA		byte_30
 		CMP		#$D
 		BNE		locret_12B739
-		LDA		byte_124
+		LDA		_npcs_pos_list+$14
 		CMP		#$10
 		BNE		locret_12B739
 		JSR		sub_174CCF
@@ -7974,20 +8122,20 @@ loc_12B792:
 		STA		byte_60BA
 		JSR		_bC_s20
 		LDA		#$24
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B7AD:
 		LDY		#$C
-		STY		byte_131
-		STY		byte_12D
+		STY		_npcs_pos_list+$21
+		STY		_npcs_pos_list+$1D
 		INY
-		STY		byte_121
+		STY		_npcs_pos_list+$11
 		LDA		#$80
-		STA		byte_110
-		STA		byte_114
-		STA		byte_118
-		STA		byte_11C
+		STA		_npcs_pos_list
+		STA		_npcs_pos_list+4
+		STA		_npcs_pos_list+8
+		STA		_npcs_pos_list+$C
 locret_12B7C7:
 		RTS
 
@@ -8047,6 +8195,7 @@ loc_12B819:
 		FARX	_bC_s34
 locret_12B81C:
 		RTS
+		
 byte_12B81D:
 		.BYTE	  7,  9, $F
 
@@ -8073,16 +8222,16 @@ sub_12B820:
 		JSR		sub_174CCF
 		FARX	_bD_sB
 		SYSX	_sys07_msg_m00_arg1,$A7
-		LDA		#[_bC_s18_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s18_idx-_sys_idx_lib]
 		STA		word_3C
-		LDA		#[_bC_s1C_idx-_sys0_sub_idx_lib]
+		LDA		#[_bC_s1C_idx-_sys_idx_lib]
 		STA		word_3C+1
 		FARX	_bC_s17_sys0_spr_effects_call
 		LDA		#$80
-		STA		byte_138
-		STA		byte_13C
-		STA		byte_140
-		STA		byte_144
+		STA		_npcs_pos_list+$28
+		STA		_npcs_pos_list+$2C
+		STA		_npcs_pos_list+$30
+		STA		_npcs_pos_list+$34
 		JSR		_vblank
 		JSR		sub_174D4F
 		LDA		#$C0
@@ -8095,7 +8244,7 @@ sub_12B877:
 		JSR		sub_12B8F4
 		FARX	_bE_sD
 		JSR		sub_12B92A
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		JSR		_bC_s12_vblank_count_50
 loc_12B88A:
@@ -8111,9 +8260,9 @@ loc_12B88A:
 		JSR		sub_1287A7
 		JSR		sub_128A2C
 		JSR		sub_128A49
-		LDA		#>[byte_138]
+		LDA		#>[_npcs_pos_list+$28]
 		STA		word_6C+1
-		LDA		#<[byte_138]
+		LDA		#<[_npcs_pos_list+$28]
 		STA		word_6C
 		JSR		sub_12B8E9
 		JSR		sub_12B8E9
@@ -8123,7 +8272,7 @@ loc_12B88A:
 		LDA		#0
 		STA		byte_28
 		LDA		#$31
-		JMP		_bC_s0
+		JMP		_bC_s0_npc_anim_script_init
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2E_vblank_count_50_wait_50_or_skip:
@@ -8211,7 +8360,7 @@ sub_12B931:
 loc_12B936:
 		LDA		byte_12B946,X
 		ORA		byte_6ABE
-		STA		byte_110,X
+		STA		_npcs_pos_list,X
 		INX
 		CPX		byte_6ABF
 		BNE		loc_12B936
@@ -8320,13 +8469,13 @@ sub_12BA11:
 		LDX		#$10
 loc_12BA23:
 		LDA		#$F
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		LDA		#3
-		STA		byte_101,X
-		LDA		byte_103,X
+		STA		_players_pos_list+1,X
+		LDA		_players_pos_list+3,X
 		AND		#$FC
 		ORA		#3
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		JSR		sub_12A6FD
 		LDY		#0
 		LDA		byte_6A62
@@ -8336,7 +8485,7 @@ loc_12BA42:
 		BEQ		locret_12BA56
 loc_12BA47:
 		LDA		byte_12BA57,Y
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		INY
 		TYA
@@ -8355,12 +8504,12 @@ sub_12BA63:
 loc_12BA67:
 		LDX		#0
 loc_12BA69:
-		LDA		byte_110,X
+		LDA		_npcs_pos_list,X
 		PHA
-		LDA		byte_100,Y
-		STA		byte_110,X
+		LDA		_players_pos_list,Y
+		STA		_npcs_pos_list,X
 		PLA
-		STA		byte_100,Y
+		STA		_players_pos_list,Y
 		INY
 		INX
 		CPX		#4
@@ -8382,9 +8531,9 @@ loc_12BA69:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BA9A:
 		LDA		byte_2D
-		STA		byte_110
+		STA		_npcs_pos_list
 		LDA		byte_2E
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8392,10 +8541,10 @@ sub_12BAA5:
 		LDA		byte_60CB
 		BPL		locret_12BAB7
 		LDA		#$80
-		STA		byte_124
+		STA		_npcs_pos_list+$14
 		LDA		#$19
-		STA		byte_11D
-		STA		byte_121
+		STA		_npcs_pos_list+$D
+		STA		_npcs_pos_list+$11
 locret_12BAB7:
 		RTS
 
@@ -8404,7 +8553,7 @@ sub_12BAB8:
 		LDA		byte_60CB
 		BPL		locret_12BAB7
 		LDA		#$80
-		STA		byte_110
+		STA		_npcs_pos_list
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8443,7 +8592,7 @@ loc_12BAF9:
 		BEQ		loc_12BB0C
 loc_12BAFE:
 		LDA		byte_12BB12,X
-		STA		byte_154,X
+		STA		_npcs_pos_list+$44,X
 		INX
 		TXA
 		AND		#3
@@ -8489,24 +8638,24 @@ sub_12BB41:
 		BVS		loc_12BB51
 		RTS
 loc_12BB4B:
-		STA		byte_128
-		STA		byte_124
+		STA		_npcs_pos_list+$18
+		STA		_npcs_pos_list+$14
 loc_12BB51:
-		STA		byte_110
-		STA		byte_114
-		STA		byte_118
-		STA		byte_11C
+		STA		_npcs_pos_list
+		STA		_npcs_pos_list+4
+		STA		_npcs_pos_list+8
+		STA		_npcs_pos_list+$C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB5E:
 		LDA		#$80
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB64:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BEQ		loc_12BB89
 		CMP		#$2B
 		BEQ		loc_12BB71
@@ -8517,9 +8666,9 @@ loc_12BB71:
 		LDY		#$27
 		LDA		#3
 loc_12BB77:
-		STX		byte_120
-		STY		byte_121
-		STA		byte_123
+		STX		_npcs_pos_list+$10
+		STY		_npcs_pos_list+$11
+		STA		_npcs_pos_list+$13
 loc_12BB80:
 		LDA		byte_60B7
 		AND		#$7F
@@ -8540,11 +8689,11 @@ sub_12BB96:
 		BNE		locret_12BBAB
 loc_12BB9D:
 		LDA		#$80
-		STA		byte_118
-		STA		byte_11C
+		STA		_npcs_pos_list+8
+		STA		_npcs_pos_list+$C
 loc_12BBA5:
-		STA		byte_110
-		STA		byte_114
+		STA		_npcs_pos_list
+		STA		_npcs_pos_list+4
 locret_12BBAB:
 		RTS
 
@@ -8575,7 +8724,7 @@ sub_12BBC9:
 		ORA		byte_60CA
 		BPL		locret_12BBD9
 		LDA		#$80
-		STA		byte_110
+		STA		_npcs_pos_list
 locret_12BBD9:
 		RTS
 
@@ -8585,11 +8734,11 @@ sub_12BBDA:
 		AND		#$20
 		BEQ		locret_12BBF0
 		LDA		#$32
-		STA		byte_110
+		STA		_npcs_pos_list
 		LDA		#$15
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		LDA		#$83
-		STA		byte_113
+		STA		_npcs_pos_list+3
 locret_12BBF0:
 		RTS
 
@@ -8598,7 +8747,7 @@ sub_12BBF1:
 		LDA		byte_60CB
 		BPL		locret_12BBFB
 		LDA		#$80
-		STA		byte_110
+		STA		_npcs_pos_list
 locret_12BBFB:
 		RTS
 
@@ -8615,10 +8764,10 @@ loc_12BC04:
 		LSR		word_4
 		BCC		loc_12BC14
 		LDY		byte_12BC24,X
-		LDA		byte_101,Y
+		LDA		_players_pos_list+1,Y
 		SEC
 		SBC		#$34
-		STA		byte_101,Y
+		STA		_players_pos_list+1,Y
 loc_12BC14:
 		INX
 		CPX		#6
@@ -8626,14 +8775,14 @@ loc_12BC14:
 		BIT		byte_60B9
 		BVC		locret_12BC23
 		LDA		#$80
-		STA		byte_118
+		STA		_npcs_pos_list+8
 locret_12BC23:
 		RTS
 byte_12BC24:
 		.BYTE	$24,$34,$30,$20,$1C,$28
 
 ; much interesting, this routines are from bank C, they doesn't take place there,
-; moved to bank 08 here, but need to be called throught system bank obviously
+; were moved to bank 08, but need to be called throught system bank obviously
 ;
 ; =============== S U B	R O U T	I N E =======================================
 sub_CBF80:
@@ -8643,7 +8792,7 @@ sub_CBF80:
 		LDA		#$80
 		LDX		#$18
 loc_CBF8B:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		INX
 		INX
@@ -8665,7 +8814,7 @@ sub_CBF97:
 		LDX		#$14
 loc_CBFA8:
 		LDA		#$A
-		STA		byte_101,X
+		STA		_players_pos_list+1,X
 locret_CBFAD:
 		RTS
 
@@ -8679,18 +8828,18 @@ sub_CBFAE:
 		LDA		byte_6DF
 		CMP		#$78
 		BCC		loc_CBFCC
-		ROR		byte_131
-		STX		byte_121
+		ROR		_npcs_pos_list+$21
+		STX		_npcs_pos_list+$11
 		INX
-		STX		byte_125
+		STX		_npcs_pos_list+$15
 locret_CBFCB:
 		RTS
 loc_CBFCC:
 		SEC
-		ROR		byte_131
-		STX		byte_121
+		ROR		_npcs_pos_list+$21
+		STX		_npcs_pos_list+$11
 		INX
-		STX		byte_125
+		STX		_npcs_pos_list+$15
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8704,9 +8853,9 @@ sub_12BC2A:
 sub_12BC33:
 		BIT		byte_60C6
 		BVC		locret_12BC40
-		LDA		byte_113
+		LDA		_npcs_pos_list+3
 		AND		#$FC
-		STA		byte_113
+		STA		_npcs_pos_list+3
 locret_12BC40:
 		RTS
 

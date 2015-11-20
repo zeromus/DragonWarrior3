@@ -2,11 +2,6 @@
 		ORG SYSTEM_FOOTER_ORG
 
 ; =============== S U B	R O U T	I N E =======================================
-; SMALL	SHARED SYSTEM STUB FOR MMC1 BANK SWITCHING
-sub_177F8E:
-		JMP		_RESET
-
-; =============== S U B	R O U T	I N E =======================================
 _mmc1_prg_set:
 		STA		_mmc_cur_prg_bank
 
@@ -25,7 +20,9 @@ _mmc1_prg_cmd:
 		AND		#$F
 		NOP
 		NOP
-_mmc1_prg_direct:
+
+; =============== S U B	R O U T	I N E =======================================
+_mmc1_prg:
 		STA		$FFFF
 		LSR
 		STA		$FFFF
@@ -49,8 +46,7 @@ _mmc1_prg_direct:
 		NOP
 		RTS
 
-		ORG SYSTEM_VECTORS_ORG
-
+; =============== S U B	R O U T	I N E =======================================
 RESET:
 		SEI
 		INC		_mmc_reset_byte

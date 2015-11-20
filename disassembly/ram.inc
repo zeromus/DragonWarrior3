@@ -382,167 +382,37 @@ _apu_data3:
 		.BYTE	0,0,0,0,0,0,0,0
 word_FE:
 		.BYTE	0,0
-byte_100:
-		.BYTE	0
-byte_101:
-		.BYTE	0
-byte_102:
-		.BYTE	0
-byte_103:
-		.BYTE	0
-byte_104:
-		.BYTE	0
-byte_105:
-		.BYTE	0
-byte_106:
-		.BYTE	0
-byte_107:
-		.BYTE	0
-byte_108:
-		.BYTE	0
-byte_109:
-		.BYTE	0
-byte_10A:
-		.BYTE	0
-byte_10B:
-		.BYTE	0
-byte_10C:
-		.BYTE	0
-byte_10D:
-		.BYTE	0
-byte_10E:
-		.BYTE	0
-byte_10F:
-		.BYTE	0
-byte_110:
-		.BYTE	0
-byte_111:
-		.BYTE	0
-		.BYTE	0
-byte_113:
-		.BYTE	0
-byte_114:
-		.BYTE	0
-byte_115:
-		.BYTE	0
-byte_116:
-		.BYTE	0
-byte_117:
-		.BYTE	0
-byte_118:
-		.BYTE	0
-byte_119:
-		.BYTE	0
-		.BYTE	0
-byte_11B:
-		.BYTE	0
-byte_11C:
-		.BYTE	0
-byte_11D:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_120:
-		.BYTE	0
-byte_121:
-		.BYTE	0
-		.BYTE	0
-byte_123:
-		.BYTE	0
-byte_124:
-		.BYTE	0
-byte_125:
-		.BYTE	0
-		.BYTE	0
-byte_127:
-		.BYTE	0
-byte_128:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_12C:
-		.BYTE	0
-byte_12D:
-		.BYTE	0
-		.BYTE	0
-byte_12F:
-		.BYTE	0
-		.BYTE	0
-byte_131:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_138:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_13C:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_140:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_144:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_147:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_154:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+_players_pos_list:
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+_npcs_pos_list:
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
+		.BYTE	0,0,0,0
 byte_174:
 		.BYTE	0
 byte_175:
@@ -1864,17 +1734,14 @@ byte_6DF:
 		.BYTE	0
 byte_6E0:
 		.BYTE	0
-byte_6E1:
+_npc_anim_script_idx:
 		.BYTE	0
-byte_6E2:
+_npc_anim_script_flags:
 		.BYTE	0
-byte_6E3:
+_npc_anim_script_phase_count:
 		.BYTE	0
-byte_6E4:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+_npc_anim_script_phase_slot_list:
+		.BYTE	0,0,0,0
 byte_6E8:
 		.BYTE	0
 		.BYTE	0

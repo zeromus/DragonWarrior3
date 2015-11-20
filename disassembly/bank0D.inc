@@ -1,8 +1,6 @@
 
 		ORG $8000
 
-;		.WORD	  0
-;		.WORD	  _bD_d1_ofs
 _bD_s2_ptr:
 		.WORD	_bD_s2
 _bD_s3_ptr:
@@ -15,7 +13,6 @@ _bD_s6_ptr:
 		.WORD	_bD_s6
 _bD_s7_ptr:
 		.WORD	_bD_s7
-;		.WORD	  0
 _bD_s9_ptr:
 		.WORD	_bD_s9
 _bD_sA_ptr:
@@ -28,8 +25,6 @@ _bD_sD_ptr:
 		.WORD	_bD_sD
 _bD_sE_ptr:
 		.WORD	_bD_sE
-;_bD_sF_ptr:
-;		.WORD	_bD_sF
 _bD_s10_ptr:
 		.WORD	_bD_s10
 _bD_s11_ptr:
@@ -72,7 +67,6 @@ _bD_s23_ptr:
 		.WORD	_bD_s23
 _bD_s24_ptr:
 		.WORD	_bD_s24
-;		.WORD	  0
 _bD_s26_ptr:
 		.WORD	_bD_s26
 _bD_s27_ptr:
@@ -84,7 +78,7 @@ _bD_s29_ptr:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s19:
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		LDY		#0
 		LDA		(word_6C),Y
@@ -102,7 +96,7 @@ _bD_s1A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sA:
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		JSR		sub_14007C
 		JSR		sub_177385
@@ -203,10 +197,10 @@ _bD_s18:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		locret_14011C
-		LDA		byte_102
+		LDA		_players_pos_list+2
 		AND		#$F
 		JSR		sub_1778D7
-		LDA		byte_103
+		LDA		_players_pos_list+3
 		JSR		sub_177909
 		LDA		byte_74
 		STA		_spr_ram+1
@@ -249,8 +243,7 @@ byte_14018A:
 sub_140192:
 		JSR		sub_1778B5
 		JMP		sub_17787B
-;_bD_d1_ofs:
-;		.WORD	_bD_d1
+
 _bD_d1:
 		.BYTE	$18,$2E,  1,$82,$89,$18,$1F,  2,$85,$92,$18,$1D, $A,$8B,$A2,$18
 		.BYTE	$52,  6,$9B,$8A,$78,$2E,$97,$90,$B4,$BE,$2C,$27,  3,$9C,$69,  4
@@ -696,7 +689,7 @@ _bD_s2:
 locret_141665:
 		RTS
 loc_141666:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BNE		locret_141665
 		LDA		byte_90
 		AND		#$F
@@ -713,7 +706,7 @@ loc_14167B:
 loc_141682:
 		LDY		#$13
 loc_141684:
-		LDA		byte_100,Y
+		LDA		_players_pos_list,Y
 		CMP		#$FF
 		BEQ		loc_141697
 		AND		#$40
@@ -1484,13 +1477,13 @@ _bD_s6:
 		BNE		loc_141B1C
 		JMP		sub_141AB0
 loc_141B1C:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BEQ		loc_141B3A
-		LDA		#1
+		LDA		#>[_players_pos_list]
 		STA		word_72+1
 		LDX		#0
 loc_141B27:
-		LDA		byte_6E4,X
+		LDA		_npc_anim_script_phase_slot_list,X
 		STA		word_72
 		TXA
 		PHA
@@ -1498,11 +1491,11 @@ loc_141B27:
 		PLA
 		TAX
 		INX
-		CPX		byte_6E3
+		CPX		_npc_anim_script_phase_count
 		BNE		loc_141B27
 		RTS
 loc_141B3A:
-		LDA		#1
+		LDA		#>[_players_pos_list]
 		STA		word_72+1
 		LDA		byte_91
 		STA		word_72
@@ -1532,7 +1525,7 @@ loc_141B5C:
 loc_141B5E:
 		AND		#$40
 		BEQ		locret_141B5B
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BNE		loc_141B6D
 		LDA		#2
@@ -1649,17 +1642,17 @@ sub_141C1C:
 		CMP		#$4E
 		BNE		locret_141C0F
 		LDA		#5
-		CMP		byte_111
+		CMP		_npcs_pos_list+1
 		BNE		locret_141C0F
-		CMP		byte_115
+		CMP		_npcs_pos_list+5
 		BNE		locret_141C0F
-		CMP		byte_119
+		CMP		_npcs_pos_list+9
 		BNE		locret_141C0F
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CLC
-		ADC		byte_114
+		ADC		_npcs_pos_list+4
 		CLC
-		ADC		byte_118
+		ADC		_npcs_pos_list+8
 		CMP		#$F
 		BNE		locret_141C0F
 		LDX		byte_30
@@ -1717,7 +1710,7 @@ loc_141C9F:
 		PLA
 		RTS
 loc_141CA1:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BNE		loc_141CAC
 		PLA
@@ -1837,9 +1830,9 @@ loc_141D64:
 		INX
 		CPX		#$40
 		BNE		loc_141D64
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
-		LDA		#>[byte_110]
+		LDA		#>[_npcs_pos_list]
 		STA		word_6C+1
 loc_141D74:
 		LDY		#0
@@ -1999,13 +1992,13 @@ _bD_s4:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s5:
 		JSR		sub_141EB3
-		LDA		byte_107
+		LDA		_players_pos_list+7
 		AND		#$FC
-		STA		byte_107
+		STA		_players_pos_list+7
 		LDA		byte_6BC
 		AND		#3
-		ORA		byte_107
-		STA		byte_107
+		ORA		_players_pos_list+7
+		STA		_players_pos_list+7
 		LDA		byte_95
 		STA		byte_96
 		LDA		byte_94
@@ -2026,13 +2019,13 @@ sub_141EB3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141EBA:
-		LDA		byte_104,X
+		LDA		_players_pos_list+4,X
 		AND		#$FC
-		STA		byte_104,X
-		LDA		byte_100,X
+		STA		_players_pos_list+4,X
+		LDA		_players_pos_list,X
 		AND		#3
-		ORA		byte_104,X
-		STA		byte_104,X
+		ORA		_players_pos_list+4,X
+		STA		_players_pos_list+4,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2102,14 +2095,14 @@ loc_141F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s12:
-		LDA		#[_b0_d44_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d44_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$7F
 		STA		byte_C0
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#3
 		TAX
@@ -2238,8 +2231,12 @@ loc_141FEE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141FF1:
-		JMP		sub_14211D
-loc_141FF4:
+		LDA		byte_CE
+		PHA
+		LDA		byte_CF
+		PHA
+		LDA		byte_D0
+		PHA
 		LDA		byte_C0
 		STA		byte_CE
 		LDA		byte_C1
@@ -2248,10 +2245,16 @@ loc_141FF4:
 		STA		byte_D0
 		JSR		_sram_b0_s1D
 		SYSX	_sys0D_wrapper_to_bE_sC,$68
-		JMP		sub_142129
-locret_142009:
+		PLA
+		STA		byte_D0
+		PLA
+		STA		byte_CF
+		PLA
+		STA		byte_CE
 		RTS
-loc_14200A:
+
+; =============== S U B	R O U T	I N E =======================================
+sub_14200A:
 		LDA		byte_C0
 		STA		byte_CE
 		LDA		byte_C1
@@ -2259,7 +2262,9 @@ loc_14200A:
 		LDA		byte_C2
 		STA		byte_D0
 		JMP		_sram_b0_s1C
-loc_142019:
+
+; =============== S U B	R O U T	I N E =======================================
+sub_142019:
 		JSR		_sram_b0_s1B
 		CLC
 		LDA		byte_C0
@@ -2279,7 +2284,9 @@ loc_142019:
 		LDA		#1
 		SBC		word_6
 		RTS
-loc_14203D:
+
+; =============== S U B	R O U T	I N E =======================================
+sub_14203D:
 		LDY		#2
 loc_14203F:
 		LDA		byte_C0,Y
@@ -2439,26 +2446,6 @@ loc_14210B:
 		CMP		byte_C5
 		BNE		loc_14210B
 		JMP		_sram_b0_s2A
-
-; =============== S U B	R O U T	I N E =======================================
-sub_14211D:
-		LDA		byte_CE
-		PHA
-		LDA		byte_CF
-		PHA
-		LDA		byte_D0
-		PHA
-		JMP		loc_141FF4
-
-; =============== S U B	R O U T	I N E =======================================
-sub_142129:
-		PLA
-		STA		byte_D0
-		PLA
-		STA		byte_CF
-		PLA
-		STA		byte_CE
-		JMP		locret_142009
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142135:
@@ -2703,7 +2690,7 @@ loc_142303:
 		CMP		#$5E
 		BEQ		loc_142333
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_14233A
@@ -2739,7 +2726,7 @@ loc_14235E:
 loc_142369:
 		JMP		sub_1422E1
 loc_14236C:
-		JSR		loc_142019
+		JSR		sub_142019
 		BCS		loc_142377
 		SYSX	_sys08_msg_m00_arg2,$8A
 		JMP		loc_14235E
@@ -2754,7 +2741,7 @@ loc_142377:
 		AND		#$80
 		BEQ		loc_1423AA
 		LDX		byte_C5
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
@@ -2767,7 +2754,7 @@ loc_142377:
 		JMP		loc_14235E
 loc_1423AA:
 		JSR		_sram_b0_s2A
-		JSR		loc_14200A
+		JSR		sub_14200A
 		SYSX	_sys0D_wrapper_to_bE_sC,$12
 		LDA		byte_C5
 		CMP		#$5E
@@ -3159,7 +3146,7 @@ loc_1426AC:
 		STA		byte_C0
 		LDX		#byte_C0
 		JSR		_mul16_to_8
-		JSR		loc_14203D
+		JSR		sub_14203D
 		CLC
 		LDA		byte_C0
 		ADC		#1
@@ -3531,7 +3518,7 @@ loc_1429CA:
 		STA		byte_D2
 		TAX
 		JSR		_bD_s12
-		JSR		loc_14203D
+		JSR		sub_14203D
 		LDA		byte_C0
 		ORA		byte_C1
 		ORA		byte_C2
@@ -3557,7 +3544,7 @@ loc_142A1B:
 		BPL		loc_142A41
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
@@ -3639,7 +3626,7 @@ loc_142ABC:
 loc_142ACC:
 		LDA		byte_C6
 		JSR		sub_142BD2
-		JSR		loc_142019
+		JSR		sub_142019
 		BCS		loc_142ADC
 		SYSX	_sys08_msg_m00_arg2,$89
 		JMP		loc_142AA5
@@ -3673,7 +3660,7 @@ loc_142AFE:
 		STA		byte_D2
 		TAX
 		JSR		_bD_s12
-		JSR		loc_14203D
+		JSR		sub_14203D
 		LDA		byte_C0
 		ORA		byte_C1
 		ORA		byte_C2
@@ -3795,9 +3782,9 @@ sub_142BF0:
 		JSR		_bD_s10
 		CMP		#$FF
 		BEQ		loc_142C14
-		JSR		loc_14203D
-		JSR		loc_14203D
-		JSR		loc_14203D
+		JSR		sub_14203D
+		JSR		sub_14203D
+		JSR		sub_14203D
 		LDA		byte_C0
 		RTS
 loc_142C14:
@@ -3972,12 +3959,12 @@ loc_142D50:
 		ASL
 		ASL
 		TAX
-		LDA		byte_100,X
+		LDA		_players_pos_list,X
 		AND		#$7F
-		STA		byte_100,X
-		LDA		byte_101,X
+		STA		_players_pos_list,X
+		LDA		_players_pos_list+1,X
 		AND		#$7F
-		STA		byte_101,X
+		STA		_players_pos_list+1,X
 		SYSX	_sys08_msg_m00_arg2,$5F
 		JSR		sub_142780
 		LDA		byte_AC
@@ -4087,7 +4074,7 @@ sub_142E35:
 sub_142E3C:
 		LDX		#$C
 loc_142E3E:
-		LDA		byte_100,X
+		LDA		_players_pos_list,X
 		BPL		loc_142E49
 		DEX
 		DEX
@@ -4096,10 +4083,10 @@ loc_142E3E:
 		BNE		loc_142E3E
 loc_142E49:
 		LDA		#$80
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		TXA
 		PHA
-		LDA		#>[byte_100]
+		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		FARX	_bC_s38
 		JSR		sub_142780
@@ -4210,7 +4197,7 @@ loc_142F1B:
 		LDX		#0
 		JSR		_bD_s10
 		LDA		#$33
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 		LDA		#0
 		STA		byte_6EB
 		LDA		#$20
@@ -4315,7 +4302,7 @@ loc_142FED:
 		LDA		#0
 		STA		byte_C2
 loc_143002:
-		JSR		loc_14200A
+		JSR		sub_14200A
 		SYSX	_sys0D_wrapper_to_bE_sC,$68
 locret_143008:
 		RTS
@@ -4426,13 +4413,13 @@ __msg_m00_select_param:
 ; =============== S U B	R O U T	I N E =======================================
 ___msg_m00_select_param:
 		TSX
-		INC		byte_103,X
-		LDA		byte_103,X
+		INC		_players_pos_list+3,X
+		LDA		_players_pos_list+3,X
 		STA		byte_6A
 		BNE		loc_14308A
-		INC		byte_104,X
+		INC		_players_pos_list+4,X
 loc_14308A:
-		LDA		byte_104,X
+		LDA		_players_pos_list+4,X
 		STA		byte_6B
 		LDX		#0
 		LDA		(byte_6A,X)
@@ -4885,8 +4872,7 @@ loc_143425:
 		DEX
 		BPL		loc_143419
 		JMP		(word_5E)
-;off_14342B:
-;		.WORD	_npc_hndl0
+
 byte_14342D:
 		.BYTE	  _npc_hndl0-_npc_hndl0
 		.BYTE	  _npc_hndl1-_npc_hndl0
@@ -5124,7 +5110,7 @@ _far_bE_s4_msg_m00_delta3:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143515:
 		JSR		__far_bE_s4_msg_m00_delta3_arg5C
-		JMP		sub_14351E
+;		JMP		sub_14351E
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
@@ -5339,8 +5325,8 @@ _npc_hndlD:
 		LDA		#5
 		FARX	_b0_s1
 		LDA		#$80
-		STA		byte_114
-		STA		byte_117
+		STA		_npcs_pos_list+4
+		STA		_npcs_pos_list+7
 		JSR		sub_174CBD
 		PLA
 		PLA
@@ -5367,7 +5353,7 @@ loc_14369F:
 		BEQ		loc_1436AE
 		SYSX	_sys04_msg_m00_b3_break,$F6
 loc_1436AE:
-		LDA		byte_144
+		LDA		_npcs_pos_list+$34
 		CMP		#7
 		BNE		loc_1436B8
 		SYSX	_sys04_msg_m00_b3_break,$E5
@@ -5523,7 +5509,7 @@ _npc_hndl18:
 		SYSX	_sys02_msg_m00_b3,$5D
 		SYSX	_sys03_msg_m00_b4,$1A
 		LDA		#1
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 		RTS
 loc_1437B1:
 		SYSX	_sys04_msg_m00_b3_break,$5E
@@ -5605,7 +5591,7 @@ locret_143826:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1F:
-		LDA		byte_101
+		LDA		_players_pos_list+1
 		CMP		#3
 		BNE		loc_143832
 		JSR		__msg_m00_param_break_b3
@@ -5698,18 +5684,18 @@ _npc_hndl24:
 		SYSX	_sys02_msg_m00_b3,$8A
 		JSR		sub_1430F2
 		BCC		loc_1438D7
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CMP		#$F
 		BNE		locret_1438E3
 		LDA		#$34
 		BNE		loc_1438E0
 loc_1438D7:
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CMP		#$F
 		BNE		locret_1438E3
 		LDA		#$12
 loc_1438E0:
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 locret_1438E3:
 		RTS
 
@@ -5815,7 +5801,7 @@ _npc_hndl29:
 		LDA		#$B7
 		JSR		sub_143F9E
 		LDA		#$80
-		STA		byte_110
+		STA		_npcs_pos_list
 		JSR		sub_174CBD
 		LDX		#$FF
 		STX		byte_9E
@@ -6134,9 +6120,12 @@ loc_143B96:
 		JSR		__msg_m00_param_b2
 		.BYTE	$17
 loc_143BC0:
-		LDA		_mmc_cur_prg_bank				; disables the SRAM and go to the infinite loop. in the jap version perfornig only once.
-		ORA		#$10							; here is for some reason it will constantly disable SRAM
-		JSR		_mmc1_sram_disable
+		LDA		_cur_chr0_bank_prg_hi
+		AND		#$EF
+		STA		_cur_chr0_bank_prg_hi
+		LDA		_mmc_cur_prg_bank				; disables the SRAM and go to the infinite loop.
+		ORA		#$10							; in the jap version perfornig only once.
+		JSR		_mmc1_prg				; here is for some reason it constantly disables SRAM
 		JMP		loc_143BC0
 loc_143BCB:
 		LDA		#4
@@ -6350,8 +6339,8 @@ _npc_hndl64:
 		LDA		#$D
 		FARX	_b0_s1
 		LDA		#$80
-		STA		byte_114
-		STA		byte_117
+		STA		_npcs_pos_list+4
+		STA		_npcs_pos_list+7
 		JSR		sub_174CBD
 		PLA
 		PLA
@@ -6658,8 +6647,7 @@ loc_143F13:
 		LDX		#3
 		JSR		_add_arg5C_to16
 		JMP		__far_bE_s4_msg_m00_delta3_arg5C
-;off_143F23:
-;		.WORD	byte_143F25
+
 byte_143F25:
 		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A,  1,  2,  3, $B,  5
 		.BYTE	  6,  7,  8,  4, $F,  1,  2,  3,  4,  5,  6,$10,  8,  4,$11,$12

@@ -1,18 +1,8 @@
 
 		ORG $8000
 
-;		.WORD	_b6_d0_ofs
-;		.WORD	_b6_d1_ofs
-;		.WORD	_b6_d2_ofs
-;		.WORD	_b6_d3_ofs
-;_b6_d4_ptr:
-;		.WORD	_b6_d4
-;_b6_d5_ptr:
-;		.WORD	_b6_d5
 _b6_s6_ptr:
 		.WORD	_b6_s6
-;_b6_s6_ptr:
-;		.WORD	_b6_s6
 _b6_s8_ptr:
 		.WORD	_b6_s8
 _b6_d9_ptr:
@@ -64,14 +54,6 @@ _b6_s1F_ptr:
 _b6_s20_player_name_veryfy_ptr:
 		.WORD	_b6_s20_player_name_veryfy
 
-;_b6_d0_ofs:
-;		.WORD	_b6_d0
-;_b6_d1_ofs:
-;		.WORD	_b6_d1
-;_b6_d2_ofs:
-;		.WORD	_b6_d2
-;_b6_d3_ofs:
-;		.WORD	_b6_d3
 _b6_d0:
 		.BYTE	$46,$80,$44,  0,$42,  0,$43,  0,$41,  0,  0,$F5,$FF,$4A,  2,$4A
 		.BYTE	  3,$4A,  4,$48,  0,$FF,$4F,  0,$4F,  1,$4E,  0,$FF,$59,  0,$58
@@ -1282,11 +1264,11 @@ loc_9B4F7:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s11:
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		CMP		#$40
 		BNE		loc_9B524
 		LDA		#0
-		STA		byte_6E1
+		STA		_npc_anim_script_idx
 		LDA		byte_60B6
 		ORA		#$40
 		STA		byte_60B6
@@ -1415,7 +1397,7 @@ loc_9B5F6:
 		STA		byte_9F
 		LDA		#0
 		STA		byte_2C
-		STA		byte_6E1
+		STA		_npc_anim_script_idx
 		BIT		byte_60CB
 		BVS		locret_9B60B
 		STA		byte_9B
@@ -2239,7 +2221,7 @@ loc_9BBEA:
 sub_9BBED:
 		LDX		#0
 		FARX	_bD_s10
-		JMP		sub_174DF2
+		JMP		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 byte_9BBF5:
 		.BYTE	  4,  2,  1,  6,  5,  7
 
@@ -2351,19 +2333,19 @@ loc_9BC95:
 		ASL
 		ASL
 		TAX
-		LDA		byte_102,X
-		STA		byte_116
+		LDA		_players_pos_list+2,X
+		STA		_npcs_pos_list+6
 		LDA		#6
-		STA		byte_114
+		STA		_npcs_pos_list+4
 		LDA		#$F
-		STA		byte_115
+		STA		_npcs_pos_list+5
 		LDA		#$94
-		STA		byte_117
+		STA		_npcs_pos_list+7
 loc_9BCAE:
 		CPX		#$10
 		BEQ		loc_9BCBE
-		LDA		byte_106,X
-		STA		byte_102,X
+		LDA		_players_pos_list+6,X
+		STA		_players_pos_list+2,X
 		INX
 		INX
 		INX
@@ -2377,14 +2359,14 @@ loc_9BCBE:
 		TAX
 		LDA		#$80
 loc_9BCC8:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		INX
 		INX
 		INX
 		CPX		#$10
 		BNE		loc_9BCC8
-		LDY		#>[byte_100]
+		LDY		#>[_players_pos_list]
 		STY		word_6C+1
 		DEY
 		STY		word_6C
@@ -2404,15 +2386,15 @@ loc_9BCE3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s18:
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
-		LDA		byte_111
+		LDA		_npcs_pos_list+1
 		CMP		#1
 		BEQ		loc_9BD0B
 		LDA		#$92
-		STA		byte_113
+		STA		_npcs_pos_list+3
 		LDX		#1
-		STX		byte_111
+		STX		_npcs_pos_list+1
 		DEX
 		FARX	_bC_sB
 		RTS
@@ -2420,21 +2402,21 @@ loc_9BD0B:
 		LDX		#2
 		FARX	_bC_sB
 		LDA		#$80
-		STA		byte_111
+		STA		_npcs_pos_list+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s19:
-		LDA		#<[byte_110]
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		FARX	_bC_s38
 		LDA		#$80
-		STA		byte_110
+		STA		_npcs_pos_list
 		LDA		#$19
-		STA		byte_125
+		STA		_npcs_pos_list+$15
 		LDA		#$90
-		STA		byte_127
-		LDA		#<[byte_124]
+		STA		_npcs_pos_list+$17
+		LDA		#<[_npcs_pos_list+$14]
 		STA		word_6C
 		FARX	_bD_s19
 		JMP		_vblank
@@ -2443,16 +2425,16 @@ _b6_s19:
 _b6_s1A:
 		TAX
 		LDY		byte_9BD60,X
-		LDA		byte_101,Y
+		LDA		_players_pos_list+1,Y
 		SEC
 		SBC		#$34
-		STA		byte_101,Y
+		STA		_players_pos_list+1,Y
 		STY		word_6C
 		JSR		sub_177668
 		LDX		word_6C
-		LDA		byte_103,X
+		LDA		_players_pos_list+3,X
 		ORA		byte_6BB
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		LDA		byte_6BB
 		FARX	_b5_s4
 		FARX	_bD_s19
@@ -2467,11 +2449,11 @@ _b6_s1B:
 		LDY		#0
 loc_9BD6A:
 		LDA		#7
-		STA		byte_102,X
-		LDA		byte_103,X
+		STA		_players_pos_list+2,X
+		LDA		_players_pos_list+3,X
 		AND		#$FC
 		ORA		byte_9BDD2,Y
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		INY
 		INX
 		INX
@@ -2497,7 +2479,7 @@ loc_9BDA0:
 		STA		word_6C
 		TAX
 		LDA		#$80
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		FARX	_bC_s38
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 		LDX		#$1E
@@ -2584,7 +2566,7 @@ loc_9BE5A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE62:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		SYSX	_sys07_msg_m00_arg1,$43
 		RTS
 

@@ -1,7 +1,6 @@
 
 		ORG $8000
 
-;		.WORD	  0
 _bA_s1_ptr:
 		.WORD	_bA_s1
 _bA_s2_ptr:
@@ -10,16 +9,10 @@ _bA_s3_ptr:
 		.WORD	_bA_s3
 _bA_s4_div24_to_8_ptr:
 		.WORD	_bA_s4_div24_to_8
-;_bA_s5_add16_to_24_ptr:
-;		.WORD	_bA_s5_add16_to_24
 _bA_s6_ptr:
 		.WORD	_bA_s6
-;_bA_s7_nullsub_ptr:
-;		.WORD	_bA_s7_nullsub
 _bA_s8_ptr:
 		.WORD	_bA_s8
-;_bA_s9_nullsub_ptr:
-;		.WORD	_bA_s9_nullsub
 _bA_sA_ptr:
 		.WORD	_bA_sA
 _bA_sB_ptr:
@@ -38,7 +31,6 @@ _bA_s11_ptr:
 		.WORD	_bA_s11
 _bA_s12_ptr:
 		.WORD	_bA_s12
-;		.WORD	  0
 _bA_d14_ptr:
 		.WORD	_bA_d14
 _bA_d15_ptr:
@@ -241,10 +233,10 @@ loc_F8189:
 		TAX
 		LDA		#0
 		STA		byte_177,Y
-		LDA		byte_103,X
+		LDA		_players_pos_list+3,X
 		AND		#$C3
 		ORA		byte_6BB
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		TYA
 		ASL
 		ASL
@@ -495,10 +487,6 @@ loc_F8309:
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-;_bA_s9_nullsub:
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 _bA_s8:
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$81
 		FARX	_b2_s7_screen_spell_blink
@@ -648,10 +636,10 @@ loc_F8416:
 		BCC		loc_F8462
 		LDX		byte_CE
 		LDA		byte_718,X
-		LDX		#[_b0_d58_idx-_sys0_sub_idx_lib]
+		LDX		#[_b0_d58_idx-_sys_idx_lib]
 		AND		#7
 		BEQ		loc_F843F
-		LDX		#[_b0_d59_idx-_sys0_sub_idx_lib]
+		LDX		#[_b0_d59_idx-_sys_idx_lib]
 loc_F843F:
 		TXA
 		LDX		byte_10
@@ -1267,10 +1255,6 @@ loc_F8C8E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-;_bA_s7_nullsub:
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 _bA_sE:
 		JSR		sub_F8DFC
 		LDA		#0
@@ -1870,7 +1854,7 @@ _bA_sF:
 		LDA		#$20
 		STA		byte_60C6
 		LDA		#$29
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1888,7 +1872,7 @@ _bA_s10:
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$2B
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 locret_F9110:
 		RTS
 
@@ -2264,8 +2248,7 @@ byte_F94C4:
 		.BYTE	  0,$20, $C,$20, $D,$20,$13,$20,$13,$60, $D,$60, $C,$60,  0,$60
 		.BYTE	  0,$20, $E,$20, $F,$20,$14,$20,$14,$60, $F,$60, $E,$60,  0,$60
 		.BYTE	  0,$20,  0,$20,$10,$20,$11,$20,$11,$60,$10,$60,  0,$60,  0,$60
-;_txt_erdrick_story_ofs:
-;		.WORD	_txt_erdrick_story
+
 _txt_erdrick_story:
 		.BYTE	$02,_T,_h,_u,_s,0,_a,0,_t,_r,_u,_e,0,_w,_a,_r,_r,_i,_o,_r,0,_w,_a,_s,$FF
 		.BYTE	$01,_b,_o,_r,_n,_sem,0,_a,_n,_d,0,$F0,0,_b,_e,_c,_a,_m,_e,$FF

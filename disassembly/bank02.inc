@@ -3,8 +3,6 @@
 
 _b2_s0_ptr:
 		.WORD	_b2_s0
-;_b2_s1_ptr:
-;		.WORD	_b2_s1
 _b2_s2_ptr:
 		.WORD	_b2_s2
 _b2_s3_ptr:
@@ -2857,7 +2855,6 @@ loc_3A342:
 		STA		_ram_pal_buf+$C,X
 		DEX
 		BNE		loc_3A342
-;		FAR		$00,$6F		; _b16_s0
 		FARX	_b16_s0
 		RTS
 
@@ -3105,7 +3102,7 @@ loc_3A500:
 		STA		byte_6A4B,X
 		PLA
 		TAY
-		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_y
 		AND		#$3F
 		STA		byte_CF
@@ -3162,7 +3159,7 @@ loc_3A536:
 		FARX	_b4_s5_do_message_speed_delay
 		JMP		loc_3A3CF
 loc_3A569:
-		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_y
 		BMI		loc_3A57B
 		LDX		#0
@@ -3277,7 +3274,7 @@ loc_3A635:
 		BNE		loc_3A677
 loc_3A642:
 		LDX		byte_45
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		STA		byte_46
 		BIT		byte_46
@@ -3434,7 +3431,7 @@ loc_3A752:
 		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#[_b0_d3F_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d3F_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		TAX
 		STA		byte_47
@@ -3747,10 +3744,7 @@ sub_3A93C:
 		FARX	_b4_s16_do_half_message_speed_delay
 		SEC
 		RTS
-;off_3A944:
-;		.WORD	byte_79C
-;off_3A946:
-;		.WORD	byte_3A948
+		
 byte_3A948:
 		.BYTE	$FF,$FF,$FF,$FF, $F,  0,  0,  0
 byte_3A950:

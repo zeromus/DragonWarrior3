@@ -1,26 +1,10 @@
 
 		ORG $8000
 
-;		.WORD	_b7_d0_map_data_lib_ofs
-;_b7_d1_ptr:
-;		.WORD	_b7_d1
-;_b7_d2_ptr:
-;		.WORD	_b7_d2_ofs
-;_b7_d3_ptr:
-;		.WORD	_b7_d3
-;_b7_d4_ptr:
-;		.WORD	_b7_d4
-;_b7_d5_ptr:
-;		.WORD	_b7_d5
-;		.WORD	  0
-;		.WORD	  0
 _b7_s8_ptr:
 		.WORD	_b7_s8
-;		.WORD	  0
 _b7_sA_sram_test_and_init_ptr:
 		.WORD	_b7_sA_sram_test_and_init
-;		.WORD	  0
-;		.WORD	  0
 _b7_sD_ptr:
 		.WORD	_b7_sD
 _b7_sE_player_log_list_ptr:
@@ -39,9 +23,6 @@ _b7_s14_ptr:
 		.WORD	_b7_s14
 _b7_s15_ptr:
 		.WORD	_b7_s15
-;		.WORD	  0
-;		.WORD	  0
-;		.WORD	  0
 _b7_s19_ptr:
 		.WORD	_b7_s19
 _b7_s1A_ptr:
@@ -52,11 +33,7 @@ _b7_s1C_ptr:
 		.WORD	_b7_s1C
 _b7_s1D_ptr:
 		.WORD	_b7_s1D
-;_b7_s1E_ptr:
-;		.WORD	_b7_s1E
 
-;_b7_d0_map_data_lib_ofs:
-;		.WORD	_map_data_lib
 _map_data_lib:
 		.WORD	_map0
 		.BYTE	  1
@@ -1349,7 +1326,7 @@ _b7_s1A:
 		LDA		#8
 		LDX		#$18
 loc_B27D7:
-		STA		byte_102,X
+		STA		_players_pos_list+2,X
 		INX
 		INX
 		INX
@@ -1360,7 +1337,7 @@ loc_B27D7:
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$02
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#2
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1390,7 +1367,7 @@ sub_B2806:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2821:
 		STX		word_6C
-		LDA		byte_100,X
+		LDA		_players_pos_list,X
 		BMI		locret_B285F
 		TXA
 		AND		#4
@@ -1411,16 +1388,16 @@ loc_B2840:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2846:
-		LDA		byte_103,X
+		LDA		_players_pos_list+3,X
 		AND		#3
 		BNE		loc_B2859
-		LDA		byte_103,X
+		LDA		_players_pos_list+3,X
 		AND		#$FC
 		ORA		#3
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		BNE		loc_B285C
 loc_B2859:
-		DEC		byte_103,X
+		DEC		_players_pos_list+3,X
 loc_B285C:
 		FARX	_bD_s19
 locret_B285F:
@@ -1428,7 +1405,7 @@ locret_B285F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2860:
-		INC		byte_103,X
+		INC		_players_pos_list+3,X
 		BNE		loc_B285C
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2165,15 +2142,6 @@ off_B2D2B:
 		.WORD	_begin_new_quest
 		.WORD	sub_B2A29
 		.WORD	sub_B2A83
-;off_B2D35:
-;		.WORD	byte_315
-;off_B2D37:
-;		.WORD	byte_60D6
-;		.WORD	byte_311
-;off_B2D3B:
-;		.WORD	byte_313
-;off_B2D3D:
-;		.WORD	byte_312
 byte_B2D3F:
 		.BYTE	  4,  1,  2
 _default_character_names:
@@ -2872,10 +2840,6 @@ sub_B3209:
 		LDY		word_4+1
 		STA		(word_3C),Y
 		RTS
-;off_B3212:
-;		.WORD	off_B3216
-;off_B3214:
-;		.WORD	off_B322A
 off_B3216:
 		.WORD	byte_60E2
 		.WORD	byte_B323E
@@ -2936,14 +2900,6 @@ byte_B3299:
 		.BYTE	  7,  5,  2,  2,  1
 byte_B329E:
 		.BYTE	  1,  2,  3,  8,  8
-;off_B32A3:
-;		.WORD	sub_B3200
-;off_B32A5:
-;		.WORD	sub_B3209
-;off_B32A7:
-;		.WORD	byte_114
-;word_B32A9:
-;		.WORD	  0
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s8:
@@ -2966,21 +2922,6 @@ loc_B32C8:
 		JSR		sub_17673A
 		FARX	_b0_s61_sram_b0_syscall_shortcuts_load
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_B32D7:
-;		JMP		sub_1742BA
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_B32DA:
-;		LDX		#$78
-;		JMP		_vblank_count
-
-; unreferenced data
-;		.BYTE	 $E,$1C, $B,$11,$19,$18,  0,$21, $B,$1C,$1C,$13,$19,$1C,  0,$13
-;		.BYTE	$13,$13
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B32F1:
@@ -3035,7 +2976,7 @@ _b7_s1C:
 		LDY		#0
 loc_B334F:
 		LDA		byte_B3382,X
-		STA		byte_110,Y
+		STA		_npcs_pos_list,Y
 		INX
 		INY
 		CPY		#$30
@@ -3056,7 +2997,7 @@ loc_B336A:
 		BCS		loc_B3373
 		LDA		byte_B3382,X
 loc_B3373:
-		STA		byte_140,Y
+		STA		_npcs_pos_list+$30,Y
 		INX
 		INY
 		CPY		#$10
@@ -3414,7 +3355,6 @@ sub_B36A2:
 		LDA		#0
 		STA		byte_6A3E
 		FARX	_b7_s1D
-;		FAR		$00,$AF		; _b1A_s0
 		FARX	_b1A_s0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3544,8 +3484,7 @@ _staff_data_lib:
 		.WORD	_staff_txt_block16
 		.WORD	_staff_txt_block17
 		.WORD	_staff_txt_block18
-;_staff_copyrights_ofs:
-;		.WORD	_staff_copyrights
+
 _staff_txt_block0:
 		.BYTE	$01,$B9,_d,_r,_a,_g,_o,_n,0,_q,_u,_e,_s,_t,$FF
 		.BYTE	$CB,0,_i,_i,_i,$FF

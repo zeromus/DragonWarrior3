@@ -270,8 +270,7 @@ _tlm_copyrights:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,$AA,$A2,$20,  0,  0,  0,  0,  0,$AA,$AA,$22,  0,  0
 		.BYTE	  0,  0,$80,$AA,$AA,$22,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-;_tlm_copyrights_ofs:
-;		.WORD	_tlm_copyrights
+
 _spr_copyrights_data:
 		.BYTE	$B0,   0,  1,$78,$B0,   1,  1,$80,$B8,   2,  1,$78,$B8,   3,  1,$80
 		.BYTE	$F8,  4,  1,$78,$F8,  5,  1,$80,$F8,  6,  1,$78,$F8,  7,  1,$80
@@ -571,10 +570,6 @@ _chr_copyright_bg_data:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-;_chr_copyright_bg_data_ofs:
-;		.WORD	_chr_copyright_bg_data
-;_chr_copyright_spr_data_ofs:
-;		.WORD	_chr_copyright_spr_data
 
 ; =============== S U B	R O U T	I N E =======================================
 _b17_s1_title_screen:
@@ -609,7 +604,6 @@ loc_23580A:
 		FARX	_bB_s4
 		LDX		#$64
 		JSR		_vblank_count
-;		FAR		$00,$8F		; _b18_s0_intro_animation
 		FARX	_b18_s0_intro_animation
 		LDX		#$64
 		JSR		_vblank_count
@@ -1376,8 +1370,7 @@ _tlm_title_data:
 		.BYTE	 $F, $F,  0,  0,  0,  0, $F, $F,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-;_tlm_title_data_ofs:
-;		.WORD	_tlm_title_data
+
 _spr_title_data:
 		.BYTE	$98,  0,  0,$68,$98,  0,  0,$70,$98,  0,  0,$78,$98,  0,  0,$80
 		.BYTE	$98,  0,  0,$88,$98,  0,  0,$90,$A0,  0,  0,$68,$A0,  0,  0,$70
@@ -1864,10 +1857,7 @@ _chr_title_bg_data1:
 		.BYTE	$2E,$1E,$2E,$1E,$2E,$1E,$2E,$1E,$D1,$E1,$D1,$E1,$D1,$E1,$D1,$E1
 		.BYTE	$E0,$C1,$E0,$C0,$E0,$C0,$E0,$C0,$1F,$3E,$1F,$3F,$1F,$3F,$1F,$3F
 		.BYTE	$F3,$73,$B9,$79,$B9,$79,$B9,$79,  8,$88,$44,$84,$44,$84,$44,$84
-;_chr_title_bg_data0_ofs:
-;		.WORD	_chr_title_bg_data0
-;_chr_title_bg_data1_ofs:
-;		.WORD	_chr_title_bg_data1
+
 byte_237F23:
 		.BYTE	  1,  2,  2,  2,  2,  5,$11,$12,$13,$14,$12,$15,  0,$22,$23,$24
 		.BYTE	$22,  0,  0,$22,$23,$24,$22,  0,$31,$32,$33,$34,$32,$35,$41,$42

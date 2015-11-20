@@ -14,7 +14,6 @@ _b18_s0_intro_animation:
 		JSR		sub_24C17A
 		JSR		sub_24E747
 		JSR		sub_24E91A
-		JSR		nullsub_1
 loc_24C019:
 		LDX		#1
 		JSR		sub_24C0F3
@@ -362,8 +361,7 @@ loc_24C281:
 		TAX
 		PLA
 		RTS
-;_unused_30:
-;		.BYTE	$30,  0,$23,$C0
+
 byte_24C28B:
 		.BYTE	  3,  7, $F,  7
 byte_24C28F:
@@ -396,9 +394,7 @@ sub_24C2B1:
 		FARX	_bB_s3_apu_load
 locret_24C2BC:
 		RTS
-;_unused_31:
-;		.BYTE	$FF,$27,$18,  8,$1B,$18,  8,$1B, $C,$1C, $F,$18,  8,$11,$37,$30
-;		.BYTE	 $B,$2B,$30,$16,$27,$37,$30,$2B,$30
+
 byte_24C2D6:
 		.BYTE	 $F,  7,  6,$16,$15,$15,$15,$16,  6,  7, $F
 byte_24C2E1:
@@ -473,8 +469,7 @@ byte_24C341:
 		.BYTE	$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA
 		.BYTE	$5A,$5A,$5A,$9A,$AA,$AA,$AA,$5A,$59,$16,$F5,$F5,$F5,$F5,$45,$59
 		.BYTE	$15,  0,  0,  0,  0,  0,  0,$45,  0,  0,  0,  0,  0,  0,  0,  0
-;off_24C741:
-;		.WORD	byte_24C341
+
 byte_24C743:
 		.BYTE	$FF,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -989,10 +984,6 @@ byte_24D743:
 		.BYTE	$77,$E7,$AC,$DE,$B8,$5A,$34,$2C,$FF,$FE,$FF,$7B,$77,$F7,$FF,$FF
 		.BYTE	$C5,$7E,$9D,$56,$4A,$47,$CB,$B4,$FF,$ED,$FB,$EF,$FF,$FE,$FF,$DF
 		.BYTE	$75,$F2,$AE,$DD,$2A,$41,$32,$E9,$FF,$EF,$FF,$7B,$F7,$FF,$FF,$7F
-;off_24E743:
-;		.WORD	byte_24D743
-;off_24E745:
-;		.WORD	byte_24C743
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E747:
@@ -1261,12 +1252,7 @@ loc_24E912:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-nullsub_1:
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 sub_24E91A:
-;		FAR		$00,$9F		; _b19_s0
 		FARX	_b19_s0
 		LDA		word_6
 		BEQ		loc_24E922
@@ -1277,9 +1263,7 @@ loc_24E922:
 		PLA
 		PLA
 		JMP		loc_24C019
-;_unused_32:
-;		.BYTE	 $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F
-;		.BYTE	 $F, $F, $F, $F, $F, $F, $F, $F, $F
+
 byte_24E945:
 		.BYTE	$30,  0,$23,$C0,$78,  9,  0,$A8,$80,$19,  0,$A8,$80,$35,  0,$B0
 		.BYTE	$88,$44,  0,$A8,$88,$45,  0,$B0,$90,$54,  0,$A8,$90,$55,  0,$B0
@@ -1305,8 +1289,7 @@ byte_24EA27:
 		.BYTE	$17,  7, $F,  8,  7, $F,  8, $F, $C, $F,  7, $F,  1,$27,$20, $F
 		.BYTE	$1A,$20,  6,$17,$27,$20,$1A,$20,$27,$17,  7,$18,$17,  7,$18, $C
 		.BYTE	$1C, $F,$17,  7,$11,$37,$30, $A,$2A,$30,$16,$27,$37,$30,$2A,$30
-;off_24EA87:
-;		.WORD	byte_24EA89
+
 byte_24EA89:
 		.BYTE	  1,$EC,  0,  1,$48,$36,  1,$50,$48,$37,  1,$58,$48,$38,  1,$60
 		.BYTE	$48,$63,  1,$68,$48,$64,  1,$70,$50,$46,  1,$50,$50,$47,  1,$58
@@ -1436,21 +1419,6 @@ byte_24EA89:
 		.BYTE	  0,$90,$FF,  0,$40,$D0,  1,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_24F261:
-;		JMP		sub_24F414
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_24F264:
-;		JMP		sub_24F431
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_24F267:
-;		JMP		sub_24F44E
-
-; =============== S U B	R O U T	I N E =======================================
 sub_24F26A:
 		LDY		#0
 		LDA		(word_6C),Y
@@ -1551,10 +1519,6 @@ loc_24F31D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F323:
-		JMP		sub_24F3C7
-
-; =============== S U B	R O U T	I N E =======================================
 sub_24F326:
 		TXA
 		PHA
@@ -1563,14 +1527,6 @@ sub_24F326:
 		TAX
 		JSR		sub_24F2DB
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F331:
-		JMP		sub_24F35D
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F334:
-		JMP		sub_24F39D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24F337:
@@ -1983,13 +1939,13 @@ loc_24F5AD:
 loc_24F5B0:
 		JMP		sub_24F2DB
 loc_24F5B3:
-		JMP		sub_24F323
+		JMP		sub_24F3C7
 loc_24F5B6:
-		JMP		sub_24F331
+		JMP		sub_24F35D
 loc_24F5B9:
 		JMP		sub_24F46B
 loc_24F5BC:
-		JMP		sub_24F334
+		JMP		sub_24F39D
 loc_24F5BF:
 		JMP		sub_24F326
 loc_24F5C2:

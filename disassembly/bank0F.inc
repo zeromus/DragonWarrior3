@@ -25,4 +25,4 @@
 		.BYTE $9D
 		.WORD NMI
 		.WORD RESET
-		.WORD _far_call
+		.WORD _FAR_CALL_HANDLER

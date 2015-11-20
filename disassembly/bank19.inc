@@ -42,7 +42,6 @@ _b19_s0:
 		STA		word_6
 		LDA		#$32
 		STA		word_6+1
-;		FAR		$01,$8F		; _b18_s1
 		FARX	_b18_s1
 		LDA		word_6
 		BEQ		locret_264076
@@ -61,7 +60,6 @@ sub_264077:
 		JSR		sub_265019
 		BCS		locret_264088
 		BVS		sub_264077
-;		FAR		$01,$8F		; _b18_s1
 		FARX	_b18_s1
 		LDA		word_6
 		BEQ		loc_264089

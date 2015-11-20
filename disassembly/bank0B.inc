@@ -1,8 +1,6 @@
 
 		ORG $8000
 
-;		.WORD	  0					; do not remove, it's a padding for sub table below!
-;		.WORD	  0
 _bB_s2_ptr:
 		.WORD	_bB_s2
 _bB_s3_apu_load_ptr:
@@ -2849,8 +2847,6 @@ loc_2DF97F:
 		TYA
 		STA		_APU_STATUS
 		LDA		byte_6A3D
-;		BNE		loc_2DF988				; redundant code
-;loc_2DF988:
 		LDA		#$DF
 		AND		_apu_data3+4
 		STA		_apu_data3+4
