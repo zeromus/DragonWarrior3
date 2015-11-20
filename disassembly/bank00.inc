@@ -115,128 +115,128 @@ _b0_s51:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_80D4:
-		JSR		sub_81FE
-		LDA		word_5E+1
-		JSR		sub_1743F1
-		SEC
-		SBC		#$A
-		BCS		loc_80E3
-		LDA		#0
-loc_80E3:
-		STA		word_4A+1
-		LDX		#3
-		STX		byte_4D
-loc_80E9:
-		LDA		#$A
-		JSR		sub_1743F1
-		CLC
-		ADC		word_4A+1
-		CMP		#9
-		BEQ		loc_80F9
-		CMP		#$19
-		BNE		loc_80FB
-loc_80F9:
-		LDA		#0
-loc_80FB:
-		LDX		byte_4D
-		STA		_enemy_roster_index_list,X
-		LDA		#1
-		STA		byte_571,X
-		DEC		byte_4D
-		BPL		loc_80E9
-		BRK
-		.BYTE $CB, 7		; ofs 0x00038012, -> dst _b2_s9
-		JSR		sub_8650
-		LDX		#3
-		LDA		#0
-loc_8113:
-		CLC
-		ADC		byte_571,X
-		DEX
-		BPL		loc_8113
-		CMP		#2
-		BCC		_b0_s51
-		STA		byte_4C
-		JSR		_enemy_roster_get_levels ; enemy roster	get min/max level enemy
-		LDX		#0
-		STX		byte_51
-loc_8127:
-		LDA		byte_4D,X
-		SEC
-		SBC		word_4A+1
-		CMP		#5
-		BCC		loc_8132
-		LDA		#4
-loc_8132:
-		TAY
-		LDA		byte_81AC,Y
-		STA		byte_4D,X
-		CLC
-		ADC		byte_51
-		STA		byte_51
-		INX
-		CPX		byte_4C
-		BCC		loc_8127
-		LDX		#0
-loc_8144:
-		STX		word_4A
-		LDA		byte_51
-		STA		byte_52
-		LDA		#0
-		STA		byte_53
-		LDX		word_4A
-		LDA		byte_4D,X
-		CLC
-		ADC		#1
-		LDX		#byte_52
-		JSR		_div16_to_8
-		LDX		word_4A
-		LDA		byte_52
-		BNE		loc_8162
-		LDA		#1
-loc_8162:
-		STA		byte_6AD5,X
-		CMP		#2
-		BCC		loc_8174
-		LDA		#$A
-		JSR		sub_1743F1
-		STA		byte_6AD9,X
-		JMP		loc_817F
-loc_8174:
-		LDA		#9
-		JSR		sub_1743F1
-		CLC
-		ADC		#1
-		STA		byte_6AD9,X
-loc_817F:
-		INX
-		CPX		byte_4C
-		BCC		loc_8144
-loc_8184:
-		CPX		#4
-		BCS		loc_8193
-		LDA		#0
-		STA		byte_6AD5,X
-		STA		byte_6AD9,X
-		INX
-		BPL		loc_8184
-loc_8193:
-		LDA		byte_4C
-		JSR		sub_1743F1
-		STA		byte_6A6D
-		LDX		#0
-loc_819D:
-		LDA		byte_6A36,X
-		STA		_enemy_roster_index_list,X
-		INX
-		CPX		#4
-		BCC		loc_819D
-		BRK
-		.BYTE $80, $17		; ofs 0x0006804c, -> dst _b4_s26
-		RTS
-byte_81AC:
-		.BYTE	1,  2,	3,  4,	5 
+;sub_80D4:
+;		JSR		sub_81FE
+;		LDA		word_5E+1
+;		JSR		sub_1743F1
+;		SEC
+;		SBC		#$A
+;		BCS		loc_80E3
+;		LDA		#0
+;loc_80E3:
+;		STA		word_4A+1
+;		LDX		#3
+;		STX		byte_4D
+;loc_80E9:
+;		LDA		#$A
+;		JSR		sub_1743F1
+;		CLC
+;		ADC		word_4A+1
+;		CMP		#9
+;		BEQ		loc_80F9
+;		CMP		#$19
+;		BNE		loc_80FB
+;loc_80F9:
+;		LDA		#0
+;loc_80FB:
+;		LDX		byte_4D
+;		STA		_enemy_roster_index_list,X
+;		LDA		#1
+;		STA		byte_571,X
+;		DEC		byte_4D
+;		BPL		loc_80E9
+;		BRK
+;		.BYTE $CB, 7		; ofs 0x00038012, -> dst _b2_s9
+;		JSR		sub_8650
+;		LDX		#3
+;		LDA		#0
+;loc_8113:
+;		CLC
+;		ADC		byte_571,X
+;		DEX
+;		BPL		loc_8113
+;		CMP		#2
+;		BCC		_b0_s51
+;		STA		byte_4C
+;		JSR		_enemy_roster_get_levels ; enemy roster	get min/max level enemy
+;		LDX		#0
+;		STX		byte_51
+;loc_8127:
+;		LDA		byte_4D,X
+;		SEC
+;		SBC		word_4A+1
+;		CMP		#5
+;		BCC		loc_8132
+;		LDA		#4
+;loc_8132:
+;		TAY
+;		LDA		byte_81AC,Y
+;		STA		byte_4D,X
+;		CLC
+;		ADC		byte_51
+;		STA		byte_51
+;		INX
+;		CPX		byte_4C
+;		BCC		loc_8127
+;		LDX		#0
+;loc_8144:
+;		STX		word_4A
+;		LDA		byte_51
+;		STA		byte_52
+;		LDA		#0
+;		STA		byte_53
+;		LDX		word_4A
+;		LDA		byte_4D,X
+;		CLC
+;		ADC		#1
+;		LDX		#byte_52
+;		JSR		_div16_to_8
+;		LDX		word_4A
+;		LDA		byte_52
+;		BNE		loc_8162
+;		LDA		#1
+;loc_8162:
+;		STA		byte_6AD5,X
+;		CMP		#2
+;		BCC		loc_8174
+;		LDA		#$A
+;		JSR		sub_1743F1
+;		STA		byte_6AD9,X
+;		JMP		loc_817F
+;loc_8174:
+;		LDA		#9
+;		JSR		sub_1743F1
+;		CLC
+;		ADC		#1
+;		STA		byte_6AD9,X
+;loc_817F:
+;		INX
+;		CPX		byte_4C
+;		BCC		loc_8144
+;loc_8184:
+;		CPX		#4
+;		BCS		loc_8193
+;		LDA		#0
+;		STA		byte_6AD5,X
+;		STA		byte_6AD9,X
+;		INX
+;		BPL		loc_8184
+;loc_8193:
+;		LDA		byte_4C
+;		JSR		sub_1743F1
+;		STA		byte_6A6D
+;		LDX		#0
+;loc_819D:
+;		LDA		byte_6A36,X
+;		STA		_enemy_roster_index_list,X
+;		INX
+;		CPX		#4
+;		BCC		loc_819D
+;		BRK
+;		.BYTE $80, $17		; ofs 0x0006804c, -> dst _b4_s26
+;		RTS
+;byte_81AC:
+;		.BYTE	1,  2,	3,  4,	5 
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s52:
@@ -283,8 +283,8 @@ _get_enemy_info_ptr:
 		LDA		#$17
 		LDX		#word_60
 		JSR		_mul16_to_8
-		LDA		_enemies_lib_ofs
-		LDY		_enemies_lib_ofs+1
+		LDA		#<[_b0_d43_enemies_lib]
+		LDY		#>[_b0_d43_enemies_lib]
 		JMP		_add_16_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -312,11 +312,11 @@ locret_8221:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s0_world_map_random_enounter_test:
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
+;		NOP				; here was random encounters disabled cheat,
+;		NOP				; which isn't removed in the japanese PRG1 version
+;		NOP				; LDA _pads+1
+;		NOP				; LSR
+;		NOP				; BCS locret_823F
 		LDA		byte_6E1
 		BNE		locret_823F
 		LDX		byte_2A
@@ -510,8 +510,8 @@ loc_835A:
 		LDA		#$F
 		LDX		#word_4A+1
 		JSR		_mul16_to_8
-		LDA		off_8648
-		LDY		off_8648+1
+		LDA		#<[byte_8ADB]
+		LDY		#>[byte_8ADB]
 		JSR		_add_16_to_16
 		LDY		#0
 		LDA		(word_4A+1),Y
@@ -562,7 +562,7 @@ loc_83C9:
 		JSR		_mul16_to_8
 		LDA		#$4A
 		STA		byte_CE
-		JSR		_sram_bank0_sub2B
+		JSR		_sram_b0_s2B
 		BCC		loc_83DD
 		LDA		#$64
 		STA		byte_4D
@@ -585,7 +585,7 @@ loc_83F3:
 		JSR		sub_85DB
 		LDA		word_4A
 		AND		#3
-		STA.W		byte_49
+		STA		byte_49
 		LDA		word_4A
 		AND		#$1C
 		LSR
@@ -596,8 +596,8 @@ loc_83F3:
 		LDA		#$11
 		LDX		#byte_4D
 		JSR		_mul16_to_8
-		LDA		off_864A
-		LDY		off_864A+1
+		LDA		#<[byte_90F3]
+		LDY		#>[byte_90F3]
 		JSR		_add_16_to_16
 		LDA		#1
 		LDX		#word_4A+1
@@ -636,8 +636,8 @@ loc_8437:
 		LDA		#6
 		LDX		#byte_4F
 		JSR		_mul16_to_8
-		LDA		off_864C
-		LDY		off_864C+1
+		LDA		#<[byte_907B]
+		LDY		#>[byte_907B]
 		JSR		_add_16_to_16
 		LDX		#0
 		STX		byte_53
@@ -913,14 +913,6 @@ byte_8638:
 		.BYTE	1,  4,	3,  8,	1,  1,	1,  3 
 byte_8640:
 		.BYTE	8,  4,	1,  1,	1,  2,	3,  0 
-off_8648:
-		.WORD byte_8ADB
-off_864A:
-		.WORD byte_90F3
-off_864C:
-		.WORD byte_907B
-_enemies_lib_ofs:
-		.WORD _b0_d43_enemies_lib 
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_8650:
@@ -2642,8 +2634,8 @@ _b0_s30:
 		JSR		_b0_s32
 		LDX		byte_CE
 		CPX		word_4
-		BEQ		loc_996D				; redundant code
-loc_996D:
+;		BEQ		loc_996D				; redundant code
+;loc_996D:
 		LDA		word_4+1,X
 		TAX
 		LDA		byte_611E,X
@@ -3236,7 +3228,7 @@ _b0_s49:
 		LDX		#0
 loc_9CF7:
 		LDA		byte_9E5C,X
-		CMP.W		byte_8B
+		CMP		byte_8B
 		BEQ		loc_9D05
 		INX
 		CPX		#$14
@@ -3398,7 +3390,7 @@ loc_9DF8:
 		AND		#3
 		BEQ		locret_9E08
 		STA		byte_D0
-		JSR		_sram_bank0_sub3A
+		JSR		_sram_b0_s3A
 locret_9E08:
 		RTS
 
@@ -3473,13 +3465,13 @@ _b0_s5B:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_9E7E:
-		LDA		#$3E
-		JSR		sub_A120
-		BRK
-		.BYTE 5, 7		; ofs 0x0015800a, -> dst _bE_s5
-		LDA		byte_42
-		JSR		sub_A100
+;sub_9E7E:
+;		LDA		#$3E
+;		JSR		sub_A120
+;		BRK
+;		.BYTE 5, 7		; ofs 0x0015800a, -> dst _bE_s5
+;		LDA		byte_42
+;		JSR		sub_A100
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9E8B:
@@ -4019,7 +4011,7 @@ sub_A197:
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s67:
 		PHA
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		LDA		word_6+1
 		CMP		#$C1
 		BNE		loc_A1C8
@@ -4076,43 +4068,44 @@ loc_A208:
 		ADC		word_4
 		TAY
 		LDA		#$20
-		STA		_sram_bank0_sub2,Y
-		LDA		_syscall0_param1_ofs
-		STA		_sram_bank0_sub2+1,Y
-		LDA		_syscall0_param1_ofs+1
-		STA		_sram_bank0_sub2+2,Y
+		STA		_sram_b0_s2,Y
+		LDA		#<[_syscall0_param1]
+		STA		_sram_b0_s2+1,Y
+		LDA		#>[_syscall0_param1]
+		STA		_sram_b0_s2+2,Y
 		TXA
 		CLC
 		ADC		#$23
-		STA		_sram_bank0_sub2+3,Y
+		STA		_sram_b0_s2+3,Y
 		LDA		#$60
-		STA		_sram_bank0_sub2+4,Y
+		STA		_sram_b0_s2+4,Y
 		INX
-		CPX		#$34
-		BNE		loc_A208
-		LDX		#0
-loc_A234:
-		TXA
-		STA		word_4
-		ASL
-		ASL
-		ADC		word_4
-		TAY
-		LDA		#$20
-		STA		_sram_bank0_sub36,Y
-		LDA		_syscall0_param1_ofs
-		STA		_sram_bank0_sub36+1,Y
-		LDA		_syscall0_param1_ofs+1
-		STA		_sram_bank0_sub36+2,Y
-		TXA
-		CLC
-		ADC		#$57
-		STA		_sram_bank0_sub36+3,Y
-		LDA		#$60
-		STA		_sram_bank0_sub36+4,Y
-		INX
-		CPX		#6
-		BNE		loc_A234
+;		CPX		#$34
+		CPX		#$3A				; first part fill first routines 2-33, second 34-39.. don't know
+		BNE		loc_A208			; why they split it into two part, maybe they has different indexes before
+;		LDX		#0
+;loc_A234:
+;		TXA
+;		STA		word_4
+;		ASL
+;		ASL
+;		ADC		word_4
+;		TAY
+;		LDA		#$20
+;		STA		_sram_b0_s36,Y
+;		LDA		#<[_syscall0_param1]
+;		STA		_sram_b0_s36+1,Y
+;		LDA		#>[_syscall0_param1]
+;		STA		_sram_b0_s36+2,Y
+;		TXA
+;		CLC
+;		ADC		#$57
+;		STA		_sram_b0_s36+3,Y
+;		LDA		#$60
+;		STA		_sram_b0_s36+4,Y
+;		INX
+;		CPX		#6
+;		BNE		loc_A234
 		LDX		#0
 loc_A260:
 		LDA		_sram_bank0_select_code,X
@@ -4121,8 +4114,6 @@ loc_A260:
 		CPX		#[_sram_bank0_select_code_end-_sram_bank0_select_code]
 		BNE		loc_A260
 		RTS
-_syscall0_param1_ofs:
-		.WORD _syscall0_param1
 
 ; code loaded into 6xxx sram area
 ;
@@ -4400,7 +4391,7 @@ loc_A47D:
 		BEQ		loc_A474
 		LDX		byte_52
 		BEQ		loc_A4A6
-		STA.WX		byte_54,X
+		STA		byte_54,X
 loc_A4A6:
 		CMP		#0
 		BEQ		loc_A4C7
@@ -5514,7 +5505,7 @@ loc_AD7B:
 		.BYTE 3, $17		; ofs 0x00140026, -> dst _bD_s13
 		LDX		#3
 loc_AD95:
-		LDA.WX		byte_BF,X
+		LDA		byte_BF,X
 		STA		byte_63E,X
 		DEX
 		BNE		loc_AD95
@@ -6205,7 +6196,7 @@ sub_B143:
 		STA		byte_D2
 		LDA		byte_46
 		STA		byte_CF
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		BMI		loc_B166
 		STA		byte_42
@@ -6233,7 +6224,7 @@ sub_B16B:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_D0
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s8
 		JSR		sub_A172
 		JSR		sub_1743B8
 		CMP		#$19
@@ -6241,7 +6232,7 @@ sub_B16B:
 		LDA		#$4E
 		BRK
 		.BYTE $EF, 7		; ofs 0x00068040, -> dst _b4_s20
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		LDA		#$A6
 		JSR		sub_B2CB
 loc_B196:
@@ -6391,7 +6382,7 @@ sub_B262:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B269:
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		LDA		word_4
 		STA		byte_55
 		LDX		#0
@@ -6662,7 +6653,7 @@ loc_BFA9:
 		BNE		loc_BFA9
 		RTS
 
-		ECHO "bank 00 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 00 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

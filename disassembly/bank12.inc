@@ -1045,7 +1045,7 @@ _b12_txt_blockE:
 		.BYTE  $F,$16,$16,$1D,$60,$21,$19,$18,$68,$1E,$60,$21,$19,$1C,$15,$69
 		.BYTE $EF
 
-		ECHO "bank 12 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 12 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

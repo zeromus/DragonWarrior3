@@ -987,7 +987,7 @@ locret_27E8D2:
 byte_27E8D3:
 		.BYTE	4,  5,	6, $D, $E, $F,$10,$11,$13,$14
 
-		ECHO "bank 1A size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 1A free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

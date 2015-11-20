@@ -3081,7 +3081,7 @@ _bC_s36:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s37:
 		LDX		#$C
-		LDA.W		byte_8B
+		LDA		byte_8B
 loc_1295D9:
 		CMP		byte_129B5D,X
 		BEQ		loc_1295E5
@@ -3220,7 +3220,7 @@ loc_129698:
 		STA		byte_CE
 		LDA		byte_CF
 		STA		byte_640
-		JSR		_sram_bank0_sub1C
+		JSR		_sram_b0_s1C
 		BRK
 		.BYTE $26, $67		; _msg_m00_arg0
 		JMP		loc_129745
@@ -3554,12 +3554,12 @@ loc_1298D1:
 loc_1298E5:
 		LDA		_tmp_pak_data_bank
 		STA		byte_CE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
 		STA		byte_D4
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		LDY		#$3F
 		LDA		_tmp_pak_data_bank
 		ASL
@@ -3608,7 +3608,7 @@ loc_129935:
 loc_129939:
 		LDA		_pak_data_ptr
 		STA		byte_CF
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 		JSR		loc_129953
 loc_129943:
 		LDA		_pak_data_ptr
@@ -6032,7 +6032,7 @@ loc_12A89E:
 		STX		word_40
 		JSR		sub_1743B8
 		LDX		word_40
-		STA.WX		byte_3B,X
+		STA		byte_3B,X
 		DEX
 		BNE		loc_12A89E
 		STX		word_40
@@ -7174,7 +7174,7 @@ loc_12B08A:
 		AND		#2
 		BEQ		loc_12B09D
 		STY		byte_CE
-		JSR		_sram_bank0_sub4
+		JSR		_sram_b0_s4
 loc_12B09D:
 		INC		word_3C+1
 		LDA		word_3C+1
@@ -7210,7 +7210,7 @@ loc_12B0C4:
 		AND		#4
 		BEQ		loc_12B0DB
 		STY		byte_CE
-		JSR		_sram_bank0_sub1A
+		JSR		_sram_b0_s1A
 		LDA		#$FF
 		STA		word_3C+1
 loc_12B0DB:
@@ -7640,7 +7640,7 @@ loc_12B393:
 		BMI		loc_12B3AF
 loc_12B39F:
 		LDA		#$FF
-		STA.WX		word_FE+1,X
+		STA		word_FE+1,X
 		LDA		(word_6E),Y
 		AND		#$7F
 		STA		byte_104,Y
@@ -7725,7 +7725,7 @@ loc_12B42E:
 		LDA		#0
 		STA		word_4+1
 		STA		word_6
-		JSR		_sram_bank0_sub1D
+		JSR		_sram_b0_s1D
 		JSR		_bC_s20
 loc_12B443:
 		LDA		#$1C
@@ -8376,9 +8376,9 @@ _bC_s12_vblank_count_50:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_12B8E4:
-		STA		word_6C
-		JMP		_bC_s38
+;sub_12B8E4:
+;		STA		word_6C
+;		JMP		_bC_s38
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B8E9:
@@ -8882,7 +8882,7 @@ sub_12BC33:
 locret_12BC40:
 		RTS
 
-		ECHO "bank 0C size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 0C free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

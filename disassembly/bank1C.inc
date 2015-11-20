@@ -1,9 +1,9 @@
 
 		ORG $8000
 
-		.BYTE $FF
+		ECHO "bank 1C free space", [$BFD8-.]
 
-		ECHO "bank 1C size", [.-$8000], "free space", [$BFD8-.]
+		.BYTE $FF
 
 		ORG $BFD8
 		SEI

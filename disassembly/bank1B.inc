@@ -41,7 +41,7 @@ sub_294028:
 		LDA		#0
 loc_294039:
 		STA		byte_CE
-		JSR		_sram_bank0_subC
+		JSR		_sram_b0_sC
 		LDA		word_4
 		CMP		#$B
 		BCS		loc_29404A
@@ -360,7 +360,7 @@ byte_294217:
 		.BYTE $36,$62,$FF,$FF,	4,  4,	1,  1,$18,$18,$18,$FF,	7,  7,	7,  1
 		.BYTE $7C,$7C,$7C,$7C,	5,  5,	5,  5,$FF
 
-		ECHO "bank 1B size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 1B free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

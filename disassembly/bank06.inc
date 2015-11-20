@@ -2018,7 +2018,7 @@ sub_9BA66:
 		JSR		_sram_b0_s31
 		LDA		word_4
 		PHA
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		PLA
 		CLC
 		ADC		word_4
@@ -2051,7 +2051,7 @@ sub_9BA90:
 		STA		byte_BD
 		LDA		byte_630F
 		STA		byte_C4
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDX		byte_BD
 		LDA		word_4+1,X
 		BNE		sub_9BAB9
@@ -2067,7 +2067,7 @@ sub_9BAB9:
 		.BYTE $6C, $17		; ofs 0x000b0028, -> dst _b7_s14
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		BEQ		sub_9BADD
 		BRK
@@ -2652,7 +2652,7 @@ sub_9BE69:
 		LDX		#4
 loc_9BE7C:
 		LDA		byte_7C0,X
-		STA.WX		byte_B9,X
+		STA		byte_B9,X
 		DEX
 		BNE		loc_9BE7C
 		STX		_pak_data_ptr
@@ -2712,7 +2712,7 @@ loc_9BEDF:
 		PHA
 		TXA
 		PHA
-		JSR		_sram_bank0_sub3A
+		JSR		_sram_b0_s3A
 		PLA
 		TAX
 		TAY
@@ -2770,7 +2770,7 @@ loc_9BF25:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BF2C:
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		LDX		#3
 loc_9BF31:
 		LDA		word_4,X
@@ -2879,7 +2879,7 @@ sub_9BFC3:
 		.BYTE $9D, 7		; ofs 0x00128014, -> dst _bC_sA
 		RTS
 
-		ECHO "bank 06 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 06 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

@@ -5,6 +5,8 @@
 
 		INCLUDE "system_bank0F_only.inc"
 
+		ECHO "bank 0F free space", [SYSTEM_FOOTER_ORG-.]
+
 		ORG SYSTEM_FOOTER_ORG
 
 		INCLUDE "system_footer.inc"

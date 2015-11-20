@@ -2077,8 +2077,8 @@ loc_83ADE:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-nullsub_13:
-		RTS
+;nullsub_13:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83AE2:
@@ -2192,8 +2192,8 @@ loc_83B8B:
 		STA		byte_181,X
 		STA		byte_182,X
 		STA		byte_183,X
-		JMP		loc_83B9C				; redundant code
-loc_83B9C:
+;		JMP		loc_83B9C				; redundant code
+;loc_83B9C:
 		TXA
 		AND		#$F0
 		TAY
@@ -2683,9 +2683,9 @@ _b5_sB_ppu_font_load:
 		STA		_PPU_ADDR
 		LDA		#0
 		STA		_PPU_ADDR
-		LDA		_chr_font_ofs
+		LDA		#<[_chr_font]
 		STA		_tmp21
-		LDA		_chr_font_ofs+1
+		LDA		#>[_chr_font]
 		STA		_tmp21+1
 		JSR		_b5_s6_ppu_send_8_empty_bytes
 		JSR		_b5_s6_ppu_send_8_empty_bytes
@@ -2713,8 +2713,6 @@ loc_83ED2:
 		DEX
 		BNE		loc_83ED2
 		RTS
-_chr_font_ofs:
-		.WORD _chr_font
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s5:
@@ -2751,7 +2749,7 @@ _b5_s5:
 		STA		byte_7464
 		JMP		sub_174CBD
 
-		ECHO "bank 05 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 05 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

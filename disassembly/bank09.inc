@@ -1,6 +1,10 @@
 
 		ORG $8000
 
+; this data is referencing from 0F bank, the only single case where they used
+; direct offset loading, instead of using the syscall to get pointers from
+; external banks
+;
 _chr_terrain_bg_data0:
 		.BYTE $FF,$FF,$FF,$FE,$C4,$82,$CE,$D9,$FF,$8C,$63,$4F,$BF,$7F,$BF,$BF
 		.BYTE $FF,$FF,$FE,$30,$1C,$76,$C3,$82,$FF,$8C,$33,$CF,$FF,$FF,$FF,$FF
@@ -930,8 +934,6 @@ byte_E3990:
 		.BYTE	4, $A, $C,$1C,$19,$20,$28,$14,$4B,$16, $F,$17,$1E,$41,$28,$14
 		.BYTE	8,  1,$28,$10,$32,$2D,$37,$23,	4, $C,$28,$32,$23,  7,$1E,  6
 		.BYTE $10,  8,$23,  8,$FF,  2,$19
-_unused_16:
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_E39E0:
@@ -1219,9 +1221,6 @@ byte_E3D66:
 		.BYTE	1,$4A,$4C,$4D,$49,$48,	0,$61,$62,$5D,$60,$5F,	6,  0
 byte_E3D74:
 		.BYTE $AD,$AE,$AF,$B0,$B1,$B3,	0,$F4,$F5,$F6,$F7,$F8,$F9,  0
-_unused_22:
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF
 _chr_data_unk5:
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	8,  4,	3,  1
 		.BYTE	0,  0,	0,  0,	0,  0,	0,$40,	0,  0,	0,  4,	8,  0,$50,$B8
@@ -1262,7 +1261,7 @@ _chr_data_unk7:
 		.BYTE $2C,  3,	8,$60,$80,  0,$1E,  0,$40,  8,$24,$81,$18,  2,$40,  8
 		.BYTE $20,  0,	0,$10,$28,  0,	0,  0,$40, $C,$40,$80,	0,$60,	0,  0
 
-		ECHO "bank 09 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 09 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

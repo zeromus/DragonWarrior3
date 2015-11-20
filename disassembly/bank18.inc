@@ -222,64 +222,64 @@ sub_24C17A:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24C190:
-		LDA		_nmi_counter
-		AND		#$20
-		BNE		loc_24C19D
-		LDA		#0
-		STA		word_4
-		BEQ		loc_24C1A1
-loc_24C19D:
-		LDA		#8
-		STA		word_4
-loc_24C1A1:
-		LDY		#0
-		LDA		#$A2
-		STA		byte_300,Y
-		INY
-		LDA		#4
-		STA		byte_300,Y
-		INY
-		LDA		#$82
-		STA		byte_300,Y
-		INY
-		LDX		word_4
-loc_24C1B7:
-		LDA		byte_24C1F7,X
-		STA		byte_300,Y
-		INY
-		INX
-		CPY		#7
-		BCC		loc_24C1B7
-		STY		byte_6D8
-		INC		byte_6D9
-		LDA		#$A2
-		STA		byte_300,Y
-		INY
-		LDA		#4
-		STA		byte_300,Y
-		INY
-		LDA		#$A2
-		STA		byte_300,Y
-		INY
-		LDA		word_4
-		CLC
-		ADC		#4
-		TAX
-loc_24C1E1:
-		LDA		byte_24C1F7,X
-		STA		byte_300,Y
-		INY
-		INX
-		CPY		#$E
-		BCC		loc_24C1E1
-		STY		byte_6D8
-		INC		byte_6D9
-		JSR		sub_1742BA
-		RTS
-byte_24C1F7:
-		.BYTE $13,$14,$15,$16,$23,$24,$25,$26,	8,  9, $E, $F,$18,$19,$1E,$1F
-		.BYTE $A0,$A1,$B0,$B1,$BC,$BD,$CC,$CD
+;sub_24C190:
+;		LDA		_nmi_counter
+;		AND		#$20
+;		BNE		loc_24C19D
+;		LDA		#0
+;		STA		word_4
+;		BEQ		loc_24C1A1
+;loc_24C19D:
+;		LDA		#8
+;		STA		word_4
+;loc_24C1A1:
+;		LDY		#0
+;		LDA		#$A2
+;		STA		byte_300,Y
+;		INY
+;		LDA		#4
+;		STA		byte_300,Y
+;		INY
+;		LDA		#$82
+;		STA		byte_300,Y
+;		INY
+;		LDX		word_4
+;loc_24C1B7:
+;		LDA		byte_24C1F7,X
+;		STA		byte_300,Y
+;		INY
+;		INX
+;		CPY		#7
+;		BCC		loc_24C1B7
+;		STY		byte_6D8
+;		INC		byte_6D9
+;		LDA		#$A2
+;		STA		byte_300,Y
+;		INY
+;		LDA		#4
+;		STA		byte_300,Y
+;		INY
+;		LDA		#$A2
+;		STA		byte_300,Y
+;		INY
+;		LDA		word_4
+;		CLC
+;		ADC		#4
+;		TAX
+;loc_24C1E1:
+;		LDA		byte_24C1F7,X
+;		STA		byte_300,Y
+;		INY
+;		INX
+;		CPY		#$E
+;		BCC		loc_24C1E1
+;		STY		byte_6D8
+;		INC		byte_6D9
+;		JSR		sub_1742BA
+;		RTS
+;byte_24C1F7:
+;		.BYTE $13,$14,$15,$16,$23,$24,$25,$26,	8,  9, $E, $F,$18,$19,$1E,$1F
+;		.BYTE $A0,$A1,$B0,$B1,$BC,$BD,$CC,$CD
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C20F:
@@ -1239,29 +1239,29 @@ locret_24E8E9:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24E8EA:
-		LDY		#0
-		LDX		#0
-		LDA		(word_6C),Y
-		CMP		#$FF
-		BCS		locret_24E90D
-		STA		_tmp12+1
-		INC		word_6C
-		BNE		loc_24E8FC
-		INC		word_6C+1
-loc_24E8FC:
-		LDA		(word_6C),Y
-		STA		_spr_ram,X
-		INX
-		INC		word_6C
-		BNE		loc_24E908
-		INC		word_6C+1
-loc_24E908:
-		DEC		_tmp12+1
-		BNE		loc_24E8FC
-		CLC
-locret_24E90D:
-		RTS
+;sub_24E8EA:
+;		LDY		#0
+;		LDX		#0
+;		LDA		(word_6C),Y
+;		CMP		#$FF
+;		BCS		locret_24E90D
+;		STA		_tmp12+1
+;		INC		word_6C
+;		BNE		loc_24E8FC
+;		INC		word_6C+1
+;loc_24E8FC:
+;		LDA		(word_6C),Y
+;		STA		_spr_ram,X
+;		INX
+;		INC		word_6C
+;		BNE		loc_24E908
+;		INC		word_6C+1
+;loc_24E908:
+;		DEC		_tmp12+1
+;		BNE		loc_24E8FC
+;		CLC
+;locret_24E90D:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E90E:
@@ -1450,18 +1450,18 @@ byte_24EA89:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24F261:
-		JMP		sub_24F414
+;sub_24F261:
+;		JMP		sub_24F414
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24F264:
-		JMP		sub_24F431
+;sub_24F264:
+;		JMP		sub_24F431
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24F267:
-		JMP		sub_24F44E
+;sub_24F267:
+;		JMP		sub_24F44E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24F26A:
@@ -1604,21 +1604,21 @@ loc_24F338:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24F34A:
-		PHA
-loc_24F34B:
-		LDA		_spr_ram,X
-		SEC
-		SBC		word_4
-		STA		_spr_ram,X
-		INX
-		INX
-		INX
-		INX
-		DEY
-		BNE		loc_24F34B
-		PLA
-		RTS
+;sub_24F34A:
+;		PHA
+;loc_24F34B:
+;		LDA		_spr_ram,X
+;		SEC
+;		SBC		word_4
+;		STA		_spr_ram,X
+;		INX
+;		INX
+;		INX
+;		INX
+;		DEY
+;		BNE		loc_24F34B
+;		PLA
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24F35D:
@@ -2552,35 +2552,35 @@ loc_24F988:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_24F98E:
-		LDX		#0
-loc_24F990:
-		LDA		_spr_ram+$A8,X
-		PHA
-		INX
-		CPX		#$10
-		BCC		loc_24F990
-		LDX		#0
-		LDY		#$F
-loc_24F99D:
-		LDA		_spr_ram+$54,X
-		STA		_spr_ram+$A8,Y
-		PLA
-		STA		_spr_ram+$54,X
-		DEY
-		INX
-		CPX		#$10
-		BCC		loc_24F99D
-		LDY		#0
-		LDA		(word_6C),Y
-		INC		word_6C
-		BNE		loc_24F9B7
-		INC		word_6C+1
-loc_24F9B7:
-		STA		word_4
-		BIT		word_4
-		CLC
-		RTS
+;sub_24F98E:
+;		LDX		#0
+;loc_24F990:
+;		LDA		_spr_ram+$A8,X
+;		PHA
+;		INX
+;		CPX		#$10
+;		BCC		loc_24F990
+;		LDX		#0
+;		LDY		#$F
+;loc_24F99D:
+;		LDA		_spr_ram+$54,X
+;		STA		_spr_ram+$A8,Y
+;		PLA
+;		STA		_spr_ram+$54,X
+;		DEY
+;		INX
+;		CPX		#$10
+;		BCC		loc_24F99D
+;		LDY		#0
+;		LDA		(word_6C),Y
+;		INC		word_6C
+;		BNE		loc_24F9B7
+;		INC		word_6C+1
+;loc_24F9B7:
+;		STA		word_4
+;		BIT		word_4
+;		CLC
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24F9BD:
@@ -2751,7 +2751,7 @@ byte_24FCBC:
 		.BYTE	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,$EA,$EB,$FA,$FB
 		.BYTE	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1
 
-		ECHO "bank 18 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 18 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

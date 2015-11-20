@@ -462,8 +462,8 @@ loc_F8309:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_F8311:
-		CLC
+;sub_F8311:
+;		CLC
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s5_add16_to_24:
@@ -622,7 +622,7 @@ loc_F83ED:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sA:
-		JSR		_sram_bank0_sub33
+		JSR		_sram_b0_s33
 		DEC		word_4
 		BEQ		locret_F8461
 		JSR		_sram_b0_s2C
@@ -1484,7 +1484,7 @@ sub_F8E2D:
 		JSR		sub_F8E1D
 loc_F8E36:
 		JSR		sub_F8EEB
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1
@@ -1530,7 +1530,7 @@ loc_F8E85:
 		BNE		loc_F8E85
 loc_F8E91:
 		INC		byte_CF
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1
@@ -1602,9 +1602,9 @@ byte_F8F13:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_F8F1B:
-		LDA		#$FF
-		BNE		sub_F8F21
+;sub_F8F1B:
+;		LDA		#$FF
+;		BNE		sub_F8F21
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8F1F:
@@ -1773,76 +1773,76 @@ sub_F9014:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_F902B:
-		STA		byte_F
-		LDA		#$1F
-		AND		byte_10
-		LSR
-		LSR
-		STA		byte_9
-		LDA		#$80
-		AND		byte_10
-		LSR
-		LSR
-		LSR
-		LSR
-		ORA		byte_9
-		STA		byte_9
-		LDA		#3
-		AND		byte_11
-		ASL
-		ASL
-		ASL
-		ASL
-		ORA		#$C0
-		ORA		byte_9
-		STA		_tmp12
-		LDX		#$23
-		LDA		byte_11
-		CMP		#$24
-		BCC		loc_F9059
-		LDX		#$27
-loc_F9059:
-		STX		_tmp12+1
-		LDA		byte_10
-		AND		#$40
-		LSR
-		LSR
-		LSR
-		LSR
-		STA		byte_C
-		LDA		byte_10
-		AND		#2
-		ORA		byte_C
-		STA		byte_C
-		LDA		_tmp12
-		SEC
-		SBC		#$C0
-		TAX
-		LDA		_tmp12+1
-		CMP		#$23
-		BEQ		loc_F907E
-		TXA
-		CLC
-		ADC		#$40
-		TAX
-loc_F907E:
-		LDA		byte_480,X
-		STA		byte_D
-		LDA		#3
-		LDY		byte_C
-		BEQ		loc_F908F
-loc_F9089:
-		ASL
-		ASL		byte_F
-		DEY
-		BNE		loc_F9089
-loc_F908F:
-		EOR		#$FF
-		AND		byte_D
-		ORA		byte_F
-		STA		byte_480,X
-		RTS
+;sub_F902B:
+;		STA		byte_F
+;		LDA		#$1F
+;		AND		byte_10
+;		LSR
+;		LSR
+;		STA		byte_9
+;		LDA		#$80
+;		AND		byte_10
+;		LSR
+;		LSR
+;		LSR
+;		LSR
+;		ORA		byte_9
+;		STA		byte_9
+;		LDA		#3
+;		AND		byte_11
+;		ASL
+;		ASL
+;		ASL
+;		ASL
+;		ORA		#$C0
+;		ORA		byte_9
+;		STA		_tmp12
+;		LDX		#$23
+;		LDA		byte_11
+;		CMP		#$24
+;		BCC		loc_F9059
+;		LDX		#$27
+;loc_F9059:
+;		STX		_tmp12+1
+;		LDA		byte_10
+;		AND		#$40
+;		LSR
+;		LSR
+;		LSR
+;		LSR
+;		STA		byte_C
+;		LDA		byte_10
+;		AND		#2
+;		ORA		byte_C
+;		STA		byte_C
+;		LDA		_tmp12
+;		SEC
+;		SBC		#$C0
+;		TAX
+;		LDA		_tmp12+1
+;		CMP		#$23
+;		BEQ		loc_F907E
+;		TXA
+;		CLC
+;		ADC		#$40
+;		TAX
+;loc_F907E:
+;		LDA		byte_480,X
+;		STA		byte_D
+;		LDA		#3
+;		LDY		byte_C
+;		BEQ		loc_F908F
+;loc_F9089:
+;		ASL
+;		ASL		byte_F
+;		DEY
+;		BNE		loc_F9089
+;loc_F908F:
+;		EOR		#$FF
+;		AND		byte_D
+;		ORA		byte_F
+;		STA		byte_480,X
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F9099:
@@ -1981,8 +1981,8 @@ loc_F9170:
 		LDA		#$80
 		STA		byte_73D,Y
 loc_F9185:
-		JSR		_sram_bank0_sub4
-		JSR		_sram_bank0_sub8
+		JSR		_sram_b0_s4
+		JSR		_sram_b0_s8
 loc_F918B:
 		PLA
 		TAX
@@ -2118,7 +2118,7 @@ loc_F936A:
 		.BYTE $7D, $17		; ofs 0x00140016, -> dst _bD_sB
 		LDA		byte_D2
 		STA		byte_CE
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		PLA
 		TAX
 		LDY		#0
@@ -2136,19 +2136,19 @@ loc_F937C:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_F938E:
-		JSR		sub_F93A4
-loc_F9391:
-		LDA		(word_6C),Y
-		CMP		#$FF
-		BEQ		loc_F935B
-		CLC
-		ADC		byte_6D8
-		TAX
-		LDA		#0
-		STA		byte_305,X
-		INY
-		BNE		loc_F9391
+;sub_F938E:
+;		JSR		sub_F93A4
+;loc_F9391:
+;		LDA		(word_6C),Y
+;		CMP		#$FF
+;		BEQ		loc_F935B
+;		CLC
+;		ADC		byte_6D8
+;		TAX
+;		LDA		#0
+;		STA		byte_305,X
+;		INY
+;		BNE		loc_F9391
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F93A4:
@@ -2303,79 +2303,52 @@ _txt_erdrick_story_ofs:
 		.WORD _txt_erdrick_story
 _txt_erdrick_story:
 		.BYTE   2,$38,$12,$1F,$1D,  0, $B,  0,$1E,$1C,$1F, $F,  0,$21, $B,$1C
-		.BYTE $1C,$13,$19,$1C,	0,$21, $B,$1D
-		.BYTE $FF
+		.BYTE $1C,$13,$19,$1C,	0,$21, $B,$1D,$FF
 		.BYTE	1, $C,$19,$1C,$18,$6A,	0, $B,$18, $E,	0,$F0,	0, $C, $F, $D
-		.BYTE  $B,$17, $F
-		.BYTE $FF
+		.BYTE  $B,$17, $F,$FF
 		.BYTE	1,$15,$18,$19,$21,$18,	0, $B,$1D,  0,$29,$1C, $E,$1C,$13, $D
-		.BYTE $15,$6A,	0,$2C, $F,$1C,$19,  0,$19,$10
-		.BYTE $FF
+		.BYTE $15,$6A,	0,$2C, $F,$1C,$19,  0,$19,$10,$FF
 		.BYTE	3,$25,$16,$13, $B,$12, $B,$18,$6C,  0,$38,$12, $F,$1C, $F,  0
-		.BYTE $21, $B,$1D,  0,$18,$19
-		.BYTE $FF
-		.BYTE  $B, $F,$1B,$1F, $B,$16,$6C
-		.BYTE $FF
-		.BYTE	0,  0
-		.BYTE $FF
+		.BYTE $21, $B,$1D,  0,$18,$19,$FF
+		.BYTE  $B, $F,$1B,$1F, $B,$16,$6C,$FF
+		.BYTE	0,  0,$FF
 		.BYTE	5,$2C,$19,$21, $F,$20, $F,$1C,$6A,  0,$1D,$12,$19,$1C,$1E,$16
-		.BYTE $23
-		.BYTE $FF
+		.BYTE $23,$FF
 		.BYTE	3,$1E,$12, $F,$1C, $F, $B,$10,$1E, $F,$1C,$6A,	0,$1E,$12, $F
-		.BYTE	0,$2C, $F,$1C,$19
-		.BYTE $FF
-		.BYTE	3,$F0,	0,$17,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$16,$23
-		.BYTE $FF
+		.BYTE	0,$2C, $F,$1C,$19,$FF
+		.BYTE	3,$F0,	0,$17,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$16,$23,$FF
 		.BYTE	2, $E,$13,$1D, $B,$1A,$1A, $F, $B,$1C, $F, $E,	0, $B,$18, $E
-		.BYTE	0,$12, $B,$1D,	0,$18,$19,$1E
-		.BYTE $FF
+		.BYTE	0,$12, $B,$1D,	0,$18,$19,$1E,$FF
 		.BYTE	5, $C, $F, $F,$18,  0,$1D, $F, $F,$18,	0,$1D,$13,$18, $D, $F
-		.BYTE $6C
-		.BYTE $FF
-		.BYTE	0,  0
-		.BYTE $FF
+		.BYTE $6C,$FF
+		.BYTE	0,  0,$FF
 		.BYTE	1,$31, $B,$18,$23,  0, $B,  0,$1D,$1E,$19,$1C,$23,  0,$12, $B
-		.BYTE $1D,  0, $C, $F, $F,$18,	0,$1E,$19,$16, $E
-		.BYTE $FF
+		.BYTE $1D,  0, $C, $F, $F,$18,	0,$1E,$19,$16, $E,$FF
 		.BYTE	1,$19,$10,  0,$1E,$12, $B,$1E,	0, $E, $B,$1C,$15, $F,$1D,$1E
-		.BYTE	0,$19,$10,  0,$18,$13,$11,$12,$1E,$1D
-		.BYTE $FF
+		.BYTE	0,$19,$10,  0,$18,$13,$11,$12,$1E,$1D,$FF
 		.BYTE	3,$21,$12, $F,$18,  0,$29,$1C, $E,$1C,$13, $D,$15,  0,$16, $F
-		.BYTE $10,$1E,	0,$12,$13,$1D
-		.BYTE $FF
+		.BYTE $10,$1E,	0,$12,$13,$1D,$FF
 		.BYTE	2,$21, $F, $B,$1A,$19,$18,$6A,	0, $B,$1C,$17,$19,$1C,	0, $B
-		.BYTE $18, $E,	0, $B,$17,$1F,$16, $F,$1E
-		.BYTE $FF
-		.BYTE  $A, $C, $F,$12,$13,$18, $E,$6C
-		.BYTE $FF
-		.BYTE	0,  0
-		.BYTE $FF
+		.BYTE $18, $E,	0, $B,$17,$1F,$16, $F,$1E,$FF
+		.BYTE  $A, $C, $F,$12,$13,$18, $E,$6C,$FF
+		.BYTE	0,  0,$FF
 		.BYTE	1,$30, $F,$11, $F,$18, $E,  0,$1D, $B,$23,$1D,	0,$1E,$12, $F
-		.BYTE $23,  0,$12, $B,$20, $F,	0, $C, $F, $F,$18
-		.BYTE $FF
+		.BYTE $23,  0,$12, $B,$20, $F,	0, $C, $F, $F,$18,$FF
 		.BYTE	3,$12, $B,$18, $E, $F, $E,  0, $E,$19,$21,$18,	0,$1E,$19,  0
-		.BYTE $21,$19,$1C,$1E,$12,$23
-		.BYTE $FF
+		.BYTE $21,$19,$1C,$1E,$12,$23,$FF
 		.BYTE	4,$21, $B,$1C,$1C,$13,$19,$1C,$1D,  0,$19,$10,	0,$10,$1F,$1E
-		.BYTE $1F,$1C, $F
-		.BYTE $FF
+		.BYTE $1F,$1C, $F,$FF
 		.BYTE	1,$11, $F,$18, $F,$1C, $B,$1E,$13,$19,$18,$1D,	0, $B,$1D,  0
-		.BYTE $1E,$12, $F,  0,$37,$21,$19,$1C, $E,  0,$19,$10
-		.BYTE $FF
+		.BYTE $1E,$12, $F,  0,$37,$21,$19,$1C, $E,  0,$19,$10,$FF
 		.BYTE	3,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0,$1E,$12, $F,  0,$25,$1C
-		.BYTE $17,$19,$1C,  0,$19,$10
-		.BYTE $FF
+		.BYTE $17,$19,$1C,  0,$19,$10,$FF
 		.BYTE	1,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0, $B,$18, $E,  0,$1E,$12
-		.BYTE  $F,  0,$29,$17, $C,$16, $F,$17,	0,$19,$10
-		.BYTE $FF
-		.BYTE  $A,$29,$1C, $E,$1C,$13, $D,$15,$6C
-		.BYTE $FF
-		.BYTE	0,  0
-		.BYTE $FF
-		.BYTE	0,  0
-		.BYTE $FF
+		.BYTE  $F,  0,$29,$17, $C,$16, $F,$17,	0,$19,$10,$FF
+		.BYTE  $A,$29,$1C, $E,$1C,$13, $D,$15,$6C,$FF
+		.BYTE	0,  0,$FF
+		.BYTE	0,  0,$FF
 
-		ECHO "bank 0A size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 0A free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

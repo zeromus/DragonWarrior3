@@ -572,7 +572,7 @@ sub_1583C2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1583D0:
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		word_4
 		ORA		word_4+1
 		ORA		word_6
@@ -628,7 +628,7 @@ loc_158417:
 		JMP		sub_1580A1
 loc_158421:
 		STA		byte_CE
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		LDA		word_4+1
 		STA		byte_6AB3
 		SEC
@@ -636,7 +636,7 @@ loc_15842C:
 		JSR		sub_158516
 loc_15842F:
 		PHP
-		JSR		_sram_bank0_sub1F
+		JSR		_sram_b0_s1F
 		PLP
 		LDX		word_4
 		BNE		loc_15843C
@@ -655,16 +655,16 @@ loc_158449:
 		LDA		#0
 		JSR		sub_15858D
 		BCS		loc_158461
-		JSR		_sram_bank0_sub1F
+		JSR		_sram_b0_s1F
 		JSR		sub_15851F
 		BCC		loc_15842F
-		JSR		_sram_bank0_sub23
+		JSR		_sram_b0_s23
 		SEC
 loc_15845E:
 		JSR		sub_158516
 loc_158461:
 		PHP
-		JSR		_sram_bank0_sub21
+		JSR		_sram_b0_s21
 		PLP
 		LDX		word_4
 		BNE		loc_15846E
@@ -680,16 +680,16 @@ loc_15846E:
 		LDA		#1
 		JSR		sub_15858D
 		BCS		loc_15848E
-		JSR		_sram_bank0_sub21
+		JSR		_sram_b0_s21
 		JSR		sub_15851F
 		BCC		loc_158461
-		JSR		_sram_bank0_sub25
+		JSR		_sram_b0_s25
 		SEC
 loc_15848B:
 		JSR		sub_158516
 loc_15848E:
 		PHP
-		JSR		_sram_bank0_sub20
+		JSR		_sram_b0_s20
 		PLP
 		LDX		word_4
 		BNE		loc_15849B
@@ -705,15 +705,15 @@ loc_15849B:
 		LDA		#2
 		JSR		sub_15858D
 		BCS		loc_1584BB
-		JSR		_sram_bank0_sub20
+		JSR		_sram_b0_s20
 		JSR		sub_15851F
 		BCC		loc_15848E
-		JSR		_sram_bank0_sub24
+		JSR		_sram_b0_s24
 		SEC
 		JSR		sub_158516
 loc_1584BB:
 		PHP
-		JSR		_sram_bank0_sub22
+		JSR		_sram_b0_s22
 		PLP
 		LDX		word_4
 		BNE		loc_1584C8
@@ -729,10 +729,10 @@ loc_1584C8:
 		LDA		#3
 		JSR		sub_15858D
 		BCS		loc_1584E7
-		JSR		_sram_bank0_sub22
+		JSR		_sram_b0_s22
 		JSR		sub_15851F
 		BCC		loc_1584BB
-		JSR		_sram_bank0_sub26
+		JSR		_sram_b0_s26
 		JSR		sub_158516
 loc_1584E7:
 		JSR		sub_1584ED
@@ -740,7 +740,7 @@ loc_1584E7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1584ED:
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		LDA		word_4+1
 		CMP		byte_6AB3
 		BEQ		loc_158507
@@ -847,9 +847,9 @@ sub_15856C:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_15857D:
-		LDA		#$A
-		BNE		sub_158569
+;sub_15857D:
+;		LDA		#$A
+;		BNE		sub_158569
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158581:
@@ -864,7 +864,7 @@ sub_158581:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15858D:
 		PHA
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		PLA
 		TAX
 		LDA		word_4,X
@@ -1075,9 +1075,9 @@ sub_1586C5:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_1586CC:
-		SEC
-		RTS
+;sub_1586CC:
+;		SEC
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586CE:
@@ -1409,7 +1409,7 @@ loc_1588F4:
 		BNE		loc_15893F
 		LDA		byte_6AC4
 		JSR		sub_158B47
-		JSR		_sram_bank0_sub10
+		JSR		_sram_b0_s10
 		LDA		word_4
 		CMP		#$FF
 		BEQ		loc_15890A
@@ -1451,7 +1451,7 @@ loc_15893F:
 loc_158951:
 		TXA
 		JSR		sub_158C89
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		LDA		byte_CE
 		ASL
 		TAX
@@ -1848,13 +1848,13 @@ loc_158C01:
 		BEQ		loc_158C16
 		CMP		#$3B
 		BNE		loc_158BEE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4
 		CMP		#5
 		BCC		loc_158BEE
 		BCS		loc_158C1F
 loc_158C16:
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		word_4
 		CMP		byte_C6
 		BCC		loc_158BEE
@@ -1910,7 +1910,7 @@ loc_158C68:
 loc_158C6E:
 		TXA
 		PHA
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		LDA		#$79
 		JSR		sub_158DB9
 		PLA
@@ -2070,7 +2070,7 @@ loc_158D80:
 		STX		word_4
 		JMP		loc_158DA7
 loc_158D85:
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		#7
 		STA		byte_6AEA
 		LDA		word_4
@@ -2142,15 +2142,15 @@ loc_158DE6:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_158DEE:
-		LDA		#0
-		TAX
-loc_158DF1:
-		STA		byte_460,X
-		INX
-		CPX		#$10
-		BNE		loc_158DF1
-		RTS
+;sub_158DEE:
+;		LDA		#0
+;		TAX
+;loc_158DF1:
+;		STA		byte_460,X
+;		INX
+;		CPX		#$10
+;		BNE		loc_158DF1
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DFA:
@@ -2914,73 +2914,73 @@ sub_159D86:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_159D92:
-		STA		byte_76
-		PHA
-		TXA
-		PHA
-		TYA
-		PHA
-		LDA		byte_76
-		JSR		_sram_bank0_select_ex
-		PLA
-		TAY
-		PLA
-		TAX
-		PLA
-		RTS
+;sub_159D92:
+;		STA		byte_76
+;		PHA
+;		TXA
+;		PHA
+;		TYA
+;		PHA
+;		LDA		byte_76
+;		JSR		_sram_bank0_select_ex
+;		PLA
+;		TAY
+;		PLA
+;		TAX
+;		PLA
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_159DA4:
-		LDA		#0
-		STA		byte_80
-		LDA		#1
-		STA		byte_81
-		LDA		#$2C
-		STA		byte_471
-		LDA		#$92
-		STA		byte_470
-		LDA		#$7A
-		STA		byte_74
-		LDA		#$78
-		STA		byte_75
-		LDA		#$7D
-		STA		byte_76
-		LDA		#$17
-		STA		byte_77
-		LDX		#0
-		JSR		sub_159E25
-		LDA		#$2F
-		STA		byte_77
-		JSR		sub_159E3C
-		JSR		sub_159E4F
-		JSR		sub_159E42
-		LDA		#$B2
-		STA		byte_470
-		LDA		#$2C
-		STA		byte_471
-		LDX		#0
-		JSR		sub_159E13
-		JSR		sub_159E4F
-		LDA		#$D2
-		STA		byte_470
-		LDA		#$1C
-		STA		byte_471
-		LDA		#$17
-		STA		byte_77
-		LDX		#0
-		JSR		sub_159E3C
-		LDA		#$2F
-		STA		byte_77
-		LDA		#$7B
-		STA		byte_74
-		LDA		#$7E
-		STA		byte_75
-		LDA		#$7F
-		STA		byte_76
-		JSR		sub_159E25
-		JMP		sub_159D86
+;sub_159DA4:
+;		LDA		#0
+;		STA		byte_80
+;		LDA		#1
+;		STA		byte_81
+;		LDA		#$2C
+;		STA		byte_471
+;		LDA		#$92
+;		STA		byte_470
+;		LDA		#$7A
+;		STA		byte_74
+;		LDA		#$78
+;		STA		byte_75
+;		LDA		#$7D
+;		STA		byte_76
+;		LDA		#$17
+;		STA		byte_77
+;		LDX		#0
+;		JSR		sub_159E25
+;		LDA		#$2F
+;		STA		byte_77
+;		JSR		sub_159E3C
+;		JSR		sub_159E4F
+;		JSR		sub_159E42
+;		LDA		#$B2
+;		STA		byte_470
+;		LDA		#$2C
+;		STA		byte_471
+;		LDX		#0
+;		JSR		sub_159E13
+;		JSR		sub_159E4F
+;		LDA		#$D2
+;		STA		byte_470
+;		LDA		#$1C
+;		STA		byte_471
+;		LDA		#$17
+;		STA		byte_77
+;		LDX		#0
+;		JSR		sub_159E3C
+;		LDA		#$2F
+;		STA		byte_77
+;		LDA		#$7B
+;		STA		byte_74
+;		LDA		#$7E
+;		STA		byte_75
+;		LDA		#$7F
+;		STA		byte_76
+;		JSR		sub_159E25
+;		JMP		sub_159D86
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_159E13:
@@ -3197,53 +3197,53 @@ _bE_s38:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_159F2E:
-		LDA		#$87
-		JSR		_get_syscall0_data_cur_byte0
-		STA		byte_10
-		LDA		#$87
-		JSR		_get_syscall0_data_cur_byte1
-		STA		byte_11
-loc_159F3C:
-		TXA
-		PHA
-		LDA		#0
-		STA		_tmp12+1
-		LDX		byte_7A
-		INX
-		INX
-		TXA
-		LDX		#_tmp12
-		JSR		_mul16_to_8
-		LDY		#0
-		LDA		_tmp12
-		LDY		_tmp12+1
-		LDX		#byte_10
-		JSR		_add_16_to_16
-		PLA
-		TAX
-		RTS
+;sub_159F2E:
+;		LDA		#$87
+;		JSR		_get_syscall0_data_cur_byte0	; 87 - bankE, ofs 1E is zeroed, so this is definitely unused leftover
+;		STA		byte_10
+;		LDA		#$87
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		byte_11
+;loc_159F3C:
+;		TXA
+;		PHA
+;		LDA		#0
+;		STA		_tmp12+1
+;		LDX		byte_7A
+;		INX
+;		INX
+;		TXA
+;		LDX		#_tmp12
+;		JSR		_mul16_to_8
+;		LDY		#0
+;		LDA		_tmp12
+;		LDY		_tmp12+1
+;		LDX		#byte_10
+;		JSR		_add_16_to_16
+;		PLA
+;		TAX
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_159F5A:
-		LDA		#$87
-		JSR		_get_syscall0_data_cur_byte0
-		STA		byte_10
-		LDA		#$87
-		JSR		_get_syscall0_data_cur_byte1
-		STA		byte_11
-		JMP		loc_159F3C
+;sub_159F5A:
+;		LDA		#$87
+;		JSR		_get_syscall0_data_cur_byte0
+;		STA		byte_10
+;		LDA		#$87
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		byte_11
+;		JMP		loc_159F3C
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-nullsub_7:
-		RTS
+;nullsub_7:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-nullsub_8:
-		RTS
+;nullsub_8:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_159F6D:
@@ -3523,7 +3523,7 @@ loc_15A13F:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_bank0_sub32
+		JSR		_sram_b0_s32
 		LDA		word_4
 		SEC
 		SBC		#6
@@ -3571,7 +3571,7 @@ sub_15A185:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDX		word_4
 		PLA
 		STA		word_4+1
@@ -3995,7 +3995,7 @@ loc_15A41B:
 		STY		byte_6ABF
 		TXA
 		PHA
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 		PLA
 		TAX
 		LDY		#0
@@ -4036,8 +4036,8 @@ loc_15A464:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-nullsub_9:
-		RTS
+;nullsub_9:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A472:
@@ -4637,7 +4637,7 @@ loc_15A89D:
 loc_15A8A3:
 		JSR		sub_15A987
 		STA		byte_CE
-		JSR		_sram_bank0_sub10
+		JSR		_sram_b0_s10
 		JMP		loc_15A8B9
 loc_15A8AE:
 		SEC
@@ -4645,7 +4645,7 @@ loc_15A8AE:
 loc_15A8B1:
 		STA		byte_CE
 		STA		byte_6A35
-		JSR		_sram_bank0_subF
+		JSR		_sram_b0_sF
 loc_15A8B9:
 		LDY		#0
 loc_15A8BB:
@@ -6266,7 +6266,7 @@ sub_15B282:
 sub_15B288:
 		LDA		byte_64
 		STA		byte_CF
-		JSR		_sram_bank0_sub5
+		JSR		_sram_b0_s5
 		PHA
 		BRK
 		.BYTE $D4, 7		; ofs 0x00068034, -> dst _b4_s1A
@@ -7202,7 +7202,7 @@ loc_15B957:
 		JSR		_sram_b0_s2C
 		LDA		word_4
 		STA		byte_6ABF
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		LDA		word_4+1
 		CMP		#$AA
 		BNE		loc_15B976
@@ -7213,7 +7213,7 @@ loc_15B976:
 		JSR		_sram_b0_s2F
 		LDA		word_4
 		BEQ		loc_15B99C
-		JSR		_sram_bank0_sub1E
+		JSR		_sram_b0_s1E
 		LDA		word_4+1
 		CMP		#$B1
 		BEQ		loc_15B98A
@@ -7345,7 +7345,7 @@ _bE_s1A:
 		CLC
 		RTS
 
-		ECHO "bank 0E size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 0E free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

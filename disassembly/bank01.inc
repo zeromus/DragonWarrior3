@@ -109,7 +109,7 @@ loc_20079:
 		CLC
 		ADC		byte_CF
 		STA		byte_CF
-		JSR		_sram_bank0_sub34
+		JSR		_sram_b0_s34
 		LDA		word_4
 		RTS
 loc_2009C:
@@ -126,7 +126,7 @@ loc_200AD:
 		STA		byte_7E
 		BNE		loc_20079
 loc_200B3:
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		word_6
 		BEQ		loc_200AD
 		BNE		loc_20079
@@ -231,7 +231,7 @@ _b1_s17:
 		DEC		byte_CF
 		LDA		word_7C+1
 		STA		byte_D0
-		JSR		_sram_bank0_sub35
+		JSR		_sram_b0_s35
 		LDA		word_4
 locret_2014C:
 		RTS
@@ -301,20 +301,20 @@ loc_201B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201B3:
-		LDX		_sram_bank0_sub36_ofs
-		LDY		_sram_bank0_sub36_ofs+1
-		JMP		sub_201CB
+		LDX		#<[_sram_b0_s36]
+		LDY		#>[_sram_b0_s36]
+		BNE		sub_201CB
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201BC:
-		LDX		_sram_bank0_sub37_ofs
-		LDY		_sram_bank0_sub37_ofs+1
-		JMP		sub_201CB
+		LDX		#<[_sram_b0_s37]
+		LDY		#>[_sram_b0_s37]
+		BNE		sub_201CB
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201C5:
-		LDX		_sram_bank0_sub38_ofs
-		LDY		_sram_bank0_sub38_ofs+1
+		LDX		#<[_sram_b0_s38]
+		LDY		#>[_sram_b0_s38]
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201CB:
@@ -441,7 +441,7 @@ sub_2028D:
 		STA		byte_CF
 		LDA		word_7C+1
 		STA		byte_D0
-		JSR		_sram_bank0_sub35
+		JSR		_sram_b0_s35
 		LDA		word_4
 		CMP		#$FF
 		BEQ		locret_202A8
@@ -478,7 +478,7 @@ loc_202C6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_202D1:
 		JSR		sub_20720
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		word_4+1
 		RTS
 
@@ -576,7 +576,7 @@ sub_2034D:
 		LDA		word_7C+1
 		EOR		#3
 		STA		byte_D0
-		JSR		_sram_bank0_sub39
+		JSR		_sram_b0_s39
 		LDA		word_6+1
 		RTS
 off_20369:
@@ -597,12 +597,6 @@ off_2036B:
 		.WORD sub_20268
 		.WORD sub_2034D
 		.WORD sub_2028D
-_sram_bank0_sub36_ofs:
-		.WORD _sram_bank0_sub36 
-_sram_bank0_sub37_ofs:
-		.WORD _sram_bank0_sub37 
-_sram_bank0_sub38_ofs:
-		.WORD _sram_bank0_sub38 
 byte_2038F:
 		.BYTE $88,$12,$22,$5C,$92,$32,$5C,$92,$32,$5C,$92,$32,$66,$83,$1A,$58
 		.BYTE $44,$22,$98,$16,$12,$96,$18,$1A
@@ -1126,7 +1120,7 @@ sub_206A9:
 		BNE		loc_206C1
 		LDX		#7
 loc_206B9:
-		STA.WX		byte_8,X
+		STA		byte_8,X
 		DEX
 		BNE		loc_206B9
 		BEQ		loc_206CD
@@ -1150,7 +1144,7 @@ loc_206CD:
 		SBC		byte_78
 		TAY
 loc_206DB:
-		LDA.WY		byte_9,Y
+		LDA		byte_9,Y
 		STA		byte_400,X
 		INX
 		INY
@@ -1196,7 +1190,7 @@ sub_20707:
 loc_2070E:
 		LDX		byte_77
 		INC		byte_77
-		LDA.WY		word_4,Y
+		LDA		word_4,Y
 		STA		byte_400,X
 		INY
 		INC		byte_79
@@ -1265,10 +1259,10 @@ sub_20775:
 		LSR
 		LSR
 		LSR
-		STA.WY		byte_74,Y
+		STA		byte_74,Y
 		LDA		byte_2038F,X
 		AND		#$F
-		STA.WY		byte_75,Y
+		STA		byte_75,Y
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1645,7 +1639,7 @@ loc_209FA:
 		STA		byte_73D
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_bank0_sub3
+		JSR		_sram_b0_s3
 		LDA		word_4
 		STA		byte_71C
 		LDA		word_4+1
@@ -1778,7 +1772,7 @@ loc_20ADF:
 		STX		byte_CE
 		TXA
 		PHA
-		JSR		_sram_bank0_sub1A
+		JSR		_sram_b0_s1A
 		PLA
 		TAX
 		INX
@@ -1893,7 +1887,7 @@ loc_20B87:
 		LDA		byte_47
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_bank0_sub28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
@@ -1902,7 +1896,7 @@ loc_20B87:
 		JSR		_get_syscall0_data_byte_X
 		AND		#$10
 		BNE		loc_20B75
-		JSR		_sram_bank0_sub2A
+		JSR		_sram_b0_s2A
 		LDA		byte_48
 		STA		byte_D4
 		LDA		#$6B
@@ -1921,7 +1915,7 @@ loc_20BDC:
 		STA		byte_CF
 		LDA		byte_47
 		STA		byte_CE
-		JSR		_sram_bank0_sub29
+		JSR		_sram_b0_s29
 loc_20BE7:
 		LDA		word_60
 		STA		word_4
@@ -1953,7 +1947,7 @@ loc_20C0C:
 		LDA		#0
 		STA		byte_641
 		STA		byte_D0
-		JSR		_sram_bank0_sub1C
+		JSR		_sram_b0_s1C
 		LDA		#$26
 		BRK
 		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
@@ -1987,7 +1981,7 @@ loc_20C4F:
 		STA		byte_63F
 		LDA		byte_CF
 		STA		byte_640
-		JSR		_sram_bank0_sub1C
+		JSR		_sram_b0_s1C
 		LDA		#$B6
 		BRK
 		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
@@ -2049,7 +2043,7 @@ loc_20CB6:
 		BNE		loc_20CB6
 loc_20CC6:
 		STX		byte_D2
-		JMP		_sram_bank0_sub33
+		JMP		_sram_b0_s33
 
 ; =============== S U B	R O U T	I N E =======================================
 _add_16_to_24:
@@ -2218,7 +2212,7 @@ sub_20DCE:
 		PLA
 		RTS
 
-		ECHO "bank 01 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 01 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI

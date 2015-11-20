@@ -178,10 +178,10 @@ locret_1740F9:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_1740FA:
-		JSR		_vblank_and_render_off_flag10_set
-		JSR		sub_1741D7
-		JMP		__render_on_flag10_clear_reinit
+;sub_1740FA:
+;		JSR		_vblank_and_render_off_flag10_set
+;		JSR		sub_1741D7
+;		JMP		__render_on_flag10_clear_reinit
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174103:
@@ -785,8 +785,8 @@ loc_17445B:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_174468:
-		JSR		_get_param_byte_set_exit_to_next
+;sub_174468:
+;		JSR		_get_param_byte_set_exit_to_next
 
 ; =============== S U B	R O U T	I N E =======================================
 _syscall01_safe:
@@ -871,16 +871,16 @@ _syscall0_unsafe:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_1744E4:
-		LDA		_mmc_cur_prg_bank
-		PHA
-		LDA		2,X
-		JSR		_mmc1_prg_set
-		JSR		_get_data_next_byte
-		STA		3,X
-		PLA
-		JSR		_mmc1_prg_set
-		RTS
+;sub_1744E4:
+;		LDA		_mmc_cur_prg_bank
+;		PHA
+;		LDA		2,X
+;		JSR		_mmc1_prg_set
+;		JSR		_get_data_next_byte
+;		STA		3,X
+;		PLA
+;		JSR		_mmc1_prg_set
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall1_bank_ptr:
@@ -1082,28 +1082,28 @@ _get_far_ptr_byte_safe:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_174625:
-		STA		_irq_a_saved
-		LDA		_mmc_cur_prg_bank
-		PHA
-		STX		_irq_x_saved
-		STY		_irq_y_saved
-		TYA
-		JSR		_mmc1_prg_set
-		LDA		0,X
-		STA		_tmp21
-		LDA		1,X
-		STA		_tmp21+1
-		LDA		_irq_a_saved
-		LDY		#0
-		AND		(_tmp21),Y
-		STA		_tmp21+2
-		PLA
-		JSR		_mmc1_prg_set
-		LDX		_irq_x_saved
-		LDY		_irq_y_saved
-		LDA		_tmp21+2
-		RTS
+;sub_174625:
+;		STA		_irq_a_saved
+;		LDA		_mmc_cur_prg_bank
+;		PHA
+;		STX		_irq_x_saved
+;		STY		_irq_y_saved
+;		TYA
+;		JSR		_mmc1_prg_set
+;		LDA		0,X
+;		STA		_tmp21
+;		LDA		1,X
+;		STA		_tmp21+1
+;		LDA		_irq_a_saved
+;		LDY		#0
+;		AND		(_tmp21),Y
+;		STA		_tmp21+2
+;		PLA
+;		JSR		_mmc1_prg_set
+;		LDX		_irq_x_saved
+;		LDY		_irq_y_saved
+;		LDA		_tmp21+2
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _mmc1_cmd:
@@ -1246,8 +1246,8 @@ loc_174713:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_174716:
-		JSR		sub_1746C8
+;sub_174716:
+;		JSR		sub_1746C8
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174719:
@@ -1263,32 +1263,32 @@ sub_174719:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_174729:
-		JSR		sub_1746C2
+;sub_174729:
+;		JSR		sub_1746C2
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_17472C:
-		JMP		sub_174719
+;sub_17472C:
+;		JMP		sub_174719
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_17472F:
-		LDA		byte_6D3
-		AND		#1
-		STA		word_6+1
-		LDA		word_4
-		ASL
-		ASL
-		ASL
-		CLC
-		ADC		byte_6D0
-		BCC		locret_174747
-		LDA		word_6+1
-		EOR		#1
-		STA		word_6+1
-locret_174747:
-		RTS
+;sub_17472F:
+;		LDA		byte_6D3
+;		AND		#1
+;		STA		word_6+1
+;		LDA		word_4
+;		ASL
+;		ASL
+;		ASL
+;		CLC
+;		ADC		byte_6D0
+;		BCC		locret_174747
+;		LDA		word_6+1
+;		EOR		#1
+;		STA		word_6+1
+;locret_174747:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174748:
@@ -1979,10 +1979,10 @@ loc_174BA4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
-_delay_n_n:
-		PHA
-		JMP		_delay_ex
+; unreferenced code
+;_delay_n_n:
+;		PHA
+;		JMP		_delay_ex
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174BB3:
@@ -2141,8 +2141,8 @@ loc_174CCA:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-nullsub_6:
-		RTS
+;nullsub_6:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CCF:
@@ -3450,22 +3450,31 @@ sub_175569:
 		SBC		#$F0
 		ASL
 		STA		word_6C
-		LDA		#$80
-		JSR		_get_syscall0_data_cur_byte0
+; here is just loading of data offset in external bank, but with this source we know
+; all offsets at assembly time, so no need in this weird methods
+; syscall 80 is bank6, offset 3 (byte_9851B)
 		CLC
-		ADC		word_6C
+		ADC		#<[byte_9851B]
 		STA		word_6C
-		PHP
-		LDA		#$80
-		JSR		_get_syscall0_data_cur_byte1
-		PLP
+		LDA		#>[byte_9851B]
 		ADC		#0
 		STA		word_6C+1
-		PHA
+;		LDA		#$80
+;		JSR		_get_syscall0_data_cur_byte0
+;		CLC
+;		ADC		word_6C
+;		STA		word_6C
+;		PHP
+;		LDA		#$80
+;		JSR		_get_syscall0_data_cur_byte1
+;		PLP
+;		ADC		#0
+;		STA		word_6C+1
+;		PHA				; why?
 		LDA		#6
 		JSR		_mmc1_prg_set
-		PLA
-		LDY		#0
+;		PLA
+		LDY		#0		; A is overwritten with next opcode
 		LDA		(word_6C),Y
 		STA		byte_2A
 		INY
@@ -4255,12 +4264,17 @@ loc_175AB2:
 		TXA
 		AND		#$1F
 		STA		byte_8A
-		LDA		#$7D
-		JSR		_get_syscall0_data_cur_byte0
+; the same, bank 6, ofs 0
+		LDA		#<[byte_9804A]
 		STA		byte_98
-		LDA		#$7D
-		JSR		_get_syscall0_data_cur_byte1
+		LDA		#>[byte_9804A]
 		STA		byte_99
+;		LDA		#$7D
+;		JSR		_get_syscall0_data_cur_byte0
+;		STA		byte_98
+;		LDA		#$7D
+;		JSR		_get_syscall0_data_cur_byte1
+;		STA		byte_99
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		byte_8B
@@ -6647,33 +6661,33 @@ _far_bE_s4_msg_m00_break:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
-sub_176C11:
-		TAX
-		STY		word_4
-		LDA		_mmc_cur_prg_bank
-		PHA
-		TXA
-		JSR		_mmc1_prg_set
-		LDY		#0
-loc_176C1E:
-		LDA		(word_6C),Y
-		BMI		loc_176C2A
-loc_176C22:
-		INC		word_6C
-		BNE		loc_176C1E
-		INC		word_6C+1
-		BNE		loc_176C1E
-loc_176C2A:
-		CMP		#$FF
-		BNE		loc_176C22
-		DEC		word_4
-		BNE		loc_176C22
-		INC		word_6C
-		BNE		loc_176C38
-		INC		word_6C+1
-loc_176C38:
-		PLA
-		JMP		_mmc1_prg_set
+;sub_176C11:
+;		TAX
+;		STY		word_4
+;		LDA		_mmc_cur_prg_bank
+;		PHA
+;		TXA
+;		JSR		_mmc1_prg_set
+;		LDY		#0
+;loc_176C1E:
+;		LDA		(word_6C),Y
+;		BMI		loc_176C2A
+;loc_176C22:
+;		INC		word_6C
+;		BNE		loc_176C1E
+;		INC		word_6C+1
+;		BNE		loc_176C1E
+;loc_176C2A:
+;		CMP		#$FF
+;		BNE		loc_176C22
+;		DEC		word_4
+;		BNE		loc_176C22
+;		INC		word_6C
+;		BNE		loc_176C38
+;		INC		word_6C+1
+;loc_176C38:
+;		PLA
+;		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C3C:

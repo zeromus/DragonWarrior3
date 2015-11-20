@@ -1057,7 +1057,7 @@ _b11_txt_block1C:
 		.BYTE $18,$1D,$60,$19,$10,$60,$1E,$12, $F,$60,$32, $F, $D,$1C,$19,$11
 		.BYTE $19,$18, $E,$69,$EF
 
-		ECHO "bank 11 size", [.-$8000], "free space", [$BFD8-.]
+		ECHO "bank 11 free space", [$BFD8-.]
 
 		ORG $BFD8
 		SEI
