@@ -1,0 +1,11 @@
+$B0 - His/Her of actor
+$B1 - Himself/Herself of actor?
+$B2 - He/She of actor?
+$B3 - Him/Her?
+$F2 - Enemy actor letter
+$F3 - Name of spell target
+$F4 - Item name
+$F5 - Actor/User (PC or enemy) name
+$F8 - A number
+$F9 - Hero's name?
+$FD - Some control code probably
