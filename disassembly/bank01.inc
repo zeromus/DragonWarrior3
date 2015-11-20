@@ -526,7 +526,7 @@ byte_2038F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_203A7:
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		_calc_pads
 		LDA		_pads
 		BNE		sub_203A7
@@ -623,8 +623,8 @@ sub_2043F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20441:
 		TXA
-		JSR		sub_1742C7
-		JMP		sub_1742B0
+		JSR		_print_char
+		JMP		_ppu_force_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_20448:
@@ -1338,11 +1338,11 @@ loc_20891:
 		BEQ		loc_208F6
 		CMP		#1
 		BNE		loc_208A4
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$20
 		BCC		loc_208AB
 loc_208A4:
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#8
 		BCS		loc_208C8
 loc_208AB:
@@ -1361,11 +1361,11 @@ loc_208C8:
 		LDA		byte_49
 		CMP		#2
 		BNE		loc_208D5
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$20
 		BCC		loc_208DC
 loc_208D5:
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#8
 		BCS		loc_208F6
 loc_208DC:
@@ -1519,7 +1519,7 @@ loc_209E6:
 		TXA
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$13
+		SYSX	_sys12_wrap_bB_s3_apu_load,$13
 		FARX	_b0_s50
 		LDA		byte_60BA
 		AND		#1
@@ -1560,7 +1560,7 @@ _b1_sD:
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$16
+		SYSX	_sys12_wrap_bB_s3_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$E
 		FARX	_b4_s1C
@@ -1574,7 +1574,7 @@ loc_20A4C:
 		FARX	_b4_s9
 		JMP		loc_20A76
 loc_20A5A:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$16
+		SYSX	_sys12_wrap_bB_s3_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$5D
 		FARX	_b4_s1C
@@ -1676,7 +1676,7 @@ loc_20B04:
 		FARX	_b4_s9
 		JSR		sub_20D11
 		STA		byte_D2
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8F
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8F
 		LDA		#$64
 		FARX	_b4_s9
 		PLA
@@ -1705,8 +1705,8 @@ loc_20B5E:
 		LDA		#$45
 		LDX		#1
 		FARX	_bE_s4_msg_m00
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
-		SYSX	_sys0E_wrapper_to_bE_s0,$1D
+		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_sys0E_wrap_bE_s0,$1D
 		CMP		#0
 		BEQ		loc_20B87
 loc_20B6F:
@@ -1802,7 +1802,7 @@ loc_20C0C:
 		JSR		_sram_b0_s1C
 		LDA		#$26
 		FARX	_b4_s9
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#3
 		BNE		loc_20C6F
 		LDX		#3

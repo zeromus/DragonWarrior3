@@ -450,7 +450,7 @@ sub_8261:
 		AND		#$7F
 		BNE		loc_828E
 		FARX	_bE_sD
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		LDA		byte_AD
 		AND		#$80
 		BEQ		loc_8285
@@ -460,7 +460,7 @@ loc_8285:
 		SYSX	_sys07_msg_m00_arg1,$9A
 loc_8288:
 		FARX	_bE_s33
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 loc_828E:
 		LDA		#0
 		STA		word_5E
@@ -618,7 +618,7 @@ loc_838D:
 		CPX		#3
 		BCS		loc_83AE
 		STA		byte_4D
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		byte_4D
 		BCC		loc_83AC
 		RTS
@@ -659,7 +659,7 @@ loc_83E7:
 		LDA		#$64
 		STA		byte_4D
 loc_83EB:
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		byte_4D
 		BCC		loc_83F3
 		RTS
@@ -691,7 +691,7 @@ loc_8424:
 		BNE		loc_8429
 		RTS
 loc_8429:
-		JSR		sub_1743B8
+		JSR		_rand
 		LDY		#0
 loc_842E:
 		CMP		(byte_4D),Y
@@ -860,7 +860,7 @@ loc_8537:
 		BNE		loc_855F
 		STA		byte_4F,X
 loc_855F:
-		JSR		sub_1743B8
+		JSR		_rand
 		LDY		byte_59
 		CMP		(byte_4D),Y
 		BCS		loc_8571
@@ -1028,7 +1028,7 @@ locret_8682:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_8683:
-		JSR		_clear_nmi_flag_10
+		JSR		_nmi_allow_ppu_dequeue
 		JSR		sub_88BD
 		LDA		#0
 		LDX		#$77
@@ -1054,27 +1054,27 @@ loc_86A4:
 loc_86AE:
 		FARX	_bB_s3_apu_load
 		JSR		sub_8841
-		JSR		sub_1742B0
+		JSR		_ppu_force_dequeue
 		LDA		byte_62
 		CMP		#$FF
 		BNE		loc_86C2
 		LDX		#$14
-		JSR		_vblank_count
+		JSR		_sleep_X
 loc_86C2:
 		JSR		_ppu_screen_clear
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_6D0
-		STA		byte_6D1
-		LDA		byte_6D3
+		STA		_ppu_scroll_shadow
+		STA		_ppu_scroll_shadow+1
+		LDA		_ppu_ctrl_shadow
 		AND		#$FE
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		JSR		sub_872B
-		JSR		_vblank_and_render_off
+		JSR		_wait_for_vblank_render_off
 		LDA		byte_62
 		CMP		#$FF
 		BNE		loc_86F5
@@ -1086,9 +1086,9 @@ loc_86F5:
 		FARX	_b2_s2
 		LDA		#$40
 		STA		_tmp21
-		JSR		_pal_fade
+		JSR		_pal_fade_step
 		JSR		sub_872B
-		JSR		sub_17443A
+		JSR		_ppu_enable
 		JSR		_pal_fade_in
 		LDA		byte_62
 		CMP		#1
@@ -1104,7 +1104,7 @@ loc_8721:
 		FARX	_b4_s0
 loc_8724:
 		LDA		#0
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		STA		byte_5C
 		RTS
 
@@ -1259,7 +1259,7 @@ loc_87D7:
 		ORA		byte_8820,X
 		STA		(word_4A+1),Y
 		LDA		#0
-		JSR		sub_1742C7
+		JSR		_print_char
 locret_881F:
 		RTS
 byte_8820:
@@ -1299,7 +1299,7 @@ sub_8841:
 		STX		word_5E+1
 loc_8854:
 		JSR		sub_8897
-		JSR		sub_1742B0
+		JSR		_ppu_force_dequeue
 		LDY		#2
 loc_885C:
 		INC		word_5E
@@ -1351,19 +1351,19 @@ sub_88BD:
 loc_88BF:
 		TXA
 		PHA
-		LDA		byte_6D4
+		LDA		_ppu_mask_shadow
 		EOR		#1
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		LDX		#3
-		JSR		_vblank_count
+		JSR		_sleep_X
 		PLA
 		TAX
 		DEX
 		BNE		loc_88BF
-		LDA		byte_6D4
+		LDA		_ppu_mask_shadow
 		AND		#$EF
-		STA		byte_6D4
-		JMP		_vblank
+		STA		_ppu_mask_shadow
+		JMP		_wait_for_nmi_is_over
 byte_88DE:
 		.BYTE	$87,$81,$FF,$65,$FF,$88,$8A,$8A,$8A,$FF,$89,$8A,$FF,$8A,$FF,$34
 		.BYTE	$FF,$7D,$FF,$83,$FF,$85,$FF,$82,$FF,$7F,$FF,$20,$FF,$62,$FF,$5F
@@ -2011,7 +2011,7 @@ _b0_s16:
 ;ok, he's not a fighter
 .power_from_weapon:
 ; read power of weapon
-		JSR		sub_174D3F ; "read_pri_stat_tbl"
+		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
 loc_9500:
 ; accumulate into Effective ATK
 		JSR		_add8_to_16
@@ -2032,7 +2032,7 @@ loc_9503:
 		BNE		loc_9500 ; this is not conditional, at this pointer
 .fighter_weapon_penalty:
 ; use the weapon's power divided by 2 as a PENALTY from the fighter's base strength. that's weird.
-		JSR		sub_174D3F ; "read_pri_stat_tbl"
+		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
 		LSR
 		JSR		_add8_to_neg16
 ; clamp at 0
@@ -2085,7 +2085,7 @@ _b0_s18:
 ; fetch DEF and incorporate into running total
 		TAY ; setup Y=item to query
 		LDX		#word_4 ; meaning unknown
-		JSR		sub_174D3F ; "read_pri_stat_tbl"
+		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
 .no_armor_equipped:
 ; load shield type
@@ -2097,7 +2097,7 @@ _b0_s18:
 ; fetch DEF and incorporate into running total
 		TAY
 		LDX		#word_4 ; meaning unknown
-		JSR		sub_174D3F ; "read_pri_stat_tbl"
+		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
 .no_shield_equipped:
 ; load shield type
@@ -2108,7 +2108,7 @@ _b0_s18:
 ; fetch DEF and incorporate into running total
 		TAY
 		LDX		#word_4 ; meaning unknown
-		JSR		sub_174D3F ; "read_pri_stat_tbl"
+		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
 .no_helm_equipped:
 ; clear MSB of u24 temp value
@@ -3693,7 +3693,7 @@ byte_9E5C:
 _b0_s5B:
 		BIT		byte_60B7
 		BVC		sub_9E9C
-		SYSX	_sys0D_wrapper_to_bE_sC,$3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$64
 		JMP		sub_9E8B
 
@@ -3822,7 +3822,7 @@ loc_9F34:
 		STA		byte_CE
 		STA		byte_D2
 		LDX		#$F
-		JSR		_vblank_count
+		JSR		_sleep_X
 		JSR		_b0_s55
 		BCS		loc_9F75
 		LDA		#$81
@@ -3957,7 +3957,7 @@ sub_A039:
 		LDY		byte_49
 		CPY		#$20
 		BNE		loc_A04B
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		BNE		loc_A079
 loc_A04B:
@@ -4487,7 +4487,7 @@ sub_A3FB:
 		LDA		byte_48
 		BNE		loc_A410
 		FARX	_bE_sD
-		SYSX	_sys0D_wrapper_to_bE_sC,$3D
+		SYSX	_sys0D_wrap_bE_sC,$3D
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
@@ -4497,7 +4497,7 @@ loc_A410:
 		STA		byte_56
 		STA		byte_58
 		FARX	_bB_s3_apu_load
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$01
+		SYSX	_sys12_wrap_bB_s3_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$C0
@@ -4540,7 +4540,7 @@ loc_A448:
 		CMP		(word_40),Y
 		BCS		loc_A47D
 loc_A474:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		BEQ		loc_A4C7
 		BNE		loc_A4AA
@@ -4605,7 +4605,7 @@ loc_A4EA:
 		CMP		word_4
 		BCC		loc_A4FA
 loc_A4F1:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		BEQ		loc_A52C
 		BNE		loc_A50D
@@ -4653,7 +4653,7 @@ loc_A54B:
 		CMP		word_4
 		BCC		loc_A55B
 loc_A552:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		BEQ		loc_A58D
 		BNE		loc_A56E
@@ -4781,7 +4781,7 @@ loc_A62F:
 		BNE		loc_A636
 		JMP		loc_A6E7
 loc_A636:
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		(word_4A),Y
 		BEQ		loc_A661
 		BCC		loc_A661
@@ -4795,7 +4795,7 @@ loc_A642:
 		BCS		loc_A651
 		JMP		loc_A6E7
 loc_A651:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#8
 		BNE		loc_A661
 		JMP		loc_A6E7
@@ -5243,10 +5243,10 @@ _b0_s5D:
 		LDA		byte_60B7
 		AND		#$40
 		BNE		sub_AAE9
-		SYSX	_sys0D_wrapper_to_bE_sC,$2C
+		SYSX	_sys0D_wrap_bE_sC,$2C
 		LDX		#5
-		JSR		_vblank_count
-		SYSX	_sys0D_wrapper_to_bE_sC,$69
+		JSR		_sleep_X
+		SYSX	_sys0D_wrap_bE_sC,$69
 		FARX	_bA_sE
 		CMP		#$FF
 		BEQ		loc_AB46
@@ -5258,7 +5258,7 @@ _b0_s5D:
 		JSR		_b0_s28
 		LDA		word_4
 		BEQ		sub_AAE5
-		SYSX	_sys0D_wrapper_to_bE_sC,$6B
+		SYSX	_sys0D_wrap_bE_sC,$6B
 		CMP		#$FF
 		BEQ		loc_AB46
 		STA		byte_46
@@ -5364,7 +5364,7 @@ loc_ABCF:
 loc_ABDA:
 		JMP		loc_ACA2
 loc_ABDD:
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 loc_ABE0:
 		CPX		#$6B
 		BEQ		loc_AC0D
@@ -5408,7 +5408,7 @@ loc_AC10:
 loc_AC2E:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5455,7 +5455,7 @@ sub_AC74:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC7D:
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		LDA		byte_47
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$69
@@ -5497,7 +5497,7 @@ byte_ACB1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACB4:
-		SYSX	_sys0D_wrapper_to_bE_sC,$2E
+		SYSX	_sys0D_wrap_bE_sC,$2E
 		STA		byte_47
 		STA		byte_D4
 		STA		byte_50
@@ -5505,7 +5505,7 @@ sub_ACB4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		JSR		sub_AD1E
 		LDA		byte_45
 		CMP		byte_47
@@ -5610,7 +5610,7 @@ loc_AD4B:
 		TYA
 		JMP		_wrap_bE_s4_msg_m00_arg1
 loc_AD4F:
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		LDA		byte_45
 		ASL
 		TAX
@@ -5693,7 +5693,7 @@ loc_ADC6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADE0:
 		PHA
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg1
 		SEC
@@ -5706,7 +5706,7 @@ _return_false_in_C:
 
 ; =============== S U B	R O U T	I N E =======================================
 loc_ADEC:
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		SYSX	_sys06_msg_m00_arg0,$BF
 		SEC
 		RTS
@@ -5721,8 +5721,8 @@ sub_ADF4:
 		AND		#8
 		BEQ		_return_false_in_C
 		STX		byte_D2
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$17
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		SYSX	_sys12_wrap_bB_s3_apu_load,$17
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		FARX	_bD_s22
 		SEC
@@ -5734,7 +5734,7 @@ sub_AE12:
 		AND		#$7F
 		CMP		#$68
 		BEQ		loc_AE1D
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 loc_AE1D:
 		LDY		#$FD
 		LDA		byte_48
@@ -5790,7 +5790,7 @@ sub_AE6C:
 		CMP		#$90
 		BNE		loc_AEB0
 		SYSX	_sys07_msg_m00_arg1,$3C
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_bC_s24
 		RTS
 
@@ -5835,7 +5835,7 @@ sub_AEB5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AEB9:
-		FARX	_bC_s12_vblank_count_50
+		FARX	_bC_s12_sleep_X_50
 		FARX	_bC_s11
 		RTS
 
@@ -5843,7 +5843,7 @@ sub_AEB9:
 sub_AEC0:
 		FARX	_b6_s15
 		BCC		locret_AECC
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_bC_s20
 		SEC
 locret_AECC:
@@ -5851,7 +5851,7 @@ locret_AECC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AECD:
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_b6_sE
 		RTS
 
@@ -5908,12 +5908,12 @@ sub_AEF1:
 		CMP		#$27
 		BNE		loc_AF38
 		SYSX	_sys07_msg_m00_arg1,$A1
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
-		SYSX	_sys0D_wrapper_to_bE_sC,$1D
+		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_sys0D_wrap_bE_sC,$1D
 		TAX
 		BNE		loc_AF32
 		SYSX	_sys07_msg_m00_arg1,$A2
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		LDA		#4
 		FARX	_bC_s0_npc_anim_script_init
 		SEC
@@ -5937,9 +5937,9 @@ sub_AF5B:
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
-		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 		SYSX	_sys06_msg_m00_arg0,$AA
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_b6_s6
 		BCS		sub_AF3E
 		SYSX	_sys06_msg_m00_arg0,$40
@@ -5956,7 +5956,7 @@ sub_AF7D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_AF7F:
 		SYSX	_sys07_msg_m00_arg1,$08
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_b6_s11
 		BCC		loc_AF92
 		SYSX	_sys07_msg_m00_arg1,$0B
@@ -6029,7 +6029,7 @@ loc_AFF6:
 		LDA		#$6F
 loc_AFF8:
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		FARX	_bC_s12_vblank_count_50
+		FARX	_bC_s12_sleep_X_50
 		FARX	_bC_s20
 		FARX	_b6_s10
 		SEC
@@ -6083,8 +6083,8 @@ sub_B068:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B06C:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1C
-		JSR		sub_176C3C
+		SYSX	_sys12_wrap_bB_s3_apu_load,$1C
+		JSR		_sleep_30
 		LDA		byte_8B
 		CMP		#$EF
 		BNE		loc_B097
@@ -6110,7 +6110,7 @@ loc_B097:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B09C:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1B
+		SYSX	_sys12_wrap_bB_s3_apu_load,$1B
 		FARX	_bB_s7
 		LDA		byte_60C5
 		BMI		loc_B0B5
@@ -6128,7 +6128,7 @@ loc_B0B5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B0BA:
-		JSR		sub_176C3C
+		JSR		_sleep_30
 		FARX	_b6_s1F
 		RTS
 
@@ -6259,7 +6259,7 @@ sub_B16B:
 		STA		byte_D0
 		JSR		_b0_s8
 		JSR		sub_A172
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$19
 		BCS		loc_B196
 		LDA		#$4E
@@ -6319,7 +6319,7 @@ sub_B1CC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1D9:
 		PHA
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		ADC		#1
 		JSR		sub_B2AD
@@ -6337,7 +6337,7 @@ sub_B1D9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1F6:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#3
 		CLC
 		ADC		#2
@@ -6651,9 +6651,9 @@ loc_BF6E:
 		BNE		loc_BF6E
 loc_BF74:
 		LDA		#$90
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		LDA		#$18
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		LDA		#$E
 		STA		_cur_mmc_cmd
 		LDA		#0
@@ -6679,7 +6679,7 @@ _b0_s66:
 		LDA		#$FF
 		LDX		#0
 loc_BFA9:
-		STA		byte_6D40,X
+		STA		_ppu_mask_shadow0,X
 		INX
 		CPX		#$A0
 		BNE		loc_BFA9

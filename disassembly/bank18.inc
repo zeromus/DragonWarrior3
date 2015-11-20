@@ -37,7 +37,7 @@ loc_24C034:
 		BCC		loc_24C034
 		STX		byte_F
 loc_24C042:
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		sub_24C227
@@ -59,7 +59,7 @@ loc_24C063:
 		INX
 		CPX		#$19
 		BCC		loc_24C063
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#1
 		JSR		sub_24C0F3
 		LDA		#0
@@ -69,13 +69,13 @@ loc_24C076:
 		INX
 		CPX		#$10
 		BCC		loc_24C076
-		STA		byte_6D0
-		STA		byte_6D1
+		STA		_ppu_scroll_shadow
+		STA		_ppu_scroll_shadow+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C084:
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDX		#$14
 		JSR		sub_24C0F3
 		LDA		#$10
@@ -134,13 +134,13 @@ sub_24C0E5:
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C0F3:
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_33
-		JSR		_vblank
+		STA		_ppu_spr_dma_sent
+		JSR		_wait_for_nmi_is_over
 		JSR		sub_24C20F
 		BCS		loc_24C113
 		DEX
@@ -155,20 +155,20 @@ loc_24C113:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b18_s1:
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDA		#2
-		JSR		sub_1740E9
+		JSR		_ppu_accept_and_reload_dequeue_request
 		JSR		sub_24C20F
 		BCS		loc_24C151
 		JSR		sub_24C2B1
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_33
-		JSR		_vblank
+		STA		_ppu_spr_dma_sent
+		JSR		_wait_for_nmi_is_over
 		JSR		sub_24C227
 		LDA		_nmi_counter
 		AND		#$F
@@ -188,7 +188,7 @@ loc_24C151:
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C156:
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
@@ -198,11 +198,11 @@ loc_24C166:
 		STA		_ram_pal_buf,X
 		DEX
 		BPL		loc_24C166
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		_ppu_screen_clear
-		JMP		_vblank_and_render_off_flag10_set
+		JMP		_ppu_disable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C17A:
@@ -211,9 +211,9 @@ sub_24C17A:
 		LDA		#$10
 		STA		_cur_chr0_bank_prg_hi
 		JSR		_mmc1_reinit
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		LDA		#$1E
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -231,32 +231,32 @@ sub_24C17A:
 ;loc_24C1A1:
 ;		LDY		#0
 ;		LDA		#$A2
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDA		#4
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDA		#$82
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDX		word_4
 ;loc_24C1B7:
 ;		LDA		byte_24C1F7,X
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		INX
 ;		CPY		#7
 ;		BCC		loc_24C1B7
 ;		STY		_ppu_queue_pos
-;		INC		_ppu_queue_tiles_count
+;		INC		_ppu_queue_chunks_count
 ;		LDA		#$A2
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDA		#4
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDA		#$A2
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		LDA		word_4
 ;		CLC
@@ -264,14 +264,14 @@ sub_24C17A:
 ;		TAX
 ;loc_24C1E1:
 ;		LDA		byte_24C1F7,X
-;		STA		byte_300,Y
+;		STA		_ppu_queue_buf,Y
 ;		INY
 ;		INX
 ;		CPY		#$E
 ;		BCC		loc_24C1E1
 ;		STY		_ppu_queue_pos
-;		INC		_ppu_queue_tiles_count
-;		JSR		_nmi_set_flag_04
+;		INC		_ppu_queue_chunks_count
+;		JSR		_ppu_set_dequeue_flag
 ;		RTS
 ;byte_24C1F7:
 ;		.BYTE	$13,$14,$15,$16,$23,$24,$25,$26,  8,  9, $E, $F,$18,$19,$1E,$1F
@@ -353,7 +353,7 @@ loc_24C272:
 		LDA		_nmi_counter
 		AND		#1
 		BNE		loc_24C281
-		INC		byte_6D0
+		INC		_ppu_scroll_shadow
 loc_24C281:
 		PLA
 		TAY
@@ -1007,7 +1007,7 @@ loc_24E761:
 		FARX	_bB_s6
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
+		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1019,11 +1019,11 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
+		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
+		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
 		LDY		#0
 loc_24E7A0:
 		TYA
@@ -1049,7 +1049,7 @@ loc_24E7C1:
 		INX
 		CPX		#$19
 		BCC		loc_24E7C1
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		sub_24E90E
@@ -1104,9 +1104,9 @@ loc_24E829:
 		JSR		sub_24F4DC
 		BCS		locret_24E88D
 		BVS		loc_24E829
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDA		#2
-		JSR		sub_1740E9
+		JSR		_ppu_accept_and_reload_dequeue_request
 		JSR		sub_24C20F
 		BCS		loc_24E88E
 		LDA		word_4+1
@@ -1168,7 +1168,7 @@ loc_24E8A0:
 		INX
 		CPX		#$19
 		BCC		loc_24E8A0
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#5
 		JSR		sub_24C0F3
 		RTS
@@ -1182,7 +1182,7 @@ loc_24E8B3:
 		INX
 		CPX		#3
 		BCC		loc_24E8B3
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#3
 		JSR		sub_24C0F3
 		RTS

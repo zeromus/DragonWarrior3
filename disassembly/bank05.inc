@@ -2286,7 +2286,7 @@ loc_83C35:
 		DEY
 		CMP		byte_83C6E,Y
 		BCC		loc_83C35
-		LDA		byte_6D7
+		LDA		_spr_shuffle_syncs_counter
 		LSR
 		STA		word_4
 		TYA
@@ -2371,16 +2371,16 @@ loc_83CA9:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s9:
-		JSR		_vblank_and_render_off
-		JSR		_set_nmi_flag_10
+		JSR		_wait_for_vblank_render_off
+		JSR		_nmi_forbid_ppu_dequeue
 		FARX	_bC_s1A
 		LDA		#$10
-		STA		byte_6D0
+		STA		_ppu_scroll_shadow
 		LDA		#0
-		STA		byte_6D1
-		LDA		byte_6D3
+		STA		_ppu_scroll_shadow+1
+		LDA		_ppu_ctrl_shadow
 		AND		#$FE
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		LDA		#$F
 		STA		_tmp12+1
 		JSR		sub_83E8A
@@ -2662,7 +2662,7 @@ loc_83E93:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_sB_ppu_font_load:
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		LDA		#$10
 		STA		_PPU_ADDR
 		LDA		#0
@@ -2686,7 +2686,7 @@ loc_83EBB:
 		JSR		_b5_s6_ppu_send_8_empty_bytes
 		DEC		word_4A
 		BNE		loc_83EB7
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s6_ppu_send_8_empty_bytes:
@@ -2716,7 +2716,7 @@ _b5_s5:
 		FARX	_bC_sB
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$AB
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		LDA		#$10
 		FARX	_b0_s1
 		LDA		byte_60CD

@@ -644,7 +644,7 @@ _b1A_s0:
 		JSR		sub_27E7CE
 loc_27E67D:
 		LDX		#$B4
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		JSR		sub_27E6A4
 		JSR		sub_27E7CE
 		JMP		loc_27E67D
@@ -680,9 +680,9 @@ loc_27E6CC:
 		INX
 		CPX		#$11
 		BCC		loc_27E6A6
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#4
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		LDA		_ram_pal_buf+$D
 		LDX		_tmp12+1
 		CMP		byte_27E6F7,X
@@ -730,9 +730,9 @@ loc_27E725:
 		INX
 		CPX		#$11
 		BCC		loc_27E6FF
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#4
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		LDA		_ram_pal_buf+$D
 		CMP		#1
 		BNE		sub_27E6FD
@@ -746,20 +746,20 @@ loc_27E73E:
 		STA		_ram_pal_buf,X
 		DEX
 		BPL		loc_27E73E
-		JSR		sub_17435B
-		JSR		_vblank_0
+		JSR		_pal_set_no_fade
+		JSR		_wait_for_nmi_is_over_0
 		JSR		_ppu_screen_clear
-		JMP		_vblank_and_render_off_flag10_set
+		JMP		_ppu_disable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E750:
 		LDA		#0
-		STA		byte_6D1
-		STA		byte_6D0
-		LDA		byte_6D3
+		STA		_ppu_scroll_shadow+1
+		STA		_ppu_scroll_shadow
+		LDA		_ppu_ctrl_shadow
 		AND		#$FC
-		STA		byte_6D3
-		JMP		__render_on_flag10_clear_reinit
+		STA		_ppu_ctrl_shadow
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E763:
@@ -820,7 +820,7 @@ loc_27E7C2:
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E7CE:
 		LDX		#$3C
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		LDA		#<[byte_27E4CC]
 		STA		word_4
 		LDA		#>[byte_27E4CC]
@@ -857,13 +857,13 @@ loc_27E804:
 		INC		word_4+1
 loc_27E811:
 		TAX
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		DEC		byte_8
 		BNE		loc_27E7E1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_vblank_0:
+_wait_for_nmi_is_over_0:
 		LDA		_nmi_counter
 loc_27E81D:
 		CMP		_nmi_counter
@@ -871,10 +871,10 @@ loc_27E81D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_vblank_count_0:
-		JSR		_vblank_0
+_sleep_X_0:
+		JSR		_wait_for_nmi_is_over_0
 		DEX
-		BNE		_vblank_count_0
+		BNE		_sleep_X_0
 		RTS
 ;off_27E82A:
 ;		.WORD	byte_27E4CC
@@ -882,7 +882,7 @@ _vblank_count_0:
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E82C:
 		LDX		#$78
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		LDY		#0
 loc_27E833:
 		LDA		byte_27E841,Y
@@ -919,16 +919,16 @@ loc_27E864:
 		STA		_ram_pal_buf,X
 		TYA
 		PHA
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		PLA
 		TAY
 		LDX		#5
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		JMP		sub_27E847
 loc_27E876:
 		LDA		byte_27E87F,Y
 		TAX
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		PLA
 		RTS
 byte_27E87F:
@@ -936,9 +936,9 @@ byte_27E87F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E884:
-		DEC		byte_6D1
+		DEC		_ppu_scroll_shadow+1
 		BEQ		locret_27E88F
-		JSR		_vblank_0
+		JSR		_wait_for_nmi_is_over_0
 		JMP		sub_27E884
 locret_27E88F:
 		RTS
@@ -946,7 +946,7 @@ locret_27E88F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E890:
 		LDX		#$3C
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		LDA		#4
 		STA		word_4
 loc_27E899:
@@ -957,9 +957,9 @@ loc_27E89B:
 		INY
 		CPY		#$A
 		BCC		loc_27E89B
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#5
-		JSR		_vblank_count_0
+		JSR		_sleep_X_0
 		DEC		word_4
 		BNE		loc_27E899
 		RTS

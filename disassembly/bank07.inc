@@ -1222,7 +1222,7 @@ _mapF0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s19:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$22
+		SYSX	_sys12_wrap_bB_s3_apu_load,$22
 		LDA		#5
 		STA		word_3C
 loc_B2711:
@@ -1231,9 +1231,9 @@ loc_B2711:
 		BNE		loc_B2711
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$A8
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s20
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$18
+		SYSX	_sys12_wrap_bB_s3_apu_load,$18
 		LDA		#0
 		STA		word_3C
 loc_B272B:
@@ -1245,9 +1245,9 @@ loc_B272B:
 		LDA		byte_B27AA,X
 		STA		byte_6DF
 		FARX	_b6_s8
-		JSR		_nmi_set_flag_04
+		JSR		_ppu_set_dequeue_flag
 		LDX		#$C
-		JSR		_vblank_count
+		JSR		_sleep_X
 		INC		word_3C
 		LDA		word_3C
 		CMP		#$18
@@ -1297,7 +1297,7 @@ loc_B278A:
 		FARX	_b0_s54
 		FARX	_bD_s11
 		FARX	_b4_s1A
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$40
 		STA		byte_6DF
@@ -1322,7 +1322,7 @@ _b7_s1A:
 		SYSX	_sys07_msg_m00_arg1,$9E
 		SYSX	_sys07_msg_m00_arg1,$9F
 		SYSX	_sys07_msg_m00_arg1,$A0
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		LDA		#8
 		LDX		#$18
 loc_B27D7:
@@ -1334,8 +1334,8 @@ loc_B27D7:
 		CPX		#$38
 		BCC		loc_B27D7
 		FARX	_bC_s20
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$02
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		SYSX	_sys12_wrap_bB_s3_apu_load,$02
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
@@ -1344,10 +1344,10 @@ loc_B27D7:
 _b7_s1B:
 		FARX	_bB_s7
 		JSR		sub_B2806
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1F
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		SYSX	_sys12_wrap_bB_s3_apu_load,$1F
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		JMP		_b7_s1E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1384,7 +1384,7 @@ loc_B283B:
 		JSR		sub_B2860
 loc_B2840:
 		LDX		byte_6AC9
-		JMP		_vblank_count
+		JMP		_sleep_X
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2846:
@@ -1410,7 +1410,7 @@ sub_B2860:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_sA_sram_test_and_init:
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		LDX		#$C
 loc_B286A:
 		LDA		_txt_manabu_yamana,X
@@ -1461,7 +1461,7 @@ loc_B28B5:
 		JSR		sub_B2C66
 		LDA		#$FF
 		STA		byte_6A3E
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$28
+		SYSX	_sys12_wrap_bB_s3_apu_load,$28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B28C6:
@@ -1490,7 +1490,7 @@ sub_B28E7:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B28ED:
 		JSR		_b7_s14
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
 		LDA		#0
 		STA		byte_6A58
@@ -1557,7 +1557,7 @@ sub_B295B:
 sub_B2961:
 		LDA		byte_63E7
 		STA		_cur_message_speed
-		SYSX	_sys0E_wrapper_to_bE_s0,$57
+		SYSX	_sys0E_wrap_bE_s0,$57
 		CMP		#$FF
 		BEQ		locret_B2974
 		STA		byte_63E7
@@ -1579,11 +1579,11 @@ loc_B2985:
 		DEX
 		BPL		loc_B2985
 loc_B298D:
-		SYSX	_sys0E_wrapper_to_bE_s0,$41
+		SYSX	_sys0E_wrap_bE_s0,$41
 		FARX	_b6_s14_name_entry_screen
 		FARX	_b6_s20_player_name_veryfy
 		BNE		loc_B29A1
-		SYSX	_sys0E_wrapper_to_bE_s0,$58
+		SYSX	_sys0E_wrap_bE_s0,$58
 		JSR		__pause_or_skip
 		JMP		loc_B298D
 loc_B29A1:
@@ -1593,7 +1593,7 @@ loc_B29A3:
 		PHA
 		DEX
 		BPL		loc_B29A3
-		SYSX	_sys0E_wrapper_to_bE_s0,$42
+		SYSX	_sys0E_wrap_bE_s0,$42
 		STA		word_4
 		LDX		#0
 loc_B29B0:
@@ -1627,7 +1627,7 @@ loc_B29D3:
 		STA		byte_CE
 		LDA		byte_B2D3F,X
 		STA		byte_CF
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#3
 		ASL
 		ASL
@@ -1701,8 +1701,8 @@ loc_B2A62:
 		PLA
 		TAX
 		JSR		sub_B2BB5
-		LDA		#<[byte_313]
-		LDY		#>[byte_313]
+		LDA		#<[_ppu_queue_buf+$13]
+		LDY		#>[_ppu_queue_buf+$13]
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
@@ -1721,8 +1721,8 @@ sub_B2A83:
 		LDA		#$FE
 		STA		word_6A2F,X
 		JSR		sub_B2BB5
-		SYSX	_sys0E_wrapper_to_bE_s0,$59
-		SYSX	_sys0E_wrapper_to_bE_s0,$1D
+		SYSX	_sys0E_wrap_bE_s0,$59
+		SYSX	_sys0E_wrap_bE_s0,$1D
 		CMP		#0
 		BNE		locret_B2AB9
 
@@ -1831,9 +1831,9 @@ loc_B2B2C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2B31:
-		LDA		#<[byte_315]
+		LDA		#<[_ppu_queue_buf+$15]
 		STA		word_40
-		LDA		#>[byte_315]
+		LDA		#>[_ppu_queue_buf+$15]
 		STA		word_40+1
 		RTS
 
@@ -1927,9 +1927,9 @@ loc_B2BB2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BB5:
-		LDA		#<[byte_315]
+		LDA		#<[_ppu_queue_buf+$15]
 		STA		word_3C
-		LDA		#>[byte_315]
+		LDA		#>[_ppu_queue_buf+$15]
 		STA		word_3C+1
 		TXA
 		LDX		#word_3C
@@ -2025,8 +2025,8 @@ loc_B2C43:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2C46:
 		LDX		#word_3C
-		LDA		#<[byte_312]
-		LDY		#>[byte_312]
+		LDA		#<[_ppu_queue_buf+$12]
+		LDY		#>[_ppu_queue_buf+$12]
 		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_3C),Y
@@ -2056,8 +2056,8 @@ loc_B2C68:
 		LDY		#0
 		LDA		(word_3C),Y
 		BEQ		loc_B2CC8
-		LDA		#<[byte_313]
-		LDY		#>[byte_313]
+		LDA		#<[_ppu_queue_buf+$13]
+		LDY		#>[_ppu_queue_buf+$13]
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
@@ -2083,7 +2083,7 @@ loc_B2C93:
 		STA		byte_641
 		LDA		#$17
 		FARX	_bB_s3_apu_load
-		SYSX	_sys0E_wrapper_to_bE_s0,$3E
+		SYSX	_sys0E_wrap_bE_s0,$3E
 		SYSX	_sys06_msg_m00_arg0,$61
 		JSR		__pause_or_skip
 		PLA
@@ -2118,7 +2118,7 @@ loc_B2CE6:
 		STA		_tmp21
 		TYA
 		PHA
-		JSR		sub_1743D2
+		JSR		_randomize
 		PLA
 		TAY
 		JSR		sub_B2B3C
@@ -2306,7 +2306,7 @@ loc_B2E97:
 		STA		word_3C
 		LDA		off_B3216+1,Y
 		STA		word_3C+1
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		BEQ		loc_B2EB5
 		LDY		byte_D0
@@ -2905,7 +2905,7 @@ byte_B329E:
 _b7_s8:
 		JSR		_ppu_screen_clear
 		JSR		sub_1743B5
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		LDA		_PPU_STATUS
 		LDA		#$23
 		STA		_PPU_ADDR
@@ -2928,7 +2928,7 @@ sub_B32F1:
 		LDA		#0
 		STA		byte_6ADD
 loc_B32F6:
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDA		byte_6ADD
 		ASL
 		ASL
@@ -2961,7 +2961,7 @@ sub_B333B:
 		JSR		loc_B333E
 loc_B333E:
 		LDX		#$42
-		JMP		_vblank_count
+		JMP		_sleep_X
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1C:
@@ -3028,25 +3028,25 @@ _b7_s1E:
 		JSR		sub_B32F1
 		FARX	_bA_s16
 		FARX	_bB_s4
-		JSR		sub_174369
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_pal_fade_out
+		JSR		_ppu_disable
 		LDA		#0
-		STA		byte_6D1
+		STA		_ppu_scroll_shadow+1
 		STA		byte_9A
 		JSR		sub_1762FC
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		JSR		_ppu_screen_clear
 		JSR		sub_B36C8
 		LDX		#$3C
-		JSR		_vblank_count
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$19
+		JSR		_sleep_X
+		SYSX	_sys12_wrap_bB_s3_apu_load,$19
 		JSR		_pal_fade_in
 		LDX		#$64
-		JSR		_vblank_count
+		JSR		_sleep_X
 		FARX	_bA_s17
-		JSR		_vblank_and_render_off
-		JSR		sub_174369
-		JSR		sub_17443A
+		JSR		_wait_for_vblank_render_off
+		JSR		_pal_fade_out
+		JSR		_ppu_enable
 		JSR		sub_1743B5
 		JSR		sub_B3687
 		JSR		sub_174CFF
@@ -3058,16 +3058,16 @@ loc_B34D2:
 		AND		#$1F
 		BNE		loc_B34D2
 		LDX		#$3C
-		JSR		_vblank_count
-		JSR		sub_174369
+		JSR		_sleep_X
+		JSR		_pal_fade_out
 		JMP		sub_B36A2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B34E4:
 		JSR		_ppu_screen_clear
 		LDA		#0
-		STA		byte_6D0
-		STA		byte_6D1
+		STA		_ppu_scroll_shadow
+		STA		_ppu_scroll_shadow+1
 		LDA		word_40+1
 		ASL
 		TAX
@@ -3098,7 +3098,7 @@ loc_B351B:
 loc_B3529:
 		JSR		sub_B361F
 loc_B352C:
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		INC		word_40+1
 		LDA		word_40+1
 		CMP		#$19
@@ -3115,8 +3115,8 @@ sub_B3538:
 loc_B3541:
 		TXA
 		CLC
-		ADC		byte_6D1
-		STA		byte_6D1
+		ADC		_ppu_scroll_shadow+1
+		STA		_ppu_scroll_shadow+1
 		LDA		word_40+1
 		ASL
 		CLC
@@ -3132,10 +3132,10 @@ loc_B3541:
 		STA		byte_9A
 		JSR		sub_1762FC
 		FARX	_b5_s8
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow
 		EOR		#1
-		STA		byte_6D3
-		JMP		_vblank
+		STA		_ppu_ctrl_shadow
+		JMP		_wait_for_nmi_is_over
 word_B3574:
 		.WORD	$C8B1
 byte_B3576:
@@ -3209,7 +3209,7 @@ loc_B35C8:
 ;		LDY		#2
 ;loc_B35D8:
 ;		LDX		#$6B
-;		JSR		_vblank_count
+;		JSR		_sleep_X
 ;		DEY
 ;		BNE		loc_B35D8
 ;		RTS
@@ -3260,9 +3260,9 @@ loc_B360F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B361F:
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow
 		EOR		#1
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		LDY		#$FF
 		BNE		sub_B362D
 
@@ -3276,15 +3276,15 @@ sub_B362D:
 loc_B362F:
 		TYA
 		CLC
-		ADC		byte_6D0
-		STA		byte_6D0
-		JSR		_vblank
+		ADC		_ppu_scroll_shadow
+		STA		_ppu_scroll_shadow
+		JSR		_wait_for_nmi_is_over
 		DEX
 		BNE		loc_B362F
 		LDY		#2
 loc_B363F:
 		LDX		#$91
-		JSR		_vblank_count
+		JSR		_sleep_X
 		DEY
 		BNE		loc_B363F
 		RTS
@@ -3319,7 +3319,7 @@ sub_B3666:
 		STA		byte_85
 loc_B366E:
 		JSR		sub_175B03
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		LDA		byte_87
 		BNE		loc_B366E
 		LDA		#$FF

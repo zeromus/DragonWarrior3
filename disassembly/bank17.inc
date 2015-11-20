@@ -12,15 +12,15 @@ _b17_s0_copyrights_screen:
 		JSR		_copyrights_send_tiles
 		JSR		_copyrights_send_tilemaps
 		JSR		_copyrights_set_sprites
-		JSR		_render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		JSR		_copyrights_set_pal_and_show
 		JSR		_copyrights_sprites_animate
 		LDX		#$50
-		JSR		_vblank_count
+		JSR		_sleep_X
 		LDA		#$F
 		STA		_ram_pal_buf
-		JSR		sub_17435B
-		JSR		sub_174369
+		JSR		_pal_set_no_fade
+		JSR		_pal_fade_out
 		LDA		#0
 		STA		byte_6A36
 		JMP		_ppu_screen_clear
@@ -33,13 +33,9 @@ loc_234035:
 		STA		_ram_pal_buf,X
 		DEX
 		BPL		loc_234035
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		JSR		_ppu_screen_clear
-		JMP		_vblank_and_render_off_flag10_set
-
-; =============== S U B	R O U T	I N E =======================================
-_render_on_flag10_clear_reinit:
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_disable
 
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_set_pal_and_show:
@@ -119,10 +115,10 @@ locret_2340C8:
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_sprites_animate:
 		LDX		#$28
-		JSR		_vblank_count
+		JSR		_sleep_X
 		JSR		_copyrights_sprites_blink
 		LDX		#$3C
-		JSR		_vblank_count
+		JSR		_sleep_X
 
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_sprites_blink:
@@ -194,13 +190,13 @@ sub_23412F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_234136:
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_33
-		JSR		_vblank
+		STA		_ppu_spr_dma_sent
+		JSR		_wait_for_nmi_is_over
 		RTS
 _pal_copyrights:
 		.BYTE	  8, $F,$37,$27, $F,$27,$17, $F,$2B,$1B,  0,  0,  0, $F,$20,$10
@@ -599,14 +595,14 @@ loc_23580A:
 		BNE		loc_2357FB
 		LDA		#$F
 		STA		_ram_pal_buf
-		JSR		sub_17435B
-		JSR		sub_174369
+		JSR		_pal_set_no_fade
+		JSR		_pal_fade_out
 		FARX	_bB_s4
 		LDX		#$64
-		JSR		_vblank_count
+		JSR		_sleep_X
 		FARX	_b18_s0_intro_animation
 		LDX		#$64
-		JSR		_vblank_count
+		JSR		_sleep_X
 		LDX		#0
 		LDA		#$F
 loc_23582C:
@@ -614,36 +610,36 @@ loc_23582C:
 		INX
 		CPX		#$19
 		BCC		loc_23582C
-		JSR		sub_17435B
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_pal_set_no_fade
+		JSR		_ppu_disable
 		LDA		#$E
 		STA		_cur_mmc_cmd
 		LDA		#$10
 		STA		_cur_chr0_bank_prg_hi
 		JSR		_mmc1_reinit
 		INC		byte_6A36
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		RTS
 loc_23584E:
 		JSR		sub_235C8C
 		JSR		sub_235C6D
 		BCC		loc_23584E
 loc_235856:
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDA		#2
 		STA		byte_6A36
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 loc_235861:
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_235856
 		FARX	_bB_s4
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDX		#$3C
-		JSR		_vblank_count
+		JSR		_sleep_X
 		LDA		#2
 		STA		byte_6A36
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_23587B:
@@ -653,15 +649,15 @@ loc_23587F:
 		STA		_ram_pal_buf,X
 		DEX
 		BPL		loc_23587F
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		JSR		sub_234136
-		JMP		_vblank_and_render_off_flag10_set
+		JMP		_ppu_disable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_23588E:
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		LDA		#$1E
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -704,7 +700,7 @@ loc_2358C6:
 		PHA
 		TYA
 		PHA
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		PLA
 		TAY
 		PLA
@@ -935,7 +931,7 @@ loc_235A3E:
 		CPY		#3
 		BCC		loc_235A3E
 		STX		byte_B
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 locret_235A58:
 		RTS
 byte_235A59:
@@ -1004,7 +1000,7 @@ loc_235AA5:
 ;		PHA
 ;		TYA
 ;		PHA
-;		JSR		sub_17435B
+;		JSR		_pal_set_no_fade
 ;		PLA
 ;		TAY
 ;		PLA
@@ -1038,7 +1034,7 @@ loc_235AA5:
 ;		PHA
 ;		TYA
 ;		PHA
-;		JSR		sub_17435B
+;		JSR		_pal_set_no_fade
 ;		PLA
 ;		TAY
 ;		PLA
@@ -1080,14 +1076,14 @@ loc_235B23:
 sub_235B3E:
 		LDY		#0
 		LDA		#$E1
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDA		#4
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDX		byte_11
 		LDA		byte_235C2A,X
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDA		byte_11
 		ASL
@@ -1095,22 +1091,22 @@ sub_235B3E:
 		TAX
 loc_235B5A:
 		LDA		byte_235CAA,X
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		INX
 		CPY		#7
 		BCC		loc_235B5A
 		STY		_ppu_queue_pos
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDA		#$E1
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDA		#4
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDX		byte_11
 		LDA		byte_235C36,X
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		LDA		byte_11
 		ASL
@@ -1118,16 +1114,16 @@ loc_235B5A:
 		TAX
 loc_235B86:
 		LDA		byte_235CDA,X
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INY
 		INX
 		CPY		#$E
 		BCC		loc_235B86
 		STY		_ppu_queue_pos
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDA		#2
-		JSR		sub_1740E9
-		JSR		_nmi_set_flag_04
+		JSR		_ppu_accept_and_reload_dequeue_request
+		JSR		_ppu_set_dequeue_flag
 		JSR		sub_235C8C
 		RTS
 
@@ -1281,13 +1277,13 @@ sub_235C85:
 ; =============== S U B	R O U T	I N E =======================================
 sub_235C8C:
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_33
-		JSR		_vblank
+		STA		_ppu_spr_dma_sent
+		JSR		_wait_for_nmi_is_over
 		LDA		_nmi_counter
 		AND		#7
 		BNE		locret_235CA9

@@ -1109,13 +1109,13 @@ loc_3980A:
 		INX
 		CPX		#$19
 		BNE		loc_3980A
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		byte_C8
-		JSR		_vblank_count
+		JSR		_sleep_X
 		JSR		sub_3A2ED
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		byte_C8
-		JSR		_vblank_count
+		JSR		_sleep_X
 		PLA
 		TAX
 		DEX
@@ -1126,7 +1126,7 @@ loc_3980A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_s6_screen_damage_shake:
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		LDA		#2
 		STA		byte_BA
 		LDX		#0
@@ -1140,10 +1140,10 @@ loc_39839:
 		DEX
 loc_39845:
 		TAY
-		LDA		byte_6D0,X
+		LDA		_ppu_scroll_shadow,X
 		CLC
 		ADC		byte_BA
-		STA		byte_6D0,X
+		STA		_ppu_scroll_shadow,X
 		LDX		#$40
 loc_39851:
 		LDA		_spr_ram,Y
@@ -1157,7 +1157,7 @@ loc_39851:
 		DEX
 		BNE		loc_39851
 		LDX		#2
-		JSR		_vblank_count
+		JSR		_sleep_X
 		LDA		byte_BA
 		EOR		#$FF
 		STA		byte_BA
@@ -1365,7 +1365,7 @@ locret_39988:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_s2:
-		JSR		sub_17435B
+		JSR		_pal_set_no_fade
 		LDX		#0
 loc_3998E:
 		STX		byte_BA
@@ -1972,7 +1972,7 @@ loc_39D6B:
 		BNE		loc_39D6B
 		ORA		byte_20
 		STA		byte_20
-		LDA		byte_32
+		LDA		_spr_force_shuffle_mode
 		CMP		#$FD
 		BNE		loc_39D7E
 		JSR		sub_1741D7
@@ -2221,7 +2221,7 @@ loc_39EF9:
 		DEC		byte_C6
 		JSR		sub_39E39
 		JSR		sub_398B3
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 loc_39F15:
 		LDA		#0
 		STA		byte_C2
@@ -2409,7 +2409,7 @@ loc_3A038:
 		BEQ		loc_3A042
 		JMP		loc_39F15
 loc_3A042:
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		sub_39E51
 		LDX		byte_BA
 		LDA		byte_4C1
@@ -2478,7 +2478,7 @@ loc_3A0B7:
 		JMP		loc_3A095
 loc_3A0C1:
 		JSR		sub_398B3
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		sub_39E51
 		LDY		byte_BA
 		LDX		byte_BB
@@ -2558,14 +2558,14 @@ _b2_s0:
 		BEQ		loc_3A142
 		JSR		sub_3A267
 loc_3A142:
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDA		#0
 		STA		byte_6B8
 		JSR		sub_39876
 		JSR		sub_3A157
-		JMP		_clear_nmi_flag_10
+		JMP		_nmi_allow_ppu_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A157:
@@ -2786,8 +2786,8 @@ byte_3A2DC:
 sub_3A2E1:
 		LDX		#$19
 loc_3A2E3:
-		LDA		byte_3E6,X
-		STA		_ram_pal_buf+$18,X
+		LDA		_ram_pal_buf-1,X
+		STA		byte_400-1,X
 		DEX
 		BNE		loc_3A2E3
 		RTS
@@ -2796,8 +2796,8 @@ loc_3A2E3:
 sub_3A2ED:
 		LDX		#$19
 loc_3A2EF:
-		LDA		_ram_pal_buf+$18,X
-		STA		byte_3E6,X
+		LDA		byte_400-1,X
+		STA		_ram_pal_buf-1,X
 		DEX
 		BNE		loc_3A2EF
 		RTS
@@ -2838,7 +2838,7 @@ loc_3A31D:
 ; =============== S U B	R O U T	I N E =======================================
 _b2_s9:
 		LDA		#0
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		JSR		sub_39876
 		LDX		#$C
 loc_3A32F:
@@ -2904,13 +2904,13 @@ loc_3A39B:
 		INX
 		CPX		#4
 		BNE		loc_3A364
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#$F
 		STA		byte_6A68
 		TXA
 		RTS
 loc_3A3AC:
-		JSR		sub_1743B8
+		JSR		_rand
 		LDX		byte_51
 		CMP		#0
 		BNE		loc_3A3BC
@@ -2918,7 +2918,7 @@ loc_3A3AC:
 		STA		byte_54C,X
 		BNE		loc_3A39B
 loc_3A3BC:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		CLC
 		ADC		#4
@@ -3209,7 +3209,7 @@ loc_3A5A8:
 		LDA		#$D1
 		FARX	_b4_s9
 		LDX		#$1E
-		JSR		_vblank_count
+		JSR		_sleep_X
 		JMP		loc_3A3CF
 loc_3A5C9:
 		LDA		#$3B
@@ -3249,7 +3249,7 @@ loc_3A5FD:
 		LDA		#$BF
 		FARX	_b4_s9
 		LDX		#$3C
-		JSR		_vblank_count
+		JSR		_sleep_X
 		JMP		loc_3A5A8
 loc_3A61D:
 		CMP		#1
@@ -3342,7 +3342,7 @@ loc_3A6A8:
 		LDA		byte_566
 		AND		#3
 		TAX
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		byte_3A6F9,X
 		BCC		loc_3A6D7
 loc_3A6CC:
@@ -3416,7 +3416,7 @@ _b2_sD:
 		JSR		_sram_b0_s2C
 		CMP		#7
 		BNE		loc_3A750
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$41
 		BCC		loc_3A752
 loc_3A750:
