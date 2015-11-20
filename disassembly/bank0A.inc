@@ -499,24 +499,24 @@ _bA_s5_add16_to_24:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s8:
-		FAR		$81,$2F		; _sys12
+		SYSX	_sys12,$81
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
-		FAR		$91,$2F		; _sys12
+		SYSX	_sys12,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		JSR		sub_F834B
 		FARX	_b4_s1A
-		FAR		$91,$2F		; _sys12
+		SYSX	_sys12,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F834B:
-		FAR		$A1,$2F		; _sys12
+		SYSX	_sys12,$A1
 		LDA		#$78
 		STA		word_4
 loc_F8352:
@@ -524,7 +524,7 @@ loc_F8352:
 		LDA		word_4
 		CMP		#$1E
 		BCS		loc_F8361
-		FAR		$9D,$2F		; _sys12
+		SYSX	_sys12,$9D
 		FARX	_b2_s7_screen_spell_blink
 loc_F8361:
 		JSR		sub_17435B
@@ -1308,7 +1308,7 @@ loc_F8CC7:
 		JSR		sub_1742C7
 		JSR		sub_1742BA
 		JSR		_vblank
-		FAR		$85,$2F		; _sys12
+		SYSX	_sys12,$85
 		LDA		byte_588
 		RTS
 loc_F8CEC:
@@ -1847,9 +1847,9 @@ _bA_sF:
 		JSR		sub_174CCF
 		FARX	_bC_s12_vblank_count_50
 		JSR		_pal_fade_in
-		FAR		$83,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$83
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$03,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$03
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		JSR		sub_174369
 		LDY		#1
@@ -1862,7 +1862,7 @@ _bA_sF:
 		STA		byte_6A58
 		JSR		sub_174CD5
 		JSR		sub_174CCF
-		FAR		$84,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$84
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s12_vblank_count_50
 		FARX	_bC_s20
@@ -1883,7 +1883,7 @@ _bA_s10:
 		LDA		#$40
 		STA		byte_60C6
 		JSR		sub_174CCF
-		FAR		$85,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$85
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$2B
@@ -1904,9 +1904,9 @@ _bA_s11:
 		LDA		#$50
 		STA		byte_60C6
 		JSR		sub_174CCF
-		FAR		$88,$77		; _sys07_msg_m00_arg1
-		FAR		$8D,$77		; _sys07_msg_m00_arg1
-		FAR		$89,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$88
+		SYSX	_sys07_msg_m00_arg1,$8D
+		SYSX	_sys07_msg_m00_arg1,$89
 		FARX	_bE_s33
 		LDA		byte_60B7
 		ORA		#$80
