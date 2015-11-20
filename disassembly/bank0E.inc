@@ -193,7 +193,7 @@ loc_1580EB:
 		LDA		#0
 		STA		byte_2C
 		FARX	_bC_s32
-		FAR		$32,$17		; _bD_s18
+		FARX	_bD_s18
 		FAR		$04,$2F		; _sys12
 locret_15811A:
 		RTS
@@ -302,7 +302,7 @@ loc_1581D4:
 		JMP		sub_158377
 loc_1581D7:
 		FARX	_b0_s5D
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -452,7 +452,7 @@ loc_1582D6:
 		PHA
 		LDA		byte_8
 		PHA
-		FAR		$33,$17		; _bD_s19
+		FARX	_bD_s19_1
 		JSR		sub_174DF2
 		PLA
 		STA		byte_8
@@ -624,7 +624,7 @@ _bE_s33:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158405:
-		FAR		$96,$17		; _b6_s1E
+		FARX	_b6_s1E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -761,7 +761,7 @@ sub_1584ED:
 loc_158504:
 		FARX	_bE_s10
 loc_158507:
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -888,7 +888,7 @@ loc_1585A5:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
 		FAR		$17,$2F		; _sys12
-		FAR		$44,$17		; _bD_s22
+		FARX	_bD_s22
 		CLC
 		RTS
 
@@ -1155,7 +1155,7 @@ loc_158731:
 		PHA
 		LDA		word_6+1
 		PHA
-		FAR		$33,$17		; _bD_s19
+		FARX	_bD_s19_1
 		PLA
 		STA		word_6+1
 		PLA
@@ -1173,21 +1173,21 @@ loc_158759:
 		BCS		loc_158766
 		JSR		_bE_s9
 		BCS		loc_158766
-		FAR		$38,$17		; _bD_s1E
+		FARX	_bD_s1E
 loc_158766:
 		JSR		sub_158666
 		JSR		sub_1586D5
 		BCS		loc_158776
 		JSR		_bE_s9
 		BCS		loc_158776
-		FAR		$36,$17		; _bD_s1C
+		FARX	_bD_s1C
 loc_158776:
 		JSR		sub_158666
 		JSR		sub_1586CE
 		BCS		loc_158786
 		JSR		_bE_s9
 		BCS		loc_158786
-		FAR		$37,$17		; _bD_s1D
+		FARX	_bD_s1D
 loc_158786:
 		JMP		_vblank
 
@@ -1473,7 +1473,7 @@ loc_158970:
 		LDA		byte_6AC4
 		JSR		sub_158B95
 		JSR		sub_158C89
-		FAR		$66,$17					; _b7_sE_player_log_list
+		FARX	_b7_sE_player_log_list
 		JMP		sub_158B52
 loc_15897F:
 		LDX		#5
@@ -5271,7 +5271,7 @@ sub_15AC41:
 		CMP		#6
 		BNE		loc_15AC63
 		PHA
-		FAR		$7D,$17		; _bD_sB
+		FARX	_bD_sB
 		PLA
 		LDA		word_6+1
 		BEQ		loc_15AC77
@@ -6747,7 +6747,7 @@ _bE_s36:
 		STA		byte_31
 		LDA		byte_15B630+3,X
 		STA		byte_8B
-		FAR		$53,$17		; _b6_s13
+		FARX	_b6_s13
 		DEC		byte_2B
 		LDA		#$40
 		STA		byte_9B
@@ -6826,7 +6826,7 @@ sub_15B6A6:
 		LDA		byte_60C5
 		AND		#$20
 		BEQ		locret_15B6B0
-		FAR		$5E,$17		; _bC_s1B
+		FARX	_bC_s1B
 locret_15B6B0:
 		RTS
 
@@ -6841,7 +6841,7 @@ locret_15B6BB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B6BC:
-		FAR		$4C,$17		; _b0_s51
+		FARX	_b0_s51_wrapper_for_b1B_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

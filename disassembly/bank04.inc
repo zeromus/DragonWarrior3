@@ -154,7 +154,7 @@ loc_680D6:
 		FARX	_bE_s31
 		FARX	_bB_s3_apu_load
 loc_680DC:
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		LDA		byte_60B7
 		AND		#$DF
 		STA		byte_60B7
@@ -205,12 +205,12 @@ loc_68122:
 		STA		byte_60B7
 		BIT		byte_6A63
 		BVS		loc_68138
-		FAR		$83,$17		; _bD_sC
+		FARX	_bD_sC
 		JSR		__pause_or_skip
 		JMP		loc_680D6
 loc_68138:
 		FAR		$29,$2F		; _sys12
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		JMP		loc_680DC
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -369,7 +369,7 @@ loc_68230:
 		BNE		loc_68230
 		LDA		#$FF
 		STA		byte_62
-		FAR		$73,$17		; _b0_s55
+		FARX	_b0_s55
 		BCS		loc_68245
 		LDA		#$10
 		STA		byte_568
@@ -475,7 +475,7 @@ loc_682F5:
 		INX
 		CPX		#4
 		BNE		loc_682C4
-		FAR		$7A,$17		; _bD_s29
+		FARX	_bD_s29
 		JSR		sub_6BA99
 		JSR		sub_6B3DB
 		JMP		loc_6833E
@@ -1630,7 +1630,7 @@ loc_689F3:
 loc_689F6:
 		TXA
 		PHA
-		FAR		$9C,$17		; _bA_s3
+		FARX	_bA_s3
 		LDX		byte_51
 		LDA		byte_50
 		STA		byte_54C,X
@@ -3271,7 +3271,7 @@ loc_6952A:
 		JSR		_b4_sA
 		JMP		loc_6953C
 loc_69536:
-		FAR		$86,$17		; _b2_sD
+		FARX	_b2_sD
 		BCC		loc_6953C
 		RTS
 loc_6953C:
@@ -3595,7 +3595,7 @@ sub_69782:
 		TAX
 		LDA		_b4_dD_spells_list,X
 		AND		#$3F
-		FAR		$99,$17		; _b0_s67
+		FARX	_b0_s67
 		JSR		_sram_b0_sB
 		BCC		loc_697C5
 		JSR		_sram_b0_s9
@@ -7395,7 +7395,7 @@ sub_6B027:
 		CMP		#$85
 		BNE		loc_6B048
 		FAR		$B1,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		FAR		$78,$17		; _bA_s8
+		FARX	_bA_s8
 		JSR		_b4_sB
 		FAR		$B2,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JSR		_b4_s5_do_message_speed_delay
@@ -7492,7 +7492,7 @@ sub_6B0B9:
 sub_6B0C1:
 		LDA		#0
 		STA		byte_42
-		FAR		$30,$17		; _b0_s63
+		FARX	_b0_s63
 		LDX		byte_51
 		LDA		byte_558,X
 		STA		byte_42
@@ -7722,7 +7722,7 @@ byte_6B270:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1A:
-		FAR		$2F,$17		; _bD_s28
+		FARX	_bD_s28
 		LDX		#0
 		JSR		sub_17435B
 		JMP		_vblank

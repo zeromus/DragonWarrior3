@@ -1254,8 +1254,8 @@ loc_B2711:
 		BNE		loc_B2711
 		JSR		sub_174CCF
 		FAR		$A8,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s20
 		FAR		$18,$2F		; _sys12
 		LDA		#0
 		STA		word_3C
@@ -1317,11 +1317,11 @@ loc_B278A:
 		INX
 		CPX		word_40
 		BNE		loc_B275E
-		FAR		$55,$17		; _b0_s54
-		FAR		$8B,$17		; _bD_s11
+		FARX	_b0_s54
+		FARX	_bD_s11
 		FARX	_b4_s1A
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s20
 		LDA		#$40
 		STA		byte_6DF
 locret_B27A9:
@@ -1341,11 +1341,11 @@ _b7_s1A:
 		BNE		locret_B27A9
 		JSR		sub_174CCF
 		FARX	_bB_s4
-		FAR		$7D,$17		; _bD_sB
+		FARX	_bD_sB
 		FAR		$9E,$77		; _sys07_msg_m00_arg1
 		FAR		$9F,$77		; _sys07_msg_m00_arg1
 		FAR		$A0,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#8
 		LDX		#$18
 loc_B27D7:
@@ -1356,9 +1356,9 @@ loc_B27D7:
 		INX
 		CPX		#$38
 		BCC		loc_B27D7
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 		FAR		$02,$2F		; _sys12
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0
 		RTS
@@ -1368,9 +1368,9 @@ _b7_s1B:
 		FARX	_bB_s7
 		JSR		sub_B2806
 		FAR		$1F,$2F		; _sys12
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		JMP		_b7_s1E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1422,7 +1422,7 @@ sub_B2846:
 loc_B2859:
 		DEC		byte_103,X
 loc_B285C:
-		FAR		$33,$17		; _bD_s19
+		FARX	_bD_s19_1
 locret_B285F:
 		RTS
 
@@ -1603,8 +1603,8 @@ loc_B2985:
 		BPL		loc_B2985
 loc_B298D:
 		FAR		$41,$E7		; _sys0E
-		FAR		$61,$17		; _b6_s14_name_entry_screen
-		FAR		$9A,$17		; _b6_s20_player_name_veryfy
+		FARX	_b6_s14_name_entry_screen
+		FARX	_b6_s20_player_name_veryfy
 		BNE		loc_B29A1
 		FAR		$58,$E7		; _sys0E
 		JSR		__pause_or_skip
@@ -2523,7 +2523,7 @@ loc_B2FD0:
 		CPX		#4
 		BNE		loc_B2FC2
 		FARX	_b0_s47
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3088,7 +3088,7 @@ byte_B3382:
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1E:
 		JSR		sub_B32F1
-		FAR		$A8,$17		; _bA_s16
+		FARX	_bA_s16
 		FARX	_bB_s4
 		JSR		sub_174369
 		JSR		_vblank_and_render_off_flag10_set
@@ -3105,7 +3105,7 @@ _b7_s1E:
 		JSR		_pal_fade_in
 		LDX		#$64
 		JSR		_vblank_count
-		FAR		$A9,$17		; _bA_s17
+		FARX	_bA_s17
 		JSR		_vblank_and_render_off
 		JSR		sub_174369
 		JSR		sub_17443A
@@ -3139,7 +3139,7 @@ sub_B34E4:
 		STA		word_40
 		JSR		sub_B35BF
 		JSR		sub_B3538
-		FAR		$5B,$17		; _bC_s1A
+		FARX	_bC_s1A
 		JSR		_pal_fade_in
 		LDA		#$12
 		STA		byte_43
@@ -3193,7 +3193,7 @@ loc_B3541:
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
-		FAR		$79,$17		; _b5_s8
+		FARX	_b5_s8
 		LDA		byte_6D3
 		EOR		#1
 		STA		byte_6D3
@@ -3416,7 +3416,7 @@ sub_B36A2:
 		STA		byte_63C9
 		LDA		#0
 		STA		byte_6A3E
-		FAR		$95,$17		; _b7_s1D
+		FARX	_b7_s1D
 		FAR		$00,$AF		; _b1A_s0
 
 ; =============== S U B	R O U T	I N E =======================================

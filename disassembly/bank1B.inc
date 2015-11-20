@@ -24,7 +24,7 @@ loc_29401C:
 		TYA
 		FARX	_b4_sF
 		STA		byte_6A6D
-		FAR		$80,$17		; _b4_s26
+		FARX	_b4_s26
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -32,7 +32,7 @@ sub_294028:
 		LDA		byte_60B7
 		LSR
 		BCS		loc_294065
-		FAR		$7D,$17		; _bD_sB
+		FARX	_bD_sB
 		LDA		byte_D2
 		CMP		#4
 		BCC		loc_294039

@@ -2398,7 +2398,7 @@ loc_83CA9:
 _b5_s9:
 		JSR		_vblank_and_render_off
 		JSR		_set_nmi_flag_10
-		FAR		$5B,$17		; _bC_s1A
+		FARX	_bC_s1A
 		LDA		#$10
 		STA		byte_6D0
 		LDA		#0
@@ -2436,7 +2436,7 @@ loc_83CFC:
 		INX
 		CPX		#$80
 		BNE		loc_83CFC
-		FAR		$35,$17		; _bD_s1B
+		FARX	_bD_s1B
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2730,7 +2730,7 @@ _b5_s5:
 		LDA		#<[byte_114]
 		STA		word_6C
 		LDX		#2
-		FAR		$72,$17		; _bC_sB
+		FARX	_bC_sB
 		LDA		#4
 		STA		byte_116
 		LDA		byte_117
@@ -2738,12 +2738,12 @@ _b5_s5:
 		ORA		#2
 		STA		byte_117
 		LDX		#0
-		FAR		$72,$17		; _bC_sB
+		FARX	_bC_sB
 		JSR		sub_174CCF
 		FAR		$AB,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$10
-		FAR		$4E,$17		; _b0_s1
+		FARX	_b0_s1
 		LDA		byte_60CD
 		ORA		#$20
 		STA		byte_60CD

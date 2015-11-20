@@ -161,7 +161,7 @@ sub_20122:
 		LDA		byte_7F
 		CMP		#4
 		BEQ		loc_2012C
-		FAR		$3C,$17		; _bD_s1F
+		FARX	_bD_s1F
 		RTS
 loc_2012C:
 		FARX	_b0_s48
@@ -485,7 +485,7 @@ loc_20320:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20325:
 		JSR		sub_20720
-		FAR		$3C,$17		; _bD_s1F
+		FARX	_bD_s1F
 		LDA		word_7C+1
 		ASL
 		ASL
@@ -1345,7 +1345,7 @@ loc_20876:
 		LDA		byte_51
 		CMP		#4
 		BNE		loc_2086A
-		FAR		$31,$17		; _b4_s21
+		FARX	_b4_s21_message_half_delay_or_wait_for_keypress
 		FARX	_b4_s5_do_message_speed_delay
 		LDA		byte_6A63
 		BNE		loc_208F6
@@ -1541,7 +1541,7 @@ loc_209E6:
 		LDX		#0
 		FARX	_bE_s6_msg_mFF_0
 		FAR		$13,$2F		; _sys12
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_209FA
@@ -1557,8 +1557,8 @@ loc_209FA:
 		STA		byte_71C
 		LDA		word_4+1
 		STA		byte_71D
-		FAR		$46,$17		; _b0_s4F
-		FAR		$4A,$17		; _bC_s2F
+		FARX	_b0_s4F
+		FARX	_bC_s2F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1618,7 +1618,7 @@ loc_20A76:
 		STA		word_6
 		LDX		#word_4
 		LDA		#byte_3
-		FAR		$A2,$17		; _bA_s4_div24_to_8
+		FARX	_bA_s4_div24_to_8
 		CMP		#1
 		LDA		word_4+1
 		TAY
@@ -1632,7 +1632,7 @@ loc_20A76:
 		BEQ		loc_20AB7
 		LDA		word_4
 		LDX		#byte_5D
-		FAR		$A2,$17		; _bA_s4_div24_to_8
+		FARX	_bA_s4_div24_to_8
 		CMP		#1
 		LDA		#0
 		TAY
