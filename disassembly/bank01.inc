@@ -1746,7 +1746,7 @@ loc_20B87:
 		AND		#$7F
 		STA		byte_D3
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BNE		loc_20B75
@@ -2091,7 +2091,7 @@ sub_294028:
 		LDA		#0
 loc_294039:
 		STA		byte_CE
-		JSR		_sram_b0_sC
+		JSR		_sram_b0_sC_char_get_level
 		LDA		word_4
 		CMP		#$B
 		BCS		loc_29404A

@@ -980,7 +980,7 @@ loc_E3A13:
 		JSR		sub_E3A4A
 		JSR		sub_E3A4A
 		LDA		#1
-		STA		byte_6D9
+		STA		_ppu_queue_tiles_count
 		JSR		sub_E3A77
 		LDA		word_6E+1
 		CLC

@@ -298,7 +298,7 @@ loc_1281D3:
 		BNE		loc_1281E4
 		LDA		#0
 		STA		_npc_anim_script_idx
-		LDY		#[_b7_s1B_idx-_sys_idx_lib]
+		LDY		#[_b7_s1B_idx-_sys_idx_lib]>>1
 		JMP		_sys0_unsafe
 loc_1281E4:
 		CMP		#$33
@@ -621,7 +621,7 @@ loc_1283CA:
 		INC		word_4+1
 		LDA		#7
 		JSR		_bC_sA
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		LDX		#$F
 		JSR		_vblank_count
 		JSR		sub_174CCF
@@ -1052,7 +1052,7 @@ sub_12871A:
 		ASL
 		ASL
 		TAY
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 		JSR		sub_12872A
 		LDA		byte_1F
 		CLC
@@ -1079,7 +1079,7 @@ sub_128735:
 		LDA		byte_7200,Y
 		STA		byte_300,X
 		INX
-		INC		byte_6D9
+		INC		_ppu_queue_tiles_count
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1106,16 +1106,16 @@ sub_12874C:
 		TYA
 		STA		byte_300,X
 		INX
-		INC		byte_6D9
-		STX		byte_6D8
+		INC		_ppu_queue_tiles_count
+		STX		_ppu_queue_pos
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2:
 		JSR		sub_128BF0
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		loc_128784
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 loc_128784:
 		JSR		sub_1287A7
@@ -1294,7 +1294,7 @@ sub_128895:
 		BCS		locret_128894
 		LDA		#$FF
 		STA		byte_32
-		LDY		byte_6D8
+		LDY		_ppu_queue_pos
 		LDA		word_3C
 		ORA		#$C0
 		STA		byte_300,Y
@@ -1334,13 +1334,13 @@ sub_128895:
 		STA		byte_30B,Y
 		LDA		word_40
 		STA		byte_30C,Y
-		LDA		byte_6D8
+		LDA		_ppu_queue_pos
 		CLC
 		ADC		#$D
-		STA		byte_6D8
-		INC		byte_6D9
-		INC		byte_6D9
-		INC		byte_6D9
+		STA		_ppu_queue_pos
+		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_tiles_count
 		INC		byte_44
 		LDA		byte_44
 		CMP		byte_47
@@ -1572,7 +1572,7 @@ sub_128A6C:
 		BEQ		loc_128A73
 		JMP		sub_128835
 loc_128A73:
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		loc_128A7B
 		JSR		_vblank
 loc_128A7B:
@@ -1643,7 +1643,7 @@ sub_128AD0:
 loc_128AE0:
 		LDA		byte_42
 		BNE		loc_128AEF
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		loc_128AEC
 		JSR		_vblank
 loc_128AEC:
@@ -1715,7 +1715,7 @@ sub_128B43:
 		BEQ		loc_128B4A
 		JMP		sub_128860
 loc_128B4A:
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		loc_128B52
 		JSR		_vblank
 loc_128B52:
@@ -2270,7 +2270,7 @@ sub_128F4F:
 		STA		word_40
 loc_128F6B:
 		JSR		sub_128F82
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		INC		word_40
 		LDY		word_40
@@ -2388,7 +2388,7 @@ loc_129032:
 		LDA		#5
 		JSR		sub_129060
 loc_129057:
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 		JMP		sub_128F4A
 
@@ -2652,7 +2652,7 @@ sub_12923C:
 		BNE		sub_1292B0
 		LDX		#6
 loc_129246:
-		LDA		#[_b6_d9_idx-_sys_idx_lib]
+		LDA		#[_b6_d9_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		CMP		byte_C5
 		BCC		loc_129254
@@ -2661,7 +2661,7 @@ loc_129246:
 		BNE		loc_129246
 loc_129254:
 		STX		byte_C5
-		LDA		#[_b6_dA_idx-_sys_idx_lib]
+		LDA		#[_b6_dA_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		TAY
 		CPX		#4
@@ -2680,7 +2680,7 @@ loc_12926C:
 		PHA
 		TYA
 		PHA
-		LDA		#[_b6_dB_idx-_sys_idx_lib]
+		LDA		#[_b6_dB_world_map_palette_lib_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_y
 		PHA
 		LDA		byte_1292A4,X
@@ -3078,7 +3078,7 @@ loc_129518:
 		LDA		byte_BC
 		CMP		byte_8C
 		BNE		loc_129524
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 loc_129524:
 		SEC
@@ -3298,7 +3298,7 @@ loc_129647:
 		ASL
 		ADC		word_4
 		TAY
-		LDA		#[_bA_d15_idx-_sys_idx_lib]
+		LDA		#[_bA_d15_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_y
 		STA		_pak_data_ptr
 		LDY		word_4
@@ -3445,7 +3445,7 @@ loc_129749:
 loc_12976B:
 		AND		#$7F
 		JSR		sub_1295EB
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		LDA		#$F
 		BNE		loc_1297C1
 loc_129777:
@@ -3631,7 +3631,7 @@ loc_1298A9:
 		LDA		word_4+1
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
@@ -3829,12 +3829,12 @@ loc_1299FD:
 		STA		word_4
 		LDX		#0
 loc_129A02:
-		LDA		#[_bA_d14_idx-_sys_idx_lib]
+		LDA		#[_bA_d14_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		INX
 		CMP		byte_8B
 		BEQ		loc_129A1B
-		LDA		#[_bA_d14_idx-_sys_idx_lib]
+		LDA		#[_bA_d14_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		INX
 		CLC
@@ -4053,7 +4053,7 @@ loc_129AFE:
 		ASL
 		ADC		word_4
 		TAX
-		LDA		#[_bA_d15_idx-_sys_idx_lib]
+		LDA		#[_bA_d15_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		TAX
 		LDA		byte_8B
@@ -4501,7 +4501,7 @@ loc_129E09:
 		INC		word_4
 		LDA		word_3E+1
 		FARX	_bC_sA
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		LDX		#$20
 		JMP		sub_12A1F1
 byte_129E55:
@@ -4559,7 +4559,7 @@ loc_129EAF:
 		INY
 		DEC		byte_8
 		BNE		loc_129EAF
-		JMP		sub_1742BA
+		JMP		_nmi_set_flag_04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129EBC:
@@ -5003,7 +5003,7 @@ sub_12A133:
 		LDY		#$F
 		LDA		#6
 		JSR		sub_177CC8
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JMP		_vblank
 byte_12A1DA:
 		.BYTE	$CC
@@ -5197,9 +5197,9 @@ sub_12A312:
 		FARX	_bE_sD
 		LDA		byte_2C
 		BNE		loc_12A326
-		LDX		#[_bC_s16_idx-_sys_idx_lib]
+		LDX		#[_bC_s16_idx-_sys_idx_lib]>>1
 		STX		word_3C
-		LDX		#[_bC_s15_idx-_sys_idx_lib]
+		LDX		#[_bC_s15_idx-_sys_idx_lib]>>1
 		STX		word_3C+1
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9F
 		JSR		_bC_s17_sys0_spr_effects_call
@@ -5383,17 +5383,17 @@ _bC_s3B:
 		STA		byte_7673
 		LDA		#7
 		STA		byte_7697
-		LDA		#[_bC_s2D_idx-_sys_idx_lib]
+		LDA		#[_bC_s2D_idx-_sys_idx_lib]>>1
 		STA		word_3C
-		LDA		#[_bC_s2C_idx-_sys_idx_lib]
+		LDA		#[_bC_s2C_idx-_sys_idx_lib]>>1
 		STA		word_3C+1
 		JMP		_bC_s17_sys0_spr_effects_call
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s3A:
-		LDA		#[_bC_s2C_idx-_sys_idx_lib]
+		LDA		#[_bC_s2C_idx-_sys_idx_lib]>>1
 		STA		word_3C
-		LDA		#[_bC_s2D_idx-_sys_idx_lib]
+		LDA		#[_bC_s2D_idx-_sys_idx_lib]>>1
 		STA		word_3C+1
 		JSR		_bC_s17_sys0_spr_effects_call
 		LDA		#$13
@@ -5426,10 +5426,10 @@ _bC_sB:
 locret_12A47A:
 		RTS
 byte_12A47B:
-		.BYTE	[_bC_s38_idx-_sys_idx_lib]
-		.BYTE	[_bD_s19_idx-_sys_idx_lib]
-		.BYTE	[_bD_s19_idx-_sys_idx_lib]
-		.BYTE	[_bC_s38_idx-_sys_idx_lib]
+		.BYTE	[_bC_s38_idx-_sys_idx_lib]>>1
+		.BYTE	[_bD_s19_idx-_sys_idx_lib]>>1
+		.BYTE	[_bD_s19_idx-_sys_idx_lib]>>1
+		.BYTE	[_bC_s38_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2C:
@@ -5469,7 +5469,7 @@ sub_12A488:
 		INC		word_4+1
 		PLA
 		JSR		_bC_sA
-		JMP		sub_1742BA
+		JMP		_nmi_set_flag_04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A4B6:
@@ -6711,7 +6711,7 @@ loc_12ACBC:
 loc_12ACC6:
 		TXA
 		JSR		_bC_sA
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		sub_12AD3F
 		JSR		sub_12AE3D
 		INC		word_3C+1
@@ -6985,7 +6985,7 @@ loc_12AEA1:
 		TAX
 		CPX		word_40
 		BCC		loc_12AEA1
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 loc_12AEB6:
 		LDA		word_3E+1
 		STA		byte_300,X
@@ -7006,15 +7006,15 @@ loc_12AEB6:
 		STY		word_3C+1
 		CPY		word_40
 		BCC		loc_12AEB6
-		STX		byte_6D8
+		STX		_ppu_queue_pos
 		LDA		word_40
 		LSR
 		LSR
 		LSR
 		CLC
-		ADC		byte_6D9
-		STA		byte_6D9
-		JSR		sub_1742BA
+		ADC		_ppu_queue_tiles_count
+		STA		_ppu_queue_tiles_count
+		JSR		_nmi_set_flag_04
 		LDX		word_40+1
 		JSR		_vblank_count
 		INC		word_3C
@@ -8222,9 +8222,9 @@ sub_12B820:
 		JSR		sub_174CCF
 		FARX	_bD_sB
 		SYSX	_sys07_msg_m00_arg1,$A7
-		LDA		#[_bC_s18_idx-_sys_idx_lib]
+		LDA		#[_bC_s18_idx-_sys_idx_lib]>>1
 		STA		word_3C
-		LDA		#[_bC_s1C_idx-_sys_idx_lib]
+		LDA		#[_bC_s1C_idx-_sys_idx_lib]>>1
 		STA		word_3C+1
 		FARX	_bC_s17_sys0_spr_effects_call
 		LDA		#$80

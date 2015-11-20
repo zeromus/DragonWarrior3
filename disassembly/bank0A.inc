@@ -636,10 +636,10 @@ loc_F8416:
 		BCC		loc_F8462
 		LDX		byte_CE
 		LDA		byte_718,X
-		LDX		#[_b0_d58_idx-_sys_idx_lib]
+		LDX		#[_b0_d58_idx-_sys_idx_lib]>>1
 		AND		#7
 		BEQ		loc_F843F
-		LDX		#[_b0_d59_idx-_sys_idx_lib]
+		LDX		#[_b0_d59_idx-_sys_idx_lib]>>1
 loc_F843F:
 		TXA
 		LDX		byte_10
@@ -1066,8 +1066,8 @@ loc_F8717:
 		CPY		#$20
 		BNE		loc_F86FF
 		LDA		#1
-		STA		byte_6D9
-		JMP		sub_1742BA
+		STA		_ppu_queue_tiles_count
+		JMP		_nmi_set_flag_04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8728:
@@ -1269,7 +1269,7 @@ _bA_sE:
 		LDA		#$73
 		STA		byte_585
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		LDA		byte_588
 		ASL
@@ -1291,7 +1291,7 @@ loc_F8CC7:
 		STA		word_4+1
 		LDA		#$73
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		LDA		byte_588
@@ -1349,7 +1349,7 @@ loc_F8D4F:
 		STA		word_4+1
 		LDA		byte_585
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		JMP		loc_F8CC7
 loc_F8D6C:
@@ -1375,7 +1375,7 @@ sub_F8D82:
 		STA		word_4+1
 		LDA		#0
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		INC		byte_583
 		INC		byte_583
@@ -1386,7 +1386,7 @@ sub_F8D82:
 		LDA		#$73
 		STA		byte_585
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		LDA		#$10
 		STA		byte_584
@@ -1402,7 +1402,7 @@ sub_F8DBF:
 		STA		word_4+1
 		LDA		#0
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		DEC		byte_583
 		DEC		byte_583
@@ -1413,7 +1413,7 @@ sub_F8DBF:
 		LDA		#$73
 		STA		byte_585
 		JSR		sub_1742C7
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		_vblank
 		LDA		#$10
 		STA		byte_584
@@ -1588,13 +1588,13 @@ sub_F8F1F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8F21:
 		JSR		sub_F8F2A
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8F2A:
 		PHA
-		LDA		byte_6D9
+		LDA		_ppu_queue_tiles_count
 		BEQ		loc_F8F33
 		JSR		_vblank
 loc_F8F33:
@@ -1617,7 +1617,7 @@ loc_F8F33:
 		ASL
 		STA		_tmp21+2
 		STA		byte_27
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 loc_F8F57:
 		LDA		byte_20
 		STA		byte_9
@@ -1678,7 +1678,7 @@ loc_F8FBD:
 		STA		byte_20
 		DEC		_tmp21+1
 		BNE		loc_F8F57
-		STX		byte_6D8
+		STX		_ppu_queue_pos
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1715,7 +1715,7 @@ loc_F8FEF:
 		PLA
 		LSR
 		STA		word_6
-		INC		byte_6D9
+		INC		_ppu_queue_tiles_count
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1982,7 +1982,7 @@ loc_F92E7:
 		BCS		loc_F92F6
 		JSR		sub_F933D
 loc_F92F6:
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		JSR		sub_F9319
 		INC		word_3C
 		LDA		word_3C
@@ -2035,7 +2035,7 @@ sub_F933D:
 		LDY		#0
 		LDA		(word_6C),Y
 		CLC
-		ADC		byte_6D8
+		ADC		_ppu_queue_pos
 		TAX
 		INY
 loc_F934A:
@@ -2057,7 +2057,7 @@ loc_F935B:
 		BCC		loc_F9366
 		INC		word_6C+1
 loc_F9366:
-		DEC		byte_6D9
+		DEC		_ppu_queue_tiles_count
 		RTS
 loc_F936A:
 		TYA
@@ -2092,7 +2092,7 @@ loc_F937C:
 ;		CMP		#$FF
 ;		BEQ		loc_F935B
 ;		CLC
-;		ADC		byte_6D8
+;		ADC		_ppu_queue_pos
 ;		TAX
 ;		LDA		#0
 ;		STA		byte_305,X
@@ -2105,7 +2105,7 @@ sub_F93A4:
 		STA		word_4+1
 		JSR		sub_F93B1
 		LDY		#0
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2114,7 +2114,7 @@ sub_F93B1:
 		STA		byte_6D0
 		STA		word_4
 		JSR		sub_1742CF
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 		LDA		byte_20
 		ORA		#$80
 		STA		byte_300,X
@@ -2130,7 +2130,7 @@ loc_F93D2:
 		INY
 		CPY		#$20
 		BNE		loc_F93D2
-		INC		byte_6D9
+		INC		_ppu_queue_tiles_count
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2139,7 +2139,7 @@ _bA_s17:
 		JSR		_vblank_count
 		JSR		_vblank_count
 		LDA		#$BF
-		LDX		byte_6D8
+		LDX		_ppu_queue_pos
 		STA		byte_300,X
 		LDA		#$10
 		STA		byte_301,X
@@ -2151,7 +2151,7 @@ loc_F93FB:
 		INX
 		CPX		#$10
 		BNE		loc_F93FB
-		INC		byte_6D9
+		INC		_ppu_queue_tiles_count
 		JSR		sub_1742B0
 		JSR		sub_F946C
 		JSR		_vblank
@@ -2174,8 +2174,8 @@ loc_F9411:
 		LDA		byte_F9463,Y
 		STA		byte_308
 		LDA		#3
-		STA		byte_6D9
-		JSR		sub_1742BA
+		STA		_ppu_queue_tiles_count
+		JSR		_nmi_set_flag_04
 		LDX		#$F
 		JSR		_vblank_count
 		INY

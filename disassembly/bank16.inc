@@ -39,12 +39,12 @@ loc_21C034:
 		DEX
 		BNE		loc_21C034
 loc_21C041:
-		LDA		byte_21C3A3,X
+		LDA		_world_pal_ofs_list,X
 		TAX
 		LDY		#0
 loc_21C047:
 		STY		_tmp_pak_data_bank
-		LDA		#$8B
+		LDA		#[_b6_dB_world_map_palette_lib_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		PHA
 		LDA		byte_21C152,Y
@@ -270,7 +270,7 @@ byte_21C33F:
 		.BYTE	$21,  7,  0,$19, $F,$17, $F,  9,  1,$19,$19,$17,$21,  7,  0, $C
 		.BYTE	 $F,$17, $F,  9,  1, $C, $C,  7,$21,  7,  0,$1A, $F,$17, $F,  9
 		.BYTE	 $C,$1A,$1A,$17
-byte_21C3A3:
+_world_pal_ofs_list:
 		.BYTE	  0, $C,$18,$24,$30,$3C,$48
 byte_21C3AA:
 		.BYTE	  0,$1E,$3C,$5A,$78,$96,$B4

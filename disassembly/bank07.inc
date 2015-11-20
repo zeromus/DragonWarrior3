@@ -1245,7 +1245,7 @@ loc_B272B:
 		LDA		byte_B27AA,X
 		STA		byte_6DF
 		FARX	_b6_s8
-		JSR		sub_1742BA
+		JSR		_nmi_set_flag_04
 		LDX		#$C
 		JSR		_vblank_count
 		INC		word_3C

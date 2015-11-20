@@ -128,7 +128,7 @@ _ddt = $76
 	ENDM
 
 	MAC PTR_IDX
-		.BYTE	[[{1}_ptr-SYSCALL_PTR_ORG]>>1]
+		.BYTE	{1},[[{2}_ptr-SYSCALL_PTR_ORG]>>1]
 	ENDM
 	
 	; we have here two different macroses for the same BRK opcode format
@@ -140,8 +140,8 @@ _ddt = $76
 	;
 	MAC FARX
 		BRK
-		.BYTE	[ [{1}_idx - _sys_idx_lib] & $FF]
-		.BYTE	[[[{1}_idx - _sys_idx_lib] >>  7] & 2]
+		.BYTE	[[[{1}_idx - _sys_idx_lib] >> 1] & $FF]
+		.BYTE	[[[{1}_idx - _sys_idx_lib] >> 8] & 2]
 	ENDM
 	
 	MAC SYSX
