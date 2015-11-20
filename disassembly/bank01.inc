@@ -1,15 +1,15 @@
 
 		ORG $8000
 
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
 _b1_s9_ptr:
 		.WORD	_b1_s9
 _b1_sA_ptr:
@@ -22,12 +22,12 @@ _b1_sD_ptr:
 		.WORD	_b1_sD
 _b1_sE_ptr:
 		.WORD	_b1_sE
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-_b1_s13_ptr:
-		.WORD	_b1_s13
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;_b1_s13_ptr:
+;		.WORD	_b1_s13
 _b1_s14_ptr:
 		.WORD	_b1_s14
 _b1_s15_ptr:
@@ -190,12 +190,12 @@ loc_2014D:
 		JMP		_b1_s17
 
 ; =============== S U B	R O U T	I N E =======================================
-_b1_s13:
-		JSR		sub_2015B
-		TAX
-		DEX
-		TXA
-		RTS
+;_b1_s13:
+;		JSR		sub_2015B
+;		TAX
+;		DEX
+;		TXA
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_2015B:
@@ -409,9 +409,9 @@ sub_202A9:
 		STA		word_4
 		LDA		off_20369+1,X
 		STA		word_4+1
-		LDA		off_2036B,X
+		LDA		off_20369+2,X
 		STA		word_6C
-		LDA		off_2036B+1,X
+		LDA		off_20369+3,X
 		STA		word_6C+1
 		LDX		#0
 		LDA		#$FF
@@ -524,23 +524,14 @@ sub_2034D:
 		LDA		word_6+1
 		RTS
 off_20369:
-		.WORD	0
-off_2036B:
-		.WORD	0
-		.WORD	sub_202D1
-		.WORD	sub_201B3
-		.WORD	sub_202DA
-		.WORD	sub_201BC
-		.WORD	sub_202DA
-		.WORD	sub_201C5
-		.WORD	sub_202E0
-		.WORD	sub_20200
-		.WORD	sub_2030F
-		.WORD	sub_20225
-		.WORD	sub_20325
-		.WORD	sub_20268
-		.WORD	sub_2034D
-		.WORD	sub_2028D
+		.WORD	  0,  0
+		.WORD	sub_202D1, sub_201B3
+		.WORD	sub_202DA, sub_201BC
+		.WORD	sub_202DA, sub_201C5
+		.WORD	sub_202E0, sub_20200
+		.WORD	sub_2030F, sub_20225
+		.WORD	sub_20325, sub_20268
+		.WORD	sub_2034D, sub_2028D
 byte_2038F:
 		.BYTE	$88,$12,$22,$5C,$92,$32,$5C,$92,$32,$5C,$92,$32,$66,$83,$1A,$58
 		.BYTE	$44,$22,$98,$16,$12,$96,$18,$1A
@@ -1421,7 +1412,7 @@ loc_20902:
 		STA		byte_6A32
 		LDX		#7
 		JSR		sub_20977
-		FARX	_bE_s6_msg_mFF_0
+		FARX	_bE_s6_msg_mFF
 		INC		byte_52
 		LDA		byte_6A32
 		AND		#$BF
@@ -1539,8 +1530,8 @@ _b1_sC:
 loc_209E6:
 		TXA
 		LDX		#0
-		FARX	_bE_s6_msg_mFF_0
-		SYSX	_sys12,$13
+		FARX	_bE_s6_msg_mFF
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$13
 		FARX	_b0_s50
 		LDA		byte_60BA
 		AND		#1
@@ -1581,7 +1572,7 @@ _b1_sD:
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		SYSX	_sys12,$16
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$E
 		FARX	_b4_s1C
@@ -1595,7 +1586,7 @@ loc_20A4C:
 		FARX	_b4_s9
 		JMP		loc_20A76
 loc_20A5A:
-		SYSX	_sys12,$16
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$5D
 		FARX	_b4_s1C
@@ -1697,7 +1688,7 @@ loc_20B04:
 		FARX	_b4_s9
 		JSR		sub_20D11
 		STA		byte_D2
-		SYSX	_sys12,$8F
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8F
 		LDA		#$64
 		FARX	_b4_s9
 		PLA
@@ -1725,9 +1716,9 @@ loc_20B48:
 loc_20B5E:
 		LDA		#$45
 		LDX		#1
-		FARX	_bE_s4_msg_m00_1
-		SYSX	_sys12,$86
-		SYSX	_sys0E,$1D
+		FARX	_bE_s4_msg_m00
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
+		SYSX	_sys0E_wrapper_to_bE_s0,$1D
 		CMP		#0
 		BEQ		loc_20B87
 loc_20B6F:
@@ -1782,7 +1773,7 @@ loc_20BD1:
 		BEQ		loc_20BDC
 		LDA		#$2D
 		LDX		#1
-		FARX	_bE_s4_msg_m00_1
+		FARX	_bE_s4_msg_m00
 loc_20BDC:
 		LDA		byte_48
 		STA		byte_CF
@@ -2076,23 +2067,7 @@ sub_20DCE:
 		PLA
 		RTS
 
-		ECHO "bank 01 free space", [$BFD8-.]
+		ECHO "bank 01 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

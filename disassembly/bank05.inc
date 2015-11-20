@@ -1,20 +1,20 @@
 
 		ORG $8000
 
-_b5_d0_world_map_data_ptr:
-		.WORD	0 ; _b5_d0_world_map_data
-_b5_d1_world_map_data_ptr:
-		.WORD	0 ; _b5_d1_world_map_data
-_b5_d2_world_map_data_ptr:
-		.WORD	0 ; _b5_d2_world_map_data
+;_b5_d0_world_map_data_ptr:
+;		.WORD	_b5_d0_world_map_data
+;_b5_d1_world_map_data_ptr:
+;		.WORD	_b5_d1_world_map_data
+;_b5_d2_world_map_data_ptr:
+;		.WORD	_b5_d2_world_map_data
 _b5_s3_ptr:
 		.WORD	_b5_s3
 _b5_s4_ptr:
 		.WORD	_b5_s4
 _b5_s5_ptr:
 		.WORD	_b5_s5
-_b5_s6_ppu_send_8_empty_bytes_ptr:
-		.WORD	_b5_s6_ppu_send_8_empty_bytes
+;_b5_s6_ppu_send_8_empty_bytes_ptr:
+;		.WORD	_b5_s6_ppu_send_8_empty_bytes
 _b5_s7_ptr:
 		.WORD	_b5_s7
 _b5_s8_ptr:
@@ -284,7 +284,7 @@ _b5_d1_world_map_data:
 		.WORD	byte_81A7D
 		.WORD	byte_81A85
 		.WORD	byte_81A8D
-		.WORD	_b5_d2_world_map_data
+;		.WORD	_b5_d2_world_map_data
 byte_8021A:
 		.BYTE	$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 byte_80222:
@@ -1191,7 +1191,7 @@ _b5_d2_world_map_data:
 		.WORD	byte_823E0
 		.WORD	byte_823E5
 		.WORD	byte_823EA
-		.WORD	off_823EF
+;		.WORD	off_823EF
 byte_81BAB:
 		.BYTE	$1F,$1F,$1F,$1F,$1D
 byte_81BB0:
@@ -1543,8 +1543,8 @@ byte_823E5:
 		.BYTE	$1F,$1F,$1F,$1F,$1D
 byte_823EA:
 		.BYTE	$1F,$1F,$1F,$1F,$1D
-off_823EF:
-		.WORD	byte_823F1
+;off_823EF:
+;		.WORD	byte_823F1
 byte_823F1:
 		.BYTE	$18,$CA,  0,$18,$D8, $A,$18,$D4,  1,  8,$91,$90,$14,$C2,$8B,$18
 		.BYTE	$C6,$8C,$15,  7,$80,$19,$27,  3,$15,$2F,  0,$1D, $F,$80,$1C,$1F
@@ -1719,10 +1719,10 @@ byte_82D74:
 		.BYTE	$E3,$E4,$EB,$EC,$E9,$EA,$EB,$EE,$E3,$E6,$EB,$EE,$EF,$EF,$EF,$F0
 		.BYTE	$EF,$EF,$F1,$F2,$EF,$EF,$F3,$EF,$EF,$F4,$EF,$F4,$F5,$EF,$F5,$EF
 		.BYTE	$EF,$F6,$EF,$FA,$F7,$F8,$FB,$FC,$F9,$EF,$FD,$EF
-off_82DD0:
-		.WORD	byte_82DD4
-off_82DD2:
-		.WORD	byte_832E4
+;off_82DD0:
+;		.WORD	byte_82DD4
+;off_82DD2:
+;		.WORD	byte_832E4
 byte_82DD4:
 		.BYTE	$10,  0,  0,$10,  4,  0,$30,$15,$40,$10,$10,  0,$10,  8,  0,$10
 		.BYTE	 $C,  0,$10,$14,  0,$F0, $D,  0,$18,$EA,  0,$88,$EA,  0,$38,$F2
@@ -2752,23 +2752,7 @@ _b5_s5:
 		STA		byte_7464
 		JMP		sub_174CBD
 
-		ECHO "bank 05 free space", [$BFD8-.]
+		ECHO "bank 05 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

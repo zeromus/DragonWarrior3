@@ -90,9 +90,9 @@ sub_24C097:
 		LDY		#0
 		STY		_PPU_ADDR
 		STY		_PPU_ADDR
-		LDA		off_24E745
+		LDA		#<[byte_24C743]
 		STA		_tmp12
-		LDA		off_24E745+1
+		LDA		#>[byte_24C743]
 		STA		_tmp12+1
 		LDX		#$10
 		JSR		sub_24C0E5
@@ -101,18 +101,18 @@ sub_24C097:
 		STA		_PPU_ADDR
 		LDY		#0
 		STY		_PPU_ADDR
-		LDA		off_24E743
+		LDA		#<[byte_24D743]
 		STA		_tmp12
-		LDA		off_24E743+1
+		LDA		#>[byte_24D743]
 		STA		_tmp12+1
 		LDX		#$10
 		BNE		sub_24C0E5
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C0CC:
-		LDA		off_24C741
+		LDA		#<[byte_24C341]
 		STA		_tmp12
-		LDA		off_24C741+1
+		LDA		#>[byte_24C341]
 		STA		_tmp12+1
 		LDA		_PPU_STATUS
 		LDA		#$20
@@ -473,8 +473,8 @@ byte_24C341:
 		.BYTE	$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA
 		.BYTE	$5A,$5A,$5A,$9A,$AA,$AA,$AA,$5A,$59,$16,$F5,$F5,$F5,$F5,$45,$59
 		.BYTE	$15,  0,  0,  0,  0,  0,  0,$45,  0,  0,  0,  0,  0,  0,  0,  0
-off_24C741:
-		.WORD	byte_24C341
+;off_24C741:
+;		.WORD	byte_24C341
 byte_24C743:
 		.BYTE	$FF,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -989,10 +989,10 @@ byte_24D743:
 		.BYTE	$77,$E7,$AC,$DE,$B8,$5A,$34,$2C,$FF,$FE,$FF,$7B,$77,$F7,$FF,$FF
 		.BYTE	$C5,$7E,$9D,$56,$4A,$47,$CB,$B4,$FF,$ED,$FB,$EF,$FF,$FE,$FF,$DF
 		.BYTE	$75,$F2,$AE,$DD,$2A,$41,$32,$E9,$FF,$EF,$FF,$7B,$F7,$FF,$FF,$7F
-off_24E743:
-		.WORD	byte_24D743
-off_24E745:
-		.WORD	byte_24C743
+;off_24E743:
+;		.WORD	byte_24D743
+;off_24E745:
+;		.WORD	byte_24C743
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E747:
@@ -1016,7 +1016,7 @@ loc_24E761:
 		FARX	_bB_s6
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12,$A6
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1028,11 +1028,11 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		SYSX	_sys12,$A6
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12,$A6
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A6
 		LDY		#0
 loc_24E7A0:
 		TYA
@@ -1047,9 +1047,9 @@ loc_24E7A0:
 		INY
 		CPY		#$A
 		BCC		loc_24E7A0
-		LDA		off_24EA87
+		LDA		#<[byte_24EA89]
 		STA		word_6C
-		LDA		off_24EA87+1
+		LDA		#>[byte_24EA89]
 		STA		word_6C+1
 		LDX		#0
 loc_24E7C1:
@@ -1266,7 +1266,8 @@ nullsub_1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E91A:
-		FAR		$00,$9F		; _b19_s0
+;		FAR		$00,$9F		; _b19_s0
+		FARX	_b19_s0
 		LDA		word_6
 		BEQ		loc_24E922
 		RTS
@@ -1304,8 +1305,8 @@ byte_24EA27:
 		.BYTE	$17,  7, $F,  8,  7, $F,  8, $F, $C, $F,  7, $F,  1,$27,$20, $F
 		.BYTE	$1A,$20,  6,$17,$27,$20,$1A,$20,$27,$17,  7,$18,$17,  7,$18, $C
 		.BYTE	$1C, $F,$17,  7,$11,$37,$30, $A,$2A,$30,$16,$27,$37,$30,$2A,$30
-off_24EA87:
-		.WORD	byte_24EA89
+;off_24EA87:
+;		.WORD	byte_24EA89
 byte_24EA89:
 		.BYTE	  1,$EC,  0,  1,$48,$36,  1,$50,$48,$37,  1,$58,$48,$38,  1,$60
 		.BYTE	$48,$63,  1,$68,$48,$64,  1,$70,$50,$46,  1,$50,$50,$47,  1,$58
@@ -1614,9 +1615,9 @@ sub_24F35D:
 		INC		word_6C+1
 loc_24F365:
 		TAX
-		LDA		off_24F39B
+		LDA		#<[byte_24FAC1]
 		STA		word_6E
-		LDA		off_24F39B+1
+		LDA		#>[byte_24FAC1]
 		STA		word_6E+1
 		TXA
 		BEQ		loc_24F381
@@ -1648,8 +1649,8 @@ loc_24F385:
 		BIT		word_4
 		CLC
 		RTS
-off_24F39B:
-		.WORD	byte_24FAC1
+;off_24F39B:
+;		.WORD	byte_24FAC1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24F39D:
@@ -2737,23 +2738,7 @@ byte_24FCBC:
 		.BYTE	  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,$EA,$EB,$FA,$FB
 		.BYTE	  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
 
-		ECHO "bank 18 free space", [$BFD8-.]
+		ECHO "bank 18 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

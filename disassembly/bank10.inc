@@ -618,23 +618,7 @@ _b10_txt_block19:
 		.BYTE	$EF
 		.BYTE	  _apu,_T,_u,_r,_n,_,_b,_a,_c,_k,_exc,_apd,$EF
 
-		ECHO "bank 10 free space", [$BFD8-.]
+		ECHO "bank 10 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

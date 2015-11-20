@@ -1,8 +1,8 @@
 
 		ORG $8000
 
-		.WORD	0					; do not remove, it's a padding for sub table below!
-		.WORD	0
+;		.WORD	  0					; do not remove, it's a padding for sub table below!
+;		.WORD	  0
 _bB_s2_ptr:
 		.WORD	_bB_s2
 _bB_s3_apu_load_ptr:
@@ -2902,23 +2902,7 @@ word_2DF9C7:
 		.WORD	$29,  $27,  $25,  $23,  $21,  $1F,  $1D,  $1B
 		.WORD	 $81A
 
-		ECHO "bank 0B free space", [$BFD8-.]
+		ECHO "bank 0B free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

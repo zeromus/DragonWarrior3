@@ -1,18 +1,18 @@
 
 		ORG $8000
 
-		.WORD	0 ; _b6_d0_ofs
-		.WORD	0 ; _b6_d1_ofs
-		.WORD	0 ; _b6_d2_ofs
-		.WORD	0 ; _b6_d3_ofs
-_b6_d4_ptr:
-		.WORD	0 ; _b6_d4
-_b6_d5_ptr:
-		.WORD	0 ; _b6_d5
-_b6_s6_0_ptr:
+;		.WORD	_b6_d0_ofs
+;		.WORD	_b6_d1_ofs
+;		.WORD	_b6_d2_ofs
+;		.WORD	_b6_d3_ofs
+;_b6_d4_ptr:
+;		.WORD	_b6_d4
+;_b6_d5_ptr:
+;		.WORD	_b6_d5
+_b6_s6_ptr:
 		.WORD	_b6_s6
-_b6_s6_1_ptr:
-		.WORD	_b6_s6
+;_b6_s6_ptr:
+;		.WORD	_b6_s6
 _b6_s8_ptr:
 		.WORD	_b6_s8
 _b6_d9_ptr:
@@ -1137,7 +1137,7 @@ loc_9B417:
 		FARX	_bC_s20
 		LDA		byte_2C
 		BNE		loc_9B431
-		SYSX	_sys12,$9F
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9F
 		LDY		#$C9
 		STY		word_3C
 		INY
@@ -1290,7 +1290,7 @@ _b6_s11:
 		LDA		byte_60B6
 		ORA		#$40
 		STA		byte_60B6
-		SYSX	_sys12,$26
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$26
 loc_9B510:
 		SEC
 		RTS
@@ -1344,7 +1344,7 @@ loc_9B557:
 		FARX	_b0_s66
 		LDA		#2
 		STA		byte_644
-		SYSX	_sys12,$92
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$92
 		JSR		sub_174369
 		LDA		byte_60B7
 		AND		#$7F
@@ -1737,7 +1737,7 @@ loc_9B8A2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _name_entry_screen_data_enter:
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		LDA		_pads+2
 		ORA		#1
 		STA		_pads+2
@@ -1954,7 +1954,7 @@ sub_9B9F8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9B9FC:
-		SYSX	_sys0D,$41
+		SYSX	_sys0D_wrapper_to_bE_sC,$41
 		JSR		_delay_n
 		LDA		#$C
 		STA		word_4
@@ -1962,7 +1962,7 @@ sub_9B9FC:
 		STA		word_4+1
 		LDA		#$78
 		FARX	_bE_s38
-		SYSX	_sys0D,$40
+		SYSX	_sys0D_wrapper_to_bE_sC,$40
 		LDA		#$C
 		STA		byte_74
 		LDA		#$A
@@ -2057,7 +2057,7 @@ sub_9BA90:
 		SYSX	_sys08_msg_m00_arg2,$4F
 		LDA		#7
 		STA		byte_C6
-		SYSX	_sys0D,$34
+		SYSX	_sys0D_wrapper_to_bE_sC,$34
 		LDX		#$10
 		FARX	_bD_s10
 		CMP		#$FF
@@ -2113,7 +2113,7 @@ sub_9BADD:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB0B:
 		SYSX	_sys08_msg_m00_arg2,$52
-		SYSX	_sys0D,$41
+		SYSX	_sys0D_wrapper_to_bE_sC,$41
 		FARX	_b6_s14_name_entry_screen
 		JMP		sub_9BB26
 
@@ -2182,13 +2182,13 @@ loc_9BB73:
 		INX
 		CPX		#$C
 		BNE		loc_9BB49
-		SYSX	_sys0D,$43
+		SYSX	_sys0D_wrapper_to_bE_sC,$43
 		CMP		#$FF
 		BEQ		loc_9BBD3
 		TAX
 		LDA		byte_9BBF5,X
 		STA		byte_CF
-		SYSX	_sys0D,$42
+		SYSX	_sys0D_wrapper_to_bE_sC,$42
 		CMP		#$FF
 		BEQ		loc_9BBD3
 		STA		byte_CE
@@ -2207,15 +2207,15 @@ loc_9BB92:
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		SYSX	_sys0D,$09
+		SYSX	_sys0D_wrapper_to_bE_sC,$09
 		JSR		__pause_or_skip
-		SYSX	_sys0D,$08
-		SYSX	_sys0D,$0A
+		SYSX	_sys0D_wrapper_to_bE_sC,$08
+		SYSX	_sys0D_wrapper_to_bE_sC,$0A
 		PLA
 		STA		byte_630F
 		FARX	_b7_s14
-		SYSX	_sys0D,$44
-		SYSX	_sys0D,$45
+		SYSX	_sys0D_wrapper_to_bE_sC,$44
+		SYSX	_sys0D_wrapper_to_bE_sC,$45
 		CMP		#0
 		BEQ		loc_9BBDC
 		LDA		byte_C3
@@ -2392,7 +2392,7 @@ loc_9BCDA:
 		LDY		#0
 		LDA		(word_6C),Y
 		BMI		loc_9BCE3
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 loc_9BCE3:
 		LDA		word_6C
 		CLC
@@ -2436,7 +2436,7 @@ _b6_s19:
 		STA		byte_127
 		LDA		#<[byte_124]
 		STA		word_6C
-		FARX	_bD_s19_0
+		FARX	_bD_s19
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2455,8 +2455,8 @@ _b6_s1A:
 		STA		byte_103,X
 		LDA		byte_6BB
 		FARX	_b5_s4
-		FARX	_bD_s19_1
-		SYSX	_sys12,$9B
+		FARX	_bD_s19
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9B
 		RTS
 byte_9BD60:
 		.BYTE	$24,$34,$30,$20,$1C,$28
@@ -2480,7 +2480,7 @@ loc_9BD6A:
 		CPX		#$30
 		BNE		loc_9BD6A
 		JSR		sub_174D4F
-		SYSX	_sys12,$22
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$22
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$A
@@ -2499,7 +2499,7 @@ loc_9BDA0:
 		LDA		#$80
 		STA		byte_100,X
 		FARX	_bC_s38
-		SYSX	_sys12,$95
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 		LDX		#$1E
 		JSR		_vblank_count
 		INC		word_3C
@@ -2525,7 +2525,7 @@ byte_9BDDE:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1C:
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
-		SYSX	_sys12,$03
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$03
 		LDA		#$FF
 		STA		byte_750
 		STA		byte_753
@@ -2551,7 +2551,7 @@ sub_9BE1D:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1D:
-		SYSX	_sys12,$14
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$14
 		JSR		sub_174369
 		FARX	_b0_s54
 		FARX	_bD_s11
@@ -2607,7 +2607,7 @@ loc_9BE7C:
 		STX		_pak_data_ptr
 		JSR		sub_9BF18
 loc_9BE8A:
-		SYSX	_sys0D,$3C
+		SYSX	_sys0D_wrapper_to_bE_sC,$3C
 		STA		byte_CE
 		TAX
 		BPL		loc_9BEB2
@@ -2746,7 +2746,7 @@ _b6_s1F:
 		JSR		sub_9BFB3
 		BCC		loc_9BF6D
 		FARX	_bC_s20
-		SYSX	_sys12,$1A
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1A
 		JSR		sub_9BF72
 		JSR		sub_9BFC3
 		FARX	_bD_s22
@@ -2818,23 +2818,7 @@ sub_9BFC3:
 		FARX	_bC_sA
 		RTS
 
-		ECHO "bank 06 free space", [$BFD8-.]
+		ECHO "bank 06 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

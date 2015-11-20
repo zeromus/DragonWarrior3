@@ -1261,23 +1261,7 @@ _chr_data_unk7:
 		.BYTE	$2C,  3,  8,$60,$80,  0,$1E,  0,$40,  8,$24,$81,$18,  2,$40,  8
 		.BYTE	$20,  0,  0,$10,$28,  0,  0,  0,$40, $C,$40,$80,  0,$60,  0,  0
 
-		ECHO "bank 09 free space", [$BFD8-.]
+		ECHO "bank 09 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

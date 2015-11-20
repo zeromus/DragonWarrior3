@@ -15,8 +15,8 @@ _bC_s5_ptr:
 		.WORD	_bC_s5
 _bC_s6_ptr:
 		.WORD	_bC_s6
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
 _bC_s9_ptr:
 		.WORD	_bC_s9
 _bC_sA_ptr:
@@ -81,8 +81,8 @@ _bC_s27_ptr:
 		.WORD	_bC_s27
 _bC_s28_ptr:
 		.WORD	_bC_s28
-_bC_s29_ptr:
-		.WORD	_bC_s29
+;_bC_s29_ptr:
+;		.WORD	_bC_s29
 _bC_s2A_ptr:
 		.WORD	_bC_s2A
 _bC_s2B_ptr:
@@ -107,8 +107,8 @@ _bC_s34_ptr:
 		.WORD	_bC_s34
 _bC_s35_ptr:
 		.WORD	_bC_s35
-_bC_s36_ptr:
-		.WORD	_bC_s36
+;_bC_s36_ptr:
+;		.WORD	_bC_s36
 _bC_s37_ptr:
 		.WORD	_bC_s37
 _bC_s38_ptr:
@@ -1863,24 +1863,24 @@ _bC_s35:
 		STA		word_6C+1
 		LDA		#<[byte_100]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		LDA		byte_73E
 		BPL		loc_128D7E
 		LDA		#<[byte_104]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 loc_128D7E:
 		LDA		byte_740
 		BPL		loc_128D8A
 		LDA		#<[byte_108]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 loc_128D8A:
 		LDA		byte_742
 		BPL		locret_128D96
 		LDA		#<[byte_10C]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 locret_128D96:
 		RTS
 ; unused
@@ -2011,7 +2011,7 @@ _bC_s34:
 		BNE		locret_128F02
 		BIT		byte_60C5
 		BVC		locret_128F02
-		SYSX	_sys12,$21
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$21
 		JSR		sub_128F03
 		JSR		sub_128F24
 		JSR		sub_128F4F
@@ -2097,7 +2097,7 @@ sub_128F30:
 		ASL
 		STA		word_4+1
 		JSR		sub_129074
-		SYSX	_sys12,$95
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 locret_128F49:
 		RTS
 
@@ -2241,7 +2241,7 @@ loc_129032:
 		JSR		sub_129060
 loc_129057:
 		JSR		sub_1742BA
-		SYSX	_sys12,$95
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 		JMP		sub_128F4A
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3058,10 +3058,11 @@ locret_1295CC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s36:
-		STA		_pak_data_ptr
-		STA		byte_CE
-		JMP		sub_129874
+; unused
+;_bC_s36:
+;		STA		_pak_data_ptr
+;		STA		byte_CE
+;		JMP		sub_129874
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s37:
@@ -3329,7 +3330,7 @@ loc_12978A:
 		STA		word_6C+1
 		LDA		#<[byte_110]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		JMP		loc_129745
 loc_1297B7:
 		LDA		byte_644
@@ -3467,18 +3468,17 @@ loc_12988F:
 		BEQ		loc_1298A9
 loc_12989F:
 		SYSX	_sys06_msg_m00_arg0,$6A
-		SYSX	_sys0D,$1C
+		SYSX	_sys0D_wrapper_to_bE_sC,$1C
 		CMP		#$FF
 		BEQ		loc_1298D1
 loc_1298A9:
 		STA		_tmp_pak_data_bank
 		STA		byte_CE
 		SYSX	_sys06_msg_m00_arg0,$68
-		SYSX	_sys0D,$2D
+		SYSX	_sys0D_wrapper_to_bE_sC,$2D
 		CMP		#$FF
 		BEQ		loc_1298CD
 		STA		byte_CF
-;		FAR		$49,$07		; _b0_s28
 		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
@@ -4050,7 +4050,7 @@ loc_129C16:
 		ORA		#4
 		STA		byte_60B6
 		JSR		sub_129E5D
-		SYSX	_sys12,$24
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4069,7 +4069,7 @@ loc_129C16:
 		LDX		#$20
 		JSR		sub_12A1F1
 		JSR		sub_129D1B
-		SYSX	_sys12,$25
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$25
 		JSR		sub_129EBC
 		JSR		sub_129EEB
 loc_129C72:
@@ -4503,7 +4503,7 @@ _bC_s25:
 		PHA
 		FARX	_bB_s4
 		JSR		sub_129E5D
-		SYSX	_sys12,$24
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4513,7 +4513,7 @@ _bC_s25:
 		JSR		sub_129CA1
 		LDX		#4
 		JSR		sub_129E07
-		SYSX	_sys12,$25
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$25
 		JSR		sub_129EBC
 		JMP		loc_129C72
 
@@ -4543,7 +4543,7 @@ loc_129FA2:
 		LDA		#0
 		FARX	_bE_sB
 		JSR		sub_129FC3
-		SYSX	_sys12,$97
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$97
 		FARX	_b2_s8_screen_hit_blink
 		JSR		sub_129FE2
 		LDA		byte_60B6
@@ -4926,7 +4926,7 @@ loc_12A221:
 		AND		#2
 		BEQ		loc_12A259
 loc_12A239:
-		SYSX	_sys12,$1E
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1E
 		FARX	_bD_s22
 		SYSX	_sys07_msg_m00_arg1,$0D
 		JSR		__pause_or_skip
@@ -4943,7 +4943,7 @@ loc_12A247:
 		LDA		byte_60B7
 		BMI		loc_12A239
 loc_12A259:
-		SYSX	_sys12,$1D
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1D
 		FARX	_bD_s22
 		SEC
 		RTS
@@ -5053,7 +5053,7 @@ sub_12A312:
 		STX		word_3C
 		LDX		#[_bC_s15_idx-_sys0_sub_idx_lib]
 		STX		word_3C+1
-		SYSX	_sys12,$9F
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9F
 		JSR		_bC_s17_sys0_spr_effects_call
 loc_12A326:
 		LDA		#$3E
@@ -5071,7 +5071,7 @@ loc_12A326:
 		LDY		#$78
 loc_12A341:
 		TYA
-		FARX	_bE_s4_msg_m00_0
+		FARX	_bE_s4_msg_m00
 		JSR		__pause_or_skip
 		JMP		_bC_s20
 
@@ -5102,7 +5102,7 @@ sub_12A35C:
 sub_12A365:
 		JSR		sub_12A3A6
 		BCS		loc_12A36D
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 loc_12A36D:
 		LDA		#4
 		CLC
@@ -5279,8 +5279,8 @@ locret_12A47A:
 		RTS
 byte_12A47B:
 		.BYTE	[_bC_s38_idx-_sys0_sub_idx_lib]
-		.BYTE	[_bD_s19_0_idx-_sys0_sub_idx_lib]
-		.BYTE	[_bD_s19_0_idx-_sys0_sub_idx_lib]
+		.BYTE	[_bD_s19_idx-_sys0_sub_idx_lib]
+		.BYTE	[_bD_s19_idx-_sys0_sub_idx_lib]
 		.BYTE	[_bC_s38_idx-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5359,7 +5359,7 @@ loc_12A4EA:
 		JSR		sub_174CCF
 		PLA
 		LDX		#1
-		FARX	_bE_s4_msg_m00_0
+		FARX	_bE_s4_msg_m00
 		FARX	_bE_s33
 		RTS
 byte_12A4F8:
@@ -5384,11 +5384,11 @@ _bC_s33:
 		ORA		byte_12F
 		AND		#$FC
 		STA		byte_12F
-		SYSX	_sys12,$9E
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9E
 		JSR		sub_12A55D
 		JSR		sub_12A58F
 		JSR		sub_12A59F
-		SYSX	_sys12,$A0
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A0
 		JSR		sub_12A5CA
 		JSR		sub_12A5DB
 		LDA		#$B
@@ -5446,7 +5446,7 @@ sub_12A58F:
 		STA		byte_12D
 		LDA		#$2C
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5482,7 +5482,7 @@ loc_12A5CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A5D5:
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5549,7 +5549,7 @@ _bC_s19:
 		BVS		loc_12A686
 		FARX	_bB_s4
 		JSR		sub_174369
-		SYSX	_sys12,$01
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$01
 		FARX	_b0_s56
 		LDA		byte_60B7
 		ORA		#$40
@@ -5574,8 +5574,8 @@ _bC_s19:
 		LDA		#0
 		STA		byte_8E
 		STA		word_6C
-		FARX	_bD_s19_1
-		SYSX	_sys12,$03
+		FARX	_bD_s19
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$03
 		JMP		sub_175B0E
 loc_12A686:
 		JSR		sub_174369
@@ -5696,7 +5696,7 @@ _bC_s21:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A743:
-		SYSX	_sys12,$22
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$22
 		LDA		byte_AC
 		AND		#$E0
 		STA		byte_AC
@@ -5718,9 +5718,9 @@ sub_12A743:
 		JSR		sub_12A9CA
 		JSR		sub_12A9C1
 		JSR		_bC_s5
-		SYSX	_sys12,$21
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$21
 		JSR		sub_12AA57
-		SYSX	_sys12,$07
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$07
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6225,13 +6225,13 @@ loc_12AA8E:
 		JSR		sub_12AE73
 		JSR		sub_12AB1E
 		JSR		sub_12AAD4
-		SYSX	_sys12,$22
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$22
 		JSR		sub_12AB31
 		JSR		sub_12AB90
 		JSR		sub_12AC5C
 		JSR		sub_12ADB1
 		JSR		sub_12AD96
-		SYSX	_sys12,$23
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$23
 		JSR		sub_12AC79
 		JSR		sub_12ADD7
 		JSR		sub_12AC69
@@ -6239,7 +6239,7 @@ loc_12AA8E:
 		JSR		_vblank_count
 		JSR		sub_12AE80
 		JSR		sub_12AF78
-		SYSX	_sys12,$04
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$04
 		LDA		byte_60B6
 		ORA		#8
 		STA		byte_60B6
@@ -6250,10 +6250,10 @@ loc_12AA8E:
 sub_12AAD4:
 		LDX		#$28
 		STX		word_3C
-		SYSX	_sys12,$20
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$20
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
-		SYSX	_sys12,$21
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$21
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
 
@@ -6372,7 +6372,7 @@ sub_12AB90:
 		LDA		#0
 		STA		word_3E+1
 loc_12AB94:
-		SYSX	_sys12,$98
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$98
 		JSR		sub_12ABC3
 		INC		word_3E+1
 		LDA		word_3E+1
@@ -7142,8 +7142,8 @@ _bC_s29:
 		BNE		locret_12B163
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$0A
-		SYSX	_sys12,$00
-		SYSX	_sys12,$0C
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$00
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$0C
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#0
@@ -7227,7 +7227,7 @@ loc_12B1CB:
 		TXA
 		ORA		#$10
 		STA		byte_60B7
-		SYSX	_sys12,$A3
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A3
 		FARX	_bD_s26
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$80
@@ -7491,7 +7491,7 @@ loc_12B3AF:
 loc_12B3BB:
 		DEC		byte_6ABE
 		BEQ		locret_12B3CC
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		LDA		word_6C
 		CLC
 		ADC		#4
@@ -7561,7 +7561,7 @@ loc_12B443:
 		JMP		_bC_s0
 loc_12B448:
 		STA		byte_147
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		LDX		#$A
 		JMP		_vblank_count
 loc_12B453:
@@ -7641,7 +7641,7 @@ loc_12B4BE:
 		FARX	_b5_s9
 		LDA		#<[byte_100]
 		STA		word_6C
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		JSR		sub_175B0E
 		JSR		sub_174CCF
 		SYSX	_sys13_msg_m00_arg6,$A2
@@ -7715,7 +7715,7 @@ loc_12B564:
 		ORA		#$10
 		STA		byte_60B9
 		FARX	_bE_s33
-		SYSX	_sys12,$07
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$07
 locret_12B5AC:
 		RTS
 
@@ -7746,7 +7746,7 @@ sub_12B5AD:
 		STX		byte_7A27
 		LDA		#1
 		STA		byte_60C4
-		SYSX	_sys12,$95
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$95
 		JMP		loc_12B6A2
 loc_12B5EA:
 		LDA		byte_60C4
@@ -8099,8 +8099,8 @@ sub_12B877:
 		STA		word_6C
 		JSR		_bC_s12_vblank_count_50
 loc_12B88A:
-		FARX	_bD_s19_1
-		SYSX	_sys12,$9B
+		FARX	_bD_s19
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9B
 		JSR		_bC_s12_vblank_count_50
 		LDA		word_6C
 		CLC
@@ -8153,7 +8153,7 @@ _bC_s12_vblank_count_50:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B8E9:
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		LDA		word_6C
 		CLC
 		ADC		#4
@@ -8710,23 +8710,7 @@ sub_12BC33:
 locret_12BC40:
 		RTS
 
-		ECHO "bank 0C free space", [$BFD8-.]
+		ECHO "bank 0C free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

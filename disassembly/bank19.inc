@@ -6,35 +6,35 @@ _b19_s0_ptr:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b19_s0:
-		LDA		off_2640AF
+		LDA		#<[byte_2640B1]
 		STA		word_6C
-		LDA		off_2640AF+1
+		LDA		#>[byte_2640B1]
 		STA		word_6C+1
 		JSR		sub_264077
-		LDA		off_26496D
+		LDA		#<[byte_26496F]
 		STA		word_6C
-		LDA		off_26496D+1
+		LDA		#>[byte_26496F]
 		STA		word_6C+1
 		JSR		sub_264077
-		LDA		off_265B14
+		LDA		#<[byte_265B16]
 		STA		word_6C
-		LDA		off_265B14+1
+		LDA		#>[byte_265B16]
 		STA		word_6C+1
 		JSR		sub_264077
-		LDA		off_2661EA
+		LDA		#<[byte_2661EC]
 		STA		word_6C
-		LDA		off_2661EA+1
+		LDA		#>[byte_2661EC]
 		STA		word_6C+1
 		JSR		sub_264077
-		LDA		off_2667D5
+		LDA		#<[byte_2667D9]
 		STA		word_6C
-		LDA		off_2667D5+1
+		LDA		#>[byte_2667D9]
 		STA		word_6C+1
 		JSR		sub_264077
 		FARX	_bB_s4
-		LDA		off_2667D7
+		LDA		#<[byte_26786F]
 		STA		word_6C
-		LDA		off_2667D7+1
+		LDA		#>[byte_26786F]
 		STA		word_6C+1
 		JSR		sub_264077
 		JSR		sub_264090
@@ -42,12 +42,13 @@ _b19_s0:
 		STA		word_6
 		LDA		#$32
 		STA		word_6+1
-		FAR		$01,$8F		; _b18_s1
+;		FAR		$01,$8F		; _b18_s1
+		FARX	_b18_s1
 		LDA		word_6
 		BEQ		locret_264076
-		LDA		off_2679DD
+		LDA		#<[byte_2679DF]
 		STA		word_6C
-		LDA		off_2679DD+1
+		LDA		#>[byte_2679DF]
 		STA		word_6C+1
 		JSR		sub_264077
 		LDA		#$FF
@@ -60,7 +61,8 @@ sub_264077:
 		JSR		sub_265019
 		BCS		locret_264088
 		BVS		sub_264077
-		FAR		$01,$8F		; _b18_s1
+;		FAR		$01,$8F		; _b18_s1
+		FARX	_b18_s1
 		LDA		word_6
 		BEQ		loc_264089
 		JMP		sub_264077
@@ -88,8 +90,8 @@ sub_264090:
 		LDA		#1
 		STA		byte_6A3D
 		RTS
-off_2640AF:
-		.WORD	byte_2640B1
+;off_2640AF:
+;		.WORD	byte_2640B1
 byte_2640B1:
 		.BYTE	$90,  0,  1,  0,$90,$FF,  0,  0,$90,  0,  1,  0,$90,$FF,  0,$40
 		.BYTE	$D0,  0,$90,  0,  1,$40,$A0,  1,  0,  0,$90,$FF,  0,  0,$90,  0
@@ -231,8 +233,8 @@ byte_2640B1:
 		.BYTE	  0,$90,$FF,  0,$40,$D0,  3,$90,  0,$FF,  0,$90,$FF,  0,  0,$90
 		.BYTE	  0,$FF,  0,$90,$FF,  0,$40,$D0,  2,$90,  0,$FF,  0,$90,$FF,  0
 		.BYTE	  0,$90,  0,$FF,  0,$90,$FF,  0,$40,$D0,  1,$FF
-off_26496D:
-		.WORD	byte_26496F
+;off_26496D:
+;		.WORD	byte_26496F
 byte_26496F:
 		.BYTE	$90,  1,  4,  0,$90,  1,  4,  0,$90,  2,  4,  0,$90,  2,  4,  0
 		.BYTE	$90,  2,  4,  0,$90,  2,  4,  0,$90,  2,  4,  0,$90,  2,  4,  0
@@ -983,9 +985,9 @@ sub_26546D:
 		INC		word_6C+1
 loc_265475:
 		TAX
-		LDA		off_2654AB
+		LDA		#<[byte_265879]
 		STA		word_6E
-		LDA		off_2654AB+1
+		LDA		#>[byte_265879]
 		STA		word_6E+1
 		TXA
 		BEQ		loc_265491
@@ -1017,8 +1019,8 @@ loc_265495:
 		BIT		word_4
 		CLC
 		RTS
-off_2654AB:
-		.WORD	byte_265879
+;off_2654AB:
+;		.WORD	byte_265879
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_2654AD:
@@ -1642,8 +1644,8 @@ byte_265A74:
 		.BYTE	  1,  1,  1,  1,  1,  1,  1,  1,$EA,$EB,  1,$FA,$CC,$ED,$DC,$DD
 		.BYTE	  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,$EA,$EB,$FA,$FB
 		.BYTE	  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
-off_265B14:
-		.WORD	byte_265B16
+;off_265B14:
+;		.WORD	byte_265B16
 byte_265B16:
 		.BYTE	$90,  0,  1,  0,$90,  1,  0,  0,$90,  0,  1,  0,$90,  1,  0,$40
 		.BYTE	$D0,  2,$90,  0,  1,  0,$90,  1,  0,  0,$90,  0,  1,  0,$90,  1
@@ -1755,8 +1757,8 @@ byte_265B16:
 		.BYTE	  4,  0,  5,$40,$C0,  5,  0,  4,  0,  2,  1,  0,  1,  4,  0,  5
 		.BYTE	$40,$C0,  4,  0,  4,  0,  2,  1,  0,  1,  4,  0,  5,$40,$C0,  5
 		.BYTE	  0,  4,  0,$FF
-off_2661EA:
-		.WORD	byte_2661EC
+;off_2661EA:
+;		.WORD	byte_2661EC
 byte_2661EC:
 		.BYTE	$A0,$FF,  0,$40,$90,$FE,  0,$40,$D0, $A,$A0,$FF,  0,$40,  2,  1
 		.BYTE	  0,  1,  5,$A0,$FF,  0,$40,$90,$FF,  0,$40,  0,  5,$40,$C0,  4
@@ -1853,10 +1855,10 @@ byte_2661EC:
 		.BYTE	$92,  1,  1,  3,$A0,  1,  4,  0,$E0,  9,  2,  1,$A9,  1,  3,  4
 		.BYTE	$14,  0,  1,$60,$61,$62,$63,$3F,$70,$71,$72,$73,$4F,$80,$81,$82
 		.BYTE	$83,$93,  1,  1,$92,  1,  1,  1,$FF
-off_2667D5:
-		.WORD	byte_2667D9
-off_2667D7:
-		.WORD	byte_26786F
+;off_2667D5:
+;		.WORD	byte_2667D9
+;off_2667D7:
+;		.WORD	byte_26786F
 byte_2667D9:
 		.BYTE	  0,  6,  2,  1,  0,$14,  5,$E0,  0,  2,  1,  0,  1,  4,  2,  1
 		.BYTE	  0,  1,  6,$A0,  2,  0,$40,  5,$18,  0,  1,$95,$8C,$41,$90,$95
@@ -2148,8 +2150,8 @@ byte_26786F:
 		.BYTE	$B6,  1,  1,$82,$B6,  1,  1,$7A,$B6,  1,  1,$72,$BE,  1,  1,$8A
 		.BYTE	$BE,  1,  1,$82,$BE,  1,  1,$7A,$BE,  1,  1,$72,$F8,  1,  1,  0
 		.BYTE	$F8,  1,  1,  0,$F8,  1,  1,  0,$F8,  1,  1,  0,  0,$FF
-off_2679DD:
-		.WORD	byte_2679DF
+;off_2679DD:
+;		.WORD	byte_2679DF
 byte_2679DF:
 		.BYTE	  5,$18,  0,  1,$F8,  1,$41,$90,$F8,  1,$41,$98,$CF,$AE,$41,$90
 		.BYTE	$CF,$AD,$41,$98,$D7,$BE,$41,$90,$D7,$BD,$41,$98,  2,  1,$A7, $A
@@ -2198,23 +2200,7 @@ byte_2679DF:
 		.BYTE	$98,$CF,$8E,$41,$90,$CF,$8D,$41,$98,$D7,$9E,$41,$90,$D7,$9D,$41
 		.BYTE	$98,  2,  1,  0,$78,  2,$FF
 
-		ECHO "bank 19 free space", [$BFD8-.]
+		ECHO "bank 19 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

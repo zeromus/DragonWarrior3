@@ -1,7 +1,7 @@
 
 		ORG $8000
 
-		.WORD	0
+;		.WORD	  0
 _bA_s1_ptr:
 		.WORD	_bA_s1
 _bA_s2_ptr:
@@ -10,16 +10,16 @@ _bA_s3_ptr:
 		.WORD	_bA_s3
 _bA_s4_div24_to_8_ptr:
 		.WORD	_bA_s4_div24_to_8
-_bA_s5_add16_to_24_ptr:
-		.WORD	0 ; _bA_s5_add16_to_24
+;_bA_s5_add16_to_24_ptr:
+;		.WORD	_bA_s5_add16_to_24
 _bA_s6_ptr:
 		.WORD	_bA_s6
-_bA_s7_nullsub_ptr:
-		.WORD	0 ; _bA_s7_nullsub
+;_bA_s7_nullsub_ptr:
+;		.WORD	_bA_s7_nullsub
 _bA_s8_ptr:
 		.WORD	_bA_s8
-_bA_s9_nullsub_ptr:
-		.WORD	0 ; _bA_s9_nullsub
+;_bA_s9_nullsub_ptr:
+;		.WORD	_bA_s9_nullsub
 _bA_sA_ptr:
 		.WORD	_bA_sA
 _bA_sB_ptr:
@@ -38,7 +38,7 @@ _bA_s11_ptr:
 		.WORD	_bA_s11
 _bA_s12_ptr:
 		.WORD	_bA_s12
-		.WORD	0
+;		.WORD	  0
 _bA_d14_ptr:
 		.WORD	_bA_d14
 _bA_d15_ptr:
@@ -482,16 +482,17 @@ loc_F8309:
 ;		CLC
 
 ; =============== S U B	R O U T	I N E =======================================
-_bA_s5_add16_to_24:
-		ADC		0,X
-		STA		0,X
-		TYA
-		ADC		1,X
-		STA		1,X
-		LDA		#0
-		ADC		2,X
-		STA		2,X
-		RTS
+; unused
+;_bA_s5_add16_to_24:
+;		ADC		0,X
+;		STA		0,X
+;		TYA
+;		ADC		1,X
+;		STA		1,X
+;		LDA		#0
+;		ADC		2,X
+;		STA		2,X
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ;_bA_s9_nullsub:
@@ -499,24 +500,24 @@ _bA_s5_add16_to_24:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s8:
-		SYSX	_sys12,$81
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$81
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
-		SYSX	_sys12,$91
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		JSR		sub_F834B
 		FARX	_b4_s1A
-		SYSX	_sys12,$91
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F834B:
-		SYSX	_sys12,$A1
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A1
 		LDA		#$78
 		STA		word_4
 loc_F8352:
@@ -524,7 +525,7 @@ loc_F8352:
 		LDA		word_4
 		CMP		#$1E
 		BCS		loc_F8361
-		SYSX	_sys12,$9D
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$9D
 		FARX	_b2_s7_screen_spell_blink
 loc_F8361:
 		JSR		sub_17435B
@@ -1161,11 +1162,11 @@ loc_F8794:
 		BNE		loc_F8778
 		RTS
 word_F87A1:
-		.WORD	  0,$3000,$6000,$8000,$B000,$E000,$1001,$3001
+		.WORD	    0,$3000,$6000,$8000,$B000,$E000,$1001,$3001
 		.WORD	$5001,$7001,$9001,$B001,$C001,$D001,$E001,$E001
 		.WORD	$F001,$E001,$E001,$D001,$C001,$B001,$9001,$7001
 		.WORD	$5001,$3001,$1001,$E000,$B000,$8000,$6000,$3000
-		.WORD	  0,$D0FF,$A0FF,$80FF,$50FF,$20FF,$F0FE,$D0FE
+		.WORD	    0,$D0FF,$A0FF,$80FF,$50FF,$20FF,$F0FE,$D0FE
 		.WORD	$B0FE,$90FE,$70FE,$50FE,$40FE,$30FE,$20FE,$20FE
 		.WORD	$10FE,$20FE,$20FE,$30FE,$40FE,$50FE,$70FE,$90FE
 		.WORD	$B0FE,$D0FE,$F0FE,$20FF,$50FF,$80FF,$A0FF,$D0FF
@@ -1308,7 +1309,7 @@ loc_F8CC7:
 		JSR		sub_1742C7
 		JSR		sub_1742BA
 		JSR		_vblank
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		LDA		byte_588
 		RTS
 loc_F8CEC:
@@ -2294,23 +2295,7 @@ _txt_erdrick_story:
 		.BYTE	$00,0,$FF
 		.BYTE	$00,0,$FF
 
-		ECHO "bank 0A free space", [$BFD8-.]
+		ECHO "bank 0A free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

@@ -9,20 +9,20 @@ _bE_s2_ptr:
 		.WORD	_bE_s2
 _bE_s3_ptr:
 		.WORD	_bE_s3
-_bE_s4_msg_m00_0_ptr:
+_bE_s4_msg_m00_ptr:
 		.WORD	_bE_s4_msg_m00
 _bE_s5_ptr:
 		.WORD	_bE_s5
-_bE_s6_msg_mFF_0_ptr:
+_bE_s6_msg_mFF_ptr:
 		.WORD	_bE_s6_msg_mFF
-_bE_s6_msg_mFF_1_ptr:
-		.WORD	_bE_s6_msg_mFF
-_bE_s4_msg_m00_1_ptr:
-		.WORD	_bE_s4_msg_m00
+;_bE_s6_msg_mFF_ptr:
+;		.WORD	_bE_s6_msg_mFF
+;_bE_s4_msg_m00_ptr:
+;		.WORD	_bE_s4_msg_m00
 _bE_s9_ptr:
 		.WORD	_bE_s9
-_bE_sA_ptr:
-		.WORD	0 ; _bE_sA		; function not fit into	bank E so moved	to bank	F
+;_bE_sA_ptr:
+;		.WORD	_bE_sA		; function not fit into	bank E so moved	to bank	F
 _bE_sB_ptr:
 		.WORD	_bE_sB
 _bE_sC_ptr:
@@ -43,11 +43,11 @@ _bE_s13_ptr:
 		.WORD	_bE_s13
 _bE_s14_ptr:
 		.WORD	_bE_s14
-		.WORD	0
+;		.WORD	  0
 _bE_s16_ptr:
 		.WORD	_bE_s16
-_bE_s1C_0_ptr:
-		.WORD	_bE_s1C
+;_bE_s1C_ptr:
+;		.WORD	_bE_s1C
 _bE_s18_ptr:
 		.WORD	_bE_s18
 _bE_s19_ptr:
@@ -60,8 +60,8 @@ _bE_s1C_ptr:
 		.WORD	_bE_s1C
 _bE_s1D_ptr:
 		.WORD	_bE_s1D
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
 _bE_s20_ptr:
 		.WORD	_bE_s20
 _bE_s21_ptr:
@@ -76,14 +76,14 @@ _bE_s25_ptr:
 		.WORD	_bE_s25
 _bE_s26_ptr:
 		.WORD	_bE_s26
-		.WORD	0
-		.WORD	0
-		.WORD	0
-		.WORD	0
-_bE_s2B_ptr:
-		.WORD	_bE_s2B
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
+;_bE_s2B_ptr:
+;		.WORD	_bE_s2B
+;		.WORD	  0
+;		.WORD	  0
 _bE_s2E_ptr:
 		.WORD	_bE_s2E
 _bE_s2F_ptr:
@@ -98,10 +98,10 @@ _bE_s33_ptr:
 		.WORD	_bE_s33
 _bE_s34_ptr:
 		.WORD	_bE_s34
-		.WORD	0
+;		.WORD	  0
 _bE_s36_ptr:
 		.WORD	_bE_s36
-		.WORD	0
+;		.WORD	  0
 _bE_s38_ptr:
 		.WORD	_bE_s38
 
@@ -194,7 +194,7 @@ loc_1580EB:
 		STA		byte_2C
 		FARX	_bC_s32
 		FARX	_bD_s18
-		SYSX	_sys12,$04
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$04
 locret_15811A:
 		RTS
 
@@ -265,7 +265,7 @@ loc_158181:
 		BNE		loc_158181
 		LDA		#2
 		STA		byte_2C
-		SYSX	_sys12,$0E
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$0E
 		LDA		#0
 		STA		byte_6C9
 		RTS
@@ -276,8 +276,8 @@ sub_15819F:
 		STA		byte_8E
 		JSR		_bE_sD
 		JSR		sub_15856C
-		SYSX	_sys12,$85
-		SYSX	_sys0D,$14
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
+		SYSX	_sys0D_wrapper_to_bE_sC,$14
 		CMP		#$FF
 		BNE		loc_1581B8
 		LDA		#3
@@ -452,7 +452,7 @@ loc_1582D6:
 		PHA
 		LDA		byte_8
 		PHA
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		JSR		sub_174DF2
 		PLA
 		STA		byte_8
@@ -558,25 +558,25 @@ sub_158377:
 		SYSX	_sys07_msg_m00_arg1,$66
 		JMP		_bE_s33
 loc_158385:
-		SYSX	_sys0D,$1E
+		SYSX	_sys0D_wrapper_to_bE_sC,$1E
 		CMP		#$FF
 		BEQ		sub_158374
 		CMP		#1
 		BEQ		sub_1583C2
 		CMP		#2
 		BEQ		sub_158405
-		SYSX	_sys0D,$23
+		SYSX	_sys0D_wrapper_to_bE_sC,$23
 		CMP		#$FF
 		BEQ		sub_158374
 		STA		byte_CE
-		SYSX	_sys0D,$68
-		SYSX	_sys0D,$09
+		SYSX	_sys0D_wrapper_to_bE_sC,$68
+		SYSX	_sys0D_wrapper_to_bE_sC,$09
 		JSR		__pause_or_skip
-		SYSX	_sys12,$85
-		SYSX	_sys0D,$08
-		SYSX	_sys0D,$0A
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
+		SYSX	_sys0D_wrapper_to_bE_sC,$08
+		SYSX	_sys0D_wrapper_to_bE_sC,$0A
 		JSR		__pause_or_skip
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		LDA		#1
 		STA		byte_D0
 		JSR		sub_1583D0
@@ -603,16 +603,16 @@ sub_1583D0:
 		JSR		_sram_b0_s2C
 		LDA		word_4
 		BEQ		loc_1583EA
-		SYSX	_sys0D,$0B
+		SYSX	_sys0D_wrapper_to_bE_sC,$0B
 		JMP		loc_1583ED
 loc_1583EA:
-		SYSX	_sys0D,$65
+		SYSX	_sys0D_wrapper_to_bE_sC,$65
 loc_1583ED:
 		JSR		__pause_or_skip
-		SYSX	_sys12,$85
-		SYSX	_sys0D,$0C
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
+		SYSX	_sys0D_wrapper_to_bE_sC,$0C
 		JSR		__pause_or_skip
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 loc_1583FC:
 		INC		byte_D0
 		RTS
@@ -631,11 +631,11 @@ sub_158405:
 sub_158409:
 		BIT		byte_60B7
 		BVC		loc_158417
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$65
 		JMP		_bE_s33
 loc_158417:
-		SYSX	_sys0D,$24
+		SYSX	_sys0D_wrapper_to_bE_sC,$24
 		CMP		#$FF
 		BNE		loc_158421
 		JMP		sub_1580A1
@@ -656,7 +656,7 @@ loc_15842F:
 		BCC		loc_158443
 		BCS		loc_158461
 loc_15843C:
-		SYSX	_sys0D,$25
+		SYSX	_sys0D_wrapper_to_bE_sC,$25
 		CMP		#$FF
 		BNE		loc_158449
 loc_158443:
@@ -683,7 +683,7 @@ loc_158461:
 		BCC		loc_15842F
 		BCS		loc_15848E
 loc_15846E:
-		SYSX	_sys0D,$26
+		SYSX	_sys0D_wrapper_to_bE_sC,$26
 		CMP		#$FF
 		CLC
 		BEQ		loc_15842C
@@ -707,7 +707,7 @@ loc_15848E:
 		BCC		loc_158461
 		BCS		loc_1584BB
 loc_15849B:
-		SYSX	_sys0D,$27
+		SYSX	_sys0D_wrapper_to_bE_sC,$27
 		CMP		#$FF
 		CLC
 		BEQ		loc_15845E
@@ -730,7 +730,7 @@ loc_1584BB:
 		BCC		loc_15848E
 		BCS		loc_1584E7
 loc_1584C8:
-		SYSX	_sys0D,$28
+		SYSX	_sys0D_wrapper_to_bE_sC,$28
 		CMP		#$FF
 		CLC
 		BEQ		loc_15848B
@@ -777,7 +777,7 @@ locret_158515:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158516:
 		PHP
-		SYSX	_sys0D,$0D
+		SYSX	_sys0D_wrapper_to_bE_sC,$0D
 		JSR		sub_158581
 		PLP
 		RTS
@@ -805,14 +805,14 @@ sub_15851F:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$51
 		JSR		sub_1585B8
 loc_15854E:
 		SEC
 		RTS
 loc_158550:
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		LDA		byte_CE
 		STA		byte_D2
 		SYSX	_sys06_msg_m00_arg0,$BC
@@ -879,7 +879,7 @@ sub_15858D:
 		CLC
 		RTS
 loc_1585A5:
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		JSR		sub_1585B8
 		SEC
@@ -887,7 +887,7 @@ loc_1585A5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
-		SYSX	_sys12,$17
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$17
 		FARX	_bD_s22
 		CLC
 		RTS
@@ -1155,7 +1155,7 @@ loc_158731:
 		PHA
 		LDA		word_6+1
 		PHA
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 		PLA
 		STA		word_6+1
 		PLA
@@ -1193,8 +1193,8 @@ loc_158786:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1C:
-		SYSX	_sys12,$86
-		SYSX	_sys0D,$1D
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
+		SYSX	_sys0D_wrapper_to_bE_sC,$1D
 		PHA
 		LDA		byte_80
 		PHA
@@ -3389,7 +3389,7 @@ sub_15A068:
 locret_15A074:
 		RTS
 loc_15A075:
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		JSR		sub_15A1A1
 		PLA
 		PLA
@@ -4301,7 +4301,7 @@ _bE_s6_msg_mFF:
 ; =============== S U B	R O U T	I N E =======================================
 _msg_display:
 		STY		byte_78
-		JSR		_get_msg_bank
+		JSR		_get_msg_ptr
 		JSR		sub_15AB4F
 loc_15A6A7:
 		JSR		sub_15A6B6
@@ -4681,7 +4681,7 @@ sub_15A8F0:
 		RTS
 loc_15A8FA:
 		JSR		sub_15A916
-		SYSX	_sys12,$85
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$85
 		LDX		#2
 		JSR		_vblank_count
 		LDA		byte_580
@@ -4836,7 +4836,7 @@ loc_15A9C3:
 		JSR		_bE_s38
 		LDA		byte_6AD0
 		BEQ		loc_15A9CF
-		SYSX	_sys12,$96
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$96
 loc_15A9CF:
 		PLP
 		BCC		locret_15A9D5
@@ -5616,8 +5616,8 @@ sub_15AE80:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_get_msg_bank:
-		NOP
+_get_msg_ptr:
+;		NOP
 		TAY
 		CMP		#$96
 		TXA
@@ -5697,7 +5697,7 @@ loc_15AEF0:
 loc_15AEFB:
 		STA		word_7C
 		TYA
-		JMP		_get_msg_bank_by_idx
+		JMP		_get_msg_ptr_by_idx
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AF01:
@@ -5867,7 +5867,7 @@ loc_15B007:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s22:
 		FARX	_bD_s5
-		SYSX	_sys12,$93
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$93
 		LDA		#$F8
 		LDX		#0
 loc_15B013:
@@ -5964,7 +5964,7 @@ loc_15B0A9:
 		LDA		byte_2C
 		CMP		#1
 		BNE		locret_15B0D4
-		SYSX	_sys12,$0B
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$0B
 		LDA		byte_2A
 		CMP		#$A2
 		BNE		locret_15B0D4
@@ -6260,7 +6260,7 @@ sub_15B288:
 		JSR		sub_174DF2
 		LDA		byte_48
 		BNE		loc_15B2D0
-		SYSX	_sys12,$13
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$13
 		LDA		#0
 		STA		byte_D2
 		LDX		#$27
@@ -6357,15 +6357,15 @@ byte_15B388:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unused
-_bE_s2B:
-		ASL
-		ASL
-		TAY
-		LDA		byte_110,Y
-		TAX
-		LDA		byte_111,Y
-		TAY
-		RTS
+;_bE_s2B:
+;		ASL
+;		ASL
+;		TAY
+;		LDA		byte_110,Y
+;		TAX
+;		LDA		byte_111,Y
+;		TAY
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s2E:
@@ -7307,23 +7307,7 @@ _bE_s1A:
 		CLC
 		RTS
 
-		ECHO "bank 0E free space", [$BFD8-.]
+		ECHO "bank 0E free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

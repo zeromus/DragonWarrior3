@@ -609,7 +609,8 @@ loc_23580A:
 		FARX	_bB_s4
 		LDX		#$64
 		JSR		_vblank_count
-		FAR		$00,$8F		; _b18_s0
+;		FAR		$00,$8F		; _b18_s0_intro_animation
+		FARX	_b18_s0_intro_animation
 		LDX		#$64
 		JSR		_vblank_count
 		LDX		#0
@@ -1881,23 +1882,7 @@ byte_237F23:
 		.BYTE	$8D,$2C,  0,$8D,$7E,$7F,$7D,$2C,$9C,$9D,$9E,$9F,$3B,$3C,$AC,$AD
 		.BYTE	$AE,$AD,$AD,$4C,$FF
 
-		ECHO "bank 17 free space", [$BFD8-.]
+		ECHO "bank 17 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$7682
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB
