@@ -6074,7 +6074,7 @@ sub_6A86B:
 		STA		word_4+1
 		LDX		#word_4
 		PLA
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDA		#2
 		JSR		_div16_to_8
 		PLA
@@ -8632,18 +8632,6 @@ loc_6B892:
 		LDX		#word_4A
 		TYA
 		JSR		_mul16_to_8
-; --
-;		LDA		#$6A
-;		LDX		#byte_5B
-;		JSR		_get_syscall0_bank_ptr_safe
-;		CLC
-;		LDA		byte_5B
-;		ADC		word_4A
-;		STA		word_4A
-;		LDA		byte_5C
-;		ADC		word_4A+1
-;		STA		word_4A+1
-; --
 		LDA		#<[_b0_d43_enemies_lib]
 		CLC
 		ADC		word_4A
@@ -8651,7 +8639,6 @@ loc_6B892:
 		LDA		#>[_b0_d43_enemies_lib]
 		ADC		word_4A+1
 		STA		word_4A+1
-; --
 		LDX		#word_4A
 		RTS
 
@@ -9116,7 +9103,7 @@ sub_6BACB:
 		LDA		byte_5B
 		JSR		_b4_sF
 		LDX		#byte_59
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDA		byte_43
 		ASL
 		TAY

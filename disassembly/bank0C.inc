@@ -7738,7 +7738,7 @@ loc_12B61D:
 		JSR		_mul16_to_8
 		LDA		#$16
 		LDY		#byte_74
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		JSR		sub_12B672
 		JSR		sub_12B667
 		LDA		byte_60C4

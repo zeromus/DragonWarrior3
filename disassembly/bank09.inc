@@ -34,7 +34,7 @@ _chr_terrain_bg_data0:
 		.BYTE	$4D,$A0,  5,$48,$80,  0,  0,  0,$B9,$ED,$AD,$CD,$A4,$A0,  9,  0
 		.BYTE	$12,$48,$10,$40,  8,  0,  0,  0,$BA,$5A,$18,$4A,$48,$40,  8,$40
 _chr_terrain_bg_data1:
-		.BYTE	    8,  8,  8,$18,$24,$FA,$87,  2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  8,  8,$18,$24,$FA,$87,  2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE	$14,$18,  8,$1C,$16,$23,$C2,$45,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE	  1,  1,  1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE	$EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF

@@ -31,8 +31,8 @@ locret_174028:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_add_16_to_neg16:
-		JSR		_add_8_to_neg16
+_add16_to_neg16:
+		JSR		_add8_to_neg16
 		TYA
 		EOR		#$FF
 		SEC
@@ -41,7 +41,7 @@ _add_16_to_neg16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_add_8_to_neg16:
+_add8_to_neg16:
 		EOR		#$FF
 		SEC
 		ADC		0,X
@@ -52,7 +52,7 @@ locret_174040:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_add_16_to_16:
+_add16_to_16:
 		JSR		_add8_to_16
 		TYA
 		CLC
@@ -296,15 +296,15 @@ loc_174196:
 off_1741BC:
 		.WORD	_chr_data_unk0
 byte_1741BE:
-		.BYTE	$A
+		.BYTE	 $A
 		.WORD	_chr_data_unk1
-		.BYTE	$A
+		.BYTE	 $A
 		.WORD	_chr_data_unk2
-		.BYTE	$A
+		.BYTE	 $A
 		.WORD	_chr_data_unk3
-		.BYTE	$A
+		.BYTE	 $A
 		.WORD	_chr_data_unk4
-		.BYTE	$A
+		.BYTE	 $A
 		.WORD	_chr_data_unk5
 		.BYTE	  9
 		.WORD	_chr_data_unk6
@@ -885,48 +885,14 @@ _syscall0_unsafe:
 _get_syscall1_bank_ptr:
 		LDA		_get_syscall1_sub_idx,Y
 		PHA
-;		TYA
-;		AND		#1
-;		BNE		loc_17450D
-;		TYA
-;		LSR
-;		TAY
 		LDA		_get_syscall1_sub_table_banks,Y
-;		LSR
-;		LSR
-;		LSR
-;		LSR
-;		JMP		_get_syscall_bank_and_ptr
-;loc_17450D:
-;		TYA
-;		LSR
-;		TAY
-;		LDA		_get_syscall1_sub_table_banks,Y
-;		AND		#$F
 		JMP		_get_syscall_bank_and_ptr
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall0_bank_ptr:
 		LDA		_get_syscall0_sub_idx,Y
 		PHA
-;		TYA
-;		AND		#1
-;		BNE		loc_17452E
-;		TYA
-;		LSR
-;		TAY
 		LDA		_get_syscall0_sub_table_banks,Y
-;		LSR
-;		LSR
-;		LSR
-;		LSR
-;		JMP		_get_syscall_bank_and_ptr
-;loc_17452E:
-;		TYA
-;		LSR
-;		TAY
-;		LDA		_get_syscall0_sub_table_banks,Y
-;		AND		#$F
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall_bank_and_ptr:
@@ -940,47 +906,6 @@ _get_syscall_bank_and_ptr:
 		LDA		$8000+1,Y
 		STA		1,X
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; unused anymore
-;_get_syscall0_bank_ptr_safe:
-;		STY		_irq_y_saved
-;		TAY
-;		LDA		_mmc_cur_prg_bank
-;		PHA
-;		LDA		_get_syscall0_sub_idx,Y
-;		PHA
-;;		TYA
-;;		AND		#1
-;;		BNE		loc_174566
-;;		TYA
-;;		LSR
-;;		TAY
-;		LDA		_get_syscall0_sub_table_banks,Y
-;;		LSR
-;;		LSR
-;;		LSR
-;;		LSR
-;;		JMP		loc_17456E
-;;loc_174566:
-;;		TYA
-;;		LSR
-;;		TAY
-;;		LDA		_get_syscall0_sub_table_banks,Y
-;;		AND		#$F
-;;loc_17456E:
-;		JSR		_mmc1_prg_set
-;		PLA
-;		ASL
-;		TAY
-;		LDA		$8000,Y
-;		STA		0,X
-;		LDA		$8000+1,Y
-;		STA		1,X
-;		PLA
-;		JSR		_mmc1_prg_set
-;		LDY		_irq_y_saved
-;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall0_data_byte_Y:
@@ -1021,44 +946,6 @@ _get_syscall0_data_byte_X:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_get_syscall0_data_cur_byte0:
-		STX		_irq_x_saved
-		STY		_irq_y_saved
-		TAY
-		LDA		_mmc_cur_prg_bank
-		PHA
-		LDX		#_tmp21
-		JSR		_get_syscall0_bank_ptr
-		LDY		#0
-		LDA		(_tmp21),Y
-		STA		byte_25
-		PLA
-		JSR		_mmc1_prg_set
-		LDY		_irq_y_saved
-		LDX		_irq_x_saved
-		LDA		byte_25
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_get_syscall0_data_cur_byte1:
-		STX		_irq_x_saved
-		STY		_irq_y_saved
-		TAY
-		LDA		_mmc_cur_prg_bank
-		PHA
-		LDX		#_tmp21
-		JSR		_get_syscall0_bank_ptr
-		LDY		#1
-		LDA		(_tmp21),Y
-		STA		byte_25
-		PLA
-		JSR		_mmc1_prg_set
-		LDY		_irq_y_saved
-		LDX		_irq_x_saved
-		LDA		byte_25
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 _get_far_ptr_byte_safe:
 		STA		_irq_a_saved
 		LDA		_mmc_cur_prg_bank
@@ -1079,75 +966,6 @@ _get_far_ptr_byte_safe:
 		LDY		_irq_y_saved
 		LDA		_tmp21+2
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;_mask_far_ptr_byte_safe:
-;		STA		_irq_a_saved
-;		LDA		_mmc_cur_prg_bank
-;		PHA
-;		STX		_irq_x_saved
-;		STY		_irq_y_saved
-;		TYA
-;		JSR		_mmc1_prg_set
-;		LDA		0,X
-;		STA		_tmp21
-;		LDA		1,X
-;		STA		_tmp21+1
-;		LDA		_irq_a_saved
-;		LDY		#0
-;		AND		(_tmp21),Y
-;		STA		_tmp21+2
-;		PLA
-;		JSR		_mmc1_prg_set
-;		LDX		_irq_x_saved
-;		LDY		_irq_y_saved
-;		LDA		_tmp21+2
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; redundant
-;_mmc1_cmd:
-;		STA		_cur_mmc_cmd
-;		STA		$9FFF
-;		LSR
-;		STA		$9FFF
-;		LSR
-;		STA		$9FFF
-;		LSR
-;		STA		$9FFF
-;		LSR
-;		STA		$9FFF
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; redundant
-;_mmc1_chr0:
-;		STA		_cur_chr0_bank_prg_hi
-;		STA		$BFFF
-;		LSR
-;		STA		$BFFF
-;		LSR
-;		STA		$BFFF
-;		LSR
-;		STA		$BFFF
-;		LSR
-;		STA		$BFFF
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; redundant
-;_mmc1_chr1:
-;		STA		$DFFF
-;		LSR
-;		STA		$DFFF
-;		LSR
-;		STA		$DFFF
-;		LSR
-;		STA		$DFFF
-;		LSR
-;		STA		$DFFF
-;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174690:
@@ -3321,10 +3139,6 @@ sub_1754EE:
 		JSR		sub_175917
 		SEC
 		SBC		#$80
-; --
-;		LDY		#$7E
-;		JSR		_calc_6C_mul_3_add_syscall0_word
-; --
 		STA		word_6C
 		ASL
 		CLC
@@ -3334,7 +3148,6 @@ sub_1754EE:
 		LDA		#>[_b6_d1]
 		ADC		#0
 		STA		word_6C+1
-; --
 		LDY		#0
 		LDA		(word_6C),Y
 		STA		byte_30
@@ -3354,10 +3167,6 @@ sub_1754EE:
 sub_175516:
 		SEC
 		SBC		#$C0
-; --
-;		LDY		#$7F
-;		JSR		_calc_6C_mul_3_add_syscall0_word
-; --
 		STA		word_6C
 		ASL
 		CLC
@@ -3367,7 +3176,6 @@ sub_175516:
 		LDA		#>[_b6_d2]
 		ADC		#0
 		STA		word_6C+1
-; --
 		LDY		#0
 		LDA		(word_6C),Y
 		PHA
@@ -3392,50 +3200,10 @@ sub_175516:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; not needed anymore
-;_calc_6C_mul_3_add_syscall0_word:
-;		STA		word_6C
-;		ASL
-;		CLC
-;		ADC		word_6C
-;		PHA
-;		TYA
-;		JSR		_get_syscall0_data_cur_byte0
-;		STA		word_6C
-;		TYA
-;		JSR		_get_syscall0_data_cur_byte1
-;		STA		word_6C+1
-;		PLA
-;		CLC
-;		ADC		word_6C
-;		STA		word_6C
-;		BCC		locret_175568
-;		INC		word_6C+1
-;locret_175568:
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 sub_175569:
 		SEC
 		SBC		#$F0
 		ASL
-; --
-;		STA		word_6C
-;		LDA		#$80
-;		JSR		_get_syscall0_data_cur_byte0
-;		CLC
-;		ADC		word_6C
-;		STA		word_6C
-;		PHP
-;		LDA		#$80
-;		JSR		_get_syscall0_data_cur_byte1
-;		PLP
-;		ADC		#0
-;		STA		word_6C+1
-;		PHA				; why?
-;		LDA		#6
-;		JSR		_mmc1_prg_set
-;		PLA				; A is overwritten with next opcode
 ; here is just loading of data offset in external bank, but with this source we know
 ; all offsets at assembly time, so no need in this weird methods
 ; syscall 80 is bank6, offset 3 (_b6_d3)
@@ -3447,7 +3215,6 @@ sub_175569:
 		STA		word_6C+1
 		LDA		#6
 		JSR		_mmc1_prg_set
-; --
 		LDY		#0
 		LDA		(word_6C),Y
 		STA		byte_2A
@@ -3983,16 +3750,10 @@ sub_175923:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17592E:
-; --
-;		LDA		#$5D
-;		LDX		#word_6C
-;		JSR		_get_syscall0_bank_ptr_safe
-; --
 		LDA		#<[_b6_d5]
 		STA		word_6C
 		LDA		#>[_b6_d5]
 		STA		word_6C+1
-; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 loc_17593A:
@@ -4068,19 +3829,10 @@ word_1759B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1759B8:
-; --
-;		LDA		#$1D
-;		JSR		_get_syscall0_data_cur_byte0
-;		STA		word_6C
-;		LDA		#$1D
-;		JSR		_get_syscall0_data_cur_byte1
-;		STA		word_6C+1
-; --
 		LDA		#<[_b6_d4]
 		STA		word_6C
 		LDA		#>[_b6_d4]
 		STA		word_6C+1
-; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		#0
@@ -4159,21 +3911,6 @@ sub_175A32:
 		LDA		#0
 		ADC		word_6E+1
 		STA		word_6E+1
-;-
-;		LDA		#$1E
-;		JSR		_get_syscall0_data_cur_byte1
-;		CLC
-;		ADC		word_6E+1
-;		STA		word_6E+1
-;		LDA		#$1E
-;		JSR		_get_syscall0_data_cur_byte0
-;		CLC
-;		ADC		word_6E
-;		STA		word_6E
-;		BCC		loc_175A5E
-;		INC		word_6E+1
-;loc_175A5E:
-;-
 		LDA		#<[_map_data_lib]
 		CLC
 		ADC		word_6E
@@ -4181,7 +3918,6 @@ sub_175A32:
 		LDA		#>[_map_data_lib]
 		ADC		word_6E+1
 		STA		word_6E+1
-; --
 		LDA		#7
 		JSR		_mmc1_prg_set
 		LDA		byte_9A
@@ -4242,19 +3978,10 @@ loc_175AB2:
 		TXA
 		AND		#$1F
 		STA		byte_8A
-; --
-;		LDA		#$7D
-;		JSR		_get_syscall0_data_cur_byte0
-;		STA		byte_98
-;		LDA		#$7D
-;		JSR		_get_syscall0_data_cur_byte1
-;		STA		byte_99
-; -- the same, bank 6, ofs 0
 		LDA		#<[_b6_d0]
 		STA		byte_98
 		LDA		#>[_b6_d0]
 		STA		byte_99
-; --
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		byte_8B
@@ -5803,7 +5530,7 @@ sub_176488:
 		LDA		off_82DD0
 		LDY		off_82DD0+1
 		LDX		#_tmp21
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDA		byte_25
 		LDX		#0
 		STX		word_5E+1
@@ -5821,7 +5548,7 @@ loc_1764AF:
 loc_1764B9:
 		INC		byte_25
 		LDX		#_tmp21
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		JSR		sub_1764E3
 		LDA		byte_25
 		CMP		#8
@@ -5863,7 +5590,7 @@ loc_176501:
 		LDA		off_823EF
 		LDY		off_823EF+1
 		LDX		#_tmp21
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 loc_17650C:
 		JSR		loc_17652D
 		LDX		byte_25
@@ -5955,7 +5682,7 @@ loc_17658E:
 		JSR		_add8_to_16
 		LDA		off_82DD2
 		LDY		off_82DD2+1
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		(byte_42),Y
 		STA		byte_52
@@ -6546,7 +6273,7 @@ _get_syscall0_sub_idx:
 		.BYTE	  1			; FAR $1B,$07 (_bA_s1)
 		.BYTE	$A		; FAR $1C,$07 (_bE_sA)
 		.BYTE	  4			; FAR $1D,$07 (_b6_d4)
-		.BYTE	  0			; FAR $1E,$07 (_b7_d0_map_data_lib_ofs)
+		.BYTE	  0			; FAR $1E,$07 (0 ; _b7_d0_map_data_lib_ofs)
 		.BYTE	$B		; FAR $1F,$07 (_bE_sB)
 		.BYTE	$C		; FAR $20,$07 (_bE_sC)
 		.BYTE	$D		; FAR $21,$07 (_bE_sD)
@@ -6771,7 +6498,7 @@ _get_syscall0_sub_idx:
 		.BYTE	  5			; FAR $FC,$07 (_bA_s5_add16_to_24)
 		.BYTE	$19		; FAR $FD,$07 (_bD_s19)
 		.BYTE	$2C		; FAR $FE,$07 (_bC_s2C)
-		.BYTE	  1			; FAR $FF,$07 (_bD_d1_ofs)
+		.BYTE	  1			; FAR $FF,$07 (0 ; _bD_d1_ofs)
 _get_syscall1_sub_idx:
 		.BYTE	$2A		; FAR $00,$17 (_bC_s2A)
 		.BYTE	$12		; FAR $01,$17 (_bC_s12_vblank_count_50)

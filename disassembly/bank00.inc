@@ -283,7 +283,7 @@ _get_enemy_info_ptr:
 		JSR		_mul16_to_8
 		LDA		#<[_b0_d43_enemies_lib]
 		LDY		#>[_b0_d43_enemies_lib]
-		JMP		_add_16_to_16
+		JMP		_add16_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_81FE:
@@ -310,16 +310,9 @@ locret_8221:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s0_world_map_random_enounter_test:
-;		NOP				; here was random encounters disabled cheat,
-;		NOP				; which isn't removed in the japanese PRG1 version
-;		NOP				; LDA _pads+1
-;		NOP				; LSR
-;		NOP				; BCS locret_823F
-; --
-		LDA		_pads+1
-		LSR
-		BCS		locret_823F
-; --
+		LDA		_pads+1			; random encounter disabled cheat from PRG1J reenabled
+		LSR						;
+		BCS		locret_823F		;
 		LDA		byte_6E1
 		BNE		locret_823F
 		LDX		byte_2A
@@ -511,7 +504,7 @@ loc_835A:
 		JSR		_mul16_to_8
 		LDA		#<[byte_8ADB]
 		LDY		#>[byte_8ADB]
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_4A+1),Y
 		BNE		loc_838D
@@ -597,7 +590,7 @@ loc_83F3:
 		JSR		_mul16_to_8
 		LDA		#<[byte_90F3]
 		LDY		#>[byte_90F3]
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDA		#1
 		LDX		#word_4A+1
 		JSR		_add8_to_16
@@ -637,7 +630,7 @@ loc_8437:
 		JSR		_mul16_to_8
 		LDA		#<[byte_907B]
 		LDY		#>[byte_907B]
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDX		#0
 		STX		byte_53
 		STX		byte_52
@@ -1438,7 +1431,7 @@ _b0_d41_equip_list:
 		.BYTE	 $E,$FF, $E,$FF,$FF,$FF,$FF,$FF,$20,$FF,$11,$FF,  1,$19,$FF, $C
 		.BYTE	  1,$FF,$FF,$40,$FF,  4, $E, $F
 _b0_d42_effects_list:
-		.BYTE	    0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
+		.BYTE	  0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
 		.BYTE	$F3,$14,$83, $B, $B,  2,$F0,  2,  3,  2,$A2,$E2,$F3,$E3,  3,$E2
 		.BYTE	  1,  1,  1,  2,  2,  2,  2,  2,$10,  2,  1,  2,  2, $B,  2,  1
 		.BYTE	  1,  3,$10,  2,$10,  2,$10,  3,  1,  2,$83,$10,  9,  1,  2,$10
@@ -1867,7 +1860,7 @@ loc_9508:
 loc_9516:
 		JSR		sub_174D3F
 		LSR
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		BCS		loc_9503
 		LDA		#0
 		STA		word_4
@@ -6313,7 +6306,7 @@ sub_B2CB:
 		JMP		sub_A10E
 
 _b0_d43_enemies_lib:
-		.BYTE	    1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
+		.BYTE	  1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
 		.BYTE	  1,  5,  0,  6,  2, $A,  6,  9,  0,$E5,$82,  2,  2,  2,  2,  2,  2,  2,  0,  0,$30,$30,$25
 		.BYTE	  2,  7,  0,  5,  2, $C,  8, $A,  0,$E5,$82,  7,  2,  2,  2,  7,  2,  2,  0,  0,$30,$30,$22
 		.BYTE	  3,  8,  0,  6,  3, $D,  8, $D,  0,$C5,$82,  2,$82,  2,  2,  2,  2,  2,  0,  0,$70,$30,$24
