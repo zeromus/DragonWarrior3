@@ -1985,9 +1985,9 @@ loc_F92F6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F930A:
-		LDA		_txt_erdrick_story_ofs
+		LDA		#<[_txt_erdrick_story]
 		STA		word_6C
-		LDA		_txt_erdrick_story_ofs+1
+		LDA		#>[_txt_erdrick_story]
 		STA		word_6C+1
 		LDA		#0
 		STA		word_3C
@@ -2239,54 +2239,36 @@ byte_F94C4:
 		.BYTE	  0,$20, $C,$20, $D,$20,$13,$20,$13,$60, $D,$60, $C,$60,  0,$60
 		.BYTE	  0,$20, $E,$20, $F,$20,$14,$20,$14,$60, $F,$60, $E,$60,  0,$60
 		.BYTE	  0,$20,  0,$20,$10,$20,$11,$20,$11,$60,$10,$60,  0,$60,  0,$60
-_txt_erdrick_story_ofs:
-		.WORD	_txt_erdrick_story
+;_txt_erdrick_story_ofs:
+;		.WORD	_txt_erdrick_story
 _txt_erdrick_story:
-		.BYTE	    2,$38,$12,$1F,$1D,  0, $B,  0,$1E,$1C,$1F, $F,  0,$21, $B,$1C
-		.BYTE	$1C,$13,$19,$1C,  0,$21, $B,$1D,$FF
-		.BYTE	  1, $C,$19,$1C,$18,$6A,  0, $B,$18, $E,  0,$F0,  0, $C, $F, $D
-		.BYTE	 $B,$17, $F,$FF
-		.BYTE	  1,$15,$18,$19,$21,$18,  0, $B,$1D,  0,$29,$1C, $E,$1C,$13, $D
-		.BYTE	$15,$6A,  0,$2C, $F,$1C,$19,  0,$19,$10,$FF
-		.BYTE	  3,$25,$16,$13, $B,$12, $B,$18,$6C,  0,$38,$12, $F,$1C, $F,  0
-		.BYTE	$21, $B,$1D,  0,$18,$19,$FF
-		.BYTE	 $B, $F,$1B,$1F, $B,$16,$6C,$FF
-		.BYTE	  0,  0,$FF
-		.BYTE	  5,$2C,$19,$21, $F,$20, $F,$1C,$6A,  0,$1D,$12,$19,$1C,$1E,$16
-		.BYTE	$23,$FF
-		.BYTE	  3,$1E,$12, $F,$1C, $F, $B,$10,$1E, $F,$1C,$6A,  0,$1E,$12, $F
-		.BYTE	  0,$2C, $F,$1C,$19,$FF
-		.BYTE	  3,$F0,  0,$17,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$16,$23,$FF
-		.BYTE	  2, $E,$13,$1D, $B,$1A,$1A, $F, $B,$1C, $F, $E,  0, $B,$18, $E
-		.BYTE	  0,$12, $B,$1D,  0,$18,$19,$1E,$FF
-		.BYTE	  5, $C, $F, $F,$18,  0,$1D, $F, $F,$18,  0,$1D,$13,$18, $D, $F
-		.BYTE	$6C,$FF
-		.BYTE	  0,  0,$FF
-		.BYTE	  1,$31, $B,$18,$23,  0, $B,  0,$1D,$1E,$19,$1C,$23,  0,$12, $B
-		.BYTE	$1D,  0, $C, $F, $F,$18,  0,$1E,$19,$16, $E,$FF
-		.BYTE	  1,$19,$10,  0,$1E,$12, $B,$1E,  0, $E, $B,$1C,$15, $F,$1D,$1E
-		.BYTE	  0,$19,$10,  0,$18,$13,$11,$12,$1E,$1D,$FF
-		.BYTE	  3,$21,$12, $F,$18,  0,$29,$1C, $E,$1C,$13, $D,$15,  0,$16, $F
-		.BYTE	$10,$1E,  0,$12,$13,$1D,$FF
-		.BYTE	  2,$21, $F, $B,$1A,$19,$18,$6A,  0, $B,$1C,$17,$19,$1C,  0, $B
-		.BYTE	$18, $E,  0, $B,$17,$1F,$16, $F,$1E,$FF
-		.BYTE	 $A, $C, $F,$12,$13,$18, $E,$6C,$FF
-		.BYTE	  0,  0,$FF
-		.BYTE	  1,$30, $F,$11, $F,$18, $E,  0,$1D, $B,$23,$1D,  0,$1E,$12, $F
-		.BYTE	$23,  0,$12, $B,$20, $F,  0, $C, $F, $F,$18,$FF
-		.BYTE	  3,$12, $B,$18, $E, $F, $E,  0, $E,$19,$21,$18,  0,$1E,$19,  0
-		.BYTE	$21,$19,$1C,$1E,$12,$23,$FF
-		.BYTE	  4,$21, $B,$1C,$1C,$13,$19,$1C,$1D,  0,$19,$10,  0,$10,$1F,$1E
-		.BYTE	$1F,$1C, $F,$FF
-		.BYTE	  1,$11, $F,$18, $F,$1C, $B,$1E,$13,$19,$18,$1D,  0, $B,$1D,  0
-		.BYTE	$1E,$12, $F,  0,$37,$21,$19,$1C, $E,  0,$19,$10,$FF
-		.BYTE	  3,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0,$1E,$12, $F,  0,$25,$1C
-		.BYTE	$17,$19,$1C,  0,$19,$10,$FF
-		.BYTE	  1,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0, $B,$18, $E,  0,$1E,$12
-		.BYTE	 $F,  0,$29,$17, $C,$16, $F,$17,  0,$19,$10,$FF
-		.BYTE	 $A,$29,$1C, $E,$1C,$13, $D,$15,$6C,$FF
-		.BYTE	  0,  0,$FF
-		.BYTE	  0,  0,$FF
+		.BYTE	$02,_T,_h,_u,_s,0,_a,0,_t,_r,_u,_e,0,_w,_a,_r,_r,_i,_o,_r,0,_w,_a,_s,$FF
+		.BYTE	$01,_b,_o,_r,_n,_sem,0,_a,_n,_d,0,$F0,0,_b,_e,_c,_a,_m,_e,$FF
+		.BYTE	$01,_k,_n,_o,_w,_n,0,_a,_s,0,_E,_r,_d,_r,_i,_c,_k,_sem,0,_H,_e,_r,_o,0,_o,_f,$FF
+		.BYTE	$03,_A,_l,_i,_a,_h,_a,_n,_dot,0,_T,_h,_e,_r,_e,0,_w,_a,_s,0,_n,_o,$FF
+		.BYTE	$0B,_e,_q,_u,_a,_l,_dot,$FF
+		.BYTE	$00,0,$FF
+		.BYTE	$05,_H,_o,_w,_e,_v,_e,_r,_sem,0,_s,_h,_o,_r,_t,_l,_y,$FF
+		.BYTE	$03,_t,_h,_e,_r,_e,_a,_f,_t,_e,_r,_sem,0,_t,_h,_e,0,_H,_e,_r,_o,$FF
+		.BYTE	$03,$F0,0,_m,_y,_s,_t,_e,_r,_i,_o,_u,_s,_l,_y,$FF
+		.BYTE	$02,_d,_i,_s,_a,_p,_p,_e,_a,_r,_e,_d,0,_a,_n,_d,0,_h,_a,_s,0,_n,_o,_t,$FF
+		.BYTE	$05,_b,_e,_e,_n,0,_s,_e,_e,_n,0,_s,_i,_n,_c,_e,_dot,$FF
+		.BYTE	$00,0,$FF
+		.BYTE	$01,_M,_a,_n,_y,0,_a,0,_s,_t,_o,_r,_y,0,_h,_a,_s,0,_b,_e,_e,_n,0,_t,_o,_l,_d,$FF
+		.BYTE	$01,_o,_f,0,_t,_h,_a,_t,0,_d,_a,_r,_k,_e,_s,_t,0,_o,_f,0,_n,_i,_g,_h,_t,_s,$FF
+		.BYTE	$03,_w,_h,_e,_n,0,_E,_r,_d,_r,_i,_c,_k,0,_l,_e,_f,_t,0,_h,_i,_s,$FF
+		.BYTE	$02,_w,_e,_a,_p,_o,_n,_sem,0,_a,_r,_m,_o,_r,0,_a,_n,_d,0,_a,_m,_u,_l,_e,_t,$FF
+		.BYTE	$0A,_b,_e,_h,_i,_n,_d,_dot,$FF
+		.BYTE	$00,0,$FF
+		.BYTE	$01,_L,_e,_g,_e,_n,_d,0,_s,_a,_y,_s,0,_t,_h,_e,_y,0,_h,_a,_v,_e,0,_b,_e,_e,_n,$FF
+		.BYTE	$03,_h,_a,_n,_d,_e,_d,0,_d,_o,_w,_n,0,_t,_o,0,_w,_o,_r,_t,_h,_y,$FF
+		.BYTE	$04,_w,_a,_r,_r,_i,_o,_r,_s,0,_o,_f,0,_f,_u,_t,_u,_r,_e,$FF
+		.BYTE	$01,_g,_e,_n,_e,_r,_a,_t,_i,_o,_n,_s,0,_a,_s,0,_t,_h,_e,0,_S,_w,_o,_r,_d,0,_o,_f,$FF
+		.BYTE	$03,_E,_r,_d,_r,_i,_c,_k,_sem,0,_t,_h,_e,0,_A,_r,_m,_o,_r,0,_o,_f,$FF
+		.BYTE	$01,_E,_r,_d,_r,_i,_c,_k,_sem,0,_a,_n,_d,0,_t,_h,_e,0,_E,_m,_b,_l,_e,_m,0,_o,_f,$FF
+		.BYTE	$0A,_E,_r,_d,_r,_i,_c,_k,_dot,$FF
+		.BYTE	$00,0,$FF
+		.BYTE	$00,0,$FF
 
 		ECHO "bank 0A free space", [$BFD8-.]
 

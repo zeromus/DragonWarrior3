@@ -3155,7 +3155,7 @@ _bE_s38:
 ;		LDA		_tmp12
 ;		LDY		_tmp12+1
 ;		LDX		#byte_10
-;		JSR		_add_16_to_16
+;		JSR		_add16_to_16
 ;		PLA
 ;		TAX
 ;		RTS
@@ -5694,7 +5694,7 @@ _bE_s20:
 		LDX		#word_6C
 		LDY		#>[byte_7400]
 		LDA		#<[byte_7400]
-		JSR		_add_16_to_neg16
+		JSR		_add16_to_neg16
 		LDA		byte_88
 		JSR		_div16_to_8
 		TAX

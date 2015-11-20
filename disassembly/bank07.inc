@@ -1683,7 +1683,7 @@ sub_B2A29:
 		JSR		sub_B2B31
 		LDX		#word_40
 		LDA		#3
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDY		#0
 loc_B2A50:
 		LDA		(word_3E),Y
@@ -1705,7 +1705,7 @@ loc_B2A62:
 		LDA		off_B2D3B
 		LDY		off_B2D3B+1
 		LDX		#word_3C
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		byte_1C
 		STA		(word_3C),Y
@@ -1732,7 +1732,7 @@ sub_B2A9D:
 		JSR		sub_B2B31
 		LDA		#3
 		LDX		#word_40
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDY		#0
 loc_B2AA9:
 		LDA		#0
@@ -1842,7 +1842,7 @@ sub_B2B31:
 sub_B2B3C:
 		LDX		#word_40
 		LDA		#1
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDA		word_40
 		ORA		word_40+1
 		RTS
@@ -1937,7 +1937,7 @@ sub_B2BB5:
 		JSR		_mul16_to_8
 		LDA		off_B2D37
 		LDY		off_B2D37+1
-		JMP		_add_16_to_16
+		JMP		_add16_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BCE:
@@ -2028,7 +2028,7 @@ sub_B2C46:
 		LDX		#word_3C
 		LDA		off_B2D3D
 		LDY		off_B2D3D+1
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_3C),Y
 		RTS
@@ -2060,7 +2060,7 @@ loc_B2C68:
 		LDA		off_B2D3B
 		LDY		off_B2D3B+1
 		LDX		#word_3C
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		byte_1C
 		CMP		(word_3C),Y
@@ -2109,7 +2109,7 @@ sub_B2CD0:
 		JSR		sub_B2B31
 		LDA		#2
 		LDX		#word_40
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDA		#$3A
 		STA		byte_1C
 		STA		byte_1D
@@ -2778,7 +2778,7 @@ _b7_sE:
 		JSR		sub_B2BB5
 		LDA		off_B32A7
 		LDY		off_B32A7+1
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 loc_B31B2:
 		LDA		(word_3C),Y
@@ -2795,7 +2795,7 @@ _b7_sF:
 		JSR		sub_B2BB5
 		LDA		word_B32A9
 		LDY		word_B32A9+1
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		STY		word_4+1
 		LDA		(word_3C),Y
@@ -3399,8 +3399,8 @@ sub_B36A2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B36B5:
-		LDX		_staff_copyrights_ofs
-		LDY		_staff_copyrights_ofs+1
+		LDX		#<[_staff_copyrights]
+		LDY		#>[_staff_copyrights]
 		STX		word_3E+1
 		STY		word_40
 		JSR		_ppu_screen_clear
@@ -3492,13 +3492,11 @@ loc_B3739:
 		BNE		loc_B3739
 		RTS
 _txt_thus_legend_was_born:
-		.BYTE	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,$38,$12,$1F,$1D,$6A,  0
-		.BYTE	$1E,$12, $F,  0,$16, $F,$11, $F,$18, $E,  0,$21, $B,$1D,  0, $C
-		.BYTE	$19,$1C,$18,$6C
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		.BYTE	_T,_h,_u,_s,_sem,0,_t,_h,_e,0,_l,_e,_g,_e,_n,_d,0,_w,_a,_s,0,_b,_o,_r,_n,_dot
 byte_B3781:
-		.BYTE	  0,$14, $F,  1,$40,$FF,  1,$41,$7F,$C1,$40,$F0,$14,$3F,$FF,$C5
-		.BYTE	$3C,$50, $F,$FF,  5,$54,$FF,$15,$4F,  5,$54,$3F,$F1,$4F,$15,$54
+		.BYTE	$00,$14,$0F,$01,$40,$FF,$01,$41,$7F,$C1,$40,$F0,$14,$3F,$FF,$C5
+		.BYTE	$3C,$50,$0F,$FF,$05,$54,$FF,$15,$4F,$05,$54,$3F,$F1,$4F,$15,$54
 		.BYTE	$3D,$4F,$FC,$3F
 _staff_data_lib:
 		.WORD	_staff_txt_block0
@@ -3526,189 +3524,178 @@ _staff_data_lib:
 		.WORD	_staff_txt_block16
 		.WORD	_staff_txt_block17
 		.WORD	_staff_txt_block18
-_staff_copyrights_ofs:
-		.WORD	_staff_copyrights
+;_staff_copyrights_ofs:
+;		.WORD	_staff_copyrights
 _staff_txt_block0:
-		.BYTE	    1,$B9, $E,$1C, $B,$11,$19,$18,  0,$1B,$1F, $F,$1D,$1E,$FF
-		.BYTE	$CB,  0,$13,$13,$13,$FF
-		.BYTE	$DB,$1D,$1E, $B,$10,$10,$FF
+		.BYTE	$01,$B9,_d,_r,_a,_g,_o,_n,0,_q,_u,_e,_s,_t,$FF
+		.BYTE	$CB,0,_i,_i,_i,$FF
+		.BYTE	$DB,_s,_t,_a,_f,_f,$FF
 _staff_txt_block1:
-		.BYTE	    2,  2,$1D, $D, $F,$18, $B,$1C,$13,$19,$FF
-		.BYTE	$12,  0,$21,$1C,$13,$1E, $F,$1C,$FF
-		.BYTE	$33,$23,$1F,$14,$13,$FF
-		.BYTE	$42,  0,$12,$19,$1C,$13,$13,$FF
+		.BYTE	$02,$02,_s,_c,_e,_n,_a,_r,_i,_o,$FF
+		.BYTE	$12,0,_w,_r,_i,_t,_e,_r,$FF
+		.BYTE	$33,_y,_u,_j,_i,$FF
+		.BYTE	$42,0,_h,_o,_r,_i,_i,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block2:
-		.BYTE	    2,$B9,  0, $D,$12, $B,$1C, $B, $D,$1E, $F,$1C,$FF
-		.BYTE	$CA, $E, $F,$1D,$13,$11,$18, $F,$1C,$FF
-		.BYTE	$EA,  0, $B,$15,$13,$1C, $B,$FF
-		.BYTE	$FA,$1E,$19,$1C,$13,$23, $B,$17, $B,$FF
-		.BYTE	  0,$FF
+		.BYTE	$02,$B9,0,_c,_h,_a,_r,_a,_c,_t,_e,_r,$FF
+		.BYTE	$CA,_d,_e,_s,_i,_g,_n,_e,_r,$FF
+		.BYTE	$EA,0,_a,_k,_i,_r,_a,$FF
+		.BYTE	$FA,_t,_o,_r,_i,_y,_a,_m,_a,$FF
+		.BYTE	$00,$FF
 _staff_txt_block3:
-		.BYTE	    2,  2,  0,$17,$1F,$1D,$13, $D,$FF
-		.BYTE	$12, $D,$19,$17,$1A,$19,$1D, $F,$1C,$FF
-		.BYTE	$32,  0,$15,$19,$13, $D,$12,$13,$FF
-		.BYTE	$42,$1D,$1F,$11,$13,$23, $B,$17, $B,$FF
+		.BYTE	$02,$02,0,_m,_u,_s,_i,_c,$FF
+		.BYTE	$12,_c,_o,_m,_p,_o,_s,_e,_r,$FF
+		.BYTE	$32,0,_k,_o,_i,_c,_h,_i,$FF
+		.BYTE	$42,_s,_u,_g,_i,_y,_a,_m,_a,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block4:
-		.BYTE	    3,$9A,$1D, $D, $F,$18, $B,$1C,$13,$19,$FF
-		.BYTE	$A9,  0, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$CA,$12,$13,$1C,$19,$1D,$12,$13,$FF
-		.BYTE	$DA,$17,$13,$23, $B,$19,$15, $B,$FF
-		.BYTE	 $A,  0,$15, $F,$18,$14,$13,$FF
-		.BYTE	$19,  0,$23, $B,$18, $B,$11,$13,$1D, $B,$21, $B,$FF
+		.BYTE	$03,$9A,_s,_c,_e,_n,_a,_r,_i,_o,$FF
+		.BYTE	$A9,0,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$CA,_h,_i,_r,_o,_s,_h,_i,$FF
+		.BYTE	$DA,_m,_i,_y,_a,_o,_k,_a,$FF
+		.BYTE	$0A,0,_k,_e,_n,_j,_i,$FF
+		.BYTE	$19,0,_y,_a,_n,_a,_g,_i,_s,_a,_w,_a,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block5:
-		.BYTE	    2,  2,  0, $D,$12,$13, $F,$10,$FF
-		.BYTE	$11,  0,$1A,$1C,$19,$11,$1C, $B,$17,$17, $F,$1C,$FF
-		.BYTE	$33,$15, $B,$18,$FF
-		.BYTE	$42,  0,$18, $B,$13,$1E,$19,$12,$FF
+		.BYTE	$02,$02,0,_c,_h,_i,_e,_f,$FF
+		.BYTE	$11,0,_p,_r,_o,_g,_r,_a,_m,_m,_e,_r,$FF
+		.BYTE	$33,_k,_a,_n,$FF
+		.BYTE	$42,0,_n,_a,_i,_t,_o,_h,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block6:
-		.BYTE	    3,$89,  0,$1A,$1C,$19,$11,$1C, $B,$17,$17, $F,$1C,$FF
-		.BYTE	$AA,  0,$17, $B,$18, $B, $C,$1F,$FF
-		.BYTE	$BA,  0,$23, $B,$17, $B,$18, $B,$FF
-		.BYTE	$EB,$1E,$19,$11,$19,$FF
-		.BYTE	$FA,  0,$18, $B,$1C,$13,$1E, $B,$FF
-		.BYTE	$2A,  0,$17, $B,$1D, $B, $B,$15,$13,$FF
-		.BYTE	$3B,$19,$15, $B,$18,$19,$FF
+		.BYTE	$03,$89,0,_p,_r,_o,_g,_r,_a,_m,_m,_e,_r,$FF
+		.BYTE	$AA,0,_m,_a,_n,_a,_b,_u,$FF
+		.BYTE	$BA,0,_y,_a,_m,_a,_n,_a,$FF
+		.BYTE	$EB,_t,_o,_g,_o,$FF
+		.BYTE	$FA,0,_n,_a,_r,_i,_t,_a,$FF
+		.BYTE	$2A,0,_m,_a,_s,_a,_a,_k,_i,$FF
+		.BYTE	$3B,_o,_k,_a,_n,_o,$FF
 _staff_txt_block7:
-		.BYTE	    2,  1,  0, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$11,  0,$1A,$1C,$19,$11,$1C, $B,$17,$17, $F,$1C,$FF
-		.BYTE	$32,  0,$17, $B,$1D,$1F,$17,$13,$FF
-		.BYTE	$42,$1E, $B,$15,$13,$17,$19,$1E,$19,$FF
+		.BYTE	$02,$01,0,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$11,0,_p,_r,_o,_g,_r,_a,_m,_m,_e,_r,$FF
+		.BYTE	$32,0,_m,_a,_s,_u,_m,_i,$FF
+		.BYTE	$42,_t,_a,_k,_i,_m,_o,_t,_o,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block8:
-		.BYTE	    2,$BA,$11,$1C, $B,$1A,$12,$13, $D,  0,$FF
-		.BYTE	$CA, $E, $F,$1D,$13,$11,$18, $F,$1C,$FF
-		.BYTE	$EA,$1E, $B,$15, $B,$1D,$12,$13,$FF
-		.BYTE	$FA,  0,$23, $B,$1D,$1F,$18,$19,$FF
-		.BYTE	  0,$FF
+		.BYTE	$02,$BA,_g,_r,_a,_p,_h,_i,_c,0,$FF
+		.BYTE	$CA,_d,_e,_s,_i,_g,_n,_e,_r,$FF
+		.BYTE	$EA,_t,_a,_k,_a,_s,_h,_i,$FF
+		.BYTE	$FA,0,_y,_a,_s,_u,_n,_o,$FF
+		.BYTE	$00,$FF
 _staff_txt_block9:
-		.BYTE	    2,  3,$1D,$19,$1F,$18, $E ,$FF
-		.BYTE	$12,$1A,$1C,$19,$11,$1C, $B,$17,$17, $F,$1C,$FF
-		.BYTE	$32,  0,$1E, $B, $E, $B,$1D,$12,$13,$FF
-		.BYTE	$42,  0,$10,$1F,$15,$1F,$24, $B,$21, $B,$FF
+		.BYTE	$02,$03,_s,_o,_u,_n,_d,$FF
+		.BYTE	$12,_p,_r,_o,_g,_r,_a,_m,_m,_e,_r,$FF
+		.BYTE	$32,0,_t,_a,_d,_a,_s,_h,_i,$FF
+		.BYTE	$42,0,_f,_u,_k,_u,_z,_a,_w,_a,$FF
 		.BYTE	$EF,$FF
 _staff_txt_blockA:
-		.BYTE	    4,$7A, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E ,$FF
-		.BYTE	$9A,  0,$15, $F,$13,$13, $D,$12,$13,$FF
-		.BYTE	$AB,  0,$12, $B,$1C, $B,$FF
-		.BYTE	$CB,$15, $B,$24,$1F,$23, $B,$FF
-		.BYTE	$DB, $B,$1D, $B,$18,$19,$FF
-		.BYTE	 $B,  0,$1C,$13,$15, $B,$FF
-		.BYTE	$1B,$1D,$1F,$24,$1F,$15,$13,$FF
-		.BYTE	$3A,  0,$1D, $B,$1E,$19,$1D,$12,$13,$FF
-		.BYTE	$4B,$10,$1F, $E, $B, $C, $B,$FF
+		.BYTE	$04,$7A,_a,_s,_s,_i,_s,_t,_a,_n,_t ,$FF
+		.BYTE	$9A,0,_k,_e,_i,_i,_c,_h,_i,$FF
+		.BYTE	$AB,0,_h,_a,_r,_a,$FF
+		.BYTE	$CB,_k,_a,_z,_u,_y,_a,$FF
+		.BYTE	$DB,_a,_s,_a,_n,_o,$FF
+		.BYTE	$0B,0,_r,_i,_k,_a,$FF
+		.BYTE	$1B,_s,_u,_z,_u,_k,_i,$FF
+		.BYTE	$3A,0,_s,_a,_t,_o,_s,_h,_i,$FF
+		.BYTE	$4B,_f,_u,_d,_a,_b,_a,$FF
 _staff_txt_blockB:
-		.BYTE	    1,  2, $E,$13,$1C, $F, $D,$1E,$19,$1C,$FF
-		.BYTE	$22,  0,$15,$19,$13, $D,$12,$13,$FF
-		.BYTE	$32,$18, $B,$15, $B,$17,$1F,$1C, $B,$FF
+		.BYTE	$01,$02,_d,_i,_r,_e,_c,_t,_o,_r,$FF
+		.BYTE	$22,0,_k,_o,_i,_c,_h,_i,$FF
+		.BYTE	$32,_n,_a,_k,_a,_m,_u,_r,_a,$FF
 _staff_txt_blockC:
-		.BYTE	    1,$BA,$1A,$1C,$19, $E,$1F, $D, $F,$1C,$FF
-		.BYTE	$DA,$23,$1F,$15,$13,$18,$19, $C,$1F,$FF
-		.BYTE	$EB, $D,$12,$13, $E, $B,$FF
+		.BYTE	$01,$BA,_p,_r,_o,_d,_u,_c,_e,_r,$FF
+		.BYTE	$DA,_y,_u,_k,_i,_n,_o,_b,_u,$FF
+		.BYTE	$EB,_c,_h,_i,_d,_a,$FF
 _staff_txt_blockD:
-		.BYTE	    1,  2,$1A,$1F, $C,$16,$13,$1D,$12, $F,$1C ,$FF
-		.BYTE	$22,$23, $B,$1D,$1F,$12,$13,$1C,$19,$FF
-		.BYTE	$32,$10,$1F,$15,$1F,$1D,$12,$13,$17, $B,$FF
+		.BYTE	$01,$02,_p,_u,_b,_l,_i,_s,_h,_e,_r ,$FF
+		.BYTE	$22,_y,_a,_s,_u,_h,_i,_r,_o,$FF
+		.BYTE	$32,_f,_u,_k,_u,_s,_h,_i,_m,_a,$FF
 _staff_copyrights:
-		.BYTE	    8,$14,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,  0, $D,$19,$1A,$23,$1C,$13,$11,$12,$1E,  0,$FF
-		.BYTE	$19,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,$25,  0,  2, $A, $A,  2,$FF
-		.BYTE	$24,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0, $F,$18,$13,$22,$FF
-		.BYTE	$26,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,  0, $D,$19,$1C,$1A,$19,$1C, $B,$1E,$13,$19,$18,$FF
-		.BYTE	$41,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,  0, $C, $B,$1D, $F, $E,  0,$1F,$1A,$19,$18,  0, $E,$1C,$FF
-		.BYTE	$48,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0, $B,$11,$19,$18,  0,$1B,$1F, $F,$1D,$1E,  0,$13,$13,$13,$FF
-		.BYTE	$64, $D,$19,$1A,$23,$1C,$13,$11,$12,$1E,  0,$25,  0,  2, $A,  9
-		.BYTE	  9,$FF
-		.BYTE	$73,  0,$FF
-		.BYTE	$74,  0, $B,$1C,$17,$19,$1C,  0,$1A,$1C,$19,$14, $F, $D,$1E,$FF
-		.BYTE	$85, $C,$13,$1C, $E,  0,$1D,$1E,$1F, $E,$13,$19,$FF
-		.BYTE	$95,  0, $D,$12,$1F,$18,  0,$1D,$19,$10,$1E,$FF
-		.BYTE	$A4, $F,$18,$13,$22,  0, $D,$19,$1C,$1A,$19,$1C, $B,$1E,$13,$19
-		.BYTE	$18,$FF
-		.BYTE	$B3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,$17,$1F,$1D,$13, $D,  0, $D,$19,$1A,$23,$1C,$13,$11,$12,$1E,$FF
-		.BYTE	$BB,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,$25,  0,  2, $A,  9,  9,$FF
-		.BYTE	$C3,  0,$FF
-		.BYTE	$C4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		.BYTE	  0,$15,$19,$13, $D,$12,$13,  0,$1D,$1F,$11,$13,$23, $B,$17, $B,$FF
-		.BYTE	$D0,  0,$FF
+		.BYTE	$08,$14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_c,_o,_p,_y,_r,_i,_g,_h,_t,0,$FF
+		.BYTE	$19,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_A,0,_1,_9,_9,_1,$FF
+		.BYTE	$24,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_e,_n,_i,_x,$FF
+		.BYTE	$26,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_c,_o,_r,_p,_o,_r,_a,_t,_i,_o,_n,$FF
+		.BYTE	$41,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_b,_a,_s,_e,_d,0,_u,_p,_o,_n,0,_d,_r,$FF
+		.BYTE	$48,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_a,_g,_o,_n,0,_q,_u,_e,_s,_t,0,_i,_i,_i,$FF
+		.BYTE	$64,$0D,_o,_p,_y,_r,_i,_g,_h,_t,0,_A,0,_1,_9,_8,_8,$FF
+		.BYTE	$73,$00,$FF
+		.BYTE	$74,$00,_a,_r,_m,_o,_r,0,_p,_r,_o,_j,_e,_c,_t,$FF
+		.BYTE	$85,$0C,_i,_r,_d,0,_s,_t,_u,_d,_i,_o,$FF
+		.BYTE	$95,$00,_c,_h,_u,_n,0,_s,_o,_f,_t,$FF
+		.BYTE	$A4,$0F,_n,_i,_x,0,_c,_o,_r,_p,_o,_r,_a,_t,_i,_o,_n,$FF
+		.BYTE	$B3,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_m,_u,_s,_i,_c,0,_c,_o,_p,_y,_r,_i,_g,_h,_t,$FF
+		.BYTE	$BB,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_A,0,_1,_9,_8,_8,$FF
+		.BYTE	$C3,$00,$FF
+		.BYTE	$C4,$00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,_k,_o,_i,_c,_h,_i,0,_s,_u,_g,_i,_y,_a,_m,_a,$FF
+		.BYTE	$D0,$00,$FF
 _staff_txt_blockE:
-		.BYTE	    1,$BA, $E,$1C, $B,$11,$19,$18,$FF
-		.BYTE	$C9,$21, $B,$1C,$1C,$13,$19,$1C,  0,$13,$13,$13,$FF
-		.BYTE	$DA,  0,$1D,$1E, $B,$10,$10,$FF
+		.BYTE	$01,$BA,_d,_r,_a,_g,_o,_n,$FF
+		.BYTE	$C9,_w,_a,_r,_r,_i,_o,_r,0,_i,_i,_i,$FF
+		.BYTE	$DA,0,_s,_t,_a,_f,_f,$FF
 _staff_txt_blockF:
-		.BYTE	    3,$D1,  0,$1D, $D,$1C, $F, $F,$18,  0,$1E, $F,$22,$1E,$FF
-		.BYTE	  3,$14,$1F,$16,$13, $B,$18,$FF
-		.BYTE	$12,  0,$1D,$6C,$1E, $B,$18, $F, $E, $B,$FF
-		.BYTE	$21,$6D,$1D,$1E,$1F, $E,$13,$19,  0, $C,$1F, $C,$19,$19,$6E,$FF
-		.BYTE	$43,$16, $B,$1C,$1C,$23,$FF
-		.BYTE	$52,  0,$1E,$23,$1C,$1C, $F,$16,$16,$FF
-		.BYTE	$61,$6D,$1D,$1E,$1F, $E,$13,$19,  0, $C,$1F, $C,$19,$19,$6E,$FF
+		.BYTE	$03,$D1,0,_s,_c,_r,_e,_e,_n,0,_t,_e,_x,_t,$FF
+		.BYTE	$03,_j,_u,_l,_i,_a,_n,$FF
+		.BYTE	$12,0,_s,_dot,_t,_a,_n,_e,_d,_a,$FF
+		.BYTE	$21,$6D,_s,_t,_u,_d,_i,_o,0,_b,_u,_b,_o,_o,$6E,$FF
+		.BYTE	$43,_l,_a,_r,_r,_y,$FF
+		.BYTE	$52,0,_t,_y,_r,_r,_e,_l,_l,$FF
+		.BYTE	$61,$6D,_s,_t,_u,_d,_i,_o,0,_b,_u,_b,_o,_o,$6E,$FF
 _staff_txt_block10:
-		.BYTE	    3,$9B,$1E, $F,$22,$1E ,$FF
-		.BYTE	$AA, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$CB,$1A, $B,$1F,$16,$FF
-		.BYTE	$DA,  0, $C,$19,$21,$16, $F,$1C,$FF
-		.BYTE	 $B,$1A, $B,$1F,$16,$FF
-		.BYTE	$1A,$12, $B,$18, $E,$16, $F,$17, $B,$18,$FF
-		.BYTE	  0,$FF
+		.BYTE	$03,$9B,_t,_e,_x,_t ,$FF
+		.BYTE	$AA,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$CB,_p,_a,_u,_l,$FF
+		.BYTE	$DA,0,_b,_o,_w,_l,_e,_r,$FF
+		.BYTE	$0B,_p,_a,_u,_l,$FF
+		.BYTE	$1A,_h,_a,_n,_d,_l,_e,_m,_a,_n,$FF
+		.BYTE	$00,$FF
 _staff_txt_block11:
-		.BYTE	    2,$E1,  0,$1A,$1C,$19,$11,$1C, $B,$17,$17, $F,$1C,$FF
-		.BYTE	$12,$17, $B,$1D, $B,$23,$1F,$15,$13,$FF
-		.BYTE	$22,$15, $B,$21, $B,$17,$19,$1E,$19,$FF
-		.BYTE	$42,  0,$17, $B,$1D,$1F,$17,$13,$FF
-		.BYTE	$52,$1E, $B,$15,$13,$17,$19,$1E,$19,$FF
+		.BYTE	$02,$E1,0,_p,_r,_o,_g,_r,_a,_m,_m,_e,_r,$FF
+		.BYTE	$12,_m,_a,_s,_a,_y,_u,_k,_i,$FF
+		.BYTE	$22,_k,_a,_w,_a,_m,_o,_t,_o,$FF
+		.BYTE	$42,0,_m,_a,_s,_u,_m,_i,$FF
+		.BYTE	$52,_t,_a,_k,_i,_m,_o,_t,_o,$FF
 _staff_txt_block12:
-		.BYTE	    2,$A9, $D,$11,  0, $E, $F,$1D,$13,$11,$18, $F,$1C,$FF
-		.BYTE	$CA,$1D, $B,$1E,$19,$1D,$12,$13,$FF
-		.BYTE	$DA,  0,$10,$1F, $E, $B, $C, $B,$FF
-		.BYTE	 $A,$14,$1F,$18,$13, $D,$12,$13,$FF
-		.BYTE	$1B,$11,$19, $E, $B,$FF
+		.BYTE	$02,$A9,_c,_g,0,_d,_e,_s,_i,_g,_n,_e,_r,$FF
+		.BYTE	$CA,_s,_a,_t,_o,_s,_h,_i,$FF
+		.BYTE	$DA,0,_f,_u,_d,_a,_b,_a,$FF
+		.BYTE	$0A,_j,_u,_n,_i,_c,_h,_i,$FF
+		.BYTE	$1B,_g,_o,_d,_a,$FF
 _staff_txt_block13:
-		.BYTE	    1,  2, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$23, $E, $B,$13,$24,$19,$FF
-		.BYTE	$32,$1D,$12,$13,$17, $B,$17,$1F,$1C, $B,$FF
+		.BYTE	$01,$02,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$23,_d,_a,_i,_z,_o,$FF
+		.BYTE	$32,_s,_h,_i,_m,_a,_m,_u,_r,_a,$FF
 _staff_txt_block14:
-		.BYTE	    3,$9A, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$AA,  0, $E,$13,$1C, $F, $D,$1E,$19,$1C,$FF
-		.BYTE	$CB,$1E,$19,$11,$19,$FF
-		.BYTE	$DA,  0,$18, $B,$1C,$13,$1E, $B,$FF
-		.BYTE	 $A,  0,$15, $F,$18,$13, $D,$12,$13,$FF
-		.BYTE	$1A,  0,$17, $B,$1D,$1F,$1E, $B,$FF
-		.BYTE	  0,$FF
+		.BYTE	$03,$9A,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$AA,0,_d,_i,_r,_e,_c,_t,_o,_r,$FF
+		.BYTE	$CB,_t,_o,_g,_o,$FF
+		.BYTE	$DA,0,_n,_a,_r,_i,_t,_a,$FF
+		.BYTE	$0A,0,_k,_e,_n,_i,_c,_h,_i,$FF
+		.BYTE	$1A,0,_m,_a,_s,_u,_t,_a,$FF
+		.BYTE	$00,$FF
 _staff_txt_block15:
-		.BYTE	    3,$D2, $B,$1D,$1D,$13,$1D,$1E, $B,$18,$1E,$FF
-		.BYTE	$E2,  0,$1A,$1C,$19, $E,$1F, $D, $F,$1C,$FF
-		.BYTE	$12,  0,$1D,$12,$13,$18,$23, $B,$FF
-		.BYTE	$22,$18,$13,$1D,$12,$13,$11, $B,$15,$13,$FF
-		.BYTE	$42,$23,$19,$1D,$12,$13,$18,$19,$1C,$13,$FF
-		.BYTE	$52,$23, $B,$17, $B,$11,$13,$1D,$12,$13,$FF
+		.BYTE	$03,$D2,_a,_s,_s,_i,_s,_t,_a,_n,_t,$FF
+		.BYTE	$E2,0,_p,_r,_o,_d,_u,_c,_e,_r,$FF
+		.BYTE	$12,0,_s,_h,_i,_n,_y,_a,$FF
+		.BYTE	$22,_n,_i,_s,_h,_i,_g,_a,_k,_i,$FF
+		.BYTE	$42,_y,_o,_s,_h,_i,_n,_o,_r,_i,$FF
+		.BYTE	$52,_y,_a,_m,_a,_g,_i,_s,_h,_i,$FF
 		.BYTE	$EF,$FF
 _staff_txt_block16:
-		.BYTE	    1,$BA, $E,$13,$1C, $F, $D,$1E,$19,$1C ,$FF
-		.BYTE	$DA,  0,$17, $B,$18, $B, $C,$1F,$FF
-		.BYTE	$EA,  0,$23, $B,$17, $B,$18, $B,$FF
+		.BYTE	$01,$BA,_d,_i,_r,_e,_c,_t,_o,_r ,$FF
+		.BYTE	$DA,0,_m,_a,_n,_a,_b,_u,$FF
+		.BYTE	$EA,0,_y,_a,_m,_a,_n,_a,$FF
 _staff_txt_block17:
-		.BYTE	    1,  2,$1A,$1C,$19, $E,$1F, $D, $F,$1C ,$FF
-		.BYTE	$22,$23,$1F,$15,$13,$18,$19, $C,$1F,$FF
-		.BYTE	$33, $D,$12,$13, $E, $B,$FF
+		.BYTE	$01,$02,_p,_r,_o,_d,_u,_c,_e,_r ,$FF
+		.BYTE	$22,_y,_u,_k,_i,_n,_o,_b,_u,$FF
+		.BYTE	$33,_c,_h,_i,_d,_a,$FF
 _staff_txt_block18:
-		.BYTE	    3,$99,  0,$1A,$1F, $C,$16,$13,$1D,$12, $F,$1C,$FF
-		.BYTE	$BA,$23, $B,$1D,$1F,$12,$13,$1C,$19,$FF
-		.BYTE	$CA,$10,$1F,$15,$1F,$1D,$12,$13,$17, $B,$FF
-		.BYTE	$EA,  0,$15, $F,$13,$14,$13,$FF
-		.BYTE	$FA,  0,$12,$19,$18, $E, $B,$FF
-		.BYTE	$19,  0,$6D, $F,$18,$13,$22,$FF
-		.BYTE	$2B, $B,$17, $F,$1C,$13, $D, $B,$6E,$FF
+		.BYTE	$03,$99,0,_p,_u,_b,_l,_i,_s,_h,_e,_r,$FF
+		.BYTE	$BA,_y,_a,_s,_u,_h,_i,_r,_o,$FF
+		.BYTE	$CA,_f,_u,_k,_u,_s,_h,_i,_m,_a,$FF
+		.BYTE	$EA,0,_k,_e,_i,_j,_i,$FF
+		.BYTE	$FA,0,_h,_o,_n,_d,_a,$FF
+		.BYTE	$19,0,$6D,_e,_n,_i,_x,$FF
+		.BYTE	$2B,_a,_m,_e,_r,_i,_c,_a,$6E,$FF
 
 		ECHO "bank 07 free space", [$BFD8-.]
 

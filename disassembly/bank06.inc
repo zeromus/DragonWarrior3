@@ -124,26 +124,26 @@ _b6_d1:
 		.BYTE	 $A,$1D,  0
 		.BYTE	 $E,$1D,  0
 		.BYTE	$12,$36,  0
-		.BYTE	    0,$24,  1
+		.BYTE	  0,$24,  1
 _b6_d2:
 		.BYTE	  0,$A3,$C8
-		.BYTE	    0,$97,$8E
-		.BYTE	    1,$F4,$98
-		.BYTE	    0,$D3,$2C
-		.BYTE	    0,$1C,$9F
-		.BYTE	    2,$D3,$2C
-		.BYTE	    0,$58,$4B
-		.BYTE	    1,$58,$4B
-		.BYTE	    2,$26,$49
-		.BYTE	    0,$F4,$98
-		.BYTE	    0,  0,  0
-		.BYTE	    1,$BE,$D1
-		.BYTE	    1,$D3,$2C
-		.BYTE	    1,$1B,$68
-		.BYTE	    2,$80,$70
-		.BYTE	    6,$80,$70
+		.BYTE	  0,$97,$8E
+		.BYTE	  1,$F4,$98
+		.BYTE	  0,$D3,$2C
+		.BYTE	  0,$1C,$9F
+		.BYTE	  2,$D3,$2C
+		.BYTE	  0,$58,$4B
+		.BYTE	  1,$58,$4B
+		.BYTE	  2,$26,$49
+		.BYTE	  0,$F4,$98
+		.BYTE	  0,  0,  0
+		.BYTE	  1,$BE,$D1
+		.BYTE	  1,$D3,$2C
+		.BYTE	  1,$1B,$68
+		.BYTE	  2,$80,$70
+		.BYTE	  6,$80,$70
 		.BYTE	  0,$31,$5D
-		.BYTE	    7,$80,$70
+		.BYTE	  7,$80,$70
 		.BYTE	 $A,$80,$70
 _b6_d3:
 		.BYTE	$5D,$68,$62,$68,$34,$B0,$34,$B4,$9F,$DF,$AC,$DA,$A5,$DA,$A3,$C8

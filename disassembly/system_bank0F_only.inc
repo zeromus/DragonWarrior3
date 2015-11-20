@@ -509,14 +509,14 @@ sub_176FB2:
 		JSR		_mul16_to_8
 		LDX		#byte_24
 		LDA		byte_88
-		JSR		_add_8_to_neg16
+		JSR		_add8_to_neg16
 		LDA		byte_74
 		LDX		#byte_24
 		JSR		_add8_to_16
 		LDY		#byte_74
 		LDA		#0
 		LDX		#byte_24
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		(byte_24),Y
 		RTS
@@ -2118,7 +2118,7 @@ sub_1779D2:
 		LDA		#0
 		LDY		#byte_74
 		LDX		#word_4
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDA		word_4
 		STA		byte_C
 		LDA		word_4+1
@@ -2228,7 +2228,7 @@ sub_177A5B:
 		LDA		#0
 		LDY		#byte_74
 		LDX		#byte_B
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDA		byte_A
 		SEC
 		SBC		byte_8
@@ -2645,11 +2645,11 @@ sub_177CD6:
 		LDA		#0
 		LDY		#byte_74
 		LDX		#word_6
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		PLA
 		LDY		#0
 		LDX		#word_6
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_6),Y
 		RTS
@@ -2833,19 +2833,10 @@ sub_177E23:
 		JSR		sub_E3C80
 		LDA		#$D
 		JSR		_mmc1_prg_set
-; --
-;		LDA		#$FF
-;		JSR		_get_syscall0_data_cur_byte0
-;		STA		word_6C
-;		LDA		#$FF
-;		JSR		_get_syscall0_data_cur_byte1
-;		STA		word_6C+1
-; --
 		LDA		#<[_bD_d1]
 		STA		word_6C
 		LDA		#>[_bD_d1]
 		STA		word_6C+1
-; --
 		LDA		byte_8B
 		BEQ		locret_177E5D
 		LDA		word_3E

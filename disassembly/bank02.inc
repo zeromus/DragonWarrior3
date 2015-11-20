@@ -2728,18 +2728,10 @@ loc_3A27B:
 		LDA		_enemy_roster_index_list,X
 		LDX		#word_4
 		JSR		_mul16_to_8
-; --
-;		LDA		#$6A
-;		LDX		#word_6
-;		JSR		_get_syscall0_bank_ptr_safe
-;		LDA		word_6
-;		LDY		word_6+1
-; --
 		LDA		#<[_b0_d43_enemies_lib]
 		LDY		#>[_b0_d43_enemies_lib]
-; --
 		LDX		#word_4
-		JSR		_add_16_to_16
+		JSR		_add16_to_16
 		LDY		#$A
 loc_3A29F:
 		LDA		#0
@@ -3893,10 +3885,10 @@ _str_lib7_locations:
 		.BYTE	_S,_a,_m,_a,_n,_a,_o,__,$FF
 		.BYTE	_S,_o,_o,__,__,__,__,$FF
 		.BYTE	_T,_a,_n,_t,_e,_g,_e,_l,$FF
-		.BYTE	_H,_a,_t,_k,_s,_n,_e,_s,_s,$FF
+		.BYTE	_H,_a,_u,_k,_s,_n,_e,_s,_s,$FF
 		.BYTE	_C,_a,_n,_t,_l,_i,_n,$FF
 		.BYTE	_K,_o,_l,__,__,__,__,$FF
-		.BYTE	_R,_i,_m,_t,_l,_d,_a,_r,$FF
+		.BYTE	_R,_i,_m,_u,_l,_d,_a,_r,$FF
 _str_lib4_spells:
 		.BYTE	_B,_l,_a,_z,_e,$FF
 		.BYTE	_B,_l,_a,_z,_e,_m,_o,_r,_e,$FF
@@ -3921,25 +3913,22 @@ _str_lib4_spells:
 		.BYTE	_S,_a,_c,_r,_i,_f,_i,_c,_e,$FF
 		.BYTE	_E,_x,_p,_e,_l,$FF
 		.BYTE	_L,_i,_m,_b,_o,$FF
-byte_3ABDB:
 		.BYTE	_R,_o,_b,_M,_a,_g,_i,_c,$FF
-byte_3ABE4:
 		.BYTE	_S,_l,_o,_w,$FF
 		.BYTE	_S,_p,_e,_e,_d,_U,_P,$FF
 		.BYTE	_H,_e,_a,_l,$FF
-byte_3ABF6:
 		.BYTE	_H,_e,_a,_l,_m,_o,_r,_e,$FF
 		.BYTE	_H,_e,_a,_l,_a,_l,_l,$FF
 		.BYTE	  0,$FF
-		.BYTE	_H,_e,_a,_l,_t,_s,$FF
-		.BYTE	_H,_e,_a,_l,_t,_s,_a,_l,_l,$FF
+		.BYTE	_H,_e,_a,_l,_u,_s,$FF
+		.BYTE	_H,_e,_a,_l,_u,_s,_a,_l,_l,$FF
 		.BYTE	_V,_i,_v,_i,_f,_y,$FF
 		.BYTE	_R,_e,_v,_i,_v,_e,$FF
 		.BYTE	_S,_l,_e,_e,_p,$FF
 		.BYTE	_A,_w,_a,_k,_e,$FF
 		.BYTE	_S,_t,_o,_p,_S,_p,_e,_l,_l,$FF
-		.BYTE	_S,_t,_r,_r,_o,_t,_n,_d,$FF
-		.BYTE	_R,_e,_t,_t,_r,_n,$FF
+		.BYTE	_S,_u,_r,_r,_o,_u,_n,_d,$FF
+		.BYTE	_R,_e,_t,_u,_r,_n,$FF
 		.BYTE	_C,_h,_a,_o,_s,$FF
 		.BYTE	_T,_r,_a,_n,_s,_f,_o,_r,_m,$FF
 		.BYTE	_B,_e,_D,_r,_a,_g,_o,_n,$FF
@@ -3949,23 +3938,23 @@ byte_3ABF6:
 		.BYTE	_U,_p,_p,_e,_r,$FF
 		.BYTE	_I,_n,_c,_r,_e,_a,_s,_e,$FF
 		.BYTE	_I,_n,_c,_r,_e,_a,_s,_e,$FF
-		.BYTE	_B,_o,_t,_n,_c,_e,$FF
+		.BYTE	_B,_o,_u,_n,_c,_e,$FF
 		.BYTE	_B,_a,_r,_r,_i,_e,_r,$FF
 		.BYTE	_B,_i,_k,_i,_l,_l,$FF
 		.BYTE	_C,_h,_a,_n,_c,_e,$FF
 		.BYTE	_A,_n,_t,_i,_d,_o,_t,_e,$FF
-		.BYTE	_N,_t,_m,_b,_O,_f,_f,$FF
-		.BYTE	_C,_t,_r,_s,_e,_O,_f,_f,$FF
+		.BYTE	_N,_u,_m,_b,_O,_f,_f,$FF
+		.BYTE	_C,_u,_r,_s,_e,_O,_f,_f,$FF
 		.BYTE	_R,_e,_p,_e,_l,$FF
 		.BYTE	_D,_a,_y,_str,_N,_i,_g,_h,_t,$FF
 		.BYTE	_O,_p,_e,_n,$FF
 		.BYTE	_X,_str,_R,_a,_y,$FF
-		.BYTE	_O,_t,_t,_s,_i,_d,_e,$FF
+		.BYTE	_O,_u,_t,_s,_i,_d,_e,$FF
 		.BYTE	_I,_n,_v,_i,_s,_i,_b,_l,_e,$FF
-		.BYTE	_S,_t,_e,_p,_G,_t,_a,_r,_d,$FF
+		.BYTE	_S,_t,_e,_p,_G,_u,_a,_r,_d,$FF
 _str_lib0_items_low0:
 		.BYTE	_C,_y,_p,_r,_e,_s,_s ,$FF
-		.BYTE	_C,_l,_t,_b,$FF
+		.BYTE	_C,_l,_u,_b,$FF
 		.BYTE	_C,_o,_p,_p,_e,_r,$FF
 		.BYTE	_M,_a,_g,_i,_c,$FF
 		.BYTE	_I,_r,_o,_n,$FF
@@ -3984,13 +3973,13 @@ _str_lib0_items_low0:
 		.BYTE	_S,_w,_o,_r,_d,___,_o,_f,$FF
 		.BYTE	_S,_t,_a,_f,_f,___,_o,_f,$FF
 		.BYTE	_S,_w,_o,_r,_d,___,_o,_f,$FF
-		.BYTE	_M,_t,_l,_t,_i,_str,_e,_d,_g,_e,$FF
+		.BYTE	_M,_u,_l,_t,_i,_str,_e,_d,_g,_e,$FF
 		.BYTE	_S,_t,_a,_f,_f,___,_o,_f,$FF
 		.BYTE	_S,_w,_o,_r,_d,___,_o,_f,$FF
 		.BYTE	_Z,_o,_m,_b,_i,_e,$FF
 		.BYTE	_F,_a,_l,_c,_o,_n,$FF
 		.BYTE	_S,_l,_e,_d,_g,_e,$FF
-		.BYTE	_T,_h,_t,_n,_d,_e,_r,$FF
+		.BYTE	_T,_h,_u,_n,_d,_e,_r,$FF
 		.BYTE	_S,_t,_a,_f,_f,___,_o,_f,$FF
 		.BYTE	_S,_w,_o,_r,_d,___,_o,_f,$FF
 		.BYTE	_O,_r,_o,_c,_h,_i,$FF
@@ -4001,7 +3990,7 @@ _str_lib0_items_low0:
 		.BYTE	_L,_e,_a,_t,_h,_e,_r,$FF
 		.BYTE	_F,_l,_a,_s,_h,_y,$FF
 		.BYTE	_H,_a,_l,_f,___,_P,_l,_a,_t,_e,$FF
-		.BYTE	_F,_t,_l,_l,___,_P,_l,_a,_t,_e,$FF
+		.BYTE	_F,_u,_l,_l,___,_P,_l,_a,_t,_e,$FF
 		.BYTE	_M,_a,_g,_i,_c,$FF
 		.BYTE	_C,_l,_o,_a,_k,___,_o,_f,$FF
 		.BYTE	_A,_r,_m,_o,_r,___,_o,_f,$FF
@@ -4030,9 +4019,9 @@ _str_lib0_items_low0:
 		.BYTE	_G,_o,_l,_d,_e,_n,$FF
 _str_lib8_items_hi0:
 		.BYTE	_I,_r,_o,_n ,$FF
-		.BYTE	_M,_y,_s,_t,_e,_r,_i,_o,_t,_s,$FF
-		.BYTE	_U,_n,_l,_t,_c,_k,_y,$FF
-		.BYTE	_T,_t,_r,_b,_a,_n,$FF
+		.BYTE	_M,_y,_s,_t,_e,_r,_i,_o,_u,_s,$FF
+		.BYTE	_U,_n,_l,_u,_c,_k,_y,$FF
+		.BYTE	_T,_u,_r,_b,_a,_n,$FF
 		.BYTE	_N,_o,_h,$FF
 		.BYTE	_L,_e,_a,_t,_h,_e,_r,$FF
 		.BYTE	_I,_r,_o,_n,$FF
@@ -4063,7 +4052,7 @@ _str_lib8_items_hi0:
 		.BYTE	_S,_t,_r,_e,_n,_g,_t,_h,$FF
 		.BYTE	_A,_g,_i,_l,_i,_t,_y,$FF
 		.BYTE	_V,_i,_t,_a,_l,_i,_t,_y,$FF
-		.BYTE	_L,_t,_c,_k,$FF
+		.BYTE	_L,_u,_c,_k,$FF
 		.BYTE	_I,_n,_t,_e,_l,_l,_i,_g,_e,_n,_c,_e,$FF
 		.BYTE	_A,_c,_o,_r,_n,_s,___,_o,_f,$FF
 		.BYTE	_M,_e,_d,_i,_c,_a,_l,$FF
@@ -4073,7 +4062,7 @@ _str_lib8_items_hi0:
 		.BYTE	_L,_e,_a,_f,___,_o,_f,$FF
 		.BYTE	___,___,___,$FF
 		.BYTE	_L,_o,_c,_k,_e,_t,___,_o,_f,$FF
-		.BYTE	_F,_t,_l,_l,___,_M,_o,_o,_n,$FF
+		.BYTE	_F,_u,_l,_l,___,_M,_o,_o,_n,$FF
 		.BYTE	_W,_a,_t,_e,_r,$FF
 		.BYTE	_S,_a,_i,_l,_o,_r,_apo,_s,$FF
 		.BYTE	_E,_c,_h,_o,_i,_n,_g,$FF
@@ -4087,8 +4076,8 @@ _str_lib8_items_hi0:
 		.BYTE	_S,_i,_l,_v,_e,_r,$FF
 		.BYTE	_R,_e,_d,$FF
 		.BYTE	_Y,_e,_l,_l,_o,_w,$FF
-		.BYTE	_P,_t,_r,_p,_l,_e,$FF
-		.BYTE	_B,_l,_t,_e,$FF
+		.BYTE	_P,_u,_r,_p,_l,_e,$FF
+		.BYTE	_B,_l,_u,_e,$FF
 		.BYTE	_G,_r,_e,_e,_n,$FF
 _str_lib1_items_low1:
 		.BYTE	_S,_t,_i,_c,_k,$FF
@@ -4110,21 +4099,21 @@ _str_lib1_items_low1:
 		.BYTE	_R,_a,_i,_n,$FF
 		.BYTE	_G,_a,_i,_a,$FF
 		.BYTE	_R,_e,_f,_l,_e,_c,_t,_i,_o,_n,$FF
-		.BYTE	_D,_e,_s,_t,_r,_t,_c,_t,_i,_o,_n,$FF
+		.BYTE	_D,_e,_s,_t,_r,_u,_c,_t,_i,_o,_n,$FF
 		.BYTE	_S,_w,_o,_r,_d,$FF
 		.BYTE	_F,_o,_r,_c,_e,$FF
-		.BYTE	_I,_l,_l,_t,_s,_i,_o,_n,$FF
+		.BYTE	_I,_l,_l,_u,_s,_i,_o,_n,$FF
 		.BYTE	_S,_l,_a,_s,_h,_e,_r,$FF
 		.BYTE	_S,_w,_o,_r,_d,$FF
 		.BYTE	_H,_a,_m,_m,_e,_r,$FF
 		.BYTE	_S,_w,_o,_r,_d,$FF
-		.BYTE	_T,_h,_t,_n,_d,_e,_r,$FF
+		.BYTE	_T,_h,_u,_n,_d,_e,_r,$FF
 		.BYTE	_K,_i,_n,_g,_s,$FF
 		.BYTE	_S,_w,_o,_r,_d,$FF
 		.BYTE	_K,_i,_l,_l,_e,_r,$FF
-		.BYTE	_J,_t,_d,_g,_m,_e,_n,_t,$FF
+		.BYTE	_J,_u,_d,_g,_m,_e,_n,_t,$FF
 		.BYTE	$FF
-		.BYTE	_S,_t,_i,_t,$FF
+		.BYTE	_S,_u,_i,_t,$FF
 		.BYTE	_A,_r,_m,_o,_r,$FF
 		.BYTE	_C,_l,_o,_t,_h,_e,_s,$FF
 		.BYTE	_A,_r,_m,_o,_r,$FF
@@ -4133,14 +4122,14 @@ _str_lib1_items_low1:
 		.BYTE	_E,_v,_a,_s,_i,_o,_n,$FF
 		.BYTE	_R,_a,_d,_i,_a,_n,_c,_e,$FF
 		.BYTE	_A,_p,_r,_o,_n,$FF
-		.BYTE	_S,_t,_i,_t,$FF
-		.BYTE	_S,_t,_i,_t,$FF
+		.BYTE	_S,_u,_i,_t,$FF
+		.BYTE	_S,_u,_i,_t,$FF
 		.BYTE	_R,_o,_b,_e,$FF
 		.BYTE	_H,_a,_d,_e,_s,$FF
 		.BYTE	_C,_l,_o,_t,_h,$FF
 		.BYTE	_M,_a,_i,_l,$FF
 		.BYTE	_C,_l,_o,_t,_h,_e,_s,$FF
-		.BYTE	_S,_w,_i,_m,_s,_t,_i,_t,$FF
+		.BYTE	_S,_w,_i,_m,_s,_u,_i,_t,$FF
 		.BYTE	_B,_i,_k,_i,_n,_i,$FF
 		.BYTE	_A,_r,_m,_o,_r,$FF
 		.BYTE	_T,_e,_r,_r,_a,_f,_i,_r,_m,_a,$FF
@@ -4163,7 +4152,7 @@ _str_lib9_items_hi1:
 		.BYTE	_M,_a,_s,_k,$FF
 		.BYTE	_H,_e,_l,_m,_e,_t,$FF
 		.BYTE	_M,_a,_s,_k,$FF
-		.BYTE	_A,_m,_t,_l,_e,_t,$FF
+		.BYTE	_A,_m,_u,_l,_e,_t,$FF
 		.BYTE	_L,_i,_f,_e,$FF
 		.BYTE	_H,_a,_p,_p,_i,_n,_e,_s,_s,$FF
 		.BYTE	_C,_l,_a,_w,$FF
@@ -4174,7 +4163,7 @@ _str_lib9_items_hi1:
 		.BYTE	_P,_e,_p,_p,_e,_r,$FF
 		.BYTE	_S,_t,_o,_n,_e,$FF
 		.BYTE	_R,_a,$FF
-		.BYTE	_D,_r,_o,_t,_g,_h,_t,$FF
+		.BYTE	_D,_r,_o,_u,_g,_h,_t,$FF
 		.BYTE	_D,_a,_r,_k,_n,_e,_s,_s,$FF
 		.BYTE	_C,_h,_a,_n,_g,_e,$FF
 		.BYTE	_L,_i,_f,_e,$FF
@@ -4183,7 +4172,7 @@ _str_lib9_items_hi1:
 		.BYTE	_K,_e,_y,$FF
 		.BYTE	_K,_e,_y,$FF
 		.BYTE	_K,_e,_y,$FF
-		.BYTE	_R,_t,_b,_y,$FF
+		.BYTE	_R,_u,_b,_y,$FF
 		.BYTE	_P,_o,_w,_d,_e,_r,$FF
 		.BYTE	_S,_c,_r,_o,_l,_l,$FF
 		.BYTE	$FF
@@ -4203,13 +4192,13 @@ _str_lib9_items_hi1:
 		.BYTE	_H,_e,_r,_b,$FF
 		.BYTE	_B,_l,_a,_s,_t,_e,_r,$FF
 		.BYTE	_T,_h,_i,_g,_h,___,_B,_o,_n,_e,$FF
-		.BYTE	_F,_l,_t,_t,_e,$FF
-		.BYTE	_F,_l,_t,_t,_e,$FF
+		.BYTE	_F,_l,_u,_t,_e,$FF
+		.BYTE	_F,_l,_u,_t,_e,$FF
 		.BYTE	_H,_a,_r,_p,$FF
 		.BYTE	_L,_i,_g,_h,_t,$FF
 		.BYTE	_P,_o,_w,_d,_e,_r,$FF
 		.BYTE	_W,_e,_b,$FF
-		.BYTE	_S,_t,_n,_l,_i,_g,_h,_t,$FF
+		.BYTE	_S,_u,_n,_l,_i,_g,_h,_t,$FF
 		.BYTE	_D,_r,_o,_p,$FF
 		.BYTE	_O,_r,_b,$FF
 		.BYTE	_O,_r,_b,$FF
@@ -4218,7 +4207,7 @@ _str_lib9_items_hi1:
 		.BYTE	_O,_r,_b,$FF
 		.BYTE	_O,_r,_b,$FF
 _str_lib2_enemy_low0:
-		.BYTE	_S,_l,_i,_m,_e,$A5 ,$FF
+		.BYTE	_S,_l,_i,_m,_e,$A5,$FF
 		.BYTE	_B,_l,_a,_c,_k,___,_R,_a,_v,_e,_n,$A5,$FF
 		.BYTE	_H,_o,_r,_n,_e,_d,$FF
 		.BYTE	_G,_i,_a,_n,_t,$FF
@@ -4232,44 +4221,44 @@ _str_lib2_enemy_low0:
 		.BYTE	_S,_p,_i,_k,_e,_d,___,_H,_a,_r,_e,$A5,$FF
 		.BYTE	_P,_o,_i,_s,_o,_n,___,_T,_o,_a,_d,$A5,$FF
 		.BYTE	_C,_a,_t,_e,_r,_p,_i,_l,_l,_a,_r,$A5,$FF
-		.BYTE	_H,_t,_m,_a,_n,_a,_b,_a,_t,$A5,$FF
-		.BYTE	_P,_t,_t,_r,_e,_p,_t,_p,$A5,$FF
+		.BYTE	_H,_u,_m,_a,_n,_a,_b,_a,_t,$A5,$FF
+		.BYTE	_P,_u,_t,_r,_e,_p,_u,_p,$A5,$FF
 		.BYTE	_K,_i,_l,_l,_e,_r,___,_B,_e,_e,$A5,$FF
 		.BYTE	_A,_r,_m,_y,___,_C,_r,_a,_b,$A5,$FF
-		.BYTE	_G,_a,_s,___,_C,_l,_o,_t,_d,$A5,$FF
+		.BYTE	_G,_a,_s,___,_C,_l,_o,_u,_d,$A5,$FF
 		.BYTE	_D,_e,_m,_o,_n,___,_T,_o,_a,_d,_s,_t,_o,_o,_l,$A5,$FF
 		.BYTE	_P,_o,_i,_s,_o,_n,$FF
 		.BYTE	_A,_v,_e,_n,_g,_e,_r,$FF
-		.BYTE	_M,_a,_d,_h,_o,_t,_n,_d,$A5,$FF
+		.BYTE	_M,_a,_d,_h,_o,_u,_n,_d,$A5,$FF
 		.BYTE	_D,_e,_a,_d,_l,_y,$FF
 		.BYTE	_S,_h,_a,_d,_o,_w,$A5,$FF
 		.BYTE	_V,_a,_m,_p,_i,_r,_e,$A5,$FF
 		.BYTE	_M,_a,_n,_str,_E,_a,_t,_e,_r,$FF
-		.BYTE	_R,_o,_g,_t,_e,$FF
+		.BYTE	_R,_o,_g,_u,_e,$FF
 		.BYTE	_V,_a,_m,_p,_i,_r,_e,___,_C,_a,_t,$A5,$FF
 		.BYTE	_K,_i,_n,_g,$FF
 		.BYTE	_W,_i,_l,_d,___,_A,_p,_e,$A5,$FF
 		.BYTE	_T,_r,_i,_c,_k,___,_B,_a,_g,$A5,$FF
-		.BYTE	_M,_t,_m,_m,_y,___,_M,$A1,$FF
-		.BYTE	_I,_n,_f,_e,_r,_n,_t,_s,$FF
-		.BYTE	_L,_t,_m,_p,_t,_s,$A7,$FF
+		.BYTE	_M,_u,_m,_m,_y,___,_M,$A1,$FF
+		.BYTE	_I,_n,_f,_e,_r,_n,_u,_s,$FF
+		.BYTE	_L,_u,_m,_p,_u,_s,$A7,$FF
 		.BYTE	_F,_l,_a,_m,_a,_p,_e,_d,_e,$A5,$FF
-		.BYTE	_M,_t,_m,_m,$A0,$FF
+		.BYTE	_M,_u,_m,_m,$A0,$FF
 		.BYTE	_M,_a,_g,_e,$FF
-		.BYTE	_H,_t,_n,_t,_e,_r,$FF
+		.BYTE	_H,_u,_n,_t,_e,_r,$FF
 		.BYTE	_A,_v,_e,_n,_g,_e,_r,$FF
 		.BYTE	_N,_e,_v,$A5,$FF
-		.BYTE	_H,_e,_a,_t,___,_C,_l,_o,_t,_d,$A5,$FF
-		.BYTE	_T,_o,_n,_g,_t,_e,_b,_e,_a,_r,$A5,$FF
-		.BYTE	_C,_t,_r,_e,_r,$A5,$FF
+		.BYTE	_H,_e,_a,_t,___,_C,_l,_o,_u,_d,$A5,$FF
+		.BYTE	_T,_o,_n,_g,_u,_e,_b,_e,_a,_r,$A5,$FF
+		.BYTE	_C,_u,_r,_e,_r,$A5,$FF
 		.BYTE	_R,_a,_m,_m,_o,_r,_e,$A5,$FF
-		.BYTE	_C,_a,_t,_t,_l,_a,$A5,$FF
+		.BYTE	_C,_a,_t,_u,_l,_a,$A5,$FF
 		.BYTE	_E,_v,_i,_l,___,_M,_a,_g,_e,$A5,$FF
 		.BYTE	_S,_i,_m,_i,_a,_c,$A5,$FF
-		.BYTE	_G,_a,_r,_t,_d,_a,$A5,$FF
+		.BYTE	_G,_a,_r,_u,_d,_a,$A5,$FF
 		.BYTE	_M,_e,_t,_a,_l,___,_S,_l,_i,_m,_e,$A5,$FF
 		.BYTE	_G,_o,_a,_t,_e,_g,_o,_n,$A5,$FF
-		.BYTE	_E,_x,_e,_c,_t,_t,_i,_o,_n,_e,_r,$A5,$FF
+		.BYTE	_E,_x,_e,_c,_u,_t,_i,_o,_n,_e,_r,$A5,$FF
 		.BYTE	_D,_e,_m,_o,_n,_i,_t,_e,$A5,$FF
 		.BYTE	_D,_e,_r,_a,_n,_g,_e,_r,$A5,$FF
 		.BYTE	_M,_a,_n,_str,_E,_a,_t,_e,_r,$FF
@@ -4280,13 +4269,13 @@ _str_lib2_enemy_low0:
 		.BYTE	_B,_a,_r,_n,_a,_b,_a,_s,$A7,$FF
 		.BYTE	_W,_i,_t,_c,_h,$A4,$FF
 		.BYTE	_A,_v,_e,_n,_g,_e,_r,$FF
-		.BYTE	_I,_n,_f,_e,_r,_n,_t,_s,$FF
+		.BYTE	_I,_n,_f,_e,_r,_n,_u,_s,$FF
 		.BYTE	_M,_a,_r,_i,_n,_e,$FF
 _str_libA_enemy_hi0:
 		.BYTE	_M,_a,_n,___,_O,_apo,___,_W,_a,_r,$A5,$FF
 		.BYTE	_M,_e,_r,_z,_o,_n,$A5,$FF
-		.BYTE	_K,_i,_n,_g,___,_S,_q,_t,_i,_d,$A5,$FF
-		.BYTE	_C,_r,_a,_b,_t,_s,$A7,$FF
+		.BYTE	_K,_i,_n,_g,___,_S,_q,_u,_i,_d,$A5,$FF
+		.BYTE	_C,_r,_a,_b,_u,_s,$A7,$FF
 		.BYTE	_M,_e,_r,_z,_o,_n,_c,_i,_a,_n,$A5,$FF
 		.BYTE	_H,_a,_d,_e,_s,_apo,$FF
 		.BYTE	_F,_i,_e,_r,_c,_e,___,_B,_e,_a,_r,$A5,$FF
@@ -4294,7 +4283,7 @@ _str_libA_enemy_hi0:
 		.BYTE	_B,_i,_g,_h,_o,_r,_n,$A5,$FF
 		.BYTE	_S,_t,_i,_n,_g,_w,_i,_n,_g,$A5,$FF
 		.BYTE	_V,_e,_n,_o,_m,$FF
-		.BYTE	_B,_l,_t,_e,___,_B,_e,_a,_k,$A5,$FF
+		.BYTE	_B,_l,_u,_e,___,_B,_e,_a,_k,$A5,$FF
 		.BYTE	_L,_e,_t,_h,_a,_l,$FF
 		.BYTE	_A,_v,_e,_n,_g,_e,_r,$A5,$FF
 		.BYTE	_L,_a,_v,$A6,$FF
@@ -4305,20 +4294,20 @@ _str_libA_enemy_hi0:
 		.BYTE	_W,_y,_v,_e,_r,_n,$A5,$FF
 		.BYTE	_K,_o,_n,_g,$A5,$FF
 		.BYTE	_T,_o,_r,_t,_r,_a,_g,_o,_n,$A5,$FF
-		.BYTE	_E,_l,_y,_s,_i,_t,_m,$FF
+		.BYTE	_E,_l,_y,_s,_i,_u,_m,$FF
 		.BYTE	_B,_o,_m,_b,___,_C,_r,_a,_g,$A5,$FF
 		.BYTE	_G,_r,_i,_z,_z,_l,$A0,$FF
 		.BYTE	_V,_o,_o,_d,_o,_o,$FF
 		.BYTE	_K,_i,_n,_g,$FF
 		.BYTE	_S,_n,_o,_w,___,_D,_r,_a,_g,_o,_n,$A5,$FF
 		.BYTE	_T,_r,_o,_l,_l,$A5,$FF
-		.BYTE	_F,_r,_o,_s,_t,___,_C,_l,_o,_t,_d,$A5,$FF
+		.BYTE	_F,_r,_o,_s,_t,___,_C,_l,_o,_u,_d,$A5,$FF
 		.BYTE	_D,_a,_n,_c,_i,_n,_g,$FF
 		.BYTE	_M,_i,_n,_i,_d,_e,_m,_o,_n,$A5,$FF
 		.BYTE	_T,_e,_n,_t,_a,_c,_l,_e,_s,$A7,$FF
 		.BYTE	_S,_k,_e,_l,_e,_t,_o,_n,$A5,$FF
 		.BYTE	_M,_i,_m,_i,_c,$A5,$FF
-		.BYTE	_M,_a,_r,_a,_t,_d,_e,_r,$A5,$FF
+		.BYTE	_M,_a,_r,_a,_u,_d,_e,_r,$A5,$FF
 		.BYTE	_H,_o,_l,_o,_g,_h,_o,_s,_t,$A5,$FF
 		.BYTE	_O,_r,_o,_c,_h,_i,$A5,$FF
 		.BYTE	_S,_t,_o,_n,_e,$FF
@@ -4328,7 +4317,7 @@ _str_libA_enemy_hi0:
 		.BYTE	_V,_i,_l,_e,___,_S,_h,_a,_d,_o,_w,$A5,$FF
 		.BYTE	_V,_o,_o,_d,_o,_o,$FF
 		.BYTE	_M,_e,_t,_a,_l,$FF
-		.BYTE	_G,_h,_o,_t,_l,$A5,$FF
+		.BYTE	_G,_h,_o,_u,_l,$A5,$FF
 		.BYTE	_L,_i,_o,_n,_h,_e,_a,_d,$A5,$FF
 		.BYTE	_B,_o,_s,_s,___,_T,_r,_o,_l,_l,$A5,$FF
 		.BYTE	_G,_o,_l,_d,___,_B,_a,_s,_h,_e,_r,$A5,$FF
@@ -4345,7 +4334,7 @@ _str_libA_enemy_hi0:
 		.BYTE	_T,_r,_o,_l,_l,___,_K,_i,_n,_g,$A5,$FF
 		.BYTE	_G,_r,_e,_e,_n,$FF
 		.BYTE	_B,_a,_r,_o,_g,$A5,$FF
-		.BYTE	_P,_t,_t,_r,_e,_g,_o,_n,$A5,$FF
+		.BYTE	_P,_u,_t,_r,_e,_g,_o,_n,$A5,$FF
 		.BYTE	_L,_i,_o,_n,_r,_o,_a,_r,$A5,$FF
 		.BYTE	_S,_w,_o,_r,_d,_o,_i,_d,$A5,$FF
 		.BYTE	_K,_i,_n,_g,___,_H,_y,_d,_r,_a,$A5,$FF
@@ -4461,7 +4450,7 @@ _str_libB_enemy_hi1:
 		.BYTE	$FF
 		.BYTE	$FF
 		.BYTE	$FF
-		.BYTE	_H,_t,_l,_k,$A5,$FF
+		.BYTE	_H,_u,_l,_k,$A5,$FF
 		.BYTE	$FF
 		.BYTE	$FF
 		.BYTE	$FF
@@ -4489,8 +4478,8 @@ _str_libB_enemy_hi1:
 		.BYTE	$FF
 		.BYTE	$FF
 		.BYTE	$FF
-		.BYTE	_B,_o,_m,_t,_s,$A5,$FF
-		.BYTE	_G,_o,_n,_t,_s,$A5,$FF
+		.BYTE	_B,_o,_m,_u,_s,$A5,$FF
+		.BYTE	_G,_o,_n,_u,_s,$A5,$FF
 		.BYTE	$FF
 		.BYTE	$FF
 		.BYTE	$FF

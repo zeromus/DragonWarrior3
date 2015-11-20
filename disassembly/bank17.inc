@@ -59,9 +59,9 @@ _copyrights_send_tiles:
 		LDY		#0
 		STY		_PPU_ADDR
 		STY		_PPU_ADDR
-		LDA		_chr_copyright_spr_data_ofs
+		LDA		#<[_chr_copyright_spr_data]
 		STA		_tmp12
-		LDA		_chr_copyright_spr_data_ofs+1
+		LDA		#>[_chr_copyright_spr_data]
 		STA		_tmp12+1
 		LDX		#$10
 		JSR		_ppu_data_send_tmp12
@@ -70,18 +70,18 @@ _copyrights_send_tiles:
 		STA		_PPU_ADDR
 		LDY		#0
 		STY		_PPU_ADDR
-		LDA		_chr_copyright_bg_data_ofs
+		LDA		#<[_chr_copyright_bg_data]
 		STA		_tmp12
-		LDA		_chr_copyright_bg_data_ofs+1
+		LDA		#>[_chr_copyright_bg_data]
 		STA		_tmp12+1
 		LDX		#$10
 		BNE		_ppu_data_send_tmp12
 
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_send_tilemaps:
-		LDA		_tlm_copyrights_ofs
+		LDA		#<[_tlm_copyrights]
 		STA		_tmp12
-		LDA		_tlm_copyrights_ofs+1
+		LDA		#>[_tlm_copyrights]
 		STA		_tmp12+1
 		LDA		_PPU_STATUS
 		LDA		#$20
@@ -268,8 +268,8 @@ _tlm_copyrights:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,$AA,$A2,$20,  0,  0,  0,  0,  0,$AA,$AA,$22,  0,  0
 		.BYTE	  0,  0,$80,$AA,$AA,$22,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-_tlm_copyrights_ofs:
-		.WORD	_tlm_copyrights
+;_tlm_copyrights_ofs:
+;		.WORD	_tlm_copyrights
 _spr_copyrights_data:
 		.BYTE	$B0,   0,  1,$78,$B0,   1,  1,$80,$B8,   2,  1,$78,$B8,   3,  1,$80
 		.BYTE	$F8,  4,  1,$78,$F8,  5,  1,$80,$F8,  6,  1,$78,$F8,  7,  1,$80
@@ -313,7 +313,7 @@ _chr_copyright_spr_data:
 		.BYTE	  0,  0,  0,  0,  0,  2,  2,  0,  0,  0,  0,  0,  0,  2,  3,  1
 		.BYTE	  0,  0,  0,  0,  0,$40,$40,  0,  0,  0,  0,  0,  0,$40,$C0,$80
 _chr_copyright_bg_data:
-		.BYTE	    0,$3E,  8,  8,  8,  8, $A,  0,$FF,$C1,$F7,$F7,$F7,$F7,$F5,$FF
+		.BYTE	  0,$3E,  8,  8,  8,  8, $A,  0,$FF,$C1,$F7,$F7,$F7,$F7,$F5,$FF
 		.BYTE	  0,$D8,$D8,$A8,$A8,$A8,$8A,  0,$FF,$27,$27,$57,$57,$57,$75,$FF
 		.BYTE	  0,$11,$29,$29,$45,$7D,$45,  0,$FF,$EE,$D6,$D6,$BA,$82,$BA,$FF
 		.BYTE	  0,$AE,$A9,$A9,$69,$69,$6E,  0,$FF,$51,$56,$56,$96,$96,$91,$FF
@@ -569,10 +569,10 @@ _chr_copyright_bg_data:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-_chr_copyright_bg_data_ofs:
-		.WORD	_chr_copyright_bg_data
-_chr_copyright_spr_data_ofs:
-		.WORD	_chr_copyright_spr_data
+;_chr_copyright_bg_data_ofs:
+;		.WORD	_chr_copyright_bg_data
+;_chr_copyright_spr_data_ofs:
+;		.WORD	_chr_copyright_spr_data
 
 ; =============== S U B	R O U T	I N E =======================================
 _b17_s1_title_screen:
@@ -729,9 +729,9 @@ sub_2358FB:
 		LDY		#0
 		STY		_PPU_ADDR
 		STY		_PPU_ADDR
-		LDA		_chr_title_bg_data0_ofs
+		LDA		#<[_chr_title_bg_data0]
 		STA		_tmp12
-		LDA		_chr_title_bg_data0_ofs+1
+		LDA		#>[_chr_title_bg_data0]
 		STA		_tmp12+1
 		LDX		#$10
 		JSR		sub_235949
@@ -740,18 +740,18 @@ sub_2358FB:
 		STA		_PPU_ADDR
 		LDY		#0
 		STY		_PPU_ADDR
-		LDA		_chr_title_bg_data1_ofs
+		LDA		#<[_chr_title_bg_data1]
 		STA		_tmp12
-		LDA		_chr_title_bg_data1_ofs+1
+		LDA		#>[_chr_title_bg_data1]
 		STA		_tmp12+1
 		LDX		#$10
 		BNE		sub_235949
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_235930:
-		LDA		_tlm_title_data_ofs
+		LDA		#<[_tlm_title_data]
 		STA		_tmp12
-		LDA		_tlm_title_data_ofs+1
+		LDA		#>[_tlm_title_data]
 		STA		_tmp12+1
 		LDA		_PPU_STATUS
 		LDA		#$20
@@ -1373,8 +1373,8 @@ _tlm_title_data:
 		.BYTE	 $F, $F,  0,  0,  0,  0, $F, $F,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-_tlm_title_data_ofs:
-		.WORD	_tlm_title_data
+;_tlm_title_data_ofs:
+;		.WORD	_tlm_title_data
 _spr_title_data:
 		.BYTE	$98,  0,  0,$68,$98,  0,  0,$70,$98,  0,  0,$78,$98,  0,  0,$80
 		.BYTE	$98,  0,  0,$88,$98,  0,  0,$90,$A0,  0,  0,$68,$A0,  0,  0,$70
@@ -1400,7 +1400,7 @@ byte_23623F:
 byte_23624F:
 		.BYTE	$77,$10,  0,$80,$7F,$10,  0,$80,$87,$10,  0,$80,$8F,$10,  0,$80
 _chr_title_bg_data0:
-		.BYTE	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,$15,$20,  0,$20,  0,$20,  0,  0,$1F,$20,$20,$20,$20,$20
 		.BYTE	  0,  0,$55,  0,  0,  0,  0,  0,  0,  0,$FF,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,$C0,$E0,$70,  0,  0,  0,  0,  0,  0,$40,  0
@@ -1605,7 +1605,7 @@ _chr_title_bg_data0:
 		.BYTE	 $D,  8,  9,  5,  6,  3,  1,  0,  3,  7,  7,  3,  1,  0,  0,  0
 		.BYTE	$B0,$10,$90,$A0,$60,$C0,$80,  0,$C0,$E0,$E0,$C0,$80,  0,  0,  0
 _chr_title_bg_data1:
-		.BYTE	    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	$BF,$7F,$7F,$BF,$7F,$F3,$73,$F3,$40,$BF,$80,$40,$8C,$1C,$9C,$1C
 		.BYTE	$FD,$FE,$DF,$E7,$63,$F3,$73,$B3,  2,$E1,$78,$3C,$BC,$1C,$9C,$5C
 		.BYTE	$F7,$FF,$DE,$CF,$CF,$CB,$C7,$C7,  8,$61,$73,$72,$74,$7C,$78,$78
@@ -1861,10 +1861,10 @@ _chr_title_bg_data1:
 		.BYTE	$2E,$1E,$2E,$1E,$2E,$1E,$2E,$1E,$D1,$E1,$D1,$E1,$D1,$E1,$D1,$E1
 		.BYTE	$E0,$C1,$E0,$C0,$E0,$C0,$E0,$C0,$1F,$3E,$1F,$3F,$1F,$3F,$1F,$3F
 		.BYTE	$F3,$73,$B9,$79,$B9,$79,$B9,$79,  8,$88,$44,$84,$44,$84,$44,$84
-_chr_title_bg_data0_ofs:
-		.WORD	_chr_title_bg_data0
-_chr_title_bg_data1_ofs:
-		.WORD	_chr_title_bg_data1
+;_chr_title_bg_data0_ofs:
+;		.WORD	_chr_title_bg_data0
+;_chr_title_bg_data1_ofs:
+;		.WORD	_chr_title_bg_data1
 byte_237F23:
 		.BYTE	  1,  2,  2,  2,  2,  5,$11,$12,$13,$14,$12,$15,  0,$22,$23,$24
 		.BYTE	$22,  0,  0,$22,$23,$24,$22,  0,$31,$32,$33,$34,$32,$35,$41,$42
