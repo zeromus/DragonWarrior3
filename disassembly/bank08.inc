@@ -977,67 +977,6 @@ _chr_character_sprites_data:
 		.BYTE $72,$7B,$37,$37,	4, $F,$1F,$1E,$1F,$1F,$7F,$7F,	3, $F,$1F,  0
 		.BYTE $17,$F7,$F7,$F7,$1B,$FC,$FE,$1E,$FF,$FE,$FE,$FF,$EF,$FF,$FE,  0
 
-; here are parts of system routines code, which has no room in the oF bank, so
-; they just moved it here and used far call to execute them
-
-; =============== S U B	R O U T	I N E =======================================
-sub_CBF80:
-		LDA		byte_60CB
-		AND		#$10
-		BEQ		locret_CBF96
-		LDA		#$80
-		LDX		#$18
-loc_CBF8B:
-		STA		byte_100,X
-		INX
-		INX
-		INX
-		INX
-		CPX		#$34
-		BNE		loc_CBF8B
-locret_CBF96:
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_CBF97:
-		LDA		byte_30
-		CMP		#5
-		BNE		locret_CBFAD
-		LDX		#$14
-		LDA		byte_6DF
-		CMP		#$78
-		BCC		loc_CBFA8
-		LDX		#$14
-loc_CBFA8:
-		LDA		#$A
-		STA		byte_101,X
-locret_CBFAD:
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_CBFAE:
-		LDA		byte_60B9
-		BMI		locret_CBFCB
-		LDA		byte_60CA
-		BPL		locret_CBFCB
-		LDX		#6
-		LDA		byte_6DF
-		CMP		#$78
-		BCC		loc_CBFCC
-		ROR		byte_131
-		STX		byte_121
-		INX
-		STX		byte_125
-locret_CBFCB:
-		RTS
-loc_CBFCC:
-		SEC
-		ROR		byte_131
-		STX		byte_121
-		INX
-		STX		byte_125
-		RTS
-
 		ECHO "bank 08 free space", [$BFD8-.]
 
 		ORG $BFD8

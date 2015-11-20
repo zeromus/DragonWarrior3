@@ -3,12 +3,12 @@
 
 		.WORD 0
 		.WORD 0
-		.WORD _b1_s2
-		.WORD _b1_s3_far_apu_load
-		.WORD _b1_s4
-		.WORD _b1_s5
 		.WORD 0
-		.WORD _b1_s7
+		.WORD 0
+		.WORD 0
+		.WORD 0
+		.WORD 0
+		.WORD 0
 		.WORD 0
 		.WORD _b1_s9
 		.WORD _b1_sA
@@ -17,7 +17,7 @@
 		.WORD _b1_sD
 		.WORD _b1_sE
 		.WORD 0
-		.WORD _b1_s10
+		.WORD 0
 		.WORD 0
 		.WORD 0
 		.WORD _b1_s13
@@ -25,66 +25,6 @@
 		.WORD _b1_s15
 		.WORD _b1_s16
 		.WORD _b1_s17
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s2:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 2, $EF		; ofs 0x002dc004, -> dst _b1E_s2
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s5:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 5, $EF		; ofs 0x002dc00a, -> dst _b1E_s5
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s4:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 4, $EF		; ofs 0x002dc008, -> dst _b1E_s4
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s7:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 6, $EF		; ofs 0x002dc00c, -> dst _b1E_s6
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s10:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 7, $EF		; ofs 0x002dc00e, -> dst _b1E_s7
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b1_s3_far_apu_load:
-		PHA
-		LDA		#1
-		STA		_mmc_cur_prg_bank
-		PLA
-		BRK
-		.BYTE 3, $EF		; ofs 0x002dc006, -> dst _b1E_s3_apu_load
-		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_s14:
@@ -210,12 +150,10 @@ sub_20122:
 		LDA		byte_7F
 		CMP		#4
 		BEQ		loc_2012C
-		BRK
-		.BYTE $3C, $17		; ofs 0x0014003e, -> dst _bD_s1F
+		FAR		$3C, $17		; _bD_s1F
 		RTS
 loc_2012C:
-		BRK
-		.BYTE $10, $17		; ofs 0x00008090, -> dst _b0_s48
+		FAR		$10, $17		; _b0_s48
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -261,8 +199,7 @@ sub_20162:
 		JSR		sub_202A9
 		LDA		byte_7E
 		JSR		sub_20759
-		BRK
-		.BYTE $1A, $17		; ofs 0x00158026, -> dst _bE_s13
+		FAR		$1A, $17		; _bE_s13
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_2016F:
@@ -373,8 +310,7 @@ sub_20200:
 		TAX
 		LDA		#0
 		STA		byte_635,X
-		BRK
-		.BYTE $10, $17		; ofs 0x00008090, -> dst _b0_s48
+		FAR		$10, $17		; _b0_s48
 		LDA		word_4+1
 		JMP		sub_206E8
 
@@ -491,8 +427,7 @@ sub_202DA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_202E0:
 		JSR		sub_20720
-		BRK
-		.BYTE $10, $17		; ofs 0x00008090, -> dst _b0_s48
+		FAR		$10, $17		; _b0_s48
 		LDA		word_7C+1
 		ASL
 		ASL
@@ -539,8 +474,7 @@ loc_20320:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20325:
 		JSR		sub_20720
-		BRK
-		.BYTE $3C, $17		; ofs 0x0014003e, -> dst _bD_s1F
+		FAR		$3C, $17		; _bD_s1F
 		LDA		word_7C+1
 		ASL
 		ASL
@@ -568,8 +502,7 @@ sub_2034D:
 		JSR		sub_20720
 		LDA		word_7C+1
 		STA		byte_D0
-		BRK
-		.BYTE $2A, $17		; ofs 0x000080c4, -> dst _b0_s62
+		FAR		$2A, $17		; _b0_s62
 		LDA		word_6+1
 		STA		byte_75
 		INC		byte_75
@@ -680,8 +613,7 @@ loc_20427:
 		LDX		#$73
 		JSR		sub_20441
 		LDA		#$85
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		LDA		byte_78
 		RTS
 
@@ -1125,8 +1057,7 @@ loc_206B9:
 		BNE		loc_206B9
 		BEQ		loc_206CD
 loc_206C1:
-		BRK
-		.BYTE $1B, $17		; ofs 0x00158028, -> dst _bE_s14
+		FAR		$1B, $17		; _bE_s14
 		LDX		#0
 loc_206C6:
 		INC		byte_9,X
@@ -1184,8 +1115,7 @@ sub_20703:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20707:
 		STY		byte_78
-		BRK
-		.BYTE $A4, 7		; ofs 0x00038018, -> dst _b2_sC
+		FAR		$A4, 7		; _b2_sC
 		LDY		#0
 loc_2070E:
 		LDX		byte_77
@@ -1248,8 +1178,7 @@ sub_20759:
 		JSR		sub_20775
 		PLA
 		STA		byte_74
-		BRK
-		.BYTE $19, $17		; ofs 0x00158024, -> dst _bE_s12
+		FAR		$19, $17		; _bE_s12
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1267,8 +1196,7 @@ sub_20775:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sA:
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$75, 7		; _b4_sA
 		LDA		byte_566
 		AND		#$F3
 		STA		byte_566
@@ -1286,8 +1214,7 @@ _b1_sA:
 		AND		#$C0
 		BNE		locret_207B5
 		LDA		#$55
-		BRK
-		.BYTE $73, 7		; ofs 0x00068010, -> dst _b4_s8
+		FAR		$73, 7		; _b4_s8
 locret_207B5:
 		RTS
 
@@ -1303,23 +1230,20 @@ loc_207B8:
 		LDA		byte_530,Y
 		AND		byte_531,Y
 		BPL		loc_207E7
-		BRK
-		.BYTE $D2, 7		; ofs 0x00068030, -> dst _b4_s18
+		FAR		$D2, 7		; _b4_s18
 		LDA		byte_59
 		BEQ		loc_207E7
 		ASL
 		TAX
 		LDA		byte_207EF-1,X
 		STX		byte_60C1
-		BRK
-		.BYTE $7C, 7		; ofs 0x0006801e, -> dst _b4_sF
+		FAR		$7C, 7		; _b4_sF
 		LDX		byte_60C1
 		ADC		byte_207EF-2,X
 		STA		byte_65
 		LDA		#0
 		STA		byte_66
-		BRK
-		.BYTE $D3, 7		; ofs 0x00068032, -> dst _b4_s19
+		FAR		$D3, 7		; _b4_s19
 loc_207E7:
 		PLA
 		TAY
@@ -1348,8 +1272,7 @@ loc_207F7:
 loc_2080F:
 		LDA		#$44
 		STA		byte_CF
-		BRK
-		.BYTE $9C, 7		; ofs 0x0000808a, -> dst _b0_s45
+		FAR		$9C, 7		; _b0_s45
 		LDA		word_4
 		CMP		#$C4
 		BNE		loc_20828
@@ -1395,10 +1318,8 @@ _b1_s9:
 		LDA		#0
 		STA		byte_576
 		LDA		#$3D
-		BRK
-		.BYTE $72, 7		; ofs 0x0006800e, -> dst _b4_s7
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$72, 7		; _b4_s7
+		FAR		$75, 7		; _b4_sA
 		LDX		#0
 		STX		byte_51
 		STX		byte_52
@@ -1413,10 +1334,8 @@ loc_20876:
 		LDA		byte_51
 		CMP		#4
 		BNE		loc_2086A
-		BRK
-		.BYTE $31, $17		; ofs 0x00068042, -> dst _b4_s21
-		BRK
-		.BYTE $70, 7		; ofs 0x0006800a, -> dst _b4_s5
+		FAR		$31, $17		; _b4_s21
+		FAR		$70, 7		; _b4_s5
 		LDA		byte_6A63
 		BNE		loc_208F6
 		LDA		byte_6A6B
@@ -1437,17 +1356,13 @@ loc_208A4:
 		CMP		#8
 		BCS		loc_208C8
 loc_208AB:
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$75, 7		; _b4_sA
 		LDA		#$A0
 		STA		byte_D2
 		LDX		#$6D
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $73, 7		; ofs 0x00068010, -> dst _b4_s8
-		BRK
-		.BYTE $70, 7		; ofs 0x0006800a, -> dst _b4_s5
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$73, 7		; _b4_s8
+		FAR		$70, 7		; _b4_s5
 		LDA		byte_566
 		ORA		#4
 		STA		byte_566
@@ -1464,23 +1379,18 @@ loc_208D5:
 		CMP		#8
 		BCS		loc_208F6
 loc_208DC:
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$75, 7		; _b4_sA
 		LDA		#$A0
 		STA		byte_D2
 		LDX		#$71
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $73, 7		; ofs 0x00068010, -> dst _b4_s8
-		BRK
-		.BYTE $70, 7		; ofs 0x0006800a, -> dst _b4_s5
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$73, 7		; _b4_s8
+		FAR		$70, 7		; _b4_s5
 		LDA		byte_566
 		ORA		#8
 		STA		byte_566
 loc_208F6:
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$75, 7		; _b4_sA
 		RTS
 loc_208FA:
 		LDA		byte_571,X
@@ -1500,8 +1410,7 @@ loc_20902:
 		STA		byte_6A32
 		LDX		#7
 		JSR		sub_20977
-		BRK
-		.BYTE 6, 7		; ofs 0x0015800c, -> dst _bE_s6_msg_mFF
+		FAR		6, 7		; _bE_s6_msg_mFF
 		INC		byte_52
 		LDA		byte_6A32
 		AND		#$BF
@@ -1605,17 +1514,13 @@ _b1_sC:
 		AND		#$DF
 		STA		byte_60B7
 		LDA		#$3D
-		BRK
-		.BYTE $72, 7		; ofs 0x0006800e, -> dst _b4_s7
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
-		BRK
-		.BYTE $D5, 7		; ofs 0x00068036, -> dst _b4_s1B
+		FAR		$72, 7		; _b4_s7
+		FAR		$75, 7		; _b4_sA
+		FAR		$D5, 7		; _b4_s1B
 		LDA		#0
 		STA		byte_D2
 		LDX		#$27
-		BRK
-		.BYTE $D7, 7		; ofs 0x0006803a, -> dst _b4_s1D
+		FAR		$D7, 7		; _b4_s1D
 		TAX
 		CPX		#$27
 		BEQ		loc_209E6
@@ -1623,12 +1528,9 @@ _b1_sC:
 loc_209E6:
 		TXA
 		LDX		#0
-		BRK
-		.BYTE 6, 7		; ofs 0x0015800c, -> dst _bE_s6_msg_mFF
-		BRK
-		.BYTE $13, $2F		; _syscall12
-		BRK
-		.BYTE $49, $17		; ofs 0x000080a0, -> dst _b0_s50
+		FAR		6, 7		; _bE_s6_msg_mFF
+		FAR		$13, $2F		; _sys12
+		FAR		$49, $17		; _b0_s50
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_209FA
@@ -1644,21 +1546,16 @@ loc_209FA:
 		STA		byte_71C
 		LDA		word_4+1
 		STA		byte_71D
-		BRK
-		.BYTE $46, $17		; ofs 0x0000809e, -> dst _b0_s4F
-		BRK
-		.BYTE $4A, $17		; ofs 0x0012805e, -> dst _bC_s2F
+		FAR		$46, $17		; _b0_s4F
+		FAR		$4A, $17		; _bC_s2F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_20A1A:
-		BRK
-		.BYTE $B, $17		; ofs 0x000f8024, -> dst _bA_s12
+		FAR		$B, $17		; _bA_s12
 		JSR		__pause_or_skip
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$E9, 7		; _bE_s31
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1667,54 +1564,41 @@ _pause_or_skip:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sD:
-		BRK
-		.BYTE $75, 7		; ofs 0x00068014, -> dst _b4_sA
+		FAR		$75, 7		; _b4_sA
 		LDA		#$A0
 		STA		byte_D2
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		BRK
-		.BYTE $16, $2F		; _syscall12
+		FAR		$16, $2F		; _sys12
 		JSR		sub_20CAA
 		LDX		#$E
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
-		BRK
-		.BYTE $70, 7		; ofs 0x0006800a, -> dst _b4_s5
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$74, 7		; _b4_s9
+		FAR		$70, 7		; _b4_s5
 		JMP		loc_20A68
 loc_20A4C:
 		JSR		sub_20CAA
 		LDX		#$50
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$74, 7		; _b4_s9
 		JMP		loc_20A76
 loc_20A5A:
-		BRK
-		.BYTE $16, $2F		; _syscall12
+		FAR		$16, $2F		; _sys12
 		JSR		sub_20CAA
 		LDX		#$5D
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$74, 7		; _b4_s9
 loc_20A68:
-		BRK
-		.BYTE $F0, 7		; ofs 0x00020020, -> dst _b1_s10
+		FAR		$F0, 7		; _bB_s7
 		LDA		byte_6A6F
 		CMP		#$84
 		BEQ		sub_20A1A
 		CMP		#$86
 		BEQ		_pause_or_skip
 loc_20A76:
-		BRK
-		.BYTE $E9, 7		; ofs 0x00158062, -> dst _bE_s31
-		BRK
-		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
+		FAR		$E9, 7		; _bE_s31
+		FAR		$A0, 7		; _bB_s3_far_apu_load
 		LDA		byte_5D
 		STA		word_4
 		LDA		word_5E
@@ -1723,8 +1607,7 @@ loc_20A76:
 		STA		word_6
 		LDX		#word_4
 		LDA		#byte_3
-		BRK
-		.BYTE $A2, $17		; ofs 0x000f8008, -> dst _bA_s4_div24_to_8
+		FAR		$A2, $17		; _bA_s4_div24_to_8
 		CMP		#1
 		LDA		word_4+1
 		TAY
@@ -1738,8 +1621,7 @@ loc_20A76:
 		BEQ		loc_20AB7
 		LDA		word_4
 		LDX		#byte_5D
-		BRK
-		.BYTE $A2, $17		; ofs 0x000f8008, -> dst _bA_s4_div24_to_8
+		FAR		$A2, $17		; _bA_s4_div24_to_8
 		CMP		#1
 		LDA		#0
 		TAY
@@ -1759,8 +1641,7 @@ loc_20ABB:
 		LDA		word_4
 		BEQ		loc_20AED
 		TYA
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		LDA		byte_5D
 		STA		byte_CF
 		LDA		word_5E
@@ -1785,8 +1666,7 @@ loc_20AED:
 		JMP		loc_20BE7
 loc_20AF6:
 		STA		byte_64
-		BRK
-		.BYTE $D1, 7		; ofs 0x0006802e, -> dst _b4_s17
+		FAR		$D1, 7		; _b4_s17
 		LDA		byte_59
 		CMP		#$FF
 		BNE		loc_20B04
@@ -1802,17 +1682,13 @@ loc_20B04:
 		STA		byte_531
 		STA		byte_D2
 		LDX		#$62
-		BRK
-		.BYTE $D6, 7		; ofs 0x00068038, -> dst _b4_s1C
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$D6, 7		; _b4_s1C
+		FAR		$74, 7		; _b4_s9
 		JSR		sub_20D11
 		STA		byte_D2
-		BRK
-		.BYTE $8F, $2F		; _syscall12
+		FAR		$8F, $2F		; _sys12
 		LDA		#$64
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		PLA
 		STA		byte_D3
 		STA		byte_48
@@ -1827,26 +1703,20 @@ loc_20B40:
 		STA		byte_60C7
 loc_20B48:
 		LDA		#$65
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JSR		sub_20CDB
 		STA		byte_D4
 		STA		byte_47
 		BCS		loc_20BD1
 		LDX		#$66
-		BRK
-		.BYTE $D7, 7		; ofs 0x0006803a, -> dst _b4_s1D
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$D7, 7		; _b4_s1D
+		FAR		$74, 7		; _b4_s9
 loc_20B5E:
 		LDA		#$45
 		LDX		#1
-		BRK
-		.BYTE 8, 7		; ofs 0x00158010, -> dst _bE_s4_msg_m00
-		BRK
-		.BYTE $86, $2F		; _syscall12
-		BRK
-		.BYTE $1D, $E7		; _syscall0E
+		FAR		8, 7		; _bE_s4_msg_m00
+		FAR		$86, $2F		; _sys12
+		FAR		$1D, $E7		; _sys0E
 		CMP		#0
 		BEQ		loc_20B87
 loc_20B6F:
@@ -1855,32 +1725,26 @@ loc_20B6F:
 		BCC		loc_20B7D
 loc_20B75:
 		LDA		#$60
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JMP		loc_20B5E
 loc_20B7D:
 		STA		byte_D3
 		LDA		#$69
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JMP		loc_20BE7
 loc_20B87:
 		LDA		#$6A
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		LDA		#$1C
-		BRK
-		.BYTE $72, 7		; ofs 0x0006800e, -> dst _b4_s7
+		FAR		$72, 7		; _b4_s7
 		CMP		#$FF
 		BEQ		loc_20B6F
 		STA		byte_CE
 		STA		byte_47
 		LDA		#$68
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		LDA		#$2D
-		BRK
-		.BYTE $72, 7		; ofs 0x0006800e, -> dst _b4_s7
+		FAR		$72, 7		; _b4_s7
 		CMP		#$FF
 		BEQ		loc_20B87
 		STA		byte_CF
@@ -1900,16 +1764,14 @@ loc_20B87:
 		LDA		byte_48
 		STA		byte_D4
 		LDA		#$6B
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JMP		loc_20BDC
 loc_20BD1:
 		CMP		byte_D2
 		BEQ		loc_20BDC
 		LDA		#$2D
 		LDX		#1
-		BRK
-		.BYTE 8, 7		; ofs 0x00158010, -> dst _bE_s4_msg_m00
+		FAR		8, 7		; _bE_s4_msg_m00
 loc_20BDC:
 		LDA		byte_48
 		STA		byte_CF
@@ -1949,8 +1811,7 @@ loc_20C0C:
 		STA		byte_D0
 		JSR		_sram_b0_s1C
 		LDA		#$26
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JSR		sub_1743B8
 		AND		#3
 		BNE		loc_20C6F
@@ -1983,13 +1844,10 @@ loc_20C4F:
 		STA		byte_640
 		JSR		_sram_b0_s1C
 		LDA		#$B6
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 loc_20C6F:
-		BRK
-		.BYTE $AA, 7		; ofs 0x0000808e, -> dst _b0_s47
-		BRK
-		.BYTE $A9, 7		; ofs 0x0000808c, -> dst _b0_s46
+		FAR		$AA, 7		; _b0_s47
+		FAR		$A9, 7		; _b0_s46
 		LDA		byte_6A6B
 		CMP		#2
 		BEQ		loc_20C8B
@@ -1998,26 +1856,22 @@ loc_20C6F:
 		BEQ		loc_20CA2
 loc_20C83:
 		LDA		#$13
-		BRK
-		.BYTE $72, 7		; ofs 0x0006800e, -> dst _b4_s7
+		FAR		$72, 7		; _b4_s7
 		JMP		__pause_or_skip
 loc_20C8B:
 		LDA		byte_60CA
 		BPL		loc_20C83
 		LDA		#$B
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 loc_20C95:
 		LDA		#$29
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		LDA		#$3C
 		STA		byte_6DF
 		JMP		loc_20C83
 loc_20CA2:
 		LDA		#$2A
-		BRK
-		.BYTE $74, 7		; ofs 0x00068012, -> dst _b4_s9
+		FAR		$74, 7		; _b4_s9
 		JMP		loc_20C95
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2087,8 +1941,7 @@ loc_20D03:
 		INY
 		CPY		word_4
 		BCC		loc_20CE0
-		BRK
-		.BYTE $68, 7		; ofs 0x00008078, -> dst _b0_s3C
+		FAR		$68, 7		; _b0_s3C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

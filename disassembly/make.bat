@@ -11,6 +11,7 @@ pause 0
 :again
 
 del !err.log
+del !output.log
 del !dw3.nes
 del !dw3.hdr
 
@@ -21,7 +22,7 @@ dasm system_footer.nas -f3 -l!dw3.lst -osystem_footer.bin >> !err.log
 
 echo assemble...
 
-for %%f in (bank*.nas) do call :dodasm %%f > NUL
+for %%f in (*.nas) do call :dodasm %%f > !output.log
 
 dasm hdr.nas -f3 -o!dw3.hdr > NUL
 

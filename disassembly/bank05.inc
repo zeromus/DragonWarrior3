@@ -1,9 +1,9 @@
 
 		ORG $8000
 
-		.WORD _b5_d0
-		.WORD _b5_d1
-		.WORD _b5_d2
+		.WORD _b5_d0_world_map_data
+		.WORD _b5_d1_world_map_data
+		.WORD _b5_d2_world_map_data
 		.WORD _b5_s3
 		.WORD _b5_s4
 		.WORD _b5_s5
@@ -14,7 +14,7 @@
 		.WORD _b5_sA
 		.WORD _b5_sB_ppu_font_load
 
-_b5_d0:
+_b5_d0_world_map_data:
 		.WORD byte_8021A
 		.WORD byte_80222
 		.WORD byte_8022A
@@ -143,7 +143,7 @@ _b5_d0:
 		.WORD byte_80EB5
 		.WORD byte_80ED0
 		.WORD byte_80EE8
-_b5_d1:
+_b5_d1_world_map_data:
 		.WORD byte_80F04
 		.WORD byte_80F21
 		.WORD byte_80F43
@@ -272,7 +272,7 @@ _b5_d1:
 		.WORD byte_81A7D
 		.WORD byte_81A85
 		.WORD byte_81A8D
-		.WORD _b5_d2
+		.WORD _b5_d2_world_map_data
 byte_8021A:
 		.BYTE $1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F 
 byte_80222:
@@ -1040,7 +1040,7 @@ byte_81A85:
 		.BYTE $1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F 
 byte_81A8D:
 		.BYTE $1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F 
-_b5_d2:
+_b5_d2_world_map_data:
 		.WORD byte_81BAB
 		.WORD byte_81BB0
 		.WORD byte_81BB5
@@ -2386,8 +2386,7 @@ loc_83CA9:
 _b5_s9:
 		JSR		_vblank_and_render_off
 		JSR		_set_nmi_flag_10
-		BRK
-		.BYTE $5B, $17		; ofs 0x00128034, -> dst _bC_s1A
+		FAR		$5B, $17		; _bC_s1A
 		LDA		#$10
 		STA		byte_6D0
 		LDA		#0
@@ -2415,8 +2414,7 @@ loc_83CD7:
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_83CF8
-		BRK
-		.BYTE $DD, 7		; ofs 0x0014001a, -> dst _bD_sD
+		FAR		$DD, 7		; _bD_sD
 		RTS
 loc_83CF8:
 		LDX		#$10
@@ -2426,8 +2424,7 @@ loc_83CFC:
 		INX
 		CPX		#$80
 		BNE		loc_83CFC
-		BRK
-		.BYTE $35, $17		; ofs 0x00140036, -> dst _bD_s1B
+		FAR		$35, $17		; _bD_s1B
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2716,14 +2713,12 @@ loc_83ED2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s5:
-		BRK
-		.BYTE $AA, $77		; _msg_m00_arg1
+		FAR		$AA, $77		; _sys07_msg_m00_arg1
 		JSR		sub_174D4F
 		LDA		#$14
 		STA		word_6C
 		LDX		#2
-		BRK
-		.BYTE $72, $17		; ofs 0x00128016, -> dst _bC_sB
+		FAR		$72, $17		; _bC_sB
 		LDA		#4
 		STA		byte_116
 		LDA		byte_117
@@ -2731,16 +2726,12 @@ _b5_s5:
 		ORA		#2
 		STA		byte_117
 		LDX		#0
-		BRK
-		.BYTE $72, $17		; ofs 0x00128016, -> dst _bC_sB
+		FAR		$72, $17		; _bC_sB
 		JSR		sub_174CCF
-		BRK
-		.BYTE $AB, $77		; _msg_m00_arg1
-		BRK
-		.BYTE $70, $17		; ofs 0x0012805c, -> dst _bC_s2E_vblank_count_50_wait_50_or_skip
+		FAR		$AB, $77		; _sys07_msg_m00_arg1
+		FAR		$70, $17		; _bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$10
-		BRK
-		.BYTE $4E, $17		; ofs 0x00008002, -> dst _b0_s1
+		FAR		$4E, $17		; _b0_s1
 		LDA		byte_60CD
 		ORA		#$20
 		STA		byte_60CD

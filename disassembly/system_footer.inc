@@ -25,7 +25,7 @@ _mmc1_prg_cmd:
 		AND		#$F
 		NOP
 		NOP
-loc_177FAC:
+_mmc1_prg_direct:
 		STA		$FFFF
 		LSR
 		STA		$FFFF
