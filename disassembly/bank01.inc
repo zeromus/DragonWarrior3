@@ -1,30 +1,30 @@
 
 		ORG $8000
 
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD _b1_s9
-		.WORD _b1_sA
-		.WORD _b1_sB
-		.WORD _b1_sC
-		.WORD _b1_sD
-		.WORD _b1_sE
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD 0
-		.WORD _b1_s13
-		.WORD _b1_s14
-		.WORD _b1_s15
-		.WORD _b1_s16
-		.WORD _b1_s17
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	_b1_s9
+		.WORD	_b1_sA
+		.WORD	_b1_sB
+		.WORD	_b1_sC
+		.WORD	_b1_sD
+		.WORD	_b1_sE
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	_b1_s13
+		.WORD	_b1_s14
+		.WORD	_b1_s15
+		.WORD	_b1_s16
+		.WORD	_b1_s17
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_s14:
@@ -513,26 +513,26 @@ sub_2034D:
 		LDA		word_6+1
 		RTS
 off_20369:
-		.WORD 0
+		.WORD	0
 off_2036B:
-		.WORD 0
-		.WORD sub_202D1
-		.WORD sub_201B3
-		.WORD sub_202DA
-		.WORD sub_201BC
-		.WORD sub_202DA
-		.WORD sub_201C5
-		.WORD sub_202E0
-		.WORD sub_20200
-		.WORD sub_2030F
-		.WORD sub_20225
-		.WORD sub_20325
-		.WORD sub_20268
-		.WORD sub_2034D
-		.WORD sub_2028D
+		.WORD	0
+		.WORD	sub_202D1
+		.WORD	sub_201B3
+		.WORD	sub_202DA
+		.WORD	sub_201BC
+		.WORD	sub_202DA
+		.WORD	sub_201C5
+		.WORD	sub_202E0
+		.WORD	sub_20200
+		.WORD	sub_2030F
+		.WORD	sub_20225
+		.WORD	sub_20325
+		.WORD	sub_20268
+		.WORD	sub_2034D
+		.WORD	sub_2028D
 byte_2038F:
-		.BYTE $88,$12,$22,$5C,$92,$32,$5C,$92,$32,$5C,$92,$32,$66,$83,$1A,$58
-		.BYTE $44,$22,$98,$16,$12,$96,$18,$1A
+		.BYTE	$88,$12,$22,$5C,$92,$32,$5C,$92,$32,$5C,$92,$32,$66,$83,$1A,$58
+		.BYTE	$44,$22,$98,$16,$12,$96,$18,$1A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_203A7:
@@ -878,7 +878,7 @@ sub_205B3:
 		DEC		byte_78
 		JMP		loc_205A1
 byte_205BD:
-		.BYTE	5,  4,	5,$14,	5,$14,	5,$14,	7,$12,	9, $A, $D,  3,$11,  4
+		.BYTE	  5,  4,  5,$14,  5,$14,  5,$14,  7,$12,  9, $A, $D,  3,$11,  4
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_205CD:
@@ -896,7 +896,7 @@ loc_205D6:
 		BNE		loc_205D6
 		RTS
 byte_205E2:
-		.BYTE $79,$3B,$2C,$29,$36,$29 
+		.BYTE	$79,$3B,$2C,$29,$36,$29
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_205E8:
@@ -1252,7 +1252,7 @@ loc_207E7:
 		BNE		loc_207B8
 		RTS
 byte_207EF:
-		.BYTE $10,  8,$2C, $C,$5A,$14 
+		.BYTE	$10,  8,$2C, $C,$5A,$14
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sB:
@@ -1464,7 +1464,7 @@ sub_20977:
 		LDA		byte_20982,Y
 		RTS
 byte_20982:
-		.BYTE	0,$13,$14,$16,$15 
+		.BYTE	  0,$13,$14,$16,$15
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_20987:
@@ -2071,17 +2071,17 @@ sub_20DCE:
 		SEI
 		INC	$BFDF
 		JMP	_RESET
-		.BYTE $80
-		.BYTE "DRAGON WARRIOR "
-		.BYTE $33
-		.WORD $FFFF
-		.WORD 0
-		.BYTE $48
-		.BYTE 4
-		.BYTE 1
-		.BYTE $F
-		.BYTE 7
-		.BYTE $9D
-		.WORD $BFD8
-		.WORD $BFD8
-		.WORD $BFD8
+		.BYTE	$80
+		.BYTE	"DRAGON WARRIOR "
+		.BYTE	$33
+		.WORD	$FFFF
+		.WORD	0
+		.BYTE	$48
+		.BYTE	  4
+		.BYTE	  1
+		.BYTE	$F
+		.BYTE	  7
+		.BYTE	$9D
+		.WORD	$BFD8
+		.WORD	$BFD8
+		.WORD	$BFD8

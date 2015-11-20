@@ -1,30 +1,30 @@
 
 		ORG $8000
 
-		.WORD 0
-		.WORD _bA_s1
-		.WORD _bA_s2
-		.WORD _bA_s3
-		.WORD _bA_s4_div24_to_8
-		.WORD _bA_s5_add16_to_24
-		.WORD _bA_s6
-		.WORD _bA_s7_nullsub
-		.WORD _bA_s8
-		.WORD _bA_s9_nullsub
-		.WORD _bA_sA
-		.WORD _bA_sB
-		.WORD _bA_sC
-		.WORD _bA_sD
-		.WORD _bA_sE
-		.WORD _bA_sF
-		.WORD _bA_s10
-		.WORD _bA_s11
-		.WORD _bA_s12
-		.WORD 0
-		.WORD _bA_d14
-		.WORD _bA_d15
-		.WORD _bA_s16
-		.WORD _bA_s17
+		.WORD	0
+		.WORD	_bA_s1
+		.WORD	_bA_s2
+		.WORD	_bA_s3
+		.WORD	_bA_s4_div24_to_8
+		.WORD	_bA_s5_add16_to_24
+		.WORD	_bA_s6
+		.WORD	_bA_s7_nullsub
+		.WORD	_bA_s8
+		.WORD	_bA_s9_nullsub
+		.WORD	_bA_sA
+		.WORD	_bA_sB
+		.WORD	_bA_sC
+		.WORD	_bA_sD
+		.WORD	_bA_sE
+		.WORD	_bA_sF
+		.WORD	_bA_s10
+		.WORD	_bA_s11
+		.WORD	_bA_s12
+		.WORD	0
+		.WORD	_bA_d14
+		.WORD	_bA_d15
+		.WORD	_bA_s16
+		.WORD	_bA_s17
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_text_block_ptr:
@@ -64,133 +64,133 @@ _get_text_block_ptr:
 		AND		#$F
 		RTS
 _b10_text_lib:
-		.WORD _b10_txt_block0
-		.WORD _b10_txt_block1
-		.WORD _b10_txt_block2
-		.WORD _b10_txt_block3
-		.WORD _b10_txt_block4
-		.WORD _b10_txt_block5
-		.WORD _b10_txt_block6
-		.WORD _b10_txt_block7
-		.WORD _b10_txt_block8
-		.WORD _b10_txt_block9
-		.WORD _b10_txt_blockA
-		.WORD _b10_txt_blockB
-		.WORD _b10_txt_blockC
-		.WORD _b10_txt_blockD
-		.WORD _b10_txt_blockE
-		.WORD _b10_txt_blockF
-		.WORD _b10_txt_block10
-		.WORD _b10_txt_block11
-		.WORD _b10_txt_block12
-		.WORD _b10_txt_block13
-		.WORD _b10_txt_block14
-		.WORD _b10_txt_block15
-		.WORD _b10_txt_block16
-		.WORD _b10_txt_block17
-		.WORD _b10_txt_block18
-		.WORD _b10_txt_block19
+		.WORD	_b10_txt_block0
+		.WORD	_b10_txt_block1
+		.WORD	_b10_txt_block2
+		.WORD	_b10_txt_block3
+		.WORD	_b10_txt_block4
+		.WORD	_b10_txt_block5
+		.WORD	_b10_txt_block6
+		.WORD	_b10_txt_block7
+		.WORD	_b10_txt_block8
+		.WORD	_b10_txt_block9
+		.WORD	_b10_txt_blockA
+		.WORD	_b10_txt_blockB
+		.WORD	_b10_txt_blockC
+		.WORD	_b10_txt_blockD
+		.WORD	_b10_txt_blockE
+		.WORD	_b10_txt_blockF
+		.WORD	_b10_txt_block10
+		.WORD	_b10_txt_block11
+		.WORD	_b10_txt_block12
+		.WORD	_b10_txt_block13
+		.WORD	_b10_txt_block14
+		.WORD	_b10_txt_block15
+		.WORD	_b10_txt_block16
+		.WORD	_b10_txt_block17
+		.WORD	_b10_txt_block18
+		.WORD	_b10_txt_block19
 _b11_text_lib:
-		.WORD _b11_txt_block0
-		.WORD _b11_txt_block1
-		.WORD _b11_txt_block2
-		.WORD _b11_txt_block3
-		.WORD _b11_txt_block4
-		.WORD _b11_txt_block5
-		.WORD _b11_txt_block6
-		.WORD _b11_txt_block7
-		.WORD _b11_txt_block8
-		.WORD _b11_txt_block9
-		.WORD _b11_txt_blockA
-		.WORD _b11_txt_blockB
-		.WORD _b11_txt_blockC
-		.WORD _b11_txt_blockD
-		.WORD _b11_txt_blockE
-		.WORD _b11_txt_blockF
-		.WORD _b11_txt_block10
-		.WORD _b11_txt_block11
-		.WORD _b11_txt_block12
-		.WORD _b11_txt_block13
-		.WORD _b11_txt_block14
-		.WORD _b11_txt_block15
-		.WORD _b11_txt_block16
-		.WORD _b11_txt_block17
-		.WORD _b11_txt_block18
-		.WORD _b11_txt_block19
-		.WORD _b11_txt_block1A
-		.WORD _b11_txt_block1B
-		.WORD _b11_txt_block1C
+		.WORD	_b11_txt_block0
+		.WORD	_b11_txt_block1
+		.WORD	_b11_txt_block2
+		.WORD	_b11_txt_block3
+		.WORD	_b11_txt_block4
+		.WORD	_b11_txt_block5
+		.WORD	_b11_txt_block6
+		.WORD	_b11_txt_block7
+		.WORD	_b11_txt_block8
+		.WORD	_b11_txt_block9
+		.WORD	_b11_txt_blockA
+		.WORD	_b11_txt_blockB
+		.WORD	_b11_txt_blockC
+		.WORD	_b11_txt_blockD
+		.WORD	_b11_txt_blockE
+		.WORD	_b11_txt_blockF
+		.WORD	_b11_txt_block10
+		.WORD	_b11_txt_block11
+		.WORD	_b11_txt_block12
+		.WORD	_b11_txt_block13
+		.WORD	_b11_txt_block14
+		.WORD	_b11_txt_block15
+		.WORD	_b11_txt_block16
+		.WORD	_b11_txt_block17
+		.WORD	_b11_txt_block18
+		.WORD	_b11_txt_block19
+		.WORD	_b11_txt_block1A
+		.WORD	_b11_txt_block1B
+		.WORD	_b11_txt_block1C
 _b12_text_lib:
-		.WORD _b12_txt_block0
-		.WORD _b12_txt_block1
-		.WORD _b12_txt_block2
-		.WORD _b12_txt_block4
-		.WORD _b12_txt_block5
-		.WORD _b12_txt_block6
-		.WORD _b12_txt_block7
-		.WORD _b12_txt_block8
-		.WORD _b12_txt_block9
-		.WORD _b12_txt_blockA
-		.WORD _b12_txt_blockB
-		.WORD _b12_txt_blockC
-		.WORD _b12_txt_blockD
-		.WORD _b12_txt_blockE
+		.WORD	_b12_txt_block0
+		.WORD	_b12_txt_block1
+		.WORD	_b12_txt_block2
+		.WORD	_b12_txt_block4
+		.WORD	_b12_txt_block5
+		.WORD	_b12_txt_block6
+		.WORD	_b12_txt_block7
+		.WORD	_b12_txt_block8
+		.WORD	_b12_txt_block9
+		.WORD	_b12_txt_blockA
+		.WORD	_b12_txt_blockB
+		.WORD	_b12_txt_blockC
+		.WORD	_b12_txt_blockD
+		.WORD	_b12_txt_blockE
 _b13_text_lib:
-		.WORD _b13_txt_block0
-		.WORD _b13_txt_block1
-		.WORD _b13_txt_block2
-		.WORD _b13_txt_block3
-		.WORD _b13_txt_block4
-		.WORD _b13_txt_block5
-		.WORD _b13_txt_block6
-		.WORD _b13_txt_block7
-		.WORD _b13_txt_block8
-		.WORD _b13_txt_block9
-		.WORD _b13_txt_blockA
-		.WORD _b13_txt_blockB
-		.WORD _b13_txt_blockC
-		.WORD _b13_txt_blockD
-		.WORD _b13_txt_blockE
-		.WORD _b13_txt_blockF
-		.WORD _b13_txt_block10
-		.WORD _b13_txt_block11
-		.WORD _b13_txt_block12
-		.WORD _b13_txt_block13
-		.WORD _b13_txt_block14
-		.WORD _b13_txt_block15
+		.WORD	_b13_txt_block0
+		.WORD	_b13_txt_block1
+		.WORD	_b13_txt_block2
+		.WORD	_b13_txt_block3
+		.WORD	_b13_txt_block4
+		.WORD	_b13_txt_block5
+		.WORD	_b13_txt_block6
+		.WORD	_b13_txt_block7
+		.WORD	_b13_txt_block8
+		.WORD	_b13_txt_block9
+		.WORD	_b13_txt_blockA
+		.WORD	_b13_txt_blockB
+		.WORD	_b13_txt_blockC
+		.WORD	_b13_txt_blockD
+		.WORD	_b13_txt_blockE
+		.WORD	_b13_txt_blockF
+		.WORD	_b13_txt_block10
+		.WORD	_b13_txt_block11
+		.WORD	_b13_txt_block12
+		.WORD	_b13_txt_block13
+		.WORD	_b13_txt_block14
+		.WORD	_b13_txt_block15
 _b14_text_lib:
-		.WORD _b14_txt_block0
-		.WORD _b14_txt_block1
-		.WORD _b14_txt_block2
-		.WORD _b14_txt_block3
-		.WORD _b14_txt_block4
-		.WORD _b14_txt_block5
-		.WORD _b14_txt_block6
-		.WORD _b14_txt_block7
-		.WORD _b14_txt_block8
-		.WORD _b14_txt_block9
-		.WORD _b14_txt_blockA
-		.WORD _b14_txt_blockB
-		.WORD _b14_txt_blockC
-		.WORD _b14_txt_blockD
+		.WORD	_b14_txt_block0
+		.WORD	_b14_txt_block1
+		.WORD	_b14_txt_block2
+		.WORD	_b14_txt_block3
+		.WORD	_b14_txt_block4
+		.WORD	_b14_txt_block5
+		.WORD	_b14_txt_block6
+		.WORD	_b14_txt_block7
+		.WORD	_b14_txt_block8
+		.WORD	_b14_txt_block9
+		.WORD	_b14_txt_blockA
+		.WORD	_b14_txt_blockB
+		.WORD	_b14_txt_blockC
+		.WORD	_b14_txt_blockD
 _b15_text_lib:
-		.WORD _b15_txt_block0
-		.WORD _b15_txt_block1
-		.WORD _b15_txt_block2
-		.WORD _b15_txt_block3
-		.WORD _b15_txt_block4
-		.WORD _b15_txt_block5
-		.WORD _b15_txt_block6
-		.WORD _b15_txt_block7
-		.WORD _b15_txt_block8
-		.WORD _b15_txt_block9
+		.WORD	_b15_txt_block0
+		.WORD	_b15_txt_block1
+		.WORD	_b15_txt_block2
+		.WORD	_b15_txt_block3
+		.WORD	_b15_txt_block4
+		.WORD	_b15_txt_block5
+		.WORD	_b15_txt_block6
+		.WORD	_b15_txt_block7
+		.WORD	_b15_txt_block8
+		.WORD	_b15_txt_block9
 _text_lib_ptrs:
-		.WORD _b10_text_lib
-		.WORD _b11_text_lib
-		.WORD _b12_text_lib
-		.WORD _b13_text_lib
-		.WORD _b14_text_lib
-		.WORD _b15_text_lib
+		.WORD	_b10_text_lib
+		.WORD	_b11_text_lib
+		.WORD	_b12_text_lib
+		.WORD	_b13_text_lib
+		.WORD	_b14_text_lib
+		.WORD	_b15_text_lib
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s1:
@@ -516,8 +516,8 @@ loc_F836A:
 		BNE		loc_F836A
 		JMP		sub_17435B
 byte_F8376:
-		.BYTE $21,$2C,$1C,  1,$2C,$1C, $F, $F, $F,$3C,$2C,$1C,$3C, $C,$1C,$3C
-		.BYTE $21,$11
+		.BYTE	$21,$2C,$1C,  1,$2C,$1C, $F, $F, $F,$3C,$2C,$1C,$3C, $C,$1C,$3C
+		.BYTE	$21,$11
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8388:
@@ -665,12 +665,12 @@ sub_F846B:
 		LDX		byte_51
 		RTS
 off_F847D:
-		.WORD byte_F8481
-		.WORD byte_F8489
+		.WORD	byte_F8481
+		.WORD	byte_F8489
 byte_F8481:
-		.BYTE $11,$55,	0,  0,	0,  0,	0,  0 
+		.BYTE	$11,$55,  0,  0,  0,  0,  0,  0
 byte_F8489:
-		.BYTE $55,$5D,$55,  0,$10,$10,$10,  0,$9C,  7 
+		.BYTE	$55,$5D,$55,  0,$10,$10,$10,  0,$9C,  7
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sC:
@@ -1140,91 +1140,91 @@ loc_F8794:
 		RTS
 word_F87A1:
 		.WORD	  0,$3000,$6000,$8000,$B000,$E000,$1001,$3001
-		.WORD $5001,$7001,$9001,$B001,$C001,$D001,$E001,$E001
-		.WORD $F001,$E001,$E001,$D001,$C001,$B001,$9001,$7001
-		.WORD $5001,$3001,$1001,$E000,$B000,$8000,$6000,$3000
+		.WORD	$5001,$7001,$9001,$B001,$C001,$D001,$E001,$E001
+		.WORD	$F001,$E001,$E001,$D001,$C001,$B001,$9001,$7001
+		.WORD	$5001,$3001,$1001,$E000,$B000,$8000,$6000,$3000
 		.WORD	  0,$D0FF,$A0FF,$80FF,$50FF,$20FF,$F0FE,$D0FE
-		.WORD $B0FE,$90FE,$70FE,$50FE,$40FE,$30FE,$20FE,$20FE
-		.WORD $10FE,$20FE,$20FE,$30FE,$40FE,$50FE,$70FE,$90FE
-		.WORD $B0FE,$D0FE,$F0FE,$20FF,$50FF,$80FF,$A0FF,$D0FF
+		.WORD	$B0FE,$90FE,$70FE,$50FE,$40FE,$30FE,$20FE,$20FE
+		.WORD	$10FE,$20FE,$20FE,$30FE,$40FE,$50FE,$70FE,$90FE
+		.WORD	$B0FE,$D0FE,$F0FE,$20FF,$50FF,$80FF,$A0FF,$D0FF
 byte_F8821:
-		.BYTE $BF,$C5,$CB,$D1,$D7,$DD,$E6,$EF,$F8,$FE,	7,$10,$19,$22,$28,$31
-		.BYTE $3A,$43,$49,$4F,$55,$5B,$61,$64,$67,$6A,$6A
+		.BYTE	$BF,$C5,$CB,$D1,$D7,$DD,$E6,$EF,$F8,$FE,  7,$10,$19,$22,$28,$31
+		.BYTE	$3A,$43,$49,$4F,$55,$5B,$61,$64,$67,$6A,$6A
 byte_F883C:
-		.BYTE $BC,$B9,$B6,$B6
+		.BYTE	$BC,$B9,$B6,$B6
 _chr_data_unk0:
-		.BYTE  $C,$AA,	5, $D,$1A,$4D,$12,$2D,$F3,$55,$FA,$72,$E5,$B2,$6D,$D2
-		.BYTE $2E,$55, $D,$22,	7,$55,$2A,$15,$D1,$AA,$72,$DD,$78,$AA,$D5,$6A
-		.BYTE $AA,$D7,$6C,$93,$59,$C4,$90,$48,$55,$28,$93,$6C,$A6,$3B,$6F,$B7
-		.BYTE	0,$40,$15,  3,$2C,$13,$5A,$25,$73,$BF,$EA,$7C,$D3,$6C,$A5,$5A
-		.BYTE	2,$20,$82,$50,$BB,$AD,$52,$AC,$B5,$DF,$7D,$AF,$44,$52,$AD,$53
-		.BYTE	0,$22,$49,$A2,$45,$B7,$59,$B6,$6B,$DD,$B6,$5D,$BA,$48,$A6,$49
-		.BYTE	2,  2,	5,$20, $A,$B4,$29,$18,$2C,$55,$1A,$5F,$F7,$CB,$D6,$7F
-		.BYTE	0,$90,	0,$40,$8C,$A4,$4C,$C0,$18,$C0,$FA,$BE,$77,$7B,$BF,$3E
-		.BYTE $10,  8,	0, $B,$94,$47,$33,$4A,$4A,$85,$9E,$66,$FB,$B9,$DC,$75
-		.BYTE $20,$44,$44,$90,$4C,$32,$48,$90,$52,$B2,$A8,$6E,$BF,$CD,$B7,$FE
-		.BYTE	0,  0,	0,  0,$10,$2C,	4,  2,	0,  8,$80,$10,$2C,$50, $A,$45
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,$20,$82, $C,$18,  0,$50,$42
-		.BYTE	0,  0,	0,  0,$20,  0,	0,  0,	0,$20,	9,$80,$50,$10,$24,$18
-		.BYTE	0,  0,$20,  0,$20,$20,$40,$40,	8,$30,	0,$60,$52,$50,$A2,$24
-		.BYTE	8,$10,	0,  0,	0,  0,	0,  0,$14,$28,$30,  8,$10,  0,$10,  0
-		.BYTE	0,  0,$18, $C,$28,$14,$10,  0,$3C,$7C,$66,$72,$56,$2A,$2C,$18
+		.BYTE	 $C,$AA,  5, $D,$1A,$4D,$12,$2D,$F3,$55,$FA,$72,$E5,$B2,$6D,$D2
+		.BYTE	$2E,$55, $D,$22,  7,$55,$2A,$15,$D1,$AA,$72,$DD,$78,$AA,$D5,$6A
+		.BYTE	$AA,$D7,$6C,$93,$59,$C4,$90,$48,$55,$28,$93,$6C,$A6,$3B,$6F,$B7
+		.BYTE	  0,$40,$15,  3,$2C,$13,$5A,$25,$73,$BF,$EA,$7C,$D3,$6C,$A5,$5A
+		.BYTE	  2,$20,$82,$50,$BB,$AD,$52,$AC,$B5,$DF,$7D,$AF,$44,$52,$AD,$53
+		.BYTE	  0,$22,$49,$A2,$45,$B7,$59,$B6,$6B,$DD,$B6,$5D,$BA,$48,$A6,$49
+		.BYTE	  2,  2,  5,$20, $A,$B4,$29,$18,$2C,$55,$1A,$5F,$F7,$CB,$D6,$7F
+		.BYTE	  0,$90,  0,$40,$8C,$A4,$4C,$C0,$18,$C0,$FA,$BE,$77,$7B,$BF,$3E
+		.BYTE	$10,  8,  0, $B,$94,$47,$33,$4A,$4A,$85,$9E,$66,$FB,$B9,$DC,$75
+		.BYTE	$20,$44,$44,$90,$4C,$32,$48,$90,$52,$B2,$A8,$6E,$BF,$CD,$B7,$FE
+		.BYTE	  0,  0,  0,  0,$10,$2C,  4,  2,  0,  8,$80,$10,$2C,$50, $A,$45
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,$20,$82, $C,$18,  0,$50,$42
+		.BYTE	  0,  0,  0,  0,$20,  0,  0,  0,  0,$20,  9,$80,$50,$10,$24,$18
+		.BYTE	  0,  0,$20,  0,$20,$20,$40,$40,  8,$30,  0,$60,$52,$50,$A2,$24
+		.BYTE	  8,$10,  0,  0,  0,  0,  0,  0,$14,$28,$30,  8,$10,  0,$10,  0
+		.BYTE	  0,  0,$18, $C,$28,$14,$10,  0,$3C,$7C,$66,$72,$56,$2A,$2C,$18
 _chr_data_unk2:
-		.BYTE	8,  0,	0,  0,$2D,$F7,$97,  2,$F9,$F1,$F0,$F0,$F4,$FB,$EF,$FF
-		.BYTE $14,$18,	8,  4,$86,$6E,$B7,$45,$FF,$FF,$EF,$C7,$87,$AB,$EE,$FF
-		.BYTE	1,  1,	1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE	8,  8,	0,  4,$37,$EC,$87,  2,$FE,$F8,$E0,$E0,$ED,$FF,$FF,$FF
-		.BYTE $14,  8,	0,$C0,$76,$CF,$82,$45,$3F, $F,	3,  3,$EB,$BF,$FF,$FF
-		.BYTE	1,  1,	1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE	8,  0,	0,$10,$20,$E0,$F0,$38,$F9,$F1,$F0,$F0,$E0,$E0,$A0,$D9
-		.BYTE $14,$18,	8,  4,	6,  3,	6,$ED,$FF,$FF,$EF,$C7,$87,  3,	5,$6B
-		.BYTE $6B,  5,	1,  2,$84,$C7,$7A,$9C,$96,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $EE,$72,$43,$81,$80,$C0,$41,$23,$95,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE	8,  8,	0,  0,	0,$A0,$30,$78,$FE,$F8,$E0,$C0,$C0,$E0,$D0,$E0
-		.BYTE	0,  0,	0,  0,	0,  2,	3, $E,$3F, $F,	3,  1,	1,  3,	6,  5
-		.BYTE $1F,$47,$30, $B,$84,$C7,$7A,$9C,$FD,$FA,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $EC,$72,	7,$D1,$80,$C0,$41,$23,$93,$EF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  0,  0,  0,$2D,$F7,$97,  2,$F9,$F1,$F0,$F0,$F4,$FB,$EF,$FF
+		.BYTE	$14,$18,  8,  4,$86,$6E,$B7,$45,$FF,$FF,$EF,$C7,$87,$AB,$EE,$FF
+		.BYTE	  1,  1,  1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  8,  0,  4,$37,$EC,$87,  2,$FE,$F8,$E0,$E0,$ED,$FF,$FF,$FF
+		.BYTE	$14,  8,  0,$C0,$76,$CF,$82,$45,$3F, $F,  3,  3,$EB,$BF,$FF,$FF
+		.BYTE	  1,  1,  1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  0,  0,$10,$20,$E0,$F0,$38,$F9,$F1,$F0,$F0,$E0,$E0,$A0,$D9
+		.BYTE	$14,$18,  8,  4,  6,  3,  6,$ED,$FF,$FF,$EF,$C7,$87,  3,  5,$6B
+		.BYTE	$6B,  5,  1,  2,$84,$C7,$7A,$9C,$96,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$EE,$72,$43,$81,$80,$C0,$41,$23,$95,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  8,  0,  0,  0,$A0,$30,$78,$FE,$F8,$E0,$C0,$C0,$E0,$D0,$E0
+		.BYTE	  0,  0,  0,  0,  0,  2,  3, $E,$3F, $F,  3,  1,  1,  3,  6,  5
+		.BYTE	$1F,$47,$30, $B,$84,$C7,$7A,$9C,$FD,$FA,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$EC,$72,  7,$D1,$80,$C0,$41,$23,$93,$EF,$FF,$FF,$FF,$FF,$FF,$FF
 _chr_data_unk3:
-		.BYTE	8,  0,	0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
-		.BYTE $14,$18,	8,  4,	6,  3,	2,  1,$FF,$FF,$EF,$C7,$87,  3,	3,  1
-		.BYTE $C0,$A0,$58,$67,$BD,$C7,$7A,$9C,$C0,$C0,$E8,$BA,$F7,$FD,$FF,$FF
-		.BYTE	2,  6,$1B,$F5,$9C,$70,$41,$23,	3,  3, $E,$5F,$EB,$BF,$FF,$FF
-		.BYTE	8,  8,	0,  0,	0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
-		.BYTE $14,  8,	0,  0,	0,  3,	2,  5,$3F, $F,	3,  1,	1,  3,	7,  7
-		.BYTE $30,$40,$30,$5C,$77,$AA,$1B,$80,$E0,$A0,$D0,$E8,$BF,$D5,$FF,$FF
-		.BYTE	6,  1,	6,$1C,$F1,$14,$D1,$23,	3,  3,	5,$13,$BE,$EB,$7F,$FF
-		.BYTE	8,  0,	0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
-		.BYTE $14,$18,	8,  4,	6,  3,	2,  1,$FF,$FF,$EF,$C7,$87,  3,	3,  1
-		.BYTE	0,  0,	0,  0,$40,$90,$62,$B6,$C0,$C0,$80,$80,	0,  0,$E0,$DD
-		.BYTE	0,  0,	0,  0,	1,$82,$23,$BA,	1,  0,	0,  0,	0,  0,	2,$ED
-		.BYTE	8,  8,	0,  0,	0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
-		.BYTE $14,  8,	0,  0,	0,  3,	2,  5,$3F, $F,	3,  1,	1,  3,	7,  7
-		.BYTE	0,  0,	0,  0,	8,$A0,$58,$B6,$F0,$E0,$C0,$80,	0,  0,	0,$A2
-		.BYTE	6,  2,	1,  1,$10,  4,$91,$DB,	7,  3,	1,  1,	0,  0,$11,$CA
+		.BYTE	  8,  0,  0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
+		.BYTE	$14,$18,  8,  4,  6,  3,  2,  1,$FF,$FF,$EF,$C7,$87,  3,  3,  1
+		.BYTE	$C0,$A0,$58,$67,$BD,$C7,$7A,$9C,$C0,$C0,$E8,$BA,$F7,$FD,$FF,$FF
+		.BYTE	  2,  6,$1B,$F5,$9C,$70,$41,$23,  3,  3, $E,$5F,$EB,$BF,$FF,$FF
+		.BYTE	  8,  8,  0,  0,  0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
+		.BYTE	$14,  8,  0,  0,  0,  3,  2,  5,$3F, $F,  3,  1,  1,  3,  7,  7
+		.BYTE	$30,$40,$30,$5C,$77,$AA,$1B,$80,$E0,$A0,$D0,$E8,$BF,$D5,$FF,$FF
+		.BYTE	  6,  1,  6,$1C,$F1,$14,$D1,$23,  3,  3,  5,$13,$BE,$EB,$7F,$FF
+		.BYTE	  8,  0,  0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
+		.BYTE	$14,$18,  8,  4,  6,  3,  2,  1,$FF,$FF,$EF,$C7,$87,  3,  3,  1
+		.BYTE	  0,  0,  0,  0,$40,$90,$62,$B6,$C0,$C0,$80,$80,  0,  0,$E0,$DD
+		.BYTE	  0,  0,  0,  0,  1,$82,$23,$BA,  1,  0,  0,  0,  0,  0,  2,$ED
+		.BYTE	  8,  8,  0,  0,  0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
+		.BYTE	$14,  8,  0,  0,  0,  3,  2,  5,$3F, $F,  3,  1,  1,  3,  7,  7
+		.BYTE	  0,  0,  0,  0,  8,$A0,$58,$B6,$F0,$E0,$C0,$80,  0,  0,  0,$A2
+		.BYTE	  6,  2,  1,  1,$10,  4,$91,$DB,  7,  3,  1,  1,  0,  0,$11,$CA
 _chr_data_unk4:
-		.BYTE	8,  0,	0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
-		.BYTE $14,$18,	8,  4,	6,  3,	2,  1,$FF,$FF,$EF,$C7,$87,  3,	3,  1
-		.BYTE	0,  0,	0,  0,	0,  0,	0,$80,$C0,$C0,$80,$80,	0,  0,$80,$C1
-		.BYTE	0,  0,	0,  0,	0,  0,	1,  3,	1,  0,	0,  0,	0,  0,	3,$87
-		.BYTE	8,  8,	0,  0,	0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
-		.BYTE $14,  8,	0,  0,	0,  3,	2,  5,$3F, $F,	3,  1,	1,  3,	7,  7
-		.BYTE	0,  0,	0,  0,	0,  0,	0,$80,$F0,$E0,$C0,$80,	0,  0,	0,$80
-		.BYTE	6,  2,	1,  1,	0,  0,	0,  1,	7,  3,	1,  1,	0,  0,	0,  1
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,$48,$F1,$C0,$10,$C0,$60,$C0,  0
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,$B9,$51,$2F,$C3,	4,  3,	0,  0
-		.BYTE	0,  0,	0,  0,	0,  0,$80,$C1,$80,$C0,	0,$80,	0,  0,$80,$C1
-		.BYTE	0,  0,	0,  0,	0,  0,	0,$81,	1,  0,	0,  0,	0,  0,	2,$85
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,$E4,$80,$C0,  0,$C0,$80,$30,$D0
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0, $E,  1,	0,  1,	1,  2,	4,  7
-		.BYTE	0,  0,	0,  0,	0,  0,	0,$80,$C0,$60,	0,$80,	0,  0,	0,$80
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  1,	1,  0,	1,  1,	0,  0,	0,  1
+		.BYTE	  8,  0,  0,$10,$20,$E0,$80,  0,$F9,$F1,$F0,$F0,$E0,$E0,$E0,$C0
+		.BYTE	$14,$18,  8,  4,  6,  3,  2,  1,$FF,$FF,$EF,$C7,$87,  3,  3,  1
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,$80,$C0,$C0,$80,$80,  0,  0,$80,$C1
+		.BYTE	  0,  0,  0,  0,  0,  0,  1,  3,  1,  0,  0,  0,  0,  0,  3,$87
+		.BYTE	  8,  8,  0,  0,  0,$E0,$80,  0,$FE,$F8,$E0,$C0,$C0,$E0,$F0,$F0
+		.BYTE	$14,  8,  0,  0,  0,  3,  2,  5,$3F, $F,  3,  1,  1,  3,  7,  7
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,$80,$F0,$E0,$C0,$80,  0,  0,  0,$80
+		.BYTE	  6,  2,  1,  1,  0,  0,  0,  1,  7,  3,  1,  1,  0,  0,  0,  1
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,$48,$F1,$C0,$10,$C0,$60,$C0,  0
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,$B9,$51,$2F,$C3,  4,  3,  0,  0
+		.BYTE	  0,  0,  0,  0,  0,  0,$80,$C1,$80,$C0,  0,$80,  0,  0,$80,$C1
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,$81,  1,  0,  0,  0,  0,  0,  2,$85
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,$E4,$80,$C0,  0,$C0,$80,$30,$D0
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0, $E,  1,  0,  1,  1,  2,  4,  7
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,$80,$C0,$60,  0,$80,  0,  0,  0,$80
+		.BYTE	  0,  0,  0,  0,  0,  0,  0,  1,  1,  0,  1,  1,  0,  0,  0,  1
 _chr_data_unk1:
-		.BYTE	8,  8,	8,$18,$24,$FA,$87,  2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $14,$18,	8,$1C,$16,$23,$C2,$45,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE	1,  1,	1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-		.BYTE $EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  8,  8,  8,$18,$24,$FA,$87,  2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$14,$18,  8,$1C,$16,$23,$C2,$45,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	  1,  1,  1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s6:
@@ -1440,7 +1440,7 @@ loc_F8E20:
 		BCC		loc_F8E20
 		RTS
 byte_F8E29:
-		.BYTE $22,$32,$42,$52
+		.BYTE	$22,$32,$42,$52
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8E2D:
@@ -1564,7 +1564,7 @@ loc_F8EEE:
 locret_F8F12:
 		RTS
 byte_F8F13:
-		.BYTE $18,$28,$38,$48,$58,$68,$78,$88 
+		.BYTE	$18,$28,$38,$48,$58,$68,$78,$88
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
@@ -1935,28 +1935,28 @@ loc_F918B:
 		FAR		$71, 7		; _b4_s6
 		RTS
 _bA_d14:
-		.BYTE	0,  1,	3,  3,	4,  1, $C,  7,$11,  1,$14,  2,$2A,  1,$2D,  3
-		.BYTE $2E,  2,$2F,  0,$30,  2,$34,  6,$36,  5,$3B,  8,$3D,  1,$3F,  1
-		.BYTE $40,  2,$46,  6,$4E,  1,$53,  1,$55,  8,$69,  3,$6A,  1,$71,  3
-		.BYTE $75,  4,$86,  1,$8B,  3,$90,  1,$9D,  6,$9F,  3,$A1,  2,$A3,  2
-		.BYTE $A4,  5,$A5,  1,$A8,  3,$B2,  4,$BD,  2,$BE,$15,$BF,  2,$C5,  5
-		.BYTE $CA,  1,$CB,  6,$D1,  1,$D2,  2,$D3, $C,$D4,  1,$D6,  1,$D7,  2
-		.BYTE $DB,  1,$DC,  2,$DE,  1,$E5,  4,$E7,  3,$E9,  1,$EE,  2,$F0,  8
-		.BYTE $F1,  1,$F2,  1,$39,  2,$A7,  3,$35,  1,$62,  1,$EB,  1,$17,  1
+		.BYTE	  0,  1,  3,  3,  4,  1, $C,  7,$11,  1,$14,  2,$2A,  1,$2D,  3
+		.BYTE	$2E,  2,$2F,  0,$30,  2,$34,  6,$36,  5,$3B,  8,$3D,  1,$3F,  1
+		.BYTE	$40,  2,$46,  6,$4E,  1,$53,  1,$55,  8,$69,  3,$6A,  1,$71,  3
+		.BYTE	$75,  4,$86,  1,$8B,  3,$90,  1,$9D,  6,$9F,  3,$A1,  2,$A3,  2
+		.BYTE	$A4,  5,$A5,  1,$A8,  3,$B2,  4,$BD,  2,$BE,$15,$BF,  2,$C5,  5
+		.BYTE	$CA,  1,$CB,  6,$D1,  1,$D2,  2,$D3, $C,$D4,  1,$D6,  1,$D7,  2
+		.BYTE	$DB,  1,$DC,  2,$DE,  1,$E5,  4,$E7,  3,$E9,  1,$EE,  2,$F0,  8
+		.BYTE	$F1,  1,$F2,  1,$39,  2,$A7,  3,$35,  1,$62,  1,$EB,  1,$17,  1
 _bA_d15:
-		.BYTE $FF, $F,$4E,$42,$5A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$48,  8,	1,$FF
-		.BYTE $82,$30,$65,$68,$A4,$21,	1,$9D,$67,$FD,$65,$C5,$FD,$34,$9F,$FE
-		.BYTE $FE,$63,$FF,$FF,$FF,$FF,$FD,$FD,$FF,$FF,$63,$68,$FE,$7F,$68,$90
-		.BYTE $5F,$AA,$60,$2B,$52,$FC,$88,$89,$30,$64,$68,$63,$73,$8A,$FF,$FF
-		.BYTE $FF,$75,$8B,$61,$74,$9E,$62,$FF,$FF,$53,$5F,$78,$68,$71,$90,$91
-		.BYTE $92,$FE,$6C,$6B,$84,$65,$60,$66,	3,$5F,	3,$64,$67,$9C,$86,$8A
-		.BYTE $5B,$E2,$1A,$36,$5F,$64,$63,$60,$65,$7B,$FE,$FE,$64,$65,$A8,$FE
-		.BYTE $FE,$83,$90,$C7,$87,$5F,$68,$FE,$FE,$FE,$55,$65,$61,$83,$FE,$51
-		.BYTE $2A,$3B,$55,$7F,$FE,$F8,$14,$FE,$55,$69,$50,$4E,$FE,$FF,$61,$59
-		.BYTE $96,$85,$5F,$8A,$83,$60,$65,$8E,$87,$68,$A6,$83,$23,$85,$45,$68
-		.BYTE $4C,$9F,$FD,$40,$6F,$C5,$64,$64,$FD,$20,$FD,$B0,$FF,$FF,$6C,$FE
-		.BYTE $FE,$F8,$64,$61,$64,$64,$FE,$28,$7F,$4E,$FE,$2D,$56,$44,$54,$3F
-		.BYTE $7A
+		.BYTE	$FF, $F,$4E,$42,$5A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$48,  8,  1,$FF
+		.BYTE	$82,$30,$65,$68,$A4,$21,  1,$9D,$67,$FD,$65,$C5,$FD,$34,$9F,$FE
+		.BYTE	$FE,$63,$FF,$FF,$FF,$FF,$FD,$FD,$FF,$FF,$63,$68,$FE,$7F,$68,$90
+		.BYTE	$5F,$AA,$60,$2B,$52,$FC,$88,$89,$30,$64,$68,$63,$73,$8A,$FF,$FF
+		.BYTE	$FF,$75,$8B,$61,$74,$9E,$62,$FF,$FF,$53,$5F,$78,$68,$71,$90,$91
+		.BYTE	$92,$FE,$6C,$6B,$84,$65,$60,$66,  3,$5F,  3,$64,$67,$9C,$86,$8A
+		.BYTE	$5B,$E2,$1A,$36,$5F,$64,$63,$60,$65,$7B,$FE,$FE,$64,$65,$A8,$FE
+		.BYTE	$FE,$83,$90,$C7,$87,$5F,$68,$FE,$FE,$FE,$55,$65,$61,$83,$FE,$51
+		.BYTE	$2A,$3B,$55,$7F,$FE,$F8,$14,$FE,$55,$69,$50,$4E,$FE,$FF,$61,$59
+		.BYTE	$96,$85,$5F,$8A,$83,$60,$65,$8E,$87,$68,$A6,$83,$23,$85,$45,$68
+		.BYTE	$4C,$9F,$FD,$40,$6F,$C5,$64,$64,$FD,$20,$FD,$B0,$FF,$FF,$6C,$FE
+		.BYTE	$FE,$F8,$64,$61,$64,$64,$FE,$28,$7F,$4E,$FE,$2D,$56,$44,$54,$3F
+		.BYTE	$7A
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s16:
@@ -2176,11 +2176,11 @@ loc_F9411:
 		JSR		_vblank_count
 		JMP		_vblank_count
 byte_F9457:
-		.BYTE $30,$31,$21,$11,	1,  0 
+		.BYTE	$30,$31,$21,$11,  1,  0
 byte_F945D:
-		.BYTE  $F,  0,	1,$11,$21,$31 
+		.BYTE	 $F,  0,  1,$11,$21,$31
 byte_F9463:
-		.BYTE $30, $F, $F,  5,	5,  5,$15,$15, $F 
+		.BYTE	$30, $F, $F,  5,  5,  5,$15,$15, $F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F946C:
@@ -2231,62 +2231,62 @@ loc_F948E:
 		BNE		loc_F9486
 		RTS
 byte_F94C1:
-		.BYTE $30,$30,$15
+		.BYTE	$30,$30,$15
 byte_F94C4:
-		.BYTE	1,$20,	2,$20,	3,$20,	4,$20,	4,$60,	3,$60,	2,$60,	1,$60
-		.BYTE	5,$20,	6,$20,	7,$20,	8,$20,	8,$60,	7,$60,	6,$60,	5,$60
-		.BYTE	9,$20, $A,$20, $B,$20,$12,$20,$12,$60, $B,$60, $A,$60,	9,$60
-		.BYTE	0,$20, $C,$20, $D,$20,$13,$20,$13,$60, $D,$60, $C,$60,	0,$60
-		.BYTE	0,$20, $E,$20, $F,$20,$14,$20,$14,$60, $F,$60, $E,$60,	0,$60
-		.BYTE	0,$20,	0,$20,$10,$20,$11,$20,$11,$60,$10,$60,	0,$60,	0,$60
+		.BYTE	  1,$20,  2,$20,  3,$20,  4,$20,  4,$60,  3,$60,  2,$60,  1,$60
+		.BYTE	  5,$20,  6,$20,  7,$20,  8,$20,  8,$60,  7,$60,  6,$60,  5,$60
+		.BYTE	  9,$20, $A,$20, $B,$20,$12,$20,$12,$60, $B,$60, $A,$60,  9,$60
+		.BYTE	  0,$20, $C,$20, $D,$20,$13,$20,$13,$60, $D,$60, $C,$60,  0,$60
+		.BYTE	  0,$20, $E,$20, $F,$20,$14,$20,$14,$60, $F,$60, $E,$60,  0,$60
+		.BYTE	  0,$20,  0,$20,$10,$20,$11,$20,$11,$60,$10,$60,  0,$60,  0,$60
 _txt_erdrick_story_ofs:
-		.WORD _txt_erdrick_story
+		.WORD	_txt_erdrick_story
 _txt_erdrick_story:
-		.BYTE   2,$38,$12,$1F,$1D,  0, $B,  0,$1E,$1C,$1F, $F,  0,$21, $B,$1C
-		.BYTE $1C,$13,$19,$1C,	0,$21, $B,$1D,$FF
-		.BYTE	1, $C,$19,$1C,$18,$6A,	0, $B,$18, $E,	0,$F0,	0, $C, $F, $D
-		.BYTE  $B,$17, $F,$FF
-		.BYTE	1,$15,$18,$19,$21,$18,	0, $B,$1D,  0,$29,$1C, $E,$1C,$13, $D
-		.BYTE $15,$6A,	0,$2C, $F,$1C,$19,  0,$19,$10,$FF
-		.BYTE	3,$25,$16,$13, $B,$12, $B,$18,$6C,  0,$38,$12, $F,$1C, $F,  0
-		.BYTE $21, $B,$1D,  0,$18,$19,$FF
-		.BYTE  $B, $F,$1B,$1F, $B,$16,$6C,$FF
-		.BYTE	0,  0,$FF
-		.BYTE	5,$2C,$19,$21, $F,$20, $F,$1C,$6A,  0,$1D,$12,$19,$1C,$1E,$16
-		.BYTE $23,$FF
-		.BYTE	3,$1E,$12, $F,$1C, $F, $B,$10,$1E, $F,$1C,$6A,	0,$1E,$12, $F
-		.BYTE	0,$2C, $F,$1C,$19,$FF
-		.BYTE	3,$F0,	0,$17,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$16,$23,$FF
-		.BYTE	2, $E,$13,$1D, $B,$1A,$1A, $F, $B,$1C, $F, $E,	0, $B,$18, $E
-		.BYTE	0,$12, $B,$1D,	0,$18,$19,$1E,$FF
-		.BYTE	5, $C, $F, $F,$18,  0,$1D, $F, $F,$18,	0,$1D,$13,$18, $D, $F
-		.BYTE $6C,$FF
-		.BYTE	0,  0,$FF
-		.BYTE	1,$31, $B,$18,$23,  0, $B,  0,$1D,$1E,$19,$1C,$23,  0,$12, $B
-		.BYTE $1D,  0, $C, $F, $F,$18,	0,$1E,$19,$16, $E,$FF
-		.BYTE	1,$19,$10,  0,$1E,$12, $B,$1E,	0, $E, $B,$1C,$15, $F,$1D,$1E
-		.BYTE	0,$19,$10,  0,$18,$13,$11,$12,$1E,$1D,$FF
-		.BYTE	3,$21,$12, $F,$18,  0,$29,$1C, $E,$1C,$13, $D,$15,  0,$16, $F
-		.BYTE $10,$1E,	0,$12,$13,$1D,$FF
-		.BYTE	2,$21, $F, $B,$1A,$19,$18,$6A,	0, $B,$1C,$17,$19,$1C,	0, $B
-		.BYTE $18, $E,	0, $B,$17,$1F,$16, $F,$1E,$FF
-		.BYTE  $A, $C, $F,$12,$13,$18, $E,$6C,$FF
-		.BYTE	0,  0,$FF
-		.BYTE	1,$30, $F,$11, $F,$18, $E,  0,$1D, $B,$23,$1D,	0,$1E,$12, $F
-		.BYTE $23,  0,$12, $B,$20, $F,	0, $C, $F, $F,$18,$FF
-		.BYTE	3,$12, $B,$18, $E, $F, $E,  0, $E,$19,$21,$18,	0,$1E,$19,  0
-		.BYTE $21,$19,$1C,$1E,$12,$23,$FF
-		.BYTE	4,$21, $B,$1C,$1C,$13,$19,$1C,$1D,  0,$19,$10,	0,$10,$1F,$1E
-		.BYTE $1F,$1C, $F,$FF
-		.BYTE	1,$11, $F,$18, $F,$1C, $B,$1E,$13,$19,$18,$1D,	0, $B,$1D,  0
-		.BYTE $1E,$12, $F,  0,$37,$21,$19,$1C, $E,  0,$19,$10,$FF
-		.BYTE	3,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0,$1E,$12, $F,  0,$25,$1C
-		.BYTE $17,$19,$1C,  0,$19,$10,$FF
-		.BYTE	1,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0, $B,$18, $E,  0,$1E,$12
-		.BYTE  $F,  0,$29,$17, $C,$16, $F,$17,	0,$19,$10,$FF
-		.BYTE  $A,$29,$1C, $E,$1C,$13, $D,$15,$6C,$FF
-		.BYTE	0,  0,$FF
-		.BYTE	0,  0,$FF
+		.BYTE	    2,$38,$12,$1F,$1D,  0, $B,  0,$1E,$1C,$1F, $F,  0,$21, $B,$1C
+		.BYTE	$1C,$13,$19,$1C,  0,$21, $B,$1D,$FF
+		.BYTE	  1, $C,$19,$1C,$18,$6A,  0, $B,$18, $E,  0,$F0,  0, $C, $F, $D
+		.BYTE	 $B,$17, $F,$FF
+		.BYTE	  1,$15,$18,$19,$21,$18,  0, $B,$1D,  0,$29,$1C, $E,$1C,$13, $D
+		.BYTE	$15,$6A,  0,$2C, $F,$1C,$19,  0,$19,$10,$FF
+		.BYTE	  3,$25,$16,$13, $B,$12, $B,$18,$6C,  0,$38,$12, $F,$1C, $F,  0
+		.BYTE	$21, $B,$1D,  0,$18,$19,$FF
+		.BYTE	 $B, $F,$1B,$1F, $B,$16,$6C,$FF
+		.BYTE	  0,  0,$FF
+		.BYTE	  5,$2C,$19,$21, $F,$20, $F,$1C,$6A,  0,$1D,$12,$19,$1C,$1E,$16
+		.BYTE	$23,$FF
+		.BYTE	  3,$1E,$12, $F,$1C, $F, $B,$10,$1E, $F,$1C,$6A,  0,$1E,$12, $F
+		.BYTE	  0,$2C, $F,$1C,$19,$FF
+		.BYTE	  3,$F0,  0,$17,$23,$1D,$1E, $F,$1C,$13,$19,$1F,$1D,$16,$23,$FF
+		.BYTE	  2, $E,$13,$1D, $B,$1A,$1A, $F, $B,$1C, $F, $E,  0, $B,$18, $E
+		.BYTE	  0,$12, $B,$1D,  0,$18,$19,$1E,$FF
+		.BYTE	  5, $C, $F, $F,$18,  0,$1D, $F, $F,$18,  0,$1D,$13,$18, $D, $F
+		.BYTE	$6C,$FF
+		.BYTE	  0,  0,$FF
+		.BYTE	  1,$31, $B,$18,$23,  0, $B,  0,$1D,$1E,$19,$1C,$23,  0,$12, $B
+		.BYTE	$1D,  0, $C, $F, $F,$18,  0,$1E,$19,$16, $E,$FF
+		.BYTE	  1,$19,$10,  0,$1E,$12, $B,$1E,  0, $E, $B,$1C,$15, $F,$1D,$1E
+		.BYTE	  0,$19,$10,  0,$18,$13,$11,$12,$1E,$1D,$FF
+		.BYTE	  3,$21,$12, $F,$18,  0,$29,$1C, $E,$1C,$13, $D,$15,  0,$16, $F
+		.BYTE	$10,$1E,  0,$12,$13,$1D,$FF
+		.BYTE	  2,$21, $F, $B,$1A,$19,$18,$6A,  0, $B,$1C,$17,$19,$1C,  0, $B
+		.BYTE	$18, $E,  0, $B,$17,$1F,$16, $F,$1E,$FF
+		.BYTE	 $A, $C, $F,$12,$13,$18, $E,$6C,$FF
+		.BYTE	  0,  0,$FF
+		.BYTE	  1,$30, $F,$11, $F,$18, $E,  0,$1D, $B,$23,$1D,  0,$1E,$12, $F
+		.BYTE	$23,  0,$12, $B,$20, $F,  0, $C, $F, $F,$18,$FF
+		.BYTE	  3,$12, $B,$18, $E, $F, $E,  0, $E,$19,$21,$18,  0,$1E,$19,  0
+		.BYTE	$21,$19,$1C,$1E,$12,$23,$FF
+		.BYTE	  4,$21, $B,$1C,$1C,$13,$19,$1C,$1D,  0,$19,$10,  0,$10,$1F,$1E
+		.BYTE	$1F,$1C, $F,$FF
+		.BYTE	  1,$11, $F,$18, $F,$1C, $B,$1E,$13,$19,$18,$1D,  0, $B,$1D,  0
+		.BYTE	$1E,$12, $F,  0,$37,$21,$19,$1C, $E,  0,$19,$10,$FF
+		.BYTE	  3,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0,$1E,$12, $F,  0,$25,$1C
+		.BYTE	$17,$19,$1C,  0,$19,$10,$FF
+		.BYTE	  1,$29,$1C, $E,$1C,$13, $D,$15,$6A,  0, $B,$18, $E,  0,$1E,$12
+		.BYTE	 $F,  0,$29,$17, $C,$16, $F,$17,  0,$19,$10,$FF
+		.BYTE	 $A,$29,$1C, $E,$1C,$13, $D,$15,$6C,$FF
+		.BYTE	  0,  0,$FF
+		.BYTE	  0,  0,$FF
 
 		ECHO "bank 0A free space", [$BFD8-.]
 
@@ -2294,17 +2294,17 @@ _txt_erdrick_story:
 		SEI
 		INC	$BFDF
 		JMP	_RESET
-		.BYTE $80
-		.BYTE "DRAGON WARRIOR "
-		.BYTE $33
-		.WORD $FFFF
-		.WORD 0
-		.BYTE $48
-		.BYTE 4
-		.BYTE 1
-		.BYTE $F
-		.BYTE 7
-		.BYTE $9D
-		.WORD $BFD8
-		.WORD $BFD8
-		.WORD $BFD8
+		.BYTE	$80
+		.BYTE	"DRAGON WARRIOR "
+		.BYTE	$33
+		.WORD	$FFFF
+		.WORD	0
+		.BYTE	$48
+		.BYTE	  4
+		.BYTE	  1
+		.BYTE	$F
+		.BYTE	  7
+		.BYTE	$9D
+		.WORD	$BFD8
+		.WORD	$BFD8
+		.WORD	$BFD8

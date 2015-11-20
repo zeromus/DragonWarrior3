@@ -1,53 +1,53 @@
 
 		ORG $8000
 
-		.WORD _b4_s0
-		.WORD _b4_s1
-		.WORD _b4_s2
-		.WORD _b4_s3
-		.WORD _b4_s4
-		.WORD _b4_s5_do_message_speed_delay
-		.WORD _b4_s6
-		.WORD _b4_s7
-		.WORD _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		.WORD _b4_s9
-		.WORD _b4_sA
-		.WORD _b4_sB
-		.WORD _b4_sC
-		.WORD _b4_dD_spells_list
-		.WORD _b4_sE
-		.WORD _b4_sF
-		.WORD _b4_s10
-		.WORD 0 ; _b4_d11
-		.WORD _b4_s12
-		.WORD _b4_s13
-		.WORD _b4_s14
-		.WORD _b4_d15
-		.WORD _b4_s16_do_half_message_speed_delay
-		.WORD _b4_s17
-		.WORD _b4_s18
-		.WORD _b4_s19
-		.WORD _b4_s1A
-		.WORD _b4_s1B
-		.WORD _b4_s1C
-		.WORD _b4_s1D
-		.WORD _b4_s1E
-		.WORD _b4_s1F
-		.WORD _b4_s20
-		.WORD _b4_s21_message_half_delay_or_wait_for_keypress
-		.WORD _b4_s22
-		.WORD _b4_s23
-		.WORD _b4_s24
-		.WORD _b4_s25
-		.WORD _b4_s26
-		.WORD _b4_s27
-		.WORD _b4_s28
-		.WORD _b4_s29
-		.WORD _b4_s2A
-		.WORD _b4_s2B
+		.WORD	_b4_s0
+		.WORD	_b4_s1
+		.WORD	_b4_s2
+		.WORD	_b4_s3
+		.WORD	_b4_s4
+		.WORD	_b4_s5_do_message_speed_delay
+		.WORD	_b4_s6
+		.WORD	_b4_s7
+		.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		.WORD	_b4_s9
+		.WORD	_b4_sA
+		.WORD	_b4_sB
+		.WORD	_b4_sC
+		.WORD	_b4_dD_spells_list
+		.WORD	_b4_sE
+		.WORD	_b4_sF
+		.WORD	_b4_s10
+		.WORD	0 ; _b4_d11
+		.WORD	_b4_s12
+		.WORD	_b4_s13
+		.WORD	_b4_s14
+		.WORD	_b4_d15
+		.WORD	_b4_s16_do_half_message_speed_delay
+		.WORD	_b4_s17
+		.WORD	_b4_s18
+		.WORD	_b4_s19
+		.WORD	_b4_s1A
+		.WORD	_b4_s1B
+		.WORD	_b4_s1C
+		.WORD	_b4_s1D
+		.WORD	_b4_s1E
+		.WORD	_b4_s1F
+		.WORD	_b4_s20
+		.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
+		.WORD	_b4_s22
+		.WORD	_b4_s23
+		.WORD	_b4_s24
+		.WORD	_b4_s25
+		.WORD	_b4_s26
+		.WORD	_b4_s27
+		.WORD	_b4_s28
+		.WORD	_b4_s29
+		.WORD	_b4_s2A
+		.WORD	_b4_s2B
 
 ;_b4_d11:
-;		.BYTE 2
+;		.BYTE	  2
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s0:
@@ -600,9 +600,9 @@ loc_683FB:
 		TAY
 		RTS
 off_68406:
-		.WORD byte_6B422
-		.WORD byte_6B42A
-		.WORD byte_6B432
+		.WORD	byte_6B422
+		.WORD	byte_6B42A
+		.WORD	byte_6B432
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6840C:
@@ -811,10 +811,10 @@ loc_6855C:
 		SEC
 		RTS
 off_6855F:
-		.WORD byte_6B43A
-		.WORD byte_6B43E
-		.WORD byte_6B442
-		.WORD byte_6B446
+		.WORD	byte_6B43A
+		.WORD	byte_6B43E
+		.WORD	byte_6B442
+		.WORD	byte_6B446
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68567:
@@ -1316,7 +1316,7 @@ loc_68826:
 		SEC
 		RTS
 byte_68828:
-		.BYTE  $F,$FF,$53,$55,$3F,$40,$55,$15,$51,$14,$C7,$D7,	3,  5,$D4,$FF
+		.BYTE	 $F,$FF,$53,$55,$3F,$40,$55,$15,$51,$14,$C7,$D7,  3,  5,$D4,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s13:
@@ -1726,7 +1726,7 @@ loc_68AF9:
 locret_68AFB:
 		RTS
 byte_68AFC:
-		.BYTE	1,  3,	3,  2
+		.BYTE	  1,  3,  3,  2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68B00:
@@ -2094,7 +2094,7 @@ sub_68D7F:
 		LDY		byte_5A
 		RTS
 byte_68D88:
-		.BYTE	9,$75,$47,$56,$59 
+		.BYTE	  9,$75,$47,$56,$59
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D8D:
@@ -2171,7 +2171,7 @@ sub_68E00:
 		JSR		sub_694C1
 		JMP		_b4_s6
 off_68E16:
-		.WORD sub_68E18
+		.WORD	sub_68E18
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E18:
@@ -2214,7 +2214,7 @@ sub_68E4B:
 		JSR		sub_694C1
 		JMP		_b4_s6
 off_68E61:
-		.WORD sub_68E63
+		.WORD	sub_68E63
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
@@ -2428,7 +2428,7 @@ sub_68FBC:
 		LDA		#$13
 		JMP		sub_694B8
 off_68FCD:
-		.WORD sub_68FCF
+		.WORD	sub_68FCF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FCF:
@@ -2556,7 +2556,7 @@ sub_69096:
 		STA		word_3E+1
 		RTS
 off_690A1:
-		.WORD sub_690A3
+		.WORD	sub_690A3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690A3:
@@ -2578,7 +2578,7 @@ loc_690BD:
 		JSR		sub_68FEB
 		JMP		sub_69D60
 off_690C5:
-		.WORD sub_690C7
+		.WORD	sub_690C7
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690C7:
@@ -2618,7 +2618,7 @@ loc_690FD:
 		JSR		sub_68FEB
 		JMP		sub_69F23
 off_69105:
-		.WORD sub_69107
+		.WORD	sub_69107
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69107:
@@ -2642,7 +2642,7 @@ loc_69125:
 		JSR		sub_68FEB
 		JMP		sub_69DDF
 off_6912D:
-		.WORD sub_6912F
+		.WORD	sub_6912F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6912F:
@@ -2736,7 +2736,7 @@ sub_691C3:
 		LDA		#$18
 		JMP		sub_694B8
 off_691D7:
-		.WORD sub_691D9
+		.WORD	sub_691D9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_691D9:
@@ -2944,7 +2944,7 @@ sub_6933E:
 		JSR		sub_6B32F
 		JMP		sub_69F64
 off_69344:
-		.WORD sub_69346
+		.WORD	sub_69346
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69346:
@@ -3645,7 +3645,7 @@ loc_69831:
 		BNE		loc_697E0
 		RTS
 byte_69837:
-		.BYTE $FF,$CC,$99,$80
+		.BYTE	$FF,$CC,$99,$80
 
 ; =============== S U B	R O U T	I N E =======================================
 nullsub_11:
@@ -3843,7 +3843,7 @@ sub_69966:
 		STA		word_40+1
 		RTS
 off_69971:
-		.WORD sub_6994F
+		.WORD	sub_6994F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69973:
@@ -3928,7 +3928,7 @@ loc_69A03:
 		JSR		sub_6B347
 		JMP		sub_6B3D8
 off_69A0D:
-		.WORD sub_69A0F
+		.WORD	sub_69A0F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69A0F:
@@ -4042,7 +4042,7 @@ loc_69AD1:
 		JSR		sub_6B2DB
 		JMP		sub_691DF
 off_69AD9:
-		.WORD sub_69ADB
+		.WORD	sub_69ADB
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69ADB:
@@ -4090,7 +4090,7 @@ sub_69B1B:
 		JSR		sub_6BBD0
 		JMP		sub_694C1
 off_69B2C:
-		.WORD sub_69B2E
+		.WORD	sub_69B2E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B2E:
@@ -4127,7 +4127,7 @@ sub_69B5F:
 		STX		word_40+1
 		JMP		sub_6A3AB
 off_69B6C:
-		.WORD sub_69B6E
+		.WORD	sub_69B6E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B6E:
@@ -4188,9 +4188,9 @@ loc_69BAD:
 loc_69BD7:
 		JMP		sub_69443
 byte_69BDA:
-		.BYTE $19,$46,$8C
+		.BYTE	$19,$46,$8C
 byte_69BDD:
-		.BYTE  $A,$14,$28
+		.BYTE	 $A,$14,$28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69BE0:
@@ -4348,7 +4348,7 @@ loc_69CDD:
 		BNE		locret_69D1C
 		FAR		$1A, $F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
 off_69CE5:
-		.WORD sub_69CE7
+		.WORD	sub_69CE7
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69CE7:
@@ -4391,7 +4391,7 @@ sub_69D20:
 		STA		word_3E+1
 		JMP		sub_694C1
 off_69D2D:
-		.WORD sub_69D2F
+		.WORD	sub_69D2F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D2F:
@@ -4485,7 +4485,7 @@ loc_69DB9:
 		STA		byte_530,X
 		RTS
 off_69DD7:
-		.WORD sub_69DD9
+		.WORD	sub_69DD9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69DD9:
@@ -4561,7 +4561,7 @@ locret_69E55:
 loc_69E56:
 		JMP		sub_6B3D8
 off_69E59:
-		.WORD sub_69E28
+		.WORD	sub_69E28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E5B:
@@ -4688,7 +4688,7 @@ loc_69F39:
 		JSR		sub_6B2DB
 		JMP		sub_6A6DF
 off_69F41:
-		.WORD sub_6A78A
+		.WORD	sub_6A78A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F43:
@@ -4723,7 +4723,7 @@ sub_69F64:
 loc_69F7A:
 		JMP		loc_6932C
 off_69F7D:
-		.WORD sub_69F7F
+		.WORD	sub_69F7F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F7F:
@@ -4864,7 +4864,7 @@ loc_6A058:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6A06E:
-		.WORD sub_6A070
+		.WORD	sub_6A070
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A070:
@@ -4936,9 +4936,9 @@ sub_6A0C9:
 		STA		word_3E+1
 		JMP		sub_694C1
 off_6A0E5:
-		.WORD sub_6A0E9
+		.WORD	sub_6A0E9
 off_6A0E7:
-		.WORD sub_6A0EF
+		.WORD	sub_6A0EF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0E9:
@@ -4959,7 +4959,7 @@ sub_6A0F5:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6A104:
-		.WORD sub_6A106
+		.WORD	sub_6A106
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A106:
@@ -5089,7 +5089,7 @@ sub_6A1C9:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6A1E0:
-		.WORD sub_6A1E2
+		.WORD	sub_6A1E2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1E2:
@@ -5123,7 +5123,7 @@ sub_6A202:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6A211:
-		.WORD sub_6A213
+		.WORD	sub_6A213
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A213:
@@ -5144,7 +5144,7 @@ sub_6A226:
 		STA		word_3E+1
 		JMP		sub_694C1
 off_6A233:
-		.WORD sub_6A235
+		.WORD	sub_6A235
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A235:
@@ -5156,23 +5156,23 @@ sub_6A23B:
 		FAR		$8C, $F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JMP		_b4_s5_do_message_speed_delay
 off_6A241:
-		.WORD sub_6A044
-		.WORD sub_6A079
-		.WORD sub_6A083
-		.WORD sub_6A0B4
-		.WORD sub_6A0C9
-		.WORD sub_6A0F5
-		.WORD sub_6A0F5
-		.WORD sub_6A121
-		.WORD sub_6A134
-		.WORD sub_6A13C
-		.WORD sub_6A158
-		.WORD sub_6A16D
-		.WORD sub_6A1C9
-		.WORD sub_6A1EE
-		.WORD sub_6A202
-		.WORD sub_6A226
-		.WORD sub_6A23B
+		.WORD	sub_6A044
+		.WORD	sub_6A079
+		.WORD	sub_6A083
+		.WORD	sub_6A0B4
+		.WORD	sub_6A0C9
+		.WORD	sub_6A0F5
+		.WORD	sub_6A0F5
+		.WORD	sub_6A121
+		.WORD	sub_6A134
+		.WORD	sub_6A13C
+		.WORD	sub_6A158
+		.WORD	sub_6A16D
+		.WORD	sub_6A1C9
+		.WORD	sub_6A1EE
+		.WORD	sub_6A202
+		.WORD	sub_6A226
+		.WORD	sub_6A23B
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A263:
@@ -7157,7 +7157,7 @@ sub_6AEEF:
 		STA		word_3E+1
 		JMP		sub_694C1
 off_6AEFC:
-		.WORD sub_6AEFE
+		.WORD	sub_6AEFE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AEFE:
@@ -7204,9 +7204,9 @@ sub_6AF34:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6AF4F:
-		.WORD sub_6AF53
+		.WORD	sub_6AF53
 off_6AF51:
-		.WORD sub_6AF5C
+		.WORD	sub_6AF5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF53:
@@ -7338,7 +7338,7 @@ sub_6B008:
 		LDA		#0
 		JMP		sub_6A3B1
 off_6B01C:
-		.WORD sub_6B01E
+		.WORD	sub_6B01E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B01E:
@@ -7531,11 +7531,11 @@ loc_6B154:
 		CLC
 		RTS
 byte_6B156:
-		.BYTE $93,$95,$88,$8F,$94,$97,$9E 
+		.BYTE	$93,$95,$88,$8F,$94,$97,$9E
 byte_6B15D:
-		.BYTE	2,  0,$80, $A,	4 
+		.BYTE	  2,  0,$80, $A,  4
 byte_6B162:
-		.BYTE $5B,$67,$7C,$3A,$71,$7E 
+		.BYTE	$5B,$67,$7C,$3A,$71,$7E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B168:
@@ -7667,15 +7667,15 @@ loc_6B235:
 		JSR		sub_6B168
 		JMP		loc_6B201
 byte_6B23D:
-		.BYTE $8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$94,$8E,$9A,$9F,$9F,$9F,$9F
-		.BYTE $9F,$A5,$9B,$9A,$9E,  3,	3,  3,	3,  3,$A7,  3,	3,$9B,$AA,$AB
-		.BYTE $AC,  3,$AE,$AF,	3,$9B,$B3,$9A
+		.BYTE	$8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$94,$8E,$9A,$9F,$9F,$9F,$9F
+		.BYTE	$9F,$A5,$9B,$9A,$9E,  3,  3,  3,  3,  3,$A7,  3,  3,$9B,$AA,$AB
+		.BYTE	$AC,  3,$AE,$AF,  3,$9B,$B3,$9A
 byte_6B265:
-		.BYTE $8F,$90,$91,$97,$98,$99,$92,$93,$90,$95,$96 
+		.BYTE	$8F,$90,$91,$97,$98,$99,$92,$93,$90,$95,$96
 byte_6B270:
-		.BYTE	0,  5, $A,$24,$30,$27,	7,  4, $F,$2C, $D,$1B,$37,$37,$37,$37
-		.BYTE $37,$38,$39,$1E,$3A,$3B,$3C,$3D,$3E,$3F,$40,$41,$34,$45,$26,$21
-		.BYTE $42,$35,$22,$43,$44,$27,$18,$36
+		.BYTE	  0,  5, $A,$24,$30,$27,  7,  4, $F,$2C, $D,$1B,$37,$37,$37,$37
+		.BYTE	$37,$38,$39,$1E,$3A,$3B,$3C,$3D,$3E,$3F,$40,$41,$34,$45,$26,$21
+		.BYTE	$42,$35,$22,$43,$44,$27,$18,$36
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1A:
@@ -7972,48 +7972,48 @@ loc_6B420:
 		TXA
 		RTS
 byte_6B422:
-		.BYTE $20,$20,$20,$20,$20,$20,$20,$20 
+		.BYTE	$20,$20,$20,$20,$20,$20,$20,$20
 byte_6B42A:
-		.BYTE $12,$16,$1A,$1E,$22,$26,$2A,$2E 
+		.BYTE	$12,$16,$1A,$1E,$22,$26,$2A,$2E
 byte_6B432:
-		.BYTE	2,  4,	6,  8, $A, $C, $E,$C8 
+		.BYTE	  2,  4,  6,  8, $A, $C, $E,$C8
 byte_6B43A:
-		.BYTE $FF,$FF,$FF,$FF
+		.BYTE	$FF,$FF,$FF,$FF
 byte_6B43E:
-		.BYTE $91,$FF,$FF,$FF
+		.BYTE	$91,$FF,$FF,$FF
 byte_6B442:
-		.BYTE $71,$C6,$FF,$FF
+		.BYTE	$71,$C6,$FF,$FF
 byte_6B446:
-		.BYTE $70,$B3,$EA,$FF
+		.BYTE	$70,$B3,$EA,$FF
 byte_6B44A:
-		.BYTE $FF,$80,$55,$20
+		.BYTE	$FF,$80,$55,$20
 byte_6B44E:
-		.BYTE $FF,$C0,$80,$40
+		.BYTE	$FF,$C0,$80,$40
 _b4_dD_spells_list:
-		.BYTE $C2,$C6,$CC,$C4,$C6,$CC,$45,$49,$52,$C3,$C6,$CC,$49,$C4,$C6,$C9
-		.BYTE $C8,$5E,$C7,$C7,$41,$C2,$C7,$C0,$C3,  3,$83,$85,$87,  0,$12,$3E
-		.BYTE $8A,$94,$C3,  3,$C3,$C4,	8,$C5,$8C,$18,	6,$C3,$C4,$83,	4,  4
-		.BYTE	8,  6,$86,$14,$82,$86,$D2,  4, $C,  0,	3,  8, $F,  2
+		.BYTE	$C2,$C6,$CC,$C4,$C6,$CC,$45,$49,$52,$C3,$C6,$CC,$49,$C4,$C6,$C9
+		.BYTE	$C8,$5E,$C7,$C7,$41,$C2,$C7,$C0,$C3,  3,$83,$85,$87,  0,$12,$3E
+		.BYTE	$8A,$94,$C3,  3,$C3,$C4,  8,$C5,$8C,$18,  6,$C3,$C4,$83,  4,  4
+		.BYTE	  8,  6,$86,$14,$82,$86,$D2,  4, $C,  0,  3,  8, $F,  2
 byte_6B490:
-		.BYTE	0,  1,	2,  9
+		.BYTE	  0,  1,  2,  9
 byte_6B494:
-		.BYTE	3,  4,	8, $A, $B, $D, $E, $F 
+		.BYTE	  3,  4,  8, $A, $B, $D, $E, $F
 byte_6B49C:
-		.BYTE $1A,$1B,$1C
+		.BYTE	$1A,$1B,$1C
 byte_6B49F:
-		.BYTE $1E,$1F
+		.BYTE	$1E,$1F
 word_6B4A1:
-		.WORD  $608,$1446,$28A0, $810, $C1E,$1858, $810,$1034
-		.WORD $2878, $A19,$102A,$1858,$143C,$1008,$1E19,$3C3C
-		.WORD $1446,$32AF
+		.WORD	 $608,$1446,$28A0, $810, $C1E,$1858, $810,$1034
+		.WORD	$2878, $A19,$102A,$1858,$143C,$1008,$1E19,$3C3C
+		.WORD	$1446,$32AF
 word_6B4C5:
-		.WORD  $507, $A34,$245C, $810, $80A, $C16,$143C, $A20
-		.WORD  $C37, $C06,$140E,$201E, $406, $A1E,$1450, $C09
-		.WORD $1428,$2864
+		.WORD	 $507, $A34,$245C, $810, $80A, $C16,$143C, $A20
+		.WORD	 $C37, $C06,$140E,$201E, $406, $A1E,$1450, $C09
+		.WORD	$1428,$2864
 _b4_d15:
-		.WORD  $A1E,$144B,  $FF, $A1E,$103E,$FFFF 
+		.WORD	 $A1E,$144B,  $FF, $A1E,$103E,$FFFF
 byte_6B4F5:
-		.BYTE	0,  1,	2,  4,	5,  0,	1,  2,	4,  5 
+		.BYTE	  0,  1,  2,  4,  5,  0,  1,  2,  4,  5
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1:
@@ -8889,9 +8889,9 @@ loc_6B9C0:
 		STA		byte_59
 		RTS
 byte_6B9CB:
-		.BYTE $C0,$30, $C
+		.BYTE	$C0,$30, $C
 byte_6B9CE:
-		.BYTE	0,$4D,$B3,$FF
+		.BYTE	  0,$4D,$B3,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B9D2:
@@ -9003,7 +9003,7 @@ loc_6BA52:
 		LDX		#1
 		RTS
 _message_speed_delays_list:
-		.BYTE $18,$24,$30,$3C,$48,$54,$64 
+		.BYTE	$18,$24,$30,$3C,$48,$54,$64
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_sE:
@@ -9291,16 +9291,16 @@ sub_6BBF9:
 		BEQ		loc_6BB95
 		BNE		loc_6BB98
 byte_6BBFD:
-		.BYTE	4,  8,$10,$20,$40,$80, $F, $F, $F, $F,$10,$20,$40,$80
+		.BYTE	  4,  8,$10,$20,$40,$80, $F, $F, $F, $F,$10,$20,$40,$80
 off_6BC0B:
-		.WORD byte_6A9B
+		.WORD	byte_6A9B
 off_6BC0D:
-		.WORD byte_73C
-		.WORD byte_73D
+		.WORD	byte_73C
+		.WORD	byte_73D
 off_6BC11:
-		.WORD sub_6BBE4
-		.WORD sub_6BBED
-		.WORD sub_6BBF3
+		.WORD	sub_6BBE4
+		.WORD	sub_6BBED
+		.WORD	sub_6BBF3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC17:
@@ -9397,11 +9397,11 @@ sub_6BC99:
 		BEQ		loc_6BC42
 		BNE		loc_6BC3F
 off_6BCA2:
-		.WORD sub_6BC60
-		.WORD sub_6BC67
-		.WORD sub_6BC86
-		.WORD sub_6BC90
-		.WORD sub_6BC99
+		.WORD	sub_6BC60
+		.WORD	sub_6BC67
+		.WORD	sub_6BC86
+		.WORD	sub_6BC90
+		.WORD	sub_6BC99
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s10:
@@ -9471,202 +9471,202 @@ sub_6BCDE:
 ;		RTS
 
 off_6BD02:
-		.WORD sub_68505
-		.WORD sub_68509
-		.WORD _b4_s2B
-		.WORD _b4_s2B
-		.WORD _b4_s2B
-		.WORD _b4_s2B
-		.WORD _b4_s2B
-		.WORD sub_68567
-		.WORD sub_68576
-		.WORD sub_685A0
-		.WORD sub_68505
-		.WORD sub_68505
-		.WORD sub_68505
-		.WORD sub_68505
-		.WORD sub_68505
-		.WORD sub_68505
-		.WORD sub_685A8
-		.WORD sub_685AD
-		.WORD sub_68505
-		.WORD sub_685B2
-		.WORD sub_685B2
-		.WORD sub_685B2
-		.WORD sub_685B2
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685C0
-		.WORD sub_685B2
-		.WORD sub_685C0
-		.WORD sub_685CB
-		.WORD sub_685A8
-		.WORD sub_685D5
-		.WORD sub_685DA
-		.WORD sub_685DF
-		.WORD sub_685E4
-		.WORD sub_685A0
-		.WORD sub_685E9
-		.WORD sub_685EE
-		.WORD sub_685F3
-		.WORD sub_68505
-		.WORD sub_685FF
-		.WORD sub_68606
-		.WORD sub_6860D
-		.WORD sub_68619
-		.WORD sub_68619
-		.WORD sub_6861E
-		.WORD sub_6861E
-		.WORD sub_6861E
-		.WORD sub_68625
-		.WORD sub_68625
-		.WORD sub_6862C
-		.WORD sub_6862C
-		.WORD sub_6862C
-		.WORD sub_68631
-		.WORD sub_68631
-		.WORD sub_6858A
-		.WORD sub_6858A
-		.WORD sub_6858A
-		.WORD sub_6858A
-		.WORD sub_6858A
+		.WORD	sub_68505
+		.WORD	sub_68509
+		.WORD	_b4_s2B
+		.WORD	_b4_s2B
+		.WORD	_b4_s2B
+		.WORD	_b4_s2B
+		.WORD	_b4_s2B
+		.WORD	sub_68567
+		.WORD	sub_68576
+		.WORD	sub_685A0
+		.WORD	sub_68505
+		.WORD	sub_68505
+		.WORD	sub_68505
+		.WORD	sub_68505
+		.WORD	sub_68505
+		.WORD	sub_68505
+		.WORD	sub_685A8
+		.WORD	sub_685AD
+		.WORD	sub_68505
+		.WORD	sub_685B2
+		.WORD	sub_685B2
+		.WORD	sub_685B2
+		.WORD	sub_685B2
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685C0
+		.WORD	sub_685B2
+		.WORD	sub_685C0
+		.WORD	sub_685CB
+		.WORD	sub_685A8
+		.WORD	sub_685D5
+		.WORD	sub_685DA
+		.WORD	sub_685DF
+		.WORD	sub_685E4
+		.WORD	sub_685A0
+		.WORD	sub_685E9
+		.WORD	sub_685EE
+		.WORD	sub_685F3
+		.WORD	sub_68505
+		.WORD	sub_685FF
+		.WORD	sub_68606
+		.WORD	sub_6860D
+		.WORD	sub_68619
+		.WORD	sub_68619
+		.WORD	sub_6861E
+		.WORD	sub_6861E
+		.WORD	sub_6861E
+		.WORD	sub_68625
+		.WORD	sub_68625
+		.WORD	sub_6862C
+		.WORD	sub_6862C
+		.WORD	sub_6862C
+		.WORD	sub_68631
+		.WORD	sub_68631
+		.WORD	sub_6858A
+		.WORD	sub_6858A
+		.WORD	sub_6858A
+		.WORD	sub_6858A
+		.WORD	sub_6858A
 byte_6BD82:
-		.BYTE	2,  6, $C,  3,	4,  6,$12,  6, $C,  4,	6,  9,	5,  8,	1,  3
-		.BYTE	4,  3,	4,  4,	0,  5,	3,  7,	0,  8,	4,  5, $A,$14,	3,  6
-		.BYTE	7,$12,$3E,  3,	6,  9,$12,$3E
+		.BYTE	  2,  6, $C,  3,  4,  6,$12,  6, $C,  4,  6,  9,  5,  8,  1,  3
+		.BYTE	  4,  3,  4,  4,  0,  5,  3,  7,  0,  8,  4,  5, $A,$14,  3,  6
+		.BYTE	  7,$12,$3E,  3,  6,  9,$12,$3E
 off_6BDAA:
-		.WORD sub_68B2F
-		.WORD sub_68B32
-		.WORD sub_68B35
-		.WORD sub_68BC9
-		.WORD sub_68BF0
-		.WORD sub_68C0A
-		.WORD sub_68C26
-		.WORD sub_68C48
-		.WORD sub_68C64
-		.WORD sub_68D8D
-		.WORD sub_68DB1
-		.WORD sub_68DB1
-		.WORD sub_68DB1
-		.WORD sub_68DB1
-		.WORD sub_68DB1
-		.WORD sub_68DB1
-		.WORD sub_68DEC
-		.WORD sub_68E00
-		.WORD sub_68E4B
-		.WORD sub_68E96
-		.WORD sub_68E96
-		.WORD sub_68E96
-		.WORD sub_68E96
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68EC7
-		.WORD sub_68F21
-		.WORD sub_68FBC
-		.WORD sub_68FF8
-		.WORD sub_69081
-		.WORD sub_690A9
-		.WORD sub_690CD
-		.WORD sub_690E9
-		.WORD sub_69111
-		.WORD sub_69135
-		.WORD sub_69173
-		.WORD sub_691C3
-		.WORD sub_69225
-		.WORD sub_692D4
-		.WORD sub_692B7
-		.WORD sub_69322
-		.WORD sub_6934C
-		.WORD sub_6936E
-		.WORD sub_6936A
-		.WORD sub_69415
-		.WORD sub_69415
-		.WORD sub_69415
-		.WORD sub_69453
-		.WORD sub_69453
-		.WORD sub_69415
-		.WORD sub_69415
-		.WORD sub_69415
-		.WORD sub_69453
-		.WORD sub_69453
-		.WORD sub_68D39
-		.WORD sub_68D39
-		.WORD sub_68D39
-		.WORD sub_68D39
-		.WORD sub_68D39
+		.WORD	sub_68B2F
+		.WORD	sub_68B32
+		.WORD	sub_68B35
+		.WORD	sub_68BC9
+		.WORD	sub_68BF0
+		.WORD	sub_68C0A
+		.WORD	sub_68C26
+		.WORD	sub_68C48
+		.WORD	sub_68C64
+		.WORD	sub_68D8D
+		.WORD	sub_68DB1
+		.WORD	sub_68DB1
+		.WORD	sub_68DB1
+		.WORD	sub_68DB1
+		.WORD	sub_68DB1
+		.WORD	sub_68DB1
+		.WORD	sub_68DEC
+		.WORD	sub_68E00
+		.WORD	sub_68E4B
+		.WORD	sub_68E96
+		.WORD	sub_68E96
+		.WORD	sub_68E96
+		.WORD	sub_68E96
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68EC7
+		.WORD	sub_68F21
+		.WORD	sub_68FBC
+		.WORD	sub_68FF8
+		.WORD	sub_69081
+		.WORD	sub_690A9
+		.WORD	sub_690CD
+		.WORD	sub_690E9
+		.WORD	sub_69111
+		.WORD	sub_69135
+		.WORD	sub_69173
+		.WORD	sub_691C3
+		.WORD	sub_69225
+		.WORD	sub_692D4
+		.WORD	sub_692B7
+		.WORD	sub_69322
+		.WORD	sub_6934C
+		.WORD	sub_6936E
+		.WORD	sub_6936A
+		.WORD	sub_69415
+		.WORD	sub_69415
+		.WORD	sub_69415
+		.WORD	sub_69453
+		.WORD	sub_69453
+		.WORD	sub_69415
+		.WORD	sub_69415
+		.WORD	sub_69415
+		.WORD	sub_69453
+		.WORD	sub_69453
+		.WORD	sub_68D39
+		.WORD	sub_68D39
+		.WORD	sub_68D39
+		.WORD	sub_68D39
+		.WORD	sub_68D39
 off_6BE2A:
-		.WORD sub_695C6
-		.WORD sub_69782
-		.WORD sub_697CD
-		.WORD sub_6AE6C
-		.WORD sub_697D0
-		.WORD sub_697D0
-		.WORD sub_6B0C1
-		.WORD nullsub_11
+		.WORD	sub_695C6
+		.WORD	sub_69782
+		.WORD	sub_697CD
+		.WORD	sub_6AE6C
+		.WORD	sub_697D0
+		.WORD	sub_697D0
+		.WORD	sub_6B0C1
+		.WORD	nullsub_11
 off_6BE3A:
-		.WORD sub_69840
-		.WORD sub_6990D
-		.WORD sub_6995B
-		.WORD sub_69973
-		.WORD sub_699F1
-		.WORD sub_69A2E
-		.WORD sub_69A80
-		.WORD sub_69ABF
-		.WORD sub_69B1B
-		.WORD sub_69BA0
-		.WORD sub_69BA0
-		.WORD sub_69BA0
-		.WORD sub_69BE0
-		.WORD sub_69BE0
-		.WORD sub_69BE0
-		.WORD sub_69C09
-		.WORD sub_69C81
-		.WORD sub_69C86
-		.WORD sub_69D20
-		.WORD sub_69D60
-		.WORD sub_69DDF
-		.WORD sub_69E5B
-		.WORD sub_69E7F
-		.WORD sub_6A263
-		.WORD sub_69ECB
-		.WORD sub_69EF8
-		.WORD sub_69F05
-		.WORD sub_69F23
-		.WORD sub_69F43
-		.WORD sub_69F64
-		.WORD sub_69840
-		.WORD sub_69F85
-		.WORD sub_69F97
-		.WORD sub_69FC5
-		.WORD sub_6A017
-		.WORD sub_6A2CB
-		.WORD sub_6A2FF
-		.WORD sub_6AEEF
-		.WORD sub_6AF04
-		.WORD sub_6AF0E
-		.WORD sub_6AF34
-		.WORD sub_6AF65
-		.WORD sub_6AF6D
-		.WORD sub_6AF7B
-		.WORD sub_6AFA5
-		.WORD sub_6AF97
-		.WORD sub_6AF89
-		.WORD sub_6AFD2
-		.WORD sub_6AFF7
-		.WORD nullsub_12
-		.WORD sub_6B008
-		.WORD sub_6B027
-		.WORD sub_6B04B
+		.WORD	sub_69840
+		.WORD	sub_6990D
+		.WORD	sub_6995B
+		.WORD	sub_69973
+		.WORD	sub_699F1
+		.WORD	sub_69A2E
+		.WORD	sub_69A80
+		.WORD	sub_69ABF
+		.WORD	sub_69B1B
+		.WORD	sub_69BA0
+		.WORD	sub_69BA0
+		.WORD	sub_69BA0
+		.WORD	sub_69BE0
+		.WORD	sub_69BE0
+		.WORD	sub_69BE0
+		.WORD	sub_69C09
+		.WORD	sub_69C81
+		.WORD	sub_69C86
+		.WORD	sub_69D20
+		.WORD	sub_69D60
+		.WORD	sub_69DDF
+		.WORD	sub_69E5B
+		.WORD	sub_69E7F
+		.WORD	sub_6A263
+		.WORD	sub_69ECB
+		.WORD	sub_69EF8
+		.WORD	sub_69F05
+		.WORD	sub_69F23
+		.WORD	sub_69F43
+		.WORD	sub_69F64
+		.WORD	sub_69840
+		.WORD	sub_69F85
+		.WORD	sub_69F97
+		.WORD	sub_69FC5
+		.WORD	sub_6A017
+		.WORD	sub_6A2CB
+		.WORD	sub_6A2FF
+		.WORD	sub_6AEEF
+		.WORD	sub_6AF04
+		.WORD	sub_6AF0E
+		.WORD	sub_6AF34
+		.WORD	sub_6AF65
+		.WORD	sub_6AF6D
+		.WORD	sub_6AF7B
+		.WORD	sub_6AFA5
+		.WORD	sub_6AF97
+		.WORD	sub_6AF89
+		.WORD	sub_6AFD2
+		.WORD	sub_6AFF7
+		.WORD	nullsub_12
+		.WORD	sub_6B008
+		.WORD	sub_6B027
+		.WORD	sub_6B04B
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEA4:
@@ -9764,17 +9764,17 @@ loc_6BF2E:
 		SEI
 		INC	$BFDF
 		JMP	_RESET
-		.BYTE $80
-		.BYTE "DRAGON WARRIOR "
-		.BYTE $33
-		.WORD $FFFF
-		.WORD 0
-		.BYTE $48
-		.BYTE 4
-		.BYTE 1
-		.BYTE $F
-		.BYTE 7
-		.BYTE $9D
-		.WORD $BFD8
-		.WORD $BFD8
-		.WORD $BFD8
+		.BYTE	$80
+		.BYTE	"DRAGON WARRIOR "
+		.BYTE	$33
+		.WORD	$FFFF
+		.WORD	0
+		.BYTE	$48
+		.BYTE	  4
+		.BYTE	  1
+		.BYTE	$F
+		.BYTE	  7
+		.BYTE	$9D
+		.WORD	$BFD8
+		.WORD	$BFD8
+		.WORD	$BFD8
