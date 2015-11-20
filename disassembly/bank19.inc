@@ -1,106 +1,100 @@
 
 		ORG $8000
 
-		.WORD _b19_s0		; data used at 8000
+		.WORD _b19_s0
 
 ; =============== S U B	R O U T	I N E =======================================
-_b19_s0:				; CODE XREF: sub_24E91A-P
-					; DATA XREF: BANK19:8000-o
-		LDA		off_2640AF	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_2640AF+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		LDA		off_26496D	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_26496D+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		LDA		off_265B14	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_265B14+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		LDA		off_2661EA	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_2661EA+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		LDA		off_2667D5	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_2667D5+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
+_b19_s0:
+		LDA		off_2640AF
+		STA		word_6C
+		LDA		off_2640AF+1
+		STA		word_6C+1
+		JSR		sub_264077
+		LDA		off_26496D
+		STA		word_6C
+		LDA		off_26496D+1
+		STA		word_6C+1
+		JSR		sub_264077
+		LDA		off_265B14
+		STA		word_6C
+		LDA		off_265B14+1
+		STA		word_6C+1
+		JSR		sub_264077
+		LDA		off_2661EA
+		STA		word_6C
+		LDA		off_2661EA+1
+		STA		word_6C+1
+		JSR		sub_264077
+		LDA		off_2667D5
+		STA		word_6C
+		LDA		off_2667D5+1
+		STA		word_6C+1
+		JSR		sub_264077
 		BRK
 		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
-		LDA		off_2667D7	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_2667D7+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		JSR		sub_264090	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_6		; code used at 8000
-		LDA		#$32       ; code used at 8000
-		STA		word_6+1	; code used at 8000
+		LDA		off_2667D7
+		STA		word_6C
+		LDA		off_2667D7+1
+		STA		word_6C+1
+		JSR		sub_264077
+		JSR		sub_264090
+		LDA		#0
+		STA		word_6
+		LDA		#$32
+		STA		word_6+1
 		BRK
 		.BYTE 1, $8F		; ofs 0x0024c002, -> dst _b18_s1
-		LDA		word_6		; code used at 8000
-		BEQ		locret_264076	; code used at 8000
-		LDA		off_2679DD	; code used at 8000
-		STA		word_6C		; code used at 8000
-		LDA		off_2679DD+1	; code used at 8000
-		STA		word_6C+1	; code used at 8000
-		JSR		sub_264077	; code used at 8000
-		LDA		#$FF		; code used at 8000
-		STA		word_6		; code used at 8000
-locret_264076:				; CODE XREF: _b19_s0+61-j
-		RTS				; code used at 8000
+		LDA		word_6
+		BEQ		locret_264076
+		LDA		off_2679DD
+		STA		word_6C
+		LDA		off_2679DD+1
+		STA		word_6C+1
+		JSR		sub_264077
+		LDA		#$FF
+		STA		word_6
+locret_264076:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_264077:				; CODE XREF: _b19_s0+A-p _b19_s0+17-p
-					; _b19_s0+24-p _b19_s0+31-p _b19_s0+3E-p
-					; _b19_s0+4E-p _b19_s0+6D-p
-					; sub_264077+5-j sub_264077+E-j
-		JSR		sub_265019	; code used at 8000
-		BCS		locret_264088	; code used at 8000
-		BVS		sub_264077	; code used at 8000
+sub_264077:
+		JSR		sub_265019
+		BCS		locret_264088
+		BVS		sub_264077
 		BRK
 		.BYTE 1, $8F		; ofs 0x0024c002, -> dst _b18_s1
-		LDA		word_6		; code used at 8000
-		BEQ		loc_264089	; code used at 8000
-		JMP		sub_264077	; code used at 8000
-locret_264088:				; CODE XREF: sub_264077+3-j
-		RTS				; code used at 8000
-loc_264089:				; CODE XREF: sub_264077+C-j
-		PLA				; code used at 8000
-		PLA				; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_6		; code used at 8000
-		RTS				; code used at 8000
+		LDA		word_6
+		BEQ		loc_264089
+		JMP		sub_264077
+locret_264088:
+		RTS
+loc_264089:
+		PLA
+		PLA
+		LDA		#0
+		STA		word_6
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_264090:				; CODE XREF: _b19_s0+51-p
-		LDA		#$E		; code used at 8000
-		STA		_APU_DMC_FREQ	; code used at 8000
-		LDA		#[[_pcm_data - $C000] >> 6]       ; code used at 8000
-		STA		_APU_DMC_ADDR	; code used at 8000
-		LDA		#$80       ; code used at 8000
-		STA		_APU_DMC_LOAD	; code used at 8000
-		LDA		#$AB       ; code used at 8000
-		STA		_APU_DMC_LEN	; code used at 8000
-		LDA		#$1F		; code used at 8000
-		STA		_APU_STATUS	; code used at 8000
-		LDA		#1		; code used at 8000
-		STA		byte_6A3D	; code used at 8000
-		RTS				; code used at 8000
+sub_264090:
+		LDA		#$E
+		STA		_APU_DMC_FREQ
+		LDA		#[[_pcm_data - $C000] >> 6]
+		STA		_APU_DMC_ADDR
+		LDA		#$80
+		STA		_APU_DMC_LOAD
+		LDA		#$AB
+		STA		_APU_DMC_LEN
+		LDA		#$1F
+		STA		_APU_STATUS
+		LDA		#1
+		STA		byte_6A3D
+		RTS
 off_2640AF:
-		.WORD byte_2640B1	; DATA XREF: _b19_s0-r _b19_s0+5-r
-					; data used at 8000
+		.WORD byte_2640B1
 byte_2640B1:
 		.BYTE $90,  0,	1,  0,$90,$FF,	0,  0,$90,  0,	1,  0,$90,$FF,	0,$40
-					; DATA XREF: BANK19:off_2640AF-o
-		.BYTE $D0,  0,$90,  0,	1,$40,$A0,  1,	0,  0,$90,$FF,	0,  0,$90,  0 ;	ind data used at 8000
+		.BYTE $D0,  0,$90,  0,	1,$40,$A0,  1,	0,  0,$90,$FF,	0,  0,$90,  0
 		.BYTE	1,  0,$90,$FF,	0,$40,$D0,  1,$90,  0,	1,  0,$90,$FF,	0,  0
 		.BYTE $90,  0,	1,$40,$A0,  1,	0,  0,$90,$FF,	0,$40,$D0,  2,$90,  0
 		.BYTE	1,  0,$90,$FF,	0,  0,$90,  0,	1,  0,$90,$FF,	0,$40,$D0,  3
@@ -240,12 +234,10 @@ byte_2640B1:
 		.BYTE	0,$FF,	0,$90,$FF,  0,$40,$D0,	2,$90,	0,$FF,	0,$90,$FF,  0
 		.BYTE	0,$90,	0,$FF,	0,$90,$FF,  0,$40,$D0,	1,$FF
 off_26496D:
-		.WORD byte_26496F	; DATA XREF: _b19_s0+D-r _b19_s0+12-r
-					; data used at 8000
+		.WORD byte_26496F
 byte_26496F:
 		.BYTE $90,  1,	4,  0,$90,  1,	4,  0,$90,  2,	4,  0,$90,  2,	4,  0
-					; DATA XREF: BANK19:off_26496D-o
-		.BYTE $90,  2,	4,  0,$90,  2,	4,  0,$90,  2,	4,  0,$90,  2,	4,  0 ;	ind data used at 8000
+		.BYTE $90,  2,	4,  0,$90,  2,	4,  0,$90,  2,	4,  0,$90,  2,	4,  0
 		.BYTE $90,  2,	4,  0,$90,  2,	4,$40,$D0,  8,$90,  4,	5,  0,$90,  4
 		.BYTE	5,  0,$90,  4,	5,  0,$90,  4,	5,  0,$90,  4,	5,  0,$90,  4
 		.BYTE	5,  0,$90,  4,	5,$40,$E0,  9,$90,  4,	5,$40,	4,$14,$A5,  1
@@ -353,166 +345,165 @@ byte_26496F:
 		.BYTE	0,  1,	0,$90,$FF,  0,$40,$D0,	1,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265019:				; CODE XREF: sub_264077-p
-		LDY		#$FF		; code used at 8000
-		STY		word_4+1	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_6+1	; code used at 8000
-		INC		word_6+1	; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		BEQ		loc_265074	; code used at 8000
-		CMP		#$FF		; code used at 8000
-		BEQ		loc_2650A1	; code used at 8000
-		TAX				; code used at 8000
-		BMI		loc_2650A9	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265034	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265034:				; CODE XREF: sub_265019+17-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_26503E	; code used at 8000
+sub_265019:
+		LDY		#$FF
+		STY		word_4+1
+		LDY		#0
+		STY		word_6+1
+		INC		word_6+1
+		LDA		(word_6C),Y
+		BEQ		loc_265074
+		CMP		#$FF
+		BEQ		loc_2650A1
+		TAX
+		BMI		loc_2650A9
+		INC		word_6C
+		BNE		loc_265034
 		INC		word_6C+1
-loc_26503E:				; CODE XREF: sub_265019+21-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4+1	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265048	; code used at 8000
+loc_265034:
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_26503E
 		INC		word_6C+1
-loc_265048:				; CODE XREF: sub_265019+2B-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_6+1	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265052	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265052:				; CODE XREF: sub_265019+35-j
-		TXA				; code used at 8000
-		LDX		#0		; code used at 8000
-		CMP		#1		; code used at 8000
-		BEQ		loc_2650D5	; code used at 8000
-		CMP		#2		; code used at 8000
-		BEQ		loc_2650D8	; code used at 8000
-		CMP		#3		; code used at 8000
-		BEQ		loc_2650DB	; code used at 8000
-		CMP		#4		; code used at 8000
-		BEQ		loc_2650DE	; code used at 8000
-		CMP		#5		; code used at 8000
-		BEQ		loc_2650E1	; code used at 8000
-		CMP		#6		; code used at 8000
-		BEQ		loc_2650E4	; code used at 8000
-		CMP		#7		; code used at 8000
-		BEQ		loc_2650E7	; code used at 8000
-loc_265071:				; CODE XREF: sub_265019:loc_265071-j
+loc_26503E:
+		LDA		(word_6C),Y
+		STA		word_4+1
+		INC		word_6C
+		BNE		loc_265048
+		INC		word_6C+1
+loc_265048:
+		LDA		(word_6C),Y
+		STA		word_6+1
+		INC		word_6C
+		BNE		loc_265052
+		INC		word_6C+1
+loc_265052:
+		TXA
+		LDX		#0
+		CMP		#1
+		BEQ		loc_2650D5
+		CMP		#2
+		BEQ		loc_2650D8
+		CMP		#3
+		BEQ		loc_2650DB
+		CMP		#4
+		BEQ		loc_2650DE
+		CMP		#5
+		BEQ		loc_2650E1
+		CMP		#6
+		BEQ		loc_2650E4
+		CMP		#7
+		BEQ		loc_2650E7
+loc_265071:
 		JMP		loc_265071
-loc_265074:				; CODE XREF: sub_265019+C-j
-		INC		word_6C		; code used at 8000
-		BNE		loc_26507A	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_26507A:				; CODE XREF: sub_265019+5D-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265082	; code used at 8000
+loc_265074:
+		INC		word_6C
+		BNE		loc_26507A
 		INC		word_6C+1
-loc_265082:				; CODE XREF: sub_265019+65-j
-		CMP		#1		; code used at 8000
-		BEQ		loc_2650FF	; code used at 8000
-		CMP		#2		; code used at 8000
-		BEQ		loc_265102	; code used at 8000
-		CMP		#3		; code used at 8000
-		BEQ		loc_265105	; code used at 8000
-		CMP		#4		; code used at 8000
-		BEQ		loc_265108	; code used at 8000
-		CMP		#5		; code used at 8000
-		BEQ		loc_26510B	; code used at 8000
-		CMP		#6		; code used at 8000
-		BEQ		loc_26510E	; code used at 8000
-		CMP		#7		; code used at 8000
-		BEQ		loc_265111	; code used at 8000
-loc_26509E:				; CODE XREF: sub_265019:loc_26509E-j
+loc_26507A:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265082
+		INC		word_6C+1
+loc_265082:
+		CMP		#1
+		BEQ		loc_2650FF
+		CMP		#2
+		BEQ		loc_265102
+		CMP		#3
+		BEQ		loc_265105
+		CMP		#4
+		BEQ		loc_265108
+		CMP		#5
+		BEQ		loc_26510B
+		CMP		#6
+		BEQ		loc_26510E
+		CMP		#7
+		BEQ		loc_265111
+loc_26509E:
 		JMP		loc_26509E
-loc_2650A1:				; CODE XREF: sub_265019+10-j
-		INC		word_6C		; code used at 8000
-		BNE		loc_2650A7	; code used at 8000
+loc_2650A1:
+		INC		word_6C
+		BNE		loc_2650A7
 		INC		word_6C+1
-loc_2650A7:				; CODE XREF: sub_265019+8A-j
-		SEC				; code used at 8000
-		RTS				; code used at 8000
-loc_2650A9:				; CODE XREF: sub_265019+13-j
-		INC		word_6C		; code used at 8000
-		BNE		loc_2650AF	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_2650AF:				; CODE XREF: sub_265019+92-j
-		LDA		#1		; code used at 8000
-		STA		word_6+1	; code used at 8000
-		TXA				; code used at 8000
-		AND		#$70       ; code used at 8000
-		CMP		#$10		; code used at 8000
-		BEQ		loc_2650EA	; code used at 8000
-		CMP		#$20       ; code used at 8000
-		BEQ		loc_2650ED	; code used at 8000
-		CMP		#$30       ; code used at 8000
-		BEQ		loc_2650FC	; code used at 8000
-		CMP		#$40       ; code used at 8000
-		BEQ		loc_2650F0	; code used at 8000
-		CMP		#$50       ; code used at 8000
-		BEQ		loc_2650F3	; code used at 8000
-		CMP		#$60       ; code used at 8000
-		BEQ		loc_2650F9	; code used at 8000
-		CMP		#$70       ; code used at 8000
-		BEQ		loc_2650F6	; code used at 8000
-loc_2650D2:				; CODE XREF: sub_265019:loc_2650D2-j
+loc_2650A7:
+		SEC
+		RTS
+loc_2650A9:
+		INC		word_6C
+		BNE		loc_2650AF
+		INC		word_6C+1
+loc_2650AF:
+		LDA		#1
+		STA		word_6+1
+		TXA
+		AND		#$70
+		CMP		#$10
+		BEQ		loc_2650EA
+		CMP		#$20
+		BEQ		loc_2650ED
+		CMP		#$30
+		BEQ		loc_2650FC
+		CMP		#$40
+		BEQ		loc_2650F0
+		CMP		#$50
+		BEQ		loc_2650F3
+		CMP		#$60
+		BEQ		loc_2650F9
+		CMP		#$70
+		BEQ		loc_2650F6
+loc_2650D2:
 		JMP		loc_2650D2
-loc_2650D5:				; CODE XREF: sub_265019+3E-j
+loc_2650D5:
 		JMP		loc_265114
-loc_2650D8:				; CODE XREF: sub_265019+42-j
-		JMP		loc_26512C	; code used at 8000
-loc_2650DB:				; CODE XREF: sub_265019+46-j
+loc_2650D8:
+		JMP		loc_26512C
+loc_2650DB:
 		JMP		loc_265191
-loc_2650DE:				; CODE XREF: sub_265019+4A-j
-		JMP		sub_2651D7	; code used at 8000
-loc_2650E1:				; CODE XREF: sub_265019+4E-j
-		JMP		sub_265241	; code used at 8000
-loc_2650E4:				; CODE XREF: sub_265019+52-j
+loc_2650DE:
+		JMP		sub_2651D7
+loc_2650E1:
+		JMP		sub_265241
+loc_2650E4:
 		JMP		sub_265259
-loc_2650E7:				; CODE XREF: sub_265019+56-j
-		JMP		sub_265264	; code used at 8000
-loc_2650EA:				; CODE XREF: sub_265019+9F-j
-		JMP		sub_26537A	; code used at 8000
-loc_2650ED:				; CODE XREF: sub_265019+A3-j
-		JMP		sub_2653EB	; code used at 8000
-loc_2650F0:				; CODE XREF: sub_265019+AB-j
-		JMP		sub_265433	; code used at 8000
-loc_2650F3:				; CODE XREF: sub_265019+AF-j
-		JMP		sub_265441	; code used at 8000
-loc_2650F6:				; CODE XREF: sub_265019+B7-j
-		JMP		sub_26557B	; code used at 8000
-loc_2650F9:				; CODE XREF: sub_265019+B3-j
-		JMP		sub_265444	; code used at 8000
-loc_2650FC:				; CODE XREF: sub_265019+A7-j
+loc_2650E7:
+		JMP		sub_265264
+loc_2650EA:
+		JMP		sub_26537A
+loc_2650ED:
+		JMP		sub_2653EB
+loc_2650F0:
+		JMP		sub_265433
+loc_2650F3:
+		JMP		sub_265441
+loc_2650F6:
+		JMP		sub_26557B
+loc_2650F9:
+		JMP		sub_265444
+loc_2650FC:
 		JMP		sub_265436
-loc_2650FF:				; CODE XREF: sub_265019+6B-j
-		JMP		sub_2655EC	; code used at 8000
-loc_265102:				; CODE XREF: sub_265019+6F-j
-		JMP		sub_265669	; code used at 8000
-loc_265105:				; CODE XREF: sub_265019+73-j
-		JMP		sub_2656BC	; code used at 8000
-loc_265108:				; CODE XREF: sub_265019+77-j
-		JMP		sub_265715	; code used at 8000
-loc_26510B:				; CODE XREF: sub_265019+7B-j
-		JMP		sub_265715	; code used at 8000
-loc_26510E:				; CODE XREF: sub_265019+7F-j
-		JMP		sub_265775	; code used at 8000
-loc_265111:				; CODE XREF: sub_265019+83-j
-		JMP		sub_26578F	; code used at 8000
-loc_265114:				; CODE XREF: sub_265019:loc_2650D5-j
-					; sub_265019+109-j
+loc_2650FF:
+		JMP		sub_2655EC
+loc_265102:
+		JMP		sub_265669
+loc_265105:
+		JMP		sub_2656BC
+loc_265108:
+		JMP		sub_265715
+loc_26510B:
+		JMP		sub_265715
+loc_26510E:
+		JMP		sub_265775
+loc_265111:
+		JMP		sub_26578F
+loc_265114:
 		LDA		(word_6C),Y
 		STA		_spr_ram+4,X
 		INC		word_6C
 		BNE		loc_26511F
 		INC		word_6C+1
-loc_26511F:				; CODE XREF: sub_265019+102-j
+loc_26511F:
 		INX
 		DEC		word_4
 		BNE		loc_265114
@@ -521,73 +512,71 @@ loc_26511F:				; CODE XREF: sub_265019+102-j
 		BIT		word_4
 		CLC
 		RTS
-loc_26512C:				; CODE XREF: sub_265019:loc_2650D8-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265134	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265134:				; CODE XREF: sub_265019+117-j
-		CMP		#1		; code used at 8000
-		BEQ		loc_26514F	; code used at 8000
-		CMP		#2		; code used at 8000
-		BEQ		loc_26515C	; code used at 8000
-		CMP		#3		; code used at 8000
-		BEQ		loc_265163	; code used at 8000
-		CMP		#4		; code used at 8000
-		BEQ		loc_265170	; code used at 8000
-		CMP		#5		; code used at 8000
-		BEQ		loc_265177	; code used at 8000
-		CMP		#6		; code used at 8000
-		BEQ		loc_265184	; code used at 8000
-loc_26514C:				; CODE XREF: sub_265019:loc_26514C-j
+loc_26512C:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265134
+		INC		word_6C+1
+loc_265134:
+		CMP		#1
+		BEQ		loc_26514F
+		CMP		#2
+		BEQ		loc_26515C
+		CMP		#3
+		BEQ		loc_265163
+		CMP		#4
+		BEQ		loc_265170
+		CMP		#5
+		BEQ		loc_265177
+		CMP		#6
+		BEQ		loc_265184
+loc_26514C:
 		JMP		loc_26514C
-loc_26514F:				; CODE XREF: sub_265019+11D-j
-		LDA		_spr_ram+$48	; code used at 8000
-		STA		_spr_ram+$B8	; code used at 8000
-		LDA		#8		; code used at 8000
-		STA		_spr_ram+$B9	; code used at 8000
-		BNE		loc_265189	; code used at 8000
-loc_26515C:				; CODE XREF: sub_265019+121-j
-		LDA		#1		; code used at 8000
-		STA		_spr_ram+$B9	; code used at 8000
-		BNE		loc_265189	; code used at 8000
-loc_265163:				; CODE XREF: sub_265019+125-j
-		LDA		_spr_ram+$64	; code used at 8000
-		STA		_spr_ram+$C0	; code used at 8000
-		LDA		#8		; code used at 8000
-		STA		_spr_ram+$C1	; code used at 8000
-		BNE		loc_265189	; code used at 8000
-loc_265170:				; CODE XREF: sub_265019+129-j
-		LDA		#1		; code used at 8000
-		STA		_spr_ram+$C1	; code used at 8000
-		BNE		loc_265189	; code used at 8000
-loc_265177:				; CODE XREF: sub_265019+12D-j
-		LDA		_spr_ram+$64	; code used at 8000
-		STA		_spr_ram+$C4	; code used at 8000
-		LDA		#8		; code used at 8000
-		STA		_spr_ram+$C5	; code used at 8000
-		BNE		loc_265189	; code used at 8000
-loc_265184:				; CODE XREF: sub_265019+131-j
-		LDA		#1		; code used at 8000
-		STA		_spr_ram+$C5	; code used at 8000
-loc_265189:				; CODE XREF: sub_265019+141-j
-					; sub_265019+148-j sub_265019+155-j
-					; sub_265019+15C-j sub_265019+169-j
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_265191:				; CODE XREF: sub_265019:loc_2650DB-j
+loc_26514F:
+		LDA		_spr_ram+$48
+		STA		_spr_ram+$B8
+		LDA		#8
+		STA		_spr_ram+$B9
+		BNE		loc_265189
+loc_26515C:
+		LDA		#1
+		STA		_spr_ram+$B9
+		BNE		loc_265189
+loc_265163:
+		LDA		_spr_ram+$64
+		STA		_spr_ram+$C0
+		LDA		#8
+		STA		_spr_ram+$C1
+		BNE		loc_265189
+loc_265170:
+		LDA		#1
+		STA		_spr_ram+$C1
+		BNE		loc_265189
+loc_265177:
+		LDA		_spr_ram+$64
+		STA		_spr_ram+$C4
+		LDA		#8
+		STA		_spr_ram+$C5
+		BNE		loc_265189
+loc_265184:
+		LDA		#1
+		STA		_spr_ram+$C5
+loc_265189:
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_265191:
 		LDA		word_4
 		PHA
-loc_265194:				; CODE XREF: sub_265019+18C-j
+loc_265194:
 		LDA		(word_6C),Y
 		STA		_spr_ram+$79,X
 		INC		word_6C
 		BNE		loc_26519F
 		INC		word_6C+1
-loc_26519F:				; CODE XREF: sub_265019+182-j
+loc_26519F:
 		INX
 		INX
 		INX
@@ -597,7 +586,7 @@ loc_26519F:				; CODE XREF: sub_265019+182-j
 		PLA
 		STA		word_4
 		LDX		#0
-loc_2651AC:				; CODE XREF: sub_265019+1A4-j
+loc_2651AC:
 		LDA		byte_2651C7,X
 		CLC
 		ADC		_spr_ram+$28
@@ -616,89 +605,87 @@ loc_2651AC:				; CODE XREF: sub_265019+1A4-j
 		RTS
 byte_2651C7:
 		.BYTE	0,  0,	8,  8,	8,$10,$10,$10,$18,$18,$18,$20,$20,$20,$28,$28
-					; DATA XREF: sub_265019:loc_2651AC-r
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_2651D7:				; CODE XREF: sub_265019:loc_2650DE-j
-		JSR		sub_265524	; code used at 8000
-		LDA		_spr_ram+$4C	; code used at 8000
-		CMP		#$F8       ; code used at 8000
-		BNE		loc_265213	; code used at 8000
-		LDA		_spr_ram+$14	; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		LDA		_spr_ram+$28	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2651F7	; code used at 8000
+sub_2651D7:
+		JSR		sub_265524
+		LDA		_spr_ram+$4C
+		CMP		#$F8
+		BNE		loc_265213
+		LDA		_spr_ram+$14
+		STA		_spr_ram+$4C
+		LDA		_spr_ram+$28
+		STA		_spr_ram+$50
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_2651F7
 		INC		word_6C+1
-loc_2651F7:				; CODE XREF: sub_2651D7+1C-j
-		LDX		#0		; code used at 8000
-loc_2651F9:				; CODE XREF: sub_2651D7+32-j
-		LDA		_spr_ram+6,X	; code used at 8000
-		AND		#$FC       ; code used at 8000
-		ORA		word_4		; code used at 8000
-		STA		_spr_ram+6,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_2651F9	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_265213:				; CODE XREF: sub_2651D7+8-j
-		LDA		#$F8       ; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265225	; code used at 8000
+loc_2651F7:
+		LDX		#0
+loc_2651F9:
+		LDA		_spr_ram+6,X
+		AND		#$FC
+		ORA		word_4
+		STA		_spr_ram+6,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_2651F9
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_265213:
+		LDA		#$F8
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_265225
 		INC		word_6C+1
-loc_265225:				; CODE XREF: sub_2651D7+4A-j
-		LDX		#0		; code used at 8000
-loc_265227:				; CODE XREF: sub_2651D7+60-j
-		LDA		_spr_ram+6,X	; code used at 8000
-		AND		#$FC       ; code used at 8000
-		ORA		word_4		; code used at 8000
-		STA		_spr_ram+6,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_265227	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_265225:
+		LDX		#0
+loc_265227:
+		LDA		_spr_ram+6,X
+		AND		#$FC
+		ORA		word_4
+		STA		_spr_ram+6,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_265227
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265241:				; CODE XREF: sub_265019:loc_2650E1-j
-					; sub_265241+E-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		_spr_ram+$C8,X	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_26524C	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_26524C:				; CODE XREF: sub_265241+7-j
-		INX				; code used at 8000
-		DEC		word_4		; code used at 8000
-		BNE		sub_265241	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+sub_265241:
+		LDA		(word_6C),Y
+		STA		_spr_ram+$C8,X
+		INC		word_6C
+		BNE		loc_26524C
+		INC		word_6C+1
+loc_26524C:
+		INX
+		DEC		word_4
+		BNE		sub_265241
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265259:				; CODE XREF: sub_265019:loc_2650E4-j
+sub_265259:
 		JSR		sub_265541
 		LDY		#0
 		STY		word_4
@@ -707,237 +694,238 @@ sub_265259:				; CODE XREF: sub_265019:loc_2650E4-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265264:				; CODE XREF: sub_265019:loc_2650E7-j
-		JSR		sub_265524	; code used at 8000
-		LDA		_spr_ram+6	; code used at 8000
-		AND		#$40       ; code used at 8000
-		BEQ		loc_265271	; code used at 8000
-		JMP		loc_2652F1	; code used at 8000
-loc_265271:				; CODE XREF: sub_265264+8-j
-		LDA		_spr_ram+$C	; code used at 8000
-		CMP		_spr_ram+$40	; code used at 8000
-		BCS		loc_2652C2	; code used at 8000
-		SEC				; code used at 8000
-		SBC		#8		; code used at 8000
-		STA		_spr_ram+$40	; code used at 8000
-		STA		_spr_ram+$44	; code used at 8000
-		LDA		#$F8       ; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		_spr_ram+$43	; code used at 8000
-		STA		_spr_ram+$E3	; code used at 8000
-		LDA		_spr_ram+$47	; code used at 8000
-		STA		_spr_ram+$E7	; code used at 8000
-		LDA		_spr_ram+$4F	; code used at 8000
-		STA		_spr_ram+$EB	; code used at 8000
-		LDA		_spr_ram+$53	; code used at 8000
-		STA		_spr_ram+$EF	; code used at 8000
-		LDA		_spr_ram+$F	; code used at 8000
-		STA		_spr_ram+$43	; code used at 8000
-		LDA		_spr_ram+$13	; code used at 8000
-		STA		_spr_ram+$47	; code used at 8000
-		LDA		_spr_ram+$17	; code used at 8000
-		CLC				; code used at 8000
-		ADC		#8		; code used at 8000
-		STA		_spr_ram+$4F	; code used at 8000
-		STA		_spr_ram+$53	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2652C2:				; CODE XREF: sub_265264+13-j
-		LDA		_spr_ram+$48	; code used at 8000
-		STA		_spr_ram+$40	; code used at 8000
-		STA		_spr_ram+$44	; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		_spr_ram+$E3	; code used at 8000
-		STA		_spr_ram+$43	; code used at 8000
-		LDA		_spr_ram+$E7	; code used at 8000
-		STA		_spr_ram+$47	; code used at 8000
-		LDA		_spr_ram+$EB	; code used at 8000
-		STA		_spr_ram+$4F	; code used at 8000
-		LDA		_spr_ram+$EF	; code used at 8000
-		STA		_spr_ram+$53	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2652F1:				; CODE XREF: sub_265264+A-j
-		LDA		_spr_ram+$C	; code used at 8000
-		CMP		_spr_ram+$40	; code used at 8000
-		BCS		loc_265342	; code used at 8000
-		SEC				; code used at 8000
-		SBC		#8		; code used at 8000
-		STA		_spr_ram+$40	; code used at 8000
-		STA		_spr_ram+$44	; code used at 8000
-		LDA		#$F8       ; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		_spr_ram+$43	; code used at 8000
-		STA		_spr_ram+$E3	; code used at 8000
-		LDA		_spr_ram+$47	; code used at 8000
-		STA		_spr_ram+$E7	; code used at 8000
-		LDA		_spr_ram+$4F	; code used at 8000
-		STA		_spr_ram+$EB	; code used at 8000
-		LDA		_spr_ram+$53	; code used at 8000
-		STA		_spr_ram+$EF	; code used at 8000
-		LDA		_spr_ram+$F	; code used at 8000
-		STA		_spr_ram+$43	; code used at 8000
-		LDA		_spr_ram+$13	; code used at 8000
-		STA		_spr_ram+$47	; code used at 8000
-		LDA		_spr_ram+$17	; code used at 8000
-		SEC				; code used at 8000
-		SBC		#8		; code used at 8000
-		STA		_spr_ram+$4F	; code used at 8000
-		STA		_spr_ram+$53	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_265342:				; CODE XREF: sub_265264+93-j
-		LDA		_spr_ram+$48	; code used at 8000
-		STA		_spr_ram+$40	; code used at 8000
-		STA		_spr_ram+$44	; code used at 8000
-		STA		_spr_ram+$4C	; code used at 8000
-		STA		_spr_ram+$50	; code used at 8000
-		LDA		_spr_ram+$E3	; code used at 8000
-		STA		_spr_ram+$43	; code used at 8000
-		LDA		_spr_ram+$E7	; code used at 8000
-		STA		_spr_ram+$47	; code used at 8000
-		LDA		_spr_ram+$EB	; code used at 8000
-		STA		_spr_ram+$4F	; code used at 8000
-		LDA		_spr_ram+$EF	; code used at 8000
-		STA		_spr_ram+$53	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+sub_265264:
+		JSR		sub_265524
+		LDA		_spr_ram+6
+		AND		#$40
+		BEQ		loc_265271
+		JMP		loc_2652F1
+loc_265271:
+		LDA		_spr_ram+$C
+		CMP		_spr_ram+$40
+		BCS		loc_2652C2
+		SEC
+		SBC		#8
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		LDA		#$F8
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$43
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$47
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$4F
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$53
+		STA		_spr_ram+$EF
+		LDA		_spr_ram+$F
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$13
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$17
+		CLC
+		ADC		#8
+		STA		_spr_ram+$4F
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2652C2:
+		LDA		_spr_ram+$48
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$E3
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$E7
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$EB
+		STA		_spr_ram+$4F
+		LDA		_spr_ram+$EF
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2652F1:
+		LDA		_spr_ram+$C
+		CMP		_spr_ram+$40
+		BCS		loc_265342
+		SEC
+		SBC		#8
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		LDA		#$F8
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$43
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$47
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$4F
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$53
+		STA		_spr_ram+$EF
+		LDA		_spr_ram+$F
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$13
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$17
+		SEC
+		SBC		#8
+		STA		_spr_ram+$4F
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_265342:
+		LDA		_spr_ram+$48
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$E3
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$E7
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$EB
+		STA		_spr_ram+$4F
+		LDA		_spr_ram+$EF
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_265371:
 		JMP		sub_265524
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_265374:
 		JMP		sub_265541
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_265377:
 		JMP		sub_26555E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_26537A:				; CODE XREF: sub_265019:loc_2650EA-j
-					; sub_265436+2-p
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265386	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265386:				; CODE XREF: sub_26537A+8-j
-		LDY		#$14		; code used at 8000
-		LDX		#7		; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDA		_spr_ram+$BB	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$BB	; code used at 8000
-		LDA		_spr_ram+$E3	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$E3	; code used at 8000
-		LDA		_spr_ram+$E7	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$E7	; code used at 8000
-		LDA		_spr_ram+$EB	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$EB	; code used at 8000
-		LDA		_spr_ram+$EF	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$EF	; code used at 8000
-		LDY		#$10		; code used at 8000
-		LDX		#$7B       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2653CD	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_2653CD:				; CODE XREF: sub_26537A+4F-j
-		LDY		#$12		; code used at 8000
-		LDX		#4		; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#$10		; code used at 8000
-		LDX		#$78       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2653E5	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_2653E5:				; CODE XREF: sub_26537A+67-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_2653EB:				; CODE XREF: sub_265019:loc_2650ED-j
-					; sub_265436+7-p
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2653F7	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_2653F7:				; CODE XREF: sub_2653EB+8-j
-		LDY		#9		; code used at 8000
-		LDX		#$57       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDA		_spr_ram+$C3	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$C3	; code used at 8000
-		LDA		_spr_ram+$C7	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$C7	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_26541C	; code used at 8000
+sub_26537A:
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_265386
 		INC		word_6C+1
-loc_26541C:				; CODE XREF: sub_2653EB+2D-j
-		LDY		#9		; code used at 8000
-		LDX		#$54       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_26542D	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_26542D:				; CODE XREF: sub_2653EB+3E-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_265386:
+		LDY		#$14
+		LDX		#7
+		JSR		sub_265447
+		LDA		_spr_ram+$BB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$BB
+		LDA		_spr_ram+$E3
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$E7
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$EB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$EF
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EF
+		LDY		#$10
+		LDX		#$7B
+		JSR		sub_265447
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_2653CD
+		INC		word_6C+1
+loc_2653CD:
+		LDY		#$12
+		LDX		#4
+		JSR		sub_265447
+		LDY		#$10
+		LDX		#$78
+		JSR		sub_265447
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2653E5
+		INC		word_6C+1
+loc_2653E5:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265433:				; CODE XREF: sub_265019:loc_2650F0-j
-		JMP		sub_2654D7	; code used at 8000
+sub_2653EB:
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_2653F7
+		INC		word_6C+1
+loc_2653F7:
+		LDY		#9
+		LDX		#$57
+		JSR		sub_265447
+		LDA		_spr_ram+$C3
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$C3
+		LDA		_spr_ram+$C7
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$C7
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_26541C
+		INC		word_6C+1
+loc_26541C:
+		LDY		#9
+		LDX		#$54
+		JSR		sub_265447
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_26542D
+		INC		word_6C+1
+loc_26542D:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265436:				; CODE XREF: sub_265019:loc_2650FC-j
+sub_265433:
+		JMP		sub_2654D7
+
+; =============== S U B	R O U T	I N E =======================================
+sub_265436:
 		TXA
 		PHA
 		JSR		sub_26537A
@@ -947,39 +935,35 @@ sub_265436:				; CODE XREF: sub_265019:loc_2650FC-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265441:				; CODE XREF: sub_265019:loc_2650F3-j
-		JMP		sub_26546D	; code used at 8000
+sub_265441:
+		JMP		sub_26546D
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265444:				; CODE XREF: sub_265019:loc_2650F9-j
-		JMP		sub_2654AD	; code used at 8000
+sub_265444:
+		JMP		sub_2654AD
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265447:				; CODE XREF: sub_26537A+10-p
-					; sub_26537A+44-p sub_26537A+57-p
-					; sub_26537A+5E-p sub_2653EB+10-p
-					; sub_2653EB+35-p sub_26557B+10-p
-					; sub_26557B+44-p sub_26557B+57-p
-					; sub_26557B+5E-p
-		PHA				; code used at 8000
-loc_265448:				; CODE XREF: sub_265447+F-j
-		LDA		_spr_ram,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		DEY				; code used at 8000
-		BNE		loc_265448	; code used at 8000
-		PLA				; code used at 8000
-		RTS				; code used at 8000
+sub_265447:
+		PHA
+loc_265448:
+		LDA		_spr_ram,X
+		CLC
+		ADC		word_4
+		STA		_spr_ram,X
+		INX
+		INX
+		INX
+		INX
+		DEY
+		BNE		loc_265448
+		PLA
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_26545A:
 		PHA
-loc_26545B:				; CODE XREF: sub_26545A+F-j
+loc_26545B:
 		LDA		_spr_ram,X
 		SEC
 		SBC		4
@@ -994,168 +978,163 @@ loc_26545B:				; CODE XREF: sub_26545A+F-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_26546D:				; CODE XREF: sub_265441-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265475	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265475:				; CODE XREF: sub_26546D+4-j
-		TAX				; code used at 8000
-		LDA		off_2654AB	; code used at 8000
-		STA		word_6E		; code used at 8000
-		LDA		off_2654AB+1	; code used at 8000
-		STA		word_6E+1	; code used at 8000
-		TXA				; code used at 8000
-		BEQ		loc_265491	; code used at 8000
-loc_265483:				; CODE XREF: sub_26546D+22-j
-		LDA		word_6E		; code used at 8000
-		CLC				; code used at 8000
-		ADC		#$14		; code used at 8000
-		STA		word_6E		; code used at 8000
-		BCC		loc_26548E	; code used at 8000
-		INC		word_6E+1	; code used at 8000
-loc_26548E:				; CODE XREF: sub_26546D+1D-j
-		DEX				; code used at 8000
-		BNE		loc_265483	; code used at 8000
-loc_265491:				; CODE XREF: sub_26546D+14-j
-		LDY		#0		; code used at 8000
-		LDX		#0		; code used at 8000
-loc_265495:				; CODE XREF: sub_26546D+34-j
-		LDA		(word_6E),Y	; code used at 8000
-		STA		_spr_ram+5,X	; code used at 8000
-		INY				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPY		#$14		; code used at 8000
-		BCC		loc_265495	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+sub_26546D:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265475
+		INC		word_6C+1
+loc_265475:
+		TAX
+		LDA		off_2654AB
+		STA		word_6E
+		LDA		off_2654AB+1
+		STA		word_6E+1
+		TXA
+		BEQ		loc_265491
+loc_265483:
+		LDA		word_6E
+		CLC
+		ADC		#$14
+		STA		word_6E
+		BCC		loc_26548E
+		INC		word_6E+1
+loc_26548E:
+		DEX
+		BNE		loc_265483
+loc_265491:
+		LDY		#0
+		LDX		#0
+loc_265495:
+		LDA		(word_6E),Y
+		STA		_spr_ram+5,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPY		#$14
+		BCC		loc_265495
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 off_2654AB:
-		.WORD byte_265879	; DATA XREF: sub_26546D+9-r
-					; sub_26546D+E-r
-					; data used at 8000
+		.WORD byte_265879
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_2654AD:				; CODE XREF: sub_265444-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2654B5	; code used at 8000
+sub_2654AD:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2654B5
 		INC		word_6C+1
-loc_2654B5:				; CODE XREF: sub_2654AD+4-j
-		STA		word_4		; code used at 8000
-		ASL		; code used at 8000
-		ASL		; code used at 8000
-		ASL		; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		TAY				; code used at 8000
-		LDX		#0		; code used at 8000
-loc_2654C0:				; CODE XREF: sub_2654AD+20-j
-		LDA		byte_2659A5,Y	; code used at 8000
-		STA		_spr_ram+$55,X	; code used at 8000
-		INY				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$24       ; code used at 8000
-		BCC		loc_2654C0	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_2654B5:
+		STA		word_4
+		ASL
+		ASL
+		ASL
+		CLC
+		ADC		word_4
+		TAY
+		LDX		#0
+loc_2654C0:
+		LDA		byte_2659A5,Y
+		STA		_spr_ram+$55,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPX		#$24
+		BCC		loc_2654C0
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_2654D7:				; CODE XREF: sub_265433-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2654DF	; code used at 8000
+sub_2654D7:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2654DF
 		INC		word_6C+1
-loc_2654DF:				; CODE XREF: sub_2654D7+4-j
-		ASL		; code used at 8000
-		ASL		; code used at 8000
-		ASL		; code used at 8000
-		ASL		; code used at 8000
-		TAY				; code used at 8000
-		LDX		#0		; code used at 8000
-loc_2654E6:				; CODE XREF: sub_2654D7+1C-j
-		LDA		byte_265A74,Y	; code used at 8000
-		STA		_spr_ram+$79,X	; code used at 8000
-		INY				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$40       ; code used at 8000
-		BCC		loc_2654E6	; code used at 8000
-		LDX		#0		; code used at 8000
-		LDY		#0		; code used at 8000
-loc_2654F9:				; CODE XREF: sub_2654D7+33-j
-		LDA		byte_265514,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$28	; code used at 8000
-		STA		_spr_ram+$78,Y	; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$10		; code used at 8000
-		BCC		loc_2654F9	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_2654DF:
+		ASL
+		ASL
+		ASL
+		ASL
+		TAY
+		LDX		#0
+loc_2654E6:
+		LDA		byte_265A74,Y
+		STA		_spr_ram+$79,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPX		#$40
+		BCC		loc_2654E6
+		LDX		#0
+		LDY		#0
+loc_2654F9:
+		LDA		byte_265514,X
+		CLC
+		ADC		_spr_ram+$28
+		STA		_spr_ram+$78,Y
+		INY
+		INY
+		INY
+		INY
+		INX
+		CPX		#$10
+		BCC		loc_2654F9
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 byte_265514:
 		.BYTE	0,  0,	8,  8,	8,$10,$10,$10,$18,$18,$18,$20,$20,$20,$28,$28
-					; DATA XREF: sub_2654D7:loc_2654F9-r
-					; data used at 8000
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265524:				; CODE XREF: sub_2651D7-p sub_265264-p
-					; sub_265371-j
-		LDX		#0		; code used at 8000
-loc_265526:				; CODE XREF: sub_265524+13-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		_spr_ram+5,X	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265531	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265531:				; CODE XREF: sub_265524+9-j
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_265526	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_265541:				; CODE XREF: sub_265259-p sub_265374-j
+sub_265524:
 		LDX		#0
-loc_265543:				; CODE XREF: sub_265541+13-j
+loc_265526:
+		LDA		(word_6C),Y
+		STA		_spr_ram+5,X
+		INC		word_6C
+		BNE		loc_265531
+		INC		word_6C+1
+loc_265531:
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_265526
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_265541:
+		LDX		#0
+loc_265543:
 		LDA		(word_6C),Y
 		STA		_spr_ram+$55,X
 		INC		word_6C
 		BNE		loc_26554E
 		INC		word_6C+1
-loc_26554E:				; CODE XREF: sub_265541+9-j
+loc_26554E:
 		INX
 		INX
 		INX
 		INX
-		CPX		#$24 
+		CPX		#$24
 		BCC		loc_265543
 		LDA		#0
 		STA		word_4
@@ -1164,20 +1143,20 @@ loc_26554E:				; CODE XREF: sub_265541+9-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_26555E:				; CODE XREF: sub_265377-j
+sub_26555E:
 		LDX		#0
-loc_265560:				; CODE XREF: sub_26555E+13-j
+loc_265560:
 		LDA		($6C),Y
 		STA		$279,X
 		INC		$6C
 		BNE		loc_26556B
 		INC		$6D
-loc_26556B:				; CODE XREF: sub_26555E+9-j
+loc_26556B:
 		INX
 		INX
 		INX
 		INX
-		CPX		#$40 
+		CPX		#$40
 		BCC		loc_265560
 		LDA		#0
 		STA		4
@@ -1186,294 +1165,291 @@ loc_26556B:				; CODE XREF: sub_26555E+9-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_26557B:				; CODE XREF: sub_265019:loc_2650F6-j
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265587	; code used at 8000
+sub_26557B:
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_265587
 		INC		word_6C+1
-loc_265587:				; CODE XREF: sub_26557B+8-j
-		LDY		#$14		; code used at 8000
-		LDX		#7		; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDA		_spr_ram+$BB	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$BB	; code used at 8000
-		LDA		_spr_ram+$E3	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$E3	; code used at 8000
-		LDA		_spr_ram+$E7	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$E7	; code used at 8000
-		LDA		_spr_ram+$EB	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$EB	; code used at 8000
-		LDA		_spr_ram+$EF	; code used at 8000
-		CLC				; code used at 8000
-		ADC		word_4		; code used at 8000
-		STA		_spr_ram+$EF	; code used at 8000
-		LDY		#$10		; code used at 8000
-		LDX		#$7B       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		STA		word_4		; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2655CE	; code used at 8000
+loc_265587:
+		LDY		#$14
+		LDX		#7
+		JSR		sub_265447
+		LDA		_spr_ram+$BB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$BB
+		LDA		_spr_ram+$E3
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$E7
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$EB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$EF
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EF
+		LDY		#$10
+		LDX		#$7B
+		JSR		sub_265447
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_2655CE
 		INC		word_6C+1
-loc_2655CE:				; CODE XREF: sub_26557B+4F-j
-		LDY		#$14		; code used at 8000
-		LDX		#4		; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#$10		; code used at 8000
-		LDX		#$78       ; code used at 8000
-		JSR		sub_265447	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2655E6	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_2655E6:				; CODE XREF: sub_26557B+67-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_2655EC:				; CODE XREF: sub_265019:loc_2650FF-j
-		LDX		#0		; code used at 8000
-loc_2655EE:				; CODE XREF: sub_2655EC+10-j
-		LDA		_spr_ram+6,X	; code used at 8000
-		EOR		#$40       ; code used at 8000
-		STA		_spr_ram+6,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_2655EE	; code used at 8000
-		LDX		#0		; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		_spr_ram+6	; code used at 8000
-		AND		#$40       ; code used at 8000
-		BEQ		loc_265639	; code used at 8000
-loc_265609:				; CODE XREF: sub_2655EC+2E-j
-		LDA		byte_265817,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+7,Y	; code used at 8000
-		STA		_spr_ram+7,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$50       ; code used at 8000
-		BCC		loc_265609	; code used at 8000
-		LDY		#0		; code used at 8000
-loc_26561E:				; CODE XREF: sub_2655EC+43-j
-		LDA		byte_265817,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$E3,Y	; code used at 8000
-		STA		_spr_ram+$E3,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$10		; code used at 8000
-		BCC		loc_26561E	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_265639:				; CODE XREF: sub_2655EC+1B-j
-					; sub_2655EC+5E-j
-		LDA		byte_26582F,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+7,Y	; code used at 8000
-		STA		_spr_ram+7,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$50       ; code used at 8000
-		BCC		loc_265639	; code used at 8000
-		LDY		#0		; code used at 8000
-loc_26564E:				; CODE XREF: sub_2655EC+73-j
-		LDA		byte_26582F,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$E3,Y	; code used at 8000
-		STA		_spr_ram+$E3,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$10		; code used at 8000
-		BCC		loc_26564E	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_265669:				; CODE XREF: sub_265019:loc_265102-j
-		LDX		#0		; code used at 8000
-loc_26566B:				; CODE XREF: sub_265669+10-j
-		LDA		_spr_ram+$56,X	; code used at 8000
-		EOR		#$40       ; code used at 8000
-		STA		_spr_ram+$56,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$24       ; code used at 8000
-		BCC		loc_26566B	; code used at 8000
-		LDX		#0		; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		_spr_ram+$56	; code used at 8000
-		AND		#$40       ; code used at 8000
-		BEQ		loc_2656A1	; code used at 8000
-loc_265686:				; CODE XREF: sub_265669+2E-j
-		LDA		byte_265847,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$57,Y	; code used at 8000
-		STA		_spr_ram+$57,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$24       ; code used at 8000
-		BCC		loc_265686	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2656A1:				; CODE XREF: sub_265669+1B-j
-					; sub_265669+49-j
-		LDA		byte_265850,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$57,Y	; code used at 8000
-		STA		_spr_ram+$57,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$24       ; code used at 8000
-		BCC		loc_2656A1	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_2656BC:				; CODE XREF: sub_265019:loc_265105-j
-		LDX		#0		; code used at 8000
-loc_2656BE:				; CODE XREF: sub_2656BC+10-j
-		LDA		_spr_ram+$7A,X	; code used at 8000
-		EOR		#$40       ; code used at 8000
-		STA		_spr_ram+$7A,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$40       ; code used at 8000
-		BCC		loc_2656BE	; code used at 8000
-		LDX		#0		; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		_spr_ram+$7A	; code used at 8000
-		AND		#$40       ; code used at 8000
-		BEQ		loc_2656F7	; code used at 8000
-loc_2656D9:				; CODE XREF: sub_2656BC+31-j
-		LDA		byte_265859,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$7B,Y	; code used at 8000
-		SEC				; code used at 8000
-		SBC		#$40       ; code used at 8000
-		STA		_spr_ram+$7B,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$40       ; code used at 8000
-		BCC		loc_2656D9	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2656F7:				; CODE XREF: sub_2656BC+1B-j
-					; sub_2656BC+4F-j
-		LDA		byte_265869,X	; code used at 8000
-		CLC				; code used at 8000
-		ADC		_spr_ram+$7B,Y	; code used at 8000
-		CLC				; code used at 8000
-		ADC		#$40       ; code used at 8000
-		STA		_spr_ram+$7B,Y	; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$40       ; code used at 8000
-		BCC		loc_2656F7	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_265715:				; CODE XREF: sub_265019:loc_265108-j
-					; sub_265019:loc_26510B-j
-		LDX		#0		; code used at 8000
-loc_265717:				; CODE XREF: sub_265715+9-j
-		LDA		_spr_ram+$54,X	; code used at 8000
-		PHA				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$10		; code used at 8000
-		BCC		loc_265717	; code used at 8000
-		LDX		#0		; code used at 8000
-loc_265722:				; CODE XREF: sub_265715+16-j
-		LDA		_spr_ram+$A8,X	; code used at 8000
-		STA		_spr_ram+$54,X	; code used at 8000
-		INX				; code used at 8000
-		CPX		#$10		; code used at 8000
-		BCC		loc_265722	; code used at 8000
-		LDX		#$F		; code used at 8000
-loc_26572F:				; CODE XREF: sub_265715+1F-j
-		PLA				; code used at 8000
-		STA		_spr_ram+$A8,X	; code used at 8000
-		DEX				; code used at 8000
-		BPL		loc_26572F	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265740	; code used at 8000
+loc_2655CE:
+		LDY		#$14
+		LDX		#4
+		JSR		sub_265447
+		LDY		#$10
+		LDX		#$78
+		JSR		sub_265447
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2655E6
 		INC		word_6C+1
-loc_265740:				; CODE XREF: sub_265715+27-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_2655E6:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+sub_2655EC:
+		LDX		#0
+loc_2655EE:
+		LDA		_spr_ram+6,X
+		EOR		#$40
+		STA		_spr_ram+6,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_2655EE
+		LDX		#0
+		LDY		#0
+		LDA		_spr_ram+6
+		AND		#$40
+		BEQ		loc_265639
+loc_265609:
+		LDA		byte_265817,X
+		CLC
+		ADC		_spr_ram+7,Y
+		STA		_spr_ram+7,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$50
+		BCC		loc_265609
+		LDY		#0
+loc_26561E:
+		LDA		byte_265817,X
+		CLC
+		ADC		_spr_ram+$E3,Y
+		STA		_spr_ram+$E3,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$10
+		BCC		loc_26561E
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_265639:
+		LDA		byte_26582F,X
+		CLC
+		ADC		_spr_ram+7,Y
+		STA		_spr_ram+7,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$50
+		BCC		loc_265639
+		LDY		#0
+loc_26564E:
+		LDA		byte_26582F,X
+		CLC
+		ADC		_spr_ram+$E3,Y
+		STA		_spr_ram+$E3,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$10
+		BCC		loc_26564E
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_265669:
+		LDX		#0
+loc_26566B:
+		LDA		_spr_ram+$56,X
+		EOR		#$40
+		STA		_spr_ram+$56,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$24
+		BCC		loc_26566B
+		LDX		#0
+		LDY		#0
+		LDA		_spr_ram+$56
+		AND		#$40
+		BEQ		loc_2656A1
+loc_265686:
+		LDA		byte_265847,X
+		CLC
+		ADC		_spr_ram+$57,Y
+		STA		_spr_ram+$57,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$24
+		BCC		loc_265686
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2656A1:
+		LDA		byte_265850,X
+		CLC
+		ADC		_spr_ram+$57,Y
+		STA		_spr_ram+$57,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$24
+		BCC		loc_2656A1
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_2656BC:
+		LDX		#0
+loc_2656BE:
+		LDA		_spr_ram+$7A,X
+		EOR		#$40
+		STA		_spr_ram+$7A,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$40
+		BCC		loc_2656BE
+		LDX		#0
+		LDY		#0
+		LDA		_spr_ram+$7A
+		AND		#$40
+		BEQ		loc_2656F7
+loc_2656D9:
+		LDA		byte_265859,X
+		CLC
+		ADC		_spr_ram+$7B,Y
+		SEC
+		SBC		#$40
+		STA		_spr_ram+$7B,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$40
+		BCC		loc_2656D9
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2656F7:
+		LDA		byte_265869,X
+		CLC
+		ADC		_spr_ram+$7B,Y
+		CLC
+		ADC		#$40
+		STA		_spr_ram+$7B,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$40
+		BCC		loc_2656F7
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_265715:
+		LDX		#0
+loc_265717:
+		LDA		_spr_ram+$54,X
+		PHA
+		INX
+		CPX		#$10
+		BCC		loc_265717
+		LDX		#0
+loc_265722:
+		LDA		_spr_ram+$A8,X
+		STA		_spr_ram+$54,X
+		INX
+		CPX		#$10
+		BCC		loc_265722
+		LDX		#$F
+loc_26572F:
+		PLA
+		STA		_spr_ram+$A8,X
+		DEX
+		BPL		loc_26572F
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265740
+		INC		word_6C+1
+loc_265740:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_265746:
 		LDX		#0
-loc_265748:				; CODE XREF: sub_265746+9-j
+loc_265748:
 		LDA		_spr_ram+$A8,X
 		PHA
 		INX
@@ -1481,7 +1457,7 @@ loc_265748:				; CODE XREF: sub_265746+9-j
 		BCC		loc_265748
 		LDX		#0
 		LDY		#$F
-loc_265755:				; CODE XREF: sub_265746+1D-j
+loc_265755:
 		LDA		_spr_ram+$54,X
 		STA		_spr_ram+$A8,Y
 		PLA
@@ -1495,150 +1471,137 @@ loc_265755:				; CODE XREF: sub_265746+1D-j
 		INC		word_6C
 		BNE		loc_26576F
 		INC		word_6C+1
-loc_26576F:				; CODE XREF: sub_265746+25-j
+loc_26576F:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_265775:				; CODE XREF: sub_265019:loc_26510E-j
-		LDX		#0		; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		#$F8       ; code used at 8000
-loc_26577B:				; CODE XREF: sub_265775+10-j
-		STA		_spr_ram+$78,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$10		; code used at 8000
-		BCC		loc_26577B	; code used at 8000
-		LDY		#0		; code used at 8000
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+sub_265775:
+		LDX		#0
+		LDY		#0
+		LDA		#$F8
+loc_26577B:
+		STA		_spr_ram+$78,X
+		INX
+		INX
+		INX
+		INX
+		INY
+		CPY		#$10
+		BCC		loc_26577B
+		LDY		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_26578F:				; CODE XREF: sub_265019:loc_265111-j
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265799	; code used at 8000
+sub_26578F:
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265799
 		INC		word_6C+1
-loc_265799:				; CODE XREF: sub_26578F+6-j
-		CMP		#1		; code used at 8000
-		BEQ		loc_2657A8	; code used at 8000
-		CMP		#2		; code used at 8000
-		BEQ		loc_2657CF	; code used at 8000
-		CMP		#3		; code used at 8000
-		BEQ		loc_2657F3	; code used at 8000
-loc_2657A5:				; CODE XREF: sub_26578F:loc_2657A5-j
+loc_265799:
+		CMP		#1
+		BEQ		loc_2657A8
+		CMP		#2
+		BEQ		loc_2657CF
+		CMP		#3
+		BEQ		loc_2657F3
+loc_2657A5:
 		JMP		loc_2657A5
-loc_2657A8:				; CODE XREF: sub_26578F+C-j
-		LDY		#0		; code used at 8000
-		LDX		#0		; code used at 8000
-loc_2657AC:				; CODE XREF: sub_26578F+2E-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2657B4	; code used at 8000
+loc_2657A8:
+		LDY		#0
+		LDX		#0
+loc_2657AC:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2657B4
 		INC		word_6C+1
-loc_2657B4:				; CODE XREF: sub_26578F+21-j
-		STA		_spr_ram+4,X	; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_2657AC	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2657C9	; code used at 8000
+loc_2657B4:
+		STA		_spr_ram+4,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_2657AC
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2657C9
 		INC		word_6C+1
-loc_2657C9:				; CODE XREF: sub_26578F+36-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2657CF:				; CODE XREF: sub_26578F+10-j
-		LDY		#0		; code used at 8000
-		LDX		#0		; code used at 8000
-loc_2657D3:				; CODE XREF: sub_26578F+52-j
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2657DB	; code used at 8000
+loc_2657C9:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2657CF:
+		LDY		#0
+		LDX		#0
+loc_2657D3:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2657DB
 		INC		word_6C+1
-loc_2657DB:				; CODE XREF: sub_26578F+48-j
-		STA		_spr_ram+$78,X	; code used at 8000
-		INX				; code used at 8000
-		CPX		#$40       ; code used at 8000
-		BCC		loc_2657D3	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_2657ED	; code used at 8000
+loc_2657DB:
+		STA		_spr_ram+$78,X
+		INX
+		CPX		#$40
+		BCC		loc_2657D3
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_2657ED
 		INC		word_6C+1
-loc_2657ED:				; CODE XREF: sub_26578F+5A-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_2657F3:				; CODE XREF: sub_26578F+14-j
-		LDY		#0		; code used at 8000
-		LDX		#0		; code used at 8000
-loc_2657F7:				; CODE XREF: sub_26578F+76-j
-		LDA		(word_6C),Y	; code used at 8000
-		STA		_spr_ram+4,X	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265802	; code used at 8000
-		INC		word_6C+1	; code used at 8000
-loc_265802:				; CODE XREF: sub_26578F+6F-j
-		INX				; code used at 8000
-		CPX		#$50       ; code used at 8000
-		BCC		loc_2657F7	; code used at 8000
-		LDY		#0		; code used at 8000
-		LDA		(word_6C),Y	; code used at 8000
-		INC		word_6C		; code used at 8000
-		BNE		loc_265811	; code used at 8000
+loc_2657ED:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_2657F3:
+		LDY		#0
+		LDX		#0
+loc_2657F7:
+		LDA		(word_6C),Y
+		STA		_spr_ram+4,X
+		INC		word_6C
+		BNE		loc_265802
 		INC		word_6C+1
-loc_265811:				; CODE XREF: sub_26578F+7E-j
-		STA		word_4		; code used at 8000
-		BIT		word_4		; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
+loc_265802:
+		INX
+		CPX		#$50
+		BCC		loc_2657F7
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_265811
+		INC		word_6C+1
+loc_265811:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
 byte_265817:
 		.BYTE $20,$10,	0,$F0,$E0,$20,$10,  0,$F0,$E0,$20,$10,	0,$F0,$F0,  0
-					; DATA XREF: sub_2655EC:loc_265609-r
-					; sub_2655EC:loc_26561E-r
-		.BYTE	8,  0,$D0,$D0,	0,  8,$E0,$E0 ;	data used at 8000
+		.BYTE	8,  0,$D0,$D0,	0,  8,$E0,$E0
 byte_26582F:
 		.BYTE $E0,$F0,	0,$10,$20,$E0,$F0,  0,$10,$20,$E0,$F0,	0,$10,$10,  0
-					; DATA XREF: sub_2655EC:loc_265639-r
-					; sub_2655EC:loc_26564E-r
-		.BYTE $F8,  0,$30,$30,	0,$F8,$20,$20 ;	data used at 8000
+		.BYTE $F8,  0,$30,$30,	0,$F8,$20,$20
 byte_265847:
 		.BYTE	8,$F8,	8,$F8,	8,$F8,	8,$18,$18
-					; DATA XREF: sub_265669:loc_265686-r
-					; data used at 8000
 byte_265850:
 		.BYTE $F8,  8,$F8,  8,$F8,  8,$F8,$E8,$E8
-					; DATA XREF: sub_265669:loc_2656A1-r
-					; data used at 8000
 byte_265859:
 		.BYTE $20,$10,$20,$10,	0,$10,	0,$F0,	0,$F0,$E0,  0,$F0,$E0,$F0,$E0
-					; DATA XREF: sub_2656BC:loc_2656D9-r
-					; data used at 8000
 byte_265869:
 		.BYTE $E0,$F0,$E0,$F0,	0,$F0,	0,$10,	0,$10,$20,  0,$10,$20,$10,$20
-					; DATA XREF: sub_2656BC:loc_2656F7-r
-					; data used at 8000
 byte_265879:
 		.BYTE $60,$61,$62,$63,$64,$70,$71,$72,$73,$74,$80,$81,$82,$83,$93,  1
-					; DATA XREF: BANK19:off_2654AB-o
-		.BYTE	1,$92,	1,  1,$36,$37,$38,$63,$64,$46,$47,$48,$73,$74,$56,$57 ;	ind data used at 8000
+		.BYTE	1,$92,	1,  1,$36,$37,$38,$63,$64,$46,$47,$48,$73,$74,$56,$57
 		.BYTE $82,$83,$93,  1,	1,$92,	1,  1,	1,  1,$3B,$63,$64,$49,$4A,$4B
 		.BYTE $73,$74,$59,$5A,$82,$83,$93,  1,	1,$92,	1,  1,	1,  1,$3E,$63
 		.BYTE $64,$4C,$4D,$4E,$73,$74,$56,$57,$5E,$5F,$3D,  1,	1,$92,	1,  1
@@ -1658,8 +1621,7 @@ byte_265879:
 		.BYTE $73,$4F,$80,$81,$90,$91,$A1,  1,	1,$A0,	1,  1
 byte_2659A5:
 		.BYTE $50,$51,$10,$11,$20,$21,	1,  1,	1,  2,	3,$12,$11,$22,$23,  1
-					; DATA XREF: sub_2654AD:loc_2654C0-r
-		.BYTE	1,  1,$50,$51,$17,$11,$20,$21,	1,  1,$16, $A, $B,$1A,$1B,$2A ;	data used at 8000
+		.BYTE	1,  1,$50,$51,$17,$11,$20,$21,	1,  1,$16, $A, $B,$1A,$1B,$2A
 		.BYTE $2B,  1,	1,  1,$19,$51,$29,$11,	4,  5,	9,  1,	1,$50,$51,$18
 		.BYTE $11,$28,$27,  1,	1,  1, $C, $D,$1C,$1D,$2C,$2D,	1,  1,	1, $C
 		.BYTE  $D,$1C,$1D,$2C,$2D,  1,	1,  1, $E, $F,$1E,$1F,$2E,$2F,	1,  1
@@ -1673,8 +1635,7 @@ byte_2659A5:
 		.BYTE $11,$20,$21,  1,	1,  1,$5B,$69,$6D,$11,$22,$23,	1,  1,	1
 byte_265A74:
 		.BYTE $EA,$EB,$FA,$FB,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1
-					; DATA XREF: sub_2654D7:loc_2654E6-r
-		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$DD,  1,	1,  1,	1,  1,	1,  1,	1,  1 ;	data used at 8000
+		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$DD,  1,	1,  1,	1,  1,	1,  1,	1,  1
 		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$EC,$ED,$FC,$DD,	1,  1,	1,  1,	1,  1
 		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$EC,$ED,$FC,$DE,$DF,  1,$EE,$EF,$FD,$FE
 		.BYTE $F0,$F1,$F2,$F3,$F4,$F5,$F6,$F4,$F7,$F8,$F9,$E4,$E5,$E6,$E7,$E8
@@ -1684,12 +1645,10 @@ byte_265A74:
 		.BYTE	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,$EA,$EB,$FA,$FB
 		.BYTE	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1
 off_265B14:
-		.WORD byte_265B16	; DATA XREF: _b19_s0+1A-r _b19_s0+1F-r
-					; data used at 8000
+		.WORD byte_265B16
 byte_265B16:
 		.BYTE $90,  0,	1,  0,$90,  1,	0,  0,$90,  0,	1,  0,$90,  1,	0,$40
-					; DATA XREF: BANK19:off_265B14-o
-		.BYTE $D0,  2,$90,  0,	1,  0,$90,  1,	0,  0,$90,  0,	1,  0,$90,  1 ;	ind data used at 8000
+		.BYTE $D0,  2,$90,  0,	1,  0,$90,  1,	0,  0,$90,  0,	1,  0,$90,  1
 		.BYTE	0,$40,$D0,  3,$90,  0,	1,  0,$90,  1,	0,  0,$90,  0,	1,  0
 		.BYTE $90,  1,	0,$40,$D0,  2,$90,  0,	1,  0,$90,  1,	0,  0,$90,  0
 		.BYTE	1,  0,$90,  1,	0,$40,$D0,  1,$90,  0,$FF,  0,$90,  1,	0,  0
@@ -1799,12 +1758,10 @@ byte_265B16:
 		.BYTE $40,$C0,	4,  0,	4,  0,	2,  1,	0,  1,	4,  0,	5,$40,$C0,  5
 		.BYTE	0,  4,	0,$FF
 off_2661EA:
-		.WORD byte_2661EC	; DATA XREF: _b19_s0+27-r _b19_s0+2C-r
-					; data used at a000
+		.WORD byte_2661EC
 byte_2661EC:
 		.BYTE $A0,$FF,	0,$40,$90,$FE,	0,$40,$D0, $A,$A0,$FF,	0,$40,	2,  1
-					; DATA XREF: BANK19:off_2661EA-o
-		.BYTE	0,  1,	5,$A0,$FF,  0,$40,$90,$FF,  0,$40,  0,	5,$40,$C0,  4 ;	ind data used at a000
+		.BYTE	0,  1,	5,$A0,$FF,  0,$40,$90,$FF,  0,$40,  0,	5,$40,$C0,  4
 		.BYTE $A0,$FF,	0,$40,$90,$FF,	0,$40,	0,  4,$40,$D0, $B,  2,	1,  0
 		.BYTE	1,  5,	0,  5,$40,$C0,	5,$A0,$FF,  0,$40,$90,$FF,  0,$40,  0
 		.BYTE	4,  0,	2,  1,	0,  1,	5,  0,	5,$40,$C0,  4,$A0,$FF,	0,$40
@@ -1899,15 +1856,12 @@ byte_2661EC:
 		.BYTE $14,  0,	1,$60,$61,$62,$63,$3F,$70,$71,$72,$73,$4F,$80,$81,$82
 		.BYTE $83,$93,	1,  1,$92,  1,	1,  1,$FF
 off_2667D5:
-		.WORD byte_2667D9	; DATA XREF: _b19_s0+34-r _b19_s0+39-r
-					; data used at a000
+		.WORD byte_2667D9
 off_2667D7:
-		.WORD byte_26786F	; DATA XREF: _b19_s0+44-r _b19_s0+49-r
-					; data used at a000
+		.WORD byte_26786F
 byte_2667D9:
 		.BYTE	0,  6,	2,  1,	0,$14,	5,$E0,	0,  2,	1,  0,	1,  4,	2,  1
-					; DATA XREF: BANK19:off_2667D5-o
-		.BYTE	0,  1,	6,$A0,	2,  0,$40,  5,$18,  0,	1,$95,$8C,$41,$90,$95 ;	ind data used at a000
+		.BYTE	0,  1,	6,$A0,	2,  0,$40,  5,$18,  0,	1,$95,$8C,$41,$90,$95
 		.BYTE $8B,$41,$98,$9D,$9C,$41,$90,$9D,$9B,$41,$98,$A5,$AC,$41,$90,$A5
 		.BYTE $AB,$41,$98,$A0,	2,  0,$40,$E0,	1,$A0,	2,  0,$40,  5,$18,  0
 		.BYTE	1,$97,$8C,$41,$90,$97,$8B,$41,$98,$9F,$9C,$41,$90,$9F,$9B,$41
@@ -2174,8 +2128,7 @@ byte_2667D9:
 		.BYTE	1,  0,$40,$E0,$13,$FF
 byte_26786F:
 		.BYTE $A0,$FE,	0,$40,	2,  1,	0, $F,	2,  5,$18,  0,	1,$F8,	1,$41
-					; DATA XREF: BANK19:off_2667D7-o
-		.BYTE $90,$F8,	1,$41,$98,$CF,$AE,$41,$90,$CF,$AD,$41,$98,$D7,$BE,$41 ;	ind data used at a000
+		.BYTE $90,$F8,	1,$41,$98,$CF,$AE,$41,$90,$CF,$AD,$41,$98,$D7,$BE,$41
 		.BYTE $90,$D7,$BD,$41,$98,  0,	7,  3,$A6,  1,	1,$8A,$A6,$BA,	1,$82
 		.BYTE $A6,  1,	1,$7A,$A6,  1,	1,$72,$AE,  1,	1,$8A,$AE,$CA,	1,$82
 		.BYTE $AE,$C9,	1,$7A,$AE,$C8,	1,$72,$B6,  1,	1,$8A,$B6,$DA,	1,$82
@@ -2198,12 +2151,10 @@ byte_26786F:
 		.BYTE $BE,  1,	1,$82,$BE,  1,	1,$7A,$BE,  1,	1,$72,$F8,  1,	1,  0
 		.BYTE $F8,  1,	1,  0,$F8,  1,	1,  0,$F8,  1,	1,  0,	0,$FF
 off_2679DD:
-		.WORD byte_2679DF	; DATA XREF: _b19_s0+63-r _b19_s0+68-r
-					; data used at a000
+		.WORD byte_2679DF
 byte_2679DF:
 		.BYTE	5,$18,	0,  1,$F8,  1,$41,$90,$F8,  1,$41,$98,$CF,$AE,$41,$90
-					; DATA XREF: BANK19:off_2679DD-o
-		.BYTE $CF,$AD,$41,$98,$D7,$BE,$41,$90,$D7,$BD,$41,$98,	2,  1,$A7, $A ;	ind data used at a000
+		.BYTE $CF,$AD,$41,$98,$D7,$BE,$41,$90,$D7,$BD,$41,$98,	2,  1,$A7, $A
 		.BYTE	2,  5,$18,  0,	1,$F8,	1,$41,$90,$F8,	1,$41,$98,$CF,$8E,$41
 		.BYTE $90,$CF,$8D,$41,$98,$D7,$9E,$41,$90,$D7,$9D,$41,$98,  2,	1,  0
 		.BYTE  $A,  2,	5,$18,	0,  1,$F8,  1,$41,$90,$F8,  1,$41,$98,$CF,$AE
