@@ -81,12 +81,13 @@ _b4_s2B_ptr:
 		.WORD	_b4_s2B
 
 ; =============== S U B	R O U T	I N E =======================================
+; sets up for a _battle_type_fight=00 (normal battle)
 _b4_s0:
 		LDA		#0
 		STA		byte_6A63
 		JSR		_b4_s1A
 loc_68061:
-		LDA		byte_62
+		LDA		_battle_type_fight
 		STA		byte_6A6B
 		LDA		#0
 		STA		byte_6A66
@@ -152,8 +153,11 @@ loc_680DC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; sets up a battle for _battle_type_fight=FF
 _b4_s24:
 		LDA		#$80
+
+;; FALL THROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_680F1:
@@ -162,9 +166,12 @@ sub_680F1:
 		JMP		loc_68061
 
 ; =============== S U B	R O U T	I N E =======================================
+; sets up a battle for _battle_type_fight=01
 _b4_s25:
 		LDA		#$C0
 		BNE		sub_680F1
+
+;; FALL THROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_680FE:
@@ -356,7 +363,7 @@ loc_68230:
 		CPX		#5
 		BNE		loc_68230
 		LDA		#$FF
-		STA		byte_62
+		STA		_battle_type_fight
 		FARX	_b0_s55
 		BCS		loc_68245
 		LDA		#$10
@@ -746,7 +753,7 @@ loc_684B2:
 		BCS		loc_684F5
 		LDA		byte_6BD82-$13,X
 		PHA
-		JSR		sub_6B6E3
+		JSR		_bs_load_acting_enemy_MP
 		PLA
 		CMP		byte_59
 		BEQ		loc_684EB
@@ -5286,21 +5293,27 @@ sub_6A35A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_eAction_UtilTryCast"
+; Checks MP, stopspell, and "spellbroken" status
 sub_6A35F:
 		JSR		sub_6B2B3
 		STA		byte_64
-		LDY		byte_558,X
-		LDA		byte_6BD82-$13,Y
-		STA		byte_65
-		JSR		sub_6B6E3
-		LDA		byte_59
+; load action
+		LDY		byte_558,X ; moveTable2
+		LDA		byte_6BD82-$13,Y ; tblEnemyAttackCostsAndMisc
+		STA		byte_65 ; actionCost?
+		JSR		_bs_load_acting_enemy_MP
+		LDA		byte_59 ; enemyMiscStats_59
+; check for sufficient MP
 		CMP		byte_65
-		BCS		loc_6A37D
+		BCS		.sufficientMP
+; print "MP is not high enough" and bail out
 		STA		byte_64
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$20
 		JMP		loc_6A38F
-loc_6A37D:
-		JSR		sub_6B70B
+.sufficientMP: ;ZOOM
+		JSR		_bs_deduct_acting_enemy_MP
+;confused about below
 		JSR		sub_6B2B3
 		ASL
 		TAX
@@ -5760,13 +5773,13 @@ loc_6A68C:
 		ADC		#5
 loc_6A693:
 		STA		byte_65
-		JSR		sub_6B6E3
+		JSR		_bs_load_acting_enemy_MP
 		LDA		byte_59
 		STA		byte_63F
 		LDA		#0
 		STA		byte_640
 		STA		byte_641
-		JSR		sub_6B70B
+		JSR		_bs_deduct_acting_enemy_MP
 		BEQ		loc_6A6B2
 		LDA		byte_65
 		STA		byte_63F
@@ -6979,7 +6992,7 @@ sub_6ADEC:
 		JSR		sub_6B91D
 		LDX		byte_59
 		LDA		byte_6A73,X
-		STA		byte_62
+		STA		_battle_type_fight
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADF9:
@@ -8317,10 +8330,10 @@ _b4_s4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B6E3:
-		LDX		byte_64
-		LDA		byte_510,X
-		STA		byte_59
+_bs_load_acting_enemy_MP:
+		LDX		byte_64 ; actingEnemy
+		LDA		byte_510,X ; must be an enemy table here
+		STA		byte_59 ; enemyMiscStats_59
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8328,7 +8341,7 @@ sub_6B6EB:
 		JSR		sub_6B72F
 		LDA		byte_59
 		STA		byte_5A
-		JSR		sub_6B6E3
+		JSR		_bs_load_acting_enemy_MP
 		CLC
 		LDA		byte_65
 		ADC		byte_59
@@ -8345,22 +8358,28 @@ loc_6B704:
 		JMP		loc_6B700
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B70B:
-		JSR		sub_6B6E3
+; deducts actionCost from the ActingEnemy's MP.
+_bs_deduct_acting_enemy_MP:
+		JSR		_bs_load_acting_enemy_MP
+; special handling for $FF infinite
 		CMP		#$FF
-		BEQ		loc_6B71F
+		BEQ		.enemyMPWasInfinite
+; subtract action cost from MP
 		SEC
-		SBC		byte_65
-		BCC		loc_6B722
-		LDX		byte_64
+		SBC		byte_65 ; actionCost
+		BCC		.mpclamp0
+		LDX		byte_64 ; actingEnemy
+; store remaining MP to stats
 		STA		byte_510,X
 		PHA
 		PLA
 		RTS
-loc_6B71F:
+.enemyMPWasInfinite:
+; return the remaining MP as 255
 		LDA		#$FF
 		RTS
-loc_6B722:
+.mpclamp0:
+; the enemy MP isn't stored back out, and 0 is returned
 		LDA		#0
 		RTS
 

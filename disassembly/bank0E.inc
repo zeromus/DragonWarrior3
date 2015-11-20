@@ -6016,6 +6016,8 @@ loc_15B11B:
 		LDA		byte_6ACE
 		AND		#3
 		BNE		locret_15B117
+; test status bits on all 4 PCs
+; TODO - re-code this so it doesnt reference 73F, etc. directly
 		LDA		byte_73D
 		ORA		byte_73F
 		ORA		byte_741
@@ -6028,7 +6030,7 @@ loc_15B11B:
 		LDA		#$16
 		STA		byte_63
 		DEY
-		STY		byte_62
+		STY		_battle_type_fight
 loc_15B140:
 		LDY		byte_67
 		LDA		byte_68,Y
@@ -6038,12 +6040,12 @@ loc_15B140:
 		LDA		byte_73D,Y
 		AND		#$20
 		BEQ		loc_15B161
-		LDA		byte_62
+		LDA		_battle_type_fight
 		BNE		loc_15B15E
 		JSR		sub_15B24B
 		JSR		sub_15B276
 		LDA		#$FF
-		STA		byte_62
+		STA		_battle_type_fight
 loc_15B15E:
 		JSR		sub_15B288
 loc_15B161:
@@ -6125,7 +6127,7 @@ loc_15B1D9:
 		STA		byte_48
 		LDA		#0
 		STA		byte_67
-		STA		byte_62
+		STA		_battle_type_fight
 		STA		byte_D0
 		RTS
 
@@ -6174,7 +6176,7 @@ loc_15B229:
 		ORA		#$20
 		STA		byte_AC
 		BMI		loc_15B217
-		LDA		byte_62
+		LDA		_battle_type_fight
 		BNE		sub_15B282
 		JSR		sub_15B24B
 		JSR		sub_15B265
@@ -6205,7 +6207,7 @@ sub_15B265:
 		LDX		#$81
 loc_15B26F:
 		TXA
-		STA		byte_62
+		STA		_battle_type_fight
 		FARX	_bB_s3_apu_load
 locret_15B275:
 		RTS
@@ -6262,7 +6264,7 @@ loc_15B2D0:
 		SYSX	_sys06_msg_m00_arg0,$27
 		JSR		_bE_s33
 		LDA		#0
-		STA		byte_62
+		STA		_battle_type_fight
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

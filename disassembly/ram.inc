@@ -149,23 +149,27 @@ byte_4F:
 		.BYTE	0
 byte_50:
 		.BYTE	0
+;----------------------------------------------
+; this controls what the enemy does, but it could be a variety of irrational things.
+; or, seems to be the current character taking an action? 0..3 is PC and 4+ is enemy
 byte_51:
 		.BYTE	0
+;----------------------------------------------
 byte_52:
 		.BYTE	0
 byte_53:
 		.BYTE	0
-byte_54: ;"numTilesInTileGroup"
+byte_54: ; "numTilesInTileGroup"
 		.BYTE	0
-byte_55: ;"bankForTilePtrnLoad"
+byte_55: ; "bankForTilePtrnLoad"
 		.BYTE	0
 byte_56:
 		.BYTE	0
-byte_57: ;"tileNumberForTileLoad_57"
+byte_57: ; "tileNumberForTileLoad_57"
 		.BYTE	0
-byte_58: ;"tileNumberForTileLoadHi_58"
+byte_58: ; "tileNumberForTileLoadHi_58"
 		.BYTE	0
-byte_59:
+byte_59: ; "enemyMiscStats"
 		.BYTE	0
 byte_5A:
 		.BYTE	0
@@ -179,12 +183,27 @@ word_5E:
 		.BYTE	0,0
 word_60:
 		.BYTE	0,0
-byte_62:
+;----------------------------------------------
+; battle type. misnamed a tiny bit
+; 00 - Normal battle
+; 01 - Enemy auto-battle (for arena) with no PC involvement
+; FF - "FIGHT!" battle (different music, screen wipe, etc.) with no PC involvement
+_battle_type_fight: ; $62
 		.BYTE	0
+;----------------------------------------------
 byte_63:
 		.BYTE	0
-byte_64: ; "actingEnemy" - contains the index of the acting enemy?
+;----------------------------------------------
+; u8 _actingEnemy - usually contains the index of the acting enemy. but it must have some other use
+; used by bank01 (why?)
+; used by bank02 (why?)
+; used by bank04 (battlesystem)
+; used by bank0A (why?)
+; used by bank0D (why?)
+; used by bank0E (why?)
+byte_64:
 		.BYTE	0
+;----------------------------------------------
 byte_65: ; "actionCost" - the cost (MP or otherwise) of the current action?
 		.BYTE	0
 byte_66:
@@ -290,7 +309,7 @@ byte_98: ; "mapStatePointer" - "block for the current mapStateIndex, in bank 6"
 		.BYTE	0
 byte_99: ; "contained in GlobalFileID $79"
 		.BYTE	0
-byte_9A: ; "tilesetNumber_9A"
+byte_9A: ; "tilesetNumber_9A" - also if i change it on the world map, majorly whack stuff happens
 		.BYTE	0
 byte_9B:
 		.BYTE	0
@@ -1002,6 +1021,17 @@ byte_521:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; struct { u8 one, two } enemystat[8]
+; contains what seems to be enemy status, two bytes per enemy? one copy seems to be the round starting state and another is the current state, or something like that
+; hazy notes about meanings: LASCXP??
+; S - sleep
+; L - alive? clear this bit and it will be kind of like enemies are dead.
+; P - "protecting itself". interferes with counting live enemies
+; X - same as P?
+; A - parrying or otherwise defense-boosted?
+; C - confused
+; or are the PX bits the enemy type/group? like, there can be 4 enemy types per battle?
 byte_530:
 		.BYTE	0
 byte_531:
@@ -1036,6 +1066,20 @@ byte_540:
 		.BYTE	0
 		.BYTE	0
 ;----------------------------------------------
+; $54C a table indicating the moves selected for each character "movetable"
+; perhaps we have 4 entries for player action and then entries for each enemy (0x00 is either 0th action entry, or action type 0)	
+; these are cleared to 0 after the action is taken
+; for the hero, I had: 
+; 80 - attack
+; 81 - attack (missing target?)
+; 84 - attack
+; 90 - chant bang
+; A0 - protect myself
+; B0 - use item
+; so, I think the top nybble is basically the general action, and maybe the low nybble is a parameter?
+; 0x - attack party, 1x - cast on party?, etc.
+; 8x - attack, 9x - cast, Ax - parry, Bx - item, Cx - nonsense, Dx - nonsense, Ex - equip+attack, Fx - bypassed
+; (0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed) 
 byte_54C:
 		.BYTE	0
 		.BYTE	0
@@ -1050,6 +1094,8 @@ byte_550:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; "this is a movetable which maps to exact enemy actions. Dont completely understand how the previous one is used, then."
 byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0
 		.BYTE	0
@@ -1063,11 +1109,17 @@ byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-		.BYTE	0
+		.BYTE	0 ; one too many?
+;----------------------------------------------
 byte_565:
 		.BYTE	0
+;----------------------------------------------
+; $566: IIS??????
+; I - Ironized. why two bits?
+; S - something that can be removed by receiving an attack??
 byte_566:
 		.BYTE	0
+;----------------------------------------------
 byte_567:
 		.BYTE	0
 byte_568:
@@ -1109,6 +1161,8 @@ byte_57D:
 		.BYTE	0
 byte_57F:
 		.BYTE	0
+;----------------------------------------------
+;$580-$5FF contains a 1bpp bitmap used to indicate which nametable tiles have been blanked during a pre-battle screen wipe. it seems it's also used for other things
 byte_580:
 		.BYTE	0
 byte_581:
@@ -1513,7 +1567,7 @@ byte_6C9:
 _ppu_scroll_shadow: ; "ntxscroll/ntyscroll" - pixel X/Y scroll 
 		.BYTE	0,0
 ;----------------------------------------------
-_nmi_counter: ; used for text system solely? not sure.
+_nmi_counter: ; used for text system solely? not sure. <zero> I thought so too last time i debugged the game
 		.BYTE	0
 ;----------------------------------------------
 _ppu_ctrl_shadow:
@@ -1534,8 +1588,11 @@ byte_6DA:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; 00 is fast, 06 is slow. 07 is slowest, but messages will prompt you to wait between each print
 _cur_message_speed:
 		.BYTE	0
+;----------------------------------------------
 byte_6DE:
 		.BYTE	0
 byte_6DF:
@@ -1581,84 +1638,62 @@ _apu_chan_ret_pc:
 byte_6FF:
 		.BYTE	0
 ;----------------------------------------------
-; u8[] pc.level - LEVEL stat for 4 PCs
+; u8 pc.level[4] - LEVEL stat for 4 PCs
 byte_700:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.str - STR stat for 4 PCs
+; u8 pc.str[4] - STR stat for 4 PCs
 byte_704:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.agi - AGI stat for 4 PCs
+; u8 pc.agi[4] - AGI stat for 4 PCs
 byte_708:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.int - INT stat for 4 PCs
+; u8 pc.int[4] - INT stat for 4 PCs
 byte_70C:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.luck - LUCK stat for 4 PCs
+; u8 pc.luck[4] - LUCK stat for 4 PCs
 byte_710:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.vit - VIT stat for 4 PCs
+; u8 pc.vit[4] - VIT stat for 4 PCs
 byte_714:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.classgender - class and gender flag for 4 PCs
+; u8 pc.classgender[4] - class and gender flag for 4 PCs
 ; classes: (hero,wizard,pilgrim,sage,soldier,merchant,fighter,goof-off)
 byte_718:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.hp - HP for 4 PCs
+; u16 pc.hp[4] - HP for 4 PCs
 byte_71C: ;
 		.BYTE	0
 byte_71D:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mhp - MHP for 4 PCs
+; u16 pc.mhp[4] - MHP for 4 PCs
 byte_724:
 		.BYTE	0
 byte_725:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mp - MP for 4 PCs
+; u16 pc.mp[4] - MP for 4 PCs
 byte_72C:
 		.BYTE	0
 byte_72D:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mmp - MMP for 4 PCs
+; u16 pc.mmp[4] - MMP for 4 PCs
 byte_734:
 		.BYTE	0
 byte_735:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
-; something like the status of PCs. u16s, probably 4 of them
+; u16 pc.status[4] - status for 4 PCs
+; ........ .....R..
+; R - Affects enemy spell/breath damage reductions. if set, reductions don't apply (for spells)? Maybe this prevents double reductions from protection spells.
 byte_73C:
 		.BYTE	0
 byte_73D:
@@ -1675,21 +1710,16 @@ byte_742:
 		.BYTE	0
 byte_743:
 		.BYTE	0
+;----------------------------------------------
+; u24 pc.exp[4] - EXP stat for 4 PCs
 byte_744:
 		.BYTE	0
 byte_745:
 		.BYTE	0
 byte_746:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0,0,0,0
+;----------------------------------------------
+; u24 pc.returnlist[4] - ? ? dont remember what this was
 byte_750:
 		.BYTE	0
 byte_751:
@@ -1711,6 +1741,8 @@ byte_759:
 byte_75A:
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; u8 pc.name[4][8] - 8 character name for 4 PCs
 byte_75C:
 		.BYTE	0
 		.BYTE	0
@@ -1745,7 +1777,7 @@ byte_75C:
 		.BYTE	0
 		.BYTE	0
 ;----------------------------------------------
-; u8[4][8] PC_inventory - 8 entries for 4 PCs
+; u8 PC.inventory[4][8] - 8 entries for 4 PCs
 byte_77C:
 		.BYTE	0
 		.BYTE	0
@@ -2162,8 +2194,12 @@ byte_60B5:
 		.BYTE	0
 byte_60B6:
 		.BYTE	0
+;----------------------------------------------
+; used by dialog wait loop.. some kind of battle special logic maybe..?
+; 60B7.0 seems to change class to Erdrick
 byte_60B7:
 		.BYTE	0
+;----------------------------------------------
 byte_60B8:
 		.BYTE	0
 byte_60B9:
@@ -4663,39 +4699,28 @@ byte_6A7B:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_6A9B:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_6A9F:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
 ;----------------------------------------------
-; u16[] pc.def - DEF for 4 players
+; u8 pc.stuff[4] - stuff? for 4 PCs
+; pc.stuff.$20 - parrying, or defense++'d? battle order?
+byte_6A9B:
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u8[] pc.agi - AGI (i think) cached for 4 PCs (modified realtime values e.g by spells and effects?)
+byte_6A9F:
+		.BYTE	0,0,0,0
+;----------------------------------------------
+; u16[] pc.def - DEF cached for 4 PCs (modified realtime values e.g by spells and effects?)
 byte_6AA3:
 		.BYTE	0
 byte_6AA4:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
+; u16[] pc.atk - ATK cached for 4 PCs (modified realtime values e.g by spells and effects?)
 byte_6AAB:
 		.BYTE	0
 byte_6AAC:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0
+;----------------------------------------------
 byte_6AB3:
 		.BYTE	0
 byte_6AB4:

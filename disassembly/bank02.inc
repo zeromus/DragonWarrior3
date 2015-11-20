@@ -2553,7 +2553,7 @@ loc_3A138:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_s0:
-		LDY		byte_62
+		LDY		_battle_type_fight
 		INY
 		BEQ		loc_3A142
 		JSR		sub_3A267
