@@ -365,10 +365,10 @@ sub_F824D:
 locret_F825B:
 		RTS
 loc_F825C:
-		FAR		$9F,$17		; _b4_s29
+		FARX	_b4_s29
 		CMP		#2
 		BEQ		locret_F825B
-		FAR		$A0,$17		; _b4_s2A
+		FARX	_b4_s2A
 		LDA		byte_59
 		CMP		#0
 		BEQ		sub_F827A
@@ -431,9 +431,9 @@ _bA_s3:
 		LDA		#0
 		STA		byte_49
 loc_F82CC:
-		FAR		$9D,$17		; _b4_s27
+		FARX	_b4_s27
 		STA		byte_4F
-		FAR		$9E,$17		; _b4_s28
+		FARX	_b4_s28
 		STA		byte_50
 		BCS		locret_F82E7
 		LDA		byte_49
@@ -441,7 +441,7 @@ loc_F82CC:
 		BNE		loc_F82CC
 		LDA		#2
 		STA		byte_4F
-		FAR		$A1,$17		; _b4_s2B
+		FARX	_b4_s2B
 		STA		byte_50
 locret_F82E7:
 		RTS
@@ -638,7 +638,7 @@ loc_F8416:
 		STA		word_3E
 		LDA		off_F847D+1,X
 		STA		word_3E+1
-		FAR		$98,$17		; _b2_sE
+		FARX	_b2_sE
 		JSR		_bA_sB
 		BCC		loc_F8462
 		STA		byte_10
@@ -679,7 +679,7 @@ locret_F846A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_F846B:
 		LDA		#$F
-		FAR		$54,$17		; _b4_s23
+		FARX	_b4_s23
 		LDA		byte_CE
 		FARX	_b4_s10
 		ORA		word_6+1
@@ -971,7 +971,7 @@ loc_F8679:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8682:
-		FAR		$5B,$17		; _bC_s1A
+		FARX	_bC_s1A
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1842,15 +1842,15 @@ sub_F9099:
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sF:
 		FARX	_bE_sF
-		FAR		$5B,$17		; _bC_s1A
+		FARX	_bC_s1A
 		JSR		__render_on_flag10_clear_reinit
 		JSR		sub_174CCF
 		FARX	_bC_s12_vblank_count_50
 		JSR		_pal_fade_in
 		FAR		$83,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FAR		$03,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		JSR		sub_174369
 		LDY		#1
 		STY		byte_2F
@@ -1863,9 +1863,9 @@ _bA_sF:
 		JSR		sub_174CD5
 		JSR		sub_174CCF
 		FAR		$84,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s12_vblank_count_50
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 		LDA		#$20
 		STA		byte_60C6
 		LDA		#$29
@@ -1884,8 +1884,8 @@ _bA_s10:
 		STA		byte_60C6
 		JSR		sub_174CCF
 		FAR		$85,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s20
 		LDA		#$2B
 		FARX	_bC_s0
 locret_F9110:
@@ -2079,7 +2079,7 @@ loc_F936A:
 		PHA
 		TXA
 		PHA
-		FAR		$7D,$17		; _bD_sB
+		FARX	_bD_sB
 		LDA		byte_D2
 		STA		byte_CE
 		JSR		_sram_b0_sF

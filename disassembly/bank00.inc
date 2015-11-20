@@ -161,8 +161,8 @@ _b0_s4F_ptr:
 		.WORD	_b0_s4F
 _b0_s50_ptr:
 		.WORD	_b0_s50
-_b0_s51_ptr:
-		.WORD	_b0_s51
+_b0_s51_wrapper_for_b1B_s0_ptr:
+		.WORD	_b0_s51_wrapper_for_b1B_s0
 _b0_s52_ptr:
 		.WORD	_b0_s52
 _b0_s53_ptr:
@@ -208,7 +208,9 @@ _b0_s67_ptr:
 		.WORD	_b0_s67
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s51:
+; why they used sys0 bank wrapper here, instead of direct using the sub call?
+; 
+_b0_s51_wrapper_for_b1B_s0:
 		FAR		$00,$BF		; _b1B_s0
 		RTS
 
@@ -255,7 +257,7 @@ _b0_s51:
 ;		DEX
 ;		BPL		loc_8113
 ;		CMP		#2
-;		BCC		_b0_s51
+;		BCC		_b0_s51_wrapper_for_b1B_s0
 ;		STA		byte_4C
 ;		JSR		_enemy_roster_get_levels ; enemy roster	get min/max level enemy
 ;		LDX		#0
@@ -1106,10 +1108,10 @@ loc_86F5:
 		BEQ		loc_871B
 		CMP		#$FF
 		BNE		loc_8721
-		FAR		$5C,$17		; _b4_s24
+		FARX	_b4_s24
 		JMP		loc_8724
 loc_871B:
-		FAR		$5D,$17		; _b4_s25
+		FARX	_b4_s25
 		JMP		loc_8724
 loc_8721:
 		FARX	_b4_s0
@@ -2562,7 +2564,7 @@ loc_988F:
 		INX
 		CPX		word_4
 		BNE		loc_988F
-		FAR		$2D,$17		; _bD_s26
+		FARX	_bD_s26
 		CLC
 		RTS
 loc_98A0:
@@ -3420,7 +3422,7 @@ loc_9D98:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s4E:
-		FAR		$2D,$17		; _bD_s26
+		FARX	_bD_s26
 loc_9D9E:
 		LDA		word_4
 		STA		byte_6A6C
@@ -3643,7 +3645,7 @@ loc_9F13:
 		JSR		sub_A120
 		JMP		loc_9F2D
 loc_9F2A:
-		FAR		$15,$17		; _b1_s15
+		FARX	_b1_s15
 loc_9F2D:
 		CMP		#$FF
 		BNE		loc_9F34
@@ -4213,7 +4215,7 @@ loc_A2A0:
 		LSR		byte_7BE
 		ROR		byte_7BD
 		ROR		byte_7BC
-		FAR		$2F,$17		; _bD_s28
+		FARX	_bD_s28
 		LDA		#0
 		STA		byte_6DF
 		JMP		sub_1743B5
@@ -5117,7 +5119,7 @@ _b0_s5D:
 		LDX		#5
 		JSR		_vblank_count
 		FAR		$69,$D7		; _sys0D
-		FAR		$A6,$17		; _bA_sE
+		FARX	_bA_sE
 		CMP		#$FF
 		BEQ		loc_AB46
 		STA		byte_45
@@ -5292,7 +5294,7 @@ loc_AC48:
 loc_AC4B:
 		JSR		__pause_or_skip
 loc_AC4E:
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 loc_AC51:
 		JSR		sub_AC57
 		JMP		sub_ACA9
@@ -5349,7 +5351,7 @@ loc_AC94:
 sub_AC9F:
 		JSR		__pause_or_skip
 loc_ACA2:
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACA5:
@@ -5360,7 +5362,7 @@ sub_ACA5:
 sub_ACA9:
 		LDA		#0
 		STA		byte_8E
-		FAR		$49,$17		; _b0_s50
+		FARX	_b0_s50
 		RTS
 byte_ACB1:
 		.BYTE	$52,$57,$76
@@ -5590,7 +5592,7 @@ sub_ADF4:
 		FAR		$17,$2F		; _sys12
 		JSR		sub_174DF2
 		FAR		$52,$77		; _sys07_msg_m00_arg1
-		FAR		$44,$17		; _bD_s22
+		FARX	_bD_s22
 		SEC
 		RTS
 
@@ -5657,7 +5659,7 @@ sub_AE6C:
 		BNE		loc_AEB0
 		FAR		$3C,$77		; _sys07_msg_m00_arg1
 		JSR		sub_176C3C
-		FAR		$39,$17		; _bC_s24
+		FARX	_bC_s24
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5691,7 +5693,7 @@ sub_AE92:
 		LDA		byte_60CD
 		AND		#$20
 		BNE		sub_AEB3
-		FAR		$56,$17		; _b5_s5
+		FARX	_b5_s5
 		SEC
 		RTS
 loc_AEB0:
@@ -5715,10 +5717,10 @@ sub_AEB9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AEC0:
-		FAR		$6E,$17		; _b6_s15
+		FARX	_b6_s15
 		BCC		locret_AECC
 		JSR		sub_176C3C
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 		SEC
 locret_AECC:
 		RTS
@@ -5757,7 +5759,7 @@ sub_AEE4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AEED:
-		FAR		$42,$17		; _b6_s12
+		FARX	_b6_s12
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5787,7 +5789,7 @@ sub_AEF1:
 		TAX
 		BNE		loc_AF32
 		FAR		$A2,$77		; _sys07_msg_m00_arg1
-		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#4
 		FARX	_bC_s0
 		SEC
@@ -5841,7 +5843,7 @@ sub_AF58:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AF5B:
-		FAR		$15,$17		; _b1_s15
+		FARX	_b1_s15
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
@@ -5948,7 +5950,7 @@ loc_AFF6:
 loc_AFF8:
 		JSR		sub_176C6C
 		FARX	_bC_s12_vblank_count_50
-		FAR		$71,$17		; _bC_s20
+		FARX	_bC_s20
 		FARX	_b6_s10
 		SEC
 		RTS
@@ -5996,7 +5998,7 @@ loc_B05F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B068:
-		FAR		$6D,$17		; _bC_sC
+		FARX	_bC_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6019,10 +6021,10 @@ sub_B06C:
 		LDA		byte_60BA
 		AND		#$20
 		BNE		loc_B097
-		FAR		$8E,$17		; _bC_s2B
+		FARX	_bC_s2B
 		RTS
 loc_B097:
-		FAR		$44,$17		; _bD_s22
+		FARX	_bD_s22
 		CLC
 		RTS
 
@@ -6032,7 +6034,7 @@ sub_B09C:
 		FARX	_bB_s7
 		LDA		byte_60C5
 		BMI		loc_B0B5
-		FAR		$4F,$17		; _b0_s53
+		FARX	_b0_s53
 		LDY		_enemy_roster_index_list
 		INY
 		BEQ		loc_B0B5
@@ -6040,7 +6042,7 @@ sub_B09C:
 		SEC
 		RTS
 loc_B0B5:
-		FAR		$44,$17		; _bD_s22
+		FARX	_bD_s22
 		CLC
 		RTS
 
@@ -6052,7 +6054,7 @@ sub_B0BA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B0C1:
-		FAR		$8A,$17		; _bC_s26
+		FARX	_bC_s26
 		RTS
 byte_B0C5:
 		.BYTE	  0

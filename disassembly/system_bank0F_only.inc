@@ -2025,7 +2025,7 @@ loc_177950:
 		INX
 		CPX		#$10
 		BNE		loc_177950
-		FAR		$47,$17		; _bC_s27
+		FARX	_bC_s27
 		LDA		#0
 		STA		byte_8E
 		RTS

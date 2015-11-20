@@ -11,7 +11,7 @@ _b16_s0:
 		LDA		#0
 		STA		byte_AA
 		JSR		sub_21C01C
-		FAR		$2F,$17		; _bD_s28
+		FARX	_bD_s28
 		PLA
 		STA		_mmc_cur_prg_bank
 		JSR		_mmc1_prg_set

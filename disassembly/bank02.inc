@@ -3323,7 +3323,7 @@ loc_3A689:
 		FARX	_b4_sA
 		LDA		#$83
 		FARX	_bB_s3_apu_load
-		FAR		$2D,$17		; _bD_s26
+		FARX	_bD_s26
 		LDA		word_4
 		STA		byte_D2
 		LDX		#$50
@@ -3430,7 +3430,7 @@ loc_3A752:
 		STA		word_3E
 		LDA		off_3A946+1
 		STA		word_3E+1
-		FAR		$97,$17		; _bA_sB
+		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
 		LDA		#[_b0_d3F_idx-_sys0_sub_idx_lib]
