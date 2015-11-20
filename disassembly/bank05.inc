@@ -1,20 +1,12 @@
 
 		ORG $8000
 
-;_b5_d0_world_map_data_ptr:
-;		.WORD	_b5_d0_world_map_data
-;_b5_d1_world_map_data_ptr:
-;		.WORD	_b5_d1_world_map_data
-;_b5_d2_world_map_data_ptr:
-;		.WORD	_b5_d2_world_map_data
 _b5_s3_ptr:
 		.WORD	_b5_s3
 _b5_s4_ptr:
 		.WORD	_b5_s4
 _b5_s5_ptr:
 		.WORD	_b5_s5
-;_b5_s6_ppu_send_8_empty_bytes_ptr:
-;		.WORD	_b5_s6_ppu_send_8_empty_bytes
 _b5_s7_ptr:
 		.WORD	_b5_s7
 _b5_s8_ptr:
@@ -1543,8 +1535,6 @@ byte_823E5:
 		.BYTE	$1F,$1F,$1F,$1F,$1D
 byte_823EA:
 		.BYTE	$1F,$1F,$1F,$1F,$1D
-;off_823EF:
-;		.WORD	byte_823F1
 byte_823F1:
 		.BYTE	$18,$CA,  0,$18,$D8, $A,$18,$D4,  1,  8,$91,$90,$14,$C2,$8B,$18
 		.BYTE	$C6,$8C,$15,  7,$80,$19,$27,  3,$15,$2F,  0,$1D, $F,$80,$1C,$1F
@@ -1719,10 +1709,6 @@ byte_82D74:
 		.BYTE	$E3,$E4,$EB,$EC,$E9,$EA,$EB,$EE,$E3,$E6,$EB,$EE,$EF,$EF,$EF,$F0
 		.BYTE	$EF,$EF,$F1,$F2,$EF,$EF,$F3,$EF,$EF,$F4,$EF,$F4,$F5,$EF,$F5,$EF
 		.BYTE	$EF,$F6,$EF,$FA,$F7,$F8,$FB,$FC,$F9,$EF,$FD,$EF
-;off_82DD0:
-;		.WORD	byte_82DD4
-;off_82DD2:
-;		.WORD	byte_832E4
 byte_82DD4:
 		.BYTE	$10,  0,  0,$10,  4,  0,$30,$15,$40,$10,$10,  0,$10,  8,  0,$10
 		.BYTE	 $C,  0,$10,$14,  0,$F0, $D,  0,$18,$EA,  0,$88,$EA,  0,$38,$F2
@@ -2060,7 +2046,7 @@ locret_83AAB:
 loc_83AAC:
 		LDA		byte_2C
 		CMP		#1
-		BNE		sub_83AE2
+		BNE		loc_83AE2
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_83AC5
@@ -2069,32 +2055,23 @@ loc_83AAC:
 		BEQ		loc_83AD0
 		CMP		#$73
 		BEQ		loc_83AD0
-		BNE		loc_83ADB
+		BNE		loc_83AE2
 loc_83AC5:
 		LDA		_spr_ram,X
 		CMP		#$6F
 		BEQ		loc_83AD0
 		CMP		#$77
-		BNE		loc_83ADB
+		BNE		loc_83AE2
 loc_83AD0:
 		LDA		_spr_ram+3,X
 		CMP		#$80
 		BEQ		loc_83ADE
 		CMP		#$88
 		BEQ		loc_83ADE
-loc_83ADB:
-		JMP		sub_83AE2
+loc_83AE2:
+		JMP		(word_72)
 loc_83ADE:
 		JMP		loc_83A99
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;nullsub_13:
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_83AE2:
-		JMP		(word_72)
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83AE5:
@@ -2204,8 +2181,6 @@ loc_83B8B:
 		STA		byte_181,X
 		STA		byte_182,X
 		STA		byte_183,X
-;		JMP		loc_83B9C				; redundant code
-;loc_83B9C:
 		TXA
 		AND		#$F0
 		TAY
@@ -2241,9 +2216,9 @@ loc_83B8B:
 		STA		byte_177,Y
 		PLA
 		TAY
-		LDA		byte_103,Y
+		LDA		_players_pos_list+3,Y
 		AND		#$C3
-		STA		byte_103,Y
+		STA		_players_pos_list+3,Y
 		DEC		byte_176
 locret_83BDA:
 		RTS
@@ -2432,7 +2407,7 @@ loc_83CF8:
 		LDX		#$10
 		LDA		#$FF
 loc_83CFC:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		CPX		#$80
 		BNE		loc_83CFC
@@ -2727,16 +2702,16 @@ loc_83ED2:
 _b5_s5:
 		SYSX	_sys07_msg_m00_arg1,$AA
 		JSR		sub_174D4F
-		LDA		#<[byte_114]
+		LDA		#<[_npcs_pos_list+4]
 		STA		word_6C
 		LDX		#2
 		FARX	_bC_sB
 		LDA		#4
-		STA		byte_116
-		LDA		byte_117
+		STA		_npcs_pos_list+6
+		LDA		_npcs_pos_list+7
 		AND		#$FC
 		ORA		#2
-		STA		byte_117
+		STA		_npcs_pos_list+7
 		LDX		#0
 		FARX	_bC_sB
 		JSR		sub_174CCF

@@ -1,7 +1,6 @@
 
 SYSTEM_SHARED_ORG	=	$C000
-SYSTEM_FOOTER_ORG	=	$FF8E
-SYSTEM_VECTORS_ORG  =   $FFD8
+SYSTEM_FOOTER_ORG	=	$FF90
 SYSTEM_DPCM_ORG     =   $F000
 SYSCALL_PTR_ORG     =   $8000
 SAFE_STUB_ORG		=   $BFD8
@@ -132,14 +131,21 @@ _ddt = $76
 		.BYTE	[[{1}_ptr-SYSCALL_PTR_ORG]>>1]
 	ENDM
 	
+	; we have here two different macroses for the same BRK opcode format
+	; to shorten the far call definition instead of SYSX _sys0,[lib_name]
+	; FARX assuming, that _sys0 and _sys1 are the first and the second
+	; syscall routines
+	;
+	; syscall idx already multiplied by 2 to simplify calculations
+	;
 	MAC FARX
 		BRK
-		.BYTE	[[{1}_idx-_sys0_sub_idx_lib]&$FF]
-		.BYTE	[$07|[[[{1}_idx-_sys0_sub_idx_lib]>>4]&$10]]
+		.BYTE	[ [{1}_idx - _sys_idx_lib] & $FF]
+		.BYTE	[[[{1}_idx - _sys_idx_lib] >>  7] & 2]
 	ENDM
 	
 	MAC SYSX
 		BRK
 		.BYTE	{2}
-		.BYTE	[$07|[[[{1}_idx-_syscall_lib]>>2]&$08]|[[[{1}_idx-_syscall_lib]<<3]&$F0]]
+		.BYTE	[[{1}_idx-_syscall_lib] & $3F]
 	ENDM

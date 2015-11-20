@@ -129,14 +129,8 @@ _b0_s3E_ptr:
 		.WORD	_b0_s3E
 _b0_d3F_ptr:
 		.WORD	_b0_d3F
-;_b0_d40_weapon_power_list_ptr:
-;		.WORD	_b0_d40_weapon_power_list
-;_b0_d41_equip_list_ptr:
-;		.WORD	_b0_d41_equip_list
 _b0_d42_effects_list_ptr:
 		.WORD	_b0_d42_effects_list
-;_b0_d43_enemies_lib_ptr:
-;		.WORD	_b0_d43_enemies_lib
 _b0_d44_ptr:
 		.WORD	_b0_d44
 _b0_s45_ptr:
@@ -149,10 +143,8 @@ _b0_s48_ptr:
 		.WORD	_b0_s48
 _b0_s49_ptr:
 		.WORD	_b0_s49
-;		.WORD	  0
 _b0_s4B_ptr:
 		.WORD	_b0_s4B
-;		.WORD	  0
 _b0_s4D_ptr:
 		.WORD	_b0_s4D
 _b0_s4E_ptr:
@@ -161,8 +153,6 @@ _b0_s4F_ptr:
 		.WORD	_b0_s4F
 _b0_s50_ptr:
 		.WORD	_b0_s50
-_b0_s51_wrapper_for_b1B_s0_ptr:
-		.WORD	_b0_s51_wrapper_for_b1B_s0
 _b0_s52_ptr:
 		.WORD	_b0_s52
 _b0_s53_ptr:
@@ -173,13 +163,10 @@ _b0_s55_ptr:
 		.WORD	_b0_s55
 _b0_s56_ptr:
 		.WORD	_b0_s56
-;		.WORD	  0
 _b0_d58_ptr:
 		.WORD	_b0_d58
 _b0_d59_ptr:
 		.WORD	_b0_d59
-;_b0_d5A_ptr:
-;		.WORD	_b0_d5A
 _b0_s5B_ptr:
 		.WORD	_b0_s5B
 _b0_s5C_ptr:
@@ -208,12 +195,10 @@ _b0_s67_ptr:
 		.WORD	_b0_s67
 
 ; =============== S U B	R O U T	I N E =======================================
-; why they used sys0 bank wrapper here, instead of direct using the sub call?
-; 
-_b0_s51_wrapper_for_b1B_s0:
-;		FAR		$00,$BF		; _b1B_s0
-		FARX	_b1B_s0
-		RTS
+; unused anymore
+;_b0_s51_wrapper_for_b1B_s0:
+;		FARX	_b1B_s0
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
@@ -348,6 +333,7 @@ _b0_s52:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy	roster get min/max level enemy
+;
 _enemy_roster_get_levels:
 		LDA		#$FF
 		STA		word_4A+1
@@ -417,7 +403,7 @@ _b0_s0_world_map_random_enounter_test:
 		LDA		_pads+1			; random encounter disabled cheat from PRG1J reenabled
 		LSR						;
 		BCS		locret_823F		;
-		LDA		byte_6E1
+		LDA		_npc_anim_script_idx
 		BNE		locret_823F
 		LDX		byte_2A
 		DEX
@@ -464,7 +450,7 @@ sub_8261:
 		AND		#$7F
 		BNE		loc_828E
 		FARX	_bE_sD
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		LDA		byte_AD
 		AND		#$80
 		BEQ		loc_8285
@@ -2723,8 +2709,6 @@ _b0_s30:
 		JSR		_b0_s32
 		LDX		byte_CE
 		CPX		word_4
-;		BEQ		loc_996D				; redundant code
-;loc_996D:
 		LDA		word_4+1,X
 		TAX
 		LDA		byte_611E,X
@@ -3101,8 +3085,6 @@ byte_9BA3:
 		.BYTE	  7,  5,  2,  3,  1,  1,  1,  2,  2,  3
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused, unreferenced version of 3A with full set of data (A) against 7
-;
 _b0_s3B:
 		LDA		#$A
 		JSR		loc_9B01
@@ -3638,7 +3620,7 @@ loc_9EF3:
 		BEQ		sub_9E8B
 		STA		byte_49
 		TAX
-		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
@@ -3651,7 +3633,7 @@ loc_9F13:
 		STX		byte_D3
 		CPX		#$26
 		BEQ		loc_9F2A
-		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
 		LDA		#$2B
@@ -3670,14 +3652,14 @@ loc_9F34:
 		STA		byte_D2
 		STA		byte_CE
 		LDX		byte_49
-		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
 		JSR		_b0_s9
 		JSR		sub_A169
 		LDA		#2
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		LDA		#$8E
 		FARX	_bB_s3_apu_load
 		FARX	_b2_s7_screen_spell_blink
@@ -3689,7 +3671,7 @@ loc_9F34:
 		JSR		_b0_s55
 		BCS		loc_9F75
 		LDA		#$81
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JMP		sub_9E8B
 loc_9F75:
 		LDX		#0
@@ -3712,7 +3694,7 @@ loc_9F81:
 		JSR		_call_indirect_3C
 		BCS		loc_9F9F
 		LDA		#$40
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JMP		sub_9E8B
 loc_9F9F:
 		LDA		byte_49
@@ -3754,7 +3736,7 @@ sub_9FCD:
 		BCC		locret_9FE9
 		JSR		_b0_s4
 		LDA		#$14
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		JSR		__pause_or_skip
 		SEC
@@ -3801,9 +3783,9 @@ loc_A01D:
 		LDA		byte_46
 		BNE		loc_A031
 		LDA		#5
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		LDA		#$14
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 loc_A031:
 		PLA
@@ -3842,7 +3824,7 @@ loc_A05F:
 		JSR		_b0_s4
 		LDA		#$3C
 loc_A06C:
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		FARX	_bE_s10
 		SEC
@@ -3867,7 +3849,7 @@ sub_A07D:
 		STA		byte_D3
 		JSR		_b0_s2A
 		LDA		#$C3
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		SEC
 locret_A09B:
 		RTS
@@ -3883,7 +3865,7 @@ sub_A09C:
 		AND		#$DF
 		STA		byte_73D,X
 		LDA		#$44
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		SEC
 locret_A0B9:
@@ -3903,7 +3885,7 @@ sub_A0BC:
 		AND		#$BF
 		STA		byte_73D,X
 		LDA		#$42
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		SEC
 locret_A0D9:
@@ -3967,12 +3949,12 @@ loc_A10D:
 		TXA
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A10E:
+_wrap_bE_s4_msg_m00_arg0_safe:
 		PHA
 		LDA		byte_CE
 		PHA
 		TSX
-		LDA		byte_102,X
+		LDA		_players_pos_list+2,X
 		LDX		#0
 		FARX	_bE_s4_msg_m00
 		PLA
@@ -4008,7 +3990,7 @@ sub_A13A:
 		LDA		byte_53
 		STA		byte_D2
 		PLA
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JMP		sub_9E8B
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4143,7 +4125,7 @@ _b0_s61_sram_b0_syscall_shortcuts_load:
 		STA		word_4
 		LDA		#>[_sram_b0_s2]
 		STA		word_4+1
-		LDX		#[_b0_s2_idx-_sys0_sub_idx_lib]	; first sub idx in lib
+		LDX		#[_b0_s2_idx-_sys_idx_lib]	; first sub idx in lib
 loc_A208a:
 		LDY		#0
 loc_A208:
@@ -4163,15 +4145,8 @@ loc_A208:
 		ADC		#0
 		STA		word_4+1
 		INX
-		CPX		#[_b0_s3B_idx-_sys0_sub_idx_lib+1]	; last sub idx in lib
+		CPX		#[_b0_s3B_idx-_sys_idx_lib+1]	; last sub idx in lib
 		BNE		loc_A208a
-;		LDX		#0
-;loc_A260:
-;		LDA		_sram_bank0_select_code,X
-;		STA		_sram_bank0_select_ex,X
-;		INX
-;		CPX		#[_sram_bank0_select_code_end-_sram_bank0_select_code]
-;		BNE		loc_A260
 		RTS
 
 ; code loaded into 6xxx sram area to faster access of code
@@ -4180,22 +4155,6 @@ _sram_bank0_bn_code:
 		LDY		#0
 		JMP		_sys0_safe
 _sram_bank0_bn_code_end:
-;
-;_sram_bank0_select_code:
-;		CMP		#[_b7_sF_player_log_read_idx-_sys0_sub_idx_lib-256]	; intended to be used with indexes 166 and 167, but currently only 167 is used here
-;		BEQ		loc_A2812
-;		TAY
-;		LDA		#0
-;		STA		word_4
-;		STA		word_4+1
-;		STA		word_6
-;		JMP		_sys0_safe
-;loc_A2812:
-;		TAY
-;		LDA		#0
-;		STA		word_6
-;		JMP		_sys1_safe
-;_sram_bank0_select_code_end:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s64:
@@ -4369,7 +4328,7 @@ sub_A3FB:
 		STA		byte_48
 loc_A410:
 		LDA		#5
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#0
 		STA		byte_56
 		STA		byte_58
@@ -4378,7 +4337,7 @@ loc_A410:
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$C0
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDX		byte_51
 		INC		byte_700,X
 		FARX	_bB_s7
@@ -4457,9 +4416,9 @@ loc_A4B6:
 		ADC		#$A0
 		PHA
 		LDA		#5
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		PLA
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A4C7:
 		INC		byte_52
 		LDA		byte_52
@@ -4508,9 +4467,9 @@ loc_A50D:
 		INC		byte_725,X
 loc_A522:
 		LDA		#5
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B8
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A52C:
 		JSR		_b0_s2C
 		CMP		#4
@@ -4556,9 +4515,9 @@ loc_A56E:
 		INC		byte_735,X
 loc_A583:
 		LDA		#5
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B9
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A58D:
 		JSR		_b0_s2C
 		LDA		word_4
@@ -4727,9 +4686,9 @@ loc_A6A1:
 		CMP		#4
 		BCS		loc_A6E7
 		LDA		#5
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$BA
-		JSR		sub_A8A2
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_A6E7
 loc_A6C0:
 		TYA
@@ -4925,8 +4884,6 @@ off_A7F4:
 		.WORD	byte_A94E
 		.WORD	byte_A976
 		.WORD	byte_A99E
-;off_A800:
-;		.WORD	byte_A806
 off_A802:
 		.WORD	byte_A80B
 		.WORD	byte_A810
@@ -5015,12 +4972,6 @@ _add_24_to_24:
 		LDA		2,X
 		ADC		2,Y
 		STA		2,Y
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_A8A2:
-		LDX		#0
-		FARX	_bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5249,7 +5200,7 @@ loc_ABCF:
 loc_ABDA:
 		JMP		loc_ACA2
 loc_ABDD:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 loc_ABE0:
 		CPX		#$6B
 		BEQ		loc_AC0D
@@ -5293,7 +5244,7 @@ loc_AC10:
 loc_AC2E:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5340,7 +5291,7 @@ sub_AC74:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC7D:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		LDA		byte_47
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$69
@@ -5390,7 +5341,7 @@ sub_ACB4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		JSR		sub_AD1E
 		LDA		byte_45
 		CMP		byte_47
@@ -5428,7 +5379,7 @@ loc_ACEE:
 		JSR		sub_AD13
 loc_ACF8:
 		TYA
-		JMP		sub_176C70
+		JMP		_wrap_bE_s4_msg_m00_arg1
 loc_ACFC:
 		ASL
 		TAX
@@ -5444,7 +5395,7 @@ loc_AD09:
 		JSR		sub_AD13
 loc_AD0F:
 		TYA
-		JMP		sub_176C70
+		JMP		_wrap_bE_s4_msg_m00_arg1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AD13:
@@ -5493,9 +5444,9 @@ loc_AD45:
 		JSR		sub_AD13
 loc_AD4B:
 		TYA
-		JMP		sub_176C70
+		JMP		_wrap_bE_s4_msg_m00_arg1
 loc_AD4F:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		LDA		byte_45
 		ASL
 		TAX
@@ -5522,7 +5473,7 @@ loc_AD7B:
 		JSR		_b0_s60
 		CLC
 		ADC		#$1D
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5568,9 +5519,9 @@ loc_ADC6:
 		STA		byte_CF
 		JSR		_b0_s45
 		LDA		word_4
-		BPL		loc_ADEA
+		BPL		_set_carry_ret
 		CMP		#$FF
-		BEQ		loc_ADEA
+		BEQ		_set_carry_ret
 		AND		#$7F
 		STA		byte_D3
 		LDA		#$15
@@ -5578,16 +5529,20 @@ loc_ADC6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADE0:
 		PHA
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		PLA
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		SEC
 		RTS
-loc_ADEA:
+
+; =============== S U B	R O U T	I N E =======================================
+_set_carry_ret:
 		CLC
 		RTS
+
+; =============== S U B	R O U T	I N E =======================================
 loc_ADEC:
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		SYSX	_sys06_msg_m00_arg0,$BF
 		SEC
 		RTS
@@ -5595,15 +5550,15 @@ loc_ADEC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADF4:
 		LDA		byte_48
-		BPL		loc_ADEA
+		BPL		_set_carry_ret
 		AND		#$7F
 		TAX
 		LDA		_b0_d42_effects_list,X
 		AND		#8
-		BEQ		loc_ADEA
+		BEQ		_set_carry_ret
 		STX		byte_D2
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$17
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		FARX	_bD_s22
 		SEC
@@ -5615,7 +5570,7 @@ sub_AE12:
 		AND		#$7F
 		CMP		#$68
 		BEQ		loc_AE1D
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 loc_AE1D:
 		LDY		#$FD
 		LDA		byte_48
@@ -5640,10 +5595,10 @@ loc_AE2C:
 		BEQ		loc_AE52
 		CMP		#$64
 		BCC		loc_AE4C
-		JSR		sub_176C6C
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_AE4F
 loc_AE4C:
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 loc_AE4F:
 		JMP		(word_3C)
 loc_AE52:
@@ -5683,14 +5638,6 @@ sub_AE82:
 		SEC
 locret_AE8B:
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AE8C:
-		JMP		sub_B16B
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AE8F:
-		JMP		sub_B269
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AE92:
@@ -5793,7 +5740,7 @@ sub_AEF1:
 		BCC		loc_AF38
 		CMP		#7
 		BCS		loc_AF38
-		LDA		byte_110
+		LDA		_npcs_pos_list
 		CMP		#$27
 		BNE		loc_AF38
 		SYSX	_sys07_msg_m00_arg1,$A1
@@ -5804,7 +5751,7 @@ sub_AEF1:
 		SYSX	_sys07_msg_m00_arg1,$A2
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#4
-		FARX	_bC_s0
+		FARX	_bC_s0_npc_anim_script_init
 		SEC
 		RTS
 loc_AF32:
@@ -5821,46 +5768,12 @@ sub_AF3E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AF40:
-		JMP		sub_B198
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF43:
-		JMP		sub_B1A5
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF46:
-		JMP		sub_B1CC
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF49:
-		JMP		sub_B1BF
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF4C:
-		JMP		sub_B1B2
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF4F:
-		JMP		sub_B1F6
-loc_AF52:
-		JMP		sub_B21E
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF55:
-		JMP		sub_B234
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF58:
-		JMP		sub_B240
-
-; =============== S U B	R O U T	I N E =======================================
 sub_AF5B:
 		FARX	_b1_s15
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
-		JSR		sub_174DF2
+		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E
 		SYSX	_sys06_msg_m00_arg0,$AA
 		JSR		sub_176C3C
 		FARX	_b6_s6
@@ -5872,10 +5785,6 @@ loc_AF78:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AF7A:
-		JMP		sub_B246
-
-; =============== S U B	R O U T	I N E =======================================
 sub_AF7D:
 		CLC
 		RTS
@@ -5885,21 +5794,15 @@ sub_AF7F:
 		SYSX	_sys07_msg_m00_arg1,$08
 		JSR		sub_176C3C
 		FARX	_b6_s11
-		BCC		sub_AF92
+		BCC		loc_AF92
 		SYSX	_sys07_msg_m00_arg1,$0B
 		SYSX	_sys07_msg_m00_arg1,$09
 		SEC
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF92:
+loc_AF92:
 		SYSX	_sys07_msg_m00_arg1,$02
 		CLC
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF97:
-		JMP		sub_B256
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AF9A:
@@ -5926,12 +5829,12 @@ loc_AFBC:
 loc_AFBE:
 		LDX		#0
 loc_AFC0:
-		LDA		byte_111,X
+		LDA		_npcs_pos_list+1,X
 		CMP		#$FF
 		BEQ		sub_AF7D
 		CMP		word_6
 		BNE		loc_AFD2
-		LDA		byte_110,X
+		LDA		_npcs_pos_list,X
 		CMP		word_4+1
 		BEQ		loc_AFD8
 loc_AFD2:
@@ -5961,7 +5864,7 @@ loc_AFD8:
 loc_AFF6:
 		LDA		#$6F
 loc_AFF8:
-		JSR		sub_176C6C
+		JSR		_wrap_bE_s4_msg_m00_arg0
 		FARX	_bC_s12_vblank_count_50
 		FARX	_bC_s20
 		FARX	_b6_s10
@@ -5990,7 +5893,7 @@ loc_B03C:
 		STX		byte_63F
 		LDA		#$10
 loc_B045:
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		LDA		byte_9B
 		SEC
 		SBC		byte_2A
@@ -6005,7 +5908,7 @@ loc_B056:
 		STX		byte_63F
 		LDA		#$13
 loc_B05F:
-		JSR		sub_176C70
+		JSR		_wrap_bE_s4_msg_m00_arg1
 		SYSX	_sys07_msg_m00_arg1,$14
 		JMP		loc_AF3B
 
@@ -6086,9 +5989,9 @@ off_B0C6:
 		.BYTE	  0
 		.WORD	sub_AEB3
 		.BYTE	$A5
-		.WORD	sub_AE8C
+		.WORD	sub_B16B
 		.BYTE	$9B
-		.WORD	sub_AE8F
+		.WORD	sub_B269
 		.BYTE	$C
 		.WORD	sub_AE92
 		.BYTE	  0
@@ -6114,33 +6017,33 @@ off_B0C6:
 		.BYTE	$58
 		.WORD	sub_AEF1
 		.BYTE	$53
-		.WORD	sub_AF40
+		.WORD	sub_B198
 		.BYTE	$53
-		.WORD	sub_AF43
+		.WORD	sub_B1A5
 		.BYTE	$53
-		.WORD	sub_AF46
+		.WORD	sub_B1CC
 		.BYTE	$53
-		.WORD	sub_AF49
+		.WORD	sub_B1BF
 		.BYTE	$53
-		.WORD	sub_AF4C
+		.WORD	sub_B1B2
 		.BYTE	$A7
-		.WORD	sub_AF4F
+		.WORD	sub_B1F6
 		.BYTE	$53
-		.WORD	loc_AF52
+		.WORD	sub_B21E
 		.BYTE	$53
-		.WORD	sub_AF55
+		.WORD	sub_B234
 		.BYTE	$A9
-		.WORD	sub_AF58
+		.WORD	sub_B240
 		.BYTE	  0
 		.WORD	sub_AF5B
 		.BYTE	$AB
-		.WORD	sub_AF7A
+		.WORD	sub_B246
 		.BYTE	$AC
 		.WORD	sub_AF7D
 		.BYTE	$53
 		.WORD	sub_AF7F
 		.BYTE	$53
-		.WORD	sub_AF97
+		.WORD	sub_B256
 		.BYTE	$5B
 		.WORD	sub_AF9A
 		.BYTE	$5C
@@ -6199,7 +6102,7 @@ sub_B16B:
 		FARX	_b4_s20
 		JSR		_b0_s2A
 		LDA		#$A6
-		JSR		sub_B2CB
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
 loc_B196:
 		SEC
 		RTS
@@ -6263,7 +6166,7 @@ sub_B1D9:
 		LDA		byte_48
 		CLC
 		ADC		#$41
-		JSR		sub_B2CB
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
 		PLA
 		LDX		byte_45
 		RTS
@@ -6288,14 +6191,14 @@ loc_B212:
 		LDA		word_4
 		JSR		sub_B2AD
 		LDA		#$A8
-		JSR		sub_B2CB
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B21E:
 		JSR		sub_B2B9
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 		LDA		#$F
 		FARX	_b4_sF
 		ADC		#$23
@@ -6307,9 +6210,9 @@ sub_B21E:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B234:
 		JSR		sub_B2B9
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 		JSR		sub_A09C
-		BCC		sub_B262
+		BCC		_wrap_bE_s4_msg_m00_arg0_idx40_safe
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6324,23 +6227,23 @@ sub_B246:
 		JSR		sub_B2B9
 		LDA		#$21
 		STA		byte_49
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 		JSR		sub_A039
-		BCC		sub_B262
+		BCC		_wrap_bE_s4_msg_m00_arg0_idx40_safe
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B256:
 		JSR		sub_B2B9
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 		JSR		sub_A0BC
-		BCC		sub_B262
+		BCC		_wrap_bE_s4_msg_m00_arg0_idx40_safe
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B262:
+_wrap_bE_s4_msg_m00_arg0_idx40_safe:
 		LDA		#$40
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		SEC
 		RTS
 
@@ -6360,10 +6263,10 @@ loc_B272:
 		AND		byte_73D,X
 		BPL		loc_B28C
 		LDA		#$9C
-		JSR		sub_A10E
+		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		DEC		byte_55
 		BEQ		loc_B28C
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 loc_B28C:
 		PLA
 		TAX
@@ -6384,7 +6287,7 @@ sub_B298:
 		ORA		#$40
 		STA		byte_73D,X
 		LDA		#$A
-		JSR		sub_B2CB
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
 		SEC
 		RTS
 
@@ -6407,16 +6310,16 @@ sub_B2B9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2C6:
+_wrap_bE_s4_msg_m00_arg0_idx05_safe:
 		LDA		#5
-		JMP		sub_A10E
+		JMP		_wrap_bE_s4_msg_m00_arg0_safe
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2CB:
+_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe:
 		PHA
-		JSR		sub_B2C6
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
 		PLA
-		JMP		sub_A10E
+		JMP		_wrap_bE_s4_msg_m00_arg0_safe
 
 _b0_d43_enemies_lib:
 		.BYTE	  1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
@@ -6602,7 +6505,7 @@ loc_BF74:
 		STA		byte_2E
 		LDX		#0
 loc_BF9D:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		CPX		#$80
 		BNE		loc_BF9D

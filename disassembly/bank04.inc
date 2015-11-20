@@ -9,8 +9,6 @@ _b4_s2_ptr:
 		.WORD	_b4_s2
 _b4_s3_ptr:
 		.WORD	_b4_s3
-;_b4_s4_ptr:
-;		.WORD	_b4_s4
 _b4_s5_do_message_speed_delay_ptr:
 		.WORD	_b4_s5_do_message_speed_delay
 _b4_s6_ptr:
@@ -23,8 +21,6 @@ _b4_s9_ptr:
 		.WORD	_b4_s9
 _b4_sA_ptr:
 		.WORD	_b4_sA
-;_b4_sB_ptr:
-;		.WORD	_b4_sB
 _b4_sC_ptr:
 		.WORD	_b4_sC
 _b4_dD_spells_list_ptr:
@@ -35,15 +31,12 @@ _b4_sF_ptr:
 		.WORD	_b4_sF
 _b4_s10_ptr:
 		.WORD	_b4_s10
-;		.WORD	_b4_d11
 _b4_s12_ptr:
 		.WORD	_b4_s12
 _b4_s13_ptr:
 		.WORD	_b4_s13
 _b4_s14_ptr:
 		.WORD	_b4_s14
-;_b4_d15_ptr:
-;		.WORD	_b4_d15
 _b4_s16_do_half_message_speed_delay_ptr:
 		.WORD	_b4_s16_do_half_message_speed_delay
 _b4_s17_ptr:
@@ -68,8 +61,6 @@ _b4_s20_ptr:
 		.WORD	_b4_s20
 _b4_s21_message_half_delay_or_wait_for_keypress_ptr:
 		.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
-;_b4_s22_ptr:
-;		.WORD	_b4_s22
 _b4_s23_ptr:
 		.WORD	_b4_s23
 _b4_s24_ptr:
@@ -88,9 +79,6 @@ _b4_s2A_ptr:
 		.WORD	_b4_s2A
 _b4_s2B_ptr:
 		.WORD	_b4_s2B
-
-;_b4_d11:
-;		.BYTE	  2
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s0:
@@ -919,22 +907,18 @@ sub_685AD:
 ; =============== S U B	R O U T	I N E =======================================
 sub_685B2:
 		JSR		sub_686E1
-		BEQ		sub_685BA
+		BEQ		loc_685BA
 		JMP		sub_686F9
-
-; =============== S U B	R O U T	I N E =======================================
-sub_685BA:
+loc_685BA:
 		JSR		sub_686E7
 		JMP		_b4_s13
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_685C0:
 		JSR		sub_686E1
-		BEQ		sub_685C8
+		BEQ		loc_685C8
 		JMP		sub_686F9
-
-; =============== S U B	R O U T	I N E =======================================
-sub_685C8:
+loc_685C8:
 		JMP		sub_686FD
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2150,15 +2134,13 @@ sub_68D8D:
 		STA		byte_CE
 		TAY
 		JSR		sub_68F0C
-		BPL		nullsub_5
+		BPL		locret_68DB0
 		JMP		sub_6A61F
 loc_68DA8:
 		STA		byte_64
-		JSR		nullsub_5
+		JSR		locret_68DB0
 		JMP		sub_6A6D9
-
-; =============== S U B	R O U T	I N E =======================================
-nullsub_5:
+locret_68DB0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2213,8 +2195,6 @@ sub_68E00:
 		STA		word_3E+1
 		JSR		sub_694C1
 		JMP		_b4_s6
-;off_68E16:
-;		.WORD	sub_68E18
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E18:
@@ -2256,8 +2236,6 @@ sub_68E4B:
 		STA		word_3E+1
 		JSR		sub_694C1
 		JMP		_b4_s6
-;off_68E61:
-;		.WORD	sub_68E63
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
@@ -2470,8 +2448,6 @@ sub_68FBC:
 		STA		byte_47
 		LDA		#$13
 		JMP		sub_694B8
-;off_68FCD:
-;		.WORD	sub_68FCF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FCF:
@@ -2598,8 +2574,6 @@ sub_69096:
 		LDA		#>[sub_690A3]
 		STA		word_3E+1
 		RTS
-;off_690A1:
-;		.WORD	sub_690A3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690A3:
@@ -2620,8 +2594,6 @@ loc_690BD:
 		LDA		#$24
 		JSR		sub_68FEB
 		JMP		sub_69D60
-;off_690C5:
-;		.WORD	sub_690C7
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690C7:
@@ -2660,8 +2632,6 @@ loc_690FD:
 		LDA		#$2C
 		JSR		sub_68FEB
 		JMP		sub_69F23
-;off_69105:
-;		.WORD	sub_69107
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69107:
@@ -2684,8 +2654,6 @@ loc_69125:
 		LDA		#$25
 		JSR		sub_68FEB
 		JMP		sub_69DDF
-;off_6912D:
-;		.WORD	sub_6912F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6912F:
@@ -2733,7 +2701,7 @@ sub_69173:
 		JSR		sub_6B30E
 loc_6917E:
 		JSR		sub_6B2A3
-		BMI		sub_691C0
+		BMI		loc_691C0
 		STA		byte_CE
 		JSR		sub_6B347
 		BCC		loc_6918F
@@ -2745,10 +2713,10 @@ loc_6918F:
 		BPL		locret_6915D
 		LDA		byte_73C,X
 		AND		#$40
-		BNE		sub_691BA
+		BNE		loc_691BA
 		LDA		#$40
 		JSR		sub_6A84F
-		BCS		sub_691BA
+		BCS		loc_691BA
 		LDA		byte_73D,X
 		AND		#$10
 		BNE		loc_691BD
@@ -2757,15 +2725,11 @@ loc_6918F:
 		STA		byte_73D,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46
 		JMP		_b4_s6
-
-; =============== S U B	R O U T	I N E =======================================
-sub_691BA:
+loc_691BA:
 		JMP		sub_6B3D8
 loc_691BD:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$85
-
-; =============== S U B	R O U T	I N E =======================================
-sub_691C0:
+loc_691C0:
 		JMP		sub_69E7F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2778,8 +2742,6 @@ sub_691C3:
 		STA		word_3E+1
 		LDA		#$18
 		JMP		sub_694B8
-;off_691D7:
-;		.WORD	sub_691D9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_691D9:
@@ -2894,8 +2856,8 @@ loc_69295:
 		BNE		locret_692B6
 		LDX		#$C
 loc_692A0:
-		LDA		byte_100
-		EOR		byte_100,X
+		LDA		_players_pos_list
+		EOR		_players_pos_list,X
 		BPL		loc_692AE
 		DEX
 		DEX
@@ -2903,9 +2865,9 @@ loc_692A0:
 		DEX
 		BNE		loc_692A0
 loc_692AE:
-		LDA		byte_100,X
+		LDA		_players_pos_list,X
 		EOR		#$80
-		STA		byte_100,X
+		STA		_players_pos_list,X
 locret_692B6:
 		RTS
 
@@ -2986,8 +2948,6 @@ loc_6932C:
 sub_6933E:
 		JSR		sub_6B32F
 		JMP		sub_69F64
-;off_69344:
-;		.WORD	sub_69346
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69346:
@@ -3885,8 +3845,6 @@ sub_69966:
 		LDA		#>[sub_6994F]
 		STA		word_40+1
 		RTS
-;off_69971:
-;		.WORD	sub_6994F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69973:
@@ -3970,8 +3928,6 @@ loc_69A03:
 		STA		byte_D2
 		JSR		sub_6B347
 		JMP		sub_6B3D8
-;off_69A0D:
-;		.WORD	sub_69A0F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69A0F:
@@ -4084,8 +4040,6 @@ loc_69AD1:
 		STA		byte_CE
 		JSR		sub_6B2DB
 		JMP		sub_691DF
-;off_69AD9:
-;		.WORD	sub_69ADB
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69ADB:
@@ -4132,8 +4086,6 @@ sub_69B1B:
 		LDX		#>[sub_69B2E]
 		JSR		sub_6BBD0
 		JMP		sub_694C1
-;off_69B2C:
-;		.WORD	sub_69B2E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B2E:
@@ -4169,8 +4121,6 @@ sub_69B5F:
 		STA		word_40
 		STX		word_40+1
 		JMP		sub_6A3AB
-;off_69B6C:
-;		.WORD	sub_69B6E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B6E:
@@ -4390,8 +4340,6 @@ loc_69CDD:
 		JSR		sub_6B2EF
 		BNE		locret_69D1C
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
-;off_69CE5:
-;		.WORD	sub_69CE7
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69CE7:
@@ -4433,8 +4381,6 @@ sub_69D20:
 		LDA		#>[sub_69D2F]
 		STA		word_3E+1
 		JMP		sub_694C1
-;off_69D2D:
-;		.WORD	sub_69D2F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D2F:
@@ -4527,8 +4473,6 @@ loc_69DB9:
 		ORA		#$20
 		STA		byte_530,X
 		RTS
-;off_69DD7:
-;		.WORD	sub_69DD9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69DD9:
@@ -4603,8 +4547,6 @@ locret_69E55:
 		RTS
 loc_69E56:
 		JMP		sub_6B3D8
-;off_69E59:
-;		.WORD	sub_69E28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E5B:
@@ -4730,8 +4672,6 @@ loc_69F39:
 		STA		byte_CE
 		JSR		sub_6B2DB
 		JMP		sub_6A6DF
-;off_69F41:
-;		.WORD	sub_6A78A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F43:
@@ -4765,8 +4705,6 @@ sub_69F64:
 		JMP		sub_694C1
 loc_69F7A:
 		JMP		loc_6932C
-;off_69F7D:
-;		.WORD	sub_69F7F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F7F:
@@ -4905,9 +4843,6 @@ loc_6A058:
 		LDA		#0
 		JMP		sub_6A3B1
 
-;off_6A06E:
-;		.WORD	sub_6A070
-
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A070:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$50
@@ -4977,10 +4912,6 @@ sub_6A0C9:
 		LDA		#>[sub_6A0EF]
 		STA		word_3E+1
 		JMP		sub_694C1
-;off_6A0E5:
-;		.WORD	sub_6A0E9
-;off_6A0E7:
-;		.WORD	sub_6A0EF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0E9:
@@ -5000,8 +4931,6 @@ sub_6A0F5:
 		STA		word_40+1
 		LDA		#0
 		JMP		sub_6A3B1
-;off_6A104:
-;		.WORD	sub_6A106
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A106:
@@ -5130,8 +5059,6 @@ sub_6A1C9:
 		STA		word_40+1
 		LDA		#0
 		JMP		sub_6A3B1
-;off_6A1E0:
-;		.WORD	sub_6A1E2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1E2:
@@ -5164,8 +5091,6 @@ sub_6A202:
 		STA		word_40+1
 		LDA		#0
 		JMP		sub_6A3B1
-;off_6A211:
-;		.WORD	sub_6A213
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A213:
@@ -5185,8 +5110,6 @@ sub_6A226:
 		LDA		#>[sub_6A235]
 		STA		word_3E+1
 		JMP		sub_694C1
-;off_6A233:
-;		.WORD	sub_6A235
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A235:
@@ -6433,17 +6356,17 @@ _pads_copy_to_tmp:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA34:
-		LDA		#[_b2_s3_idx-_sys0_sub_idx_lib]
+		LDA		#[_b2_s3_idx-_sys_idx_lib]
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA38:
-		LDA		#[_b2_s4_idx-_sys0_sub_idx_lib]
+		LDA		#[_b2_s4_idx-_sys_idx_lib]
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3C:
-		LDA		#[_b2_s5_idx-_sys0_sub_idx_lib]
+		LDA		#[_b2_s5_idx-_sys_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3E:
@@ -7153,7 +7076,7 @@ loc_6AEA2:
 		LDX		#0
 		LDY		#0
 loc_6AEA6:
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#$80
 		BMI		loc_6AEBA
@@ -7181,7 +7104,7 @@ loc_6AED0:
 loc_6AED7:
 		LDA		byte_6B270,Y
 		STA		byte_49
-		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]
 		JSR		_sys0_byte_read_x
 		AND		#4
 		BEQ		loc_6AEEC
@@ -7198,8 +7121,6 @@ sub_6AEEF:
 		LDA		#>[sub_6AEFE]
 		STA		word_3E+1
 		JMP		sub_694C1
-;off_6AEFC:
-;		.WORD	sub_6AEFE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AEFE:
@@ -7245,10 +7166,6 @@ sub_6AF34:
 		STA		word_40+1
 		LDA		#0
 		JMP		sub_6A3B1
-;off_6AF4F:
-;		.WORD	sub_6AF53
-;off_6AF51:
-;		.WORD	sub_6AF5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF53:
@@ -7379,8 +7296,6 @@ sub_6B008:
 		STA		word_40+1
 		LDA		#0
 		JMP		sub_6A3B1
-;off_6B01C:
-;		.WORD	sub_6B01E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B01E:
@@ -9319,8 +9234,6 @@ sub_6BBF9:
 		BNE		loc_6BB98
 byte_6BBFD:
 		.BYTE	  4,  8,$10,$20,$40,$80, $F, $F, $F, $F,$10,$20,$40,$80
-;off_6BC0B:
-;		.WORD	byte_6A9B
 off_6BC0D:
 		.WORD	byte_73C
 		.WORD	byte_73D

@@ -938,7 +938,7 @@ sub_177259:
 		LDY		#3
 		LDA		(word_72),Y
 		PHA
-		LDY		byte_6E1
+		LDY		_npc_anim_script_idx
 		CPY		#7
 		BCC		loc_177274
 		CPY		#$A
@@ -956,11 +956,6 @@ loc_177274:
 loc_177282:
 		JSR		sub_177385
 		JMP		sub_17732F
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-nullsub_21:
-		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177289:
@@ -2021,7 +2016,7 @@ loc_177930:
 		LDX		#0
 		LDA		#$80
 loc_177950:
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		INX
 		CPX		#$10
 		BNE		loc_177950
@@ -2787,14 +2782,14 @@ loc_177DCF:
 		STA		word_3E
 		LDA		word_6
 		AND		#$7F
-		STA		byte_101,X
+		STA		_players_pos_list+1,X
 		LDA		word_4+1
 		AND		#$7F
-		STA		byte_100,X
+		STA		_players_pos_list,X
 		LDA		word_6+1
 		AND		#$80
 		ORA		word_3E
-		STA		byte_103,X
+		STA		_players_pos_list+3,X
 		LDY		#4
 loc_177DF0:
 		LDA		word_4
@@ -2811,14 +2806,14 @@ loc_177E05:
 		JMP		loc_177E05
 loc_177E08:
 		TYA
-		STA		byte_102,X
+		STA		_players_pos_list+2,X
 		JMP		loc_177D7F
 loc_177E0F:
 		LDA		word_4
 		AND		#$FC
 		STA		byte_6ABE,Y
 		TYA
-		STA		byte_102,X
+		STA		_players_pos_list+2,X
 		JMP		loc_177D7F
 
 ; =============== S U B	R O U T	I N E =======================================
