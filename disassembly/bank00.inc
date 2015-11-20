@@ -2878,6 +2878,7 @@ loc_9982:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; does some kind of summing of party status
 _b0_s33:
 		TXA
 		PHA
@@ -5729,43 +5730,50 @@ sub_ADF4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; triggered when *USE is picked on an item in the field
 sub_AE12:
 		LDA		byte_48
-		AND		#$7F
-		CMP		#$68
+		AND		#$7F ; remove equip bit?
+		CMP		#$68 ; compare to wing of wyvern? that one's special, we need to launch a "where" places list.
 		BEQ		loc_AE1D
 		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
 loc_AE1D:
-		LDY		#$FD
-		LDA		byte_48
-		AND		#$7F
+		LDY		#$FD ; pre-roll loop one step early
+		LDA		byte_48 ; reload target item in case above jsr whacked it..?
+		AND		#$7F ; remove equip bit?
 		TAX
 loc_AE24:
+; reference item effects table
 		LDA		_b0_d44,X
-		BPL		loc_AE2C
+		BPL		loc_AE2C ; if it's <$80, skip Y+=3 (one function pointer and one text message)
+;Y+=3
 		INY
 		INY
 		INY
 loc_AE2C:
-		DEX
-		BNE		loc_AE24
+		DEX ; decrease item number by 1
+		BNE		loc_AE24 ; loop back up if we didnt hit zero
+; load a function pointer
 		LDA		off_B0C6,Y
 		STA		word_3C
 		LDA		off_B0C6+1,Y
 		STA		word_3C+1
 		LDA		byte_B0C5,Y
 		BEQ		loc_AE4F
-		CMP		#$5C
+		CMP		#$5C ; check for special messages..? "Holds the X by the thread.." actually in block 15...?
 		BEQ		loc_AE52
-		CMP		#$64
+		CMP		#$64  ; check for special messages..? treasure receipt related
 		BCC		loc_AE4C
+; prints A=string from bank $10
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		JMP		loc_AE4F
+		JMP		loc_AE4F ; proceed to handle script
 loc_AE4C:
+; interacting with items on the field? treasure, caskets?
 		JSR		_wrap_bE_s4_msg_m00_arg1
 loc_AE4F:
-		JMP		(word_3C)
+		JMP		(word_3C) ; dispatch to script callback
 loc_AE52:
+; "PLAYER holds the fairy water by the thread.. and the sailors thigh bone begins to spin." Other things?
 		LDA		byte_2F
 		CMP		#2
 		BCC		loc_AE68
@@ -5782,6 +5790,7 @@ loc_AE68:
 		BNE		loc_AE4C
 
 ; =============== S U B	R O U T	I N E =======================================
+; "<user> uses the <item>. But nothing happens!
 sub_AE6C:
 		LDA		byte_2A
 		CMP		#$4A
@@ -5795,6 +5804,7 @@ sub_AE6C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "<user> puts the <item> on
 sub_AE82:
 		JSR		sub_B143
 		BCC		locret_AE8B
@@ -5804,19 +5814,22 @@ locret_AE8B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; For the mirror of ra, i think. If on a special map, at a special spot, says
+; "Look! There is an image of a sleeping monster reflected in the mirror!"
+; otherwise "But nothing happens!"
 sub_AE92:
-		LDA		byte_8B
+		LDA		byte_8B ; mapNumber
 		CMP		#$62
-		BNE		sub_AEB3
-		LDA		byte_30
+		BNE		_void_event
+		LDA		byte_30 ; playerMapX
 		CMP		#$D
-		BNE		sub_AEB3
-		LDA		byte_31
+		BNE		_void_event
+		LDA		byte_31 ; playerMapY
 		CMP		#6
-		BNE		sub_AEB3
-		LDA		byte_60CD
+		BNE		_void_event
+		LDA		byte_60CD ; probably some quest flags
 		AND		#$20
-		BNE		sub_AEB3
+		BNE		_void_event
 		FARX	_b5_s5
 		SEC
 		RTS
@@ -5824,22 +5837,26 @@ loc_AEB0:
 		SYSX	_sys07_msg_m00_arg1,$53
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AEB3:
+; a null event handler
+_void_event:
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "<actor> sets the <item> on the ground. But nothing is happening here."
 sub_AEB5:
 		FARX	_bC_s22
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; delay and "A darkness oozes out from the lamp and covers ..."
 sub_AEB9:
 		FARX	_bC_s12_sleep_X_50
 		FARX	_bC_s11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; become a princess. cool!
 sub_AEC0:
 		FARX	_b6_s15
 		BCC		locret_AECC
@@ -5850,49 +5867,60 @@ locret_AECC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; become invisible, for a while (Invisibility Herb)
 sub_AECD:
 		JSR		_sleep_30
 		FARX	_b6_sE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "The magic ball can't be used here"
 sub_AED4:
 		FARX	_bC_s13
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "But nothing happens!" obviously more complex
 sub_AED8:
 		FARX	_bC_sD
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "But nothing happens!" obviously more complex
 sub_AEDC:
 		FARX	_bC_sE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "But nothing happens!" obviously more complex
 sub_AEE0:
 		FARX	_bC_sF
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "<user> falls asleep!" <wait> "<user> is numb and unable to move". possibly glitched by my testing
 sub_AEE4:
 		SYSX	_sys06_msg_m00_arg0,$18
 		JSR		sub_B298
 		JMP		loc_AF3B
 
 ; =============== S U B	R O U T	I N E =======================================
+; "But nothing happens!" obviously more complex
 sub_AEED:
 		FARX	_b6_s12
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "However, Norud is not here". Must be for Royal Scroll
+; "Ahem! So thou wouldst go east?" (yes/no) -> "Ahem! It is the request of the king of Portoga! Come along with me then" (and cutscene happens im sure) ; "Well then, there is nothing I can do for you"
 sub_AEF1:
+; reference a quest flag to see whether this quest has already been done
 		LDA		byte_60B6
 		AND		#$20
-		BNE		sub_AEB3
-		LDA		byte_8B
-		CMP		#$2F
+		BNE		_void_event
+		LDA		byte_8B ; mapNumber
+		CMP		#$2F ; whichever map norud's on
+; search a range of positions for where norud might be
 		BNE		loc_AF38
 		LDA		byte_30
 		CMP		#$26
@@ -5904,6 +5932,7 @@ sub_AEF1:
 		BCC		loc_AF38
 		CMP		#7
 		BCS		loc_AF38
+; something else tricky...
 		LDA		_npcs_pos_list
 		CMP		#$27
 		BNE		loc_AF38
@@ -6139,6 +6168,7 @@ sub_B0C1:
 byte_B0C5:
 		.BYTE	  0
 off_B0C6:
+;item use callbacks? I guess we could compress this table now that we've changed how the calls work
 		.WORD	sub_AE6C
 		.BYTE	  0
 		.WORD	sub_AE82
@@ -6151,7 +6181,7 @@ off_B0C6:
 		.BYTE	  0
 		.WORD	sub_AE82
 		.BYTE	  0
-		.WORD	sub_AEB3
+		.WORD	_void_event
 		.BYTE	$A5
 		.WORD	sub_B16B
 		.BYTE	$9B
@@ -6248,6 +6278,7 @@ loc_B166:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; displays HP/MP summary box
 sub_B16B:
 		LDA		byte_45
 		STA		byte_CE
@@ -6272,8 +6303,9 @@ loc_B196:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; <wait> "The Maximum HP goes up 2 points!". But with @704, this should be the strength?
 sub_B198:
-		LDX		byte_45
+		LDX		byte_45 ; i called this "itemSelectedInBattle" but clearly not
 		LDA		byte_704,X
 		JSR		sub_B1D9
 		STA		byte_704,X
@@ -6281,6 +6313,7 @@ sub_B198:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; <wait> "The Maximum HP goes up 2 points!".  But with @708, this should be the strength?
 sub_B1A5:
 		LDX		byte_45
 		LDA		byte_708,X
@@ -6317,25 +6350,29 @@ sub_B1CC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Seems always to print HP, not sure why
 sub_B1D9:
-		PHA
+		PHA ; stash the stat we came in here with
 		JSR		_rand
+; makes the random number tiny, 1 or 2?
 		AND		#1
 		ADC		#1
+; prepare it for printing
 		JSR		sub_B2AD
-		PLA
+		PLA ; unstash the stat we came in here with
 		CLC
-		ADC		byte_63F
-		PHA
+		ADC		byte_63F ; add bonus to stat (sneakily we pull it out of the spot we just saved it for printing)
+		PHA ; push sum
 		LDA		byte_48
 		CLC
 		ADC		#$41
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
-		PLA
+		PLA ; pop sum
 		LDX		byte_45
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; opens the Spell menu ready to pick a caster
 sub_B1F6:
 		JSR		_rand
 		AND		#3
@@ -6360,6 +6397,7 @@ loc_B212:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; <wait> "<user> has recovered!" <show hp/mp info box>. For healing items I guess
 sub_B21E:
 		JSR		sub_B2B9
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
@@ -6372,6 +6410,7 @@ sub_B21E:
 		JMP		sub_9FCD
 
 ; =============== S U B	R O U T	I N E =======================================
+; "but nothing happened..." but definitely not that simple
 sub_B234:
 		JSR		sub_B2B9
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
@@ -6380,6 +6419,7 @@ sub_B234:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; <wait> maybe and do nothing
 sub_B240:
 		LDA		#$7F
 		STA		byte_AD
@@ -6387,6 +6427,7 @@ sub_B240:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "but nothing happens!" but definitely not that simple
 sub_B246:
 		JSR		sub_B2B9
 		LDA		#$21
@@ -6412,6 +6453,7 @@ _wrap_bE_s4_msg_m00_arg0_idx40_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "<actor> sneezes!" -- but it can't be this simple. is this goof-off tricks? is it only working during battles?
 sub_B269:
 		JSR		_b0_s33
 		LDA		word_4
@@ -6456,6 +6498,7 @@ sub_B298:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; sets the text parameter u24AttackDisplayDamage=A
 sub_B2AD:
 		STA		byte_63F
 		LDA		#0
