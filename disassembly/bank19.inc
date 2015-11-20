@@ -1,6 +1,7 @@
 
 		ORG $8000
 
+_b19_s0_ptr:
 		.WORD	_b19_s0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -30,7 +31,7 @@ _b19_s0:
 		LDA		off_2667D5+1
 		STA		word_6C+1
 		JSR		sub_264077
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 		LDA		off_2667D7
 		STA		word_6C
 		LDA		off_2667D7+1
@@ -41,7 +42,7 @@ _b19_s0:
 		STA		word_6
 		LDA		#$32
 		STA		word_6+1
-		FAR		1, $8F		; _b18_s1
+		FAR		$01,$8F		; _b18_s1
 		LDA		word_6
 		BEQ		locret_264076
 		LDA		off_2679DD
@@ -59,7 +60,7 @@ sub_264077:
 		JSR		sub_265019
 		BCS		locret_264088
 		BVS		sub_264077
-		FAR		1, $8F		; _b18_s1
+		FAR		$01,$8F		; _b18_s1
 		LDA		word_6
 		BEQ		loc_264089
 		JMP		sub_264077

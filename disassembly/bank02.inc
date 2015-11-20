@@ -1,20 +1,35 @@
 
 		ORG $8000
 
+_b2_s0_ptr:
 		.WORD	_b2_s0
+_b2_s1_ptr:
 		.WORD	_b2_s1
+_b2_s2_ptr:
 		.WORD	_b2_s2
+_b2_s3_ptr:
 		.WORD	_b2_s3
+_b2_s4_ptr:
 		.WORD	_b2_s4
+_b2_s5_ptr:
 		.WORD	_b2_s5
+_b2_s6_screen_damage_shake_ptr:
 		.WORD	_b2_s6_screen_damage_shake
+_b2_s7_screen_spell_blink_ptr:
 		.WORD	_b2_s7_screen_spell_blink
+_b2_s8_screen_hit_blink_ptr:
 		.WORD	_b2_s8_screen_hit_blink
+_b2_s9_ptr:
 		.WORD	_b2_s9
+_b2_sA_ptr:
 		.WORD	_b2_sA
+_b2_sB_ptr:
 		.WORD	_b2_sB
+_b2_sC_ptr:
 		.WORD	_b2_sC
+_b2_sD_ptr:
 		.WORD	_b2_sD
+_b2_sE_ptr:
 		.WORD	_b2_sE
 
 _pak_data7C:
@@ -2842,7 +2857,7 @@ loc_3A342:
 		STA		_ram_pal_buf+$C,X
 		DEX
 		BNE		loc_3A342
-		FAR		0, $6F		; _b16_s0
+		FAR		$00,$6F		; _b16_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2851,7 +2866,7 @@ _b2_sB:
 		BEQ		loc_3A355
 		RTS
 loc_3A355:
-		FAR		$71, 7		; _b4_s6
+		FAR		$71,$07		; _b4_s6
 		LDA		byte_566
 		AND		#$C4
 		BEQ		loc_3A360
@@ -2917,15 +2932,15 @@ loc_3A3BC:
 		STA		byte_54C,X
 		BNE		loc_3A39B
 loc_3A3CF:
-		FAR		$77, 7		; _b4_sC
+		FAR		$77,$07		; _b4_sC
 		LDA		#$3F
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		LDX		byte_51
 		JSR		sub_3A6FD
 		LDA		byte_54
 		CLC
 		ADC		#$18
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A417
 		LDA		byte_52
@@ -2991,14 +3006,14 @@ loc_3A454:
 loc_3A457:
 		LDA		#$39
 loc_3A459:
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BEQ		loc_3A46F
 		CMP		#$80
 		BCC		loc_3A46F
 		AND		#$7F
 		STA		byte_59
-		FAR		$6E, 7		; _b4_s3
+		FAR		$6E,$07		; _b4_s3
 		LDA		byte_5A
 		ORA		#$80
 loc_3A46F:
@@ -3031,7 +3046,7 @@ loc_3A498:
 		CPY		#2
 		BNE		loc_3A4B0
 		LDA		#$22
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A4A8
 		JMP		loc_3A3CF
@@ -3057,7 +3072,7 @@ loc_3A4BD:
 		LSR
 loc_3A4C9:
 		AND		#3
-		FAR		$14, $17		; _b1_s14
+		FAR		$14,$17		; _b1_s14
 		CMP		#$FF
 		BNE		loc_3A4D5
 		JMP		loc_3A3CF
@@ -3101,7 +3116,7 @@ loc_3A500:
 		STA		byte_CF
 		TYA
 		PHA
-		FAR		$9C, 7		; _b0_s45
+		FAR		$9C,$07		; _b0_s45
 		PLA
 		TAY
 		PLA
@@ -3137,13 +3152,13 @@ loc_3A536:
 		STA		byte_66
 		BCS		loc_3A569
 		LDA		#$3D
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		LDA		#$20
-		FAR		$74, 7		; _b4_s9
-		FAR		$70, 7		; _b4_s5
-		FAR		$70, 7		; _b4_s5
-		FAR		$70, 7		; _b4_s5
-		FAR		$70, 7		; _b4_s5
+		FAR		$74,$07		; _b4_s9
+		FAR		$70,$07		; _b4_s5
+		FAR		$70,$07		; _b4_s5
+		FAR		$70,$07		; _b4_s5
+		FAR		$70,$07		; _b4_s5
 		JMP		loc_3A3CF
 loc_3A569:
 		LDA		#$78
@@ -3164,14 +3179,14 @@ loc_3A582:
 		TYA
 		PHA
 		TXA
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BEQ		loc_3A59B
 		CMP		#$80
 		BCC		loc_3A59B
 		AND		#$7F
 		STA		byte_59
-		FAR		$6E, 7		; _b4_s3
+		FAR		$6E,$07		; _b4_s3
 		LDA		byte_5A
 		ORA		#$80
 loc_3A59B:
@@ -3190,17 +3205,17 @@ loc_3A5A8:
 		LDA		word_4
 		BNE		loc_3A5C9
 		LDA		#$3D
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		LDA		byte_CE
 		STA		byte_D2
 		LDA		#$D1
-		FAR		$74, 7		; _b4_s9
+		FAR		$74,$07		; _b4_s9
 		LDX		#$1E
 		JSR		_vblank_count
 		JMP		loc_3A3CF
 loc_3A5C9:
 		LDA		#$3B
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A5D5
 		JMP		loc_3A3CF
@@ -3214,13 +3229,13 @@ loc_3A5D5:
 		STA		byte_CF
 		STA		byte_45
 		STA		byte_D3
-		FAR		$A, $17		; _b0_s60
+		FAR		$0A,$17		; _b0_s60
 		BNE		loc_3A5F4
-		FAR		8, $17		; _b0_s5E
+		FAR		$08,$17		; _b0_s5E
 		BCC		loc_3A5F4
 		INC		byte_46
 loc_3A5F4:
-		FAR		9, $17		; _b0_s5F
+		FAR		$09,$17		; _b0_s5F
 		BCC		loc_3A5FD
 		INC		byte_46
 		INC		byte_46
@@ -3228,13 +3243,13 @@ loc_3A5FD:
 		LDA		byte_46
 		BNE		loc_3A61D
 		LDA		#$3D
-		FAR		$72, 7		; _b4_s7
-		FAR		2, 7		; _bE_s2
-		FAR		5, 7		; _bE_s5
+		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_bE_s2
+		FARX	_bE_s5
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$BF
-		FAR		$74, 7		; _b4_s9
+		FAR		$74,$07		; _b4_s9
 		LDX		#$3C
 		JSR		_vblank_count
 		JMP		loc_3A5A8
@@ -3244,7 +3259,7 @@ loc_3A61D:
 		CMP		#2
 		BEQ		loc_3A642
 		LDA		#$21
-		FAR		$72, 7		; _b4_s7
+		FAR		$72,$07		; _b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A631
 loc_3A62E:
@@ -3304,20 +3319,20 @@ loc_3A677:
 		RTS
 loc_3A689:
 		LDA		#$3D
-		FAR		$72, 7		; _b4_s7
-		FAR		$75, 7		; _b4_sA
+		FAR		$72,$07		; _b4_s7_window_display_safe
+		FAR		$75,$07		; _b4_sA
 		LDA		#$83
-		FAR		$A0, 7		; _bB_s3_far_apu_load
-		FAR		$2D, $17		; _bD_s26
+		FAR		$A0,$07		; _bB_s3_apu_load
+		FAR		$2D,$17		; _bD_s26
 		LDA		word_4
 		STA		byte_D2
 		LDX		#$50
-		FAR		$D7, 7		; _b4_s1D
+		FAR		$D7,$07		; _b4_s1D
 		CMP		#$50
 		BEQ		loc_3A6A8
 		LDA		#8
 loc_3A6A8:
-		FAR		$73, 7		; _b4_s8
+		FAR		$73,$07		; _b4_s8
 		LDA		byte_6A6B
 		BNE		loc_3A6D7
 		LDA		byte_566
@@ -3333,15 +3348,15 @@ loc_3A6A8:
 		CMP		byte_3A6F9,X
 		BCC		loc_3A6D7
 loc_3A6CC:
-		FAR		$AA, 7		; _b0_s47
-		FAR		$70, 7		; _b4_s5
+		FAR		$AA,$07		; _b0_s47
+		FAR		$70,$07		; _b4_s5
 		PLA
 		PLA
 		LDA		#$FD
 		RTS
 loc_3A6D7:
 		LDA		#$17
-		FAR		$73, 7		; _b4_s8
+		FAR		$73,$07		; _b4_s8
 		LDA		byte_566
 		CLC
 		ADC		#1
@@ -3415,7 +3430,7 @@ loc_3A752:
 		STA		word_3E
 		LDA		off_3A946+1
 		STA		word_3E+1
-		FAR		$97, $17		; _bA_sB
+		FAR		$97,$17		; _bA_sB
 		BCC		loc_3A750
 		TAX
 		LDA		#$B2
@@ -3516,8 +3531,8 @@ loc_3A7F9:
 		CMP		#$10
 		BNE		loc_3A805
 		LDA		#$8E
-		FAR		$A0, 7		; _bB_s3_far_apu_load
-		FAR		$66, 7		; _b2_s7_screen_spell_blink
+		FAR		$A0,$07		; _bB_s3_apu_load
+		FAR		$66,$07		; _b2_s7_screen_spell_blink
 loc_3A805:
 		JSR		sub_3A7E9
 		LDX		byte_47
@@ -3538,13 +3553,13 @@ loc_3A81D:
 		BEQ		loc_3A831
 		JSR		sub_3A88D
 		BCC		loc_3A852
-		FAR		$B1, 7		; _b4_s12
+		FAR		$B1,$07		; _b4_s12
 		STA		byte_D3
 loc_3A831:
 		LDX		byte_47
 		LDA		byte_3A950,X
 		JSR		sub_3A7E9
-		FAR		$B1, 7		; _b4_s12
+		FAR		$B1,$07		; _b4_s12
 		STA		byte_D2
 		LDX		byte_47
 		LDA		byte_3A965,X
@@ -3727,8 +3742,8 @@ _b2_sE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A93C:
-		FAR		$73, 7		; _b4_s8
-		FAR		$D0, 7		; _b4_s16
+		FAR		$73,$07		; _b4_s8
+		FAR		$D0,$07		; _b4_s16
 		SEC
 		RTS
 off_3A944:

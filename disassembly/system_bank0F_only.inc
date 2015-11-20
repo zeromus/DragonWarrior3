@@ -864,7 +864,7 @@ loc_1771C5:
 		CLC
 		ADC		#7
 		STA		word_4+1
-		FAR		9, 7		; _bE_s9
+		FARX	_bE_s9
 		BCS		sub_1771F8
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1515,7 +1515,7 @@ loc_177650:
 		ORA		byte_6BB
 		STA		(word_6C),Y
 		LDA		byte_6BB
-		FAR		$13, 7		; _b5_s4
+		FARX	_b5_s4
 		JSR		sub_1773E9
 		JMP		sub_177613
 		RTS
@@ -2013,11 +2013,11 @@ loc_177930:
 		JSR		sub_177960
 		JSR		sub_177981
 		JSR		sub_177CFC
-		FAR		$E6, 7		; _bE_s2E
-		FAR		$E7, 7		; _bE_s2F
-		FAR		$E8, 7		; _bE_s30
-		FAR		$1E, $17		; _bE_s16
-		FAR		$11, $17		; _b0_s49
+		FAR		$E6,$07		; _bE_s2E
+		FAR		$E7,$07		; _bE_s2F
+		FAR		$E8,$07		; _bE_s30
+		FAR		$1E,$17		; _bE_s16
+		FAR		$11,$17		; _b0_s49
 		LDX		#0
 		LDA		#$80
 loc_177950:
@@ -2025,7 +2025,7 @@ loc_177950:
 		INX
 		CPX		#$10
 		BNE		loc_177950
-		FAR		$47, $17		; _bC_s27
+		FAR		$47,$17		; _bC_s27
 		LDA		#0
 		STA		byte_8E
 		RTS

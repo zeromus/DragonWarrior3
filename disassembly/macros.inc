@@ -76,6 +76,8 @@ _Z = $3E
 _ldt = $57
 ; apostrophe right up
 _apa = $62
+; arrow
+_arrow = $64
 ; apostrophe left up
 _apu = $66
 ; apostrope left down
@@ -99,6 +101,16 @@ _ddt = $76
 
 	MAC FAR
 		BRK
-		.BYTE	  {1}
-		.BYTE	  {2}
+		.BYTE	{1}
+		.BYTE	{2}
+	ENDM
+
+	MAC IDX
+		.BYTE	[[{1}_ptr-$8000]>>1]
+	ENDM
+
+	MAC FARX
+		BRK
+		.BYTE	[[{1}_idx-_sys0_sub_idx_lib]&$FF]
+		.BYTE	[$07|[[[{1}_idx-_sys0_sub_idx_lib]>>4]&$10]]
 	ENDM

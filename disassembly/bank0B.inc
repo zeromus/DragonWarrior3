@@ -3,11 +3,17 @@
 
 		.WORD	0					; do not remove, it's a padding for sub table below!
 		.WORD	0
+_bB_s2_ptr:
 		.WORD	_bB_s2
+_bB_s3_apu_load_ptr:
 		.WORD	_bB_s3_apu_load
+_bB_s4_ptr:
 		.WORD	_bB_s4
+_bB_s5_ptr:
 		.WORD	_bB_s5
+_bB_s6_ptr:
 		.WORD	_bB_s6
+_bB_s7_ptr:
 		.WORD	_bB_s7
 
 _apu_music_lib0:

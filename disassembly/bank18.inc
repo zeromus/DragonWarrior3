@@ -1,7 +1,9 @@
 
 		ORG $8000
 
+_b18_s0_intro_animation_ptr:
 		.WORD	_b18_s0_intro_animation
+_b18_s1_ptr:
 		.WORD	_b18_s1
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -17,7 +19,7 @@ loc_24C019:
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		sub_24C227
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 		LDA		#0
 		STA		byte_F
 		LDA		#4
@@ -48,9 +50,9 @@ loc_24C042:
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C055:
 		LDA		#0
-		FAR		$A5, 7		; _bB_s6
+		FAR		$A5,$07		; _bB_s6
 		LDA		#0
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 		LDX		#0
 		LDA		#$F
 loc_24C063:
@@ -78,8 +80,8 @@ sub_24C084:
 		LDX		#$14
 		JSR		sub_24C0F3
 		LDA		#$10
-		FAR		$A5, 7		; _bB_s6
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A5,$07		; _bB_s6
+		FAR		$A1,$07		; _bB_s4
 		JMP		sub_24C055
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -391,7 +393,7 @@ sub_24C2B1:
 		BEQ		locret_24C2BC
 		CMP		#$FF
 		BEQ		locret_24C2BC
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 locret_24C2BC:
 		RTS
 ;_unused_31:
@@ -1009,12 +1011,12 @@ loc_24E74D:
 		JMP		loc_24E7E8
 loc_24E761:
 		LDA		#$10
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 		LDA		#0
-		FAR		$A5, 7		; _bB_s6
+		FAR		$A5,$07		; _bB_s6
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		FAR		$A6, $2F		; _sys12
+		FAR		$A6,$2F		; _sys12
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1026,16 +1028,16 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		FAR		$A6, $2F		; _sys12
+		FAR		$A6,$2F		; _sys12
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		FAR		$A6, $2F		; _sys12
+		FAR		$A6,$2F		; _sys12
 		LDY		#0
 loc_24E7A0:
 		TYA
 		PHA
-		FAR		$A5, 7		; _bB_s6
+		FAR		$A5,$07		; _bB_s6
 		PLA
 		TAY
 		LDX		#7
@@ -1120,7 +1122,7 @@ loc_24E829:
 		BEQ		loc_24E848
 		CMP		#$FF
 		BEQ		loc_24E848
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 loc_24E848:
 		LDA		_nmi_counter
 		AND		#7
@@ -1128,7 +1130,7 @@ loc_24E848:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E85A
-		FAR		$A5, 7		; _bB_s6
+		FAR		$A5,$07		; _bB_s6
 		INC		byte_8
 loc_24E85A:
 		LDX		#1
@@ -1151,7 +1153,7 @@ loc_24E86A:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E88A
-		FAR		$A5, 7		; _bB_s6
+		FAR		$A5,$07		; _bB_s6
 		INC		byte_8
 loc_24E88A:
 		JMP		loc_24E86A
@@ -1264,7 +1266,7 @@ nullsub_1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_24E91A:
-		FAR		0, $9F		; _b19_s0
+		FAR		$00,$9F		; _b19_s0
 		LDA		word_6
 		BEQ		loc_24E922
 		RTS
