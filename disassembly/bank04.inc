@@ -10,7 +10,7 @@ _b4_s2_ptr:
 _b4_s3_ptr:
 		.WORD	_b4_s3
 _b4_s4_ptr:
-		.WORD	_b4_s4
+		.WORD	0 ; _b4_s4
 _b4_s5_do_message_speed_delay_ptr:
 		.WORD	_b4_s5_do_message_speed_delay
 _b4_s6_ptr:
@@ -24,7 +24,7 @@ _b4_s9_ptr:
 _b4_sA_ptr:
 		.WORD	_b4_sA
 _b4_sB_ptr:
-		.WORD	_b4_sB
+		.WORD	0 ; _b4_sB
 _b4_sC_ptr:
 		.WORD	_b4_sC
 _b4_dD_spells_list_ptr:
@@ -43,7 +43,7 @@ _b4_s13_ptr:
 _b4_s14_ptr:
 		.WORD	_b4_s14
 _b4_d15_ptr:
-		.WORD	_b4_d15
+		.WORD	0 ; _b4_d15
 _b4_s16_do_half_message_speed_delay_ptr:
 		.WORD	_b4_s16_do_half_message_speed_delay
 _b4_s17_ptr:
@@ -109,14 +109,14 @@ loc_68061:
 		LDA		#$FD
 		STA		byte_32
 		JSR		_b4_s22
-		FAR		$D8,$07		; _b1_s9
+		FARX	_b1_s9
 loc_68080:
-		FAR		$DA,$07		; _b1_sB
+		FARX	_b1_sB
 		JSR		sub_6814E
-		FAR		$79,$07		; _b2_sB
+		FARX	_b2_sB
 		CMP		#$FD
 		BEQ		loc_680D6
-		FAR		$9B,$17		; _bA_s2
+		FARX	_bA_s2
 		JSR		sub_6AE36
 		JSR		sub_6AE51
 		INC		byte_6A66
@@ -124,14 +124,14 @@ loc_68080:
 		CMP		#$FF
 		BNE		loc_680AA
 loc_680A0:
-		FAR		$DB,$07		; _b1_sC
+		FARX	_b1_sC
 		LDA		#0
 		STA		byte_32
-		JMP		sub_174BB3
+		JMP		_MAIN_ENTRY
 loc_680AA:
 		CMP		#$FE
 		BNE		loc_680B4
-		FAR		$DC,$07		; _b1_sD
+		FARX	_b1_sD
 		JMP		loc_680D6
 loc_680B4:
 		BIT		byte_6A63
@@ -146,13 +146,13 @@ loc_680B4:
 		CMP		#$A
 		BCS		loc_6810D
 loc_680CD:
-		FAR		$D9,$07		; _b1_sA
+		FARX	_b1_sA
 		LDA		byte_4C
 		BNE		loc_68080
 		BEQ		loc_680A0
 loc_680D6:
-		FAR		$E9,$07		; _bE_s31
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bE_s31
+		FARX	_bB_s3_apu_load
 loc_680DC:
 		FAR		$49,$17		; _b0_s50
 		LDA		byte_60B7
@@ -878,7 +878,7 @@ sub_68576:
 		JSR		sub_6B91D
 		TAX
 		LDA		byte_6A6F,X
-		FAR		$69,$07		; _b2_sA
+		FARX	_b2_sA
 		BCC		loc_6859E
 loc_68588:
 		CLC
@@ -894,7 +894,7 @@ sub_6858A:
 		SBC		#$3B
 		TAX
 		LDA		byte_68D88,X
-		FAR		$69,$07		; _b2_sA
+		FARX	_b2_sA
 		BCS		loc_68588
 loc_6859E:
 		SEC
@@ -1980,7 +1980,7 @@ sub_68C64:
 		JMP		loc_68D56
 loc_68C7C:
 		LDA		byte_45
-		FAR		$69,$07		; _b2_sA
+		FARX	_b2_sA
 		BCC		loc_68C86
 		JMP		loc_68D56
 loc_68C86:
@@ -2292,7 +2292,7 @@ loc_68E8E:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E96:
 		JSR		sub_6983C
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
 		LDA		byte_558,X
 		SEC
@@ -2317,7 +2317,7 @@ loc_68EC4:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68EC7:
 		JSR		sub_6983C
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
 		LDA		byte_558,X
 		SEC
@@ -2497,7 +2497,7 @@ sub_68FE0:
 sub_68FEB:
 		PHA
 		JSR		sub_6983C
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		PLA
 		STA		byte_D3
 		FAR		$02,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
@@ -2929,9 +2929,9 @@ sub_692D4:
 		LDA		#$AD
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		#$9C
-		FAR		$A0,$07		; _bB_s3_apu_load
-		FAR		$EA,$07		; _b2_s8_screen_hit_blink
-		FAR		$EA,$07		; _b2_s8_screen_hit_blink
+		FARX	_bB_s3_apu_load
+		FARX	_b2_s8_screen_hit_blink
+		FARX	_b2_s8_screen_hit_blink
 		FAR		$76,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		byte_500
 		PHA
@@ -3044,7 +3044,7 @@ loc_6939C:
 		JSR		sub_6B91D
 		TAX
 		LDA		byte_6A6F,X
-		FAR		$69,$07		; _b2_sA
+		FARX	_b2_sA
 		BCS		loc_693EA
 		LDA		byte_64
 		ASL
@@ -3106,7 +3106,7 @@ loc_6940A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_69415:
 		JSR		sub_6983C
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		LDA		#$36
 		STA		word_4
 		LDX		byte_51
@@ -3141,7 +3141,7 @@ loc_69450:
 ; =============== S U B	R O U T	I N E =======================================
 sub_69453:
 		JSR		sub_6983C
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		LDA		#$34
 		STA		word_4
 		LDX		byte_51
@@ -3266,7 +3266,7 @@ loc_694FD:
 		AND		#$10
 		BEQ		loc_69536
 loc_6952A:
-		FAR		$E5,$07		; _bA_sA
+		FARX	_bA_sA
 		FAR		$73,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JSR		_b4_sA
 		JMP		loc_6953C
@@ -4612,7 +4612,7 @@ sub_69E5B:
 		BNE		loc_69E7C
 		STA		byte_50
 		JSR		_b4_s5_do_message_speed_delay
-		FAR		$12,$17		; _b6_s6
+		FARX	_b6_s6_0
 		BCC		loc_69E7C
 		LDA		byte_60B7
 		AND		#$DF
@@ -5703,7 +5703,7 @@ loc_6A5A6:
 		ORA		word_4+1
 		BEQ		sub_6A560
 		JSR		sub_6A5B8
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
 		JSR		_b4_s21_message_half_delay_or_wait_for_keypress
 		JMP		sub_6A4E4
 
@@ -6434,17 +6434,17 @@ _pads_copy_to_tmp:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA34:
-		LDA		#$62
+		LDA		#[_b2_s3_idx-_sys0_sub_idx_lib]
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA38:
-		LDA		#$63
+		LDA		#[_b2_s4_idx-_sys0_sub_idx_lib]
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3C:
-		LDA		#$64
+		LDA		#[_b2_s5_idx-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3E:
@@ -6455,7 +6455,7 @@ sub_6AA3E:
 		PHA
 		JSR		sub_6B595
 		LDY		byte_42
-		JSR		_sys00_safe
+		JSR		_sys0_safe
 		PLA
 		TAY
 		PLA
@@ -7154,8 +7154,8 @@ loc_6AEA2:
 		LDX		#0
 		LDY		#0
 loc_6AEA6:
-		LDA		#$90
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		AND		#$80
 		BMI		loc_6AEBA
 loc_6AEAF:
@@ -7182,8 +7182,8 @@ loc_6AED0:
 loc_6AED7:
 		LDA		byte_6B270,Y
 		STA		byte_49
-		LDA		#$90
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		AND		#4
 		BEQ		loc_6AEEC
 		TXA
@@ -7484,7 +7484,7 @@ loc_6B0B6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B0B9:
 		STA		byte_CF
-		FAR		$9C,$07		; _b0_s45
+		FARX	_b0_s45
 		LDA		word_4
 		RTS
 
@@ -7503,8 +7503,8 @@ sub_6B0C1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B0DB:
-		FAR		$A0,$07		; _bB_s3_apu_load
-		FAR		$F0,$07		; _bB_s7
+		FARX	_bB_s3_apu_load
+		FARX	_bB_s7
 		FAR		$10,$2F		; _sys12
 		RTS
 
@@ -7897,7 +7897,7 @@ loc_6B372:
 		LDA		#$40
 		JSR		sub_6B2F7
 		LDA		#$9A
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bB_s3_apu_load
 		FAR		$56,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JSR		_b4_sB
 		JSR		sub_6B2B3
@@ -9175,7 +9175,7 @@ sub_6BACB:
 ; =============== S U B	R O U T	I N E =======================================
 _get_bank0_ptr_byte_safe:
 		LDA		#0
-		JMP		_get_far_ptr_byte_safe
+		JMP		_far_byte_read_by_ptr
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s23:

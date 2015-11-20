@@ -1030,7 +1030,7 @@ _get_far_pak_data_ptr_byte_safe:
 		LDY		#0
 		LDX		#_pak_data_ptr
 		LDA		_tmp_pak_data_bank
-		JSR		_get_far_ptr_byte_safe
+		JSR		_far_byte_read_by_ptr
 		STA		word_B7
 		PLA
 		TAY
@@ -2751,7 +2751,7 @@ loc_3A27B:
 loc_3A29F:
 		LDA		#0
 		LDX		#word_4
-		JSR		_get_far_ptr_byte_safe
+		JSR		_far_byte_read_by_ptr
 		AND		#$3F
 		CMP		#$3B
 		BCS		loc_3A2B6
@@ -2866,7 +2866,7 @@ _b2_sB:
 		BEQ		loc_3A355
 		RTS
 loc_3A355:
-		FAR		$71,$07		; _b4_s6
+		FARX	_b4_s6
 		LDA		byte_566
 		AND		#$C4
 		BEQ		loc_3A360
@@ -2932,15 +2932,15 @@ loc_3A3BC:
 		STA		byte_54C,X
 		BNE		loc_3A39B
 loc_3A3CF:
-		FAR		$77,$07		; _b4_sC
+		FARX	_b4_sC
 		LDA		#$3F
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		LDX		byte_51
 		JSR		sub_3A6FD
 		LDA		byte_54
 		CLC
 		ADC		#$18
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A417
 		LDA		byte_52
@@ -3006,14 +3006,14 @@ loc_3A454:
 loc_3A457:
 		LDA		#$39
 loc_3A459:
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BEQ		loc_3A46F
 		CMP		#$80
 		BCC		loc_3A46F
 		AND		#$7F
 		STA		byte_59
-		FAR		$6E,$07		; _b4_s3
+		FARX	_b4_s3
 		LDA		byte_5A
 		ORA		#$80
 loc_3A46F:
@@ -3046,7 +3046,7 @@ loc_3A498:
 		CPY		#2
 		BNE		loc_3A4B0
 		LDA		#$22
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A4A8
 		JMP		loc_3A3CF
@@ -3072,7 +3072,7 @@ loc_3A4BD:
 		LSR
 loc_3A4C9:
 		AND		#3
-		FAR		$14,$17		; _b1_s14
+		FARX	_b1_s14
 		CMP		#$FF
 		BNE		loc_3A4D5
 		JMP		loc_3A3CF
@@ -3104,8 +3104,8 @@ loc_3A500:
 		STA		byte_6A4B,X
 		PLA
 		TAY
-		LDA		#$78
-		JSR		_get_syscall0_data_byte_Y
+		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_y
 		AND		#$3F
 		STA		byte_CF
 		LDA		byte_D0
@@ -3116,7 +3116,7 @@ loc_3A500:
 		STA		byte_CF
 		TYA
 		PHA
-		FAR		$9C,$07		; _b0_s45
+		FARX	_b0_s45
 		PLA
 		TAY
 		PLA
@@ -3152,17 +3152,17 @@ loc_3A536:
 		STA		byte_66
 		BCS		loc_3A569
 		LDA		#$3D
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		LDA		#$20
-		FAR		$74,$07		; _b4_s9
-		FAR		$70,$07		; _b4_s5
-		FAR		$70,$07		; _b4_s5
-		FAR		$70,$07		; _b4_s5
-		FAR		$70,$07		; _b4_s5
+		FARX	_b4_s9
+		FARX	_b4_s5_do_message_speed_delay
+		FARX	_b4_s5_do_message_speed_delay
+		FARX	_b4_s5_do_message_speed_delay
+		FARX	_b4_s5_do_message_speed_delay
 		JMP		loc_3A3CF
 loc_3A569:
-		LDA		#$78
-		JSR		_get_syscall0_data_byte_Y
+		LDA		#[_b4_dD_spells_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_y
 		BMI		loc_3A57B
 		LDX		#0
 		AND		#$40
@@ -3179,14 +3179,14 @@ loc_3A582:
 		TYA
 		PHA
 		TXA
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BEQ		loc_3A59B
 		CMP		#$80
 		BCC		loc_3A59B
 		AND		#$7F
 		STA		byte_59
-		FAR		$6E,$07		; _b4_s3
+		FARX	_b4_s3
 		LDA		byte_5A
 		ORA		#$80
 loc_3A59B:
@@ -3205,17 +3205,17 @@ loc_3A5A8:
 		LDA		word_4
 		BNE		loc_3A5C9
 		LDA		#$3D
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		LDA		byte_CE
 		STA		byte_D2
 		LDA		#$D1
-		FAR		$74,$07		; _b4_s9
+		FARX	_b4_s9
 		LDX		#$1E
 		JSR		_vblank_count
 		JMP		loc_3A3CF
 loc_3A5C9:
 		LDA		#$3B
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A5D5
 		JMP		loc_3A3CF
@@ -3229,13 +3229,13 @@ loc_3A5D5:
 		STA		byte_CF
 		STA		byte_45
 		STA		byte_D3
-		FAR		$0A,$17		; _b0_s60
+		FARX	_b0_s60
 		BNE		loc_3A5F4
-		FAR		$08,$17		; _b0_s5E
+		FARX	_b0_s5E
 		BCC		loc_3A5F4
 		INC		byte_46
 loc_3A5F4:
-		FAR		$09,$17		; _b0_s5F
+		FARX	_b0_s5F
 		BCC		loc_3A5FD
 		INC		byte_46
 		INC		byte_46
@@ -3243,13 +3243,13 @@ loc_3A5FD:
 		LDA		byte_46
 		BNE		loc_3A61D
 		LDA		#$3D
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		FARX	_bE_s2
 		FARX	_bE_s5
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$BF
-		FAR		$74,$07		; _b4_s9
+		FARX	_b4_s9
 		LDX		#$3C
 		JSR		_vblank_count
 		JMP		loc_3A5A8
@@ -3259,7 +3259,7 @@ loc_3A61D:
 		CMP		#2
 		BEQ		loc_3A642
 		LDA		#$21
-		FAR		$72,$07		; _b4_s7_window_display_safe
+		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BNE		loc_3A631
 loc_3A62E:
@@ -3276,8 +3276,8 @@ loc_3A635:
 		BNE		loc_3A677
 loc_3A642:
 		LDX		byte_45
-		LDA		#$90
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d42_effects_list_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		STA		byte_46
 		BIT		byte_46
 		BVS		loc_3A660
@@ -3319,20 +3319,20 @@ loc_3A677:
 		RTS
 loc_3A689:
 		LDA		#$3D
-		FAR		$72,$07		; _b4_s7_window_display_safe
-		FAR		$75,$07		; _b4_sA
+		FARX	_b4_s7_window_display_safe
+		FARX	_b4_sA
 		LDA		#$83
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bB_s3_apu_load
 		FAR		$2D,$17		; _bD_s26
 		LDA		word_4
 		STA		byte_D2
 		LDX		#$50
-		FAR		$D7,$07		; _b4_s1D
+		FARX	_b4_s1D
 		CMP		#$50
 		BEQ		loc_3A6A8
 		LDA		#8
 loc_3A6A8:
-		FAR		$73,$07		; _b4_s8
+		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		byte_6A6B
 		BNE		loc_3A6D7
 		LDA		byte_566
@@ -3348,15 +3348,15 @@ loc_3A6A8:
 		CMP		byte_3A6F9,X
 		BCC		loc_3A6D7
 loc_3A6CC:
-		FAR		$AA,$07		; _b0_s47
-		FAR		$70,$07		; _b4_s5
+		FARX	_b0_s47
+		FARX	_b4_s5_do_message_speed_delay
 		PLA
 		PLA
 		LDA		#$FD
 		RTS
 loc_3A6D7:
 		LDA		#$17
-		FAR		$73,$07		; _b4_s8
+		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		byte_566
 		CLC
 		ADC		#1
@@ -3433,8 +3433,8 @@ loc_3A752:
 		FAR		$97,$17		; _bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#$B2
-		JSR		_get_syscall0_data_byte_X
+		LDA		#[_b0_d3F_idx-_sys0_sub_idx_lib]
+		JSR		_sys0_byte_read_x
 		TAX
 		STA		byte_47
 		CMP		#$F
@@ -3531,8 +3531,8 @@ loc_3A7F9:
 		CMP		#$10
 		BNE		loc_3A805
 		LDA		#$8E
-		FAR		$A0,$07		; _bB_s3_apu_load
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_bB_s3_apu_load
+		FARX	_b2_s7_screen_spell_blink
 loc_3A805:
 		JSR		sub_3A7E9
 		LDX		byte_47
@@ -3553,13 +3553,13 @@ loc_3A81D:
 		BEQ		loc_3A831
 		JSR		sub_3A88D
 		BCC		loc_3A852
-		FAR		$B1,$07		; _b4_s12
+		FARX	_b4_s12
 		STA		byte_D3
 loc_3A831:
 		LDX		byte_47
 		LDA		byte_3A950,X
 		JSR		sub_3A7E9
-		FAR		$B1,$07		; _b4_s12
+		FARX	_b4_s12
 		STA		byte_D2
 		LDX		byte_47
 		LDA		byte_3A965,X
@@ -3742,8 +3742,8 @@ _b2_sE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A93C:
-		FAR		$73,$07		; _b4_s8
-		FAR		$D0,$07		; _b4_s16
+		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		FARX	_b4_s16_do_half_message_speed_delay
 		SEC
 		RTS
 off_3A944:

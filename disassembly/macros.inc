@@ -3,6 +3,7 @@ SYSTEM_SHARED_ORG	=	$C000
 SYSTEM_FOOTER_ORG	=	$FF8E
 SYSTEM_VECTORS_ORG  =   $FFD8
 SYSTEM_DPCM_ORG     =   $F000
+SYSCALL_PTR_ORG     =   $8000
 
 ; == FONTS ==
 
@@ -105,8 +106,16 @@ _ddt = $76
 		.BYTE	{2}
 	ENDM
 
-	MAC IDX
-		.BYTE	[[{1}_ptr-$8000]>>1]
+	MAC PTR_IDX
+		.BYTE	[[{1}_ptr-SYSCALL_PTR_ORG]>>1]
+	ENDM
+	
+	MAC SYS_IDX
+		IF [{1}_idx-_sys0_sub_idx_lib]&$FF00
+			[{1}_idx-_sys0_sub_idx_lib-256]&FF
+		ELSE
+			[{1}_idx-_sys0_sub_idx_lib]
+		ENDIF
 	ENDM
 
 	MAC FARX

@@ -2013,11 +2013,11 @@ loc_177930:
 		JSR		sub_177960
 		JSR		sub_177981
 		JSR		sub_177CFC
-		FAR		$E6,$07		; _bE_s2E
-		FAR		$E7,$07		; _bE_s2F
-		FAR		$E8,$07		; _bE_s30
-		FAR		$1E,$17		; _bE_s16
-		FAR		$11,$17		; _b0_s49
+		FARX	_bE_s2E
+		FARX	_bE_s2F
+		FARX	_bE_s30
+		FARX	_bE_s16
+		FARX	_b0_s49
 		LDX		#0
 		LDA		#$80
 loc_177950:

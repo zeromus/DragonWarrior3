@@ -11,15 +11,15 @@ _bA_s3_ptr:
 _bA_s4_div24_to_8_ptr:
 		.WORD	_bA_s4_div24_to_8
 _bA_s5_add16_to_24_ptr:
-		.WORD	_bA_s5_add16_to_24
+		.WORD	0 ; _bA_s5_add16_to_24
 _bA_s6_ptr:
 		.WORD	_bA_s6
 _bA_s7_nullsub_ptr:
-		.WORD	_bA_s7_nullsub
+		.WORD	0 ; _bA_s7_nullsub
 _bA_s8_ptr:
 		.WORD	_bA_s8
 _bA_s9_nullsub_ptr:
-		.WORD	_bA_s9_nullsub
+		.WORD	0 ; _bA_s9_nullsub
 _bA_sA_ptr:
 		.WORD	_bA_sA
 _bA_sB_ptr:
@@ -494,24 +494,24 @@ _bA_s5_add16_to_24:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bA_s9_nullsub:
-		RTS
+;_bA_s9_nullsub:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s8:
 		FAR		$81,$2F		; _sys12
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 		FAR		$91,$2F		; _sys12
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
 		JSR		sub_F834B
-		FAR		$D4,$07		; _b4_s1A
+		FARX	_b4_s1A
 		FAR		$91,$2F		; _sys12
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
-		FAR		$65,$07		; _b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
+		FARX	_b2_s6_screen_damage_shake
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -525,7 +525,7 @@ loc_F8352:
 		CMP		#$1E
 		BCS		loc_F8361
 		FAR		$9D,$2F		; _sys12
-		FAR		$66,$07		; _b2_s7_screen_spell_blink
+		FARX	_b2_s7_screen_spell_blink
 loc_F8361:
 		JSR		sub_17435B
 		DEC		word_4
@@ -611,7 +611,7 @@ loc_F83ED:
 		LDA		_tmp12+1
 		EOR		#$FF
 		STY		word_4
-		FAR		$B4,$07		; _b4_s14
+		FARX	_b4_s14
 		AND		#$7F
 		ASL		word_4
 		ASL		word_4
@@ -647,14 +647,14 @@ loc_F8416:
 		BCC		loc_F8462
 		LDX		byte_CE
 		LDA		byte_718,X
-		LDX		#$DF
+		LDX		#[_b0_d58_idx-_sys0_sub_idx_lib]
 		AND		#7
 		BEQ		loc_F843F
-		INX
+		LDX		#[_b0_d59_idx-_sys0_sub_idx_lib]
 loc_F843F:
 		TXA
 		LDX		byte_10
-		JSR		_get_syscall0_data_byte_X
+		JSR		_sys0_byte_read_x
 		LDX		byte_51
 		AND		#$1F
 		STA		byte_558,X
@@ -681,9 +681,9 @@ sub_F846B:
 		LDA		#$F
 		FAR		$54,$17		; _b4_s23
 		LDA		byte_CE
-		FAR		$B0,$07		; _b4_s10
+		FARX	_b4_s10
 		ORA		word_6+1
-		FAR		$B3,$07		; _b4_s13
+		FARX	_b4_s13
 		LDX		byte_51
 		RTS
 off_F847D:
@@ -696,11 +696,11 @@ byte_F8489:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sC:
-		FAR		$F2,$07		; _b5_sA
+		FARX	_b5_sA
 		JSR		sub_F8682
 		JSR		sub_F864D
 		LDA		#$94
-		FAR		$A0,$07		; _bB_s3_apu_load
+		FARX	_bB_s3_apu_load
 		JSR		sub_F84CE
 		LDA		#0
 		STA		byte_28
@@ -710,11 +710,11 @@ _bA_sC:
 _bA_sD:
 		JSR		_clear_nmi_flag_10
 		JSR		sub_17443A
-		FAR		$F2,$07		; _b5_sA
+		FARX	_b5_sA
 		JSR		sub_F8682
 		JSR		sub_F85B0
-		FAR		$E9,$07		; _bE_s31
-		FAR		$A2,$07		; _bB_s5
+		FARX	_bE_s31
+		FARX	_bB_s5
 		JSR		sub_F850A
 		LDA		#0
 		STA		byte_28
@@ -1266,8 +1266,8 @@ loc_F8C8E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bA_s7_nullsub:
-		RTS
+;_bA_s7_nullsub:
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sE:
@@ -1836,12 +1836,12 @@ sub_F9014:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F9099:
-		FAR		$A4,$07		; _b2_sC
+		FARX	_b2_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sF:
-		FAR		$21,$17		; _bE_sF
+		FARX	_bE_sF
 		FAR		$5B,$17		; _bC_s1A
 		JSR		__render_on_flag10_clear_reinit
 		JSR		sub_174CCF
@@ -1869,7 +1869,7 @@ _bA_sF:
 		LDA		#$20
 		STA		byte_60C6
 		LDA		#$29
-		FAR		$97,$07		; _bC_s0
+		FARX	_bC_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1887,7 +1887,7 @@ _bA_s10:
 		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
 		FAR		$71,$17		; _bC_s20
 		LDA		#$2B
-		FAR		$97,$07		; _bC_s0
+		FARX	_bC_s0
 locret_F9110:
 		RTS
 
@@ -1907,7 +1907,7 @@ _bA_s11:
 		FAR		$88,$77		; _sys07_msg_m00_arg1
 		FAR		$8D,$77		; _sys07_msg_m00_arg1
 		FAR		$89,$77		; _sys07_msg_m00_arg1
-		FAR		$F4,$07		; _bE_s33
+		FARX	_bE_s33
 		LDA		byte_60B7
 		ORA		#$80
 		STA		byte_60B7
@@ -1930,8 +1930,8 @@ _bA_s12:
 		AND		#$DF
 		STA		byte_60B7
 		LDA		#$7F
-		FAR		$74,$07		; _b4_s9
-		FAR		$EA,$07		; _b2_s8_screen_hit_blink
+		FARX	_b4_s9
+		FARX	_b2_s8_screen_hit_blink
 		LDX		#3
 		STX		byte_CF
 		STX		byte_D0
@@ -1955,8 +1955,8 @@ loc_F918B:
 		TAX
 		DEX
 		BPL		loc_F9170
-		FAR		$D4,$07		; _b4_s1A
-		FAR		$71,$07		; _b4_s6
+		FARX	_b4_s1A
+		FARX	_b4_s6
 		RTS
 _bA_d14:
 		.BYTE	  0,  1,  3,  3,  4,  1, $C,  7,$11,  1,$14,  2,$2A,  1,$2D,  3

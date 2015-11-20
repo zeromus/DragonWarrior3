@@ -31,7 +31,7 @@ _b19_s0:
 		LDA		off_2667D5+1
 		STA		word_6C+1
 		JSR		sub_264077
-		FAR		$A1,$07		; _bB_s4
+		FARX	_bB_s4
 		LDA		off_2667D7
 		STA		word_6C
 		LDA		off_2667D7+1
