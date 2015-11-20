@@ -95,7 +95,7 @@ loc_68061:
 		STA		byte_60B7
 		FARX	_bE_s5
 		LDA		#$FD
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		JSR		_b4_s22
 		FARX	_b1_s9
 loc_68080:
@@ -114,7 +114,7 @@ loc_68080:
 loc_680A0:
 		FARX	_b1_sC
 		LDA		#0
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		JMP		_MAIN_ENTRY
 loc_680AA:
 		CMP		#$FE
@@ -197,8 +197,8 @@ loc_68122:
 		JSR		__pause_or_skip
 		JMP		loc_680D6
 loc_68138:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$29
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		SYSX	_sys12_wrap_bB_s3_apu_load,$29
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		JMP		loc_680DC
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1535,8 +1535,8 @@ loc_6894A:
 		BPL		loc_68974
 		LDA		#$CB
 		JSR		_b4_s9
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
-		SYSX	_sys0E_wrapper_to_bE_s0,$45
+		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_sys0E_wrap_bE_s0,$45
 		PHA
 		JSR		sub_6AA51
 		PLA
@@ -1857,14 +1857,14 @@ loc_68BAB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB0:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8B
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8B
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB6:
 		LDA		#$20
 		JSR		sub_6B2BB
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8D
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8D
 		JSR		sub_6B2A3
 		BMI		loc_68BC6
 		JMP		sub_6B3D2
@@ -1880,7 +1880,7 @@ sub_68BC9:
 loc_68BD3:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$88
+		SYSX	_sys12_wrap_bB_s3_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
 		JSR		sub_6B763
 		LDA		byte_59
@@ -1940,7 +1940,7 @@ sub_68C42:
 sub_68C48:
 		JSR		sub_6B2B3
 		STA		byte_64
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$83
+		SYSX	_sys12_wrap_bB_s3_apu_load,$83
 		LDA		#$50
 		JSR		sub_6A96F
 		JSR		sub_6ADBF
@@ -2145,7 +2145,7 @@ locret_68DB0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68DB1:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$91
+		SYSX	_sys12_wrap_bB_s3_apu_load,$91
 		LDA		#$36
 		STA		word_4
 		LDX		byte_51
@@ -3352,7 +3352,7 @@ sub_69604:
 		BMI		loc_6960C
 		JMP		sub_696E8
 loc_6960C:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$89
+		SYSX	_sys12_wrap_bB_s3_apu_load,$89
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
 		JSR		sub_6B0E5
 		BCC		loc_6961A
@@ -3379,7 +3379,7 @@ loc_6962A:
 		CMP		#$A0
 		BCS		loc_69647
 loc_6963E:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8C
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
 loc_69647:
@@ -3438,7 +3438,7 @@ loc_696AD:
 		CMP		word_6+1
 		BCS		loc_696C9
 loc_696B6:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$88
+		SYSX	_sys12_wrap_bB_s3_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10
 		JSR		_sram_b0_s17
 		JSR		sub_6ADA4
@@ -3458,7 +3458,7 @@ loc_696DC:
 		JMP		loc_6A42E
 loc_696DF:
 		JSR		sub_6B5B7
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8C
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3590,7 +3590,7 @@ sub_697CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697D0:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$91
+		SYSX	_sys12_wrap_bB_s3_apu_load,$91
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36
 		LDA		#$14
 		STA		byte_55
@@ -3656,7 +3656,7 @@ nullsub_11:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6983C:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8E
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4560,7 +4560,7 @@ sub_69E5B:
 		AND		#$DF
 		STA		byte_60B7
 		LDA		#0
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		LDX		#$FB
 		TXS
 		JMP		loc_174E92
@@ -5433,7 +5433,7 @@ loc_6A42E:
 		BCS		loc_6A45F
 		LDA		byte_6A6B
 		BNE		loc_6A45F
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$99
+		SYSX	_sys12_wrap_bB_s3_apu_load,$99
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E
 		JSR		sub_6ADB6
@@ -5470,7 +5470,7 @@ loc_6A478:
 		LDA		word_4+1
 		PHA
 		JSR		sub_6B697
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$87
+		SYSX	_sys12_wrap_bB_s3_apu_load,$87
 		LDA		#$C
 		JSR		sub_6A96F
 		JSR		sub_6AA3C
@@ -5493,7 +5493,7 @@ loc_6A478:
 locret_6A4C8:
 		RTS
 loc_6A4C9:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8C
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
 		LDY		#$22
 		JSR		sub_6B2B3
 		BPL		loc_6A4D5
@@ -5577,7 +5577,7 @@ sub_6A544:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A560:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8D
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8D
 		JSR		sub_6A569
 		JMP		loc_6A4C9
 
@@ -5640,7 +5640,7 @@ sub_6A5B8:
 		LDA		#0
 		STA		byte_641
 		JSR		_sram_b0_s5
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$8A
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8A
 		LDA		#$13
 		JMP		sub_6A96F
 
@@ -6244,7 +6244,7 @@ _b4_sB:
 		PHA
 		FARX	_bE_s3
 		LDX		#4
-		JSR		_vblank_count
+		JSR		_sleep_X
 		PLA
 		TAY
 		PLA
@@ -6260,9 +6260,9 @@ _b4_sA:
 		PHA
 		FARX	_bE_s2
 		FARX	_bE_s5
-		JSR		_delay_n
-		JSR		_delay_n
-		JSR		_delay_n
+		JSR		_delay1sec
+		JSR		_delay1sec
+		JSR		_delay1sec
 		PLA
 		TAY
 		PLA
@@ -6321,8 +6321,8 @@ sub_6A9FF:
 		STA		word_4
 		STA		word_4+1
 		PLA
-		JSR		sub_1742C7
-		JMP		_nmi_set_flag_04
+		JSR		_print_char
+		JMP		_ppu_set_dequeue_flag
 
 ; =============== S U B	R O U T	I N E =======================================
 _test_for_keypress:
@@ -6330,7 +6330,7 @@ _test_for_keypress:
 loc_6AA0F:
 		TXA
 		PHA
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		_calc_pads
 		LDA		_prev_pads
 		BNE		loc_6AA21
@@ -6778,14 +6778,14 @@ sub_6ACBE:
 		TAX
 		INX
 loc_6ACC9:
-		JSR		sub_1743B8
+		JSR		_rand
 		DEX
 		BNE		loc_6ACC9
 		PLA
 		TAY
 		PLA
 		TAX
-		JMP		sub_1743B8
+		JMP		_rand
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ACD6:
@@ -7144,7 +7144,7 @@ sub_6AF0E:
 		STA		byte_D0
 		JSR		_sram_b0_s8
 		JSR		_b4_s6
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$19
 		BCS		locret_6AF33
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$A6
@@ -7233,7 +7233,7 @@ sub_6AFA5:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFB3:
 		PHA
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#1
 		ADC		#1
 		JSR		sub_6B2CF
@@ -7253,7 +7253,7 @@ loc_6AFC7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFD2:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#3
 		CLC
 		ADC		#2
@@ -7419,7 +7419,7 @@ sub_6B0C1:
 sub_6B0DB:
 		FARX	_bB_s3_apu_load
 		FARX	_bB_s7
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$10
+		SYSX	_sys12_wrap_bB_s3_apu_load,$10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7439,7 +7439,7 @@ loc_6B0EA:
 		BPL		loc_6B109
 		JSR		loc_6B142
 		BCS		locret_6B108
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$C0
 locret_6B108:
 		RTS
@@ -7481,7 +7481,7 @@ loc_6B145:
 		LDA		word_4+1
 		CMP		#$AD
 		BNE		loc_6B154
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$AA
 		RTS
 loc_6B154:
@@ -7598,7 +7598,7 @@ loc_6B202:
 		STA		word_4
 		RTS
 loc_6B209:
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$CC
 		JMP		loc_6B202
 loc_6B211:
@@ -7638,8 +7638,8 @@ byte_6B270:
 _b4_s1A:
 		FARX	_bD_s28
 		LDX		#0
-		JSR		sub_17435B
-		JMP		_vblank
+		JSR		_pal_set_no_fade
+		JMP		_wait_for_nmi_is_over
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B2A3:
@@ -8557,7 +8557,7 @@ loc_6B866:
 		DEY
 		BNE		loc_6B866
 		STA		byte_5A
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		byte_5A
 		BCS		loc_6B874
 locret_6B873:
@@ -8567,10 +8567,10 @@ loc_6B874:
 		STA		byte_59
 		RTS
 loc_6B879:
-		JSR		sub_1743B8
+		JSR		_rand
 		STA		byte_5A
 		BNE		loc_6B874
-		JSR		sub_1743B8
+		JSR		_rand
 		CMP		#$20
 		BCS		loc_6B874
 		RTS
@@ -8922,7 +8922,7 @@ _b4_s5_do_message_speed_delay:
 		PHA
 		JSR		_get_cur_message_speed_delay
 loc_6BA3F:
-		JSR		_vblank_count
+		JSR		_sleep_X
 		PLA
 		TAX
 		PLA
@@ -8969,7 +8969,7 @@ sub_6BA6A:
 		LDA		#0
 		STA		word_3C+1
 loc_6BA74:
-		JSR		sub_1743B8
+		JSR		_rand
 		LDA		byte_1C
 		AND		byte_42
 		CLC

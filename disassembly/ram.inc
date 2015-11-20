@@ -48,7 +48,11 @@ _pads:
 		.BYTE	0,0,0,0,0,0
 		.BYTE	0
 _nmi_flags:
-		.BYTE	0
+		.BYTE	0			; bit 01 - sprite insert busy flag
+							; bit 02 -
+							; bit 04 - 
+							; bit 08 -
+							; bin 10 - forbid nmi ppu dequeue
 byte_1C:
 		.BYTE	0
 byte_1D:
@@ -89,9 +93,9 @@ byte_30: ; "playerMapX"
 		.BYTE	0
 byte_31: ; "playerMapY"
 		.BYTE	0
-byte_32:
+_spr_force_shuffle_mode:
 		.BYTE	0
-byte_33:
+_ppu_spr_dma_sent:
 		.BYTE	0
 _irq_x_saved:
 		.BYTE	0
@@ -305,7 +309,7 @@ byte_A1:
 byte_A2:
 		.BYTE	0
 		.BYTE	0
-byte_A4: ;RNG related
+_rand_iterations_counter: ;RNG related
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -597,6 +601,7 @@ byte_18E:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+		
 _spr_ram:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -614,284 +619,44 @@ _spr_ram:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
 ;----------------------------------------------
-;format: struct ppu_queue_entry { u16 address; u8 value }; .. right?
-;rename to ppu_queue_data
-byte_300: ; "ppuDMAList" -- contents of ppu queue (how large?)
-		.BYTE	0
-byte_301:
-		.BYTE	0
-byte_302:
-		.BYTE	0
-byte_303:
-		.BYTE	0
-byte_304:
-		.BYTE	0
-byte_305:
-		.BYTE	0
-byte_306:
-		.BYTE	0
-byte_307:
-		.BYTE	0
-byte_308:
-		.BYTE	0
-byte_309:
-		.BYTE	0
-byte_30A:
-		.BYTE	0
-byte_30B:
-		.BYTE	0
-byte_30C:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_311:
-		.BYTE	0
-byte_312:
-		.BYTE	0
-byte_313:
-		.BYTE	0
-		.BYTE	0
-byte_315:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-byte_3E6:
-		.BYTE	0
+; buffer format: headered data chunks
+; chunk format :
+; byte/word 0  : rthhhhhh [cccccccc]
+; byte      1  : llllllll
+; bytes  1..N  : dddddddd [...]
+;
+; r - data chunk size
+; 	0 - short data chunk, 2 byte header, 1 byte to write
+;	1 - long data chunk, 3 byte header, N bytes to write
+; t - 2000.2 bit override, used if r = 1
+; h - high nibble of ppu address
+; c - number of bytes to write, 0 means 256 bytes, only if r = 1
+; l - lower hibble of ppu address
+; d - data bytes
+;
+; number of chunks is in _ppu_queue_chunks_count
+;
+_ppu_queue_buf: ; "ppuDMAList" -- contents of ppu queue (buffer is 231 bytes long)
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0
 _ram_pal_buf: ;current logical unfaded palette
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0
 byte_400:
 		.BYTE	0
 byte_401:
@@ -1745,27 +1510,25 @@ byte_6C9:
 		.BYTE	0
 		.BYTE	0
 ;----------------------------------------------
-byte_6D0: ; "ntxscroll" - pixel X scroll 
-		.BYTE	0
-byte_6D1: ; "ntyscroll" - pixel Y scroll
-		.BYTE	0
+_ppu_scroll_shadow: ; "ntxscroll/ntyscroll" - pixel X/Y scroll 
+		.BYTE	0,0
 ;----------------------------------------------
 _nmi_counter: ; used for text system solely? not sure.
 		.BYTE	0
 ;----------------------------------------------
-byte_6D3:
+_ppu_ctrl_shadow:
 		.BYTE	0
-byte_6D4: ; "current_2001_setting?"
+_ppu_mask_shadow: ; "current_2001_setting?"
 		.BYTE	0
 _mmc_cur_prg_bank:
 		.BYTE	0
-byte_6D6:
+_nmi_force_dequeue_request_flag:
 		.BYTE	0
-byte_6D7:
+_spr_shuffle_syncs_counter:
 		.BYTE	0
 _ppu_queue_pos:
 		.BYTE	0
-_ppu_queue_tiles_count:
+_ppu_queue_chunks_count:
 		.BYTE	0
 byte_6DA:
 		.BYTE	0
@@ -5400,7 +5163,7 @@ byte_6CF2:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_6D31:
+_ppu_ctrl_shadow1:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -5416,7 +5179,7 @@ byte_6D31:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-byte_6D40:
+_ppu_mask_shadow0:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0

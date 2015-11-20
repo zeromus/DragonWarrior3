@@ -976,11 +976,11 @@ loc_E3A05:
 loc_E3A13:
 		LDA		word_6E
 		ORA		#$80 ; set MSBit of LSB of target address to $80... why?
-		STA		byte_300 ; store in "ppuDMAList" ppu queue
+		STA		_ppu_queue_buf ; store in "ppuDMAList" ppu queue
 		LDA		#$40 ; set MSB of target address to $40, which doesnt make sense to me. its past the end of the PPU bus
-		STA		byte_301 ; store in "ppuDMAList" ppu queue
+		STA		_ppu_queue_buf+1 ; store in "ppuDMAList" ppu queue
 		LDA		word_6E+1
-		STA		byte_302 ; store in "ppuDMAList" ppu queue
+		STA		_ppu_queue_buf+2 ; store in "ppuDMAList" ppu queue
 		LDX		#0
 		JSR		sub_E3A4A
 		JSR		sub_E3A4A
@@ -988,8 +988,8 @@ loc_E3A13:
 		JSR		sub_E3A4A
 ;set 1 item in queue
 		LDA		#1
-		STA		_ppu_queue_tiles_count
-		JSR		sub_E3A77
+		STA		_ppu_queue_chunks_count
+		JSR		_ppu_force_dequeue_0
 		LDA		word_6E+1
 		CLC
 		ADC		#$40
@@ -1012,7 +1012,7 @@ sub_E3A51:
 		LDY		#0
 loc_E3A53:
 		LDA		(word_6C),Y
-		STA		byte_303,X ; store in "ppuDMAList"
+		STA		_ppu_queue_buf+3,X ; store in "ppuDMAList"
 		INX
 		INY
 		TYA
@@ -1030,7 +1030,7 @@ locret_E3A6A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_E3A6B:
 		LDA		#0
-		STA		byte_303,X
+		STA		_ppu_queue_buf+3,X
 		INX
 		TXA
 		AND		#$F
@@ -1038,8 +1038,8 @@ sub_E3A6B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A77:
-		JSR		sub_E3A81
+_ppu_force_dequeue_0:
+		JSR		_ppu_set_dequeue_flag_0
 loc_E3A7A:
 		LDA		#4
 		AND		_nmi_flags
@@ -1047,14 +1047,15 @@ loc_E3A7A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A81:
+_ppu_set_dequeue_flag_0:
 		LDA		#4
 		AND		_nmi_flags
-		BNE		sub_E3A81
+		BNE		_ppu_set_dequeue_flag_0
 		LDA		#4
 		ORA		_nmi_flags
 		STA		_nmi_flags
 		RTS
+		
 off_E3A8E:
 		.WORD	byte_E3A94
 		.WORD	byte_E3BBC

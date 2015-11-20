@@ -1921,7 +1921,7 @@ byte_2DFB35:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bB_s7:
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		LDA		byte_47F
 		AND		#$20
 		BEQ		_bB_s7

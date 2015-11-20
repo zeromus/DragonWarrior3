@@ -6,26 +6,28 @@
 ; 0F:C000-0F:EC98 == 1F:C000-1F:EC98
 
 ; =============== S U B	R O U T	I N E =======================================
-; "disp_InitRegs"
 ; initializes registers used by the general engine display system
-sub_174000:
+; 
+;"disp_InitRegs"
+_disp_regs_init:		
 		LDA		#0
 		STA		_ppu_queue_pos
-		STA		_ppu_queue_tiles_count
+		STA		_ppu_queue_chunks_count
 		STA		byte_6DA
-		STA		byte_6D7
+		STA		_spr_shuffle_syncs_counter
 		STA		_nmi_flags
 		STA		_pads+2
 		STA		_pads+3
 		STA		_pads+4
 		STA		byte_28
 		STA		byte_29
-		STA		byte_32
-		STA		byte_6D6
+		STA		_spr_force_shuffle_mode
+		STA		_nmi_force_dequeue_request_flag
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; A = *(u8*)((*(u16*)X)++) ... I think.
+;
 _get_data_next_byte:
 		LDA		(0,X)
 		INC		0,X
@@ -36,6 +38,7 @@ locret_174028:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]-=Y:A
+;
 _add16_to_neg16:
 		JSR		_add8_to_neg16
 		TYA
@@ -47,6 +50,7 @@ _add16_to_neg16:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]-=A
+;
 _add8_to_neg16:
 		EOR		#$FF
 		SEC
@@ -58,8 +62,9 @@ locret_174040:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; [X]+=Y:A
 ; adds a 16bit value composed of Y:A
+; [X]+=Y:A
+;
 _add16_to_16:
 		JSR		_add8_to_16
 		TYA
@@ -70,6 +75,7 @@ _add16_to_16:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]+=A
+;
 _add8_to_16:
 		CLC
 		ADC		0,X
@@ -81,6 +87,7 @@ locret_174054:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]*=A
+;
 _mul16_to_8:
 		STA		_tmp21
 		LDA		#0
@@ -108,8 +115,9 @@ loc_17406E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; [X]/=A
 ; divides value in (X) by divisor in A. quotient left in (X) and remainder is in A
+; [X]/=A
+;
 _div16_to_8:
 		STA		_tmp21+2
 		TYA
@@ -149,27 +157,24 @@ loc_1740AE:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; seems to happen when changing game modes with variable timing
+;
 _ppu_screen_clear:
-		JSR		_vblank_and_render_off_flag10_set
-		JSR		sub_174000
-		LDA		#$F8
+		JSR		_ppu_disable
+		JSR		_disp_regs_init
+		LDA		#$F8				; F8 is adequate to hide sprites. _spr_ram (and _PPU_OAM_DATA) is filled up with them
 		LDX		#0
-_resetOAM:
-; F8 is adequate to hide sprites. _spr_ram (and _PPU_OAM_DATA) is filled up with them
-		STX		_PPU_OAM_ADDR
-.iterate
+		STX		_PPU_OAM_ADDR		; "_resetOAM"
+.iterate:
 		STA		_spr_ram,X
 		STA		_PPU_OAM_DATA
 		INX
 		BNE		.iterate
-; clear PPUADDR Toggle Latch
-		LDA		_PPU_STATUS
-; for clearing nametables with $800 worth of $0
+		LDA		_PPU_STATUS			; clear PPUADDR Toggle Latch
 		LDA		#$20
 		STA		_PPU_ADDR
 		LDA		#0
 		STA		_PPU_ADDR
-		LDX		#8
+		LDX		#8					; for clearing nametables with $800 worth of $0
 		LDY		#0
 loc_1740DD:
 		STA		_PPU_DATA
@@ -177,28 +182,33 @@ loc_1740DD:
 		BNE		loc_1740DD
 		DEX
 		BNE		loc_1740DD
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1740E9:
+; if the dequeue force request is set previously, do the ppu dequeue
+; set a new force dequeue flag
+;
+_ppu_accept_and_reload_dequeue_request:
 		TAX
-		LDA		byte_6D6
-		STX		byte_6D6
+		LDA		_nmi_force_dequeue_request_flag
+		STX		_nmi_force_dequeue_request_flag
 		AND		#3
 		CMP		#2
 		BEQ		locret_1740F9
-		JSR		sub_1742B0
+		JSR		_ppu_force_dequeue
 locret_1740F9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 ;sub_1740FA:
-;		JSR		_vblank_and_render_off_flag10_set
+;		JSR		_ppu_disable
 ;		JSR		sub_1741D7
-;		JMP		__render_on_flag10_clear_reinit
+;		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
+; 8x8 bits matrix rotated right from $0004-$000B to $000C-0013 (inv transpose)
+;
 _tile_rotate_right:
 		LDX		#0
 loc_174105:
@@ -224,6 +234,8 @@ loc_174105:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; 8x8 bits matrix rotated right from $0004-$000B to $000C-0013 (transpose)
+;
 _tile_rotate_left:
 		LDX		#0
 loc_174131:
@@ -249,39 +261,39 @@ loc_174131:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_17415B:
+_chd_lib_data_send:
 		STA		_tmp21
 		ASL
 		CLC
 		ADC		_tmp21
 		TAX
-		LDA		off_1741BC,X
+		LDA		_chr_data_lib,X
 		STA		_tmp21
-		LDA		off_1741BC+1,X
+		LDA		_chr_data_lib+1,X
 		STA		_tmp21+1
 		LDA		_mmc_cur_prg_bank
 		PHA
-		LDA		byte_1741BE,X
+		LDA		_chr_data_lib+2,X
 		JSR		_mmc1_prg_set
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		LDA		#0
 		STA		byte_26
 loc_17417D:
 		LDX		_ppu_queue_pos
 		LDA		_tmp21+2
 		ORA		#$80
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		#$10
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		byte_24
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		LDY		byte_26
 		INX
 loc_174196:
 		LDA		(_tmp21),Y
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INC		byte_24
 		INY
 		INX
@@ -290,17 +302,17 @@ loc_174196:
 		BNE		loc_174196
 		STX		_ppu_queue_pos
 		STY		byte_26
-		INC		_ppu_queue_tiles_count
-		JSR		_nmi_set_flag_04
-		JSR		_vblank
+		INC		_ppu_queue_chunks_count
+		JSR		_ppu_set_dequeue_flag
+		JSR		_wait_for_nmi_is_over
 		LDA		byte_24
 		CMP		byte_25
 		BNE		loc_17417D
 		PLA
 		JMP		_mmc1_prg_set
-off_1741BC:
+
+_chr_data_lib:
 		.WORD	_chr_data_unk0
-byte_1741BE:
 		.BYTE	 $A
 		.WORD	_chr_data_unk1
 		.BYTE	 $A
@@ -316,8 +328,8 @@ byte_1741BE:
 		.BYTE	  9
 		.WORD	_chr_data_unk7
 		.BYTE	  9
-		.WORD	_chr_terrain_bg_data1+$470
-		.BYTE	  9
+;		.WORD	_chr_terrain_bg_data1+$470		; unused, seems old or buggy piece of data
+;		.BYTE	  9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1741D7:
@@ -384,7 +396,7 @@ loc_17421A:
 		SEC
 		ROL
 		SEC
-		SBC		byte_6D7
+		SBC		_spr_shuffle_syncs_counter
 		BPL		loc_17422F
 		CLC
 		ADC		#$A
@@ -472,13 +484,18 @@ loc_17429B:
 		ADC		#4
 		TAX
 		RTS
+		
 byte_1742AB:
 		.BYTE	  4,$10,$1C,$28,$34
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1742B0:
-		JSR		_nmi_set_flag_04
-; waitForVblStatus
+; wait for ppu queue is empty, force it to flush, then wait again one more
+; time. since this flag clears on nmi may be used for waiting for the current
+; frame is over, then skip for one more frame to be sure all work is done
+;
+;"waitForVblStatus"
+_ppu_force_dequeue:
+		JSR		_ppu_set_dequeue_flag
 loc_1742B3:
 		LDA		#4
 		AND		_nmi_flags
@@ -486,29 +503,34 @@ loc_1742B3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; zero called this sub_unk_vbl_ntbuf_flush?
-_nmi_set_flag_04:
+; wait for ppu queue is empty, then set ppu queue flush request flag
+; 
+;"sub_unk_vbl_ntbuf_flush"
+_ppu_set_dequeue_flag:
 		LDA		#4
 		AND		_nmi_flags
-		BNE		_nmi_set_flag_04
+		BNE		_ppu_set_dequeue_flag
 		LDA		#4
 		ORA		_nmi_flags
 		STA		_nmi_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "printChar"
 ; sets a tile value A to screen at coords $temp16 (accomodating scroll)
-sub_1742C7:
+;
+;"printChar"
+_print_char:
 		STA		_ppuByteToWrite
-		JSR		sub_1742CF
+		JSR		_ppu_calc_nt_offset
 		JMP		_ppu_queue_tile
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_printChar_calcNTAddr"
 ; calculates an NT addr into u16_1f from temp16 based on current scroll parameters
-sub_1742CF:
-		LDA		byte_6D3
+; and outputs a good PPU address at $1F-$20
+;
+;"sub_printChar_calcNTAddr"
+_ppu_calc_nt_offset:
+		LDA		_ppu_ctrl_shadow
 		ASL
 		ASL
 		AND		#4
@@ -519,14 +541,14 @@ sub_1742CF:
 		ASL
 		ASL
 		CLC
-		ADC		byte_6D0
+		ADC		_ppu_scroll_shadow
 		STA		byte_1F
 		BCC		loc_1742ED
 		LDA		byte_20
 		EOR		#4
 		STA		byte_20
 loc_1742ED:
-		LDA		byte_6D1
+		LDA		_ppu_scroll_shadow+1
 		LSR
 		LSR
 		LSR
@@ -544,148 +566,143 @@ loc_1742FC:
 		ROR		byte_1F
 		ORA		byte_20
 		STA		byte_20
-; and at this point we had a good PPU address at $1F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; writes byte at $1E to ppu address at $1F-$20. waits for opportune time and then appends it to ppu_queue
+; writes byte at $1E to ppu address at $1F-$20. waits for
+; opportune time and then appends it to ppu_queue
+;
 _ppu_queue_tile:
 		LDA		#4
-		AND		_nmi_flags
-; timingNoGood
-; ; wait for a vblank to happen? wait for a pending $300 NT flush to complete?
-		BNE		_ppu_queue_tile
-		LDA		_ppu_queue_tiles_count
-		CMP		#$28
+		AND		_nmi_flags				; timingNoGood
+		BNE		_ppu_queue_tile			; wait for previous dequeue is done
+		LDA		_ppu_queue_chunks_count	; check if queue buffer is full
+		CMP		#$28					; ($28*3 = $78 or 120 bytes in buffer)
 		BCC		loc_17431D
-		JSR		_nmi_set_flag_04
+		JSR		_ppu_set_dequeue_flag	; if full, do flush, then try one more time
 		JMP		_ppu_queue_tile
 loc_17431D:
 		LDX		_ppu_queue_pos
-; _storeOutputAddr
-		LDA		byte_20
+		LDA		byte_20					; temp _storeOutputAddr
 		AND		#$3F
-		STA		byte_300,X ; store into ppu_queue_data
+		STA		_ppu_queue_buf,X		; store into ppu_queue_data
 		INX
-; _storeOutputByte
-		LDA		byte_1F
-		STA		byte_300,X ; store into ppu_queue_data
+		LDA		byte_1F					; temp _storeOutputByte
+		STA		_ppu_queue_buf,X		; store into ppu_queue_data
 		INX
-		LDA		_ppuByteToWrite
-		STA		byte_300,X ; store into ppu_queue_data
+		LDA		_ppuByteToWrite			; temp var mostly used here
+		STA		_ppu_queue_buf,X 		; store into ppu_queue_data
 		INX
 		STX		_ppu_queue_pos
-		INC		_ppu_queue_tiles_count
-; _incrementPPUAddr
-		INC		byte_1F
+		INC		_ppu_queue_chunks_count
+		INC		byte_1F					; temp _incrementPPUAddr
 		BNE		locret_174340
 		INC		byte_20
 locret_174340:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; I called this "sub_msg_WaitTick" - "waits for one frame to happen" - maybe this would be more conventially be called waitVsync
-_vblank:
+; wait for one NMI occurs and NMI routine finish its job (dequeue, etc.)
+; used to be sure you still at vblank period and ppu is free for any other operations
+;
+;"sub_msg_WaitTick"
+_wait_for_nmi_is_over:
 		LDA		_nmi_counter
 loc_174344:
 		CMP		_nmi_counter
 		BEQ		loc_174344
-		JMP		sub_17490A
+		JMP		_spr_shuffle_safe
 
 ; =============== S U B	R O U T	I N E =======================================
-; I called this "sub_Sleep_X" - "; suspends game for X number of ticks (polling $6D2 framecounter)"
-_vblank_count:
+; suspend for desired number of frames is over, do only basic sync job in process
+; like sprite shuffling, input arg in X - number of frames to suspend
+;
+;"sub_Sleep_X"
+_sleep_X:
 		LDA		_nmi_counter
 .sleep_loop:
 		CMP		_nmi_counter
 		BEQ		.sleep_loop
-		JSR		sub_17490A
+		JSR		_spr_shuffle_safe
 		DEX
-		BNE		_vblank_count
+		BNE		_sleep_X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_17435B:
+; delta for paletter entries is 0, so this routine will just send the palette
+; "as is"
+;
+_pal_set_no_fade:
 		LDA		#0
 		STA		_tmp21
-		JSR		_pal_fade
-		RTS
+		BEQ		_pal_fade_step
 
 ; =============== S U B	R O U T	I N E =======================================
+; fades in the the screen palette at any time. start at fade
+; $40 (totally faded) and delta by -$10 per iteration
+;
 _pal_fade_in:
 		LDA		#$40
 		LDX		#$F0
-		BNE		sub_17436D
+		BNE		_pal_fade_loop
 
 ; =============== S U B	R O U T	I N E =======================================
-; "fades out the map, or maybe the screen at any time. start at fade $10 (barely faded) and delta by $10 (+$10 per iteration)"
-sub_174369:
+; fades out the the screen palette at any time. start at fade
+; $10 (barely faded) and delta by +$10 per iteration
+;
+_pal_fade_out:
 		LDA		#$10
 		LDX		#$10
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_17436D:
-; "sub_fadeProcessCommon"
-; first, store fade delta
-		STX		_tmp21+1
+_pal_fade_loop:
+		STX		_tmp21+1			; first, store fade delta
 .iteratefade:
-; store current fade level
-		STA		_tmp21
-		JSR		_pal_fade
+		STA		_tmp21				; store current fade level
+		JSR		_pal_fade_step
 		LDX		#3
-		JSR		_vblank_count
+		JSR		_sleep_X
 		LDA		_tmp21
 		CLC
 		ADC		_tmp21+1
-; check for finished state (#$50)
-		CMP		#$50
+		CMP		#$50				; check for finished state (#$50)
 		BCC		.iteratefade
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_pal_fade:
-; start by setting up the soft PPUADDR reg with $3F00 for the palette
-		LDA		#$3F
+; fades the current palette with selected delta, send it to ppu queue, then
+; wait for next nmi is over
+;
+_pal_fade_step:
+		LDA		#$3F		; start by setting up the soft PPUADDR reg with $3F00 for the palette
 		STA		byte_20
 		LDA		#0
 		STA		byte_1F
 		TAX
 loc_17438C:
-; start by loading the current PPUADDR, which is reflecting the currently processed palette entry index
-		LDA		byte_1F
-; loadFirstPaletteEntry: we'll use this in case we have made it to a %4==0 clear palette entry
-		LDY		_ram_pal_buf
-; check for clear palette entry:
+		LDA		byte_1F			; start by loading the current PPUADDR, which is reflecting
+								; the currently processed palette entry index
+		LDY		_ram_pal_buf	; "loadFirstPaletteEntry" we'll use this in case we have
+								; made it to a %4==0 clear palette entry
 		AND		#3
-		BEQ		loc_174399
-; load "non first palette entry"
-; a little weirdly skipping the first entry
-		LDY		_ram_pal_buf+1,X
+		BEQ		loc_174399		; check for palette entry index
+		LDY		_ram_pal_buf+1,X; use palette colors if not default
 		INX
 loc_174399:
-; palette entry is clear
-		TYA
-; subtract fading factor
-		SEC
+		TYA						; palette index is always in Y
+		SEC						; subtract fading factor
 		SBC		_tmp21
-; check for overflow
-		CMP		#$40
-		BCC		loc_1743A4
-; in case of overflow
-; load original color?
-		LDA		_ram_pal_buf
+		CMP		#$40			; check for overflow
+		BCC		loc_1743A4		; in case of overflow
+		LDA		_ram_pal_buf	; load defalut palette index #0
 loc_1743A4:
-		STA		_ppuByteToWrite
-; overflow is corrected
+		STA		_ppuByteToWrite	; write final byte to input argument
 		STX		_tmp21+2
-; write faded color to active palette
-		JSR		_ppu_queue_tile
-		LDX		_tmp21+2
-; check whether the palette is done
-; there are $18 entries, after the $8 color0's are skipped
-		CPX		#$18
-		BNE		loc_17438C
-		JSR		_nmi_set_flag_04
+		JSR		_ppu_queue_tile	; queue single palette entry
+		LDX		_tmp21+2		; check whether the palette is done
+		CPX		#$18			; there are $18 entries, after the $8 color0's are skipped
+		BNE		loc_17438C		
+		JSR		_ppu_set_dequeue_flag	; force palette to flush, so wait until next nmi is over
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -693,27 +710,30 @@ sub_1743B5:
 		FARX	_b16_s0
 
 ; =============== S U B	R O U T	I N E =======================================
-;  RNG related somehow
-sub_1743B8:
+; get random number
+; output is A - 8 bit pseudo-random integer
+;
+_rand:
 		TYA
 		PHA
+		LDA		#$FF			; xor mask is always FF
+		STA		_tmp21
+		JSR		_randomize
 		LDA		#$FF
 		STA		_tmp21
-		JSR		sub_1743D2
-		LDA		#$FF
-		STA		_tmp21
-		JSR		sub_1743D2
-		INC		byte_A4
+		JSR		_randomize
+		INC		_rand_iterations_counter
 		PLA
 		TAY
 		LDA		byte_1C
 		CLC
-		ADC		byte_A4
+		ADC		_rand_iterations_counter
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; maybe myunge RNG 8 times
-sub_1743D2:
+; one randomize iteration consists of 8 steps with custom xor mask
+;
+_randomize:
 		LDY		#8
 loc_1743D4:
 		LDA		byte_1D
@@ -758,7 +778,7 @@ loc_174409:
 		DEY
 		BNE		loc_174409
 loc_17440F:
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		_tmp21+2
 		CMP		_tmp21+1
 		BCS		loc_17440F
@@ -772,27 +792,35 @@ locret_174420:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_map_FinishLoadingTiles?"
-__render_on_flag10_clear_reinit:
-		JSR		_clear_nmi_flag_10 ; "sub_disp_disableLoadMode?"
-		JMP		sub_17443A ; "sub_map_FinishingTileLoading?"
+; do all the same as _ppu_enable, but additionally enables further nmi ppu
+; dequeue process
+;
+;"sub_map_FinishLoadingTiles?"
+_ppu_and_dequeue_enable:
+		JSR		_nmi_allow_ppu_dequeue		; set this one more time, because next sub is don't change it
+		JMP		_ppu_enable
 
 ; =============== S U B	R O U T	I N E =======================================
-; waits for vblank, disables screen, fiddles vblank_status. enables direct VRAM loading mode?
-_vblank_and_render_off_flag10_set:
-		JSR		_vblank_and_render_off
+; waits for nmi flag is raised, disabled the PPU render and forbids the
+; nmi dequeue flag, prepare ppu to free access
+;
+_ppu_disable:
+		JSR		_wait_for_vblank_render_off
 
 ; =============== S U B	R O U T	I N E =======================================
-_set_nmi_flag_10:
+; forbids further dequeue process at nmi even if it occurs
+;
+_nmi_forbid_ppu_dequeue:
 		LDA		#$10
 		ORA		_nmi_flags
 		STA		_nmi_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_disp_disableLoadMode?"
-; exits vblank loading mode?
-_clear_nmi_flag_10:
+; allows to run dequeue subroutine of the nmi
+;
+;"sub_disp_disableLoadMode?"
+_nmi_allow_ppu_dequeue:
 		LDA		#$10
 		EOR		#$FF
 		AND		_nmi_flags
@@ -800,26 +828,30 @@ _clear_nmi_flag_10:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; dequeue previously loaded ppu data if any, keep nmi flags and previous
+; dequeue force flags, so just flushes the buffers and siplay it on the screen
+;
 ; "sub_map_FinishingTileLoading?"
-sub_17443A:
+_ppu_enable:
 		LDA		_nmi_flags
 		PHA
-		LDA		byte_6D6
+		LDA		_nmi_force_dequeue_request_flag
 		PHA
-		JSR		_clear_nmi_flag_10
+		JSR		_nmi_allow_ppu_dequeue
 		LDA		#$18
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		LDA		#2
-		JSR		sub_1740E9
+		JSR		_ppu_accept_and_reload_dequeue_request
 		PLA
-		STA		byte_6D6
+		STA		_nmi_force_dequeue_request_flag
 		PLA
 		STA		_nmi_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "WAIT for vblank"
-_vblank_and_render_off:
+; wait for NMI flag is rised by the CPU, then disables PPU render
+;
+_wait_for_vblank_render_off:
 		LDY		#0
 		LDA		_PPU_STATUS
 loc_17445B:
@@ -827,7 +859,7 @@ loc_17445B:
 		BPL		loc_17445B
 		TYA
 		STA		_PPU_MASK
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -899,14 +931,14 @@ sub_1746C2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1746C8:
-		LDA		byte_6D0
+		LDA		_ppu_scroll_shadow
 		LSR
 		LSR
 		LSR
 		CLC
 		ADC		word_4
 		STA		word_6
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow
 		AND		#1
 		ASL
 		ASL
@@ -915,7 +947,7 @@ sub_1746C8:
 		ASL
 		EOR		word_6
 		STA		word_6
-		LDA		byte_6D1
+		LDA		_ppu_scroll_shadow+1
 		LSR
 		LSR
 		LSR
@@ -969,7 +1001,7 @@ sub_174719:
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 ;sub_17472F:
-;		LDA		byte_6D3
+;		LDA		_ppu_ctrl_shadow
 ;		AND		#1
 ;		STA		word_6+1
 ;		LDA		word_4
@@ -977,7 +1009,7 @@ sub_174719:
 ;		ASL
 ;		ASL
 ;		CLC
-;		ADC		byte_6D0
+;		ADC		_ppu_scroll_shadow
 ;		BCC		locret_174747
 ;		LDA		word_6+1
 ;		EOR		#1
@@ -997,15 +1029,15 @@ sub_17474C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_17474E:
 		JSR		sub_174757
-		JSR		_nmi_set_flag_04
-		JMP		_vblank
+		JSR		_ppu_set_dequeue_flag
+		JMP		_wait_for_nmi_is_over
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174757:
 		PHA
-		LDA		_ppu_queue_tiles_count
+		LDA		_ppu_queue_chunks_count
 		BEQ		loc_174760
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 loc_174760:
 		LDA		#0
 		STA		byte_24
@@ -1098,15 +1130,15 @@ sub_1747F4:
 		BCC		loc_174803
 		LDX		#0
 		STX		byte_24
-		JSR		sub_1742B0
+		JSR		_ppu_force_dequeue
 loc_174803:
 		LDA		byte_9
 		ORA		#$80
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		LDA		word_6
-		STA		byte_301,X
+		STA		_ppu_queue_buf+1,X
 		LDA		byte_8
-		STA		byte_302,X
+		STA		_ppu_queue_buf+2,X
 		INX
 		INX
 		INX
@@ -1115,7 +1147,7 @@ loc_174803:
 		LDY		byte_25
 loc_17481C:
 		LDA		byte_400,Y
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INY
 		DEC		word_6
@@ -1149,23 +1181,23 @@ loc_17483E:
 		PLA
 		TAX
 		LDA		_tmp12+1
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		_tmp12
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		word_4
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INY
 		INC		byte_10
 		INC		byte_10
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		DEC		word_6
 		BNE		loc_17483E
 		STY		byte_26
 loc_174874:
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1193,7 +1225,7 @@ sub_174887:
 		LSR
 		AND		#$1E
 		STA		word_4+1
-		JMP		sub_1742CF
+		JMP		_ppu_calc_nt_offset
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17489C:
@@ -1268,21 +1300,23 @@ loc_174900:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; this is called from the vblank waits or somesuch, once per frame
-sub_17490A:
+; called with every sync, keep all registers intact, shuffles sprites except
+; modes which is forbid shuffling, used also for increment sync counter
+;
+_spr_shuffle_safe:
 		PHA
 		TXA
 		PHA
 		TYA
 		PHA
-		LDA		byte_32
+		LDA		_spr_force_shuffle_mode		; if 0 or FF - force sprite shuffle
 		CMP		#$FD
 		BNE		loc_17491C
-		LDA		byte_60B7
-		AND		#$20
+		LDA		byte_60B7					; or else additional bit is tested
+		AND		#$20						; both set as FD/20 in battle mode?
 		BNE		loc_17491F
 loc_17491C:
-		JSR		sub_174925
+		JSR		_spr_shuffle
 loc_17491F:
 		PLA
 		TAY
@@ -1292,38 +1326,44 @@ loc_17491F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_174925:
-		LDA		byte_33
+; swaps blocks of sprites on every sync to prevent 8-sprite overflow glitch
+; increases sprite shuffle sync counter at the same time, used in some other
+; places for animation and sync purposes
+;
+_spr_shuffle:
+		LDA		_ppu_spr_dma_sent		; do only if sprite dma is performed at the NMI
 		BEQ		locret_17494E
-		LDA		byte_6D7
+		LDA		_spr_shuffle_syncs_counter
 		AND		#1
 		TAX
-		LDA		byte_17494F,X
+		LDA		_spr_ram_shuffle_offset,X
 		PHA
-		LDA		byte_17494F+1,X
+		LDA		_spr_ram_shuffle_offset+1,X
 		LDX		#$40
-		JSR		_spr_swap
+		JSR		_spr_swap				; swap D0/A0 with 40
 		LDX		#$10
 		PLA
-		JSR		_spr_swap
-		LDX		byte_6D7
+		JSR		_spr_swap				; swap A0/70 with 10
+		LDX		_spr_shuffle_syncs_counter		; increment syncs counter
 		INX
 		CPX		#$A
 		BCC		loc_17494B
 		LDX		#0
 loc_17494B:
-		STX		byte_6D7
+		STX		_spr_shuffle_syncs_counter		; sync counter is only from 0 to 9
 locret_17494E:
 		RTS
-byte_17494F:
+		
+_spr_ram_shuffle_offset:
 		.BYTE	$D0,$A0,$70
 
 ; =============== S U B	R O U T	I N E =======================================
-; swap 12 sprites at X and Y pos
+; swap 12 sprites between X and Y positions
 ; input	X - dst, A - src
+;
 _spr_swap:
 		TAY
-		LDA		#$30
+		LDA		#$30			; $30 bytes (48) is a 12 sprites.
 		STA		byte_A1
 loc_174957:
 		LDA		_spr_ram,X
@@ -1347,17 +1387,17 @@ NMI:
 		PHA
 		LDA		#$10
 		AND		_nmi_flags
-		BNE		loc_17497E
+		BNE		loc_17497E			; if dequeue is forbidden, skip
 		LDA		#0
-		STA		byte_33
-		JSR		sub_174A5C
+		STA		_ppu_spr_dma_sent	; clear OAM dma flag
+		JSR		_nmi_dequeue		; do dequeue
 loc_17497E:
 		INC		_mmc_reset_byte
 		LDA		#$B
 		JSR		_mmc1_prg_cmd
-		JSR		_apu_play
+		JSR		_apu_play			; do generic music play
 		LDA		_mmc_cur_prg_bank
-		JSR		_mmc1_prg_cmd
+		JSR		_mmc1_prg_cmd		; restore current bank
 		INC		_nmi_counter
 		TSX							; some external bank protection
 		LDA		$106,X				; need to figure out when the problem may occurs
@@ -1438,26 +1478,26 @@ nullsub_2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1749FF:
-		LDA		_ppu_queue_tiles_count
+		LDA		_ppu_queue_chunks_count
 		BNE		loc_174A07
 		JMP		loc_174AE6
 loc_174A07:
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow
 		ORA		#4
 		STA		_PPU_CTRL
 loc_174A0F:
 		JSR		sub_174A36
 		JSR		sub_174A36
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_ADDR
 		INX
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_ADDR
 		INX
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_DATA
 		INX
-		DEC		_ppu_queue_tiles_count
+		DEC		_ppu_queue_chunks_count
 		BNE		loc_174A0F
 		LDA		#0
 		STA		byte_44
@@ -1465,21 +1505,21 @@ loc_174A0F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174A36:
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		AND		#$3F
 		STA		_PPU_ADDR
 		INX
 		INX
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_ADDR
 		INX
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_DATA
 		INX
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X
 		STA		_PPU_DATA
 		INX
-		DEC		_ppu_queue_tiles_count
+		DEC		_ppu_queue_chunks_count
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1487,17 +1527,17 @@ sub_174A59:
 		JMP		sub_17673E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_174A5C:
-		LDA		_PPU_STATUS
+_nmi_dequeue:
+		LDA		_PPU_STATUS							; reset PPU address latch
 		LDX		#0
-		LDA		byte_32
+		LDA		_spr_force_shuffle_mode				; check for additional game modes, mode 00 and FD - regular dequeue
 		BEQ		loc_174A6E
 		CMP		#$FE
-		BEQ		loc_174A84
+		BEQ		loc_174A84							; mode FE - forced dequeue
 		CMP		#$FD
 		BEQ		loc_174A6E
 		RTS
-loc_174A6E:
+loc_174A6E:							
 		LDA		byte_28
 		BEQ		loc_174A7A
 		CMP		#$10
@@ -1509,87 +1549,87 @@ loc_174A7A:
 		BNE		loc_174A84
 		LDA		#4
 		AND		_nmi_flags
-		BEQ		loc_174A99
+		BEQ		loc_174A99					; if dequeue request is set
 loc_174A84:
-		LDA		#4
+		LDA		#4							; force nmi dequeue for FE mode
 		ORA		_nmi_flags
 		STA		_nmi_flags
-		LDA		byte_29
+		LDA		byte_29						; additional force/disable logic, need to figure out
 		BEQ		loc_174A92
 		STX		byte_29
 		BNE		loc_174A9F
 loc_174A92:
-		LDA		byte_6D6
+		LDA		_nmi_force_dequeue_request_flag
 		CMP		#2
-		BNE		loc_174AAC
+		BNE		loc_174AAC					; skip dma oam
 loc_174A99:
 		LDA		#1
-		AND		_nmi_flags
+		AND		_nmi_flags					; test if sprite dma is allowed
 		BNE		loc_174AA6
 loc_174A9F:
 		LDA		#2
-		STA		_PPU_OAM_DMA
-		STA		byte_33
+		STA		_PPU_OAM_DMA				; do sprite dma
+		STA		_ppu_spr_dma_sent			; rise dma performed flag
 loc_174AA6:
 		LDA		#4
 		AND		_nmi_flags
-		BEQ		loc_174B0A
+		BEQ		loc_174B0A					; one more dequeue request test
 loc_174AAC:
-		LDA		_ppu_queue_tiles_count
+		LDA		_ppu_queue_chunks_count		; if buffer is not empty, do dequeue
 		BEQ		loc_174AE6
 loc_174AB1:
-		LDY		#1
-		LDA		byte_300,X
+		LDY		#1							; default chunk data size
+		LDA		_ppu_queue_buf,X			; test for large data chunk bit
 		BPL		loc_174ACC
-		TAY
+		TAY									; large data chunk
 		LSR
 		LSR
 		LSR
 		LSR
-		AND		#4
-		ORA		byte_6D3
+		AND		#4							; get 2000.2 override bit, apply
+		ORA		_ppu_ctrl_shadow
 		STA		_PPU_CTRL
 		TYA
-		INX
-		LDY		byte_300,X
-		AND		#$3F
+		INX		
+		LDY		_ppu_queue_buf,X			; read data block size
+		AND		#$3F						; get higher ppu offset bits
 loc_174ACC:
 		INX
 		STA		_PPU_ADDR
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X			; get lower ppu offset bits
 		INX
 		STA		_PPU_ADDR
 loc_174AD7:
-		LDA		byte_300,X
+		LDA		_ppu_queue_buf,X			; send actual data to ppu
 		INX
 		STA		_PPU_DATA
 		DEY
 		BNE		loc_174AD7
-		DEC		_ppu_queue_tiles_count
+		DEC		_ppu_queue_chunks_count		; next chunk until zero
 		BNE		loc_174AB1
 loc_174AE6:
 		LDA		#$3F
-		STA		_PPU_ADDR
-		LDX		#0
+		STA		_PPU_ADDR					; set default palette bg color once
+		LDX		#0							; so we don't need to set it again
 		STX		_PPU_ADDR
-		LDA		_ram_pal_buf
+		LDA		_ram_pal_buf				; default pal index in bufer
 		STA		_PPU_DATA
+		STX		_PPU_ADDR					; reset ppu address offset
 		STX		_PPU_ADDR
-		STX		_PPU_ADDR
-		STX		_ppu_queue_pos
+		STX		_ppu_queue_pos				; erase ppu queue buf
 		STX		byte_6DA
 		LDA		#4
 		EOR		#$FF
-		AND		_nmi_flags
+		AND		_nmi_flags					; done here, clear ppu queue flag
 		STA		_nmi_flags
 loc_174B0A:
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow			; reload ppu controls
 		STA		_PPU_CTRL
-		LDA		byte_6D4
+		LDA		_ppu_mask_shadow
 		STA		_PPU_MASK
-		LDA		byte_6D0
+		LDA		_ppu_scroll_shadow		; reload ppu scrolls
 		STA		_PPU_SCROLL
-		LDA		byte_6D1
+		LDA		_ppu_scroll_shadow+1
 		STA		_PPU_SCROLL
 		RTS
 
@@ -1600,7 +1640,7 @@ loc_174B35:
 		TXA
 		PHA
 		JSR		_calc_pads
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		PLA
 		TAX
 		INX
@@ -1609,7 +1649,7 @@ loc_174B35:
 		LDA		_pads
 		BNE		loc_174B35
 loc_174B48:
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		_calc_pads
 		LDA		_pads
 		BEQ		loc_174B48
@@ -1618,6 +1658,7 @@ locret_174B52:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; reads both pads, and double-checks to solve DMC glitch..  i think
+;
 _calc_pads:
 		LDX		#0
 		JSR		_calc_pad
@@ -1627,10 +1668,9 @@ _calc_pads:
 _calc_pad:
 		JSR		_read_pad
 .subsequent_read:
-; the above was just to bootstrap things. now repeat until we read the same value twice in a row
-		LDA		_pads_tmp
+		LDA		_pads_tmp	; the above was just to bootstrap things
 		PHA
-		JSR		_read_pad
+		JSR		_read_pad	; now repeat until we read the same value twice in a row
 		PLA
 		CMP		_pads_tmp
 		BNE		.subsequent_read
@@ -1655,6 +1695,7 @@ loc_174B79:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; reads pad[X] and stores the result in _pads_tmp
+;
 _read_pad:
 		LDA		#1
 		STA		_PAD0_REG
@@ -1673,12 +1714,11 @@ loc_174B99:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_delay_n:
+; CPU clock-only delay, doing approximately 1.84^5 cycles, something about 1 sec.
+;
+_delay1sec:
 		PHA
 		LDA		#0
-
-; =============== S U B	R O U T	I N E =======================================
-_delay_ex:
 		SEC
 loc_174BA3:
 		PHA
@@ -1740,7 +1780,7 @@ loc_17683B:
 		DEX
 		BNE		loc_17683B
 		FARX	_b0_s65
-		JSR		sub_174000
+		JSR		_disp_regs_init
 		LDA		#$F
 		LDX		#$19
 loc_17684B:
@@ -1748,10 +1788,10 @@ loc_17684B:
 		DEX
 		BPL		loc_17684B
 		LDA		#$18
-		STA		byte_6D4
+		STA		_ppu_mask_shadow
 		STA		_PPU_MASK
 		LDA		#$90
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		STA		_PPU_CTRL
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1763,7 +1803,7 @@ _MAIN_ENTRY:
 loc_174BBB:
 		JSR		__pause_or_skip
 		FARX	_bB_s4
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		JSR		sub_1743B5
 loc_174BC7:
 		LDA		byte_6A58
@@ -1791,9 +1831,9 @@ loc_174BF2:
 loc_174BFC:
 		LDA		#$50
 		STA		byte_60C6
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		FARX	_bE_sF
-		JSR		__render_on_flag10_clear_reinit
+		JSR		_ppu_and_dequeue_enable
 		LDA		byte_60B8
 		AND		#$BF
 		STA		byte_60B8
@@ -1835,7 +1875,7 @@ loc_174C5C:
 sub_174C62:
 		LDA		_mmc_cur_prg_bank
 		PHA
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDA		byte_9A
 		JSR		sub_1762FC
 		JSR		sub_1743B5
@@ -1855,9 +1895,9 @@ loc_174C87:
 		JSR		sub_177CFC
 		FARX	_bC_s27
 loc_174C93:
-		JSR		_set_nmi_flag_10
+		JSR		_nmi_forbid_ppu_dequeue
 		FARX	_bE_s11
-		JSR		_set_nmi_flag_10
+		JSR		_nmi_forbid_ppu_dequeue
 		LDA		byte_2C
 		BNE		loc_174CCA
 		LDA		byte_2F
@@ -1889,7 +1929,7 @@ loc_174CCA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CCF:
 		FARX	_bE_sD
-		JMP		_wrap_sys0D_wrapper_to_bE_sC_arg3E
+		JMP		_wrap_sys0D_wrap_bE_sC_arg3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CD5:
@@ -1936,19 +1976,23 @@ sub_174D0D:
 ; "read_pri_stat_tbl" - reads a value from pri_stat_tbl
 ; Y is the index of the item to query
 ; the value of X seems significant, but maybe it's always 4
-sub_174D3F:
-		LDA		#9 ; specify bank 9
+;
+; unsafe fast routine, may be replaced with slow and
+; safe _sys0_byte_read_x if add _gear_pri_stat_tbl to the filesystem
+;
+_read_pri_stat_tbl:
+		LDA		#9 					; specify bank 9
 		JSR		_mmc1_prg_set
 		LDA		_gear_pri_stat_tbl,Y
 		PHA
-		LDA		#0 ; specify bank 0
+		LDA		#0 					; specify bank 0
 		JSR		_mmc1_prg_set
 		PLA
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D4F:
-		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s20
 		RTS
 
@@ -1966,7 +2010,7 @@ sub_174D56:
 		FARX	_bD_s6
 		JSR		sub_174DC0
 		JSR		sub_177116
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		JSR		sub_1755AB
 		FARX	_bA_s1
 		JSR		sub_174E10
@@ -2036,16 +2080,16 @@ loc_174DE0:
 		FARX	_b6_s8
 		LDA		byte_87
 		BNE		locret_174DF1
-		LDA		_ppu_queue_tiles_count
+		LDA		_ppu_queue_chunks_count
 		CMP		#1
 		BNE		locret_174DF1
-		JSR		_nmi_set_flag_04
+		JSR		_ppu_set_dequeue_flag
 locret_174DF1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_sys0D_wrapper_to_bE_sC_arg3E:
-		SYSX	_sys0D_wrapper_to_bE_sC,$3E
+_wrap_sys0D_wrap_bE_sC_arg3E:
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2152,7 +2196,7 @@ loc_174E95:
 loc_174E99:
 		JMP		loc_174ED8
 loc_174E9C:
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDA		#3
 		STA		byte_2F
 		LDA		#$2D
@@ -2568,7 +2612,7 @@ loc_1751AA:
 		AND		#$EF
 		STA		byte_60BA
 		JSR		sub_1743B5
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		FARX	_bE_sF
 		FARX	_b5_s9
 		LDA		byte_2C
@@ -2681,7 +2725,7 @@ loc_17527F:
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$04
+		SYSX	_sys12_wrap_bB_s3_apu_load,$04
 locret_175291:
 		RTS
 loc_175292:
@@ -2705,7 +2749,7 @@ loc_1752B0:
 		LDA		byte_2F
 		ORA		#1
 		STA		byte_2F
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		PLA
 		JMP		loc_1752EB
 loc_1752BE:
@@ -2729,8 +2773,8 @@ loc_1752D9:
 		ORA		#1
 		STA		byte_2F
 		FARX	_bB_s4
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
-		JSR		sub_174369
+		SYSX	_sys12_wrap_bB_s3_apu_load,$82
+		JSR		_pal_fade_out
 		JSR		sub_1759B8
 loc_1752EB:
 		PHA
@@ -2785,7 +2829,7 @@ sub_17532D:
 sub_175342:
 		FARX	_bE_s32
 		FARX	_bB_s4
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		LDA		#$9C
 		STA		byte_8B
 		LDA		byte_2F
@@ -2800,7 +2844,7 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$11
+		SYSX	_sys12_wrap_bB_s3_apu_load,$11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2852,7 +2896,7 @@ sub_1753AA:
 		STA		word_4+1
 		LDA		#$21
 		FARX	_bC_sA
-		JSR		sub_1742B0
+		JSR		_ppu_force_dequeue
 loc_1753C0:
 		LDA		byte_8B
 		CMP		#$C5
@@ -2912,7 +2956,7 @@ loc_17541D:
 		LDA		#0
 		STA		byte_6B9
 		FARX	_bB_s4
-		JSR		sub_174369
+		JSR		_pal_fade_out
 		JMP		loc_175195
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2991,9 +3035,9 @@ loc_1754A7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1754AD:
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		JSR		_bE_sA
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1754B6:
@@ -3121,8 +3165,8 @@ sub_175596:
 		BEQ		loc_1755A0
 		FARX	_bB_s4
 loc_1755A0:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
-		JSR		sub_174369
+		SYSX	_sys12_wrap_bB_s3_apu_load,$82
+		JSR		_pal_fade_out
 		PLA
 		PLA
 		JMP		loc_17518B
@@ -3142,7 +3186,7 @@ sub_1755AB:
 		AND		#1
 		BNE		locret_1755C9
 		LDX		#3
-		JSR		_vblank_count
+		JSR		_sleep_X
 locret_1755C9:
 		RTS
 
@@ -3473,7 +3517,7 @@ loc_17580C:
 		CMP		byte_2B
 		BEQ		loc_175824
 loc_175818:
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A2
+		SYSX	_sys12_wrap_bB_s3_apu_load,$A2
 loc_17581B:
 		SEC
 		RTS
@@ -3549,7 +3593,7 @@ loc_17588B:
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A2
+		SYSX	_sys12_wrap_bB_s3_apu_load,$A2
 loc_17589F:
 		SEC
 		RTS
@@ -3631,8 +3675,8 @@ sub_17590B:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
-		JSR		sub_174369
+		SYSX	_sys12_wrap_bB_s3_apu_load,$82
+		JSR		_pal_fade_out
 		FARX	_bE_s1B
 		PLA
 		RTS
@@ -3718,6 +3762,7 @@ loc_175999:
 		BPL		loc_1759ED
 		LDX		#$A6
 		BNE		loc_1759ED
+		
 byte_1759A6:
 		.BYTE	  3, $F,$3F,$FF,$FF
 byte_1759AB:
@@ -3922,8 +3967,8 @@ sub_175B03:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175B0E:
-		JSR		_clear_nmi_flag_10
-		JSR		sub_17443A
+		JSR		_nmi_allow_ppu_dequeue
+		JSR		_ppu_enable
 		JMP		_pal_fade_in
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3949,17 +3994,17 @@ loc_175B27:
 locret_175B38:
 		RTS
 loc_175B39:
-		DEC		byte_6D1
-		LDA		byte_6D1
+		DEC		_ppu_scroll_shadow+1
+		LDA		_ppu_scroll_shadow+1
 		CMP		#$FF
 		BNE		locret_175B38
 		LDA		#$EF
 loc_175B45:
-		STA		byte_6D1
+		STA		_ppu_scroll_shadow+1
 		RTS
 loc_175B49:
-		INC		byte_6D1
-		LDA		byte_6D1
+		INC		_ppu_scroll_shadow+1
+		LDA		_ppu_scroll_shadow+1
 		CMP		#$F0
 		BEQ		loc_175B54
 		RTS
@@ -3967,17 +4012,17 @@ loc_175B54:
 		LDA		#0
 		BEQ		loc_175B45
 loc_175B58:
-		INC		byte_6D0
+		INC		_ppu_scroll_shadow
 		BEQ		loc_175B5E
 		RTS
 loc_175B5E:
-		LDA		byte_6D3
+		LDA		_ppu_ctrl_shadow
 		EOR		#1
-		STA		byte_6D3
+		STA		_ppu_ctrl_shadow
 		RTS
 loc_175B67:
-		DEC		byte_6D0
-		LDA		byte_6D0
+		DEC		_ppu_scroll_shadow
+		LDA		_ppu_scroll_shadow
 		CMP		#$FF
 		BEQ		loc_175B5E
 		RTS
@@ -4172,11 +4217,11 @@ loc_175C80:
 		STA		byte_A
 		JSR		sub_174690
 		LDX		_ppu_queue_pos
-		STA		byte_302,X
+		STA		_ppu_queue_buf+2,X
 		LDA		byte_20
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		LDA		byte_1F
-		STA		byte_301,X
+		STA		_ppu_queue_buf+1,X
 		INC		word_4
 		INC		word_4
 		INC		_ppu_queue_pos
@@ -4192,8 +4237,8 @@ loc_175C80:
 		BNE		loc_175C6D
 		TYA
 		CLC
-		ADC		_ppu_queue_tiles_count
-		STA		_ppu_queue_tiles_count
+		ADC		_ppu_queue_chunks_count
+		STA		_ppu_queue_chunks_count
 		LDA		#1
 		STA		byte_29
 		RTS
@@ -4202,9 +4247,9 @@ loc_175C80:
 sub_175CBD:
 		LDX		_ppu_queue_pos
 		LDA		byte_20
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		LDA		byte_1F
-		STA		byte_301,X
+		STA		_ppu_queue_buf+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4215,8 +4260,8 @@ sub_175CCB:
 		PHA
 		LDA		#5
 		CLC
-		ADC		_ppu_queue_tiles_count
-		STA		_ppu_queue_tiles_count
+		ADC		_ppu_queue_chunks_count
+		STA		_ppu_queue_chunks_count
 		PLA
 		ASL
 		ASL
@@ -4291,7 +4336,7 @@ loc_175D46:
 loc_175D50:
 		JSR		sub_175CBD
 		PLA
-		STA		byte_302,X
+		STA		_ppu_queue_buf+2,X
 		INC		word_4+1
 		INC		word_4+1
 		INC		_ppu_queue_pos
@@ -4338,7 +4383,7 @@ loc_175D7E:
 		LDX		#0
 loc_175D9A:
 		STX		word_4
-		JSR		sub_1742CF
+		JSR		_ppu_calc_nt_offset
 		JSR		sub_175DA5
 		JMP		sub_175DFE
 
@@ -4465,16 +4510,16 @@ locret_175E61:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175E62:
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDX		_ppu_queue_pos
 		LDA		byte_20
 		ORA		#$C0
 		STA		byte_29
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		LDA		byte_F
-		STA		byte_301,X
+		STA		_ppu_queue_buf+1,X
 		LDA		byte_1F
-		STA		byte_302,X
+		STA		_ppu_queue_buf+2,X
 		INC		_ppu_queue_pos
 		INC		_ppu_queue_pos
 		INC		_ppu_queue_pos
@@ -4500,7 +4545,7 @@ loc_175E9E:
 		LDX		_ppu_queue_pos
 loc_175EA7:
 		LDA		byte_647,Y
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INY
 		INC		byte_E
@@ -4513,32 +4558,32 @@ loc_175EA7:
 		CLC
 		ADC		byte_10
 		STA		word_4+1
-		JSR		sub_1742CF
+		JSR		_ppu_calc_nt_offset
 		JSR		sub_175DA5
 		JSR		sub_175E41
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDX		_ppu_queue_pos
 		LDA		byte_20
 		ORA		#$C0
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INC		_ppu_queue_pos
 		LDA		byte_10
 		LDA		#$F
 		SEC
 		SBC		byte_10
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INC		_ppu_queue_pos
 		STA		byte_F
 		LDA		byte_1F
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INC		_ppu_queue_pos
 		LDY		byte_E
 loc_175EF8:
 		LDA		byte_647,Y
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INY
 		DEC		byte_F
@@ -4882,7 +4927,7 @@ sub_1760DE:
 		LDA		#$1E
 loc_1760F8:
 		STA		word_4+1
-		JSR		sub_1742CF
+		JSR		_ppu_calc_nt_offset
 		PLA
 		BPL		loc_176106
 		LDA		byte_20
@@ -4904,18 +4949,18 @@ loc_176106:
 		STA		byte_B
 loc_17611E:
 		STX		byte_F
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDX		_ppu_queue_pos
 		LDA		byte_20
 		ORA		#$80
 		STA		byte_29
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		byte_F
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		byte_1F
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDY		byte_87
 		LDA		byte_644
@@ -4943,26 +4988,26 @@ loc_176154:
 		SEC
 		SBC		word_4
 		STA		byte_1F
-		INC		_ppu_queue_tiles_count
+		INC		_ppu_queue_chunks_count
 		LDA		byte_20
 		EOR		#4
 		ORA		#$80
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		LDA		#$12
 		SEC
 		SBC		byte_A
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		STA		byte_F
 		INX
 		LDA		byte_1F
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176188:
 		LDA		byte_647,Y
-		STA		byte_300,X
+		STA		_ppu_queue_buf,X
 		INX
 		INY
 		DEC		byte_F
@@ -5151,13 +5196,13 @@ sub_1762A8:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762C3:
 		JSR		sub_1762C9
-		JMP		_vblank
+		JMP		_wait_for_nmi_is_over
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762C9:
 		STA		word_4A
 		STY		byte_4D
-		JSR		_vblank
+		JSR		_wait_for_nmi_is_over
 		LDA		_mmc_cur_prg_bank
 		PHA
 		JSR		_mmc1_prg5_set_ppu_reset
@@ -5183,9 +5228,9 @@ loc_1762F4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762FC:
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		JSR		sub_176305
-		JMP		__render_on_flag10_clear_reinit
+		JMP		_ppu_and_dequeue_enable
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176305:
@@ -5690,14 +5735,14 @@ loc_176656:
 		LDA		#3
 		STA		word_60
 		LDA		byte_62
-		STA		byte_300
+		STA		_ppu_queue_buf
 		LDA		word_60+1
-		STA		byte_302
+		STA		_ppu_queue_buf+2
 		LDA		#$40
-		STA		byte_301
+		STA		_ppu_queue_buf+1
 		LDA		#1
-		STA		_ppu_queue_tiles_count
-		JSR		sub_1742B0
+		STA		_ppu_queue_chunks_count
+		JSR		_ppu_force_dequeue
 		LDA		#$40
 		LDX		#word_60+1
 		JMP		_add8_to_16
@@ -5814,7 +5859,7 @@ loc_176725:
 		LDY		word_60
 loc_176729:
 		LDA		word_4,X
-		STA		byte_300,Y
+		STA		_ppu_queue_buf,Y
 		INX
 		INY
 		TXA
@@ -5928,9 +5973,9 @@ loc_176BCF:
 ; ==================================================
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176C3C:
+_sleep_30:
 		LDX		#$1E
-		JMP		_vblank_count
+		JMP		_sleep_X
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C41:
@@ -6083,10 +6128,10 @@ _sys0C_msg_m00_arg8_idx:
 		
 		; other common routines
 		;
-_sys0D_wrapper_to_bE_sC_idx:
-		.WORD	_sys0D_wrapper_to_bE_sC
-_sys0E_wrapper_to_bE_s0_idx:
-		.WORD	_sys0E_wrapper_to_bE_s0
+_sys0D_wrap_bE_sC_idx:
+		.WORD	_sys0D_wrap_bE_sC
+_sys0E_wrap_bE_s0_idx:
+		.WORD	_sys0E_wrap_bE_s0
 		
 		; two more external direct offsets, called from bank 4 only
 		;
@@ -6099,47 +6144,16 @@ _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break_idx:
 		;
 _sys11_msg_m00_arg7_idx:
 		.WORD	_sys11_msg_m00_arg7
-_sys12_wrapper_to_bB_s3_apu_load_idx:
-		.WORD	_sys12_wrapper_to_bB_s3_apu_load
+_sys12_wrap_bB_s3_apu_load_idx:
+		.WORD	_sys12_wrap_bB_s3_apu_load
 _sys13_msg_m00_arg6_idx:
 		.WORD	_sys13_msg_m00_arg6
 
 ; == FILESYSTEM DATA == 
 
-;_sys_bank_lib:
-;				  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-;		.BYTE	 $E, $E, $E, $E, $E, $E, $E, $E, $E, $E, $D, $D, $D, $D, $D, $D ; 0
-;		.BYTE	 $A, $D, $5, $5, $5, $5, $C, $C, $8, $7, $A, $A, $E, $6, $7, $E ; 1
-;		.BYTE	 $E, $E, $5, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 2
-;		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 3
-;		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 4
-;		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $6, $C, $2 ; 5
-;		.BYTE	 $2, $2, $2, $2, $2, $2, $2, $0, $0, $2, $0, $4, $4, $4, $4, $4 ; 6
-;		.BYTE	 $4, $4, $4, $4, $4, $4, $4, $4, $4, $2, $0, $0, $4, $6, $6, $6 ; 7
-;		.BYTE	 $6, $A, $C, $C, $C, $C, $A, $E, $6, $6, $6, $6, $A, $A, $0, $0 ; 8
-;		.BYTE	 $0, $1, $0, $7, $7, $7, $7, $C, $A, $5, $7, $C, $0, $C, $1, $B ; 9
-;		.BYTE	 $B, $B, $B, $D, $2, $B, $E, $4, $E, $0, $0, $E, $E, $E, $E, $E ; A
-;		.BYTE	 $4, $4, $0, $4, $4, $4, $A, $A, $C, $C, $C, $C, $C, $6, $C, $E ; B
-;		.BYTE	 $E, $E, $E, $E, $6, $6, $6, $6, $C, $C, $C, $2, $0, $0, $C, $C ; C
-;		.BYTE	 $4, $4, $4, $4, $4, $4, $4, $4, $1, $1, $1, $1, $1, $D, $6, $0 ; D
-;		.BYTE	 $0, $0, $C, $6, $0, $A, $E, $E, $E, $E, $2, $E, $0, $4, $4, $4 ; E
-;		.BYTE	 $B, $5, $5, $C, $E, $C, $7, $C, $C, $E, $C, $C, $A, $D, $C, $D ; F
-;		.BYTE	 $C, $C, $D, $D, $C, $6, $D, $E, $0, $0, $0, $A, $7, $D, $D, $C ; 10
-;		.BYTE	 $0, $0, $6, $6, $1, $1, $1, $1, $1, $E, $E, $E, $E, $C, $E, $E ; 11
-;		.BYTE	 $E, $E, $0, $C, $E, $E, $C, $D, $D, $0, $0, $C, $0, $D, $0, $D ; 12
-;		.BYTE	 $0, $4, $D, $D, $D, $D, $D, $D, $D, $C, $C, $C, $D, $5, $D, $1 ; 13
-;		.BYTE	 $4, $C, $6, $C, $D, $0, $0, $C, $C, $0, $C, $C, $0, $0, $0, $0 ; 14
-;		.BYTE	 $E, $E, $E, $6, $4, $0, $5, $C, $D, $C, $C, $C, $4, $4, $C, $5 ; 15
-;		.BYTE	 $A, $6, $7, $0, $0, $7, $7, $7, $7, $7, $7, $7, $7, $C, $6, $7 ; 16
-;		.BYTE	 $C, $C, $C, $0, $5, $A, $A, $C, $A, $5, $D, $0, $7, $D, $7, $6 ; 17
-;		.BYTE	 $4, $6, $D, $D, $D, $6, $2, $6, $6, $6, $C, $D, $D, $D, $C, $A ; 18
-;		.BYTE	 $D, $6, $C, $E, $6, $7, $6, $A, $2, $0, $6, $A, $A, $4, $4, $4 ; 19
-;		.BYTE	 $4, $4, $A, $A, $A, $A, $A, $7, $A, $A,$16,$17,$17,$18,$18,$19	; 1A
-;		.BYTE	$1A,  1															; 1B
-
 _sys_idx_lib:
 ;
-; keep this record within first 256 indexes!
+; keep this records within first 256 indexes!
 ; data entries goes first
 ;
 _b0_d3F_idx:			PTR_IDX	$0,_b0_d3F					; $B2 _b0_d3F
@@ -6170,7 +6184,7 @@ _bC_s38_idx:			PTR_IDX	$C,_bC_s38					; $FA _bC_s38
 _bC_s18_idx:			PTR_IDX	$C,_bC_s18					; $CF _bC_s18, used indirectly
 _bC_s1C_idx:			PTR_IDX	$C,_bC_s1C					; $F3 _bC_s1C, used indirectly
 ;
-; then SRAM shourcuts
+; then SRAM shourtcuts
 ;
 _b0_s2_idx:				PTR_IDX	$0,_b0_s2					; $23 _b0_s2
 _b0_s3_idx:				PTR_IDX	$0,_b0_s3					; $24 _b0_s3
@@ -6180,9 +6194,9 @@ _b0_s6_idx:				PTR_IDX	$0,_b0_s6					; $27 _b0_s6
 _b0_s7_idx:				PTR_IDX	$0,_b0_s7					; $28 _b0_s7
 _b0_s8_idx:				PTR_IDX	$0,_b0_s8					; $29 _b0_s8
 _b0_s9_idx:				PTR_IDX	$0,_b0_s9					; $2A _b0_s9
-_b0_sA_idx:				PTR_IDX	$0,_b0_sA					; $2B _b0_sA, never used no SRAM or BRK
+_b0_sA_idx:				PTR_IDX	$0,_b0_sA					; $2B _b0_sA, never used with SRAM or BRK
 _b0_sB_idx:				PTR_IDX	$0,_b0_sB					; $2C _b0_sB
-_b0_sC_char_get_level_idx:				PTR_IDX	$0,_b0_sC_char_get_level					; $2D _b0_sC_char_get_level
+_b0_sC_char_get_level_idx:	PTR_IDX	$0,_b0_sC_char_get_level; $2D _b0_sC_char_get_level
 _b0_sD_idx:				PTR_IDX	$0,_b0_sD					; $2E _b0_sD
 _b0_sE_idx:				PTR_IDX	$0,_b0_sE					; $2F _b0_sE
 _b0_sF_idx:				PTR_IDX	$0,_b0_sF					; $30 _b0_sF
@@ -6396,7 +6410,7 @@ _bB_s7_idx:				PTR_IDX	$B,_bB_s7					; $F0 _bB_s7
 _bC_s0_npc_anim_script_init_idx:	PTR_IDX	$C,_bC_s0_npc_anim_script_init	; $97 _bC_s0_npc_anim_script_init
 _bC_s10_idx:			PTR_IDX	$C,_bC_s10					; $BB _bC_s10
 _bC_s11_idx:			PTR_IDX	$C,_bC_s11					; $BC _bC_s11
-_bC_s12_vblank_count_50_idx:PTR_IDX	$C,_bC_s12_vblank_count_50	; $101 _bC_s12_vblank_count_50
+_bC_s12_sleep_X_50_idx:PTR_IDX	$C,_bC_s12_sleep_X_50	; $101 _bC_s12_sleep_X_50
 _bC_s13_idx:			PTR_IDX	$C,_bC_s13					; $BE _bC_s13
 _bC_s14_idx:			PTR_IDX	$C,_bC_s14					; $C8 _bC_s14
 _bC_s17_sys0_spr_effects_call_idx:	PTR_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE _bC_s17_sys0_spr_effects_call
@@ -6418,7 +6432,7 @@ _bC_s27_idx:			PTR_IDX	$C,_bC_s27					; $147 _bC_s27
 _bC_s28_idx:			PTR_IDX	$C,_bC_s28					; $148 _bC_s28
 _bC_s2A_idx:			PTR_IDX	$C,_bC_s2A					; $100 _bC_s2A
 _bC_s2B_idx:			PTR_IDX	$C,_bC_s2B					; $18E _bC_s2B
-_bC_s2E_vblank_count_50_wait_50_or_skip_idx:PTR_IDX	$C,_bC_s2E_vblank_count_50_wait_50_or_skip	; $170 _bC_s2E_vblank_count_50_wait_50_or_skip
+_bC_s2E_sleep_X_50_wait_50_or_skip_idx:PTR_IDX	$C,_bC_s2E_sleep_X_50_wait_50_or_skip	; $170 _bC_s2E_sleep_X_50_wait_50_or_skip
 _bC_s2F_idx:			PTR_IDX	$C,_bC_s2F					; $14A _bC_s2F
 _bC_s2_idx:				PTR_IDX	$C,_bC_s2					; $5E _bC_s2
 _bC_s30_idx:			PTR_IDX	$C,_bC_s30					; $14B _bC_s30
@@ -6520,7 +6534,7 @@ _bE_sD_idx:				PTR_IDX	$E,_bE_sD					; $21 _bE_sD
 _bE_sE_idx:				PTR_IDX	$E,_bE_sE					; $A8 _bE_sE
 _bE_sF_idx:				PTR_IDX	$E,_bE_sF					; $121 _bE_sF
 
-; now we can add an higher bank routines here in the common list
+; now we can add a higher bank routines here in the common list
 ;
 _b16_s0_idx:			PTR_IDX	$16,_b16_s0					; $1AA _b16_s0
 _b17_s0_copyrights_screen_idx:	PTR_IDX	$17,_b17_s0_copyrights_screen	; $1AB _b17_s0_copyrights_screen
@@ -6529,7 +6543,7 @@ _b18_s0_intro_animation_idx:PTR_IDX	$18,_b18_s0_intro_animation	; $1AD _b18_s0_i
 _b18_s1_idx:			PTR_IDX	$18,_b18_s1					; $1AE _b18_s1
 _b19_s0_idx:			PTR_IDX	$19,_b19_s0					; $1AF _b19_s0
 _b1A_s0_idx:			PTR_IDX	$1A,_b1A_s0					; $1B0 _b1A_s0
-_b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1 _b1B_s0	; moved to bank 01
+_b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1 _b1B_s0, moved to bank 01
 
 ; == removed unused, unneeded or empty filesystem entries
 ;
@@ -6597,14 +6611,6 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1 _b1B_s0	; moved to bank 01
 		ECHO "filesystem entries", [.-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
-; MASTER, PLEASE KILL MEEE....
-;
-;_sys_safe_select_ex:
-;		TAY
-;		LDA		#0
-;		STA		word_6
-
-; =============== S U B	R O U T	I N E =======================================
 _sys1_safe:
 		STA		_irq_a_saved
 		STX		_irq_x_saved
@@ -6618,10 +6624,6 @@ _sys1_safe:
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_safe_select:
-; intended to be used with indexes 166 and 167, but currently only 167 is used here
-;
-;		CMP		#[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
-;		BEQ		_sys_safe_select_ex
 		TAY
 		LDA		#0
 		STA		word_4
@@ -6804,19 +6806,19 @@ _far_bE_s4_msg_m00_break:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0D_wrapper_to_bE_sC:
+_sys0D_wrap_bE_sC:
 		TYA
 		FARX	_bE_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0E_wrapper_to_bE_s0:
+_sys0E_wrap_bE_s0:
 		TYA
 		FARX	_bE_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys12_wrapper_to_bB_s3_apu_load:
+_sys12_wrap_bB_s3_apu_load:
 		TYA
 		FARX	_bB_s3_apu_load
 		RTS

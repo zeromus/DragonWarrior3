@@ -1328,10 +1328,10 @@ off_17750F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_177517:
 		LDA		#$FF
-		STA		byte_32
-		LDA		#$10
+		STA		_spr_force_shuffle_mode
+		LDA		#<[_npcs_pos_list]
 		STA		word_6C
-		LDA		#1
+		LDA		#>[_npcs_pos_list]
 		STA		word_6C+1
 		LDA		byte_644
 		ASL
@@ -1370,7 +1370,7 @@ loc_177560:
 		CMP		#$FF
 		BNE		loc_17756D
 		LDA		#0
-		STA		byte_32
+		STA		_spr_force_shuffle_mode
 		RTS
 loc_17756D:
 		JMP		(word_6E)
@@ -2663,7 +2663,7 @@ sub_177D0A:
 		LDA		byte_6AC2
 		CMP		#$FF
 		BEQ		locret_177D52
-		JSR		_vblank_and_render_off_flag10_set
+		JSR		_ppu_disable
 		JSR		sub_176285
 		LDX		#4
 loc_177D19:
@@ -2934,7 +2934,7 @@ loc_177ED8:
 		AND		#8
 		BEQ		loc_177EEF
 		STX		byte_6ABE
-		JSR		sub_1743B8
+		JSR		_rand
 		AND		#$F
 		LDX		byte_6ABE
 		RTS
