@@ -1904,10 +1904,10 @@ _b0_s11:
 ; factors in whether the meteorite armband is equipped
 _b0_s12:
 ; check whether meteorite armband is equipped
-		LDA		ITEM_METEORITE_ARMBAND
+		LDA		#ITEM_METEORITE_ARMBAND
 		STA		byte_CF ; stash parameter in byte_CF
 		JSR		_b0_s45 ; "sub_checkIfItemEquipped"
-		CMP		ITEM_EMETEORITE_ARMBAND
+		CMP		#ITEM_EMETEORITE_ARMBAND
 		BEQ		.armband_equipped
 .no_armband_equipped:
 		LDX		byte_CE ; load target player
@@ -1951,7 +1951,7 @@ _b0_s15:
 		JSR		_b0_s1E ; "sub_inv_AnalyzeEquipped"
 ; load helm from inventory
 		LDA		word_6+1
-		CMP		ITEM_EUNLUCKY_HELMET
+		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
 		LDX		byte_CE ; "target"
 ; load pc.luck for PC=target
@@ -1987,7 +1987,7 @@ _b0_s16:
 ; check whether it's equipped
 		BPL		.no_weapon_equipped
 ; check whether it's vacant
-		CMP		ITEM_EMPTY
+		CMP		#ITEM_EMPTY
 		BNE		.weapon_equipped
 .no_weapon_equipped:
 ; just return the PC's strength 
@@ -1997,7 +1997,7 @@ _b0_s16:
 		STA		word_6
 		RTS
 .weapon_equipped:
-		AND		ITEM_TYPE_MASK
+		AND		#ITEM_TYPE_MASK
 		TAY
 ; begin accumulating attack power in u24 at word_4 by storing Effective STR
 		JSR		_b0_s11 ; "sub_calc_EffSTR"
@@ -2005,7 +2005,7 @@ _b0_s16:
 		STA		word_4+1
 ; load the stashed player class, check whether its fighter. fighter ATK is calculated differently
 		LDX		word_6+1
-		CPX		CLASS_FIGHTER
+		CPX		#CLASS_FIGHTER
 		BEQ		.calc_ATK_for_fighter
 		LDX		#$04 ; meaning unknown
 ;ok, he's not a fighter
@@ -2023,9 +2023,9 @@ loc_9503:
 .calc_ATK_for_fighter:
 ;check whether we're using weapons the fighter is allowed to equip
 		LDX		#$04
-		CPY		ITEM_IRON_CLAW
+		CPY		#ITEM_IRON_CLAW
 		BEQ		.power_from_weapon
-		CPY		ITEM_GOLDEN_CLAW
+		CPY		#ITEM_GOLDEN_CLAW
 		BNE		.fighter_weapon_penalty ; branch down if it's not any kind of claw
 ;attack power of golden claw is $37 (55 decimal). Why did this have to be hardcoded? Different for fighter, i guess. Not sure how it even gets calculated for non-fighters.
 		LDA		#$37
@@ -2078,10 +2078,10 @@ _b0_s18:
 ; pop the armor type
 		PLA
 ; check if it was empty (no armor equipped)
-		CMP		ITEM_EMPTY
+		CMP		#ITEM_EMPTY
 		BEQ		.no_armor_equipped
 ; mask off equip bit
-		AND		ITEM_TYPE_MASK
+		AND		#ITEM_TYPE_MASK
 ; fetch DEF and incorporate into running total
 		TAY ; setup Y=item to query
 		LDX		#word_4 ; meaning unknown
@@ -2091,9 +2091,9 @@ _b0_s18:
 ; load shield type
 		LDA		word_6
 ; check if it was empty(no shield equipped)
-		CMP		ITEM_EMPTY
+		CMP		#ITEM_EMPTY
 		BEQ		.no_shield_equipped
-		AND		ITEM_TYPE_MASK
+		AND		#ITEM_TYPE_MASK
 ; fetch DEF and incorporate into running total
 		TAY
 		LDX		#word_4 ; meaning unknown
@@ -2102,9 +2102,9 @@ _b0_s18:
 .no_shield_equipped:
 ; load shield type
 		LDA		word_6+1
-		CMP		ITEM_EMPTY
+		CMP		#ITEM_EMPTY
 		BEQ		.no_helm_equipped
-		AND		ITEM_TYPE_MASK
+		AND		#ITEM_TYPE_MASK
 ; fetch DEF and incorporate into running total
 		TAY
 		LDX		#word_4 ; meaning unknown
@@ -2461,7 +2461,7 @@ _b0_s5E:
 		STA		word_4+1
 ; load item of interest and check against book of satori, a sentinel for the end of accessories
 		LDA		byte_CF
-		CMP		ITEM_BOOK_OF_SATORI
+		CMP		#ITEM_BOOK_OF_SATORI
 		BCS		.not_equippable
 _checkClassMask:
 ; normal gear
@@ -2488,11 +2488,11 @@ loc_9786:
 ; reload item of interest to check against a hardcoded list
 		LDA		byte_CF
 ; deny males equipping some things
-		CMP		ITEM_SWORD_OF_ILLUSION
+		CMP		#ITEM_SWORD_OF_ILLUSION
 		BEQ		.not_equippable
-		CMP		ITEM_REVEALING_SWIMSUIT
+		CMP		#ITEM_REVEALING_SWIMSUIT
 		BEQ		.not_equippable
-		CMP		ITEM_MAGIC_BIKINI
+		CMP		#ITEM_MAGIC_BIKINI
 		BEQ		.not_equippable
 _return_true_in_C:
 		SEC
@@ -2504,13 +2504,13 @@ _return_true_in_C:
 _b0_s5F:
 ;items > BLACK_PEPPER are always allowed, as theyre items
 		LDX		byte_CF
-		CPX		ITEM_BLACK_PEPPER
+		CPX		#ITEM_BLACK_PEPPER
 		BCS		_return_true_in_C
 ;check if it's a weapon
 		CPX		#$20
 		BCC		.check_item_use_table
 ;check non-weapon gear by looking for items < ITEM_SACRED_AMULET
-		CPX		ITEM_SACRED_AMULET
+		CPX		#ITEM_SACRED_AMULET
 		BCC		_return_true_in_C
 ;accessories are $47-$4F. weapons are $00 to $1F. subtract $27 to turn accessories into $20-$27, and therefore stacked onto the end of the usability table controlling the items
 		TXA
@@ -3359,7 +3359,7 @@ sub_9C55:
 ; "sub_classifyItemType_returnA"
 ; 0=weapon,1=armor,2=shield,3=helm,5=other
 _b0_s60:
-		CMP		ITEM_GOLDEN_CLAW
+		CMP		#ITEM_GOLDEN_CLAW
 ; return 0 if A=goldenclaw
 		BEQ		.return_0_for_weapon
 		CMP		#0
@@ -4231,7 +4231,7 @@ _b0_s67:
 ; fetch the equipped hat from the player inventory scan
 		LDA		word_6+1
 ; compare to mysterious hat
-		CMP		ITEM_EMYSTERIOUS_HAT
+		CMP		#ITEM_EMYSTERIOUS_HAT
 		BNE		.no_mp_cost_modifier
 ; somehow we got here with A=mpCost
 		PLA
