@@ -80,7 +80,7 @@ _apa = $62
 _arrow = $64
 ; apostrophe left up
 _apu = $66
-; apostrope left down
+; apostrophe left down
 _apd = $67
 ; apostrophe right down
 _apo = $68

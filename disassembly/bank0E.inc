@@ -85,31 +85,35 @@ _bE_s38_ptr:
 		.WORD	_bE_s38
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_MainLoopCheckAButton" - called from main loop
 _bE_s1:
-		LDA		byte_87
-		BNE		loc_158093
+		LDA		byte_87 ; heroTileMovePixelsRemain
+		BNE		.processRemainingPixelMove
+; this affects NPC motion some way i dont understand. bitmask for autopilot entities or NPCs or autopiloted player?
 		LDA		byte_86
-		BEQ		loc_158093
-		LDA		byte_8F
+		BEQ		.processRemainingPixelMove
+		LDA		byte_8F ; blockPlayerInputDuringMap
 		BNE		locret_158092
-loc_15807E:
+; if above checks pass, we're OK to read A button input
+.okToReadInput:
 		JSR		_calc_pads
 		LDA		_pads
 		ORA		byte_6BD
 		STA		byte_6BD
-		LDA		byte_90
+		LDA		byte_90 ; EntityUpdateCycle_90
+; only handle input every 16th frame
 		AND		#$F
 		BNE		locret_158092
 		JMP		sub_15812C
 locret_158092:
 		RTS
-loc_158093:
+.processRemainingPixelMove:
 		LDA		_npc_anim_script_idx
 		BEQ		locret_158092
 		LDA		_npc_anim_script_flags
 		AND		#$40
 		BNE		locret_158092
-		BEQ		loc_15807E
+		BEQ		.okToReadInput
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1580A1:
@@ -187,6 +191,7 @@ sub_15811B:
 		JMP		_bE_s33
 
 ; =============== S U B	R O U T	I N E =======================================
+; something about trying to handle player input on map
 sub_15812C:
 		LDA		byte_6BD
 		AND		#1
@@ -5070,6 +5075,7 @@ sub_15AB4F:
 		LDA		byte_6A32
 		AND		#$DF
 		STA		byte_6A32
+; next char
 loc_15AB5E:
 		JSR		sub_15A6B6
 		JSR		sub_15ABC3
@@ -5077,6 +5083,7 @@ loc_15AB5E:
 		STA		byte_6B0A,X
 		INX
 		STX		byte_6ACC
+; checking against width of textbox
 		CPX		#$16
 		BNE		loc_15AB5E
 		LDA		byte_6B0A
@@ -5109,11 +5116,13 @@ sub_15AB9E:
 		PHA
 		LDY		byte_6B0A
 		LDX		#1
+; next char
 loc_15ABA4:
 		LDA		byte_6B0A,X
 		STA		byte_6B09,X
 		INX
 		CPX		#$16
+; checking against width of textbox
 		BNE		loc_15ABA4
 		PLA
 		STA		byte_6B1F
@@ -5128,6 +5137,7 @@ loc_15ABBF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; check some special string characters
 sub_15ABC3:
 		CMP		#$EF
 		BEQ		loc_15ABD0
@@ -5191,17 +5201,19 @@ loc_15AC0C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AC10:
 		PHA
-		CMP		#$66
+; analyzing special string codes?  not 100% sure yet so i didnt change to macros yet. this does appear to be related possibly to indenting
+		CMP		#$66 ; "apostrophe left up"
 		BEQ		loc_15AC32
-		CMP		#$51
+		CMP		#$51 ; some kind of space
 		BEQ		loc_15AC32
-		CMP		#$67
+		CMP		#$67 ; "apostrope left down"
 		BEQ		loc_15AC23
-		CMP		#$69
+		CMP		#$69 ; "semicolon" ?
 		BEQ		loc_15AC23
 		PLA
 		RTS
 loc_15AC23:
+; when handling "apostrophe left down" or "semicolon" set the $80 bit in byte_6A32
 		LDA		byte_6A32
 		ORA		#$80
 		STA		byte_6A32
@@ -5210,6 +5222,7 @@ loc_15AC23:
 		PLA
 		RTS
 loc_15AC32:
+; when handling "apostrophe left up" or some kind of space, clear the $80 bit in byte_6A32 and store $1 in byte_6AD0
 		LDA		byte_6A32
 		AND		#$7F
 		STA		byte_6A32
@@ -5708,6 +5721,8 @@ _bE_s1D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "map_DecodePointer6CToXY"
+; turns a tilemap pointer at $6C into X/Y tile position (in X and Y). don't modify $6C.
 _bE_s20:
 		LDA		word_6C
 		PHA
@@ -5716,12 +5731,16 @@ _bE_s20:
 		LDX		#word_6C
 		LDY		#>[byte_7400]
 		LDA		#<[byte_7400]
+; remove buffer base #$7400
 		JSR		_add16_to_neg16
-		LDA		byte_88
+		LDA		byte_88 ; mapWidth
+; divide by width
 		JSR		_div16_to_8
+; setup result in X and Y
 		TAX
 		LDA		word_6C
 		TAY
+; restore word_6c
 		PLA
 		STA		word_6C+1
 		PLA
@@ -5899,11 +5918,13 @@ loc_15B067:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s26:
 		FARX	_bD_s7
-		INC		byte_8F
-		LDA		byte_8F
+; increment timer
+		INC		byte_8F ; blockPlayerInputDuringMap
+		LDA		byte_8F ; blockPlayerInputDuringMap
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B08E:
+; checking weird special values..
 		CMP		#$12
 		BEQ		loc_15B09B
 		CMP		#$22
@@ -7237,37 +7258,53 @@ byte_15BA34:
 		.BYTE	$36,$30,$11,$36,$15,  3,$36,$30,$1B,$36,$1A,  6
 
 ; =============== S U B	R O U T	I N E =======================================
+; "readTileFromMap"
 _bE_s19:
 		LDY		#0
 		LDA		(word_6C),Y
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
+; "maskToBottom5Bits"
+; remember, we think the top 3 bits of a tile are special.. roof-related
 sub_15BA44:
 		AND		#$1F
 		TAX
+; load tile info. does 6de0 contain information about each loaded tile type?
 		LDA		byte_6DE0,X
 		LDX		#3
+; classify
 		AND		#$F
 		CMP		#1
-		BEQ		loc_15BA5E
+; classified as X=3.
+; if tileinfo[0]&0x0F==1
+		BEQ		.classificationSucceeded
 		LDX		#1
 		CMP		#$A
-		BEQ		loc_15BA5E
+; classify as X=1
+; if tileinfo[0]&0x0F==0x0A
+		BEQ		.classificationSucceeded
 		CMP		#$F
-		BEQ		loc_15BA5E
+; classify as X=1
+; if tileinfo[0]&0x0F==0x0F
+		BEQ		.classificationSucceeded
+; classify as X=1
+; if tileinfo[0]&0x0F != (0x01,0x0A,0x0F) also return C=0
 		CLC
 		RTS
-loc_15BA5E:
+.classificationSucceeded:
 		SEC
 locret_15BA5F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1A:
-		JSR		sub_15BA44
+		JSR		sub_15BA44 ; maskToBottom5Bits
 		BCC		locret_15BA5F
 		CMP		#$F
-		BNE		loc_15BA5E
+		BNE		.classificationSucceeded
+; classification must have failed
 		CLC
 		RTS
 

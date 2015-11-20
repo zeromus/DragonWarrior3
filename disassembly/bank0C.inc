@@ -4666,11 +4666,12 @@ _bC_s25:
 		JMP		loc_129C72
 
 ; =============== S U B	R O U T	I N E =======================================
+; hardcode logic looking for a specific spot on a map (Magic Ball)
 _bC_s13:
 		LDA		byte_2F
 		LSR
 		BCC		loc_129F9D
-		LDA		byte_8B
+		LDA		byte_8B ; mapNumber
 		CMP		#$A0
 		BNE		loc_129F9D
 		LDA		byte_31

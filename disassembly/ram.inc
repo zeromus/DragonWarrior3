@@ -4524,7 +4524,7 @@ _sram_signature1:
 word_6A2F:
 		.BYTE	0,0
 		.BYTE	0
-byte_6A32: ;"printingState" - some kind of printing status, maybe just for actions or maybe for others
+byte_6A32: ;"printingState" - some kind of printing status, maybe just for actions or maybe for others. Seems to be related to indenting?
 		.BYTE	0
 byte_6A33:
 		.BYTE	0
@@ -4735,7 +4735,7 @@ byte_6ACD:
 byte_6ACE:
 		.BYTE	0
 		.BYTE	0
-byte_6AD0:
+byte_6AD0: ; text printing related
 		.BYTE	0
 byte_6AD1:
 		.BYTE	0
