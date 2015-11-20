@@ -2419,11 +2419,11 @@ loc_68F8F:
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JMP		_sram_b0_s5
+		JMP		_sram_b0_s5_pc_reduce_hp
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F98:
-		JSR		_sram_b0_s2
+		JSR		_sram_b0_s2_pc_store_hp
 		LDX		#word_4
 		LDA		#4
 		JSR		_div16_to_8
@@ -3859,7 +3859,7 @@ sub_69973:
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JSR		_sram_b0_s5
+		JSR		_sram_b0_s5_pc_reduce_hp
 		PLA
 		ASL
 		TAX
@@ -5472,7 +5472,9 @@ loc_6A478:
 		JSR		sub_6B697
 		SYSX	_sys12_wrap_bB_s3_apu_load,$87
 		LDA		#$C
+; printing damage for counterattack
 		JSR		sub_6A96F
+; blinking enemy effect?
 		JSR		sub_6AA3C
 		JSR		_b4_s21_message_half_delay_or_wait_for_keypress
 		JSR		sub_6ADD1
@@ -5509,19 +5511,22 @@ sub_6A4D9:
 		BNE		loc_6A4E1
 		INC		word_4
 loc_6A4E1:
-		JSR		sub_6A5B8
+		JSR		_bs_run_PC_Damage
 
 ; =============== S U B	R O U T	I N E =======================================
+; "btl_someDamageResolution"
 sub_6A4E4:
-		JSR		_sram_b0_s2
+; "should we be doing some counter-attacking here?"
+		JSR		_sram_b0_s2_pc_store_hp
 		ORA		word_4
 		BEQ		loc_6A4EE
 		JSR		_b4_s1A
 loc_6A4EE:
 		JSR		_b4_s6
-		JSR		_sram_b0_s2
+		JSR		_sram_b0_s2_pc_store_hp
 		LDA		word_4
 		ORA		word_4+1
+; check for HP 0
 		BEQ		sub_6A544
 		LDA		byte_575
 		AND		#1
@@ -5553,6 +5558,7 @@ loc_6A529:
 		INC		word_4
 		LDA		#0
 		STA		byte_575
+; after this, before counterattack, a line of text was erased
 		JSR		_b4_sB
 		JMP		loc_6A42E
 loc_6A542:
@@ -5597,7 +5603,7 @@ locret_6A578:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A579:
-		JSR		sub_6B170
+		JSR		sub_6B170 ; "sub_Calc_eSpell_PlayerDef"
 		JMP		loc_6A582
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5612,35 +5618,43 @@ loc_6A58C:
 		JSR		sub_6B3D2
 		JSR		sub_68F0C
 		BPL		locret_6A578
+; removes $20 from flags at $566
 		LDA		#$20
 		JSR		sub_6B2C4
-		LDX		byte_CE
+; load a PC status flag and check & $20
+		LDX		byte_CE ; "targetplayer"
 		LDA		byte_6A9B,X
 		AND		#$20
-		BEQ		loc_6A5A6
+		BEQ		.checkForDamage0 ; skip parry reduction if not parrying
+; ..make damage smaller /2 ..?parrying?
 		LSR		word_4+1
 		ROR		word_4
-loc_6A5A6:
+.checkForDamage0:
+; do something special ("misses!") if damage was 0
 		LDA		word_4
 		ORA		word_4+1
 		BEQ		sub_6A560
-		JSR		sub_6A5B8
+; causes "9 damage points for zero!" and other things
+		JSR		_bs_run_PC_Damage
 		FARX	_b2_s6_screen_damage_shake
 		JSR		_b4_s21_message_half_delay_or_wait_for_keypress
-		JMP		sub_6A4E4
+		JMP		sub_6A4E4 ; "_btl_someDamageResolution"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A5B8:
+; applies damage to PC. plays a SFX. branches far away to do other related processing
+_bs_run_PC_Damage:
+; copy word_4 to u16[CF] and u24[63F]
 		LDA		word_4
 		STA		byte_CF
 		STA		byte_63F
 		LDA		word_4+1
 		STA		byte_D0
 		STA		byte_640
-		LDA		#0
+		LDA		#0 ; make sure MSB is cleared
 		STA		byte_641
-		JSR		_sram_b0_s5
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8A
+; reduce HP 
+		JSR		_sram_b0_s5_pc_reduce_hp
+		SYSX	_sys12_wrap_bB_s3_apu_load,$8A ; play sfx hit!
 		LDA		#$13
 		JMP		sub_6A96F
 
