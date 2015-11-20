@@ -928,7 +928,10 @@ _chr_terrain_bg_data1:
 		.BYTE	$C0,$40,$C0,$40,$40,$80,  0,$FF,$DA,$59,$DB,$5B,$5B,$BB,$1A,$FF
 		.BYTE	  2,$42,$62,$62,  2,  2,  2,$FE,$96,$16, $E, $E, $E,$6E,$4E,$FE
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-byte_E3990:
+;----------------------------------------------
+; contains the primary stat (ATK or DEF) of items
+; ends with iron mask. note the extreme def of the NOH mask
+_gear_pri_stat_tbl:
 		.BYTE	  2,  7, $C, $E,$1C,$28,$21, $F, $A,$1E,$12,$30,$18,$5F,$50,$5A
 		.BYTE	$10,$30,$21,$6E,$64,$37,$32,$41,  5,$37,$55,$1E,$78,$3F,$4D,$23
 		.BYTE	  4, $A, $C,$1C,$19,$20,$28,$14,$4B,$16, $F,$17,$1E,$41,$28,$14
@@ -938,12 +941,12 @@ byte_E3990:
 ; =============== S U B	R O U T	I N E =======================================
 sub_E39E0:
 		LDA		#$10
-		STA		word_4+1
-		LDX		#0
-		BEQ		sub_E3A01
+		STA		word_4+1 ; ; set a hardcoded return value?
+		LDX		#0 ; load X=0 for referencing 0th table
+		BEQ		sub_E3A01 ; poll input Z flag?
 loc_E39E8:
 		LDA		#0
-		LDX		#2
+		LDX		#2 ; load X=2 for referencing 2nd table
 		STX		word_4+1
 		JSR		sub_E3A01
 		LDA		#0
@@ -956,10 +959,14 @@ loc_E39E8:
 		BNE		loc_E3A05
 
 ; =============== S U B	R O U T	I N E =======================================
+; reference a table X=0,1,2 from off_E3A8E
+; ehh i tried, but failed to crack this
 sub_E3A01:
+; unsure...
 		STA		word_6E+1
 		STA		word_6E
 loc_E3A05:
+; load pointer to desired table
 		LDA		off_E3A8E,X
 		STA		word_6C
 		LDA		off_E3A8E+1,X
@@ -968,17 +975,18 @@ loc_E3A05:
 		STA		word_4
 loc_E3A13:
 		LDA		word_6E
-		ORA		#$80
-		STA		byte_300
-		LDA		#$40
-		STA		byte_301
+		ORA		#$80 ; set MSBit of LSB of target address to $80... why?
+		STA		byte_300 ; store in "ppuDMAList" ppu queue
+		LDA		#$40 ; set MSB of target address to $40, which doesnt make sense to me. its past the end of the PPU bus
+		STA		byte_301 ; store in "ppuDMAList" ppu queue
 		LDA		word_6E+1
-		STA		byte_302
+		STA		byte_302 ; store in "ppuDMAList" ppu queue
 		LDX		#0
 		JSR		sub_E3A4A
 		JSR		sub_E3A4A
 		JSR		sub_E3A4A
 		JSR		sub_E3A4A
+;set 1 item in queue
 		LDA		#1
 		STA		_ppu_queue_tiles_count
 		JSR		sub_E3A77
@@ -1004,7 +1012,7 @@ sub_E3A51:
 		LDY		#0
 loc_E3A53:
 		LDA		(word_6C),Y
-		STA		byte_303,X
+		STA		byte_303,X ; store in "ppuDMAList"
 		INX
 		INY
 		TYA

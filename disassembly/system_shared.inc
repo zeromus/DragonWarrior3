@@ -1,10 +1,13 @@
 
 		ORG SYSTEM_SHARED_ORG
 
-; =============== S U B	R O U T	I N E =======================================
 ; SYSTEM ROUTINES BLOCK	SHARED BETWEEN 0F and 1F
 ; the same data	in both	banks
 ; 0F:C000-0F:EC98 == 1F:C000-1F:EC98
+
+; =============== S U B	R O U T	I N E =======================================
+; "disp_InitRegs"
+; initializes registers used by the general engine display system
 sub_174000:
 		LDA		#0
 		STA		_ppu_queue_pos
@@ -22,6 +25,7 @@ sub_174000:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; A = *(u8*)((*(u16*)X)++) ... I think.
 _get_data_next_byte:
 		LDA		(0,X)
 		INC		0,X
@@ -31,6 +35,7 @@ locret_174028:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; [X]-=Y:A
 _add16_to_neg16:
 		JSR		_add8_to_neg16
 		TYA
@@ -41,6 +46,7 @@ _add16_to_neg16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; [X]-=A
 _add8_to_neg16:
 		EOR		#$FF
 		SEC
@@ -52,6 +58,8 @@ locret_174040:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; [X]+=Y:A
+; adds a 16bit value composed of Y:A
 _add16_to_16:
 		JSR		_add8_to_16
 		TYA
@@ -61,8 +69,7 @@ _add16_to_16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; A = value
-; X = ram var ofs
+; [X]+=A
 _add8_to_16:
 		CLC
 		ADC		0,X
@@ -73,6 +80,7 @@ locret_174054:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; [X]*=A
 _mul16_to_8:
 		STA		_tmp21
 		LDA		#0
@@ -100,6 +108,8 @@ loc_17406E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; [X]/=A
+; divides value in (X) by divisor in A. quotient left in (X) and remainder is in A
 _div16_to_8:
 		STA		_tmp21+2
 		TYA
@@ -138,18 +148,23 @@ loc_1740AE:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; seems to happen when changing game modes with variable timing
 _ppu_screen_clear:
 		JSR		_vblank_and_render_off_flag10_set
 		JSR		sub_174000
 		LDA		#$F8
 		LDX		#0
+_resetOAM:
+; F8 is adequate to hide sprites. _spr_ram (and _PPU_OAM_DATA) is filled up with them
 		STX		_PPU_OAM_ADDR
-loc_1740C3:
+.iterate
 		STA		_spr_ram,X
 		STA		_PPU_OAM_DATA
 		INX
-		BNE		loc_1740C3
+		BNE		.iterate
+; clear PPUADDR Toggle Latch
 		LDA		_PPU_STATUS
+; for clearing nametables with $800 worth of $0
 		LDA		#$20
 		STA		_PPU_ADDR
 		LDA		#0
@@ -463,6 +478,7 @@ byte_1742AB:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1742B0:
 		JSR		_nmi_set_flag_04
+; waitForVblStatus
 loc_1742B3:
 		LDA		#4
 		AND		_nmi_flags
@@ -470,6 +486,7 @@ loc_1742B3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; zero called this sub_unk_vbl_ntbuf_flush?
 _nmi_set_flag_04:
 		LDA		#4
 		AND		_nmi_flags
@@ -480,12 +497,16 @@ _nmi_set_flag_04:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "printChar"
+; sets a tile value A to screen at coords $temp16 (accomodating scroll)
 sub_1742C7:
-		STA		byte_1E
+		STA		_ppuByteToWrite
 		JSR		sub_1742CF
 		JMP		_ppu_queue_tile
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_printChar_calcNTAddr"
+; calculates an NT addr into u16_1f from temp16 based on current scroll parameters
 sub_1742CF:
 		LDA		byte_6D3
 		ASL
@@ -523,12 +544,16 @@ loc_1742FC:
 		ROR		byte_1F
 		ORA		byte_20
 		STA		byte_20
+; and at this point we had a good PPU address at $1F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; writes byte at $1E to ppu address at $1F-$20. waits for opportune time and then appends it to ppu_queue
 _ppu_queue_tile:
 		LDA		#4
 		AND		_nmi_flags
+; timingNoGood
+; ; wait for a vblank to happen? wait for a pending $300 NT flush to complete?
 		BNE		_ppu_queue_tile
 		LDA		_ppu_queue_tiles_count
 		CMP		#$28
@@ -537,18 +562,21 @@ _ppu_queue_tile:
 		JMP		_ppu_queue_tile
 loc_17431D:
 		LDX		_ppu_queue_pos
+; _storeOutputAddr
 		LDA		byte_20
 		AND		#$3F
-		STA		byte_300,X
+		STA		byte_300,X ; store into ppu_queue_data
 		INX
+; _storeOutputByte
 		LDA		byte_1F
-		STA		byte_300,X
+		STA		byte_300,X ; store into ppu_queue_data
 		INX
-		LDA		byte_1E
-		STA		byte_300,X
+		LDA		_ppuByteToWrite
+		STA		byte_300,X ; store into ppu_queue_data
 		INX
 		STX		_ppu_queue_pos
 		INC		_ppu_queue_tiles_count
+; _incrementPPUAddr
 		INC		byte_1F
 		BNE		locret_174340
 		INC		byte_20
@@ -556,6 +584,7 @@ locret_174340:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; I called this "sub_msg_WaitTick" - "waits for one frame to happen" - maybe this would be more conventially be called waitVsync
 _vblank:
 		LDA		_nmi_counter
 loc_174344:
@@ -564,11 +593,12 @@ loc_174344:
 		JMP		sub_17490A
 
 ; =============== S U B	R O U T	I N E =======================================
+; I called this "sub_Sleep_X" - "; suspends game for X number of ticks (polling $6D2 framecounter)"
 _vblank_count:
 		LDA		_nmi_counter
-loc_17434F:
+.sleep_loop:
 		CMP		_nmi_counter
-		BEQ		loc_17434F
+		BEQ		.sleep_loop
 		JSR		sub_17490A
 		DEX
 		BNE		_vblank_count
@@ -588,14 +618,18 @@ _pal_fade_in:
 		BNE		sub_17436D
 
 ; =============== S U B	R O U T	I N E =======================================
+; "fades out the map, or maybe the screen at any time. start at fade $10 (barely faded) and delta by $10 (+$10 per iteration)"
 sub_174369:
 		LDA		#$10
 		LDX		#$10
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17436D:
+; "sub_fadeProcessCommon"
+; first, store fade delta
 		STX		_tmp21+1
-loc_17436F:
+.iteratefade:
+; store current fade level
 		STA		_tmp21
 		JSR		_pal_fade
 		LDX		#3
@@ -603,36 +637,52 @@ loc_17436F:
 		LDA		_tmp21
 		CLC
 		ADC		_tmp21+1
+; check for finished state (#$50)
 		CMP		#$50
-		BCC		loc_17436F
+		BCC		.iteratefade
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _pal_fade:
+; start by setting up the soft PPUADDR reg with $3F00 for the palette
 		LDA		#$3F
 		STA		byte_20
 		LDA		#0
 		STA		byte_1F
 		TAX
 loc_17438C:
+; start by loading the current PPUADDR, which is reflecting the currently processed palette entry index
 		LDA		byte_1F
+; loadFirstPaletteEntry: we'll use this in case we have made it to a %4==0 clear palette entry
 		LDY		_ram_pal_buf
+; check for clear palette entry:
 		AND		#3
 		BEQ		loc_174399
+; load "non first palette entry"
+; a little weirdly skipping the first entry
 		LDY		_ram_pal_buf+1,X
 		INX
 loc_174399:
+; palette entry is clear
 		TYA
+; subtract fading factor
 		SEC
 		SBC		_tmp21
+; check for overflow
 		CMP		#$40
 		BCC		loc_1743A4
+; in case of overflow
+; load original color?
 		LDA		_ram_pal_buf
 loc_1743A4:
-		STA		byte_1E
+		STA		_ppuByteToWrite
+; overflow is corrected
 		STX		_tmp21+2
+; write faded color to active palette
 		JSR		_ppu_queue_tile
 		LDX		_tmp21+2
+; check whether the palette is done
+; there are $18 entries, after the $8 color0's are skipped
 		CPX		#$18
 		BNE		loc_17438C
 		JSR		_nmi_set_flag_04
@@ -643,6 +693,7 @@ sub_1743B5:
 		FARX	_b16_s0
 
 ; =============== S U B	R O U T	I N E =======================================
+;  RNG related somehow
 sub_1743B8:
 		TYA
 		PHA
@@ -661,6 +712,7 @@ sub_1743B8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; maybe myunge RNG 8 times
 sub_1743D2:
 		LDY		#8
 loc_1743D4:
@@ -720,11 +772,13 @@ locret_174420:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_map_FinishLoadingTiles?"
 __render_on_flag10_clear_reinit:
-		JSR		_clear_nmi_flag_10
-		JMP		sub_17443A
+		JSR		_clear_nmi_flag_10 ; "sub_disp_disableLoadMode?"
+		JMP		sub_17443A ; "sub_map_FinishingTileLoading?"
 
 ; =============== S U B	R O U T	I N E =======================================
+; waits for vblank, disables screen, fiddles vblank_status. enables direct VRAM loading mode?
 _vblank_and_render_off_flag10_set:
 		JSR		_vblank_and_render_off
 
@@ -736,6 +790,8 @@ _set_nmi_flag_10:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_disp_disableLoadMode?"
+; exits vblank loading mode?
 _clear_nmi_flag_10:
 		LDA		#$10
 		EOR		#$FF
@@ -744,6 +800,7 @@ _clear_nmi_flag_10:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_map_FinishingTileLoading?"
 sub_17443A:
 		LDA		_nmi_flags
 		PHA
@@ -761,6 +818,7 @@ sub_17443A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "WAIT for vblank"
 _vblank_and_render_off:
 		LDY		#0
 		LDA		_PPU_STATUS
@@ -1210,6 +1268,7 @@ loc_174900:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; this is called from the vblank waits or somesuch, once per frame
 sub_17490A:
 		PHA
 		TXA
@@ -1558,6 +1617,7 @@ locret_174B52:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; reads both pads, and double-checks to solve DMC glitch..  i think
 _calc_pads:
 		LDX		#0
 		JSR		_calc_pad
@@ -1566,13 +1626,14 @@ _calc_pads:
 ; =============== S U B	R O U T	I N E =======================================
 _calc_pad:
 		JSR		_read_pad
-loc_174B5D:
+.subsequent_read:
+; the above was just to bootstrap things. now repeat until we read the same value twice in a row
 		LDA		_pads_tmp
 		PHA
 		JSR		_read_pad
 		PLA
 		CMP		_pads_tmp
-		BNE		loc_174B5D
+		BNE		.subsequent_read
 		LDY		_pads_tmp
 		BEQ		loc_174B79
 		LDY		_pads+4,X
@@ -1593,6 +1654,7 @@ loc_174B79:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; reads pad[X] and stores the result in _pads_tmp
 _read_pad:
 		LDA		#1
 		STA		_PAD0_REG
@@ -1854,29 +1916,32 @@ sub_174CE2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CFF:
-		LDA		#9
+		LDA		#9 ; specify bank 9
 		JSR		_mmc1_prg_set
 		JSR		sub_E39E0
-		LDA		#7
+		LDA		#7 ; specify bank 7
 		JSR		_mmc1_prg_set
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D0D:
-		LDA		#9
+		LDA		#9 ; specify bank 9
 		JSR		_mmc1_prg_set
 		JSR		loc_E39E8
-		LDA		#$A
+		LDA		#$A ; specify bank $A
 		JSR		_mmc1_prg_set
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "read_pri_stat_tbl" - reads a value from pri_stat_tbl
+; Y is the index of the item to query
+; the value of X seems significant, but maybe it's always 4
 sub_174D3F:
-		LDA		#9
+		LDA		#9 ; specify bank 9
 		JSR		_mmc1_prg_set
-		LDA		byte_E3990,Y
+		LDA		_gear_pri_stat_tbl,Y
 		PHA
-		LDA		#0
+		LDA		#0 ; specify bank 0
 		JSR		_mmc1_prg_set
 		PLA
 		RTS

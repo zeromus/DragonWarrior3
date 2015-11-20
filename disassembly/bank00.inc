@@ -1510,16 +1510,34 @@ byte_90F3:
 		.BYTE	$14,$28,$37,$46,$64,$78,$8C,$96,$A5,$AF,$D7,$E2,$F1,$40,$80,$B1,  1
 		.BYTE	$12,$32,$3F,$44,$67,$71,$84,$9D,$B0,$BF,$DD,$E2,$F1,$40,$10,$B4,  2
 		.BYTE	 $A,$14,$26,$30,$76,$76,$80,$8A,$9C,$A6,$EC,$F6,$FF,$40,  0,$93,  1
-_b0_d40_weapon_power_list:
+;----------------------------------------------
+; <zero> nope, that's wrong. its a class equip permission mask. 
+; ex. everyone can equip cypress stick (0th entry)
+; ex. wizard (1<<1 = $02) can equip poison needle (8th entry)
+; ex. soldier (1<<6 = $40) can equip iron claw (9th entry)
+_b0_d40_gear_equip_allow_list:
 		.BYTE	$FF,$FD,$FD,$FF,$FD,$F1,$79, $A,  2,$40,$B9,$10,$FD,$11,$11,$10
 		.BYTE	 $E,$11, $E,$11,$11, $E,$B0,$3D,$29,$10,$11, $A,  1,$19,$11, $C
 		.BYTE	$FF,$C8,$3D,$80,$31,$11,$1D,$FF,  1,$20,$FF,$48, $C,$11,  2,$3D
 		.BYTE	$BF,$FF,$FF,$3D,$11,$11,$11, $E,$BD,$31,$11,  1,$11,$3D,$1D,$BF
 		.BYTE	$1D,$AE,$11,$A0,$FF,$BF,$11,  1,$FF,$FF,$40,$FF,$FF,$FF,$FF
-_b0_d41_equip_list:
+;----------------------------------------------
+;whether items can be used by a given class.
+;first $20 entries are weapons, final $7 entries are items $47-$4F
+;sanity checks:
+;ITEM_SACRED_AMULET $01 (only hero, as reported)
+;ITEM_GOLDEN_CLAW $40 (only soldier, as per common sense)
+;ITEM_BOOK_OF_SATORI $04 (only by pilgrim? that's odd. "but nothing happens". game checks out OK)
+;ITEM_WIZARDS_RING $F (only hero, wizard, pilgrim, sage: yep)
+_b0_d41_item_use_list:
 		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$11,$11,$FF
 		.BYTE	 $E,$FF, $E,$FF,$FF,$FF,$FF,$FF,$20,$FF,$11,$FF,  1,$19,$FF, $C
 		.BYTE	  1,$FF,$FF,$40,$FF,  4, $E, $F
+;----------------------------------------------
+;aka item use effects (in battle) list
+;sanity checks: 
+;ITEM_WIZARDS_WAND $E2 (casts spells, yep)
+;THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
 _b0_d42_effects_list:
 		.BYTE	  0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
 		.BYTE	$F3,$14,$83, $B, $B,  2,$F0,  2,  3,  2,$A2,$E2,$F3,$E3,  3,$E2
@@ -1540,6 +1558,7 @@ _b0_d44:
 		.BYTE	$80,$81,  0,  5,$23,  0,$80,$80,  0,  0,  0,  0,  0
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_StoreHP"
 _b0_s2:
 		LDA		byte_CE
 		ASL
@@ -1551,6 +1570,8 @@ _b0_s2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_StoreMHP"
+; who calls this? should only be at levelup time?
 _b0_s3:
 		LDA		byte_CE
 		ASL
@@ -1562,6 +1583,8 @@ _b0_s3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_AddHP"
+; clamps at MHP
 _b0_s4:
 		LDA		byte_CE
 		ASL
@@ -1596,6 +1619,8 @@ loc_92F7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "_PC_SubtractHP"
+; clamps at 0
 _b0_s5:
 		LDA		byte_CE
 		ASL
@@ -1618,9 +1643,12 @@ loc_931D:
 		STA		byte_71D,X
 		LDA		word_4
 		ORA		word_4+1
+; returns indication of whether HP was 0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_SetMP"
+; uses target ($CE)
 _b0_s6:
 		LDA		byte_CE
 		ASL
@@ -1630,9 +1658,14 @@ _b0_s6:
 		LDA		byte_72D,X
 		STA		word_4+1
 		ORA		word_4
+; returns indication of whether MP was 0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_SetMMP"
+; uses target ($CE)
+; returns void
+; who uses this? should only be at levelup?
 _b0_s7:
 		LDA		byte_CE
 		ASL
@@ -1644,6 +1677,9 @@ _b0_s7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_AddMP"
+; boost from tempdamage $CF; clamps at MMP
+; returns void
 _b0_s8:
 		LDA		byte_CE
 		ASL
@@ -1678,6 +1714,9 @@ loc_937D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_SubtractMP"
+; return with C=0 if insufficient MP. also word_4 has curr MP
+; return with C=1 if suffient MP, and MP is deducted
 _b0_s9:
 		LDA		byte_CE
 		ASL
@@ -1705,7 +1744,9 @@ loc_93A9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-unused
+; "sub_PC_ZeroMP"
+; sets MP to 0 in status and word_4
+unused ; huh?
 _b0_sA:
 		LDA		byte_CE
 		ASL
@@ -1718,6 +1759,9 @@ _b0_sA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_TestMP"
+; appears to check whether MP is sufficient for casting
+; returns C=1 if MP sufficient for casting
 _b0_sB:
 		JSR		_b0_s9
 		BCC		locret_93CF
@@ -1825,7 +1869,7 @@ _b0_s10:
 		JSR		_b0_s32
 		LDX		byte_CE
 		CPX		word_4
-		BCS		loc_9479
+		BCS		loc_9479 ; branch down to return empty string
 		LDA		word_4+1,X
 		ASL
 		ASL
@@ -1833,6 +1877,7 @@ _b0_s10:
 		TAY
 		LDX		#0
 loc_946D:
+; loop 8 times, copying bytes of name?
 		LDA		_character_names,Y
 		STA		word_4,X
 		INY
@@ -1841,59 +1886,75 @@ loc_946D:
 		BNE		loc_946D
 		RTS
 loc_9479:
+;set an empty string as a result ($FF null terminator?)
 		LDA		#$FF
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_calc_EffSTR" - calculates Eff STR (same as STR in this game) for PC to word_4 and A
 _b0_s11:
 		LDX		byte_CE
-		LDA		byte_704,X
+		LDA		byte_704,X ; reference STR stat
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_calc_EffAGI" - calculates Eff AGIfor PC to word_4 and A
+; factors in whether the meteorite armband is equipped
 _b0_s12:
-		LDA		#$4B
-		STA		byte_CF
-		JSR		_b0_s45
-		CMP		#$CB
-		BEQ		loc_9499
-loc_9491:
-		LDX		byte_CE
-		LDA		byte_708,X
+; check whether meteorite armband is equipped
+		LDA		ITEM_METEORITE_ARMBAND
+		STA		byte_CF ; stash parameter in byte_CF
+		JSR		_b0_s45 ; "sub_checkIfItemEquipped"
+		CMP		ITEM_EMETEORITE_ARMBAND
+		BEQ		.armband_equipped
+.no_armband_equipped:
+		LDX		byte_CE ; load target player
+		LDA		byte_708,X ; read AGI stat
+;store return value
 loc_9496:
 		STA		word_4
 locret_9498:
 		RTS
-loc_9499:
-		JSR		loc_9491
+.armband_equipped:
+; first, cache the base AGI
+		JSR		.no_armband_equipped
+; apply a 2x bonus
 		ASL		word_4
+; return if theres no overflow
 		BCC		locret_9498
+; clamp to 255 otherwise
 		LDA		#$FF
 		BNE		loc_9496
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_calc_EffVIT" - calculates Eff VIT (same as VIT in this game) for PC to word_4 and A
 _b0_s13:
 		LDX		byte_CE
-		LDA		byte_714,X
+		LDA		byte_714,X ; reference VIT stat
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_calc_EffINT" - calculates Eff INT (same as INT in this game) for PC to word_4 and A
 _b0_s14:
-		LDX		byte_CE
+		LDX		byte_CE ; load "target"
 		LDA		byte_70C,X
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_calc_EffLUCK" - calculates effective LUCK stat in word_4 with word_5 and word_6 cleared out (setting up for a luck-based calculation?)
 _b0_s15:
-		JSR		_b0_s1E
+; scan inventory
+		JSR		_b0_s1E ; "sub_inv_AnalyzeEquipped"
+; load helm from inventory
 		LDA		word_6+1
-		CMP		#$C2
-		BEQ		loc_94CB
-		LDX		byte_CE
+		CMP		ITEM_EUNLUCKY_HELMET
+		BEQ		.return_luck_0
+		LDX		byte_CE ; "target"
+; load pc.luck for PC=target
 		LDA		byte_710,X
 loc_94C2:
 		STA		word_4
@@ -1901,59 +1962,83 @@ loc_94C2:
 		STA		word_4+1
 		STA		word_6
 		RTS
-loc_94CB:
+.return_luck_0:
 		LDA		#0
 		BEQ		loc_94C2
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_calc_EffATK" - calculates effective ATK at u24 in word_4
+; If(unequipped) return STR;
+; If(!IsFighter) return STR+WeaponPow(weapon); (there's no POW in the table for the golden claw. only fighters can equip or use the golden claw (equip and use are equivalent, it ends up equipped)
+; //must be a fighter
+; if(equipped(IronClaw)) return STR+WeaponPow(IronClaw);
+; if(equipped(GoldenClaw)) return STR+55;
+; return clamp(STR-WeaponPow(weapon)/2,0); //yikes!
 _b0_s16:
-		JSR		_b0_s2C
+; fetch the PCs class and stash it
+		JSR		_b0_s2C ; "PC_FetchTargetClass"
 		PHA
-		JSR		_b0_s1E
+		JSR		_b0_s1E ; "sub_inv_AnalyzeEquipped"
+; restore class and stash it elsewhere
 		PLA
 		STA		word_6+1
+; fetch A=found weapon
 		LDA		word_4
-		BPL		loc_94E1
-		CMP		#$FF
-		BNE		loc_94EB
-loc_94E1:
-		JSR		_b0_s11
+; check whether it's equipped
+		BPL		.no_weapon_equipped
+; check whether it's vacant
+		CMP		ITEM_EMPTY
+		BNE		.weapon_equipped
+.no_weapon_equipped:
+; just return the PC's strength 
+		JSR		_b0_s11 ; "sub_calc_EffSTR"
 		LDA		#0
-		STA		word_4+1
+		STA		word_4+1 ; clear out high 
 		STA		word_6
 		RTS
-loc_94EB:
-		AND		#$7F
+.weapon_equipped:
+		AND		ITEM_TYPE_MASK
 		TAY
-		JSR		_b0_s11
+; begin accumulating attack power in u24 at word_4 by storing Effective STR
+		JSR		_b0_s11 ; "sub_calc_EffSTR"
 		LDA		#0
 		STA		word_4+1
+; load the stashed player class, check whether its fighter. fighter ATK is calculated differently
 		LDX		word_6+1
-		CPX		#word_6
-		BEQ		loc_9508
-		LDX		#word_4
-loc_94FD:
-		JSR		sub_174D3F
+		CPX		CLASS_FIGHTER
+		BEQ		.calc_ATK_for_fighter
+		LDX		#$04 ; meaning unknown
+;ok, he's not a fighter
+.power_from_weapon:
+; read power of weapon
+		JSR		sub_174D3F ; "read_pri_stat_tbl"
 loc_9500:
+; accumulate into Effective ATK
 		JSR		_add8_to_16
 loc_9503:
+; clear high order bytes of u24 result and return
 		LDA		#0
 		STA		word_6
 		RTS
-loc_9508:
-		LDX		#word_4
-		CPY		#9
-		BEQ		loc_94FD
-		CPY		#$4A
-		BNE		loc_9516
+.calc_ATK_for_fighter:
+;check whether we're using weapons the fighter is allowed to equip
+		LDX		#$04
+		CPY		ITEM_IRON_CLAW
+		BEQ		.power_from_weapon
+		CPY		ITEM_GOLDEN_CLAW
+		BNE		.fighter_weapon_penalty ; branch down if it's not any kind of claw
+;attack power of golden claw is $37 (55 decimal). Why did this have to be hardcoded? Different for fighter, i guess. Not sure how it even gets calculated for non-fighters.
 		LDA		#$37
-		BNE		loc_9500
-loc_9516:
-		JSR		sub_174D3F
+		BNE		loc_9500 ; this is not conditional, at this pointer
+.fighter_weapon_penalty:
+; use the weapon's power divided by 2 as a PENALTY from the fighter's base strength. that's weird.
+		JSR		sub_174D3F ; "read_pri_stat_tbl"
 		LSR
 		JSR		_add8_to_neg16
+; clamp at 0
 		BCS		loc_9503
 		LDA		#0
+;store results and exit
 		STA		word_4
 		STA		word_4+1
 		BEQ		loc_9503
@@ -1977,41 +2062,56 @@ _b0_s17:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_PC_CalcEffDEF"
+; EffDEF = EffAGI/2 + (armor.def + shield.def + helm.def)
+; returns it as u24 in word_4
 _b0_s18:
-		JSR		_b0_s1E
+		JSR		_b0_s1E ;"sub_inv_AnalyzeEquipped
+; push the armor type
 		LDA		word_4+1
 		PHA
-		JSR		_b0_s12
+; calculate effective AGI and divide by 2, stashing result
+		JSR		_b0_s12 ; "sub_PC_CalcEffAGI"
 		LSR		word_4
 		LDA		#0
 		STA		word_4+1
+; pop the armor type
 		PLA
-		CMP		#$FF
-		BEQ		loc_955F
-		AND		#$7F
-		TAY
-		LDX		#word_4
-		JSR		sub_174D3F
+; check if it was empty (no armor equipped)
+		CMP		ITEM_EMPTY
+		BEQ		.no_armor_equipped
+; mask off equip bit
+		AND		ITEM_TYPE_MASK
+; fetch DEF and incorporate into running total
+		TAY ; setup Y=item to query
+		LDX		#word_4 ; meaning unknown
+		JSR		sub_174D3F ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
-loc_955F:
+.no_armor_equipped:
+; load shield type
 		LDA		word_6
-		CMP		#$FF
-		BEQ		loc_9570
-		AND		#$7F
+; check if it was empty(no shield equipped)
+		CMP		ITEM_EMPTY
+		BEQ		.no_shield_equipped
+		AND		ITEM_TYPE_MASK
+; fetch DEF and incorporate into running total
 		TAY
-		LDX		#word_4
-		JSR		sub_174D3F
+		LDX		#word_4 ; meaning unknown
+		JSR		sub_174D3F ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
-loc_9570:
+.no_shield_equipped:
+; load shield type
 		LDA		word_6+1
-		CMP		#$FF
-		BEQ		loc_9581
-		AND		#$7F
+		CMP		ITEM_EMPTY
+		BEQ		.no_helm_equipped
+		AND		ITEM_TYPE_MASK
+; fetch DEF and incorporate into running total
 		TAY
-		LDX		#word_4
-		JSR		sub_174D3F
+		LDX		#word_4 ; meaning unknown
+		JSR		sub_174D3F ; "read_pri_stat_tbl"
 		JSR		_add8_to_16
-loc_9581:
+.no_helm_equipped:
+; clear MSB of u24 temp value
 		LDA		#0
 		STA		word_6
 		RTS
@@ -2151,43 +2251,57 @@ loc_9663:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s1E:
+; "sub_inv_AnalyzeEquipped"
+; analyzes the targeted player's equipped items; reports them in $4-$7
 		LDA		byte_CE
 		ASL
 		ASL
 		ASL
+; setup PCx8 inventory ptr:
+; the desired player's inventory slot 0 is pointed to by X
 		TAX
+; initialize itemTypeCounter:
+; $13 will store the item types we're scanning inventory for
 		LDA		#0
 		STA		_tmp12+1
-loc_9672:
+.load_8slot_counter:
 		LDY		#8
 		TXA
 		PHA
-loc_9676:
+.iterate_inventory ; 9676
+; checking inventory for something special? equipped?
 		LDA		byte_77C,X
-		BPL		loc_9688
+; skip if nonequipped
+		BPL		.nextslot
+; skip if nulled
 		CMP		#$FF
-		BEQ		loc_9688
+		BEQ		.nextslot
+; mask off equipbit?
 		AND		#$7F
-		JSR		_b0_s60
+		JSR		_b0_s60 ; AKA sub_classifyItemType_returnA
+; test against desired type
 		CMP		_tmp12+1
 		BEQ		loc_9690
-loc_9688:
+.nextslot:
 		INX
 		DEY
-		BNE		loc_9676
+		BNE		.iterate_inventory
 		LDA		#$FF
 		BNE		loc_9693
 loc_9690:
 		LDA		byte_77C,X
 loc_9693:
 		LDY		_tmp12+1
+; storing some inventory item in $4?
 		STA		word_4,Y
 		PLA
 		TAX
+; move to next player
 		INY
 		STY		_tmp12+1
+; check done analyzing
 		CPY		#4
-		BNE		loc_9672
+		BNE		.load_8slot_counter
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2231,7 +2345,7 @@ loc_96C4:
 		JSR		_b0_s60
 		CMP		byte_42
 		BNE		loc_96DB
-		LDA		byte_77C,X
+		LDA		byte_77C,X ; check inventory
 		STA		word_4+1,Y
 		INY
 loc_96DB:
@@ -2289,7 +2403,7 @@ _b0_s27:
 loc_971D:
 		DEC		_tmp12+1
 		BEQ		loc_9740
-		LDA		byte_77C,X
+		LDA		byte_77C,X ; check inventory
 		CMP		#$FF
 		BEQ		loc_9736
 		AND		#$7F
@@ -2339,58 +2453,74 @@ locret_976F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_checkItemCanBeEquipped"
 _b0_s5E:
+; load item of interest, reference a table, and store it in word_5
 		LDX		byte_CF
-		LDA		_b0_d40_weapon_power_list,X
+		LDA		_b0_d40_gear_equip_allow_list,X
 		STA		word_4+1
+; load item of interest and check against book of satori, a sentinel for the end of accessories
 		LDA		byte_CF
-		CMP		#$4C
-		BCS		loc_978E
-loc_977D:
-		JSR		_b0_s2C
+		CMP		ITEM_BOOK_OF_SATORI
+		BCS		.not_equippable
+_checkClassMask:
+; normal gear
+		JSR		_b0_s2C ; "PC_FetchTargetClass"
 		LDA		#0
 		LDX		word_4
+; make a bitmask based on X (our class)
 		INX
 		SEC
 loc_9786:
 		ROL
 		DEX
 		BNE		loc_9786
-		AND		word_4+1
-		BNE		loc_9790
-loc_978E:
+		AND		word_4+1 ; AND our class mask bit vs the equip_allow_list_entry
+		BNE		.class_can_equip
+.not_equippable:
 		CLC
 		RTS
-loc_9790:
-		JSR		_b0_s2F
-		BNE		loc_97A3
+.class_can_equip:
+;but now check whether we're gender-blocked
+		JSR		_b0_s2F ; PC_FetchGender
+;if we're female, theres no extra restrictions
+		BNE		_return_true_in_C
+; reload item of interest to check against a hardcoded list
 		LDA		byte_CF
-		CMP		#$16
-		BEQ		loc_978E
-		CMP		#$31
-		BEQ		loc_978E
-		CMP		#$32
-		BEQ		loc_978E
-loc_97A3:
+; deny males equipping some things
+		CMP		ITEM_SWORD_OF_ILLUSION
+		BEQ		.not_equippable
+		CMP		ITEM_REVEALING_SWIMSUIT
+		BEQ		.not_equippable
+		CMP		ITEM_MAGIC_BIKINI
+		BEQ		.not_equippable
+_return_true_in_C:
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_checkItemCanBeUsed"
+; [$CF] contains item of interest
 _b0_s5F:
+;items > BLACK_PEPPER are always allowed, as theyre items
 		LDX		byte_CF
-		CPX		#$4F
-		BCS		loc_97A3
+		CPX		ITEM_BLACK_PEPPER
+		BCS		_return_true_in_C
+;check if it's a weapon
 		CPX		#$20
-		BCC		loc_97B7
-		CPX		#$47
-		BCC		loc_97A3
+		BCC		.check_item_use_table
+;check non-weapon gear by looking for items < ITEM_SACRED_AMULET
+		CPX		ITEM_SACRED_AMULET
+		BCC		_return_true_in_C
+;accessories are $47-$4F. weapons are $00 to $1F. subtract $27 to turn accessories into $20-$27, and therefore stacked onto the end of the usability table controlling the items
 		TXA
 		SBC		#$27
 		TAX
-loc_97B7:
-		LDA		_b0_d41_equip_list,X
+.check_item_use_table:
+;query the item use table and branch up to check against the class mask
+		LDA		_b0_d41_item_use_list,X
 		STA		word_4+1
-		JMP		loc_977D
+		JMP		_checkClassMask
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s28:
@@ -2512,29 +2642,41 @@ loc_985B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_checkIfItemEquipped"
+; check target inventory for an equpped item (specified by byte_CF); 
+; returns: C flag (set if item was equipped)
+; returns: word_4 (the value found in the inventory)
+; returns: A (the value found in the inventory)
 _b0_s45:
 		LDA		#$FF
 		STA		word_4
-		LDA		byte_CE
+; calculate offset to the target's inventory: mult 8 for target inventory buffer
+		LDA		byte_CE ; load target PC number
 		ASL
 		ASL
 		ASL
 		TAX
+; setup a loop through 8 inventory entries
 		LDY		#8
-loc_986E:
-		LDA		byte_77C,X
+.checkequipped_iterate:
+		LDA		byte_77C,X ; read value from inventory
+; mask off equip flag
 		AND		#$7F
+; is it the item we were looking for?
 		CMP		byte_CF
-		BEQ		loc_987C
-loc_9877:
+		BEQ		.found_item
+.next_check:
 		INX
 		DEY
-		BNE		loc_986E
+		BNE		.checkequipped_iterate
+; return if unfound: clear C flag is important here to indicate no item found
 		RTS
-loc_987C:
-		LDA		byte_77C,X
+.found_item:
+		LDA		byte_77C,X ; read value from inventory again, and store in word_4
 		STA		word_4
-		BPL		loc_9877
+; branch back if nonequipped (check top bit)
+		BPL		.next_check
+; return if found and equipped: set C flag is important here
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2668,14 +2810,16 @@ loc_9932:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_FetchTargetClass"
 _b0_s2C:
 		LDX		byte_CE
-		LDA		byte_718,X
-		AND		#7
+		LDA		byte_718,X ; reference pc.classgender table for target PC
+		AND		#7 ; mask off gender, leaving class only remaining
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; just calls PC_FetchTargetClass
 _b0_s2D:
 		JMP		_b0_s2C
 
@@ -2691,12 +2835,15 @@ _b0_s2E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "PC_FetchGender" - fetches the gender of a PC and stores result in word_4 as 1 or 0
 _b0_s2F:
 		LDX		byte_CE
-		LDA		byte_718,X
-
+		LDA		byte_718,X ; reference pc.classgender table for target PC
+; fall through to gender analysis
 ; =============== S U B	R O U T	I N E =======================================
+; "GenderFromClassGender" - gets the gender from a ClassGender value, stores result in word_4 as 1 or 0
 sub_995C:
+; shift down gender bit to LSBit and isolate it
 		LSR
 		LSR
 		LSR
@@ -3209,38 +3356,46 @@ sub_9C55:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_classifyItemType_returnA"
+; 0=weapon,1=armor,2=shield,3=helm,5=other
 _b0_s60:
-		CMP		#$4A
-		BEQ		loc_9C6C
+		CMP		ITEM_GOLDEN_CLAW
+; return 0 if A=goldenclaw
+		BEQ		.return_0_for_weapon
 		CMP		#0
-		BCC		loc_9C6F
+		BCC		.try_as_armor
+; test against the highest weapon item
+; $20 is Clothes, the first item type that isnt a weapon
 		CMP		#$20
-		BCS		loc_9C6F
-loc_9C6C:
+		BCS		.try_as_armor
+.return_0_for_weapon:
 		LDA		#0
 		RTS
-loc_9C6F:
+.try_as_armor:
 		CMP		#$20
-		BCC		loc_9C7A
+		BCC		.try_as_shield
 		CMP		#$38
-		BCS		loc_9C7A
+		BCS		.try_as_shield
+; return 1 for armor
 		LDA		#1
 		RTS
-loc_9C7A:
+.try_as_shield:
 		CMP		#$38
-		BCC		loc_9C85
+		BCC		._try_as_helm
 		CMP		#$3F
-		BCS		loc_9C85
+		BCS		._try_as_helm
+; return 2 for shield
 		LDA		#2
 		RTS
-loc_9C85:
+._try_as_helm:
 		CMP		#$3F
-		BCC		loc_9C90
+		BCC		.return_5_for_other
 		CMP		#$47
-		BCS		loc_9C90
+		BCS		.return_5_for_other
+; return 3 for helm
 		LDA		#3
 		RTS
-loc_9C90:
+.return_5_for_other:
 		LDA		#5
 		RTS
 off_9C93:
@@ -4067,15 +4222,23 @@ sub_A197:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "applyMpCostModifiers" - this might be a little bit of a misnomer, not sure
+; Seems to only be mysterious hat mp = mp*3/4+1
 _b0_s67:
 		PHA
+; this ended up scanning the inventory for a player...
 		JSR		_b0_s1E
+; fetch the equipped hat from the player inventory scan
 		LDA		word_6+1
-		CMP		#$C1
-		BNE		loc_A1C8
+; compare to mysterious hat
+		CMP		ITEM_EMYSTERIOUS_HAT
+		BNE		.no_mp_cost_modifier
+; somehow we got here with A=mpCost
 		PLA
-		BEQ		sub_A1C9
-		JSR		sub_A1C9
+; store result 0 if original cost was 0
+		BEQ		_store_mp_cost
+; stash the original cost for math (apply mysterious hat MP adjustment)
+		JSR		_store_mp_cost
 		LDA		#3
 		LDX		#byte_CF
 		JSR		_mul16_to_8
@@ -4083,11 +4246,11 @@ _b0_s67:
 		JSR		_div16_to_8
 		LDA		#1
 		JMP		_add8_to_16	; A = value
-loc_A1C8:
+.no_mp_cost_modifier:
 		PLA
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A1C9:
+_store_mp_cost: ; sub_A1C9
 		STA		byte_CF
 		LDA		#0
 		STA		byte_D0
@@ -4191,6 +4354,7 @@ loc_A2A0:
 		LDA		#0
 		STA		byte_6DF
 		JMP		sub_1743B5
+; probably an item stats related table, but not sure
 _b0_d58:
 		.BYTE	  0,$1A,$15,$2A,  3,$26,$24,$22
 byte_A2DF:
@@ -5519,9 +5683,9 @@ loc_ADC6:
 		STA		byte_CF
 		JSR		_b0_s45
 		LDA		word_4
-		BPL		_set_carry_ret
+		BPL		_return_false_in_C
 		CMP		#$FF
-		BEQ		_set_carry_ret
+		BEQ		_return_false_in_C
 		AND		#$7F
 		STA		byte_D3
 		LDA		#$15
@@ -5536,7 +5700,7 @@ sub_ADE0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_set_carry_ret:
+_return_false_in_C:
 		CLC
 		RTS
 
@@ -5550,12 +5714,12 @@ loc_ADEC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADF4:
 		LDA		byte_48
-		BPL		_set_carry_ret
+		BPL		_return_false_in_C
 		AND		#$7F
 		TAX
 		LDA		_b0_d42_effects_list,X
 		AND		#8
-		BEQ		_set_carry_ret
+		BEQ		_return_false_in_C
 		STX		byte_D2
 		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$17
 		JSR		_wrap_sys0D_wrapper_to_bE_sC_arg3E

@@ -2303,7 +2303,7 @@ loc_39F8E:
 		JMP		loc_39F8E
 loc_39F96:
 		AND		#3
-		STA		byte_1E
+		STA		_ppuByteToWrite
 		JSR		_get_far_pak_data_ptr_byte_safe
 		PHA
 		AND		#$F
@@ -2367,7 +2367,7 @@ loc_39FF4:
 		CLC
 		ADC		word_6
 		TAX
-		LDA		byte_1E
+		LDA		_ppuByteToWrite
 		CPX		#$C
 		BCS		loc_3A006
 		STA		byte_460,X
