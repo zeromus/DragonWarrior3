@@ -977,23 +977,7 @@ _chr_character_sprites_data:
 		.BYTE	$72,$7B,$37,$37,  4, $F,$1F,$1E,$1F,$1F,$7F,$7F,  3, $F,$1F,  0
 		.BYTE	$17,$F7,$F7,$F7,$1B,$FC,$FE,$1E,$FF,$FE,$FE,$FF,$EF,$FF,$FE,  0
 
-		ECHO "bank 08 free space", [$BFD8-.]
+		ECHO "bank 08 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

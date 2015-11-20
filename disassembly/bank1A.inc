@@ -518,10 +518,10 @@ byte_27D002:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-off_27E002:
-		.WORD	byte_27C002
-off_27E004:
-		.WORD	byte_27D002
+;off_27E002:
+;		.WORD	byte_27C002
+;off_27E004:
+;		.WORD	byte_27D002
 byte_27E006:
 		.BYTE	$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10
 		.BYTE	$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10
@@ -587,8 +587,8 @@ byte_27E006:
 		.BYTE	$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0, $A, $A, $A, $A, $A, $A, $A, $A
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-off_27E406:
-		.WORD	byte_27E006
+;off_27E406:
+;		.WORD	byte_27E006
 byte_27E408:
 		.BYTE	$31,  4,$21,$6A,$31,  5,$21,$72,$31,  6,$21,$7A,$31,  7,$21,$82
 		.BYTE	$39,$14,$21,$6A,$39,$15,$21,$72,$39,$16,$21,$7A,$39,$17,$21,$82
@@ -767,9 +767,9 @@ sub_27E763:
 		LDY		#0
 		STY		_PPU_ADDR
 		STY		_PPU_ADDR
-		LDA		off_27E002
+		LDA		#<[byte_27C002]
 		STA		word_4
-		LDA		off_27E002+1
+		LDA		#>[byte_27C002]
 		STA		word_4+1
 		LDX		#$10
 		JSR		sub_27E7B2
@@ -778,15 +778,15 @@ sub_27E763:
 		STA		_PPU_ADDR
 		LDY		#0
 		STY		_PPU_ADDR
-		LDA		off_27E004
+		LDA		#<[byte_27D002]
 		STA		word_4
-		LDA		off_27E004+1
+		LDA		#>[byte_27D002]
 		STA		word_4+1
 		LDX		#$10
 		JSR		sub_27E7B2
-		LDA		off_27E406
+		LDA		#<[byte_27E006]
 		STA		word_4
-		LDA		off_27E406+1
+		LDA		#>[byte_27E006]
 		STA		word_4+1
 		LDA		_PPU_STATUS
 		LDA		#$20
@@ -821,9 +821,9 @@ loc_27E7C2:
 sub_27E7CE:
 		LDX		#$3C
 		JSR		_vblank_count_0
-		LDA		off_27E82A
+		LDA		#<[byte_27E4CC]
 		STA		word_4
-		LDA		off_27E82A+1
+		LDA		#>[byte_27E4CC]
 		STA		word_4+1
 		LDA		#$C
 		STA		byte_8
@@ -876,8 +876,8 @@ _vblank_count_0:
 		DEX
 		BNE		_vblank_count_0
 		RTS
-off_27E82A:
-		.WORD	byte_27E4CC
+;off_27E82A:
+;		.WORD	byte_27E4CC
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_27E82C:
@@ -988,23 +988,7 @@ locret_27E8D2:
 byte_27E8D3:
 		.BYTE	  4,  5,  6, $D, $E, $F,$10,$11,$13,$14
 
-		ECHO "bank 1A free space", [$BFD8-.]
+		ECHO "bank 1A free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

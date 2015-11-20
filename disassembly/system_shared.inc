@@ -184,17 +184,9 @@ locret_1740F9:
 ;		JMP		__render_on_flag10_clear_reinit
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_174103:
+_tile_rotate_right:
 		LDX		#0
 loc_174105:
-		JSR		sub_17410E
-		INX
-		CPX		#8
-		BNE		loc_174105
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_17410E:
 		ASL		word_4,X
 		ROR		byte_C
 		ASL		word_4,X
@@ -211,20 +203,15 @@ sub_17410E:
 		ROR		_tmp12
 		ASL		word_4,X
 		ROR		_tmp12+1
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_17412F:
-		LDX		#0
-loc_174131:
-		JSR		sub_17413A
 		INX
 		CPX		#8
-		BNE		loc_174131
+		BNE		loc_174105
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_17413A:
+_tile_rotate_left:
+		LDX		#0
+loc_174131:
 		LSR		word_4,X
 		ROL		byte_C
 		LSR		word_4,X
@@ -241,6 +228,9 @@ sub_17413A:
 		ROL		_tmp12
 		LSR		word_4,X
 		ROL		_tmp12+1
+		INX
+		CPX		#8
+		BNE		loc_174131
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -650,7 +640,8 @@ loc_1743A4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B5:
-		FAR		$00,$6F		; _b16_s0
+;		FAR		$00,$6F		; _b16_s0
+		FARX	_b16_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B8:
@@ -1809,9 +1800,11 @@ loc_174BBB:
 loc_174BC7:
 		LDA		byte_6A58
 		BNE		loc_174BF2
-		FAR		$00,$7F		; _b17_s0_copyrights_screen
+;		FAR		$00,$7F		; _b17_s0_copyrights_screen
+		FARX	_b17_s0_copyrights_screen
 loc_174BCF:
-		FAR		$01,$7F		; _b17_s1
+;		FAR		$01,$7F		; _b17_s1_title_screen
+		FARX	_b17_s1_title_screen
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_174BCF
@@ -2115,7 +2108,7 @@ locret_174DF1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174DF2:
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2751,7 +2744,7 @@ loc_17527F:
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		SYSX	_sys12,$04
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$04
 locret_175291:
 		RTS
 loc_175292:
@@ -2799,7 +2792,7 @@ loc_1752D9:
 		ORA		#1
 		STA		byte_2F
 		FARX	_bB_s4
-		SYSX	_sys12,$82
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
 		JSR		sub_174369
 		JSR		sub_1759B8
 loc_1752EB:
@@ -2870,7 +2863,7 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		SYSX	_sys12,$11
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3191,7 +3184,7 @@ sub_175596:
 		BEQ		loc_1755A0
 		FARX	_bB_s4
 loc_1755A0:
-		SYSX	_sys12,$82
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
 		JSR		sub_174369
 		PLA
 		PLA
@@ -3537,7 +3530,7 @@ loc_17580C:
 		CMP		byte_2B
 		BEQ		loc_175824
 loc_175818:
-		SYSX	_sys12,$A2
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A2
 loc_17581B:
 		SEC
 		RTS
@@ -3613,7 +3606,7 @@ loc_17588B:
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		SYSX	_sys12,$A2
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$A2
 loc_17589F:
 		SEC
 		RTS
@@ -3695,7 +3688,7 @@ sub_17590B:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		SYSX	_sys12,$82
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$82
 		JSR		sub_174369
 		FARX	_bE_s1B
 		PLA
@@ -5489,8 +5482,8 @@ sub_176488:
 		STA		byte_54
 		ASL
 		STA		byte_55
-		LDA		off_82DD0
-		LDY		off_82DD0+1
+		LDA		#<[byte_82DD4]
+		LDY		#>[byte_82DD4]
 		LDX		#_tmp21
 		JSR		_add16_to_16
 		LDA		byte_25
@@ -5549,8 +5542,8 @@ loc_1764FA:
 loc_1764FE:
 		JSR		sub_17646E
 loc_176501:
-		LDA		off_823EF
-		LDY		off_823EF+1
+		LDA		#<[byte_823F1]
+		LDY		#>[byte_823F1]
 		LDX		#_tmp21
 		JSR		_add16_to_16
 loc_17650C:
@@ -5642,8 +5635,8 @@ loc_17658E:
 		ROL		byte_43
 		LDX		#byte_42
 		JSR		_add8_to_16
-		LDA		off_82DD2
-		LDY		off_82DD2+1
+		LDA		#<[byte_832E4]
+		LDY		#>[byte_832E4]
 		JSR		_add16_to_16
 		LDY		#0
 		LDA		(byte_42),Y
@@ -5848,7 +5841,7 @@ loc_1766E4:
 		BEQ		loc_176712
 		CMP		#2
 		BEQ		loc_17670C
-		JSR		sub_17412F
+		JSR		_tile_rotate_left
 		LDX		#0
 loc_176703:
 		LDA		byte_C,X
@@ -5857,10 +5850,10 @@ loc_176703:
 		CPX		#8
 		BCC		loc_176703
 loc_17670C:
-		JSR		sub_17412F
+		JSR		_tile_rotate_left
 		JMP		loc_176715
 loc_176712:
-		JSR		sub_174103
+		JSR		_tile_rotate_right
 loc_176715:
 		LDA		word_60
 		BNE		loc_176725
@@ -5964,12 +5957,12 @@ _sys09_msg_m00_arg0_break_idx:		.WORD	_sys09_msg_m00_arg0_break
 _sys0A_msg_m00_arg1_break_idx:		.WORD	_sys0A_msg_m00_arg1_break
 _sys0B_msg_m00_arg2_break_idx:		.WORD	_sys0B_msg_m00_arg2_break
 _sys0C_msg_m00_arg8_idx:			.WORD	_sys0C_msg_m00_arg8
-_sys0D_idx:							.WORD	_sys0D
-_sys0E_idx:							.WORD	_sys0E
+_sys0D_wrapper_to_bE_sC_idx:							.WORD	_sys0D_wrapper_to_bE_sC
+_sys0E_wrapper_to_bE_s0_idx:							.WORD	_sys0E_wrapper_to_bE_s0
 _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:			.WORD	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break_idx:	.WORD	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
 _sys11_msg_m00_arg7_idx:			.WORD	_sys11_msg_m00_arg7
-_sys12_idx:							.WORD	_sys12
+_sys12_wrapper_to_bB_s3_apu_load_idx:							.WORD	_sys12_wrapper_to_bB_s3_apu_load
 _sys13_msg_m00_arg6_idx:			.WORD	_sys13_msg_m00_arg6
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6065,8 +6058,7 @@ _far_call:
 		LDA		(_tmp21),Y
 		PHA
 		AND		#$F
-		CMP		#$F
-		BNE		_syscalls
+		BEQ		_syscalls
 		PLA
 		PHA
 		AND		#$F0
@@ -6188,18 +6180,19 @@ _sys0_sub_banks_list:
 		.BYTE	 $C, $C, $C, $0, $5, $A, $A, $C, $A, $5, $D, $0, $7, $D, $7, $6 ; 17
 		.BYTE	 $4, $6, $D, $D, $D, $6, $2, $6, $6, $6, $C, $D, $D, $D, $C, $A ; 18
 		.BYTE	 $D, $6, $C, $E, $6, $7, $6, $A, $2, $0, $6, $A, $A, $4, $4, $4 ; 19
-		.BYTE	 $4, $4, $A, $A, $A, $A, $A, $7, $A, $A							; 1A
+		.BYTE	 $4, $4, $A, $A, $A, $A, $A, $7, $A, $A,$16,$17,$17,$18,$18,$19	; 1A
+		.BYTE	$1A,$1B															; 1B
 
 _sys0_sub_idx_lib:
 _bE_s0_idx:				PTR_IDX	_bE_s0					; $00 _bE_s0
 _bE_s1_idx:				PTR_IDX	_bE_s1					; $01 _bE_s1
 _bE_s2_idx:				PTR_IDX	_bE_s2					; $02 _bE_s2
 _bE_s3_idx:				PTR_IDX	_bE_s3					; $03 _bE_s3
-_bE_s4_msg_m00_0_idx:	PTR_IDX	_bE_s4_msg_m00_0		; $04 _bE_s4_msg_m00
+_bE_s4_msg_m00_idx:		PTR_IDX	_bE_s4_msg_m00			; $04 _bE_s4_msg_m00
 _bE_s5_idx:				PTR_IDX	_bE_s5					; $05 _bE_s5
-_bE_s6_msg_mFF_0_idx:	PTR_IDX	_bE_s6_msg_mFF_0		; $06 _bE_s6_msg_mFF
-						PTR_IDX	_bE_s6_msg_mFF_1		; $07 _bE_s6_msg_mFF, unused dupe of _bE_s6_msg_mFF_0_idx
-_bE_s4_msg_m00_1_idx:	PTR_IDX	_bE_s4_msg_m00_1		; $08 _bE_s4_msg_m00, used dupe of _bE_s4_msg_m00_0_idx
+_bE_s6_msg_mFF_idx:		PTR_IDX	_bE_s6_msg_mFF			; $06 _bE_s6_msg_mFF
+						.BYTE	  6						; $07 _bE_s6_msg_mFF, unused dupe of _bE_s6_msg_mFF_idx
+						.BYTE	  4						; $08 _bE_s4_msg_m00, were used as dupe of _bE_s4_msg_m00_idx, removed
 _bE_s9_idx:				PTR_IDX	_bE_s9					; $09 _bE_s9
 _bD_s2_idx:				PTR_IDX	_bD_s2					; $0A _bD_s2
 _bD_s3_idx:				PTR_IDX	_bD_s3					; $0B _bD_s3
@@ -6211,21 +6204,21 @@ _bA_s1_idx:				PTR_IDX	_bA_s1					; $10 _bA_s1
 _bD_s9_idx:				PTR_IDX	_bD_s9					; $11 _bD_s9
 _b5_s7_idx:				PTR_IDX	_b5_s7					; $12 _b5_s7
 _b5_s4_idx:				PTR_IDX	_b5_s4					; $13 _b5_s4
-						PTR_IDX	_b5_d0_world_map_data	; $14 former, _b5_d0_world_map_data, not used anymore
-						PTR_IDX	_b5_d1_world_map_data	; $15 former, _b5_d1_world_map_data, not used anymore
+						.BYTE	  0						; $14 _b5_d0_world_map_data, not used anymore
+						.BYTE	  1						; $15 _b5_d1_world_map_data, not used anymore
 _bC_s1D_idx:			PTR_IDX	_bC_s1D					; $16 _bC_s1D
 _bC_s1F_idx:			PTR_IDX	_bC_s1F					; $17 _bC_s1F
 						.BYTE	  0						; $18 bank 08, idx 00, empty
 _b7_s8_idx:				PTR_IDX	_b7_s8					; $19 _b7_s8
 						.BYTE	  0						; $1A bank 0a, idx 00, empty
-						PTR_IDX	_bA_s1					; $1B _bA_s1, unused copy of _bA_s1_idx
-						PTR_IDX	_bE_sA					; $1C former _bE_sA, no use here, moved to bank 0F, used directly
-						PTR_IDX	_b6_d4					; $1D former _b6_d4, not used anymore
-						.BYTE	  0						; $1E former _b7_d0_map_data_lib_ofs, not used anymore
+						.BYTE	  1						; $1B _bA_s1, unused copy of _bA_s1_idx
+						.BYTE	 $A						; $1C _bE_sA, no use here, moved to bank 0F, used directly
+						.BYTE	  4						; $1D _b6_d4, not used anymore
+						.BYTE	  0						; $1E _b7_d0_map_data_lib_ofs, not used anymore
 _bE_sB_idx:				PTR_IDX	_bE_sB					; $1F _bE_sB
 _bE_sC_idx:				PTR_IDX	_bE_sC					; $20 _bE_sC
 _bE_sD_idx:				PTR_IDX	_bE_sD					; $21 _bE_sD
-						PTR_IDX	_b5_d2_world_map_data	; $22 former _b5_d2_world_map_data, not used anymore
+						.BYTE	  2						; $22 _b5_d2_world_map_data, not used anymore
 ; do not touch unless ram routines is changed too!
 ; -- SRAM SHORTCUTS, not used with BRK opcode
 _b0_s2_idx:				PTR_IDX	_b0_s2					; $23 _b0_s2
@@ -6236,7 +6229,7 @@ _b0_s6_idx:				PTR_IDX	_b0_s6					; $27 _b0_s6
 _b0_s7_idx:				PTR_IDX	_b0_s7					; $28 _b0_s7
 _b0_s8_idx:				PTR_IDX	_b0_s8					; $29 _b0_s8
 _b0_s9_idx:				PTR_IDX	_b0_s9					; $2A _b0_s9
-_b0_sA_idx:				PTR_IDX	_b0_sA					; $2B _b0_sA, never used nor in sram or BRK
+_b0_sA_idx:				PTR_IDX	_b0_sA					; $2B _b0_sA, never used no SRAM or BRK
 _b0_sB_idx:				PTR_IDX	_b0_sB					; $2C _b0_sB
 _b0_sC_idx:				PTR_IDX	_b0_sC					; $2D _b0_sC
 _b0_sD_idx:				PTR_IDX	_b0_sD					; $2E _b0_sD
@@ -6265,7 +6258,7 @@ _b0_s23_idx:			PTR_IDX	_b0_s23					; $44 _b0_s23
 _b0_s24_idx:			PTR_IDX	_b0_s24					; $45 _b0_s24
 _b0_s25_idx:			PTR_IDX	_b0_s25					; $46 _b0_s25
 _b0_s26_idx:			PTR_IDX	_b0_s26					; $47 _b0_s26
-_b0_s27_idx:			PTR_IDX	_b0_s27					; $48 _b0_s27
+_b0_s27_idx:			PTR_IDX	_b0_s27					; $48 _b0_s27, used only directly, no SRAM or BRK
 _b0_s28_idx:			PTR_IDX	_b0_s28					; $49 _b0_s28
 _b0_s29_idx:			PTR_IDX	_b0_s29					; $4A _b0_s29
 _b0_s2A_idx:			PTR_IDX	_b0_s2A					; $4B _b0_s2A
@@ -6287,10 +6280,10 @@ _b0_s39_idx:			PTR_IDX	_b0_s39					; $5A _b0_s39
 _b0_s3A_idx:			PTR_IDX	_b0_s3A					; $5B _b0_s3A
 _b0_s3B_idx:			PTR_IDX	_b0_s3B					; $5C _b0_s3B
 ; -- SRAM SHOURTCUTS end
-						PTR_IDX	_b6_d5					; $5D former _b6_d5, not used anymore
+						.BYTE	  5						; $5D _b6_d5, not used anymore
 _bC_s2_idx:				PTR_IDX	_bC_s2					; $5E _bC_s2
 _b2_s0_idx:				PTR_IDX	_b2_s0					; $5F _b2_s0
-						PTR_IDX	_b2_s1					; $60 _b2_s1, no use here
+						.BYTE	  1						; $60 _b2_s1, no use here
 _b2_s2_idx:				PTR_IDX	_b2_s2					; $61 _b2_s2
 _b2_s3_idx:				PTR_IDX	_b2_s3					; $62 _b2_s3, used indirectly in sub_6AA34
 _b2_s4_idx:				PTR_IDX	_b2_s4					; $63 _b2_s4, used indirectly in sub_6AA38
@@ -6300,35 +6293,35 @@ _b2_s7_screen_spell_blink_idx:	PTR_IDX	_b2_s7_screen_spell_blink	; $66 _b2_s7_sc
 _b0_s0_world_map_random_enounter_test_idx:	PTR_IDX	_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
 _b0_s3C_idx:			PTR_IDX	_b0_s3C					; $68 _b0_s3C
 _b2_sA_idx:				PTR_IDX	_b2_sA					; $69 _b2_sA
-						PTR_IDX	_b0_d43_enemies_lib		; $6A former _b0_d43_enemies_lib, not used anymore
+						.BYTE	$43						; $6A _b0_d43_enemies_lib, not used anymore
 _b4_s0_idx:				PTR_IDX	_b4_s0					; $6B _b4_s0
 _b4_s1_idx:				PTR_IDX	_b4_s1					; $6C _b4_s1
 _b4_s2_idx:				PTR_IDX	_b4_s2					; $6D _b4_s2
 _b4_s3_idx:				PTR_IDX	_b4_s3					; $6E _b4_s3
-						PTR_IDX	_b4_s4					; $6F former _b4_s4, no use here
+						.BYTE	  4						; $6F _b4_s4, no use here
 _b4_s5_do_message_speed_delay_idx:	PTR_IDX	_b4_s5_do_message_speed_delay	; $70 _b4_s5_do_message_speed_delay
 _b4_s6_idx:				PTR_IDX	_b4_s6					; $71 _b4_s6
 _b4_s7_window_display_safe_idx:		PTR_IDX	_b4_s7_window_display_safe	; $72 _b4_s7_window_display_safe
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:	PTR_IDX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 _b4_s9_idx:				PTR_IDX	_b4_s9					; $74 _b4_s9
 _b4_sA_idx:				PTR_IDX	_b4_sA					; $75 _b4_sA
-						PTR_IDX	_b4_sB					; $76 ofrmer _b4_sB, no use here
+						.BYTE	 $B						; $76 _b4_sB, no use here
 _b4_sC_idx:				PTR_IDX	_b4_sC					; $77 _b4_sC
 _b4_dD_spells_list_idx:	PTR_IDX	_b4_dD_spells_list		; $78 _b4_dD_spells_list
 _b2_sB_idx:				PTR_IDX	_b2_sB					; $79 _b2_sB
 _b0_s3D_idx:			PTR_IDX	_b0_s3D					; $7A _b0_s3D
 _b0_s3E_idx:			PTR_IDX	_b0_s3E					; $7B _b0_s3E
 _b4_sF_idx:				PTR_IDX	_b4_sF					; $7C _b4_sF
-						.BYTE	  0						; $7D former _b6_d0_ofs, not used anymore
-						.BYTE	  1						; $7E former _b6_d1_ofs, not used anymore
-						.BYTE	  2						; $7F former _b6_d2_ofs, not used anymore
-						.BYTE	  3						; $80 former _b6_d3_ofs, not used anymore
-						PTR_IDX	_bA_s2					; $81 _bA_s2, unused copy of $19B
+						.BYTE	  0						; $7D _b6_d0_ofs, not used anymore
+						.BYTE	  1						; $7E _b6_d1_ofs, not used anymore
+						.BYTE	  2						; $7F _b6_d2_ofs, not used anymore
+						.BYTE	  3						; $80 _b6_d3_ofs, not used anymore
+						.BYTE	  2						; $81 _bA_s2, unused copy of $19B
 _bC_s3_idx:				PTR_IDX	_bC_s3					; $82 _bC_s3
 _bC_s4_idx:				PTR_IDX	_bC_s4					; $83 _bC_s4
 _bC_s5_idx:				PTR_IDX	_bC_s5					; $84 _bC_s5
 _bC_s6_idx:				PTR_IDX	_bC_s6					; $85 _bC_s6
-						PTR_IDX	_bA_s3					; $86 _bA_s3, unused copy of $19C
+						.BYTE	  3						; $86 _bA_s3, unused copy of $19C
 						.BYTE	$1E						; $87, bank 0e, idx 1E, empty
 _b6_s8_idx:				PTR_IDX	_b6_s8					; $88 _b6_s8
 _b6_d9_idx:				PTR_IDX	_b6_d9					; $89 _b6_d9
@@ -6336,19 +6329,19 @@ _b6_dA_idx:				PTR_IDX	_b6_dA					; $8A _b6_dA
 _b6_dB_idx:				PTR_IDX	_b6_dB					; $8B _b6_dB
 _bA_sC_idx:				PTR_IDX	_bA_sC					; $8C _bA_sC
 _bA_sD_idx:				PTR_IDX	_bA_sD					; $8D _bA_sD
-						PTR_IDX	_b0_d40_weapon_power_list	; $8E former _b0_d40_weapon_power_list, no use here
-						PTR_IDX	_b0_d41_equip_list		; $8F former _b0_d41_equip_list, no use here
+						.BYTE	$40						; $8E _b0_d40_weapon_power_list, no use here
+						.BYTE	$41						; $8F _b0_d41_equip_list, no use here
 _b0_d42_effects_list_idx:	PTR_IDX	_b0_d42_effects_list; $90 _b0_d42_effects_list
 						.BYTE	 $F						; $91, bank 01, idx 0F, empty
-_b0_d44_idx:			PTR_IDX	_b0_d44					; $92 _b0_d44
-						PTR_IDX	_b7_d1					; $93 former _b7_d1, unused
-						PTR_IDX	_b7_d3					; $94 former _b7_d3, unused
-						PTR_IDX	_b7_d4					; $95 former _b7_d4, unused
-						.BYTE	  2						; $96 former _b7_d2_ofs, unused
+_b0_d44_idx:			.BYTE	$44						; $92 _b0_d44
+						.BYTE	  1						; $93 _b7_d1, unused
+						.BYTE	  3						; $94 _b7_d3, unused
+						.BYTE	  4						; $95 _b7_d4, unused
+						.BYTE	  2						; $96 _b7_d2_ofs, unused
 _bC_s0_idx:				PTR_IDX	_bC_s0					; $97 _bC_s0
-						PTR_IDX	_bA_s6					; $98 _bA_s6, unused copy of $1A4
+						.BYTE	  6						; $98 _bA_s6, unused copy of $1A4
 _b5_s3_idx:				PTR_IDX	_b5_s3					; $99 _b5_s3
-						PTR_IDX	_b7_d5					; $9A former _b7_d5, unused
+						.BYTE	  5						; $9A _b7_d5, unused
 _bC_s9_idx:				PTR_IDX	_bC_s9					; $9B _bC_s9
 _b0_s45_idx:			PTR_IDX	_b0_s45					; $9C _b0_s45
 _bC_sA_idx:				PTR_IDX	_bC_sA					; $9D _bC_sA
@@ -6360,7 +6353,7 @@ _bB_s5_idx:				PTR_IDX	_bB_s5					; $A2 _bB_s5
 _bD_s27_idx:			PTR_IDX	_bD_s27					; $A3 _bD_s27
 _b2_sC_idx:				PTR_IDX	_b2_sC					; $A4 _b2_sC
 _bB_s6_idx:				PTR_IDX	_bB_s6					; $A5 _bB_s6
-						PTR_IDX	_bE_s10					; $A6 _bE_s10, unused copy of $124
+						.BYTE	$10						; $A6 _bE_s10, unused copy of $124
 _b4_sE_idx:				PTR_IDX	_b4_sE					; $A7 _b4_sE
 _bE_sE_idx:				PTR_IDX	_bE_sE					; $A8 _bE_sE
 _b0_s46_idx:			PTR_IDX	_b0_s46					; $A9 _b0_s46
@@ -6375,7 +6368,7 @@ _b4_s12_idx:			PTR_IDX	_b4_s12					; $B1 _b4_s12
 _b0_d3F_idx:			PTR_IDX	_b0_d3F					; $B2 _b0_d3F
 _b4_s13_idx:			PTR_IDX	_b4_s13					; $B3 _b4_s13
 _b4_s14_idx:			PTR_IDX	_b4_s14					; $B4 _b4_s14
-						PTR_IDX	_b4_d15					; $B5 former _b4_d15, no use here
+						.BYTE	$15						; $B5 _b4_d15, no use here
 _bA_d14_idx:			PTR_IDX	_bA_d14					; $B6 _bA_d14
 _bA_d15_idx:			PTR_IDX	_bA_d15					; $B7 _bA_d15
 _bC_sD_idx:				PTR_IDX	_bC_sD					; $B8 _bC_sD
@@ -6399,7 +6392,7 @@ _bC_s15_idx:			PTR_IDX	_bC_s15					; $C9 _bC_s15, used indirectly
 _bC_s16_idx:			PTR_IDX	_bC_s16					; $CA _bC_s16, used indirectly
 _b2_s9_idx:				PTR_IDX	_b2_s9					; $CB _b2_s9
 						.BYTE	$4C						; $CC, bank 00, idx 4c, empty
-						PTR_IDX	_b0_s4D					; $CD _b0_s4D, unused copy of $12C
+						.BYTE	$4D						; $CD _b0_s4D, unused copy of $12C
 _bC_s17_sys0_spr_effects_call_idx:	PTR_IDX	_bC_s17_sys0_spr_effects_call	; $CE _bC_s17_sys0_spr_effects_call
 _bC_s18_idx:			PTR_IDX	_bC_s18					; $CF _bC_s18, used indirectly
 _b4_s16_do_half_message_speed_delay_idx:PTR_IDX	_b4_s16_do_half_message_speed_delay	; $D0 _b4_s16_do_half_message_speed_delay
@@ -6419,7 +6412,7 @@ _bD_sD_idx:				PTR_IDX	_bD_sD					; $DD _bD_sD
 _b6_s10_idx:			PTR_IDX	_b6_s10					; $DE _b6_s10
 _b0_d58_idx:			PTR_IDX	_b0_d58					; $DF _b0_d58
 _b0_d59_idx:			PTR_IDX	_b0_d59					; $E0 _b0_d59
-						PTR_IDX	_b0_d5A					; $E1 former _b0_d5A, no use here
+						.BYTE	$5A						; $E1 _b0_d5A, no use here
 _bC_s2D_idx:			PTR_IDX	_bC_s2D					; $E2 _bC_s2D, used indirectly
 _b6_s11_idx:			PTR_IDX	_b6_s11					; $E3 _b6_s11
 _b0_s5B_idx:			PTR_IDX	_b0_s5B					; $E4 _b0_s5B
@@ -6446,19 +6439,19 @@ _bC_s22_idx:			PTR_IDX	_bC_s22					; $F8 _bC_s22
 _bE_s1B_idx:			PTR_IDX	_bE_s1B					; $F9 _bE_s1B
 _bC_s38_idx:			PTR_IDX	_bC_s38					; $FA _bC_s38
 _bC_s25_idx:			PTR_IDX	_bC_s25					; $FB _bC_s25
-						PTR_IDX	_bA_s5_add16_to_24		; $FC former _bA_s5_add16_to_24, unused
-_bD_s19_0_idx:			PTR_IDX	_bD_s19					; $FD _bD_s19, used copy of $133, should be here, because used in _bC_s17_sys0_spr_effects_call, don't know why they need a second bank routine
+						.BYTE	  5						; $FC _bA_s5_add16_to_24, unused
+_bD_s19_idx:			PTR_IDX	_bD_s19					; $FD _bD_s19, copy of $133, should be here, because used in _bC_s17_sys0_spr_effects_call, don't know why they need a second bank routine
 _bC_s2C_idx:			PTR_IDX	_bC_s2C					; $FE _bC_s2C, used indirectly
-						.BYTE	  1						; $FF former _bD_d1_ofs, not used anymore
+						.BYTE	  1						; $FF _bD_d1_ofs, not used anymore
 ;_sys1_sub_idx_lib:
 _bC_s2A_idx:			PTR_IDX	_bC_s2A					; $100 _bC_s2A
 _bC_s12_vblank_count_50_idx:PTR_IDX	_bC_s12_vblank_count_50	; $101 _bC_s12_vblank_count_50
 _bD_s12_idx:			PTR_IDX	_bD_s12					; $102 _bD_s12
 _bD_s13_idx:			PTR_IDX	_bD_s13					; $103 _bD_s13
-						PTR_IDX	_bC_s29					; $104 _bC_s29, no use here 
+						.BYTE	$29						; $104 _bC_s29, no use here 
 _b6_s17_idx:			PTR_IDX	_b6_s17					; $105 _b6_s17
 _bD_sE_idx:				PTR_IDX	_bD_sE					; $106 _bD_sE
-						PTR_IDX	_bE_s2B					; $107 _bE_s2B, never used 
+						.BYTE	$2B						; $107 _bE_s2B, never used 
 _b0_s5E_idx:			PTR_IDX	_b0_s5E					; $108 _b0_s5E
 _b0_s5F_idx:			PTR_IDX	_b0_s5F					; $109 _b0_s5F
 _b0_s60_idx:			PTR_IDX	_b0_s60					; $10A _b0_s60
@@ -6466,23 +6459,23 @@ _bA_s12_idx:			PTR_IDX	_bA_s12					; $10B _bA_s12
 _b7_s1C_idx:			PTR_IDX	_b7_s1C					; $10C _b7_s1C
 _bD_s14_idx:			PTR_IDX	_bD_s14					; $10D _bD_s14
 _bD_s15_idx:			PTR_IDX	_bD_s15					; $10E _bD_s15
-						PTR_IDX	_bC_s26					; $10F _bC_s26, unused copy of $18A
+						.BYTE	$26						; $10F _bC_s26, unused copy of $18A
 _b0_s48_idx:			PTR_IDX	_b0_s48					; $110 _b0_s48
 _b0_s49_idx:			PTR_IDX	_b0_s49					; $111 _b0_s49
-_b6_s6_0_idx:			PTR_IDX	_b6_s6_0				; $112 _b6_s6, different ptrs points to the same sub
-_b6_s6_1_idx:			PTR_IDX	_b6_s6_1				; $113 _b6_s6, both used
+_b6_s6_idx:				PTR_IDX	_b6_s6					; $112 _b6_s6, different ptrs points to the same sub
+						.BYTE	  6						; $113 _b6_s6, were used as copy of $112, removed
 _b1_s14_idx:			PTR_IDX	_b1_s14					; $114 _b1_s14
 _b1_s15_idx:			PTR_IDX	_b1_s15					; $115 _b1_s15
 _b1_s16_idx:			PTR_IDX	_b1_s16					; $116 _b1_s16
 _b1_s17_idx:			PTR_IDX	_b1_s17					; $117 _b1_s17
-						PTR_IDX	_b1_s13					; $118 _b1_s13, never used
+						.BYTE	$13						; $118 _b1_s13, never used
 _bE_s12_idx:			PTR_IDX	_bE_s12					; $119 _bE_s12
 _bE_s13_idx:			PTR_IDX	_bE_s13					; $11A _bE_s13
 _bE_s14_idx:			PTR_IDX	_bE_s14					; $11B _bE_s14
 						.BYTE	$15						; $111C, bank 0E, idx 15, empty
 _bC_s31_idx:			PTR_IDX	_bC_s31					; $11D _bC_s31
 _bE_s16_idx:			PTR_IDX	_bE_s16					; $11E _bE_s16
-						PTR_IDX	_bE_s1C_0				; $11F _bE_s1C, different ptrs points to the same sub, the first never used
+						.BYTE	$1C						; $11F _bE_s1C, different ptrs points to the same sub, the first never used
 _bE_s1C_idx:			PTR_IDX	_bE_s1C					; $120 _bE_s1C, the second is only used
 _bE_sF_idx:				PTR_IDX	_bE_sF					; $121 _bE_sF
 _b0_s61_sram_b0_syscall_shortcuts_load_idx:	PTR_IDX	_b0_s61_sram_b0_syscall_shortcuts_load	; $122 _b0_s61_sram_b0_syscall_shortcuts_load
@@ -6502,7 +6495,7 @@ _bD_s28_idx:			PTR_IDX	_bD_s28					; $12F _bD_s28
 _b0_s63_idx:			PTR_IDX	_b0_s63					; $130 _b0_s63
 _b4_s21_message_half_delay_or_wait_for_keypress_idx:	PTR_IDX	_b4_s21_message_half_delay_or_wait_for_keypress	; $131 _b4_s21_message_half_delay_or_wait_for_keypress
 _bD_s18_idx:			PTR_IDX	_bD_s18					; $132 _bD_s18
-_bD_s19_1_idx:			PTR_IDX	_bD_s19					; $133 _bD_s19
+						.BYTE	$19						; $133 _bD_s19 were used as copy of $FD
 _bD_s1A_idx:			PTR_IDX	_bD_s1A					; $134 _bD_s1A
 _bD_s1B_idx:			PTR_IDX	_bD_s1B					; $135 _bD_s1B
 _bD_s1C_idx:			PTR_IDX	_bD_s1C					; $136 _bD_s1C
@@ -6512,10 +6505,10 @@ _bC_s24_idx:			PTR_IDX	_bC_s24					; $139 _bC_s24
 _bC_s39_idx:			PTR_IDX	_bC_s39					; $13A _bC_s39
 _bC_s3A_idx:			PTR_IDX	_bC_s3A					; $13B _bC_s3A
 _bD_s1F_idx:			PTR_IDX	_bD_s1F					; $13C _bD_s1F
-						PTR_IDX	_b5_s8					; $13D _b5_s8, unused copy of $179
+						.BYTE	  8						; $13D _b5_s8, unused copy of $179
 _bD_s21_idx:			PTR_IDX	_bD_s21					; $13E _bD_s21
 _b1_sE_idx:				PTR_IDX	_b1_sE					; $13F _b1_sE
-						PTR_IDX	_b4_s22					; $140 _b4_s22, no use here, used directly
+						.BYTE	$22						; $140 _b4_s22, no use here, used directly
 _bC_s3B_idx:			PTR_IDX	_bC_s3B					; $141 _bC_s3B
 _b6_s12_idx:			PTR_IDX	_b6_s12					; $142 _b6_s12
 _bC_s19_idx:			PTR_IDX	_bC_s19					; $143 _bC_s19
@@ -6527,7 +6520,7 @@ _bC_s28_idx:			PTR_IDX	_bC_s28					; $148 _bC_s28
 _b0_s50_idx:			PTR_IDX	_b0_s50					; $149 _b0_s50
 _bC_s2F_idx:			PTR_IDX	_bC_s2F					; $14A _bC_s2F
 _bC_s30_idx:			PTR_IDX	_bC_s30					; $14B _bC_s30
-_b0_s51_wrapper_for_b1B_s0_idx:			PTR_IDX	_b0_s51_wrapper_for_b1B_s0					; $14C _b0_s51_wrapper_for_b1B_s0
+_b0_s51_wrapper_for_b1B_s0_idx:	PTR_IDX	_b0_s51_wrapper_for_b1B_s0	; $14C _b0_s51_wrapper_for_b1B_s0
 _b0_s52_idx:			PTR_IDX	_b0_s52					; $14D _b0_s52
 _b0_s1_idx:				PTR_IDX	_b0_s1					; $14E _b0_s1
 _b0_s53_idx:			PTR_IDX	_b0_s53					; $14F _b0_s53
@@ -6567,10 +6560,10 @@ _bC_s2E_vblank_count_50_wait_50_or_skip_idx:PTR_IDX	_bC_s2E_vblank_count_50_wait
 _bC_s20_idx:			PTR_IDX	_bC_s20					; $171 _bC_s20
 _bC_sB_idx:				PTR_IDX	_bC_sB					; $172 _bC_sB
 _b0_s55_idx:			PTR_IDX	_b0_s55					; $173 _b0_s55
-						PTR_IDX	_b5_s6_ppu_send_8_empty_bytes	; $174 _b5_s6_ppu_send_8_empty_bytes, no use here, used directly
+						.BYTE	  8						; $174 _b5_s6_ppu_send_8_empty_bytes, no use here, used directly
 _bA_s10_idx:			PTR_IDX	_bA_s10					; $175 _bA_s10
 _bA_s11_idx:			PTR_IDX	_bA_s11					; $176 _bA_s11
-						PTR_IDX	_bC_s36					; $177 _bC_s36, never used
+						.BYTE	$36						; $177 _bC_s36, never used
 _bA_s8_idx:				PTR_IDX	_bA_s8					; $178 _bA_s8
 _b5_s8_idx:				PTR_IDX	_b5_s8					; $179 _b5_s8
 _bD_s29_idx:			PTR_IDX	_bD_s29					; $17A _bD_s29
@@ -6581,7 +6574,7 @@ _b7_s1A_idx:			PTR_IDX	_b7_s1A					; $17E _b7_s1A
 _b6_s18_idx:			PTR_IDX	_b6_s18					; $17F _b6_s18
 _b4_s26_idx:			PTR_IDX	_b4_s26					; $180 _b4_s26
 _b6_s19_idx:			PTR_IDX	_b6_s19					; $181 _b6_s19
-						PTR_IDX	_bD_sF					; $182 _bD_sF, no use here, used indirectly
+						.BYTE	 $F						; $182 _bD_sF, no use here, used directly
 _bD_sC_idx:				PTR_IDX	_bD_sC					; $183 _bD_sC
 _bD_s10_idx:			PTR_IDX	_bD_s10					; $184 _bD_s10
 _b6_s16_idx:			PTR_IDX	_b6_s16					; $185 _b6_s16
@@ -6594,9 +6587,9 @@ _bD_s11_idx:			PTR_IDX	_bD_s11					; $18B _bD_s11
 _bD_s23_idx:			PTR_IDX	_bD_s23					; $18C _bD_s23
 _bD_s24_idx:			PTR_IDX	_bD_s24					; $18D _bD_s24
 _bC_s2B_idx:			PTR_IDX	_bC_s2B					; $18E _bC_s2B
-						PTR_IDX	_bA_s9_nullsub			; $18F former _bA_s9_nullsub, unused
+						.BYTE	  9						; $18F _bA_s9_nullsub, unused
 _bD_s20_npc_hndl31_idx:	PTR_IDX	_bD_s20_npc_hndl31		; $190 _bD_s20_npc_hndl31
-						PTR_IDX	_b6_s16					; $191 _b6_s16, unused copy of $185
+						.BYTE	$16						; $191 _b6_s16, unused copy of $185
 _bC_s23_idx:			PTR_IDX	_bC_s23					; $192 _bC_s23
 _bE_s11_idx:			PTR_IDX	_bE_s11					; $193 _bE_s11
 _b6_s1A_idx:			PTR_IDX	_b6_s1A					; $194 _b6_s1A
@@ -6614,18 +6607,29 @@ _b4_s29_idx:			PTR_IDX	_b4_s29					; $19F _b4_s29
 _b4_s2A_idx:			PTR_IDX	_b4_s2A					; $1A0 _b4_s2A
 _b4_s2B_idx:			PTR_IDX	_b4_s2B					; $1A1 _b4_s2B
 _bA_s4_div24_to_8_idx:	PTR_IDX	_bA_s4_div24_to_8		; $1A2 _bA_s4_div24_to_8
-						PTR_IDX	_bA_s5_add16_to_24		; $1A3 former _bA_s5_add16_to_24, unused copy of $FC
+						.BYTE	  5						; $1A3 _bA_s5_add16_to_24, unused copy of $FC
 _bA_s6_idx:				PTR_IDX	_bA_s6					; $1A4 _bA_s6
-						PTR_IDX	_bA_s7_nullsub			; $1A5 former _bA_s7_nullsub, unused
+						.BYTE	  7						; $1A5 _bA_s7_nullsub, unused
 _bA_sE_idx:				PTR_IDX	_bA_sE					; $1A6 _bA_sE
-						PTR_IDX	_b7_s1E					; $1A7 _b7_s1E, no use here, used directly
+						.BYTE	$1E						; $1A7 _b7_s1E, no use here, used directly
 _bA_s16_idx:			PTR_IDX	_bA_s16					; $1A8 _bA_s16
 _bA_s17_idx:			PTR_IDX	_bA_s17					; $1A9 _bA_s17
+;
+; now we can add an higher bank routines here in the common list
+;
+_b16_s0_idx:			PTR_IDX _b16_s0					; $1AA _b16_s0
+_b17_s0_copyrights_screen_idx:	PTR_IDX _b17_s0_copyrights_screen	; $1AB _b17_s0_copyrights_screen
+_b17_s1_title_screen_idx:PTR_IDX _b17_s1_title_screen	; $1AC _b17_s1_title_screen
+_b18_s0_intro_animation_idx:PTR_IDX _b18_s0_intro_animation	; $1AD _b18_s0_intro_animation
+_b18_s1_idx:			PTR_IDX _b18_s1					; $1AE _b18_s1
+_b19_s0_idx:			PTR_IDX _b19_s0					; $1AF _b19_s0
+_b1A_s0_idx:			PTR_IDX _b1A_s0					; $1B0 _b1A_s0
+_b1B_s0_idx:			PTR_IDX _b1B_s0					; $1B1 _b1B_s0
 
 		ECHO "filesystem entries", [.-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
-_get_msg_bank_by_idx:
+_get_msg_ptr_by_idx:
 		TAY
 		LDA		_mmc_cur_prg_bank
 		PHA
@@ -6636,10 +6640,10 @@ _get_msg_bank_by_idx:
 		PHA
 		LDA		word_7C
 		JSR		_mmc1_prg_set
-		NOP
-		NOP
-		NOP
-		NOP
+;		NOP
+;		NOP
+;		NOP
+;		NOP
 		PLA
 		TAX
 		BEQ		loc_176BCF
@@ -6665,13 +6669,13 @@ loc_176BCF:
 		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0D:
+_sys0D_wrapper_to_bE_sC:
 		TYA
 		FARX	_bE_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0E:
+_sys0E_wrapper_to_bE_s0:
 		TYA
 		FARX	_bE_s0
 		RTS
@@ -6722,7 +6726,7 @@ _sys0B_msg_m00_arg2_break:
 		BNE		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys12:
+_sys12_wrapper_to_bB_s3_apu_load:
 		TYA
 		FARX	_bB_s3_apu_load
 		RTS
@@ -6730,7 +6734,7 @@ _sys12:
 ; =============== S U B	R O U T	I N E =======================================
 _far_bE_s4_msg_m00:
 		TYA
-		FARX	_bE_s4_msg_m00_0
+		FARX	_bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6780,7 +6784,7 @@ sub_176C70:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C72:
-		FARX	_bE_s4_msg_m00_0
+		FARX	_bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

@@ -1085,23 +1085,7 @@ _pak_data85:
 		.BYTE	$70,$A0,$36,$11,$16,$33,$61,$E6,$44,$8C,$88,$18,$26,$C7,$ED,$EE
 		.BYTE	$5C,$BC,$B8,$78
 
-		ECHO "bank 03 free space", [$BFD8-.]
+		ECHO "bank 03 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

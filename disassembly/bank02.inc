@@ -3,8 +3,8 @@
 
 _b2_s0_ptr:
 		.WORD	_b2_s0
-_b2_s1_ptr:
-		.WORD	_b2_s1
+;_b2_s1_ptr:
+;		.WORD	_b2_s1
 _b2_s2_ptr:
 		.WORD	_b2_s2
 _b2_s3_ptr:
@@ -2857,7 +2857,8 @@ loc_3A342:
 		STA		_ram_pal_buf+$C,X
 		DEX
 		BNE		loc_3A342
-		FAR		$00,$6F		; _b16_s0
+;		FAR		$00,$6F		; _b16_s0
+		FARX	_b16_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3426,9 +3427,9 @@ loc_3A750:
 		RTS
 loc_3A752:
 		JSR		_b2_sE
-		LDA		off_3A946
+		LDA		#<[byte_3A948]
 		STA		word_3E
-		LDA		off_3A946+1
+		LDA		#>[byte_3A948]
 		STA		word_3E+1
 		FARX	_bA_sB
 		BCC		loc_3A750
@@ -3729,9 +3730,9 @@ loc_3A924:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_sE:
-		LDA		off_3A944
+		LDA		#<[byte_79C]
 		STA		word_3C
-		LDA		off_3A944+1
+		LDA		#>[byte_79C]
 		STA		word_3C+1
 		LDA		byte_CE
 		ASL
@@ -3746,10 +3747,10 @@ sub_3A93C:
 		FARX	_b4_s16_do_half_message_speed_delay
 		SEC
 		RTS
-off_3A944:
-		.WORD	byte_79C
-off_3A946:
-		.WORD	byte_3A948
+;off_3A944:
+;		.WORD	byte_79C
+;off_3A946:
+;		.WORD	byte_3A948
 byte_3A948:
 		.BYTE	$FF,$FF,$FF,$FF, $F,  0,  0,  0
 byte_3A950:
@@ -4581,23 +4582,7 @@ _str_libB_enemy_hi1:
 		.BYTE	$FF
 		.BYTE	$FF
 
-		ECHO "bank 02 free space", [$BFD8-.]
+		ECHO "bank 02 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

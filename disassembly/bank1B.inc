@@ -81,9 +81,9 @@ sub_294071:
 		STA		word_6
 		LDA		#0
 		STA		word_6+1
-		LDA		off_294215
+		LDA		#<[byte_294217]
 		STA		word_4
-		LDA		off_294215+1
+		LDA		#>[byte_294217]
 		STA		word_4+1
 		ASL		word_6
 		ROL		word_6+1
@@ -327,8 +327,8 @@ loc_294210:
 		TAY
 		TXA
 		RTS
-off_294215:
-		.WORD	byte_294217
+;off_294215:
+;		.WORD	byte_294217
 byte_294217:
 		.BYTE	  0,  1,  2,$FF,  4,  4,  2,  1,  5,  4,  6,$FF,  2, $A,  3,  1
 		.BYTE	  7, $B,  7,$FF,  3,  4,  3,  1,  7, $E,$10,$FF,$14,  3,  3,  1
@@ -351,23 +351,7 @@ byte_294217:
 		.BYTE	$36,$62,$FF,$FF,  4,  4,  1,  1,$18,$18,$18,$FF,  7,  7,  7,  1
 		.BYTE	$7C,$7C,$7C,$7C,  5,  5,  5,  5,$FF
 
-		ECHO "bank 1B free space", [$BFD8-.]
+		ECHO "bank 1B free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

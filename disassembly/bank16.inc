@@ -23,9 +23,9 @@ _b16_s0:
 sub_21C01C:
 		LDA		#$F
 		STA		_ram_pal_buf
-		LDA		off_21C164
+		LDA		#<[byte_21C188]
 		STA		_pak_data_ptr
-		LDA		off_21C164+1
+		LDA		#>[byte_21C188]
 		STA		_pak_data_ptr+1
 		JSR		sub_21C145
 		LDA		byte_9A
@@ -226,8 +226,8 @@ byte_21C15E:
 		.BYTE	  0, $C,$18,$24
 byte_21C162:
 		.BYTE	$30,$3C
-off_21C164:
-		.WORD	byte_21C188
+;off_21C164:
+;		.WORD	byte_21C188
 byte_21C166:
 		.BYTE	  0,  1,$20,  8,$54,  2,$8D,  5,$55,$D5,$D4,$3F,$51,$74,$75,$3C
 		.BYTE	  1,  0,$FC,  0,$3F,$55,$7F,$C0,$2F,$D5,$FF,$77,  9,$B0,$2D,$30
@@ -276,23 +276,7 @@ byte_21C3A3:
 byte_21C3AA:
 		.BYTE	  0,$1E,$3C,$5A,$78,$96,$B4
 
-		ECHO "bank 16 free space", [$BFD8-.]
+		ECHO "bank 16 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

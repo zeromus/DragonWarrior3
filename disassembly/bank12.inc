@@ -347,23 +347,7 @@ _b12_txt_blockE:
 		.BYTE	_apu,_T,_h,_e,_,_p,_y,_r,_a,_m,_i,_d,_,_h,_a,_s,_,_a,_l,_r,_e,_a,_d,_y,_,_b,_e,_e,_n,_,_p,_i,_l,_l,_a,_g,_e,_d,_,_b,_y,_,_m,_a,_n,_y,_,_t,_h,_i,_e,_v,_e,_s,_smc,$EF
 		.BYTE	_apu,_P,_l,_e,_a,_s,_e,_,_b,_e,_,_c,_a,_r,_e,_f,_u,_l,_exc,_,_I,_,_h,_e,_a,_r,_,_t,_h,_e,_r,_e,_,_i,_s,_,_a,_,_p,_l,_a,_c,_e,_,_i,_n,_,_t,_h,_e,_,_P,_y,_r,_a,_m,_i,_d,_,_w,_h,_e,_r,_e,_,_s,_p,_e,_l,_l,_s,_,_w,_o,_n,_apo,_t,_,_w,_o,_r,_k,_smc,$EF
 
-		ECHO "bank 12 free space", [$BFD8-.]
+		ECHO "bank 12 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

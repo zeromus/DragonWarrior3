@@ -1,26 +1,26 @@
 
 		ORG $8000
 
-		.WORD	0 ; _b7_d0_map_data_lib_ofs
-_b7_d1_ptr:
-		.WORD	0 ; _b7_d1
-_b7_d2_ptr:
-		.WORD	0 ; _b7_d2_ofs
-_b7_d3_ptr:
-		.WORD	0 ; _b7_d3
-_b7_d4_ptr:
-		.WORD	0 ; _b7_d4
-_b7_d5_ptr:
-		.WORD	0 ; _b7_d5
-		.WORD	0
-		.WORD	0
+;		.WORD	_b7_d0_map_data_lib_ofs
+;_b7_d1_ptr:
+;		.WORD	_b7_d1
+;_b7_d2_ptr:
+;		.WORD	_b7_d2_ofs
+;_b7_d3_ptr:
+;		.WORD	_b7_d3
+;_b7_d4_ptr:
+;		.WORD	_b7_d4
+;_b7_d5_ptr:
+;		.WORD	_b7_d5
+;		.WORD	  0
+;		.WORD	  0
 _b7_s8_ptr:
 		.WORD	_b7_s8
-		.WORD	0
+;		.WORD	  0
 _b7_sA_sram_test_and_init_ptr:
 		.WORD	_b7_sA_sram_test_and_init
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
 _b7_sD_ptr:
 		.WORD	_b7_sD
 _b7_sE_player_log_list_ptr:
@@ -39,9 +39,9 @@ _b7_s14_ptr:
 		.WORD	_b7_s14
 _b7_s15_ptr:
 		.WORD	_b7_s15
-		.WORD	0
-		.WORD	0
-		.WORD	0
+;		.WORD	  0
+;		.WORD	  0
+;		.WORD	  0
 _b7_s19_ptr:
 		.WORD	_b7_s19
 _b7_s1A_ptr:
@@ -52,8 +52,8 @@ _b7_s1C_ptr:
 		.WORD	_b7_s1C
 _b7_s1D_ptr:
 		.WORD	_b7_s1D
-_b7_s1E_ptr:
-		.WORD	_b7_s1E
+;_b7_s1E_ptr:
+;		.WORD	_b7_s1E
 
 ;_b7_d0_map_data_lib_ofs:
 ;		.WORD	_map_data_lib
@@ -68,7 +68,7 @@ _map_data_lib:
 		.BYTE	  2
 		.WORD	_map4
 		.BYTE	  2
-		.WORD	0
+		.WORD	  0
 		.BYTE	$11
 		.WORD	_map6
 		.BYTE	  1
@@ -84,7 +84,7 @@ _map_data_lib:
 		.BYTE	  4
 		.WORD	_mapC
 		.BYTE	  5
-		.WORD	0
+		.WORD	  0
 		.BYTE	  1
 		.WORD	_mapE
 		.BYTE	  3
@@ -205,7 +205,7 @@ byte_B0072:
 		.BYTE	  2
 		.WORD	_map49
 		.BYTE	  4
-		.WORD	0
+		.WORD	  0
 		.BYTE	  3
 		.WORD	_map4A
 		.BYTE	  2
@@ -241,7 +241,7 @@ byte_B0072:
 		.BYTE	  4
 		.WORD	_map5A
 		.BYTE	  2
-		.WORD	0
+		.WORD	  0
 		.BYTE	  3
 		.WORD	_map5C
 		.BYTE	  3
@@ -305,9 +305,9 @@ byte_B0072:
 		.BYTE	  2
 		.WORD	_map7B
 		.BYTE	  4
-		.WORD	0
+		.WORD	  0
 		.BYTE	  4
-		.WORD	0
+		.WORD	  0
 		.BYTE	  3
 		.WORD	_map7E
 		.BYTE	  3
@@ -331,7 +331,7 @@ byte_B0072:
 		.BYTE	  3
 		.WORD	_map49
 		.BYTE	  4
-		.WORD	0
+		.WORD	  0
 		.BYTE	  4
 		.WORD	_map8A
 		.BYTE	  3
@@ -357,7 +357,7 @@ byte_B0072:
 		.BYTE	  4
 		.WORD	_map95
 		.BYTE	  4
-		.WORD	0
+		.WORD	  0
 		.BYTE	  3
 		.WORD	_map97
 		.BYTE	  1
@@ -375,7 +375,7 @@ byte_B0072:
 		.BYTE	  9
 		.WORD	_map9E
 		.BYTE	$A
-		.WORD	0
+		.WORD	  0
 		.BYTE	$A
 		.WORD	_mapA0
 		.BYTE	$18
@@ -401,37 +401,37 @@ byte_B0072:
 		.BYTE	$12
 		.WORD	_mapAB
 		.BYTE	$12
-		.WORD	0
+		.WORD	  0
 		.BYTE	$12
-		.WORD	0
+		.WORD	  0
 		.BYTE	$1B
-		.WORD	0
+		.WORD	  0
 		.BYTE	$13
-		.WORD	0
+		.WORD	  0
 		.BYTE	$13
-		.WORD	0
+		.WORD	  0
 		.BYTE	$13
-		.WORD	0
+		.WORD	  0
 		.BYTE	$13
-		.WORD	0
+		.WORD	  0
 		.BYTE	$13
 		.WORD	_mapB3
 		.BYTE	$10
-		.WORD	0
+		.WORD	  0
 		.BYTE	$E
-		.WORD	0
+		.WORD	  0
 		.BYTE	$E
-		.WORD	0
+		.WORD	  0
 		.BYTE	$E
-		.WORD	0
+		.WORD	  0
 		.BYTE	$10
-		.WORD	0
+		.WORD	  0
 		.BYTE	$14
-		.WORD	0
+		.WORD	  0
 		.BYTE	$14
-		.WORD	0
+		.WORD	  0
 		.BYTE	$14
-		.WORD	0
+		.WORD	  0
 		.BYTE	$14
 		.WORD	_mapBC
 		.BYTE	$14
@@ -443,21 +443,21 @@ byte_B0072:
 		.BYTE	$13
 		.WORD	_mapC0
 		.BYTE	$13
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
 		.WORD	_mapC4
 		.BYTE	$17
-		.WORD	0
+		.WORD	  0
 		.BYTE	$C
 		.WORD	_mapC6
 		.BYTE	$15
 		.WORD	_mapC7
 		.BYTE	$C
-		.WORD	0
+		.WORD	  0
 		.BYTE	$F
 		.WORD	_mapC9
 		.BYTE	$F
@@ -469,9 +469,9 @@ byte_B0072:
 		.BYTE	$F
 		.WORD	_mapCD
 		.BYTE	$11
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
 		.WORD	_mapD0
 		.BYTE	$15
@@ -493,9 +493,9 @@ byte_B0072:
 		.BYTE	$19
 		.WORD	_mapD9
 		.BYTE	$1B
-		.WORD	0
+		.WORD	  0
 		.BYTE	$1B
-		.WORD	0
+		.WORD	  0
 		.BYTE	$1B
 		.WORD	_mapDC
 		.BYTE	$1A
@@ -505,15 +505,15 @@ byte_B0072:
 		.BYTE	$1A
 		.WORD	_mapDF
 		.BYTE	$1A
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
-		.WORD	0
+		.WORD	  0
 		.BYTE	  0
-		.WORD	0
+		.WORD	  0
 		.BYTE	$19
-		.WORD	0
+		.WORD	  0
 		.BYTE	$19
-		.WORD	0
+		.WORD	  0
 		.BYTE	$1B
 		.WORD	_mapE5
 		.BYTE	$1B
@@ -527,7 +527,7 @@ byte_B0072:
 		.BYTE	$1B
 		.WORD	_mapEA
 		.BYTE	$1B
-		.WORD	0
+		.WORD	  0
 		.BYTE	$1B
 		.WORD	_mapEC
 		.BYTE	$1B
@@ -1245,7 +1245,7 @@ _mapF0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s19:
-		SYSX	_sys12,$22
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$22
 		LDA		#5
 		STA		word_3C
 loc_B2711:
@@ -1256,7 +1256,7 @@ loc_B2711:
 		SYSX	_sys07_msg_m00_arg1,$A8
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
-		SYSX	_sys12,$18
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$18
 		LDA		#0
 		STA		word_3C
 loc_B272B:
@@ -1357,7 +1357,7 @@ loc_B27D7:
 		CPX		#$38
 		BCC		loc_B27D7
 		FARX	_bC_s20
-		SYSX	_sys12,$02
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$02
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0
@@ -1367,7 +1367,7 @@ loc_B27D7:
 _b7_s1B:
 		FARX	_bB_s7
 		JSR		sub_B2806
-		SYSX	_sys12,$1F
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1F
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
@@ -1422,7 +1422,7 @@ sub_B2846:
 loc_B2859:
 		DEC		byte_103,X
 loc_B285C:
-		FARX	_bD_s19_1
+		FARX	_bD_s19
 locret_B285F:
 		RTS
 
@@ -1484,7 +1484,7 @@ loc_B28B5:
 		JSR		sub_B2C66
 		LDA		#$FF
 		STA		byte_6A3E
-		SYSX	_sys12,$28
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B28C6:
@@ -1540,9 +1540,9 @@ sub_B2917:
 		BEQ		locret_B295A
 		STA		byte_6A6E
 		JSR		sub_B2BB5
-		LDA		off_B2D37
+		LDA		#<[byte_60D6]
 		STA		word_3E
-		LDA		off_B2D37+1
+		LDA		#>[byte_60D6]
 		STA		word_3E+1
 		JSR		sub_B2B31
 		LDY		#0
@@ -1580,7 +1580,7 @@ sub_B295B:
 sub_B2961:
 		LDA		byte_63E7
 		STA		_cur_message_speed
-		SYSX	_sys0E,$57
+		SYSX	_sys0E_wrapper_to_bE_s0,$57
 		CMP		#$FF
 		BEQ		locret_B2974
 		STA		byte_63E7
@@ -1602,11 +1602,11 @@ loc_B2985:
 		DEX
 		BPL		loc_B2985
 loc_B298D:
-		SYSX	_sys0E,$41
+		SYSX	_sys0E_wrapper_to_bE_s0,$41
 		FARX	_b6_s14_name_entry_screen
 		FARX	_b6_s20_player_name_veryfy
 		BNE		loc_B29A1
-		SYSX	_sys0E,$58
+		SYSX	_sys0E_wrapper_to_bE_s0,$58
 		JSR		__pause_or_skip
 		JMP		loc_B298D
 loc_B29A1:
@@ -1616,7 +1616,7 @@ loc_B29A3:
 		PHA
 		DEX
 		BPL		loc_B29A3
-		SYSX	_sys0E,$42
+		SYSX	_sys0E_wrapper_to_bE_s0,$42
 		STA		word_4
 		LDX		#0
 loc_B29B0:
@@ -1724,8 +1724,8 @@ loc_B2A62:
 		PLA
 		TAX
 		JSR		sub_B2BB5
-		LDA		off_B2D3B
-		LDY		off_B2D3B+1
+		LDA		#<[byte_313]
+		LDY		#>[byte_313]
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
@@ -1744,8 +1744,8 @@ sub_B2A83:
 		LDA		#$FE
 		STA		word_6A2F,X
 		JSR		sub_B2BB5
-		SYSX	_sys0E,$59
-		SYSX	_sys0E,$1D
+		SYSX	_sys0E_wrapper_to_bE_s0,$59
+		SYSX	_sys0E_wrapper_to_bE_s0,$1D
 		CMP		#0
 		BNE		locret_B2AB9
 
@@ -1854,9 +1854,9 @@ loc_B2B2C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2B31:
-		LDA		off_B2D35
+		LDA		#<[byte_315]
 		STA		word_40
-		LDA		off_B2D35+1
+		LDA		#>[byte_315]
 		STA		word_40+1
 		RTS
 
@@ -1950,15 +1950,15 @@ loc_B2BB2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BB5:
-		LDA		off_B2D35
+		LDA		#<[byte_315]
 		STA		word_3C
-		LDA		off_B2D35+1
+		LDA		#>[byte_315]
 		STA		word_3C+1
 		TXA
 		LDX		#word_3C
 		JSR		_mul16_to_8
-		LDA		off_B2D37
-		LDY		off_B2D37+1
+		LDA		#<[byte_60D6]
+		LDY		#>[byte_60D6]
 		JMP		_add16_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2048,8 +2048,8 @@ loc_B2C43:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2C46:
 		LDX		#word_3C
-		LDA		off_B2D3D
-		LDY		off_B2D3D+1
+		LDA		#<[byte_312]
+		LDY		#>[byte_312]
 		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_3C),Y
@@ -2079,8 +2079,8 @@ loc_B2C68:
 		LDY		#0
 		LDA		(word_3C),Y
 		BEQ		loc_B2CC8
-		LDA		off_B2D3B
-		LDY		off_B2D3B+1
+		LDA		#<[byte_313]
+		LDY		#>[byte_313]
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
@@ -2106,7 +2106,7 @@ loc_B2C93:
 		STA		byte_641
 		LDA		#$17
 		FARX	_bB_s3_apu_load
-		SYSX	_sys0E,$3E
+		SYSX	_sys0E_wrapper_to_bE_s0,$3E
 		SYSX	_sys06_msg_m00_arg0,$61
 		JSR		__pause_or_skip
 		PLA
@@ -2165,46 +2165,45 @@ off_B2D2B:
 		.WORD	_begin_new_quest
 		.WORD	sub_B2A29
 		.WORD	sub_B2A83
-off_B2D35:
-		.WORD	byte_315
-off_B2D37:
-		.WORD	byte_60D6
-		.WORD	byte_311
-off_B2D3B:
-		.WORD	byte_313
-off_B2D3D:
-		.WORD	byte_312
+;off_B2D35:
+;		.WORD	byte_315
+;off_B2D37:
+;		.WORD	byte_60D6
+;		.WORD	byte_311
+;off_B2D3B:
+;		.WORD	byte_313
+;off_B2D3D:
+;		.WORD	byte_312
 byte_B2D3F:
 		.BYTE	  4,  1,  2
 _default_character_names:
-		.BYTE	$26,$1C,$13,$18,  $E, $B,$1C,  0
-		.BYTE	$36, $B,$11,$18, $B,$1C,  0,  0
-		.BYTE	$25, $E, $B,$18,  0,  0,  0,  0
-		.BYTE	$2B,$16, $F,$18,$18, $B,$1C, $E
-		.BYTE	$38,$12, $F,$1C,$19,$18,  0,  0
-		.BYTE	$29,$16,$1F, $D,$13, $E,$1F,$1D
-		.BYTE	$2C, $B,$1C,$16, $F,$23,  0,  0
-		.BYTE	$31, $B,$1E,$12,$13, $B,$1D,  0
-		.BYTE	$37, $B,$1C,$1E,$1C,$13,$1D,  0
-		.BYTE	$34, $F,$1E,$1C,$1F,$1D,  0,  0
-		.BYTE	$2C,$13,$1C, $B,$17,  0,  0,  0
-		.BYTE	$3A,$13,$1C,$19,$18,  0,  0,  0
-		.BYTE	  0,$20
+		.BYTE	_B,_r,_i,_n,_d,_a,_r,0
+		.BYTE	_R,_a,_g,_n,_a,_r,0,0
+		.BYTE	_A,_d,_a,_n,0,0,0,0
+		.BYTE	_G,_l,_e,_n,_n,_a,_r,_d
+		.BYTE	_T,_h,_e,_r,_o,_n,0,0
+		.BYTE	_E,_l,_u,_c,_i,_d,_u,_s
+		.BYTE	_H,_a,_r,_l,_e,_y,0,0
+		.BYTE	_M,_a,_t,_h,_i,_a,_s,0
+		.BYTE	_S,_a,_r,_t,_r,_i,_s,0
+		.BYTE	_P,_e,_t,_r,_u,_s,0,0
+		.BYTE	_H,_i,_r,_a,_m,0,0,0
+		.BYTE	_V,_i,_r,_o,_n,0,0,0
 
 ; =============== S U B	R O U T	I N E =======================================
 _player_data_initialize:
-		LDA		off_B3214
+		LDA		#<[off_B322A]
 		STA		word_40
-		LDA		off_B3214+1
+		LDA		#>[off_B322A]
 		STA		word_40+1
 		LDA		#$FF
 		BNE		sub_B2DBE
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s10:
-		LDA		off_B3212
+		LDA		#<[off_B3216]
 		STA		word_40
-		LDA		off_B3212+1
+		LDA		#>[off_B3216]
 		STA		word_40+1
 		LDA		#0
 
@@ -2470,7 +2469,7 @@ loc_B2F5F:
 loc_B2F7A:
 		LDA		byte_B3266,X
 		STA		byte_62AA,Y
-		LDA		byte_B3267,X
+		LDA		byte_B3266+1,X
 		STA		byte_62AD,Y
 loc_B2F86:
 		JSR		_b7_s1D
@@ -2596,15 +2595,15 @@ loc_B3048:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B304F:
 		PHA
-		LDA		off_B32A3
-		LDX		off_B32A3+1
+		LDA		#<[sub_B3200]
+		LDX		#>[sub_B3200]
 		JSR		sub_B31FB
 		PLA
 		JMP		loc_B3068
 loc_B305D:
 		PHA
-		LDA		off_B32A5
-		LDX		off_B32A5+1
+		LDA		#<[sub_B3209]
+		LDX		#>[sub_B3209]
 		JSR		sub_B31FB
 		PLA
 loc_B3068:
@@ -2798,9 +2797,9 @@ _b7_sE_player_log_list:
 		LDA		byte_CE
 		JSR		sub_B2B98
 		JSR		sub_B2BB5
-		LDA		off_B32A7
-		LDY		off_B32A7+1
-		JSR		_add16_to_16
+		LDA		#$14			; check me, this may be just size constant
+		LDY		#$01			;
+		JSR		_add16_to_16	; 
 		LDY		#0
 loc_B31B2:
 		LDA		(word_3C),Y
@@ -2815,9 +2814,9 @@ _b7_sF_player_log_read:
 		LDA		byte_CE
 		JSR		sub_B2B98
 		JSR		sub_B2BB5
-		LDA		word_B32A9
-		LDY		word_B32A9+1
-		JSR		_add16_to_16
+;		LDA		word_B32A9		; word_B32A9 is 0, so this is redundant
+;		LDY		word_B32A9+1
+;		JSR		_add16_to_16
 		LDY		#0
 		STY		word_4+1
 		LDA		(word_3C),Y
@@ -2873,10 +2872,10 @@ sub_B3209:
 		LDY		word_4+1
 		STA		(word_3C),Y
 		RTS
-off_B3212:
-		.WORD	off_B3216
-off_B3214:
-		.WORD	off_B322A
+;off_B3212:
+;		.WORD	off_B3216
+;off_B3214:
+;		.WORD	off_B322A
 off_B3216:
 		.WORD	byte_60E2
 		.WORD	byte_B323E
@@ -2910,9 +2909,7 @@ byte_B3256:
 byte_B325E:
 		.BYTE	  4,  2,  2,  0,  2,  3,  1,  8
 byte_B3266:
-		.BYTE	  0
-byte_B3267:
-		.BYTE	  0,  1,  0,  2,  1
+		.BYTE	  0,  0,  1,  0,  2,  1
 byte_B326C:
 		.BYTE	  7,  1,  3,  0,  9
 byte_B3271:
@@ -2939,14 +2936,14 @@ byte_B3299:
 		.BYTE	  7,  5,  2,  2,  1
 byte_B329E:
 		.BYTE	  1,  2,  3,  8,  8
-off_B32A3:
-		.WORD	sub_B3200
-off_B32A5:
-		.WORD	sub_B3209
-off_B32A7:
-		.WORD	byte_114
-word_B32A9:
-		.WORD	0
+;off_B32A3:
+;		.WORD	sub_B3200
+;off_B32A5:
+;		.WORD	sub_B3209
+;off_B32A7:
+;		.WORD	byte_114
+;word_B32A9:
+;		.WORD	  0
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s8:
@@ -3101,7 +3098,7 @@ _b7_s1E:
 		JSR		sub_B36C8
 		LDX		#$3C
 		JSR		_vblank_count
-		SYSX	_sys12,$19
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$19
 		JSR		_pal_fade_in
 		LDX		#$64
 		JSR		_vblank_count
@@ -3417,7 +3414,8 @@ sub_B36A2:
 		LDA		#0
 		STA		byte_6A3E
 		FARX	_b7_s1D
-		FAR		$00,$AF		; _b1A_s0
+;		FAR		$00,$AF		; _b1A_s0
+		FARX	_b1A_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B36B5:
@@ -3719,23 +3717,7 @@ _staff_txt_block18:
 		.BYTE	$19,0,$6D,_e,_n,_i,_x,$FF
 		.BYTE	$2B,_a,_m,_e,_r,_i,_c,_a,$6E,$FF
 
-		ECHO "bank 07 free space", [$BFD8-.]
+		ECHO "bank 07 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$6CFE
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

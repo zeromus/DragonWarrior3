@@ -471,23 +471,7 @@ _b13_txt_block15:
 		.BYTE	_apu,_I,_,_t,_h,_o,_u,_g,_h,_t,_,_a,_s,_,_m,_u,_c,_h,_exc,_apd,$EF
 		.BYTE	_apu,_O,_h,_exc,_,_T,_h,_a,_t,_apo,_s,_,_g,_r,_e,_a,_t,_exc,_apd,$EF
 
-		ECHO "bank 13 free space", [$BFD8-.]
+		ECHO "bank 13 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

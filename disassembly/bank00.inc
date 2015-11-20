@@ -129,14 +129,14 @@ _b0_s3E_ptr:
 		.WORD	_b0_s3E
 _b0_d3F_ptr:
 		.WORD	_b0_d3F
-_b0_d40_weapon_power_list_ptr:
-		.WORD	0 ; _b0_d40_weapon_power_list
-_b0_d41_equip_list_ptr:
-		.WORD	0 ; _b0_d41_equip_list
+;_b0_d40_weapon_power_list_ptr:
+;		.WORD	_b0_d40_weapon_power_list
+;_b0_d41_equip_list_ptr:
+;		.WORD	_b0_d41_equip_list
 _b0_d42_effects_list_ptr:
 		.WORD	_b0_d42_effects_list
-_b0_d43_enemies_lib_ptr:
-		.WORD	0 ; _b0_d43_enemies_lib
+;_b0_d43_enemies_lib_ptr:
+;		.WORD	_b0_d43_enemies_lib
 _b0_d44_ptr:
 		.WORD	_b0_d44
 _b0_s45_ptr:
@@ -149,10 +149,10 @@ _b0_s48_ptr:
 		.WORD	_b0_s48
 _b0_s49_ptr:
 		.WORD	_b0_s49
-		.WORD	0
+;		.WORD	  0
 _b0_s4B_ptr:
 		.WORD	_b0_s4B
-		.WORD	0
+;		.WORD	  0
 _b0_s4D_ptr:
 		.WORD	_b0_s4D
 _b0_s4E_ptr:
@@ -173,13 +173,13 @@ _b0_s55_ptr:
 		.WORD	_b0_s55
 _b0_s56_ptr:
 		.WORD	_b0_s56
-		.WORD	0
+;		.WORD	  0
 _b0_d58_ptr:
 		.WORD	_b0_d58
 _b0_d59_ptr:
 		.WORD	_b0_d59
-_b0_d5A_ptr:
-		.WORD	0 ; _b0_d5A
+;_b0_d5A_ptr:
+;		.WORD	_b0_d5A
 _b0_s5B_ptr:
 		.WORD	_b0_s5B
 _b0_s5C_ptr:
@@ -211,7 +211,8 @@ _b0_s67_ptr:
 ; why they used sys0 bank wrapper here, instead of direct using the sub call?
 ; 
 _b0_s51_wrapper_for_b1B_s0:
-		FAR		$00,$BF		; _b1B_s0
+;		FAR		$00,$BF		; _b1B_s0
+		FARX	_b1B_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3020,9 +3021,9 @@ loc_9B07:
 		LDA		#$C
 loc_9B11:
 		STA		byte_A
-		LDA		word_9B85,X
+		LDA		off_9B85,X
 		STA		word_3C
-		LDA		word_9B85+1,X
+		LDA		off_9B85+1,X
 		STA		word_3C+1
 		LDX		_tmp12+1
 		LDA		byte_9B99,X
@@ -3082,14 +3083,26 @@ sub_9B78:
 		LDX		#word_4+1
 		LDA		word_4
 		JMP		_mul16_to_8
-word_9B85:
-		.WORD	 $700, $71C, $744, $75C,$6A4B, $7C1,  $B0,$6A9B,$6AA3, $540
+
+off_9B85:
+		.WORD	byte_700
+		.WORD	byte_71C
+		.WORD	byte_744
+		.WORD	byte_75C
+		.WORD	byte_6A4B
+		.WORD	byte_7C1
+		.WORD	byte_B0
+		.WORD	byte_6A9B
+		.WORD	byte_6AA3
+		.WORD	byte_540
 byte_9B99:
 		.BYTE	  1,  2,  3,  8,  1,  1,  1,  1,  2,  1
 byte_9BA3:
 		.BYTE	  7,  5,  2,  3,  1,  1,  1,  2,  2,  3
 
 ; =============== S U B	R O U T	I N E =======================================
+; unused, unreferenced version of 3A with full set of data (A) against 7
+;
 _b0_s3B:
 		LDA		#$A
 		JSR		loc_9B01
@@ -3543,7 +3556,7 @@ byte_9E5C:
 _b0_s5B:
 		BIT		byte_60B7
 		BVC		sub_9E9C
-		SYSX	_sys0D,$3E
+		SYSX	_sys0D_wrapper_to_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$64
 		JMP		sub_9E8B
 
@@ -3922,7 +3935,7 @@ sub_A0E8:
 sub_A0EC:
 		LDA		byte_53
 		STA		byte_CE
-		FARX	_b6_s6_0
+		FARX	_b6_s6
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3961,7 +3974,7 @@ sub_A10E:
 		TSX
 		LDA		byte_102,X
 		LDX		#0
-		FARX	_bE_s4_msg_m00_0
+		FARX	_bE_s4_msg_m00
 		PLA
 		STA		byte_CE
 		PLA
@@ -4351,7 +4364,7 @@ sub_A3FB:
 		LDA		byte_48
 		BNE		loc_A410
 		FARX	_bE_sD
-		SYSX	_sys0D,$3D
+		SYSX	_sys0D_wrapper_to_bE_sC,$3D
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
@@ -4361,7 +4374,7 @@ loc_A410:
 		STA		byte_56
 		STA		byte_58
 		FARX	_bB_s3_apu_load
-		SYSX	_sys12,$01
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$C0
@@ -4803,8 +4816,8 @@ loc_A739:
 		JSR		_add8_to_16
 		JMP		loc_A739
 loc_A747:
-		LDA		off_A800
-		LDY		off_A800+1
+		LDA		#<[byte_A806]
+		LDY		#>[byte_A806]
 		LDX		byte_10
 		BEQ		loc_A761
 		LDY		#0
@@ -4912,8 +4925,8 @@ off_A7F4:
 		.WORD	byte_A94E
 		.WORD	byte_A976
 		.WORD	byte_A99E
-off_A800:
-		.WORD	byte_A806
+;off_A800:
+;		.WORD	byte_A806
 off_A802:
 		.WORD	byte_A80B
 		.WORD	byte_A810
@@ -5007,7 +5020,7 @@ _add_24_to_24:
 ; =============== S U B	R O U T	I N E =======================================
 sub_A8A2:
 		LDX		#0
-		FARX	_bE_s4_msg_m00_1
+		FARX	_bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5115,10 +5128,10 @@ _b0_s5D:
 		LDA		byte_60B7
 		AND		#$40
 		BNE		sub_AAE9
-		SYSX	_sys0D,$2C
+		SYSX	_sys0D_wrapper_to_bE_sC,$2C
 		LDX		#5
 		JSR		_vblank_count
-		SYSX	_sys0D,$69
+		SYSX	_sys0D_wrapper_to_bE_sC,$69
 		FARX	_bA_sE
 		CMP		#$FF
 		BEQ		loc_AB46
@@ -5130,7 +5143,7 @@ _b0_s5D:
 		JSR		_b0_s28
 		LDA		word_4
 		BEQ		sub_AAE5
-		SYSX	_sys0D,$6B
+		SYSX	_sys0D_wrapper_to_bE_sC,$6B
 		CMP		#$FF
 		BEQ		loc_AB46
 		STA		byte_46
@@ -5369,7 +5382,7 @@ byte_ACB1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACB4:
-		SYSX	_sys0D,$2E
+		SYSX	_sys0D_wrapper_to_bE_sC,$2E
 		STA		byte_47
 		STA		byte_D4
 		STA		byte_50
@@ -5589,7 +5602,7 @@ sub_ADF4:
 		AND		#8
 		BEQ		loc_ADEA
 		STX		byte_D2
-		SYSX	_sys12,$17
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$17
 		JSR		sub_174DF2
 		SYSX	_sys07_msg_m00_arg1,$52
 		FARX	_bD_s22
@@ -5784,8 +5797,8 @@ sub_AEF1:
 		CMP		#$27
 		BNE		loc_AF38
 		SYSX	_sys07_msg_m00_arg1,$A1
-		SYSX	_sys12,$86
-		SYSX	_sys0D,$1D
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$86
+		SYSX	_sys0D_wrapper_to_bE_sC,$1D
 		TAX
 		BNE		loc_AF32
 		SYSX	_sys07_msg_m00_arg1,$A2
@@ -5850,7 +5863,7 @@ sub_AF5B:
 		JSR		sub_174DF2
 		SYSX	_sys06_msg_m00_arg0,$AA
 		JSR		sub_176C3C
-		FARX	_b6_s6_1
+		FARX	_b6_s6
 		BCS		sub_AF3E
 		SYSX	_sys06_msg_m00_arg0,$40
 		JSR		__pause_or_skip
@@ -6003,7 +6016,7 @@ sub_B068:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B06C:
-		SYSX	_sys12,$1C
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1C
 		JSR		sub_176C3C
 		LDA		byte_8B
 		CMP		#$EF
@@ -6030,7 +6043,7 @@ loc_B097:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B09C:
-		SYSX	_sys12,$1B
+		SYSX	_sys12_wrapper_to_bB_s3_apu_load,$1B
 		FARX	_bB_s7
 		LDA		byte_60C5
 		BMI		loc_B0B5
@@ -6549,20 +6562,20 @@ _b0_d43_enemies_lib:
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s65:
 		LDA		#0
-		STA		byte_0
-		STA		byte_1
+		STA		0
+		STA		1
 		TAY
 loc_BF57:
-		STA		(byte_0),Y
+		STA		(0),Y
 		INY
 		BNE		loc_BF57
-		INC		byte_1
-		LDX		byte_1
+		INC		1
+		LDX		1
 		CPX		#7
 		BEQ		loc_BF74
 		CPX		#1
 		BNE		loc_BF57
-		INC		byte_1
+		INC		1
 		BNE		loc_BF57
 		LDX		#1
 loc_BF6E:
@@ -6605,23 +6618,7 @@ loc_BFA9:
 		BNE		loc_BFA9
 		RTS
 
-		ECHO "bank 00 free space", [$BFD8-.]
+		ECHO "bank 00 free space", [SAFE_STUB_ORG-.]
 
-		ORG $BFD8
-		SEI
-		INC	$BFDF
-		JMP	_RESET
-		.BYTE	$80
-		.BYTE	"DRAGON WARRIOR "
-		.BYTE	$33
-		.WORD	$FFFF
-		.WORD	0
-		.BYTE	$48
-		.BYTE	  4
-		.BYTE	  1
-		.BYTE	$F
-		.BYTE	  7
-		.BYTE	$9D
-		.WORD	$BFD8
-		.WORD	$BFD8
-		.WORD	$BFD8
+		ORG SAFE_STUB_ORG
+		SAFE_STUB

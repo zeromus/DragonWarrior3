@@ -4,6 +4,7 @@ SYSTEM_FOOTER_ORG	=	$FF8E
 SYSTEM_VECTORS_ORG  =   $FFD8
 SYSTEM_DPCM_ORG     =   $F000
 SYSCALL_PTR_ORG     =   $8000
+SAFE_STUB_ORG		=   $BFD8
 
 ; == FONTS ==
 
@@ -99,6 +100,27 @@ _col = $75
 _ddt = $76
 
 ; == OPCODES ==
+
+	MAC	SAFE_STUB
+		SEI
+		INC	.1
+		JMP	_RESET
+.1:
+		.BYTE	$80
+		.BYTE	"DRAGON WARRIOR "
+		.BYTE	$33
+		.WORD	$FFFF
+		.WORD	  0
+		.BYTE	$48
+		.BYTE	  4
+		.BYTE	  1
+		.BYTE	 $F
+		.BYTE	  7
+		.BYTE	$9D
+		.WORD	SAFE_STUB_ORG
+		.WORD	SAFE_STUB_ORG
+		.WORD	SAFE_STUB_ORG
+	ENDM
 
 	MAC FAR
 		BRK
