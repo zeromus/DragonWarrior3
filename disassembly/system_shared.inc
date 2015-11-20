@@ -650,7 +650,7 @@ loc_1743A4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B5:
-		FAR		0, $6F		; _b16_s0
+		FAR		$00,$6F		; _b16_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1743B8:
@@ -783,11 +783,6 @@ loc_17445B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;_syscall1_param1:
-;		JSR		_get_param_byte_set_exit_to_next
-
-; =============== S U B	R O U T	I N E =======================================
 _sys01_safe:
 		STA		_irq_a_saved
 		STX		_irq_x_saved
@@ -798,30 +793,6 @@ _sys01_safe:
 		LDX		#_tmp21+1
 		JSR		_get_syscall1_bank_ptr
 		JMP		_syscall_exec_safe
-
-; =============== S U B	R O U T	I N E =======================================
-_get_param_byte_set_exit_to_next:
-		STA		_irq_a_saved
-		STX		_irq_x_saved
-		TSX
-		INC		$103,X
-		BNE		loc_17448C
-		INC		$104,X
-loc_17448C:
-		LDA		$103,X
-		STA		_tmp21
-		LDA		$104,X
-		STA		_tmp21+1
-		LDY		#0
-		LDA		(_tmp21),Y
-		TAY
-		LDX		_irq_x_saved
-		LDA		_irq_a_saved
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_syscall0_param1:
-		JSR		_get_param_byte_set_exit_to_next
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys00_safe:
@@ -869,34 +840,20 @@ _syscall0_unsafe:
 		JMP		_tmp21
 
 ; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_1744E4:
-;		LDA		_mmc_cur_prg_bank
-;		PHA
-;		LDA		2,X
-;		JSR		_mmc1_prg_set
-;		JSR		_get_data_next_byte
-;		STA		3,X
-;		PLA
-;		JSR		_mmc1_prg_set
-;		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 _get_syscall1_bank_ptr:
-		LDA		_get_syscall1_sub_idx,Y
+		LDA		_sys0_sub_idx_lib+256,Y
 		PHA
-		LDA		_get_syscall1_sub_table_banks,Y
+		LDA		_sys0_sub_banks_list+256,Y
 		JMP		_get_syscall_bank_and_ptr
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall0_bank_ptr:
-		LDA		_get_syscall0_sub_idx,Y
+		LDA		_sys0_sub_idx_lib,Y
 		PHA
-		LDA		_get_syscall0_sub_table_banks,Y
+		LDA		_sys0_sub_banks_list,Y
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_syscall_bank_and_ptr:
-		STA		2,X						; сохраняет требуемый банк рядом с опкодом перехода, но никак не используется
 		JSR		_mmc1_prg_set
 		PLA
 		ASL
@@ -1478,12 +1435,6 @@ NMI:
 		JSR		sub_174A5C
 loc_17497E:
 		INC		_mmc_reset_byte
-;		LDA		#$1E
-;		JSR		_mmc1_prg_cmd
-;		LDA		#$10
-;		JSR		_mmc1_chr0
-;		LDA		#$10
-;		JSR		_mmc1_chr0
 		LDA		#$B
 		JSR		_mmc1_prg_cmd
 		JSR		_apu_play
@@ -1537,7 +1488,6 @@ loc_1749E2:
 _mmc1_reinit:
 		INC		_mmc_reset_byte
 		LDA		_cur_mmc_cmd
-;		JSR		_mmc1_cmd
 		STA		$9FFF
 		LSR
 		STA		$9FFF
@@ -1548,7 +1498,6 @@ _mmc1_reinit:
 		LSR
 		STA		$9FFF
 		LDA		_cur_chr0_bank_prg_hi
-;		JSR		_mmc1_chr0
 		STA		$BFFF
 		LSR
 		STA		$BFFF
@@ -1559,7 +1508,6 @@ _mmc1_reinit:
 		LSR
 		STA		$BFFF
 		LDA		#0
-;		JSR		_mmc1_chr1
 		STA		$DFFF
 		LSR
 		STA		$DFFF
@@ -1841,37 +1789,37 @@ sub_174BB3:
 		BEQ		loc_174BC7
 loc_174BBB:
 		JSR		__pause_or_skip
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 		JSR		sub_174369
 		JSR		sub_1743B5
 loc_174BC7:
 		LDA		byte_6A58
 		BNE		loc_174BF2
-		FAR		0, $7F		; _b17_s0_copyrights_screen
+		FAR		$00,$7F		; _b17_s0_copyrights_screen
 loc_174BCF:
-		FAR		1, $7F		; _b17_s1
+		FAR		$01,$7F		; _b17_s1
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_174BCF
-		FAR		$19, 7		; _b7_s8
-		FAR		$62, $17		; _b7_sA_sram_test_and_init
-		FAR		$A1, 7		; _bB_s4
+		FARX	_b7_s8
+		FAR		$62,$17		; _b7_sA_sram_test_and_init
+		FAR		$A1,$07		; _bB_s4
 		LDA		byte_60C7
 		BMI		loc_174BFC
 		ORA		#$80
 		STA		byte_60C7
-		FAR		$60, $17		; _bA_sF
+		FAR		$60,$17		; _bA_sF
 		JMP		loc_174C5C
 loc_174BF2:
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_174BFC
-		FAR		$2E, $17		; _b0_s64
+		FAR		$2E,$17		; _b0_s64
 loc_174BFC:
 		LDA		#$50
 		STA		byte_60C6
 		JSR		_vblank_and_render_off_flag10_set
-		FAR		$21, $17		; _bE_sF
+		FAR		$21,$17		; _bE_sF
 		JSR		__render_on_flag10_clear_reinit
 		LDA		byte_60B8
 		AND		#$BF
@@ -1885,27 +1833,27 @@ loc_174BFC:
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		FAR		$90, $17		; _bD_s20_npc_hndl31
+		FAR		$90,$17		; _bD_s20_npc_hndl31
 		JMP		loc_174C5C
 loc_174C2F:
-		FAR		$50, $17		; _bE_s36
+		FAR		$50,$17		; _bE_s36
 		LDA		byte_2F
 		ORA		#1
 		STA		byte_2F
 		LDA		byte_6A58
 		BNE		loc_174C51
 		DEC		byte_6A58
-		FAR		$2F, $17		; _bD_s28
+		FAR		$2F,$17		; _bD_s28
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		FAR		$8D, $17		; _bD_s24
+		FAR		$8D,$17		; _bD_s24
 		JMP		loc_174C5C
 loc_174C51:
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		FAR		$8C, $17		; _bD_s23
+		FAR		$8C,$17		; _bD_s23
 loc_174C5C:
 		JSR		sub_174D56
 		JMP		loc_174C5C
@@ -1921,21 +1869,21 @@ sub_174C62:
 		LDA		byte_60BA
 		AND		#1
 		BEQ		loc_174C84
-		FAR		$46, $17		; _b0_s4F
-		FAR		$51, $17		; _bE_s18
-		FAR		$45, $17		; _b0_s4E
+		FAR		$46,$17		; _b0_s4F
+		FAR		$51,$17		; _bE_s18
+		FAR		$45,$17		; _b0_s4E
 		JMP		loc_174C87
 loc_174C84:
-		FAR		$51, $17		; _bE_s18
+		FAR		$51,$17		; _bE_s18
 loc_174C87:
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_174C93
 		JSR		sub_177CFC
-		FAR		$47, $17		; _bC_s27
+		FAR		$47,$17		; _bC_s27
 loc_174C93:
 		JSR		_set_nmi_flag_10
-		FAR		$93, $17		; _bE_s11
+		FAR		$93,$17		; _bE_s11
 		JSR		_set_nmi_flag_10
 		LDA		byte_2C
 		BNE		loc_174CCA
@@ -1951,15 +1899,15 @@ loc_174CAD:
 loc_174CB1:
 		STX		byte_100
 		STY		byte_101
-		FAR		$5A, $17		; _bC_s35
+		FAR		$5A,$17		; _bC_s35
 		JMP		loc_174CCA
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CBD:
 		LDA		_mmc_cur_prg_bank
 		PHA
-		FAR		$F1, 7		; _b5_s9
-		FAR		$5A, $17		; _bC_s35
+		FAR		$F1,$07		; _b5_s9
+		FAR		$5A,$17		; _bC_s35
 		JSR		sub_175B0E
 loc_174CCA:
 		PLA
@@ -1972,7 +1920,7 @@ loc_174CCA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CCF:
-		FAR		$21, 7		; _bE_sD
+		FARX	_bE_sD
 		JMP		sub_174DF2
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1990,8 +1938,8 @@ sub_174CE2:
 		JSR		sub_175A32
 		JSR		sub_1762FC
 		JSR		sub_1754AD
-		FAR		$C, $17		; _b7_s1C
-		FAR		$F1, 7		; _b5_s9
+		FAR		$0C,$17		; _b7_s1C
+		FAR		$F1,$07		; _b5_s9
 		JSR		sub_1743B5
 		JSR		sub_17578E
 		LDA		#7
@@ -2056,27 +2004,27 @@ sub_174D3F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D4F:
-		FAR		$70, $17		; _bC_s2E_vblank_count_50_wait_50_or_skip
-		FAR		$71, $17		; _bC_s20
+		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FAR		$71,$17		; _bC_s20
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D56:
-		FAR		1, 7		; _bE_s1
+		FARX	_bE_s1
 		JSR		sub_174E52
 		JSR		sub_174E1A
-		FAR		$A, 7		; _bD_s2
+		FARX	_bD_s2
 		JSR		sub_174D89
-		FAR		$57, $17		; _bC_s1
+		FAR		$57,$17		; _bC_s1
 		JSR		sub_174DCF
 		JSR		sub_175AF7
-		FAR		$11, 7		; _bD_s9
-		FAR		$E, 7		; _bD_s6
+		FARX	_bD_s9
+		FARX	_bD_s6
 		JSR		sub_174DC0
 		JSR		sub_177116
 		JSR		_vblank
 		JSR		sub_1755AB
-		FAR		$10, 7		; _bA_s1
+		FARX	_bA_s1
 		JSR		sub_174E10
 		INC		byte_90
 		RTS
@@ -2141,7 +2089,7 @@ loc_174DDA:
 		AND		#1
 		BEQ		locret_174DF1
 loc_174DE0:
-		FAR		$88, 7		; _b6_s8
+		FAR		$88,$07		; _b6_s8
 		LDA		byte_87
 		BNE		locret_174DF1
 		LDA		byte_6D9
@@ -2153,7 +2101,7 @@ locret_174DF1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174DF2:
-		FAR		$3E, $D7		; _sys0D
+		FAR		$3E,$D7		; _sys0D
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2187,7 +2135,7 @@ sub_174E1A:
 		BCS		loc_174E21
 		RTS
 loc_174E21:
-		FAR		$C3, 7		; _bE_s26
+		FAR		$C3,$07		; _bE_s26
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2244,14 +2192,14 @@ loc_174E78:
 		LDA		byte_86
 		BNE		loc_174E95
 		INC		byte_6ACE
-		FAR		$C8, 7		; _bC_s14
+		FAR		$C8,$07		; _bC_s14
 		JSR		sub_175049
 		LDA		byte_8F
 		BNE		locret_174E77
 		LDA		byte_2C
 		CMP		#2
 		BEQ		loc_174E92
-		FAR		$67, 7		; _b0_s0_world_map_random_enounter_test
+		FAR		$67,$07		; _b0_s0_world_map_random_enounter_test
 loc_174E92:
 		JMP		loc_174E99
 loc_174E95:
@@ -2321,7 +2269,7 @@ loc_174F04:
 		BEQ		loc_174F53
 		RTS
 loc_174F1A:
-		FAR		$A4, $17		; _bA_s6
+		FAR		$A4,$17		; _bA_s6
 		BCS		loc_174F3B
 		LDA		byte_6EB
 		BNE		loc_174F43
@@ -2330,7 +2278,7 @@ loc_174F1A:
 		LDA		byte_174FF2,X
 		CMP		#$FF
 		BNE		loc_174F3E
-		FAR		$A4, $17		; _bA_s6
+		FAR		$A4,$17		; _bA_s6
 		BCS		loc_174F3B
 		LDA		#0
 		STA		byte_6E1
@@ -2425,11 +2373,11 @@ loc_174FBB:
 		ADC		#$10
 		STA		byte_8E
 		BPL		locret_174FF1
-		FAR		$21, 7		; _bE_sD
+		FARX	_bE_sD
 		JSR		_sram_b0_s31
 		DEC		word_4
 		LDA		word_4
-		FAR		$20, 7		; _bE_sC
+		FARX	_bE_sC
 locret_174FF1:
 		RTS
 byte_174FF2:
@@ -2535,7 +2483,7 @@ loc_17509F:
 		BCC		sub_1750D0
 		CMP		#$FF
 		BEQ		sub_1750BC
-		FAR		0, $17		; _bC_s2A
+		FARX	_bC_s2A
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2554,9 +2502,9 @@ locret_1750CF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1750D0:
 		LDA		byte_8B
-		FAR		$AB, 7		; _bE_s1D
+		FAR		$AB,$07		; _bE_s1D
 loc_1750D5:
-		FAR		$AC, 7		; _bE_s19
+		FAR		$AC,$07		; _bE_s19
 		BCC		loc_1750DC
 		INC		word_4
 loc_1750DC:
@@ -2605,7 +2553,7 @@ loc_175123:
 		LDA		byte_8B
 		CMP		#$41
 		BCC		loc_175185
-		FAR		$BF, 7		; _bE_s22
+		FAR		$BF,$07		; _bE_s22
 		JMP		loc_175185
 loc_17513A:
 		LDA		byte_31
@@ -2647,7 +2595,7 @@ loc_175181:
 		LDA		#$23
 		STA		byte_2A
 loc_175185:
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 		JSR		sub_175917
 loc_17518B:
 		LDA		#$FF
@@ -2677,8 +2625,8 @@ loc_1751AA:
 		STA		byte_60BA
 		JSR		sub_1743B5
 		JSR		_vblank_and_render_off_flag10_set
-		FAR		$21, $17		; _bE_sF
-		FAR		$F1, 7		; _b5_s9
+		FAR		$21,$17		; _bE_sF
+		FAR		$F1,$07		; _b5_s9
 		LDA		byte_2C
 		BEQ		loc_1751E5
 		LDA		byte_2A
@@ -2687,10 +2635,10 @@ loc_1751AA:
 		LDA		byte_2B
 		STA		byte_101
 		STA		byte_2E
-		FAR		$35, $17		; _bD_s1B
+		FAR		$35,$17		; _bD_s1B
 		JMP		loc_1751F7
 loc_1751E5:
-		FAR		$82, 7		; _bC_s3
+		FAR		$82,$07		; _bC_s3
 		LDA		byte_60C5
 		BPL		loc_1751F4
 		LDA		byte_60CB
@@ -2702,20 +2650,20 @@ loc_1751F7:
 		JSR		sub_175B0E
 		LDA		#6
 		JSR		_mmc1_prg_set
-		FAR		$64, $17		; _b0_s66
+		FAR		$64,$17		; _b0_s66
 		LDA		byte_60C5
 		BPL		locret_175211
 		LDA		byte_60CB
 		AND		#$20
 		BNE		locret_175211
-		FAR		$7C, $17		; _b7_s19
+		FAR		$7C,$17		; _b7_s19
 locret_175211:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175212:
-		FAR		$E9, 7		; _bE_s31
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$E9,$07		; _bE_s31
+		FAR		$A0,$07		; _bB_s3_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2736,7 +2684,7 @@ locret_175228:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175229:
-		FAR		$C2, 7		; _bE_s25
+		FAR		$C2,$07		; _bE_s25
 locret_17522C:
 		RTS
 
@@ -2783,13 +2731,13 @@ sub_17522D:
 		BNE		loc_17527F
 		JMP		sub_175342
 loc_17527F:
-		FAR		$C0, 7		; _bE_s23
+		FAR		$C0,$07		; _bE_s23
 		LDA		#0
 		STA		byte_6B9
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		FAR		4, $2F		; _sys12
+		FAR		$04,$2F		; _sys12
 locret_175291:
 		RTS
 loc_175292:
@@ -2836,8 +2784,8 @@ loc_1752D9:
 		LDA		byte_2F
 		ORA		#1
 		STA		byte_2F
-		FAR		$A1, 7		; _bB_s4
-		FAR		$82, $2F		; _sys12
+		FAR		$A1,$07		; _bB_s4
+		FAR		$82,$2F		; _sys12
 		JSR		sub_174369
 		JSR		sub_1759B8
 loc_1752EB:
@@ -2848,8 +2796,8 @@ loc_1752EB:
 loc_1752F5:
 		PLA
 		JSR		sub_17530A
-		FAR		$E9, 7		; _bE_s31
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$E9,$07		; _bE_s31
+		FAR		$A0,$07		; _bB_s3_apu_load
 		LDA		byte_6AE6
 		AND		#$FE
 		STA		byte_6AE6
@@ -2862,7 +2810,7 @@ sub_17530A:
 		JSR		sub_17578E
 		PLA
 		BNE		loc_175324
-		FAR		$83, 7		; _bC_s4
+		FAR		$83,$07		; _bC_s4
 		BIT		byte_60C5
 		BVC		loc_17531E
 		PLA
@@ -2872,7 +2820,7 @@ loc_17531E:
 		JSR		_mmc1_prg_set
 		RTS
 loc_175324:
-		FAR		$84, 7		; _bC_s5
+		FAR		$84,$07		; _bC_s5
 		LDA		#$C
 		JSR		_mmc1_prg_set
 		RTS
@@ -2886,13 +2834,13 @@ sub_17532D:
 		STA		byte_92
 		AND		#$E0
 		STA		byte_8C
-		FAR		$F1, 7		; _b5_s9
+		FAR		$F1,$07		; _b5_s9
 		JMP		sub_1743B5
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175342:
-		FAR		$EB, 7		; _bE_s32
-		FAR		$A1, 7		; _bB_s4
+		FAR		$EB,$07		; _bE_s32
+		FAR		$A1,$07		; _bB_s4
 		JSR		sub_174369
 		LDA		#$9C
 		STA		byte_8B
@@ -2908,18 +2856,18 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		FAR		$11, $2F		; _sys12
+		FAR		$11,$2F		; _sys12
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17536E:
 		LDA		byte_8F
 		BEQ		loc_175376
-		FAR		$C2, 7		; _bE_s25
+		FAR		$C2,$07		; _bE_s25
 		RTS
 loc_175376:
 		LDA		byte_92
-		FAR		$AD, 7		; _bE_s1A
+		FAR		$AD,$07		; _bE_s1A
 		BCS		loc_175397
 		CMP		#2
 		BEQ		loc_17538D
@@ -2927,7 +2875,7 @@ loc_175376:
 		BEQ		loc_1753DF
 		CMP		#8
 		BEQ		sub_1753AA
-		FAR		$C1, 7		; _bE_s24
+		FAR		$C1,$07		; _bE_s24
 locret_17538C:
 		RTS
 loc_17538D:
@@ -2959,22 +2907,22 @@ sub_1753AA:
 		LDA		#$E
 		STA		word_4+1
 		LDA		#$21
-		FAR		$9D, 7		; _bC_sA
+		FAR		$9D,$07		; _bC_sA
 		JSR		sub_1742B0
 loc_1753C0:
 		LDA		byte_8B
 		CMP		#$C5
 		BNE		loc_1753CA
-		FAR		$F7, 7		; _bC_s21
+		FAR		$F7,$07		; _bC_s21
 		RTS
 loc_1753CA:
 		CMP		#$A6
 		BNE		loc_1753D4
-		FAR		$BF, 7		; _bE_s22
+		FAR		$BF,$07		; _bE_s22
 		JMP		loc_174E9C
 loc_1753D4:
-		FAR		$BF, 7		; _bE_s22
-		FAR		$A8, 7		; _bE_sE
+		FAR		$BF,$07		; _bE_s22
+		FAR		$A8,$07		; _bE_sE
 		BCC		loc_1753E6
 		JMP		loc_1752EB
 loc_1753DF:
@@ -3019,7 +2967,7 @@ loc_17541D:
 		PLA
 		LDA		#0
 		STA		byte_6B9
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 		JSR		sub_174369
 		JMP		loc_175195
 
@@ -3036,12 +2984,12 @@ sub_17542F:
 		STA		word_4
 		JSR		sub_175219
 loc_17543E:
-		FAR		$AC, 7		; _bE_s19
+		FAR		$AC,$07		; _bE_s19
 		BCS		loc_175449
 		JSR		sub_175222
 		JMP		loc_17543E
 loc_175449:
-		FAR		$AE, 7		; _bE_s20
+		FAR		$AE,$07		; _bE_s20
 		CPX		byte_30
 		BNE		loc_175454
 		CPY		byte_31
@@ -3088,7 +3036,7 @@ loc_175488:
 		AND		#$F
 		CMP		#$F
 		BNE		loc_1754A7
-		FAR		$2B, $17		; _bC_s37
+		FAR		$2B,$17		; _bC_s37
 		LDX		byte_30
 		LDY		byte_31
 		JSR		sub_177CC8
@@ -3115,7 +3063,7 @@ sub_1754B6:
 		LDA		#0
 		STA		word_4+1
 loc_1754CA:
-		FAR		$AC, 7		; _bE_s19
+		FAR		$AC,$07		; _bE_s19
 		BCS		loc_1754D5
 loc_1754CF:
 		JSR		sub_175222
@@ -3129,7 +3077,7 @@ loc_1754D5:
 loc_1754E0:
 		STX		byte_644
 		STX		byte_6BC
-		FAR		$AE, 7		; _bE_s20
+		FAR		$AE,$07		; _bE_s20
 		STX		byte_30
 		STY		byte_31
 		RTS
@@ -3187,16 +3135,16 @@ sub_175516:
 		STA		byte_2B
 		PLA
 		PHA
-		FAR		$8C, 7		; _bA_sC
+		FAR		$8C,$07		; _bA_sC
 		PLA
 		JSR		sub_1754B6
 		JSR		sub_17532D
-		FAR		$8D, 7		; _bA_sD
+		FAR		$8D,$07		; _bA_sD
 		LDA		#2
 		STA		byte_644
 		STA		byte_6BC
-		FAR		$84, 7		; _bC_s5
-		FAR		$DD, 7		; _bD_sD
+		FAR		$84,$07		; _bC_s5
+		FAR		$DD,$07		; _bD_sD
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3224,12 +3172,12 @@ sub_175569:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175596:
-		FAR		$E9, 7		; _bE_s31
+		FAR		$E9,$07		; _bE_s31
 		CMP		#$11
 		BEQ		loc_1755A0
-		FAR		$A1, 7		; _bB_s4
+		FAR		$A1,$07		; _bB_s4
 loc_1755A0:
-		FAR		$82, $2F		; _sys12
+		FAR		$82,$2F		; _sys12
 		JSR		sub_174369
 		PLA
 		PLA
@@ -3307,7 +3255,7 @@ loc_175624:
 		JMP		sub_17574F
 loc_175638:
 		JSR		sub_17574F
-		FAR		$C, 7		; _bD_s4
+		FARX	_bD_s4
 		LDA		#$10
 		STA		byte_87
 		LDA		#0
@@ -3508,7 +3456,7 @@ sub_1757A4:
 		LDA		#0
 		STA		byte_8E
 		LDA		#4
-		FAR		$1F, 7		; _bE_sB
+		FARX	_bE_sB
 loc_1757B3:
 		PLA
 		TAX
@@ -3575,14 +3523,14 @@ loc_17580C:
 		CMP		byte_2B
 		BEQ		loc_175824
 loc_175818:
-		FAR		$A2, $2F		; _sys12
+		FAR		$A2,$2F		; _sys12
 loc_17581B:
 		SEC
 		RTS
 loc_17581D:
 		LDA		#0
 		STA		byte_2C
-		FAR		$85, 7		; _bC_s6
+		FAR		$85,$07		; _bC_s6
 loc_175824:
 		CLC
 		RTS
@@ -3607,9 +3555,9 @@ loc_175838:
 		BCS		loc_175818
 		LDA		#0
 		STA		byte_2C
-		FAR		$85, 7		; _bC_s6
+		FAR		$85,$07		; _bC_s6
 		JSR		sub_175212
-		FAR		$32, $17		; _bD_s18
+		FAR		$32,$17		; _bD_s18
 		CLC
 		RTS
 
@@ -3623,10 +3571,10 @@ sub_175853:
 		CMP		#$18
 		BNE		loc_175877
 		JSR		sub_174CCF
-		FAR		$87, $77		; _sys07_msg_m00_arg1
+		FAR		$87,$77		; _sys07_msg_m00_arg1
 		DEC		byte_101
 		DEC		byte_31
-		FAR		$F4, 7		; _bE_s33
+		FAR		$F4,$07		; _bE_s33
 		INC		byte_101
 		INC		byte_31
 		SEC
@@ -3646,12 +3594,12 @@ loc_17588B:
 		LDA		word_7C
 		STA		byte_92
 		AND		#$1F
-		FAR		$B, 7		; _bD_s3
+		FARX	_bD_s3
 		BCC		loc_1758C3
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		FAR		$A2, $2F		; _sys12
+		FAR		$A2,$2F		; _sys12
 loc_17589F:
 		SEC
 		RTS
@@ -3697,9 +3645,9 @@ loc_1758DF:
 		BEQ		loc_1758F0
 		LDA		#0
 		STA		byte_2C
-		FAR		$1D, $17		; _bC_s31
-		FAR		$E9, 7		; _bE_s31
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$1D,$17		; _bC_s31
+		FAR		$E9,$07		; _bE_s31
+		FAR		$A0,$07		; _bB_s3_apu_load
 loc_1758F0:
 		CLC
 		RTS
@@ -3717,7 +3665,7 @@ loc_175900:
 		LDA		(word_72),Y
 		CMP		byte_31
 		BNE		loc_1758F6
-		FAR		$AF, 7		; _bE_s21
+		FAR		$AF,$07		; _bE_s21
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3727,15 +3675,15 @@ sub_17590B:
 		STA		byte_B
 		PLA
 		STA		byte_8C
-		FAR		$5E, 7		; _bC_s2
+		FAR		$5E,$07		; _bC_s2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		FAR		$82, $2F		; _sys12
+		FAR		$82,$2F		; _sys12
 		JSR		sub_174369
-		FAR		$F9, 7		; _bE_s1B
+		FAR		$F9,$07		; _bE_s1B
 		PLA
 		RTS
 
@@ -4011,7 +3959,7 @@ sub_175AF7:
 		LDA		#5
 		JSR		_mmc1_prg_set
 		JSR		sub_175B17
-		FAR		$12, 7		; _b5_s7
+		FARX	_b5_s7
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5929,7 +5877,7 @@ loc_176729:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17673A:
-		FAR		$5F, $17		; _b5_sB_ppu_font_load
+		FAR		$5F,$17		; _b5_sB_ppu_font_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6042,7 +5990,7 @@ loc_1767F8:
 		LDA		#0
 		STA		_APU_STATUS
 		STA		byte_6A3D
-		FAR		$9F, 7		; _bB_s2
+		FAR		$9F,$07		; _bB_s2
 		LDA		_PPU_STATUS
 		LDA		#$10
 		STA		_PPU_ADDR
@@ -6054,7 +6002,7 @@ loc_17683B:
 		STA		_PPU_DATA
 		DEX
 		BNE		loc_17683B
-		FAR		$63, $17		; _b0_s65
+		FAR		$63,$17		; _b0_s65
 		JSR		sub_174000
 		LDA		#$F
 		LDX		#$19
@@ -6198,478 +6146,470 @@ _mmc1_sram_disable:
 		PLA
 		JMP		_mmc1_prg_direct
 
-_get_syscall0_sub_table_banks:
-;		.BYTE	$EE,$EE,$EE,$EE,$EE,$DD,$DD,$DD,$AD,$55,$55,$CC,$87,$AA,$E6,$7E
-;		.BYTE	$EE,$50,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-;		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,$C2
-;		.BYTE	$22,$22,$22,$20,  2,  4,$44,$44,$44,$44,$44,$44,$42,  0,$46,$66
-;		.BYTE	$6A,$CC,$CC,$AE,$66,$66,$AA,  0,  1,  7,$77,$7C,$A5,$7C, $C,$1B
-;		.BYTE	$BB,$BD,$2B,$E4,$E0, $E,$EE,$EE,$44,  4,$44,$AA,$CC,$CC,$C6,$CE
-;		.BYTE	$EE,$EE,$66,$66,$CC,$C2,  0,$CC,$44,$44,$44,$44,$11,$11,$1D,$60
-;		.BYTE	  0,$C6, $A,$EE,$EE,$2E,  4,$44,$B5,$5C,$EC,$7C,$CE,$CC,$AD,$CD
-		.BYTE	$E,$E,$E,$E,$E,$E,$E,$E,$E,$E,$D,$D,$D,$D,$D,$D
-		.BYTE	$A,$D,$5,$5,$5,$5,$C,$C,$8,$7,$A,$A,$E,$6,$7,$E
-		.BYTE	$E,$E,$5,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
-		.BYTE	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$0,$6,$C,$2
-		.BYTE	$2,$2,$2,$2,$2,$2,$2,$0,$0,$2,$0,$4,$4,$4,$4,$4
-		.BYTE	$4,$4,$4,$4,$4,$4,$4,$4,$4,$2,$0,$0,$4,$6,$6,$6
-		.BYTE	$6,$A,$C,$C,$C,$C,$A,$E,$6,$6,$6,$6,$A,$A,$0,$0
-		.BYTE	$0,$1,$0,$7,$7,$7,$7,$C,$A,$5,$7,$C,$0,$C,$1,$B
-		.BYTE	$B,$B,$B,$D,$2,$B,$E,$4,$E,$0,$0,$E,$E,$E,$E,$E
-		.BYTE	$4,$4,$0,$4,$4,$4,$A,$A,$C,$C,$C,$C,$C,$6,$C,$E
-		.BYTE	$E,$E,$E,$E,$6,$6,$6,$6,$C,$C,$C,$2,$0,$0,$C,$C
-		.BYTE	$4,$4,$4,$4,$4,$4,$4,$4,$1,$1,$1,$1,$1,$D,$6,$0
-		.BYTE	$0,$0,$C,$6,$0,$A,$E,$E,$E,$E,$2,$E,$0,$4,$4,$4
-		.BYTE	$B,$5,$5,$C,$E,$C,$7,$C,$C,$E,$C,$C,$A,$D,$C,$D
+_sys0_sub_banks_list:
+;				  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+		.BYTE	 $E, $E, $E, $E, $E, $E, $E, $E, $E, $E, $D, $D, $D, $D, $D, $D ; 0
+		.BYTE	 $A, $D, $5, $5, $5, $5, $C, $C, $8, $7, $A, $A, $E, $6, $7, $E ; 1
+		.BYTE	 $E, $E, $5, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 2
+		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 3
+		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0 ; 4
+		.BYTE	 $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $0, $6, $C, $2 ; 5
+		.BYTE	 $2, $2, $2, $2, $2, $2, $2, $0, $0, $2, $0, $4, $4, $4, $4, $4 ; 6
+		.BYTE	 $4, $4, $4, $4, $4, $4, $4, $4, $4, $2, $0, $0, $4, $6, $6, $6 ; 7
+		.BYTE	 $6, $A, $C, $C, $C, $C, $A, $E, $6, $6, $6, $6, $A, $A, $0, $0 ; 8
+		.BYTE	 $0, $1, $0, $7, $7, $7, $7, $C, $A, $5, $7, $C, $0, $C, $1, $B ; 9
+		.BYTE	 $B, $B, $B, $D, $2, $B, $E, $4, $E, $0, $0, $E, $E, $E, $E, $E ; A
+		.BYTE	 $4, $4, $0, $4, $4, $4, $A, $A, $C, $C, $C, $C, $C, $6, $C, $E ; B
+		.BYTE	 $E, $E, $E, $E, $6, $6, $6, $6, $C, $C, $C, $2, $0, $0, $C, $C ; C
+		.BYTE	 $4, $4, $4, $4, $4, $4, $4, $4, $1, $1, $1, $1, $1, $D, $6, $0 ; D
+		.BYTE	 $0, $0, $C, $6, $0, $A, $E, $E, $E, $E, $2, $E, $0, $4, $4, $4 ; E
+		.BYTE	 $B, $5, $5, $C, $E, $C, $7, $C, $C, $E, $C, $C, $A, $D, $C, $D ; F
 
-_get_syscall1_sub_table_banks:
-;		.BYTE	$CC,$DD,$C6,$DE,  0, $A,$7D,$DC,  0,$66,$11,$11,$1E,$EE,$EC,$EE
-;		.BYTE	$EE, $C,$EE,$CD,$D0, $C, $D, $D,  4,$DD,$DD,$DD,$DC,$CC,$D5,$D1
-;		.BYTE	$4C,$6C,$D0, $C,$C0,$CC,  0,  0,$EE,$E6,$40,$5C,$DC,$CC,$44,$C5
-;		.BYTE	$A6,$70,  7,$77,$77,$77,$7C,$67,$CC,$C0,$5A,$AC,$A5,$D0,$7D,$76
-;		.BYTE	$46,$DD,$D6,$26,$66,$CD,$DD,$CA,$D6,$CE,$67,$6A,$20,$6A,$A4,$44
-;		.BYTE	$44,$AA,$AA,$A7,$AA
-		.BYTE	$C,$C,$D,$D,$C,$6,$D,$E,$0,$0,$0,$A,$7,$D,$D,$C
-		.BYTE	$0,$0,$6,$6,$1,$1,$1,$1,$1,$E,$E,$E,$E,$C,$E,$E
-		.BYTE	$E,$E,$0,$C,$E,$E,$C,$D,$D,$0,$0,$C,$0,$D,$0,$D
-		.BYTE	$0,$4,$D,$D,$D,$D,$D,$D,$D,$C,$C,$C,$D,$5,$D,$1
-		.BYTE	$4,$C,$6,$C,$D,$0,$0,$C,$C,$0,$C,$C,$0,$0,$0,$0
-		.BYTE	$E,$E,$E,$6,$4,$0,$5,$C,$D,$C,$C,$C,$4,$4,$C,$5
-		.BYTE	$A,$6,$7,$0,$0,$7,$7,$7,$7,$7,$7,$7,$7,$C,$6,$7
-		.BYTE	$C,$C,$C,$0,$5,$A,$A,$C,$A,$5,$D,$0,$7,$D,$7,$6
-		.BYTE	$4,$6,$D,$D,$D,$6,$2,$6,$6,$6,$C,$D,$D,$D,$C,$A
-		.BYTE	$D,$6,$C,$E,$6,$7,$6,$A,$2,$0,$6,$A,$A,$4,$4,$4
-		.BYTE	$4,$4,$A,$A,$A,$A,$A,$7,$A,$A
-_get_syscall0_sub_idx:
-		.BYTE	  0			; FAR $00,$07 (_bE_s0)
-		.BYTE	  1			; FAR $01,$07 (_bE_s1)
-		.BYTE	  2			; FAR $02,$07 (_bE_s2)
-		.BYTE	  3			; FAR $03,$07 (_bE_s3)
-		.BYTE	  4			; FAR $04,$07 (_bE_s4_msg_m00)
-		.BYTE	  5			; FAR $05,$07 (_bE_s5)
-		.BYTE	  6			; FAR $06,$07 (_bE_s6_msg_mFF)
-		.BYTE	  7			; FAR $07,$07 (_bE_s6_msg_mFF)
-		.BYTE	  8			; FAR $08,$07 (_bE_s4_msg_m00)
-		.BYTE	  9			; FAR $09,$07 (_bE_s9)
-		.BYTE	  2			; FAR $0A,$07 (_bD_s2)
-		.BYTE	  3			; FAR $0B,$07 (_bD_s3)
-		.BYTE	  4			; FAR $0C,$07 (_bD_s4)
-		.BYTE	  5			; FAR $0D,$07 (_bD_s5)
-		.BYTE	  6			; FAR $0E,$07 (_bD_s6)
-		.BYTE	  7			; FAR $0F,$07 (_bD_s7)
-		.BYTE	  1			; FAR $10,$07 (_bA_s1)
-		.BYTE	  9			; FAR $11,$07 (_bD_s9)
-		.BYTE	  7			; FAR $12,$07 (_b5_s7)
-		.BYTE	  4			; FAR $13,$07 (_b5_s4)
-		.BYTE	  0			; FAR $14,$07 (_b5_d0_world_map_data)
-		.BYTE	  1			; FAR $15,$07 (_b5_d1_world_map_data)
-		.BYTE	$1D		; FAR $16,$07 (_bC_s1D)
-		.BYTE	$1F		; FAR $17,$07 (_bC_s1F)
-		.BYTE	  0			; bank 08, idx 00
-		.BYTE	  8			; FAR $19,$07 (_b7_s8)
-		.BYTE	  0			; FAR $1A,$07 (bank 0a,  idx 00,  empty)
-		.BYTE	  1			; FAR $1B,$07 (_bA_s1)
-		.BYTE	$A		; FAR $1C,$07 (_bE_sA)
-		.BYTE	  4			; FAR $1D,$07 (_b6_d4)
-		.BYTE	  0			; FAR $1E,$07 (0 ; _b7_d0_map_data_lib_ofs)
-		.BYTE	$B		; FAR $1F,$07 (_bE_sB)
-		.BYTE	$C		; FAR $20,$07 (_bE_sC)
-		.BYTE	$D		; FAR $21,$07 (_bE_sD)
-		.BYTE	  2			; FAR $22,$07 (_b5_d2_world_map_data)
-		.BYTE	  2			; FAR $23,$07 (_b0_s2)
-		.BYTE	  3			; FAR $24,$07 (_b0_s3)
-		.BYTE	  4			; FAR $25,$07 (_b0_s4)
-		.BYTE	  5			; FAR $26,$07 (_b0_s5)
-		.BYTE	  6			; FAR $27,$07 (_b0_s6)
-		.BYTE	  7			; FAR $28,$07 (_b0_s7)
-		.BYTE	  8			; FAR $29,$07 (_b0_s8)
-		.BYTE	  9			; FAR $2A,$07 (_b0_s9)
-		.BYTE	$A		; FAR $2B,$07 (_b0_sA)
-		.BYTE	$B		; FAR $2C,$07 (_b0_sB)
-		.BYTE	$C		; FAR $2D,$07 (_b0_sC)
-		.BYTE	$D		; FAR $2E,$07 (_b0_sD)
-		.BYTE	$E		; FAR $2F,$07 (_b0_sE)
-		.BYTE	$F		; FAR $30,$07 (_b0_sF)
-		.BYTE	$10		; FAR $31,$07 (_b0_s10)
-		.BYTE	$11		; FAR $32,$07 (_b0_s11)
-		.BYTE	$12		; FAR $33,$07 (_b0_s12)
-		.BYTE	$13		; FAR $34,$07 (_b0_s13)
-		.BYTE	$14		; FAR $35,$07 (_b0_s14)
-		.BYTE	$15		; FAR $36,$07 (_b0_s15)
-		.BYTE	$16		; FAR $37,$07 (_b0_s16)
-		.BYTE	$17		; FAR $38,$07 (_b0_s17)
-		.BYTE	$18		; FAR $39,$07 (_b0_s18)
-		.BYTE	$19		; FAR $3A,$07 (_b0_s19)
-		.BYTE	$1A		; FAR $3B,$07 (_b0_s1A)
-		.BYTE	$1B		; FAR $3C,$07 (_b0_s1B)
-		.BYTE	$1C		; FAR $3D,$07 (_b0_s1C)
-		.BYTE	$1D		; FAR $3E,$07 (_b0_s1D)
-		.BYTE	$1E		; FAR $3F,$07 (_b0_s1E)
-		.BYTE	$1F		; FAR $40,$07 (_b0_s1F)
-		.BYTE	$20		; FAR $41,$07 (_b0_s20)
-		.BYTE	$21		; FAR $42,$07 (_b0_s21)
-		.BYTE	$22		; FAR $43,$07 (_b0_s22)
-		.BYTE	$23		; FAR $44,$07 (_b0_s23)
-		.BYTE	$24		; FAR $45,$07 (_b0_s24)
-		.BYTE	$25		; FAR $46,$07 (_b0_s25)
-		.BYTE	$26		; FAR $47,$07 (_b0_s26)
-		.BYTE	$27		; FAR $48,$07 (_b0_s27)
-		.BYTE	$28		; FAR $49,$07 (_b0_s28)
-		.BYTE	$29		; FAR $4A,$07 (_b0_s29)
-		.BYTE	$2A		; FAR $4B,$07 (_b0_s2A)
-		.BYTE	$2B		; FAR $4C,$07 (_b0_s2B)
-		.BYTE	$2C		; FAR $4D,$07 (_b0_s2C)
-		.BYTE	$2D		; FAR $4E,$07 (_b0_s2D)
-		.BYTE	$2E		; FAR $4F,$07 (_b0_s2E)
-		.BYTE	$2F		; FAR $50,$07 (_b0_s2F)
-		.BYTE	$30		; FAR $51,$07 (_b0_s30)
-		.BYTE	$31		; FAR $52,$07 (_b0_s31)
-		.BYTE	$32		; FAR $53,$07 (_b0_s32)
-		.BYTE	$33		; FAR $54,$07 (_b0_s33)
-		.BYTE	$34		; FAR $55,$07 (_b0_s34)
-		.BYTE	$35		; FAR $56,$07 (_b0_s35)
-		.BYTE	$36		; FAR $57,$07 (_b0_s36)
-		.BYTE	$37		; FAR $58,$07 (_b0_s37)
-		.BYTE	$38		; FAR $59,$07 (_b0_s38)
-		.BYTE	$39		; FAR $5A,$07 (_b0_s39)
-		.BYTE	$3A		; FAR $5B,$07 (_b0_s3A)
-		.BYTE	$3B		; FAR $5C,$07 (_b0_s3B)
-		.BYTE	  5			; FAR $5D,$07 (_b6_d5)
-		.BYTE	  2			; FAR $5E,$07 (_bC_s2)
-		.BYTE	  0			; FAR $5F,$07 (_b2_s0)
-		.BYTE	  1			; FAR $60,$07 (_b2_s1)
-		.BYTE	  2			; FAR $61,$07 (_b2_s2)
-		.BYTE	  3			; FAR $62,$07 (_b2_s3)
-		.BYTE	  4			; FAR $63,$07 (_b2_s4)
-		.BYTE	  5			; FAR $64,$07 (_b2_s5)
-		.BYTE	  6			; FAR $65,$07 (_b2_s6_screen_damage_shake)
-		.BYTE	  7			; FAR $66,$07 (_b2_s7_screen_spell_blink)
-		.BYTE	  0			; FAR $67,$07 (_b0_s0_world_map_random_enounter_test)
-		.BYTE	$3C		; FAR $68,$07 (_b0_s3C)
-		.BYTE	$A		; FAR $69,$07 (_b2_sA)
-		.BYTE	$43		; FAR $6A,$07 (_b0_d43_enemies_lib)
-		.BYTE	  0			; FAR $6B,$07 (_b4_s0)
-		.BYTE	  1			; FAR $6C,$07 (_b4_s1)
-		.BYTE	  2			; FAR $6D,$07 (_b4_s2)
-		.BYTE	  3			; FAR $6E,$07 (_b4_s3)
-		.BYTE	  4			; FAR $6F,$07 (_b4_s4)
-		.BYTE	  5			; FAR $70,$07 (_b4_s5_do_message_speed_delay)
-		.BYTE	  6			; FAR $71,$07 (_b4_s6)
-		.BYTE	  7			; FAR $72,$07 (_b4_s7_window_display_safe)
-		.BYTE	  8			; FAR $73,$07 (_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress)
-		.BYTE	  9			; FAR $74,$07 (_b4_s9)
-		.BYTE	$A		; FAR $75,$07 (_b4_sA)
-		.BYTE	$B		; FAR $76,$07 (_b4_sB)
-		.BYTE	$C		; FAR $77,$07 (_b4_sC)
-		.BYTE	$D		; FAR $78,$07 (_b4_dD_spells_list)
-		.BYTE	$B		; FAR $79,$07 (_b2_sB)
-		.BYTE	$3D		; FAR $7A,$07 (_b0_s3D)
-		.BYTE	$3E		; FAR $7B,$07 (_b0_s3E)
-		.BYTE	$F		; FAR $7C,$07 (_b4_sF)
-		.BYTE	  0			; FAR $7D,$07 (0 ; _b6_d0_ofs)
-		.BYTE	  1			; FAR $7E,$07 (0 ; _b6_d1_ofs)
-		.BYTE	  2			; FAR $7F,$07 (0 ; _b6_d2_ofs)
-		.BYTE	  3			; FAR $80,$07 (0 ; _b6_d3_ofs)
-		.BYTE	  2			; FAR $81,$07 (_bA_s2)
-		.BYTE	  3			; FAR $82,$07 (_bC_s3)
-		.BYTE	  4			; FAR $83,$07 (_bC_s4)
-		.BYTE	  5			; FAR $84,$07 (_bC_s5)
-		.BYTE	  6			; FAR $85,$07 (_bC_s6)
-		.BYTE	  3			; FAR $86,$07 (_bA_s3)
-		.BYTE	$1E		; FAR $87,$07 (bank 0e,  idx 1e,  empty)
-		.BYTE	  8			; FAR $88,$07 (_b6_s8)
-		.BYTE	  9			; FAR $89,$07 (_b6_d9)
-		.BYTE	$A		; FAR $8A,$07 (_b6_dA)
-		.BYTE	$B		; FAR $8B,$07 (_b6_dB)
-		.BYTE	$C		; FAR $8C,$07 (_bA_sC)
-		.BYTE	$D		; FAR $8D,$07 (_bA_sD)
-		.BYTE	$40		; FAR $8E,$07 (_b0_d40_weapon_power_list)
-		.BYTE	$41		; FAR $8F,$07 (_b0_d41_equip_list)
-		.BYTE	$42		; FAR $90,$07 (_b0_d42_effects_list)
-		.BYTE	$F		; FAR $91,$07 (bank 01,  idx 0f,  empty)
-		.BYTE	$44		; FAR $92,$07 (_b0_d44)
-		.BYTE	  1			; FAR $93,$07 (_b7_d1)
-		.BYTE	  3			; FAR $94,$07 (_b7_d3)
-		.BYTE	  4			; FAR $95,$07 (_b7_d4)
-		.BYTE	  2			; FAR $96,$07 (0 ; _b7_d2_ofs)
-		.BYTE	  0			; FAR $97,$07 (_bC_s0)
-		.BYTE	  6			; FAR $98,$07 (_bA_s6)
-		.BYTE	  3			; FAR $99,$07 (_b5_s3)
-		.BYTE	  5			; FAR $9A,$07 (_b7_d5)
-		.BYTE	  9			; FAR $9B,$07 (_bC_s9)
-		.BYTE	$45		; FAR $9C,$07 (_b0_s45)
-		.BYTE	$A		; FAR $9D,$07 (_bC_sA)
-		.BYTE	  1			; FAR $9E,$07 (bank 01,  idx 01,  empty)
-		.BYTE	  2			; FAR $9F,$07 (_bB_s2)
-		.BYTE	  3			; FAR $A0,$07 (_bB_s3_far_apu_load)
-		.BYTE	  4			; FAR $A1,$07 (_bB_s4)
-		.BYTE	  5			; FAR $A2,$07 (_bB_s5)
-		.BYTE	$27		; FAR $A3,$07 (_bD_s27)
-		.BYTE	$C		; FAR $A4,$07 (_b2_sC)
-		.BYTE	  6			; FAR $A5,$07 (_bB_s6)
-		.BYTE	$10		; FAR $A6,$07 (_bE_s10)
-		.BYTE	$E		; FAR $A7,$07 (_b4_sE)
-		.BYTE	$E		; FAR $A8,$07 (_bE_sE)
-		.BYTE	$46		; FAR $A9,$07 (_b0_s46)
-		.BYTE	$47		; FAR $AA,$07 (_b0_s47)
-		.BYTE	$1D		; FAR $AB,$07 (_bE_s1D)
-		.BYTE	$19		; FAR $AC,$07 (_bE_s19)
-		.BYTE	$1A		; FAR $AD,$07 (_bE_s1A)
-		.BYTE	$20		; FAR $AE,$07 (_bE_s20)
-		.BYTE	$21		; FAR $AF,$07 (_bE_s21)
-		.BYTE	$10		; FAR $B0,$07 (_b4_s10)
-		.BYTE	$12		; FAR $B1,$07 (_b4_s12)
-		.BYTE	$3F		; FAR $B2,$07 (_b0_d3F)
-		.BYTE	$13		; FAR $B3,$07 (_b4_s13)
-		.BYTE	$14		; FAR $B4,$07 (_b4_s14)
-		.BYTE	$15		; FAR $B5,$07 (_b4_d15)
-		.BYTE	$14		; FAR $B6,$07 (_bA_d14)
-		.BYTE	$15		; FAR $B7,$07 (_bA_d15)
-		.BYTE	$D		; FAR $B8,$07 (_bC_sD)
-		.BYTE	$E		; FAR $B9,$07 (_bC_sE)
-		.BYTE	$F		; FAR $BA,$07 (_bC_sF)
-		.BYTE	$10		; FAR $BB,$07 (_bC_s10)
-		.BYTE	$11		; FAR $BC,$07 (_bC_s11)
-		.BYTE	$1F		; FAR $BD,$07 (_b6_s1F)
-		.BYTE	$13		; FAR $BE,$07 (_bC_s13)
-		.BYTE	$22		; FAR $BF,$07 (_bE_s22)
-		.BYTE	$23		; FAR $C0,$07 (_bE_s23)
-		.BYTE	$24		; FAR $C1,$07 (_bE_s24)
-		.BYTE	$25		; FAR $C2,$07 (_bE_s25)
-		.BYTE	$26		; FAR $C3,$07 (_bE_s26)
-		.BYTE	$C		; FAR $C4,$07 (_b6_sC)
-		.BYTE	$D		; FAR $C5,$07 (_b6_sD)
-		.BYTE	$E		; FAR $C6,$07 (_b6_sE)
-		.BYTE	$F		; FAR $C7,$07 (_b6_sF)
-		.BYTE	$14		; FAR $C8,$07 (_bC_s14)
-		.BYTE	$15		; FAR $C9,$07 (_bC_s15)
-		.BYTE	$16		; FAR $CA,$07 (_bC_s16)
-		.BYTE	  9			; FAR $CB,$07 (_b2_s9)
-		.BYTE	$4C		; FAR $CC,$07 (bank 00,  idx 4c,  empty)
-		.BYTE	$4D		; FAR $CD,$07 (_b0_s4D)
-		.BYTE	$17		; FAR $CE,$07 (_bC_s17)
-		.BYTE	$18		; FAR $CF,$07 (_bC_s18)
-		.BYTE	$16		; FAR $D0,$07 (_b4_s16_do_half_message_speed_delay)
-		.BYTE	$17		; FAR $D1,$07 (_b4_s17)
-		.BYTE	$18		; FAR $D2,$07 (_b4_s18)
-		.BYTE	$19		; FAR $D3,$07 (_b4_s19)
-		.BYTE	$1A		; FAR $D4,$07 (_b4_s1A)
-		.BYTE	$1B		; FAR $D5,$07 (_b4_s1B)
-		.BYTE	$1C		; FAR $D6,$07 (_b4_s1C)
-		.BYTE	$1D		; FAR $D7,$07 (_b4_s1D)
-		.BYTE	  9			; FAR $D8,$07 (_b1_s9)
-		.BYTE	$A		; FAR $D9,$07 (_b1_sA)
-		.BYTE	$B		; FAR $DA,$07 (_b1_sB)
-		.BYTE	$C		; FAR $DB,$07 (_b1_sC)
-		.BYTE	$D		; FAR $DC,$07 (_b1_sD)
-		.BYTE	$D		; FAR $DD,$07 (_bD_sD)
-		.BYTE	$10		; FAR $DE,$07 (_b6_s10)
-		.BYTE	$58		; FAR $DF,$07 (_b0_d58)
-		.BYTE	$59		; FAR $E0,$07 (_b0_d59)
-		.BYTE	$5A		; FAR $E1,$07 (_b0_d5A)
-		.BYTE	$2D		; FAR $E2,$07 (_bC_s2D)
-		.BYTE	$11		; FAR $E3,$07 (_b6_s11)
-		.BYTE	$5B		; FAR $E4,$07 (_b0_s5B)
-		.BYTE	$A		; FAR $E5,$07 (_bA_sA)
-		.BYTE	$2E		; FAR $E6,$07 (_bE_s2E)
-		.BYTE	$2F		; FAR $E7,$07 (_bE_s2F)
-		.BYTE	$30		; FAR $E8,$07 (_bE_s30)
-		.BYTE	$31		; FAR $E9,$07 (_bE_s31)
-		.BYTE	  8			; FAR $EA,$07 (_b2_s8_screen_hit_blink)
-		.BYTE	$32		; FAR $EB,$07 (_bE_s32)
-		.BYTE	$5D		; FAR $EC,$07 (_b0_s5D)
-		.BYTE	$1E		; FAR $ED,$07 (_b4_s1E)
-		.BYTE	$1F		; FAR $EE,$07 (_b4_s1F)
-		.BYTE	$20		; FAR $EF,$07 (_b4_s20)
-		.BYTE	  7			; FAR $F0,$07 (_bB_s7)
-		.BYTE	  9			; FAR $F1,$07 (_b5_s9)
-		.BYTE	$A		; FAR $F2,$07 (_b5_sA)
-		.BYTE	$1C		; FAR $F3,$07 (_bC_s1C)
-		.BYTE	$33		; FAR $F4,$07 (_bE_s33)
-		.BYTE	$1E		; FAR $F5,$07 (_bC_s1E)
-		.BYTE	$1B		; FAR $F6,$07 (_b7_s1B)
-		.BYTE	$21		; FAR $F7,$07 (_bC_s21)
-		.BYTE	$22		; FAR $F8,$07 (_bC_s22)
-		.BYTE	$1B		; FAR $F9,$07 (_bE_s1B)
-		.BYTE	$38		; FAR $FA,$07 (_bC_s38)
-		.BYTE	$25		; FAR $FB,$07 (_bC_s25)
-		.BYTE	  5			; FAR $FC,$07 (_bA_s5_add16_to_24)
-		.BYTE	$19		; FAR $FD,$07 (_bD_s19)
-		.BYTE	$2C		; FAR $FE,$07 (_bC_s2C)
-		.BYTE	  1			; FAR $FF,$07 (0 ; _bD_d1_ofs)
-_get_syscall1_sub_idx:
-		.BYTE	$2A		; FAR $00,$17 (_bC_s2A)
-		.BYTE	$12		; FAR $01,$17 (_bC_s12_vblank_count_50)
-		.BYTE	$12		; FAR $02,$17 (_bD_s12)
-		.BYTE	$13		; FAR $03,$17 (_bD_s13)
-		.BYTE	$29		; FAR $04,$17 (_bC_s29)
-		.BYTE	$17		; FAR $05,$17 (_b6_s17)
-		.BYTE	$E		; FAR $06,$17 (_bD_sE)
-		.BYTE	$2B		; FAR $07,$17 (_bE_s2B)
-		.BYTE	$5E		; FAR $08,$17 (_b0_s5E)
-		.BYTE	$5F		; FAR $09,$17 (_b0_s5F)
-		.BYTE	$60		; FAR $0A,$17 (_b0_s60)
-		.BYTE	$12		; FAR $0B,$17 (_bA_s12)
-		.BYTE	$1C		; FAR $0C,$17 (_b7_s1C)
-		.BYTE	$14		; FAR $0D,$17 (_bD_s14)
-		.BYTE	$15		; FAR $0E,$17 (_bD_s15)
-		.BYTE	$26		; FAR $0F,$17 (_bC_s26)
-		.BYTE	$48		; FAR $10,$17 (_b0_s48)
-		.BYTE	$49		; FAR $11,$17 (_b0_s49)
-		.BYTE	  6			; FAR $12,$17 (_b6_s6)
-		.BYTE	  7			; FAR $13,$17 (_b6_s6)
-		.BYTE	$14		; FAR $14,$17 (_b1_s14)
-		.BYTE	$15		; FAR $15,$17 (_b1_s15)
-		.BYTE	$16		; FAR $16,$17 (_b1_s16)
-		.BYTE	$17		; FAR $17,$17 (_b1_s17)
-		.BYTE	$13		; FAR $18,$17 (_b1_s13)
-		.BYTE	$12		; FAR $19,$17 (_bE_s12)
-		.BYTE	$13		; FAR $1A,$17 (_bE_s13)
-		.BYTE	$14		; FAR $1B,$17 (_bE_s14)
-		.BYTE	$15		; FAR $1C,$17 (bank 0e,  idx 15,  empty)
-		.BYTE	$31		; FAR $1D,$17 (_bC_s31)
-		.BYTE	$16		; FAR $1E,$17 (_bE_s16)
-		.BYTE	$17		; FAR $1F,$17 (_bE_s1C)
-		.BYTE	$1C		; FAR $20,$17 (_bE_s1C)
-		.BYTE	$F		; FAR $21,$17 (_bE_sF)
-		.BYTE	$61		; FAR $22,$17 (_b0_s61_sram_b0_syscall_shortcuts_load)
-		.BYTE	$32		; FAR $23,$17 (_bC_s32)
-		.BYTE	$10		; FAR $24,$17 (_bE_s10)
-		.BYTE	$34		; FAR $25,$17 (_bE_s34)
-		.BYTE	$33		; FAR $26,$17 (_bC_s33)
-		.BYTE	$16		; FAR $27,$17 (_bD_s16)
-		.BYTE	$17		; FAR $28,$17 (_bD_s17)
-		.BYTE	$5C		; FAR $29,$17 (_b0_s5C)
-		.BYTE	$62		; FAR $2A,$17 (_b0_s62)
-		.BYTE	$37		; FAR $2B,$17 (_bC_s37)
-		.BYTE	$4D		; FAR $2C,$17 (_b0_s4D)
-		.BYTE	$26		; FAR $2D,$17 (_bD_s26)
-		.BYTE	$64		; FAR $2E,$17 (_b0_s64)
-		.BYTE	$28		; FAR $2F,$17 (_bD_s28)
-		.BYTE	$63		; FAR $30,$17 (_b0_s63)
-		.BYTE	$21		; FAR $31,$17 (_b4_s21_message_half_delay_or_wait_for_keypress)
-		.BYTE	$18		; FAR $32,$17 (_bD_s18)
-		.BYTE	$19		; FAR $33,$17 (_bD_s19)
-		.BYTE	$1A		; FAR $34,$17 (_bD_s1A)
-		.BYTE	$1B		; FAR $35,$17 (_bD_s1B)
-		.BYTE	$1C		; FAR $36,$17 (_bD_s1C)
-		.BYTE	$1D		; FAR $37,$17 (_bD_s1D)
-		.BYTE	$1E		; FAR $38,$17 (_bD_s1E)
-		.BYTE	$24		; FAR $39,$17 (_bC_s24)
-		.BYTE	$39		; FAR $3A,$17 (_bC_s39)
-		.BYTE	$3A		; FAR $3B,$17 (_bC_s3A)
-		.BYTE	$1F		; FAR $3C,$17 (_bD_s1F)
-		.BYTE	  8			; FAR $3D,$17 (_b5_s8)
-		.BYTE	$21		; FAR $3E,$17 (_bD_s21)
-		.BYTE	$E		; FAR $3F,$17 (_b1_sE)
-		.BYTE	$22		; FAR $40,$17 (_b4_s22)
-		.BYTE	$3B		; FAR $41,$17 (_bC_s3B)
-		.BYTE	$12		; FAR $42,$17 (_b6_s12)
-		.BYTE	$19		; FAR $43,$17 (_bC_s19)
-		.BYTE	$22		; FAR $44,$17 (_bD_s22)
-		.BYTE	$4E		; FAR $45,$17 (_b0_s4E)
-		.BYTE	$4F		; FAR $46,$17 (_b0_s4F)
-		.BYTE	$27		; FAR $47,$17 (_bC_s27)
-		.BYTE	$28		; FAR $48,$17 (_bC_s28)
-		.BYTE	$50		; FAR $49,$17 (_b0_s50)
-		.BYTE	$2F		; FAR $4A,$17 (_bC_s2F)
-		.BYTE	$30		; FAR $4B,$17 (_bC_s30)
-		.BYTE	$51		; FAR $4C,$17 (_b0_s51)
-		.BYTE	$52		; FAR $4D,$17 (_b0_s52)
-		.BYTE	  1			; FAR $4E,$17 (_b0_s1)
-		.BYTE	$53		; FAR $4F,$17 (_b0_s53)
-		.BYTE	$36		; FAR $50,$17 (_bE_s36)
-		.BYTE	$18		; FAR $51,$17 (_bE_s18)
-		.BYTE	$38		; FAR $52,$17 (_bE_s38)
-		.BYTE	$13		; FAR $53,$17 (_b6_s13)
-		.BYTE	$23		; FAR $54,$17 (_b4_s23)
-		.BYTE	$54		; FAR $55,$17 (_b0_s54)
-		.BYTE	  5			; FAR $56,$17 (_b5_s5)
-		.BYTE	  1			; FAR $57,$17 (_bC_s1)
-		.BYTE	$A		; FAR $58,$17 (_bD_sA)
-		.BYTE	$34		; FAR $59,$17 (_bC_s34)
-		.BYTE	$35		; FAR $5A,$17 (_bC_s35)
-		.BYTE	$1A		; FAR $5B,$17 (_bC_s1A)
-		.BYTE	$24		; FAR $5C,$17 (_b4_s24)
-		.BYTE	$25		; FAR $5D,$17 (_b4_s25)
-		.BYTE	$1B		; FAR $5E,$17 (_bC_s1B)
-		.BYTE	$B		; FAR $5F,$17 (_b5_sB_ppu_font_load)
-		.BYTE	$F		; FAR $60,$17 (_bA_sF)
-		.BYTE	$14		; FAR $61,$17 (_b6_s14_name_entry_screen)
-		.BYTE	$A		; FAR $62,$17 (_b7_sA_sram_test_and_init)
-		.BYTE	$65		; FAR $63,$17 (_b0_s65)
-		.BYTE	$66		; FAR $64,$17 (_b0_s66)
-		.BYTE	$D		; FAR $65,$17 (_b7_sD)
-		.BYTE	$E		; FAR $66,$17 (_b7_sE)
-		.BYTE	$F		; FAR $67,$17 (_b7_sF)
-		.BYTE	$10		; FAR $68,$17 (_b7_s10)
-		.BYTE	$11		; FAR $69,$17 (_b7_s11)
-		.BYTE	$12		; FAR $6A,$17 (_b7_s12)
-		.BYTE	$13		; FAR $6B,$17 (_b7_s13)
-		.BYTE	$14		; FAR $6C,$17 (_b7_s14)
-		.BYTE	$C		; FAR $6D,$17 (_bC_sC)
-		.BYTE	$15		; FAR $6E,$17 (_b6_s15)
-		.BYTE	$15		; FAR $6F,$17 (_b7_s15)
-		.BYTE	$2E		; FAR $70,$17 (_bC_s2E_vblank_count_50_wait_50_or_skip)
-		.BYTE	$20		; FAR $71,$17 (_bC_s20)
-		.BYTE	$B		; FAR $72,$17 (_bC_sB)
-		.BYTE	$55		; FAR $73,$17 (_b0_s55)
-		.BYTE	  6			; FAR $74,$17 (_b5_s6_ppu_send_8_empty_bytes)
-		.BYTE	$10		; FAR $75,$17 (_bA_s10)
-		.BYTE	$11		; FAR $76,$17 (_bA_s11)
-		.BYTE	$36		; FAR $77,$17 (_bC_s36)
-		.BYTE	  8			; FAR $78,$17 (_bA_s8)
-		.BYTE	  8			; FAR $79,$17 (_b5_s8)
-		.BYTE	$29		; FAR $7A,$17 (_bD_s29)
-		.BYTE	$56		; FAR $7B,$17 (_b0_s56)
-		.BYTE	$19		; FAR $7C,$17 (_b7_s19)
-		.BYTE	$B		; FAR $7D,$17 (_bD_sB)
-		.BYTE	$1A		; FAR $7E,$17 (_b7_s1A)
-		.BYTE	$18		; FAR $7F,$17 (_b6_s18)
-		.BYTE	$26		; FAR $80,$17 (_b4_s26)
-		.BYTE	$19		; FAR $81,$17 (_b6_s19)
-		.BYTE	$F		; FAR $82,$17 (_bD_sF)
-		.BYTE	$C		; FAR $83,$17 (_bD_sC)
-		.BYTE	$10		; FAR $84,$17 (_bD_s10)
-		.BYTE	$16		; FAR $85,$17 (_b6_s16)
-		.BYTE	$D		; FAR $86,$17 (_b2_sD)
-		.BYTE	$1D		; FAR $87,$17 (_b6_s1D)
-		.BYTE	$1C		; FAR $88,$17 (_b6_s1C)
-		.BYTE	$1B		; FAR $89,$17 (_b6_s1B)
-		.BYTE	$26		; FAR $8A,$17 (_bC_s26)
-		.BYTE	$11		; FAR $8B,$17 (_bD_s11)
-		.BYTE	$23		; FAR $8C,$17 (_bD_s23)
-		.BYTE	$24		; FAR $8D,$17 (_bD_s24)
-		.BYTE	$2B		; FAR $8E,$17 (_bC_s2B)
-		.BYTE	  9			; FAR $8F,$17 (_bA_s9_nullsub)
-		.BYTE	$20		; FAR $90,$17 (_bD_s20_npc_hndl31)
-		.BYTE	$16		; FAR $91,$17 (_b6_s16)
-		.BYTE	$23		; FAR $92,$17 (_bC_s23)
-		.BYTE	$11		; FAR $93,$17 (_bE_s11)
-		.BYTE	$1A		; FAR $94,$17 (_b6_s1A)
-		.BYTE	$1D		; FAR $95,$17 (_b7_s1D)
-		.BYTE	$1E		; FAR $96,$17 (_b6_s1E)
-		.BYTE	$B		; FAR $97,$17 (_bA_sB)
-		.BYTE	$E		; FAR $98,$17 (_b2_sE)
-		.BYTE	$67		; FAR $99,$17 (_b0_s67)
-		.BYTE	$20		; FAR $9A,$17 (_b6_s20_player_name_veryfy)
-		.BYTE	  2			; FAR $9B,$17 (_bA_s2)
-		.BYTE	  3			; FAR $9C,$17 (_bA_s3)
-		.BYTE	$27		; FAR $9D,$17 (_b4_s27)
-		.BYTE	$28		; FAR $9E,$17 (_b4_s28)
-		.BYTE	$29		; FAR $9F,$17 (_b4_s29)
-		.BYTE	$2A		; FAR $A0,$17 (_b4_s2A)
-		.BYTE	$2B		; FAR $A1,$17 (_b4_s2B)
-		.BYTE	  4			; FAR $A2,$17 (_bA_s4_div24_to_8)
-		.BYTE	  5			; FAR $A3,$17 (_bA_s5_add16_to_24)
-		.BYTE	  6			; FAR $A4,$17 (_bA_s6)
-		.BYTE	  7			; FAR $A5,$17 (_bA_s7_nullsub)
-		.BYTE	$E		; FAR $A6,$17 (_bA_sE)
-		.BYTE	$1E		; FAR $A7,$17 (_b7_s1E)
-		.BYTE	$16		; FAR $A8,$17 (_bA_s16)
-		.BYTE	$17		; FAR $A9,$17 (_bA_s17)
+;_sys1_sub_banks_list:
+;				  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+		.BYTE	 $C, $C, $D, $D, $C, $6, $D, $E, $0, $0, $0, $A, $7, $D, $D, $C ; 0
+		.BYTE	 $0, $0, $6, $6, $1, $1, $1, $1, $1, $E, $E, $E, $E, $C, $E, $E ; 1
+		.BYTE	 $E, $E, $0, $C, $E, $E, $C, $D, $D, $0, $0, $C, $0, $D, $0, $D ; 2
+		.BYTE	 $0, $4, $D, $D, $D, $D, $D, $D, $D, $C, $C, $C, $D, $5, $D, $1 ; 3
+		.BYTE	 $4, $C, $6, $C, $D, $0, $0, $C, $C, $0, $C, $C, $0, $0, $0, $0 ; 4
+		.BYTE	 $E, $E, $E, $6, $4, $0, $5, $C, $D, $C, $C, $C, $4, $4, $C, $5 ; 5
+		.BYTE	 $A, $6, $7, $0, $0, $7, $7, $7, $7, $7, $7, $7, $7, $C, $6, $7 ; 6
+		.BYTE	 $C, $C, $C, $0, $5, $A, $A, $C, $A, $5, $D, $0, $7, $D, $7, $6 ; 7
+		.BYTE	 $4, $6, $D, $D, $D, $6, $2, $6, $6, $6, $C, $D, $D, $D, $C, $A ; 8
+		.BYTE	 $D, $6, $C, $E, $6, $7, $6, $A, $2, $0, $6, $A, $A, $4, $4, $4 ; 9
+		.BYTE	 $4, $4, $A, $A, $A, $A, $A, $7, $A, $A
+
+_sys0_sub_idx_lib:
+_bE_s0_idx:					IDX		_bE_s0					; $00 _bE_s0
+_bE_s1_idx:					IDX		_bE_s1					; $01 _bE_s1
+_bE_s2_idx:					IDX		_bE_s2					; $02 _bE_s2
+_bE_s3_idx:					IDX		_bE_s3					; $03 _bE_s3
+_bE_s4_msg_m00_0_idx:		IDX		_bE_s4_msg_m00_0		; $04 _bE_s4_msg_m00
+_bE_s5_idx:					IDX		_bE_s5					; $05 _bE_s5
+_bE_s6_msg_mFF_0_idx:		IDX		_bE_s6_msg_mFF_0		; $06 _bE_s6_msg_mFF
+							IDX		_bE_s6_msg_mFF_1		; $07 _bE_s6_msg_mFF, unused dupe of _bE_s6_msg_mFF_0_idx
+_bE_s4_msg_m00_1_idx:		IDX		_bE_s4_msg_m00_1		; $08 _bE_s4_msg_m00, used dupe of _bE_s4_msg_m00_0_idx
+_bE_s9_idx:					IDX		_bE_s9					; $09 _bE_s9
+_bD_s2_idx:					IDX		_bD_s2					; $0A _bD_s2
+_bD_s3_idx:					IDX		_bD_s3					; $0B _bD_s3
+_bD_s4_idx:					IDX		_bD_s4					; $0C _bD_s4
+_bD_s5_idx:					IDX		_bD_s5					; $0D _bD_s5
+_bD_s6_idx:					IDX		_bD_s6					; $0E _bD_s6
+_bD_s7_idx:					IDX		_bD_s7					; $0F _bD_s7
+_bA_s1_idx:					IDX		_bA_s1					; $10 _bA_s1
+_bD_s9_idx:					IDX		_bD_s9					; $11 _bD_s9
+_b5_s7_idx:					IDX		_b5_s7					; $12 _b5_s7
+_b5_s4_idx:					IDX		_b5_s4					; $13 _b5_s4
+							IDX		_b5_d0_world_map_data	; $14 _b5_d0_world_map_data, not used anymore
+							IDX		_b5_d1_world_map_data	; $15 _b5_d1_world_map_data, not used anymore
+_bC_s1D_idx:				IDX		_bC_s1D					; $16 _bC_s1D
+_bC_s1F_idx:				IDX		_bC_s1F					; $17 _bC_s1F
+							.BYTE	  0						; $18 bank 08, idx 00, empty
+_b7_s8_idx:					IDX		_b7_s8					; $19 _b7_s8
+							.BYTE	  0						; $1A bank 0a, idx 00, empty
+							IDX		_bA_s1					; $1B _bA_s1, unused dupe of _bA_s1_idx
+							IDX		_bE_sA					; $1C _bE_sA, no use here, moved to bank 0F, used directly
+							IDX		_b6_d4					; $1D _b6_d4, no use here
+							.BYTE	  0						; $1E bank 07 idx 00, former _b7_d0_map_data_lib_ofs, not used anymore
+_bE_sB_idx:					IDX		_bE_sB					; $1F _bE_sB
+_bE_sC_idx:					IDX		_bE_sC					; $20 _bE_sC
+_bE_sD_idx:					IDX		_bE_sD					; $21 _bE_sD
+							IDX		_b5_d2_world_map_data	; $22 _b5_d2_world_map_data, not used anymore
+; do not touch unless sram routines is changed too!
+; -- SRAM SHORTCUTS, not used with BRK opcode
+_b0_s2_idx:					IDX		_b0_s2		; $23 _b0_s2
+_b0_s3_idx:					IDX		_b0_s3		; $24 _b0_s3
+_b0_s4_idx:					IDX		_b0_s4		; $25 _b0_s4
+_b0_s5_idx:					IDX		_b0_s5		; $26 _b0_s5
+_b0_s6_idx:					IDX		_b0_s6		; $27 _b0_s6
+_b0_s7_idx:					IDX		_b0_s7		; $28 _b0_s7
+_b0_s8_idx:					IDX		_b0_s8		; $29 _b0_s8
+_b0_s9_idx:					IDX		_b0_s9		; $2A _b0_s9
+_b0_sA_idx:					IDX		_b0_sA		; $2B _b0_sA
+_b0_sB_idx:					IDX		_b0_sB		; $2C _b0_sB
+_b0_sC_idx:					IDX		_b0_sC		; $2D _b0_sC
+_b0_sD_idx:					IDX		_b0_sD		; $2E _b0_sD
+_b0_sE_idx:					IDX		_b0_sE		; $2F _b0_sE
+_b0_sF_idx:					IDX		_b0_sF		; $30 _b0_sF
+_b0_s10_idx:				IDX		_b0_s10		; $31 _b0_s10
+_b0_s11_idx:				IDX		_b0_s11		; $32 _b0_s11
+_b0_s12_idx:				IDX		_b0_s12		; $33 _b0_s12
+_b0_s13_idx:				IDX		_b0_s13		; $34 _b0_s13
+_b0_s14_idx:				IDX		_b0_s14		; $35 _b0_s14
+_b0_s15_idx:				IDX		_b0_s15		; $36 _b0_s15
+_b0_s16_idx:				IDX		_b0_s16		; $37 _b0_s16
+_b0_s17_idx:				IDX		_b0_s17		; $38 _b0_s17
+_b0_s18_idx:				IDX		_b0_s18		; $39 _b0_s18
+_b0_s19_idx:				IDX		_b0_s19		; $3A _b0_s19
+_b0_s1A_idx:				IDX		_b0_s1A		; $3B _b0_s1A
+_b0_s1B_idx:				IDX		_b0_s1B		; $3C _b0_s1B
+_b0_s1C_idx:				IDX		_b0_s1C		; $3D _b0_s1C
+_b0_s1D_idx:				IDX		_b0_s1D		; $3E _b0_s1D
+_b0_s1E_idx:				IDX		_b0_s1E		; $3F _b0_s1E
+_b0_s1F_idx:				IDX		_b0_s1F		; $40 _b0_s1F
+_b0_s20_idx:				IDX		_b0_s20		; $41 _b0_s20
+_b0_s21_idx:				IDX		_b0_s21		; $42 _b0_s21
+_b0_s22_idx:				IDX		_b0_s22		; $43 _b0_s22
+_b0_s23_idx:				IDX		_b0_s23		; $44 _b0_s23
+_b0_s24_idx:				IDX		_b0_s24		; $45 _b0_s24
+_b0_s25_idx:				IDX		_b0_s25		; $46 _b0_s25
+_b0_s26_idx:				IDX		_b0_s26		; $47 _b0_s26
+_b0_s27_idx:				IDX		_b0_s27		; $48 _b0_s27
+_b0_s28_idx:				IDX		_b0_s28		; $49 _b0_s28
+_b0_s29_idx:				IDX		_b0_s29		; $4A _b0_s29
+_b0_s2A_idx:				IDX		_b0_s2A		; $4B _b0_s2A
+_b0_s2B_idx:				IDX		_b0_s2B		; $4C _b0_s2B
+_b0_s2C_idx:				IDX		_b0_s2C		; $4D _b0_s2C
+_b0_s2D_idx:				IDX		_b0_s2D		; $4E _b0_s2D
+_b0_s2E_idx:				IDX		_b0_s2E		; $4F _b0_s2E
+_b0_s2F_idx:				IDX		_b0_s2F		; $50 _b0_s2F
+_b0_s30_idx:				IDX		_b0_s30		; $51 _b0_s30
+_b0_s31_idx:				IDX		_b0_s31		; $52 _b0_s31
+_b0_s32_idx:				IDX		_b0_s32		; $53 _b0_s32
+_b0_s33_idx:				IDX		_b0_s33		; $54 _b0_s33
+_b0_s34_idx:				IDX		_b0_s34		; $55 _b0_s34
+_b0_s35_idx:				IDX		_b0_s35		; $56 _b0_s35
+_b0_s36_idx:				IDX		_b0_s36		; $57 _b0_s36
+_b0_s37_idx:				IDX		_b0_s37		; $58 _b0_s37
+_b0_s38_idx:				IDX		_b0_s38		; $59 _b0_s38
+_b0_s39_idx:				IDX		_b0_s39		; $5A _b0_s39
+_b0_s3A_idx:				IDX		_b0_s3A		; $5B _b0_s3A
+_b0_s3B_idx:				IDX		_b0_s3B		; $5C _b0_s3B
+; -- SRAM SHOURTCUTS!
+_b6_d5_idx:					IDX		_b6_d5		; $5D,$07 (_b6_d5)
+_bC_s2_idx:					IDX		_bC_s2		; $5E,$07 (_bC_s2)
+_b2_s0_idx:					IDX		_b2_s0		; $5F,$07 (_b2_s0)
+_b2_s1_idx:					IDX		_b2_s1		; $60,$07 (_b2_s1)
+_b2_s2_idx:					IDX		_b2_s2		; $61,$07 (_b2_s2)
+_b2_s3_idx:					IDX		_b2_s3		; $62,$07 (_b2_s3)
+_b2_s4_idx:					IDX		_b2_s4		; $63,$07 (_b2_s4)
+_b2_s5_idx:					IDX		_b2_s5		; $64,$07 (_b2_s5)
+_b2_s6_screen_damage_shake_idx:		IDX		_b2_s6_screen_damage_shake		; $65,$07 (_b2_s6_screen_damage_shake)
+_b2_s7_screen_spell_blink_idx:		IDX		_b2_s7_screen_spell_blink		; $66,$07 (_b2_s7_screen_spell_blink)
+_b0_s0_world_map_random_enounter_test_idx:		IDX		_b0_s0_world_map_random_enounter_test		; $67,$07 (_b0_s0_world_map_random_enounter_test)
+_b0_s3C_idx:				IDX		_b0_s3C		; $68,$07 (_b0_s3C)
+_b2_sA_idx:					IDX		_b2_sA		; $69,$07 (_b2_sA)
+_b0_d43_enemies_lib_idx:	IDX		_b0_d43_enemies_lib		; $6A,$07 (_b0_d43_enemies_lib)
+_b4_s0_idx:					IDX		_b4_s0		; $6B,$07 (_b4_s0)
+_b4_s1_idx:					IDX		_b4_s1		; $6C,$07 (_b4_s1)
+_b4_s2_idx:					IDX		_b4_s2		; $6D,$07 (_b4_s2)
+_b4_s3_idx:					IDX		_b4_s3		; $6E,$07 (_b4_s3)
+_b4_s4_idx:					IDX		_b4_s4		; $6F,$07 (_b4_s4)
+_b4_s5_do_message_speed_delay_idx:		IDX		_b4_s5_do_message_speed_delay		; $70,$07 (_b4_s5_do_message_speed_delay)
+_b4_s6_idx:					IDX		_b4_s6		; $71,$07 (_b4_s6)
+_b4_s7_window_display_safe_idx:		IDX		_b4_s7_window_display_safe		; $72,$07 (_b4_s7_window_display_safe)
+_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:		IDX		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress		; $73,$07 (_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress)
+_b4_s9_idx:					IDX		_b4_s9		; $74,$07 (_b4_s9)
+_b4_sA_idx:					IDX		_b4_sA		; $75,$07 (_b4_sA)
+_b4_sB_idx:					IDX		_b4_sB		; $76,$07 (_b4_sB)
+_b4_sC_idx:					IDX		_b4_sC		; $77,$07 (_b4_sC)
+_b4_dD_spells_list_idx:		IDX		_b4_dD_spells_list		; $78,$07 (_b4_dD_spells_list)
+_b2_sB_idx:					IDX		_b2_sB		; $79,$07 (_b2_sB)
+_b0_s3D_idx:				IDX		_b0_s3D		; $7A,$07 (_b0_s3D)
+_b0_s3E_idx:				IDX		_b0_s3E		; $7B,$07 (_b0_s3E)
+_b4_sF_idx:					IDX		_b4_sF		; $7C,$07 (_b4_sF)
+							.BYTE	  0			; $7D, bank 06, idx 00, former _b6_d0_ofs, not used anymore
+							.BYTE	  1			; $7E, bank 06, idx 01, former _b6_d1_ofs, not used anymore
+							.BYTE	  2			; $7F, bank 06, idx 02, former _b6_d2_ofs, not used anymore
+							.BYTE	  3			; $80, bank 06, idx 03, former _b6_d3_ofs, not used anymore
+_bA_s2_0_idx:				IDX		_bA_s2		; $81,$07 (_bA_s2)
+_bC_s3_idx:					IDX		_bC_s3		; $82,$07 (_bC_s3)
+_bC_s4_idx:					IDX		_bC_s4		; $83,$07 (_bC_s4)
+_bC_s5_idx:					IDX		_bC_s5		; $84,$07 (_bC_s5)
+_bC_s6_idx:					IDX		_bC_s6		; $85,$07 (_bC_s6)
+_bA_s3_0_idx:				IDX		_bA_s3		; $86,$07 (_bA_s3)
+							.BYTE	$1E			; $87, bank 0e, idx 1E, empty
+_b6_s8_idx:					IDX		_b6_s8		; $88,$07 (_b6_s8)
+_b6_d9_idx:					IDX		_b6_d9		; $89,$07 (_b6_d9)
+_b6_dA_idx:					IDX		_b6_dA		; $8A,$07 (_b6_dA)
+_b6_dB_idx:					IDX		_b6_dB		; $8B,$07 (_b6_dB)
+_bA_sC_idx:					IDX		_bA_sC		; $8C,$07 (_bA_sC)
+_bA_sD_idx:					IDX		_bA_sD		; $8D,$07 (_bA_sD)
+_b0_d40_weapon_power_list_idx:		IDX		_b0_d40_weapon_power_list		; $8E,$07 (_b0_d40_weapon_power_list)
+_b0_d41_equip_list_idx:		IDX		_b0_d41_equip_list	; $8F,$07 (_b0_d41_equip_list)
+_b0_d42_effects_list_idx:	IDX		_b0_d42_effects_list; $90,$07 (_b0_d42_effects_list)
+							.BYTE	 $F			; $91, bank 01, idx 0F, empty
+_b0_d44_idx:				IDX		_b0_d44		; $92,$07 (_b0_d44)
+_b7_d1_idx:					IDX		_b7_d1		; $93,$07 (_b7_d1)
+_b7_d3_idx:					IDX		_b7_d3		; $94,$07 (_b7_d3)
+_b7_d4_idx:					IDX		_b7_d4		; $95,$07 (_b7_d4)
+							.BYTE	  2			; $96, bank 07, idx 02, former _b7_d2_ofs, not used anymore
+_bC_s0_idx:					IDX		_bC_s0		; $97,$07 (_bC_s0)
+_bA_s6_0_idx:				IDX		_bA_s6		; $98,$07 (_bA_s6)
+_b5_s3_idx:					IDX		_b5_s3		; $99,$07 (_b5_s3)
+_b7_d5_idx:					IDX		_b7_d5		; $9A,$07 (_b7_d5)
+_bC_s9_idx:					IDX		_bC_s9		; $9B,$07 (_bC_s9)
+_b0_s45_idx:				IDX		_b0_s45		; $9C,$07 (_b0_s45)
+_bC_sA_idx:					IDX		_bC_sA		; $9D,$07 (_bC_sA)
+							.BYTE	  1			; $9E, bank 01, idx 01, empty
+_bB_s2_idx:					IDX		_bB_s2		; $9F,$07 (_bB_s2)
+_bB_s3_apu_load_idx:		IDX		_bB_s3_apu_load	; $A0,$07 (_bB_s3_apu_load)
+_bB_s4_idx:					IDX		_bB_s4		; $A1,$07 (_bB_s4)
+_bB_s5_idx:					IDX		_bB_s5		; $A2,$07 (_bB_s5)
+_bD_s27_idx:				IDX		_bD_s27		; $A3,$07 (_bD_s27)
+_b2_sC_idx:					IDX		_b2_sC		; $A4,$07 (_b2_sC)
+_bB_s6_idx:					IDX		_bB_s6		; $A5,$07 (_bB_s6)
+_bE_s10_1_idx:				IDX		_bE_s10		; $A6,$07 (_bE_s10)
+_b4_sE_idx:					IDX		_b4_sE		; $A7,$07 (_b4_sE)
+_bE_sE_idx:					IDX		_bE_sE		; $A8,$07 (_bE_sE)
+_b0_s46_idx:				IDX		_b0_s46		; $A9,$07 (_b0_s46)
+_b0_s47_idx:				IDX		_b0_s47		; $AA,$07 (_b0_s47)
+_bE_s1D_idx:				IDX		_bE_s1D		; $AB,$07 (_bE_s1D)
+_bE_s19_idx:				IDX		_bE_s19		; $AC,$07 (_bE_s19)
+_bE_s1A_idx:				IDX		_bE_s1A		; $AD,$07 (_bE_s1A)
+_bE_s20_idx:				IDX		_bE_s20		; $AE,$07 (_bE_s20)
+_bE_s21_idx:				IDX		_bE_s21		; $AF,$07 (_bE_s21)
+_b4_s10_idx:				IDX		_b4_s10		; $B0,$07 (_b4_s10)
+_b4_s12_idx:				IDX		_b4_s12		; $B1,$07 (_b4_s12)
+_b0_d3F_idx:				IDX		_b0_d3F		; $B2,$07 (_b0_d3F)
+_b4_s13_idx:				IDX		_b4_s13		; $B3,$07 (_b4_s13)
+_b4_s14_idx:				IDX		_b4_s14		; $B4,$07 (_b4_s14)
+_b4_d15_idx:				IDX		_b4_d15		; $B5,$07 (_b4_d15)
+_bA_d14_idx:				IDX		_bA_d14		; $B6,$07 (_bA_d14)
+_bA_d15_idx:				IDX		_bA_d15		; $B7,$07 (_bA_d15)
+_bC_sD_idx:					IDX		_bC_sD		; $B8,$07 (_bC_sD)
+_bC_sE_idx:					IDX		_bC_sE		; $B9,$07 (_bC_sE)
+_bC_sF_idx:					IDX		_bC_sF		; $BA,$07 (_bC_sF)
+_bC_s10_idx:				IDX		_bC_s10		; $BB,$07 (_bC_s10)
+_bC_s11_idx:				IDX		_bC_s11		; $BC,$07 (_bC_s11)
+_b6_s1F_idx:				IDX		_b6_s1F		; $BD,$07 (_b6_s1F)
+_bC_s13_idx:				IDX		_bC_s13		; $BE,$07 (_bC_s13)
+_bE_s22_idx:				IDX		_bE_s22		; $BF,$07 (_bE_s22)
+_bE_s23_idx:				IDX		_bE_s23		; $C0,$07 (_bE_s23)
+_bE_s24_idx:				IDX		_bE_s24		; $C1,$07 (_bE_s24)
+_bE_s25_idx:				IDX		_bE_s25		; $C2,$07 (_bE_s25)
+_bE_s26_idx:				IDX		_bE_s26		; $C3,$07 (_bE_s26)
+_b6_sC_idx:					IDX		_b6_sC		; $C4,$07 (_b6_sC)
+_b6_sD_idx:					IDX		_b6_sD		; $C5,$07 (_b6_sD)
+_b6_sE_idx:					IDX		_b6_sE		; $C6,$07 (_b6_sE)
+_b6_sF_idx:					IDX		_b6_sF		; $C7,$07 (_b6_sF)
+_bC_s14_idx:				IDX		_bC_s14		; $C8,$07 (_bC_s14)
+_bC_s15_idx:				IDX		_bC_s15		; $C9,$07 (_bC_s15)
+_bC_s16_idx:				IDX		_bC_s16		; $CA,$07 (_bC_s16)
+_b2_s9_idx:					IDX		_b2_s9		; $CB,$07 (_b2_s9)
+							.BYTE	$4C			; $CC, bank 00, idx 4c, empty
+_b0_s4D_1_idx:				IDX		_b0_s4D		; $CD,$07 (_b0_s4D)
+_bC_s17_idx:				IDX		_bC_s17		; $CE,$07 (_bC_s17)
+_bC_s18_idx:				IDX		_bC_s18		; $CF,$07 (_bC_s18)
+_b4_s16_do_half_message_speed_delay_idx:	IDX		_b4_s16_do_half_message_speed_delay		; $D0,$07 (_b4_s16_do_half_message_speed_delay)
+_b4_s17_idx:				IDX		_b4_s17		; $D1,$07 (_b4_s17)
+_b4_s18_idx:				IDX		_b4_s18		; $D2,$07 (_b4_s18)
+_b4_s19_idx:				IDX		_b4_s19		; $D3,$07 (_b4_s19)
+_b4_s1A_idx:				IDX		_b4_s1A		; $D4,$07 (_b4_s1A)
+_b4_s1B_idx:				IDX		_b4_s1B		; $D5,$07 (_b4_s1B)
+_b4_s1C_idx:				IDX		_b4_s1C		; $D6,$07 (_b4_s1C)
+_b4_s1D_idx:				IDX		_b4_s1D		; $D7,$07 (_b4_s1D)
+_b1_s9_idx:					IDX		_b1_s9		; $D8,$07 (_b1_s9)
+_b1_sA_idx:					IDX		_b1_sA		; $D9,$07 (_b1_sA)
+_b1_sB_idx:					IDX		_b1_sB		; $DA,$07 (_b1_sB)
+_b1_sC_idx:					IDX		_b1_sC		; $DB,$07 (_b1_sC)
+_b1_sD_idx:					IDX		_b1_sD		; $DC,$07 (_b1_sD)
+_bD_sD_idx:					IDX		_bD_sD		; $DD,$07 (_bD_sD)
+_b6_s10_idx:				IDX		_b6_s10		; $DE,$07 (_b6_s10)
+_b0_d58_idx:				IDX		_b0_d58		; $DF,$07 (_b0_d58)
+_b0_d59_idx:				IDX		_b0_d59		; $E0,$07 (_b0_d59)
+_b0_d5A_idx:				IDX		_b0_d5A		; $E1,$07 (_b0_d5A)
+_bC_s2D_idx:				IDX		_bC_s2D		; $E2,$07 (_bC_s2D)
+_b6_s11_idx:				IDX		_b6_s11		; $E3,$07 (_b6_s11)
+_b0_s5B_idx:				IDX		_b0_s5B		; $E4,$07 (_b0_s5B)
+_bA_sA_idx:					IDX		_bA_sA		; $E5,$07 (_bA_sA)
+_bE_s2E_idx:				IDX		_bE_s2E		; $E6,$07 (_bE_s2E)
+_bE_s2F_idx:				IDX		_bE_s2F		; $E7,$07 (_bE_s2F)
+_bE_s30_idx:				IDX		_bE_s30		; $E8,$07 (_bE_s30)
+_bE_s31_idx:				IDX		_bE_s31		; $E9,$07 (_bE_s31)
+_b2_s8_screen_hit_blink_idx:IDX		_b2_s8_screen_hit_blink		; $EA,$07 (_b2_s8_screen_hit_blink)
+_bE_s32_idx:				IDX		_bE_s32		; $EB,$07 (_bE_s32)
+_b0_s5D_idx:				IDX		_b0_s5D		; $EC,$07 (_b0_s5D)
+_b4_s1E_idx:				IDX		_b4_s1E		; $ED,$07 (_b4_s1E)
+_b4_s1F_idx:				IDX		_b4_s1F		; $EE,$07 (_b4_s1F)
+_b4_s20_idx:				IDX		_b4_s20		; $EF,$07 (_b4_s20)
+_bB_s7_idx:					IDX		_bB_s7		; $F0,$07 (_bB_s7)
+_b5_s9_idx:					IDX		_b5_s9		; $F1,$07 (_b5_s9)
+_b5_sA_idx:					IDX		_b5_sA		; $F2,$07 (_b5_sA)
+_bC_s1C_idx:				IDX		_bC_s1C		; $F3,$07 (_bC_s1C)
+_bE_s33_idx:				IDX		_bE_s33		; $F4,$07 (_bE_s33)
+_bC_s1E_idx:				IDX		_bC_s1E		; $F5,$07 (_bC_s1E)
+_b7_s1B_idx:				IDX		_b7_s1B		; $F6,$07 (_b7_s1B)
+_bC_s21_idx:				IDX		_bC_s21		; $F7,$07 (_bC_s21)
+_bC_s22_idx:				IDX		_bC_s22		; $F8,$07 (_bC_s22)
+_bE_s1B_idx:				IDX		_bE_s1B		; $F9,$07 (_bE_s1B)
+_bC_s38_idx:				IDX		_bC_s38		; $FA,$07 (_bC_s38)
+_bC_s25_idx:				IDX		_bC_s25		; $FB,$07 (_bC_s25)
+_bA_s5_add16_to_24_0_idx:	IDX		_bA_s5_add16_to_24		; $FC,$07 (_bA_s5_add16_to_24)
+_bD_s19_0_idx:				IDX		_bD_s19		; $FD,$07 (_bD_s19)
+_bC_s2C_idx:				IDX		_bC_s2C		; $FE,$07 (_bC_s2C)
+							.BYTE	  1			; $FF, bank 0D, idx 01, former _bD_d1_ofs, not used anymore
+;_sys1_sub_idx_lib:
+_bC_s2A_idx:				IDX		_bC_s2A		; $00,$17 (_bC_s2A)
+_bC_s12_vblank_count_50_idx:IDX		_bC_s12_vblank_count_50		; $01,$17 (_bC_s12_vblank_count_50)
+_bD_s12_idx:				IDX		_bD_s12		; $02,$17 (_bD_s12)
+_bD_s13_idx:				IDX		_bD_s13		; $03,$17 (_bD_s13)
+_bC_s29_idx:				IDX		_bC_s29		; $04,$17 (_bC_s29)
+_b6_s17_idx:				IDX		_b6_s17		; $05,$17 (_b6_s17)
+_bD_sE_idx:					IDX		_bD_sE		; $06,$17 (_bD_sE)
+_bE_s2B_idx:				IDX		_bE_s2B		; $07,$17 (_bE_s2B)
+_b0_s5E_idx:				IDX		_b0_s5E		; $08,$17 (_b0_s5E)
+_b0_s5F_idx:				IDX		_b0_s5F		; $09,$17 (_b0_s5F)
+_b0_s60_idx:				IDX		_b0_s60		; $0A,$17 (_b0_s60)
+_bA_s12_idx:				IDX		_bA_s12		; $0B,$17 (_bA_s12)
+_b7_s1C_idx:				IDX		_b7_s1C		; $0C,$17 (_b7_s1C)
+_bD_s14_idx:				IDX		_bD_s14		; $0D,$17 (_bD_s14)
+_bD_s15_idx:				IDX		_bD_s15		; $0E,$17 (_bD_s15)
+_bC_s26_1_idx:				IDX		_bC_s26		; $0F,$17 (_bC_s26)
+_b0_s48_idx:				IDX		_b0_s48		; $10,$17 (_b0_s48)
+_b0_s49_idx:				IDX		_b0_s49		; $11,$17 (_b0_s49)
+_b6_s6_0_idx:				IDX		_b6_s6_0	; $12,$17 (_b6_s6)
+_b6_s6_1_idx:				IDX		_b6_s6_1	; $13,$17 (_b6_s6)
+_b1_s14_idx:				IDX		_b1_s14		; $14,$17 (_b1_s14)
+_b1_s15_idx:				IDX		_b1_s15		; $15,$17 (_b1_s15)
+_b1_s16_idx:				IDX		_b1_s16		; $16,$17 (_b1_s16)
+_b1_s17_idx:				IDX		_b1_s17		; $17,$17 (_b1_s17)
+_b1_s13_idx:				IDX		_b1_s13		; $18,$17 (_b1_s13)
+_bE_s12_idx:				IDX		_bE_s12		; $19,$17 (_bE_s12)
+_bE_s13_idx:				IDX		_bE_s13		; $1A,$17 (_bE_s13)
+_bE_s14_idx:				IDX		_bE_s14		; $1B,$17 (_bE_s14)
+							.BYTE	$15			; $11C, bank 0E, idx 15, empty
+_bC_s31_idx:				IDX		_bC_s31		; $1D,$17 (_bC_s31)
+_bE_s16_idx:				IDX		_bE_s16		; $1E,$17 (_bE_s16)
+_bE_s1C_0_idx:				IDX		_bE_s1C_0	; $1F,$17 (_bE_s1C)
+_bE_s1C_1_idx:				IDX		_bE_s1C_1	; $20,$17 (_bE_s1C)
+_bE_sF_idx:					IDX		_bE_sF		; $21,$17 (_bE_sF)
+_b0_s61_sram_b0_syscall_shortcuts_load_idx:	IDX		_b0_s61_sram_b0_syscall_shortcuts_load		; $22,$17 (_b0_s61_sram_b0_syscall_shortcuts_load)
+_bC_s32_idx:				IDX		_bC_s32		; $23,$17 (_bC_s32)
+_bE_s10_0_idx:				IDX		_bE_s10		; $24,$17 (_bE_s10)
+_bE_s34_idx:				IDX		_bE_s34		; $25,$17 (_bE_s34)
+_bC_s33_idx:				IDX		_bC_s33		; $26,$17 (_bC_s33)
+_bD_s16_idx:				IDX		_bD_s16		; $27,$17 (_bD_s16)
+_bD_s17_idx:				IDX		_bD_s17		; $28,$17 (_bD_s17)
+_b0_s5C_idx:				IDX		_b0_s5C		; $29,$17 (_b0_s5C)
+_b0_s62_idx:				IDX		_b0_s62		; $2A,$17 (_b0_s62)
+_bC_s37_idx:				IDX		_bC_s37		; $2B,$17 (_bC_s37)
+_b0_s4D_0_idx:				IDX		_b0_s4D		; $2C,$17 (_b0_s4D)
+_bD_s26_idx:				IDX		_bD_s26		; $2D,$17 (_bD_s26)
+_b0_s64_idx:				IDX		_b0_s64		; $2E,$17 (_b0_s64)
+_bD_s28_idx:				IDX		_bD_s28		; $2F,$17 (_bD_s28)
+_b0_s63_idx:				IDX		_b0_s63		; $30,$17 (_b0_s63)
+_b4_s21_message_half_delay_or_wait_for_keypress_idx:		IDX		_b4_s21_message_half_delay_or_wait_for_keypress		; $31,$17 (_b4_s21_message_half_delay_or_wait_for_keypress)
+_bD_s18_idx:				IDX		_bD_s18		; $32,$17 (_bD_s18)
+_bD_s19_1_idx:				IDX		_bD_s19		; $33,$17 (_bD_s19)
+_bD_s1A_idx:				IDX		_bD_s1A		; $34,$17 (_bD_s1A)
+_bD_s1B_idx:				IDX		_bD_s1B		; $35,$17 (_bD_s1B)
+_bD_s1C_idx:				IDX		_bD_s1C		; $36,$17 (_bD_s1C)
+_bD_s1D_idx:				IDX		_bD_s1D		; $37,$17 (_bD_s1D)
+_bD_s1E_idx:				IDX		_bD_s1E		; $38,$17 (_bD_s1E)
+_bC_s24_idx:				IDX		_bC_s24		; $39,$17 (_bC_s24)
+_bC_s39_idx:				IDX		_bC_s39		; $3A,$17 (_bC_s39)
+_bC_s3A_idx:				IDX		_bC_s3A		; $3B,$17 (_bC_s3A)
+_bD_s1F_idx:				IDX		_bD_s1F		; $3C,$17 (_bD_s1F)
+_b5_s8_0_idx:				IDX		_b5_s8		; $3D,$17 (_b5_s8)
+_bD_s21_idx:				IDX		_bD_s21		; $3E,$17 (_bD_s21)
+_b1_sE_idx:					IDX		_b1_sE		; $3F,$17 (_b1_sE)
+_b4_s22_idx:				IDX		_b4_s22		; $40,$17 (_b4_s22)
+_bC_s3B_idx:				IDX		_bC_s3B		; $41,$17 (_bC_s3B)
+_b6_s12_idx:				IDX		_b6_s12		; $42,$17 (_b6_s12)
+_bC_s19_idx:				IDX		_bC_s19		; $43,$17 (_bC_s19)
+_bD_s22_idx:				IDX		_bD_s22		; $44,$17 (_bD_s22)
+_b0_s4E_idx:				IDX		_b0_s4E		; $45,$17 (_b0_s4E)
+_b0_s4F_idx:				IDX		_b0_s4F		; $46,$17 (_b0_s4F)
+_bC_s27_idx:				IDX		_bC_s27		; $47,$17 (_bC_s27)
+_bC_s28_idx:				IDX		_bC_s28		; $48,$17 (_bC_s28)
+_b0_s50_idx:				IDX		_b0_s50		; $49,$17 (_b0_s50)
+_bC_s2F_idx:				IDX		_bC_s2F		; $4A,$17 (_bC_s2F)
+_bC_s30_idx:				IDX		_bC_s30		; $4B,$17 (_bC_s30)
+_b0_s51_idx:				IDX		_b0_s51		; $4C,$17 (_b0_s51)
+_b0_s52_idx:				IDX		_b0_s52		; $4D,$17 (_b0_s52)
+_b0_s1_idx:					IDX		_b0_s1		; $4E,$17 (_b0_s1)
+_b0_s53_idx:				IDX		_b0_s53		; $4F,$17 (_b0_s53)
+_bE_s36_idx:				IDX		_bE_s36		; $50,$17 (_bE_s36)
+_bE_s18_idx:				IDX		_bE_s18		; $51,$17 (_bE_s18)
+_bE_s38_idx:				IDX		_bE_s38		; $52,$17 (_bE_s38)
+_b6_s13_idx:				IDX		_b6_s13		; $53,$17 (_b6_s13)
+_b4_s23_idx:				IDX		_b4_s23		; $54,$17 (_b4_s23)
+_b0_s54_idx:				IDX		_b0_s54		; $55,$17 (_b0_s54)
+_b5_s5_idx:					IDX		_b5_s5		; $56,$17 (_b5_s5)
+_bC_s1_idx:					IDX		_bC_s1		; $57,$17 (_bC_s1)
+_bD_sA_idx:					IDX		_bD_sA		; $58,$17 (_bD_sA)
+_bC_s34_idx:				IDX		_bC_s34		; $59,$17 (_bC_s34)
+_bC_s35_idx:				IDX		_bC_s35		; $5A,$17 (_bC_s35)
+_bC_s1A_idx:				IDX		_bC_s1A		; $5B,$17 (_bC_s1A)
+_b4_s24_idx:				IDX		_b4_s24		; $5C,$17 (_b4_s24)
+_b4_s25_idx:				IDX		_b4_s25		; $5D,$17 (_b4_s25)
+_bC_s1B_idx:				IDX		_bC_s1B		; $5E,$17 (_bC_s1B)
+_b5_sB_ppu_font_load_idx:	IDX		_b5_sB_ppu_font_load	; $5F,$17 (_b5_sB_ppu_font_load)
+_bA_sF_idx:					IDX		_bA_sF		; $60,$17 (_bA_sF)
+_b6_s14_name_entry_screen_idx:		IDX		_b6_s14_name_entry_screen		; $61,$17 (_b6_s14_name_entry_screen)
+_b7_sA_sram_test_and_init_idx:		IDX		_b7_sA_sram_test_and_init		; $62,$17 (_b7_sA_sram_test_and_init)
+_b0_s65_idx:				IDX		_b0_s65		; $63,$17 (_b0_s65)
+_b0_s66_idx:				IDX		_b0_s66		; $64,$17 (_b0_s66)
+_b7_sD_idx:					IDX		_b7_sD		; $65,$17 (_b7_sD)
+_b7_sE_player_log_list_idx:	IDX		_b7_sE_player_log_list		; $66,$17 (_b7_sE_player_log_list)
+_b7_sF_player_log_read_idx:	IDX		_b7_sF_player_log_read		; $67,$17 (_b7_sF_player_log_read)
+_b7_s10_idx:				IDX		_b7_s10		; $68,$17 (_b7_s10)
+_b7_s11_idx:				IDX		_b7_s11		; $69,$17 (_b7_s11)
+_b7_s12_idx:				IDX		_b7_s12		; $6A,$17 (_b7_s12)
+_b7_s13_idx:				IDX		_b7_s13		; $6B,$17 (_b7_s13)
+_b7_s14_idx:				IDX		_b7_s14		; $6C,$17 (_b7_s14)
+_bC_sC_idx:					IDX		_bC_sC		; $6D,$17 (_bC_sC)
+_b6_s15_idx:				IDX		_b6_s15		; $6E,$17 (_b6_s15)
+_b7_s15_idx:				IDX		_b7_s15		; $6F,$17 (_b7_s15)
+_bC_s2E_vblank_count_50_wait_50_or_skip_idx:	IDX		_bC_s2E_vblank_count_50_wait_50_or_skip		; $70,$17 (_bC_s2E_vblank_count_50_wait_50_or_skip)
+_bC_s20_idx:				IDX		_bC_s20		; $71,$17 (_bC_s20)
+_bC_sB_idx:					IDX		_bC_sB		; $72,$17 (_bC_sB)
+_b0_s55_idx:				IDX		_b0_s55		; $73,$17 (_b0_s55)
+_b5_s6_ppu_send_8_empty_bytes_idx:	IDX		_b5_s6_ppu_send_8_empty_bytes		; $74,$17 (_b5_s6_ppu_send_8_empty_bytes)
+_bA_s10_idx:				IDX		_bA_s10		; $75,$17 (_bA_s10)
+_bA_s11_idx:				IDX		_bA_s11		; $76,$17 (_bA_s11)
+_bC_s36_idx:				IDX		_bC_s36		; $77,$17 (_bC_s36)
+_bA_s8_idx:					IDX		_bA_s8		; $78,$17 (_bA_s8)
+_b5_s8_1_idx:				IDX		_b5_s8		; $79,$17 (_b5_s8)
+_bD_s29_idx:				IDX		_bD_s29		; $7A,$17 (_bD_s29)
+_b0_s56_idx:				IDX		_b0_s56		; $7B,$17 (_b0_s56)
+_b7_s19_idx:				IDX		_b7_s19		; $7C,$17 (_b7_s19)
+_bD_sB_idx:					IDX		_bD_sB		; $7D,$17 (_bD_sB)
+_b7_s1A_idx:				IDX		_b7_s1A		; $7E,$17 (_b7_s1A)
+_b6_s18_idx:				IDX		_b6_s18		; $7F,$17 (_b6_s18)
+_b4_s26_idx:				IDX		_b4_s26		; $80,$17 (_b4_s26)
+_b6_s19_idx:				IDX		_b6_s19		; $81,$17 (_b6_s19)
+_bD_sF_idx:					IDX		_bD_sF		; $82,$17 (_bD_sF)
+_bD_sC_idx:					IDX		_bD_sC		; $83,$17 (_bD_sC)
+_bD_s10_idx:				IDX		_bD_s10		; $84,$17 (_bD_s10)
+_b6_s16_0_idx:				IDX		_b6_s16		; $85,$17 (_b6_s16)
+_b2_sD_idx:					IDX		_b2_sD		; $86,$17 (_b2_sD)
+_b6_s1D_idx:				IDX		_b6_s1D		; $87,$17 (_b6_s1D)
+_b6_s1C_idx:				IDX		_b6_s1C		; $88,$17 (_b6_s1C)
+_b6_s1B_idx:				IDX		_b6_s1B		; $89,$17 (_b6_s1B)
+_bC_s26_0_idx:				IDX		_bC_s26		; $8A,$17 (_bC_s26)
+_bD_s11_idx:				IDX		_bD_s11		; $8B,$17 (_bD_s11)
+_bD_s23_idx:				IDX		_bD_s23		; $8C,$17 (_bD_s23)
+_bD_s24_idx:				IDX		_bD_s24		; $8D,$17 (_bD_s24)
+_bC_s2B_idx:				IDX		_bC_s2B		; $8E,$17 (_bC_s2B)
+_bA_s9_nullsub_idx:			IDX		_bA_s9_nullsub	; $8F,$17 (_bA_s9_nullsub)
+_bD_s20_npc_hndl31_idx:		IDX		_bD_s20_npc_hndl31	; $90,$17 (_bD_s20_npc_hndl31)
+_b6_s16_1_idx:				IDX		_b6_s16		; $91,$17 (_b6_s16)
+_bC_s23_idx:				IDX		_bC_s23		; $92,$17 (_bC_s23)
+_bE_s11_idx:				IDX		_bE_s11		; $93,$17 (_bE_s11)
+_b6_s1A_idx:				IDX		_b6_s1A		; $94,$17 (_b6_s1A)
+_b7_s1D_idx:				IDX		_b7_s1D		; $95,$17 (_b7_s1D)
+_b6_s1E_idx:				IDX		_b6_s1E		; $96,$17 (_b6_s1E)
+_bA_sB_idx:					IDX		_bA_sB		; $97,$17 (_bA_sB)
+_b2_sE_idx:					IDX		_b2_sE		; $98,$17 (_b2_sE)
+_b0_s67_idx:				IDX		_b0_s67		; $99,$17 (_b0_s67)
+_b6_s20_player_name_veryfy_idx:	IDX		_b6_s20_player_name_veryfy		; $9A,$17 (_b6_s20_player_name_veryfy)
+_bA_s2_1_idx:				IDX		_bA_s2		; $9B,$17 (_bA_s2)
+_bA_s3_1_idx:				IDX		_bA_s3		; $9C,$17 (_bA_s3)
+_b4_s27_idx:				IDX		_b4_s27		; $9D,$17 (_b4_s27)
+_b4_s28_idx:				IDX		_b4_s28		; $9E,$17 (_b4_s28)
+_b4_s29_idx:				IDX		_b4_s29		; $9F,$17 (_b4_s29)
+_b4_s2A_idx:				IDX		_b4_s2A		; $A0,$17 (_b4_s2A)
+_b4_s2B_idx:				IDX		_b4_s2B		; $A1,$17 (_b4_s2B)
+_bA_s4_div24_to_8_idx:		IDX		_bA_s4_div24_to_8		; $A2,$17 (_bA_s4_div24_to_8)
+_bA_s5_add16_to_24_1_idx:	IDX		_bA_s5_add16_to_24		; $A3,$17 (_bA_s5_add16_to_24)
+_bA_s6_1_idx:				IDX		_bA_s6		; $A4,$17 (_bA_s6)
+_bA_s7_nullsub_idx:			IDX		_bA_s7_nullsub	; $A5,$17 (_bA_s7_nullsub)
+_bA_sE_idx:					IDX		_bA_sE		; $A6,$17 (_bA_sE)
+_b7_s1E_idx:				IDX		_b7_s1E		; $A7,$17 (_b7_s1E)
+_bA_s16_idx:				IDX		_bA_s16		; $A8,$17 (_bA_s16)
+_bA_s17_idx:				IDX		_bA_s17		; $A9,$17 (_bA_s17)
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_msg_ptr_by_idx:
@@ -6714,13 +6654,13 @@ loc_176BCF:
 ; =============== S U B	R O U T	I N E =======================================
 _sys0D:
 		TYA
-		FAR		$20, 7		; _bE_sC
+		FARX	_bE_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys0E:
 		TYA
-		FAR		0, 7		; _bE_s0
+		FARX	_bE_s0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6771,13 +6711,13 @@ _sys0B_msg_m00_arg2_break:
 ; =============== S U B	R O U T	I N E =======================================
 _sys12:
 		TYA
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _far_bE_s4_msg_m00:
 		TYA
-		FAR		4, 7		; _bE_s4_msg_m00
+		FARX	_bE_s4_msg_m00_0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6786,36 +6726,6 @@ _far_bE_s4_msg_m00_break:
 		PLA
 		PLA
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_176C11:
-;		TAX
-;		STY		word_4
-;		LDA		_mmc_cur_prg_bank
-;		PHA
-;		TXA
-;		JSR		_mmc1_prg_set
-;		LDY		#0
-;loc_176C1E:
-;		LDA		(word_6C),Y
-;		BMI		loc_176C2A
-;loc_176C22:
-;		INC		word_6C
-;		BNE		loc_176C1E
-;		INC		word_6C+1
-;		BNE		loc_176C1E
-;loc_176C2A:
-;		CMP		#$FF
-;		BNE		loc_176C22
-;		DEC		word_4
-;		BNE		loc_176C22
-;		INC		word_6C
-;		BNE		loc_176C38
-;		INC		word_6C+1
-;loc_176C38:
-;		PLA
-;		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C3C:
@@ -6841,7 +6751,7 @@ loc_176C5B:
 		PHA
 		JSR		sub_175A32
 		JSR		sub_1762FC
-		FAR		$F9, 7		; _bE_s1B
+		FAR		$F9,$07		; _bE_s1B
 		JSR		_bE_sA		; function not fit into	bank E so moved	to bank	F
 		PLA
 		JMP		sub_17530A
@@ -6857,7 +6767,7 @@ sub_176C70:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C72:
-		FAR		4, 7		; _bE_s4_msg_m00
+		FARX	_bE_s4_msg_m00_0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6882,7 +6792,7 @@ sub_176C80:
 		JSR		_mmc1_prg_set
 		LDY		#$3F
 loc_176C8B:
-		LDA		_chr_data_unk4+$7F,X
+		LDA		_chr_data_unk8-1,X
 		STA		byte_7800,Y
 		DEX
 		DEY

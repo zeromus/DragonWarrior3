@@ -5184,7 +5184,7 @@ _sram_b0_sC:
 _sram_b0_sD:
 		.BYTE	0,0,0,0,0
 _sram_b0_sE:
-		.BYTE	0,0,0,0,0	
+		.BYTE	0,0,0,0,0
 _sram_b0_sF:
 		.BYTE	0,0,0,0,0
 _sram_b0_s10:
@@ -5244,17 +5244,17 @@ _sram_b0_s2A:
 _sram_b0_s2B:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2C:
-		.BYTE	0,0,0,0,0	
+		.BYTE	0,0,0,0,0
 _sram_b0_s2D:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2E:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2F:
-		.BYTE	0,0,0,0,0	
+		.BYTE	0,0,0,0,0
 _sram_b0_s30:
 		.BYTE	0,0,0,0,0
 _sram_b0_s31:
-		.BYTE	0,0,0,0,0	
+		.BYTE	0,0,0,0,0
 _sram_b0_s32:
 		.BYTE	0,0,0,0,0
 _sram_b0_s33:

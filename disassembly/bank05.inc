@@ -1,17 +1,29 @@
 
 		ORG $8000
 
+_b5_d0_world_map_data_ptr:
 		.WORD	_b5_d0_world_map_data
+_b5_d1_world_map_data_ptr:
 		.WORD	_b5_d1_world_map_data
+_b5_d2_world_map_data_ptr:
 		.WORD	_b5_d2_world_map_data
+_b5_s3_ptr:
 		.WORD	_b5_s3
+_b5_s4_ptr:
 		.WORD	_b5_s4
+_b5_s5_ptr:
 		.WORD	_b5_s5
+_b5_s6_ppu_send_8_empty_bytes_ptr:
 		.WORD	_b5_s6_ppu_send_8_empty_bytes
+_b5_s7_ptr:
 		.WORD	_b5_s7
+_b5_s8_ptr:
 		.WORD	_b5_s8
+_b5_s9_ptr:
 		.WORD	_b5_s9
+_b5_sA_ptr:
 		.WORD	_b5_sA
+_b5_sB_ppu_font_load_ptr:
 		.WORD	_b5_sB_ppu_font_load
 
 _b5_d0_world_map_data:
@@ -2386,7 +2398,7 @@ loc_83CA9:
 _b5_s9:
 		JSR		_vblank_and_render_off
 		JSR		_set_nmi_flag_10
-		FAR		$5B, $17		; _bC_s1A
+		FAR		$5B,$17		; _bC_s1A
 		LDA		#$10
 		STA		byte_6D0
 		LDA		#0
@@ -2414,7 +2426,7 @@ loc_83CD7:
 		LDA		byte_2F
 		AND		#1
 		BEQ		loc_83CF8
-		FAR		$DD, 7		; _bD_sD
+		FAR		$DD,$07		; _bD_sD
 		RTS
 loc_83CF8:
 		LDX		#$10
@@ -2424,7 +2436,7 @@ loc_83CFC:
 		INX
 		CPX		#$80
 		BNE		loc_83CFC
-		FAR		$35, $17		; _bD_s1B
+		FAR		$35,$17		; _bD_s1B
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2713,12 +2725,12 @@ loc_83ED2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s5:
-		FAR		$AA, $77		; _sys07_msg_m00_arg1
+		FAR		$AA,$77		; _sys07_msg_m00_arg1
 		JSR		sub_174D4F
 		LDA		#$14
 		STA		word_6C
 		LDX		#2
-		FAR		$72, $17		; _bC_sB
+		FAR		$72,$17		; _bC_sB
 		LDA		#4
 		STA		byte_116
 		LDA		byte_117
@@ -2726,12 +2738,12 @@ _b5_s5:
 		ORA		#2
 		STA		byte_117
 		LDX		#0
-		FAR		$72, $17		; _bC_sB
+		FAR		$72,$17		; _bC_sB
 		JSR		sub_174CCF
-		FAR		$AB, $77		; _sys07_msg_m00_arg1
-		FAR		$70, $17		; _bC_s2E_vblank_count_50_wait_50_or_skip
+		FAR		$AB,$77		; _sys07_msg_m00_arg1
+		FAR		$70,$17		; _bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$10
-		FAR		$4E, $17		; _b0_s1
+		FAR		$4E,$17		; _b0_s1
 		LDA		byte_60CD
 		ORA		#$20
 		STA		byte_60CD

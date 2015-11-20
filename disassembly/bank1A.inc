@@ -1,6 +1,7 @@
 
 		ORG $8000
 
+_b1A_s0_ptr:
 		.WORD	_b1A_s0
 
 byte_27C002:

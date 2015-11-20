@@ -1,62 +1,108 @@
 
 		ORG $8000
 
+_bE_s0_ptr:
 		.WORD	_bE_s0
+_bE_s1_ptr:
 		.WORD	_bE_s1
+_bE_s2_ptr:
 		.WORD	_bE_s2
+_bE_s3_ptr:
 		.WORD	_bE_s3
+_bE_s4_msg_m00_0_ptr:
 		.WORD	_bE_s4_msg_m00
+_bE_s5_ptr:
 		.WORD	_bE_s5
+_bE_s6_msg_mFF_0_ptr:
 		.WORD	_bE_s6_msg_mFF
+_bE_s6_msg_mFF_1_ptr:
 		.WORD	_bE_s6_msg_mFF
+_bE_s4_msg_m00_1_ptr:
 		.WORD	_bE_s4_msg_m00
+_bE_s9_ptr:
 		.WORD	_bE_s9
+_bE_sA_ptr:
 		.WORD	_bE_sA		; function not fit into	bank E so moved	to bank	F
+_bE_sB_ptr:
 		.WORD	_bE_sB
+_bE_sC_ptr:
 		.WORD	_bE_sC
+_bE_sD_ptr:
 		.WORD	_bE_sD
+_bE_sE_ptr:
 		.WORD	_bE_sE
+_bE_sF_ptr:
 		.WORD	_bE_sF
+_bE_s10_ptr:
 		.WORD	_bE_s10
+_bE_s11_ptr:
 		.WORD	_bE_s11
+_bE_s12_ptr:
 		.WORD	_bE_s12
+_bE_s13_ptr:
 		.WORD	_bE_s13
+_bE_s14_ptr:
 		.WORD	_bE_s14
 		.WORD	0
+_bE_s16_ptr:
 		.WORD	_bE_s16
+_bE_s1C_0_ptr:
 		.WORD	_bE_s1C
+_bE_s18_ptr:
 		.WORD	_bE_s18
+_bE_s19_ptr:
 		.WORD	_bE_s19
+_bE_s1A_ptr:
 		.WORD	_bE_s1A
+_bE_s1B_ptr:
 		.WORD	_bE_s1B
+_bE_s1C_1_ptr:
 		.WORD	_bE_s1C
+_bE_s1D_ptr:
 		.WORD	_bE_s1D
 		.WORD	0
 		.WORD	0
+_bE_s20_ptr:
 		.WORD	_bE_s20
+_bE_s21_ptr:
 		.WORD	_bE_s21
+_bE_s22_ptr:
 		.WORD	_bE_s22
+_bE_s23_ptr:
 		.WORD	_bE_s23
+_bE_s24_ptr:
 		.WORD	_bE_s24
+_bE_s25_ptr:
 		.WORD	_bE_s25
+_bE_s26_ptr:
 		.WORD	_bE_s26
 		.WORD	0
 		.WORD	0
 		.WORD	0
 		.WORD	0
+_bE_s2B_ptr:
 		.WORD	_bE_s2B
 		.WORD	0
 		.WORD	0
+_bE_s2E_ptr:
 		.WORD	_bE_s2E
+_bE_s2F_ptr:
 		.WORD	_bE_s2F
+_bE_s30_ptr:
 		.WORD	_bE_s30
+_bE_s31_ptr:
 		.WORD	_bE_s31
+_bE_s32_ptr:
 		.WORD	_bE_s32
+_bE_s33_ptr:
 		.WORD	_bE_s33
+_bE_s34_ptr:
 		.WORD	_bE_s34
 		.WORD	0
+_bE_s36_ptr:
 		.WORD	_bE_s36
 		.WORD	0
+_bE_s38_ptr:
 		.WORD	_bE_s38
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -146,9 +192,9 @@ loc_1580EB:
 		JSR		sub_174204
 		LDA		#0
 		STA		byte_2C
-		FAR		$23, $17		; _bC_s32
-		FAR		$32, $17		; _bD_s18
-		FAR		4, $2F		; _sys12
+		FAR		$23,$17		; _bC_s32
+		FAR		$32,$17		; _bD_s18
+		FAR		$04,$2F		; _sys12
 locret_15811A:
 		RTS
 
@@ -156,7 +202,7 @@ locret_15811A:
 sub_15811B:
 		JSR		_bE_sD
 		JSR		sub_174DF2
-		FAR		$BE, $67		; _sys06_msg_m00_arg0
+		FAR		$BE,$67		; _sys06_msg_m00_arg0
 		LDA		#0
 		STA		byte_6BD
 		JMP		_bE_s33
@@ -191,7 +237,7 @@ loc_158153:
 		LDA		byte_2F
 		BNE		sub_15819F
 		JSR		sub_1580A1
-		FAR		$EB, 7		; _bE_s32
+		FAR		$EB,$07		; _bE_s32
 		LDX		#$10
 loc_15816B:
 		LDA		_spr_ram,X
@@ -219,7 +265,7 @@ loc_158181:
 		BNE		loc_158181
 		LDA		#2
 		STA		byte_2C
-		FAR		$E, $2F		; _sys12
+		FAR		$0E,$2F		; _sys12
 		LDA		#0
 		STA		byte_6C9
 		RTS
@@ -230,8 +276,8 @@ sub_15819F:
 		STA		byte_8E
 		JSR		_bE_sD
 		JSR		sub_15856C
-		FAR		$85, $2F		; _sys12
-		FAR		$14, $D7		; _sys0D
+		FAR		$85,$2F		; _sys12
+		FAR		$14,$D7		; _sys0D
 		CMP		#$FF
 		BNE		loc_1581B8
 		LDA		#3
@@ -247,16 +293,16 @@ loc_1581B8:
 		BEQ		loc_1581D7
 		CMP		#5
 		BEQ		sub_1581DE
-		FAR		$16, 7		; _bC_s1D
+		FARX	_bC_s1D
 		RTS
 loc_1581D0:
-		FAR		$E4, 7		; _b0_s5B
+		FAR		$E4,$07		; _b0_s5B
 		RTS
 loc_1581D4:
 		JMP		sub_158377
 loc_1581D7:
-		FAR		$EC, 7		; _b0_s5D
-		FAR		$49, $17		; _b0_s50
+		FAR		$EC,$07		; _b0_s5D
+		FAR		$49,$17		; _b0_s50
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -328,7 +374,7 @@ loc_15824C:
 		BCC		loc_158240
 loc_158255:
 		JSR		sub_174DF2
-		FAR		$E, $77		; _sys07_msg_m00_arg1
+		FAR		$0E,$77		; _sys07_msg_m00_arg1
 		JMP		_bE_s33
 loc_15825E:
 		TAX
@@ -406,7 +452,7 @@ loc_1582D6:
 		PHA
 		LDA		byte_8
 		PHA
-		FAR		$33, $17		; _bD_s19
+		FAR		$33,$17		; _bD_s19
 		JSR		sub_174DF2
 		PLA
 		STA		byte_8
@@ -416,7 +462,7 @@ loc_1582D6:
 		STA		word_4+1
 		PLA
 		STA		word_4
-		FAR		$27, $17		; _bD_s16
+		FAR		$27,$17		; _bD_s16
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -509,28 +555,28 @@ sub_158377:
 		BIT		byte_60B7
 		BVC		loc_158385
 		JSR		sub_174DF2
-		FAR		$66, $77		; _sys07_msg_m00_arg1
+		FAR		$66,$77		; _sys07_msg_m00_arg1
 		JMP		_bE_s33
 loc_158385:
-		FAR		$1E, $D7		; _sys0D
+		FAR		$1E,$D7		; _sys0D
 		CMP		#$FF
 		BEQ		sub_158374
 		CMP		#1
 		BEQ		sub_1583C2
 		CMP		#2
 		BEQ		sub_158405
-		FAR		$23, $D7		; _sys0D
+		FAR		$23,$D7		; _sys0D
 		CMP		#$FF
 		BEQ		sub_158374
 		STA		byte_CE
-		FAR		$68, $D7		; _sys0D
-		FAR		9, $D7		; _sys0D
+		FAR		$68,$D7		; _sys0D
+		FAR		$09,$D7		; _sys0D
 		JSR		__pause_or_skip
-		FAR		$85, $2F		; _sys12
-		FAR		8, $D7		; _sys0D
-		FAR		$A, $D7		; _sys0D
+		FAR		$85,$2F		; _sys12
+		FAR		$08,$D7		; _sys0D
+		FAR		$0A,$D7		; _sys0D
 		JSR		__pause_or_skip
-		FAR		$85, $2F		; _sys12
+		FAR		$85,$2F		; _sys12
 		LDA		#1
 		STA		byte_D0
 		JSR		sub_1583D0
@@ -557,16 +603,16 @@ sub_1583D0:
 		JSR		_sram_b0_s2C
 		LDA		word_4
 		BEQ		loc_1583EA
-		FAR		$B, $D7		; _sys0D
+		FAR		$0B,$D7		; _sys0D
 		JMP		loc_1583ED
 loc_1583EA:
-		FAR		$65, $D7		; _sys0D
+		FAR		$65,$D7		; _sys0D
 loc_1583ED:
 		JSR		__pause_or_skip
-		FAR		$85, $2F		; _sys12
-		FAR		$C, $D7		; _sys0D
+		FAR		$85,$2F		; _sys12
+		FAR		$0C,$D7		; _sys0D
 		JSR		__pause_or_skip
-		FAR		$85, $2F		; _sys12
+		FAR		$85,$2F		; _sys12
 loc_1583FC:
 		INC		byte_D0
 		RTS
@@ -578,18 +624,18 @@ _bE_s33:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158405:
-		FAR		$96, $17		; _b6_s1E
+		FAR		$96,$17		; _b6_s1E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158409:
 		BIT		byte_60B7
 		BVC		loc_158417
-		FAR		$3E, $D7		; _sys0D
-		FAR		$65, $77		; _sys07_msg_m00_arg1
+		FAR		$3E,$D7		; _sys0D
+		FAR		$65,$77		; _sys07_msg_m00_arg1
 		JMP		_bE_s33
 loc_158417:
-		FAR		$24, $D7		; _sys0D
+		FAR		$24,$D7		; _sys0D
 		CMP		#$FF
 		BNE		loc_158421
 		JMP		sub_1580A1
@@ -610,7 +656,7 @@ loc_15842F:
 		BCC		loc_158443
 		BCS		loc_158461
 loc_15843C:
-		FAR		$25, $D7		; _sys0D
+		FAR		$25,$D7		; _sys0D
 		CMP		#$FF
 		BNE		loc_158449
 loc_158443:
@@ -637,7 +683,7 @@ loc_158461:
 		BCC		loc_15842F
 		BCS		loc_15848E
 loc_15846E:
-		FAR		$26, $D7		; _sys0D
+		FAR		$26,$D7		; _sys0D
 		CMP		#$FF
 		CLC
 		BEQ		loc_15842C
@@ -661,7 +707,7 @@ loc_15848E:
 		BCC		loc_158461
 		BCS		loc_1584BB
 loc_15849B:
-		FAR		$27, $D7		; _sys0D
+		FAR		$27,$D7		; _sys0D
 		CMP		#$FF
 		CLC
 		BEQ		loc_15845E
@@ -684,7 +730,7 @@ loc_1584BB:
 		BCC		loc_15848E
 		BCS		loc_1584E7
 loc_1584C8:
-		FAR		$28, $D7		; _sys0D
+		FAR		$28,$D7		; _sys0D
 		CMP		#$FF
 		CLC
 		BEQ		loc_15848B
@@ -713,9 +759,9 @@ sub_1584ED:
 		JSR		sub_15850B
 		BNE		loc_158507
 loc_158504:
-		FAR		$24, $17		; _bE_s10
+		FAR		$24,$17		; _bE_s10
 loc_158507:
-		FAR		$49, $17		; _b0_s50
+		FAR		$49,$17		; _b0_s50
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -731,7 +777,7 @@ locret_158515:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158516:
 		PHP
-		FAR		$D, $D7		; _sys0D
+		FAR		$0D,$D7		; _sys0D
 		JSR		sub_158581
 		PLP
 		RTS
@@ -749,7 +795,7 @@ sub_15851F:
 		LDA		byte_CF
 		PHA
 		STX		byte_CF
-		FAR		8, $17		; _b0_s5E
+		FAR		$08,$17		; _b0_s5E
 		PLA
 		STA		byte_CF
 		PLA
@@ -759,17 +805,17 @@ sub_15851F:
 		JSR		_get_syscall0_data_byte_X
 		AND		#8
 		BEQ		loc_15854E
-		FAR		$3E, $D7		; _sys0D
-		FAR		$51, $77		; _sys07_msg_m00_arg1
+		FAR		$3E,$D7		; _sys0D
+		FAR		$51,$77		; _sys07_msg_m00_arg1
 		JSR		sub_1585B8
 loc_15854E:
 		SEC
 		RTS
 loc_158550:
-		FAR		$3E, $D7		; _sys0D
+		FAR		$3E,$D7		; _sys0D
 		LDA		byte_CE
 		STA		byte_D2
-		FAR		$BC, $67		; _sys06_msg_m00_arg0
+		FAR		$BC,$67		; _sys06_msg_m00_arg0
 		JSR		sub_15855F
 		CLC
 		RTS
@@ -833,16 +879,16 @@ sub_15858D:
 		CLC
 		RTS
 loc_1585A5:
-		FAR		$3E, $D7		; _sys0D
-		FAR		$52, $77		; _sys07_msg_m00_arg1
+		FAR		$3E,$D7		; _sys0D
+		FAR		$52,$77		; _sys07_msg_m00_arg1
 		JSR		sub_1585B8
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
-		FAR		$17, $2F		; _sys12
-		FAR		$44, $17		; _bD_s22
+		FAR		$17,$2F		; _sys12
+		FAR		$44,$17		; _bD_s22
 		CLC
 		RTS
 
@@ -1109,7 +1155,7 @@ loc_158731:
 		PHA
 		LDA		word_6+1
 		PHA
-		FAR		$33, $17		; _bD_s19
+		FAR		$33,$17		; _bD_s19
 		PLA
 		STA		word_6+1
 		PLA
@@ -1127,28 +1173,28 @@ loc_158759:
 		BCS		loc_158766
 		JSR		_bE_s9
 		BCS		loc_158766
-		FAR		$38, $17		; _bD_s1E
+		FAR		$38,$17		; _bD_s1E
 loc_158766:
 		JSR		sub_158666
 		JSR		sub_1586D5
 		BCS		loc_158776
 		JSR		_bE_s9
 		BCS		loc_158776
-		FAR		$36, $17		; _bD_s1C
+		FAR		$36,$17		; _bD_s1C
 loc_158776:
 		JSR		sub_158666
 		JSR		sub_1586CE
 		BCS		loc_158786
 		JSR		_bE_s9
 		BCS		loc_158786
-		FAR		$37, $17		; _bD_s1D
+		FAR		$37,$17		; _bD_s1D
 loc_158786:
 		JMP		_vblank
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1C:
-		FAR		$86, $2F		; _sys12
-		FAR		$1D, $D7		; _sys0D
+		FAR		$86,$2F		; _sys12
+		FAR		$1D,$D7		; _sys0D
 		PHA
 		LDA		byte_80
 		PHA
@@ -1317,7 +1363,7 @@ loc_1588A3:
 		PLA
 		TAX
 loc_1588AF:
-		LDA		byte_1588C3,X
+		LDA		_sram_bank0_sel_list0,X
 		PHA
 		JSR		_sram_bank0_select_ex
 		PLA
@@ -1326,7 +1372,7 @@ loc_1588BA:
 		JSR		sub_158BA1
 		JSR		sub_158E72
 		JMP		loc_15883A
-byte_1588C3:
+_sram_bank0_sel_list0:
 		.BYTE	  0,  4,  1,  5, $F,$10,$11,$12,$13,$14,$16,$19,$17, $A, $B,$67
 loc_1588D3:
 		LDA		byte_C9
@@ -1337,9 +1383,9 @@ loc_1588DD:
 		LDA		byte_6AC1
 		LSR
 		TAX
-		FAR		$E, $17		; _bD_s15
+		FAR		$0E,$17		; _bD_s15
 		TAX
-		FAR		2, $17		; _bD_s12
+		FAR		$02,$17		; _bD_s12
 		LDX		#2
 loc_1588EB:
 		LDA		byte_C0,X
@@ -1412,15 +1458,15 @@ loc_158970:
 		LDA		byte_6AC4
 		JSR		sub_158B95
 		JSR		sub_158C89
-		FAR		$66, $17		; _b7_sE
+		FAR		$66,$17					; _b7_sE_player_log_list
 		JMP		sub_158B52
 loc_15897F:
 		LDX		#5
-		LDA		#$2B
+		LDA		#$2B			; sram sub idx
 		BNE		loc_158989
 loc_158985:
 		LDX		#6
-		LDA		#$2D
+		LDA		#$2D			; sram sub idx
 loc_158989:
 		STX		byte_6AC5
 		PHA
@@ -1478,7 +1524,7 @@ loc_1589E8:
 		CPX		#9
 		BCC		loc_158A04
 		TAX
-		FAR		$E, $17		; _bD_s15
+		FAR		$0E,$17		; _bD_s15
 		STA		word_4
 		JMP		loc_158A15
 loc_158A04:
@@ -1488,7 +1534,7 @@ loc_158A04:
 		CLC
 		ADC		(word_6C),Y
 		STA		byte_CF
-		LDA		byte_158A6D,X
+		LDA		_sram_bank0_sel_list1,X
 		JSR		_sram_bank0_select_ex
 loc_158A15:
 		PLA
@@ -1539,7 +1585,7 @@ loc_158A5E:
 		JMP		loc_15883A
 byte_158A61:
 		.BYTE	$32,$33,$32,  0,$29,$35,$39,$2D,$34,$34,$29,$28
-byte_158A6D:
+_sram_bank0_sel_list1:
 		.BYTE	$1D,$1F,$1E,$20,$26,$1C,$1C,$1C,$1C
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
@@ -1584,7 +1630,7 @@ sub_158AA6:
 		JMP		loc_158AC8
 loc_158AC3:
 		STA		byte_64
-		FAR		$6D, 7		; _b4_s2
+		FAR		$6D,$07		; _b4_s2
 loc_158AC8:
 		LDA		byte_6AC4
 		JSR		sub_158B95
@@ -1593,7 +1639,7 @@ loc_158AC8:
 		ADC		#2
 		TAX
 		LDA		byte_59
-		FAR		$A4, 7		; _b2_sC
+		FAR		$A4,$07		; _b2_sC
 		JSR		sub_158BA1
 		JSR		sub_158B5B
 		PLA
@@ -1636,7 +1682,7 @@ loc_158B26:
 		JSR		sub_158BA1
 		AND		#1
 		TAX
-		LDA		byte_158B45,X
+		LDA		_sram_bank0_sel_list2,X
 		JSR		_sram_bank0_select_ex
 		LDA		word_4
 		CMP		#$FF
@@ -1647,7 +1693,7 @@ loc_158B26:
 loc_158B40:
 		LDY		#9
 		JMP		sub_158B8A
-byte_158B45:
+_sram_bank0_sel_list2:
 		.BYTE	$32,$33
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1720,7 +1766,7 @@ sub_158B95:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B9D:
-		FAR		$A4, 7		; _b2_sC
+		FAR		$A4,$07		; _b2_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1985,11 +2031,11 @@ loc_158D4C:
 		BEQ		loc_158D85
 		BNE		loc_158D98
 loc_158D60:
-		FAR		$D, $17		; _bD_s14
+		FAR		$0D,$17		; _bD_s14
 		STA		word_4
 		JMP		loc_158DA7
 loc_158D68:
-		FAR		$6C, 7		; _b4_s1
+		FAR		$6C,$07		; _b4_s1
 		LDA		byte_59
 		STA		word_4
 		JMP		loc_158DA7
@@ -2019,7 +2065,7 @@ loc_158D95:
 loc_158D98:
 		PHA
 		TAX
-		LDA		byte_158DB2,X
+		LDA		_sram_bank0_sel_list3,X
 		JSR		_sram_bank0_select_ex
 		PLA
 		CMP		#2
@@ -2031,7 +2077,7 @@ loc_158DA7:
 		STA		word_7C+1
 		INC		byte_6AEA
 		RTS
-byte_158DB2:
+_sram_bank0_sel_list3:
 		.BYTE	$2F,$26,$1D,$1F,$1E,$20,$2F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2349,148 +2395,148 @@ byte_158F7A:
 		.BYTE	$34,$33,$32,$31,$28,$29,$37,$30,$27,$2A
 
 _windows_lib:
-		.WORD	byte_15905C
-		.WORD	byte_159074
-		.WORD	byte_159099
-		.WORD	byte_1590CB
-		.WORD	byte_15910A
-		.WORD	byte_15910E
-		.WORD	byte_159112
-		.WORD	byte_159116
-		.WORD	byte_15911A
-		.WORD	byte_159147
-		.WORD	byte_1591FA
-		.WORD	byte_159222
-		.WORD	byte_159233
-		.WORD	byte_159241
-		.WORD	byte_159272
-		.WORD	byte_15929E
-		.WORD	byte_1592E3
-		.WORD	byte_159341
-		.WORD	byte_1593B8
-		.WORD	byte_1593C7
-		.WORD	byte_1593F1
-		.WORD	byte_159420
-		.WORD	byte_159440
-		.WORD	byte_159454
-		.WORD	byte_159479
-		.WORD	byte_159499
-		.WORD	byte_1594BB
-		.WORD	byte_1594DB
-		.WORD	byte_1594F7
-		.WORD	byte_1594FB
-		.WORD	byte_15950D
-		.WORD	byte_159531
-		.WORD	byte_15954A
-		.WORD	byte_15955F
-		.WORD	byte_159574
-		.WORD	byte_15958E
-		.WORD	byte_15959C
-		.WORD	byte_1595AA
-		.WORD	byte_1595BD
-		.WORD	byte_1595D0
-		.WORD	byte_1595E3
-		.WORD	byte_1595F6
-		.WORD	byte_159604
-		.WORD	byte_159604
-		.WORD	byte_159612
-		.WORD	byte_159620
-		.WORD	byte_159633
-		.WORD	byte_159641
-		.WORD	byte_159641
-		.WORD	byte_159641
-		.WORD	byte_159641
-		.WORD	byte_159641
-		.WORD	byte_159641
-		.WORD	byte_15965B
-		.WORD	byte_159675
-		.WORD	byte_15968A
-		.WORD	byte_15969B
-		.WORD	byte_1596A9
-		.WORD	byte_1596BC
-		.WORD	byte_1596BC
-		.WORD	byte_1596CF
-		.WORD	byte_1596DD
-		.WORD	byte_1596E9
-		.WORD	byte_1596ED
-		.WORD	byte_159700
-		.WORD	byte_15978C
-		.WORD	byte_1597A1
-		.WORD	byte_1597B8
-		.WORD	byte_1597F4
-		.WORD	byte_159819
-		.WORD	byte_15981D
-		.WORD	byte_159849
-		.WORD	byte_159881
-		.WORD	byte_159881
-		.WORD	byte_159890
-		.WORD	byte_1598A1
-		.WORD	byte_1598B4
-		.WORD	byte_15968A
-		.WORD	byte_1598DD
-		.WORD	byte_1598EB
-		.WORD	byte_15991E
-		.WORD	byte_159939
-		.WORD	byte_159954
-		.WORD	byte_15997F
-		.WORD	byte_15999A
-		.WORD	byte_1599C5
-		.WORD	byte_1599F0
-		.WORD	byte_159A2B
-		.WORD	byte_159A7F
-		.WORD	byte_159A9B
-		.WORD	byte_159AD8
-		.WORD	byte_159AF6
-		.WORD	byte_159B14
-		.WORD	byte_159B45
-		.WORD	byte_159B63
-		.WORD	byte_159B94
-		.WORD	byte_159BC5
-		.WORD	byte_159C09
-		.WORD	byte_159C67
-		.WORD	byte_159CA6
-		.WORD	byte_159819
-		.WORD	byte_159CC3
-		.WORD	byte_159CD4
-		.WORD	byte_159CE7
-		.WORD	byte_159CFA
-		.WORD	byte_159CFE
-		.WORD	byte_159D0A
-		.WORD	byte_159D18
-byte_15905C:
+		.WORD	_wnd00
+		.WORD	_wnd01
+		.WORD	_wnd02
+		.WORD	_wnd03
+		.WORD	_wnd04
+		.WORD	_wnd05
+		.WORD	_wnd06
+		.WORD	_wnd07
+		.WORD	_wnd08
+		.WORD	_wnd09
+		.WORD	_wnd0A
+		.WORD	_wnd0B
+		.WORD	_wnd0C
+		.WORD	_wnd0D
+		.WORD	_wnd0E
+		.WORD	_wnd0F
+		.WORD	_wnd10
+		.WORD	_wnd11
+		.WORD	_wnd12
+		.WORD	_wnd13
+		.WORD	_wnd14
+		.WORD	_wnd15
+		.WORD	_wnd16
+		.WORD	_wnd17
+		.WORD	_wnd18
+		.WORD	_wnd19
+		.WORD	_wnd1A
+		.WORD	_wnd1B
+		.WORD	_wnd1C
+		.WORD	_wnd1D
+		.WORD	_wnd1E
+		.WORD	_wnd1F
+		.WORD	_wnd20
+		.WORD	_wnd21
+		.WORD	_wnd22
+		.WORD	_wnd23
+		.WORD	_wnd24
+		.WORD	_wnd25
+		.WORD	_wnd26
+		.WORD	_wnd27
+		.WORD	_wnd28
+		.WORD	_wnd29
+		.WORD	_wnd2A
+		.WORD	_wnd2A
+		.WORD	_wnd2C
+		.WORD	_wnd2D
+		.WORD	_wnd2E
+		.WORD	_wnd2F
+		.WORD	_wnd2F
+		.WORD	_wnd2F
+		.WORD	_wnd2F
+		.WORD	_wnd2F
+		.WORD	_wnd2F
+		.WORD	_wnd35
+		.WORD	_wnd36
+		.WORD	_wnd37
+		.WORD	_wnd38
+		.WORD	_wnd39
+		.WORD	_wnd3A
+		.WORD	_wnd3A
+		.WORD	_wnd3C
+		.WORD	_wnd3D
+		.WORD	_wnd3E
+		.WORD	_wnd3F
+		.WORD	_wnd40
+		.WORD	_wnd41
+		.WORD	_wnd42
+		.WORD	_wnd43
+		.WORD	_wnd44
+		.WORD	_wnd45
+		.WORD	_wnd46
+		.WORD	_wnd47
+		.WORD	_wnd48
+		.WORD	_wnd48
+		.WORD	_wnd4A
+		.WORD	_wnd4B
+		.WORD	_wnd4C
+		.WORD	_wnd37
+		.WORD	_wnd4E
+		.WORD	_wnd4F
+		.WORD	_wnd50
+		.WORD	_wnd51
+		.WORD	_wnd52
+		.WORD	_wnd53
+		.WORD	_wnd54
+		.WORD	_wnd55
+		.WORD	_wnd56
+		.WORD	_wnd57
+		.WORD	_wnd58
+		.WORD	_wnd59
+		.WORD	_wnd5A
+		.WORD	_wnd5B
+		.WORD	_wnd5C
+		.WORD	_wnd5D
+		.WORD	_wnd5E
+		.WORD	_wnd5F
+		.WORD	_wnd60
+		.WORD	_wnd61
+		.WORD	_wnd62
+		.WORD	_wnd63
+		.WORD	_wnd45
+		.WORD	_wnd65
+		.WORD	_wnd66
+		.WORD	_wnd67
+		.WORD	_wnd68
+		.WORD	_wnd69
+		.WORD	_wnd6A
+		.WORD	_wnd6B
+_wnd00:
 		.BYTE	  8,  4,$AA,$81,$60,$21,$22,$23,  0,  0,  0,$2C,$80,  3,$FF,$31
 		.BYTE	$81,  3,$FF,$92,$20,$8D,  2,$FF
-byte_159074:
+_wnd01:
 		.BYTE	 $C,  4,$A8,$A0,$20,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
 		.BYTE	$A0,  3,$FF,$31,$81,  3,  0,$31,$A1,  3,$FF,$92,$20,$8D,  2,  0
 		.BYTE	$B2,$20,$AD,  2,$FF
-byte_159099:
+_wnd02:
 		.BYTE	$12,  4,$A5,$C1,$60,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
 		.BYTE	$A0,  3,  0,$2C,$C0,  3,$FF,$31,$81,  3,  0,$31,$A1,  3,  0,$31
 		.BYTE	$C1,  3,$FF,$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD
 		.BYTE	  2,$FF
-byte_1590CB:
+_wnd03:
 		.BYTE	$16,  4,$A3,$E0,$20,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
 		.BYTE	$A0,  3,  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF,$31,$81,  3,  0,$31
 		.BYTE	$A1,  3,  0,$31,$C1,  3,  0,$31,$E1,  3,$FF,$92,$20,$8D,  2,  0
 		.BYTE	$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,  0,$F2,$20,$ED,  2,$FF
-byte_15910A:
+_wnd04:
 		.BYTE	$80,$12
-		.WORD	byte_15905C
-byte_15910E:
+		.WORD	_wnd00
+_wnd05:
 		.BYTE	$80,$12
-		.WORD	byte_159074
-byte_159112:
+		.WORD	_wnd01
+_wnd06:
 		.BYTE	$80,$12
-		.WORD	byte_159099
-byte_159116:
+		.WORD	_wnd02
+_wnd07:
 		.BYTE	$80,$12
-		.WORD	byte_1590CB
-byte_15911A:
+		.WORD	_wnd03
+_wnd08:
 		.BYTE	 $C,  6,$32,$81,$25,$21,$22,$23,$40,  0,  0,  0,$92,$80,$FF,$37
 		.BYTE	$29,$3C,$75,$94,$60,$FF,$30,$29,$3A,$29,$30,$75,$8D,  2,$FF,$9E
 		.BYTE	$2C,$34,$75,$80,  3,$FF,$9E,$31,$34,$75,$81,  3,$FF
-byte_159147:
+_wnd09:
 		.BYTE	$14, $B,$34,  0,$20,$61,$22,$23,$40,  0,  0,$FE,  0,$37,$1E,$1C
 		.BYTE	 $F,$18,$11,$1E,$12,$75,$84,  3,$FF,$FF,$FE,$9E,$25,$11,$13,$16
 		.BYTE	$13,$1E,$23,$75,$85,  3,$FF,$FF,$FE,  0,$3A,$13,$1E, $B,$16,$13
@@ -2503,38 +2549,38 @@ byte_159147:
 		.BYTE	 $D, $F,  0,$34,$19,$21, $F,$1C,$75,$8A,  3,$FF,$FF,$29,$22,$1A
 		.BYTE	 $F,$1C,$13, $F,$18, $D, $F,$FF,$DE,$34,$19,$13,$18,$1E,$1D,$75
 		.BYTE	$8C,  7,$FF
-byte_1591FA:
+_wnd0A:
 		.BYTE	$10,  5,$92,  0,$60,$61,$22,$23,$C0,  0,  0,$96,$D5,$FF,$9E,$B6
 		.BYTE	$B5,$FF,$96,$D6,$FF,$9E,$B6,$B6,$FF,$96,$D7,$FF,$9E,$B6,$B7,$FF
 		.BYTE	$96,$D8,$FF,$9E,$B6,$B8,$FF,$FF
-byte_159222:
+_wnd0B:
 		.BYTE	$18, $D,$12,$87,$4E,$A1,$22,$23,$40,  0,  0,$DA,$90,$9E,$FA,$90
 		.BYTE	$FF
-byte_159233:
+_wnd0C:
 		.BYTE	 $C,  9,$18,$82,$40,$A1,$22,$23,$40,  0,  0,$9A,$91,$FF
-byte_159241:
+_wnd0D:
 		.BYTE	 $A,  4,$31,  0,$20,$61,$22,$23,$40,  0,  0,$25,$38,$38,$25,$27
 		.BYTE	$2F,$FF,  0,$34,$33,$3B,$29,$36,$FF,$FE,$89,  3,$FF,$28,$29,$2A
 		.BYTE	$29,$32,$27,$29,$FF,  0,$34,$33,$3B,$29,$36,$FF,$FE,$8A,  3,$FF
 		.BYTE	$FF
-byte_159272:
+_wnd0E:
 		.BYTE	  8,  6,$47,  0,$60,$61,$22,$23,  0,  0,  0,$FF,$90,$40,$FF,$FF
 		.BYTE	$2C,$80,  3,$FF,  0,$58,$58,$58,$FF,  0,$82,  3,$FF,$FF,$31,$81
 		.BYTE	  3,$FF,  0,$58,$58,$58,$FF,  0,$83,  3,$FF,$FF
-byte_15929E:
+_wnd0F:
 		.BYTE	 $C,  6,$45,  0,$20,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
 		.BYTE	$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3,$FF,  0,$58,$58,$58,$9E
 		.BYTE	$58,$58,$58,$FF,  0,$82,  3,$9E,$A2,  3,$FF,$FF,$31,$81,  3,  0
 		.BYTE	$31,$A1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$FF,  0,$83,  3
 		.BYTE	$9E,$A3,  3,$FF,$FF
-byte_1592E3:
+_wnd10:
 		.BYTE	$12,  6,$44,  0,$60,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
 		.BYTE	$40,  0,$D0,$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0
 		.BYTE	  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$9E,$58,$58,$58,$FF,  0
 		.BYTE	$82,  3,$9E,$A2,  3,$9E,$C2,  3,$FF,$FF,$31,$81,  3,  0,$31,$A1
 		.BYTE	  3,  0,$31,$C1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$9E,$58
 		.BYTE	$58,$58,$FF,  0,$83,  3,$9E,$A3,  3,$9E,$C3,  3,$FF,$FF
-byte_159341:
+_wnd11:
 		.BYTE	$16,  6,$42,  0,$20,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
 		.BYTE	$40,  0,$D0,$40,  0,$F0,$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3
 		.BYTE	  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF,  0,$58,$58,$58,$9E,$58,$58
@@ -2543,119 +2589,119 @@ byte_159341:
 		.BYTE	$31,$C1,  3,  0,$31,$E1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58
 		.BYTE	$9E,$58,$58,$58,$9E,$58,$58,$58,$FF,  0,$83,  3,$9E,$A3,  3,$9E
 		.BYTE	$C3,  3,$9E,$E3,  3,$FF,$FF
-byte_1593B8:
+_wnd12:
 		.BYTE	  8,  2,$1B,  0,$20,$21,$22,$23,$40,  0,  0,$2B,$8B,  5,$FF
-byte_1593C7:
+_wnd13:
 		.BYTE	$10,$16,$54,  0,$60,$21,$22,$23,  0,  0,  0,$BE,$2B,$75,$9E,$8B
 		.BYTE	  5,$FF,$90,$40,$75,$8C,  7,$FF,$B0,$40,$75,$AC,  7,$FF,$D0,$40
 		.BYTE	$75,$CC,  7,$FF,$F0,$40,$75,$EC,  7,$FF
-byte_1593F1:
+_wnd14:
 		.BYTE	$10,  4,$12,$83,$40,  0,  0,$80,$11,$62,  0,$38,$25,$30,$2F,$DE
 		.BYTE	$37,$34,$29,$30,$30,$FF,$37,$38,$25,$38,$39,$37,$9E,$2D,$38,$29
 		.BYTE	$31,$FF,$37,$29,$25,$36,$27,$2C,$9E,$29,$35,$39,$2D,$34,$FF
-byte_159420:
+_wnd15:
 		.BYTE	 $C,  4,$53,  0,$A0,$21,$22,$A3,  2,  2,  0,$39,$37,$29,$FF,$38
 		.BYTE	$36,$25,$32,$37,$2A,$29,$36,$FF,$28,$2D,$37,$27,$25,$36,$28,$FF
-byte_159440:
+_wnd16:
 		.BYTE	  8,  3,$3A,  0,$60,$21,$22,$A3,  1,  2,  0,$26,$39,$3D,$FF,$37
 		.BYTE	$29,$30,$30,$FF
-byte_159454:
+_wnd17:
 		.BYTE	 $E,  4,$57,  0,$60,$21,$22,$A3,  1,  2,  0,$28,$29,$38,$33,$3C
 		.BYTE	$2D,$27,$25,$38,$29,$FF,$39,$32,$27,$39,$36,$37,$29,$FF,$36,$29
 		.BYTE	$3A,$2D,$3A,$29,$FF
-byte_159479:
+_wnd18:
 		.BYTE	  8,  5,$92,$81,$64,$21,$22,$A3,  1,  2,  0,$2A,$2D,$2B,$2C,$38
 		.BYTE	$FF,$37,$34,$29,$30,$30,$FF,$36,$39,$32,$FF,$2D,$38,$29,$31,$FF
-byte_159499:
+_wnd19:
 		.BYTE	  8,  5,$92,$81,$64,$21,$22,$A3,  1,  2,  0,$2A,$2D,$2B,$2C,$38
 		.BYTE	$FF,$37,$34,$29,$30,$30,$FF,$34,$25,$36,$36,$3D,$FF,$2D,$38,$29
 		.BYTE	$31,$FF
-byte_1594BB:
+_wnd1A:
 		.BYTE	  8,  5,$92,$81,$64,$21,$22,$A3,  1,  2,  0,$2A,$2D,$2B,$2C,$38
 		.BYTE	$FF,$36,$39,$32,$FF,$34,$25,$36,$36,$3D,$FF,$2D,$38,$29,$31,$FF
-byte_1594DB:
+_wnd1B:
 		.BYTE	  8,  4,$92,$81,$64,$21,$22,$A3,  1,  2,  0,$2A,$2D,$2B,$2C,$38
 		.BYTE	$FF,$34,$25,$36,$36,$3D,$FF,$2D,$38,$29,$31,$FF
-byte_1594F7:
+_wnd1C:
 		.BYTE	$80,$3B
-		.WORD	byte_159604
-byte_1594FB:
+		.WORD	_wnd2A
+_wnd1D:
 		.BYTE	  6,  3,$3B,  0,$60,$21,$22,$A3,  1,  2,  0,$3D,$29,$37,$FF,$32
 		.BYTE	$33,$FF
-byte_15950D:
+_wnd1E:
 		.BYTE	 $C,  4,$32,$81,$41,$21,$22,$A3,  1,  2,  0,$2D,$32,$2A,$33,$FF
 		.BYTE	$27,$33,$32,$28,$2D,$38,$2D,$33,$32,$FF,$2A,$33,$36,$31,$25,$38
 		.BYTE	$2D,$33,$32,$FF
-byte_159531:
+_wnd1F:
 		.BYTE	 $A,  3,$59,  0,$60,$21,$22,$A3,  1,  2,  0,$30, $F, $B,$20, $F
 		.BYTE	$FF,$34,$13, $D,$15,  0,$39,$1A,$FF
-byte_15954A:
+_wnd20:
 		.BYTE	  8,  3,$3A,  0,$60,$21,$22,$A3,  1,  2,  0,$2B,$33,$30,$28,$FF
 		.BYTE	$2D,$38,$29,$31,$FF
-byte_15955F:
+_wnd21:
 		.BYTE	  8,  3,$B3,  0,$60,$21,$22,$A3,  1,  2,  0,$39,$37,$29,$FF,$29
 		.BYTE	$35,$39,$2D,$34,$FF
-byte_159574:
+_wnd22:
 		.BYTE	 $A,  3,$B2,$81,$44,$21,$22,$A3,  1,  2,  0,$3B,$13,$24, $B,$1C
 		.BYTE	 $E,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF
-byte_15958E:
+_wnd23:
 		.BYTE	  8,$10,$45,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
-byte_15959C:
+_wnd24:
 		.BYTE	 $A,$10,$46,$81,$85,$A1,$22,$A3,  2,  2,  0,$90,$41,$FF
-byte_1595AA:
+_wnd25:
 		.BYTE	$10,$12,$16,$84,$46,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B0,$FF,$96
 		.BYTE	$D0,$FF,$FF
-byte_1595BD:
+_wnd26:
 		.BYTE	$10,$13,$16,$84,$47,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B1,$FF,$96
 		.BYTE	$D1,$FF,$FF
-byte_1595D0:
+_wnd27:
 		.BYTE	$10,$14,$16,$84,$48,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B2,$FF,$96
 		.BYTE	$D2,$FF,$FF
-byte_1595E3:
+_wnd28:
 		.BYTE	$10,$15,$16,$84,$49,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B3,$FF,$96
 		.BYTE	$D3,$FF,$FF
-byte_1595F6:
+_wnd29:
 		.BYTE	 $A,$10,$26,$81,$84,$A1,$22,$A3,  2,  2,  0,$90,$41,$FF
-byte_159604:
+_wnd2A:
 		.BYTE	  8,$10,$33,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
-byte_159612:
+_wnd2C:
 		.BYTE	 $A,$10,$35,$83,$42,$A1,$22,$23,  0,  0,  0,$90,$41,$FF
-byte_159620:
+_wnd2D:
 		.BYTE	$10,$11,$16,  0,$60,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B4,$FF,$96
 		.BYTE	$D4,$FF,$FF
-byte_159633:
+_wnd2E:
 		.BYTE	 $A,$10,$25,$83,$8F,$A1,$22,$A3,  2,  2,  0,$90,$41,$FF
-byte_159641:
+_wnd2F:
 		.BYTE	$18,$1A,$22,  0,$4D,$A1,$22,$B5,  1,  2,  0,$91,$81,  0,$30,$8E
 		.BYTE	  2,  0,$93,$31,  0,$6B,  0,$95,$11,$FF
-byte_15965B:
+_wnd35:
 		.BYTE	$18,  7,$22,$80,$4D,$A1,$22,$B4,  1,  2,  6,$F1,$80,  0,$30,$EE
 		.BYTE	  2,  0,$F3,$30,  0,$6B,  0,$F5,$10,$FF
-byte_159675:
+_wnd36:
 		.BYTE	$14,$17,$11,  0,$60,$E1,$22,$A3,  1,  1,  0,$9E,$B6,$A9,$FF,$96
 		.BYTE	$C9,$97,  5,$FF,$FF
-byte_15968A:
+_wnd37:
 		.BYTE	  8,  2,$3A,  0,$60,$21,$22,$A3,  0,  0,  0,  1,  1,  1,  1,  1
 		.BYTE	$FF
-byte_15969B:
+_wnd38:
 		.BYTE	  8,$10,$9A,$80,$4D,$A1,  0,$B9,  1,  2,  0,$90,$41,$FF
-byte_1596A9:
+_wnd39:
 		.BYTE	$10,$18,$96,$80,$4D,$E1,  0,$B8,  1,$81,$80,  0,$B8,$C0,$FF,$98
 		.BYTE	$C0,$FF,$FF
-byte_1596BC:
+_wnd3A:
 		.BYTE	$10,  5,$96,  0,$4D,$E1,$22,$E7,$41,  1,  0,$9E,$B6,$B4,$FF,$96
 		.BYTE	$D4,$FF,$FF
-byte_1596CF:
+_wnd3C:
 		.BYTE	  8,$10,$54,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
-byte_1596DD:
+_wnd3D:
 		.BYTE	$18,  5,$92,  0,$60,$A1,$22,$23,  0,  0,  0,$FF
-byte_1596E9:
+_wnd3E:
 		.BYTE	$80,$92
-		.WORD	byte_1596DD
-byte_1596ED:
+		.WORD	_wnd3D
+_wnd3F:
 		.BYTE	$10,$18,$96,  0,$60,$E1,$22,$23,  1,$81,  0,  0,$B8,$C0,$FF,$98
 		.BYTE	$C0,$FF,$FF
-byte_159700:
+_wnd40:
 		.BYTE	$18,  7,$42,  0,$60,$21,$22,$23,  0,  0,  0,$25,  0,$26,  0,$27
 		.BYTE	  0,$28,  0,$29,  0,$2A,  0,$2B,  0,$2C,  0,$2D,  0,$2E,  0,$2F
 		.BYTE	$FF,$30,  0,$31,  0,$32,  0,$33,  0,$34,  0,$35,  0,$36,  0,$37
@@ -2665,175 +2711,175 @@ byte_159700:
 		.BYTE	$FF,$16,  0,$17,  0,$18,  0,$19,  0,$1A,  0,$1B,  0,$1C,  0,$1D
 		.BYTE	  0,$1E,  0,$1F,  0,$20,$FF,$21,  0,$22,  0,$23,  0,$24,  0,$6A
 		.BYTE	  0,$6C,  0,$26,$25,$27,$2F,$9E,$29,$32,$28,$FF
-byte_15978C:
+_wnd41:
 		.BYTE	 $C,  3,$25,$83,$4C,$21,$22,$23,  0,  0,  0,$5A,$5A,$5A,$5A,$5A
 		.BYTE	$5A,$5A,$5A,$FF,$FF
-byte_1597A1:
+_wnd42:
 		.BYTE	 $A,  3,$68,$83,$4B,$21,$22,$A3,  1,  2,  0,$31,$25,$30,$29,$FF
 		.BYTE	$2A,$29,$31,$25,$30,$29,$FF
-byte_1597B8:
+_wnd43:
 		.BYTE	 $C,  7,$54,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
 		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
 		.BYTE	 $E,$FF,$2A,$13,$11,$12,$1E, $F,$1C,$FF,$31, $F,$1C, $D,$12, $B
 		.BYTE	$18,$1E,$FF,$2B,$19,$19,$10,$6B,$19,$10,$10,$FF
-byte_1597F4:
+_wnd44:
 		.BYTE	$10,  2,$13,  0,$20,$61,$22,$23,  0,  0,  0,$2D,$1D,  0,$1E,$12
 		.BYTE	$13,$1D,  0,$1E,$12, $F,$FF,$1C,$13,$11,$12,$1E,  0,$1A, $F,$1C
 		.BYTE	$1D,$19,$18,$6F,$FF
-byte_159819:
+_wnd45:
 		.BYTE	$80,$1B
-		.WORD	byte_1594FB
-byte_15981D:
+		.WORD	_wnd1D
+_wnd46:
 		.BYTE	$10,  4,$56,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$28,  0,$31
 		.BYTE	$29,$31,$26,$29,$36,$FF,$30,$29,$25,$3A,$29,  0,$31,$29,$31,$26
 		.BYTE	$29,$36,$FF,$37,$29,$29,  0,$30,$2D,$37,$38,$FF
-byte_159849:
+_wnd47:
 		.BYTE	 $C,  7,$18,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
 		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
 		.BYTE	 $E,$FF,$2A,$13,$11,$12,$1E, $F,$1C,$FF,$31, $F,$1C, $D,$12, $B
 		.BYTE	$18,$1E,$FF,$37, $B,$11, $F,$FF
-byte_159881:
+_wnd48:
 		.BYTE	 $A,  3,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF
-byte_159890:
+_wnd4A:
 		.BYTE	 $A,  4,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF,  4
 		.BYTE	$FF
-byte_1598A1:
+_wnd4B:
 		.BYTE	 $A,  5,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF,  4
 		.BYTE	$FF,  5,$FF
-byte_1598B4:
+_wnd4C:
 		.BYTE	 $C,  5,$53,  0,$A0,$21,$22,$A3,  2,  2,  0,$39,$37,$29,$FF,$38
 		.BYTE	$36,$25,$32,$37,$2A,$29,$36,$FF,$28,$2D,$37,$27,$25,$36,$28,$FF
 		.BYTE	$25,$34,$34,$36,$25,$2D,$37,$29,$FF
-byte_1598DD:
+_wnd4E:
 		.BYTE	  8,$10,$3B,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$51,$FF
-byte_1598EB:
+_wnd4F:
 		.BYTE	 $C,  6,$18,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
 		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
 		.BYTE	 $E,$FF,$2A,$13,$11,$12,$1E, $F,$1C,$FF,$31, $F,$1C, $D,$12, $B
 		.BYTE	$18,$1E,$FF
-byte_15991E:
+_wnd50:
 		.BYTE	$14,  2,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$FF
-byte_159939:
+_wnd51:
 		.BYTE	$14,  2,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$FF
-byte_159954:
+_wnd52:
 		.BYTE	$14,  3,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$FF,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$FF
-byte_15997F:
+_wnd53:
 		.BYTE	$14,  2,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$FF
-byte_15999A:
+_wnd54:
 		.BYTE	$14,  3,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$FF,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$FF
-byte_1599C5:
+_wnd55:
 		.BYTE	$14,  3,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$FF,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$FF
-byte_1599F0:
+_wnd56:
 		.BYTE	$14,  4,$95,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$FF,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$FF,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$FF
-byte_159A2B:
+_wnd57:
 		.BYTE	$12,  6,$74,  0,$20,$61,$22,$A3,$31,  8,  0,  0,$37, $F,$16, $F
 		.BYTE	 $D,$1E,  0,$1E,$12, $F,$FF,$FF,  0,$17, $F,$1D,$1D, $B,$11, $F
 		.BYTE	  0,$1D,$1A, $F, $F, $E,$FF,$FF,  0,$23,$19,$1F,  0,$16,$13,$15
 		.BYTE	 $F,$6C,$FF,$FF,$FF,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0
 		.BYTE	  7,  0,  8,  0,  9,$FF,$FF,  0,$2A, $B,$1D,$1E,$FE,$9E,$37,$16
 		.BYTE	$19,$21,$FF,$FF
-byte_159A7F:
+_wnd58:
 		.BYTE	$14,  2,$73,  0,$60,$21,$22,$23,  0,  0,  0,$2D,$32,$34,$39,$38
 		.BYTE	  0,$3D,$33,$39,$36,  0,$32,$25,$31,$29,$70,$FF
-byte_159A9B:
+_wnd59:
 		.BYTE	$14,  6,$73,  0,$20,$21,$22,$23,$40,  0,  0,  0,$99,$80,$FF,  0
 		.BYTE	$30,$29,$3A,$29,$30,$9E,$8F,  2,$FF,  0,$28,$19,  0,$23,$19,$1F
 		.BYTE	  0,$21, $B,$18,$1E,  0,$1E,$19,$FF,  0, $F,$1C, $B,$1D, $F,  0
 		.BYTE	$1E,$12,$13,$1D,$FF,  0,$1B,$1F, $F,$1D,$1E,$6F,$FF
-byte_159AD8:
+_wnd5A:
 		.BYTE	$18,  2,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$75,$99,$40,$FF
-byte_159AF6:
+_wnd5B:
 		.BYTE	$18,  2,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$75,$B9,$40,$FF
-byte_159B14:
+_wnd5C:
 		.BYTE	$18,  3,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$75,$99,$40,$FF,$25,$28
 		.BYTE	$3A,$29,$32,$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$75,$B9,$40
 		.BYTE	$FF
-byte_159B45:
+_wnd5D:
 		.BYTE	$18,  2,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$75,$D9,$40,$FF
-byte_159B63:
+_wnd5E:
 		.BYTE	$18,  3,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$75,$99,$40,$FF,$25,$28
 		.BYTE	$3A,$29,$32,$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$75,$D9,$40
 		.BYTE	$FF
-byte_159B94:
+_wnd5F:
 		.BYTE	$18,  3,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$75,$B9,$40,$FF,$25,$28
 		.BYTE	$3A,$29,$32,$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4,$75,$D9,$40
 		.BYTE	$FF
-byte_159BC5:
+_wnd60:
 		.BYTE	$18,  4,$63,  0,$60,$21,$22,$A3,  1,  2,  0,$25,$28,$3A,$29,$32
 		.BYTE	$38,$39,$36,$29,  0,$30,$33,$2B,  0,  2,$75,$99,$40,$FF,$25,$28
 		.BYTE	$3A,$29,$32,$38,$39,$36,$29,  0,$30,$33,$2B,  0,  3,$75,$B9,$40
 		.BYTE	$FF,$25,$28,$3A,$29,$32,$38,$39,$36,$29,  0,$30,$33,$2B,  0,  4
 		.BYTE	$75,$D9,$40,$FF
-byte_159C09:
+_wnd61:
 		.BYTE	$18,  6,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$27,$33,$32,$38,$2D
 		.BYTE	$32,$39,$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$26,$29,$2B,$2D
 		.BYTE	$32,  0,$25,  0,$32,$29,$3B,  0,$35,$39,$29,$37,$38,$FF,$27,$33
 		.BYTE	$34,$3D,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$29,$36,$25,$37,$29
 		.BYTE	  0,$25,  0,$35,$39,$29,$37,$38,$FF,$27,$2C,$25,$32,$2B,$29,  0
 		.BYTE	$31,$29,$37,$37,$25,$2B,$29,  0,$37,$34,$29,$29,$28,$FF
-byte_159C67:
+_wnd62:
 		.BYTE	$18,  4,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$27,$33,$32,$38,$2D
 		.BYTE	$32,$39,$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$29,$36,$25,$37
 		.BYTE	$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$27,$2C,$25,$32,$2B,$29
 		.BYTE	  0,$31,$29,$37,$37,$25,$2B,$29,  0,$37,$34,$29,$29,$28,$FF
-byte_159CA6:
+_wnd63:
 		.BYTE	$18,  2,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$26,$29,$2B,$2D,$32
 		.BYTE	  0,$25,  0,$32,$29,$3B,  0,$35,$39,$29,$37,$38,$FF
-byte_159CC3:
+_wnd65:
 		.BYTE	$18,  9,$12,$87,$4E,$A1,$22,$23,  0,  0,  0,$DA,$90,$9E,$FA,$90
 		.BYTE	$FF
-byte_159CD4:
+_wnd66:
 		.BYTE	$16,$19,$43,  0,$60,$E1,$22,$A3,  1,  1,  0,  0,$B8,$C0,$FF,$98
 		.BYTE	$C0,$FF,$FF
-byte_159CE7:
+_wnd67:
 		.BYTE	$10,  5,$96,$80,$4D,$E1,$22,$BB,$41,  1,  4,$9E,$B6,$B4,$FF,$96
 		.BYTE	$D4,$FF,$FF
-byte_159CFA:
+_wnd68:
 		.BYTE	$80,$1A
-		.WORD	byte_1593B8
-byte_159CFE:
+		.WORD	_wnd12
+_wnd69:
 		.BYTE	$10,  9,$18,  0,$60,$A1,$22,$23,  0,  0,  0,$FF
-byte_159D0A:
+_wnd6A:
 		.BYTE	  8,$10,$35,$83,$42,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
-byte_159D18:
+_wnd6B:
 		.BYTE	$10,  9,$18,  0,$60,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B4
 		.BYTE	$FF
 		.BYTE	$96,$D4,$FF,$FF
 _txt_window_names:
-		.BYTE	$27,$33,$31,$31,$25,$32,$28,$FF
-		.BYTE	$37,$38,$25,$38,$39,$37,$FF
-		.BYTE	$2D,$38,$29,$31,$FF
-		.BYTE	$3B,$2C,$33,$31,$FF
-		.BYTE	$37,$34,$29,$30,$30,$FF
-		.BYTE	$29,$35,$39,$2D,$34,$FF
-		.BYTE	$3B,$29,$25,$34,$33,$32,$FF
-		.BYTE	$25,$36,$31,$33,$36,$FF
-		.BYTE	$37,$2C,$2D,$29,$30,$28,$FF
-		.BYTE	$2C,$29,$30,$31,$29,$38,$FF
-		.BYTE	$27,$30,$25,$37,$37,$FF
-		.BYTE	$37,$29,$3C,$FF
-		.BYTE	$32,$25,$31,$29,$FF
-		.BYTE	  0,$64,$FF
-		.BYTE	$2A,$2D,$2B,$2C,$38,$FF
-		.BYTE	$38,$33,$FF
+		.BYTE	_C,_O,_M,_M,_A,_N,_D,$FF
+		.BYTE	_S,_T,_A,_T,_U,_S,$FF
+		.BYTE	_I,_T,_E,_M,$FF
+		.BYTE	_W,_H,_O,_M,$FF
+		.BYTE	_S,_P,_E,_L,_L,$FF
+		.BYTE	_E,_Q,_U,_I,_P,$FF
+		.BYTE	_W,_E,_A,_P,_O,_N,$FF
+		.BYTE	_A,_R,_M,_O,_R,$FF
+		.BYTE	_S,_H,_I,_E,_L,_D,$FF
+		.BYTE	_H,_E,_L,_M,_E,_T,$FF
+		.BYTE	_C,_L,_A,_S,_S,$FF
+		.BYTE	_S,_E,_X,$FF
+		.BYTE	_N,_A,_M,_E,$FF
+		.BYTE	  0,_arrow,$FF
+		.BYTE	_F,_I,_G,_H,_T,$FF
+		.BYTE	_T,_O,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_159D86:
@@ -2847,24 +2893,6 @@ sub_159D86:
 		PLA
 		TAY
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_159D92:
-;		STA		byte_76
-;		PHA
-;		TXA
-;		PHA
-;		TYA
-;		PHA
-;		LDA		byte_76
-;		JSR		_sram_bank0_select_ex
-;		PLA
-;		TAY
-;		PLA
-;		TAX
-;		PLA
-;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
@@ -3331,7 +3359,7 @@ sub_15A068:
 locret_15A074:
 		RTS
 loc_15A075:
-		FAR		$85, $2F		; _sys12
+		FAR		$85,$2F		; _sys12
 		JSR		sub_15A1A1
 		PLA
 		PLA
@@ -4522,7 +4550,7 @@ loc_15A849:
 		BPL		loc_15A8B1
 		AND		#3
 		STA		byte_64
-		FAR		$6D, 7		; _b4_s2
+		FAR		$6D,$07		; _b4_s2
 		LDA		byte_59
 		LDX		#2
 		JSR		sub_15A96C
@@ -4623,7 +4651,7 @@ sub_15A8F0:
 		RTS
 loc_15A8FA:
 		JSR		sub_15A916
-		FAR		$85, $2F		; _sys12
+		FAR		$85,$2F		; _sys12
 		LDX		#2
 		JSR		_vblank_count
 		LDA		byte_580
@@ -4778,7 +4806,7 @@ loc_15A9C3:
 		JSR		_bE_s38
 		LDA		byte_6AD0
 		BEQ		loc_15A9CF
-		FAR		$96, $2F		; _sys12
+		FAR		$96,$2F		; _sys12
 loc_15A9CF:
 		PLP
 		BCC		locret_15A9D5
@@ -5213,7 +5241,7 @@ sub_15AC41:
 		CMP		#6
 		BNE		loc_15AC63
 		PHA
-		FAR		$7D, $17		; _bD_sB
+		FAR		$7D,$17		; _bD_sB
 		PLA
 		LDA		word_6+1
 		BEQ		loc_15AC77
@@ -5808,8 +5836,8 @@ loc_15B007:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s22:
-		FAR		$D, 7		; _bD_s5
-		FAR		$93, $2F		; _sys12
+		FARX	_bD_s5
+		FAR		$93,$2F		; _sys12
 		LDA		#$F8
 		LDX		#0
 loc_15B013:
@@ -5820,8 +5848,8 @@ loc_15B013:
 		LDA		#2
 		STA		byte_8F
 loc_15B01F:
-		FAR		$F, 7		; _bD_s7
-		FAR		$F, 7		; _bD_s7
+		FARX	_bD_s7
+		FARX	_bD_s7
 		LDA		#1
 		STA		word_72+1
 		LDA		#0
@@ -5847,12 +5875,12 @@ loc_15B02D:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s32:
-		FAR		$D, 7		; _bD_s5
+		FARX	_bD_s5
 		JSR		sub_15B0EF
 		LDA		#2
 		STA		byte_8F
 loc_15B05C:
-		FAR		$F, 7		; _bD_s7
+		FARX	_bD_s7
 		LDA		#1
 		STA		word_72+1
 		LDA		#0
@@ -5876,7 +5904,7 @@ loc_15B067:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s26:
-		FAR		$F, 7		; _bD_s7
+		FARX	_bD_s7
 		INC		byte_8F
 		LDA		byte_8F
 
@@ -5890,15 +5918,15 @@ sub_15B08E:
 		BEQ		loc_15B0A9
 		RTS
 loc_15B09B:
-		FAR		$D, 7		; _bD_s5
+		FARX	_bD_s5
 		LDY		#4
 		BNE		sub_15B0D5
 loc_15B0A2:
-		FAR		$D, 7		; _bD_s5
+		FARX	_bD_s5
 		LDY		#8
 		BNE		sub_15B0D5
 loc_15B0A9:
-		FAR		$D, 7		; _bD_s5
+		FARX	_bD_s5
 		LDY		#$C
 		JSR		sub_15B0D5
 		LDA		#0
@@ -5906,7 +5934,7 @@ loc_15B0A9:
 		LDA		byte_2C
 		CMP		#1
 		BNE		locret_15B0D4
-		FAR		$B, $2F		; _sys12
+		FAR		$0B,$2F		; _sys12
 		LDA		byte_2A
 		CMP		#$A2
 		BNE		locret_15B0D4
@@ -5916,7 +5944,7 @@ loc_15B0A9:
 		LDA		byte_60B6
 		AND		#4
 		BEQ		locret_15B0D4
-		FAR		$FB, 7		; _bC_s25
+		FAR		$FB,$07		; _bC_s25
 locret_15B0D4:
 		RTS
 
@@ -5962,7 +5990,7 @@ _bE_s25:
 		STA		byte_60CD
 loc_15B112:
 		INC		byte_8F
-		FAR		$D, 7		; _bD_s5
+		FARX	_bD_s5
 locret_15B117:
 		RTS
 
@@ -6163,7 +6191,7 @@ sub_15B265:
 loc_15B26F:
 		TXA
 		STA		byte_62
-		FAR		$A0, 7		; _bB_s3_far_apu_load
+		FAR		$A0,$07		; _bB_s3_apu_load
 locret_15B275:
 		RTS
 
@@ -6185,7 +6213,7 @@ sub_15B288:
 		STA		byte_CF
 		JSR		_sram_b0_s5
 		PHA
-		FAR		$D4, 7		; _b4_s1A
+		FAR		$D4,$07		; _b4_s1A
 		PLA
 		BNE		locret_15B275
 		LDA		byte_CE
@@ -6195,14 +6223,14 @@ sub_15B288:
 		LDA		#0
 		STA		byte_73D,X
 		DEC		byte_48
-		FAR		$D4, 7		; _b4_s1A
+		FAR		$D4,$07		; _b4_s1A
 		JSR		_bE_sD
-		FAR		$24, $17		; _bE_s10
+		FAR		$24,$17		; _bE_s10
 		JSR		_bE_s34
 		JSR		sub_174DF2
 		LDA		byte_48
 		BNE		loc_15B2D0
-		FAR		$13, $2F		; _sys12
+		FAR		$13,$2F		; _sys12
 		LDA		#0
 		STA		byte_D2
 		LDX		#$27
@@ -6216,7 +6244,7 @@ loc_15B2C7:
 		JSR		_bE_s4_msg_m00
 		JMP		sub_174BB3
 loc_15B2D0:
-		FAR		$27, $67		; _sys06_msg_m00_arg0
+		FAR		$27,$67		; _sys06_msg_m00_arg0
 		JSR		_bE_s33
 		LDA		#0
 		STA		byte_62
@@ -6230,7 +6258,7 @@ _bE_s31:
 		CMP		#$6B
 		BNE		loc_15B2F5
 		LDA		#$32
-		FAR		$97, 7		; _bC_s0
+		FAR		$97,$07		; _bC_s0
 		LDA		#$1C
 		STA		byte_6EF
 		LDA		#0
@@ -6559,7 +6587,7 @@ loc_15B538:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s30:
-		FAR		$AB, 7		; _bE_s1D
+		FAR		$AB,$07		; _bE_s1D
 		LDA		#<[byte_6D40]
 		STA		word_3C
 		LDA		#>[byte_6D40]
@@ -6588,7 +6616,7 @@ loc_15B561:
 		BNE		loc_15B549
 		RTS
 loc_15B572:
-		FAR		$AE, 7		; _bE_s20
+		FAR		$AE,$07		; _bE_s20
 		STX		word_3E
 		STY		word_3E+1
 		LDY		#0
@@ -6630,7 +6658,7 @@ loc_15B58F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s16:
-		FAR		$AB, 7		; _bE_s1D
+		FAR		$AB,$07		; _bE_s1D
 		LDA		#<[byte_7400]
 		STA		word_6E
 		LDA		#>[byte_7400]
@@ -6662,7 +6690,7 @@ loc_15B5D8:
 loc_15B5E5:
 		LDA		word_3C
 		INC		word_3C
-		FAR		$17, 7		; _bC_s1F
+		FARX	_bC_s1F
 		BCC		loc_15B5D2
 		LDA		#$1F
 		STA		word_3E
@@ -6688,7 +6716,7 @@ _bE_s36:
 		STA		byte_31
 		LDA		byte_15B630+3,X
 		STA		byte_8B
-		FAR		$53, $17		; _b6_s13
+		FAR		$53,$17		; _b6_s13
 		DEC		byte_2B
 		LDA		#$40
 		STA		byte_9B
@@ -6767,7 +6795,7 @@ sub_15B6A6:
 		LDA		byte_60C5
 		AND		#$20
 		BEQ		locret_15B6B0
-		FAR		$5E, $17		; _bC_s1B
+		FAR		$5E,$17		; _bC_s1B
 locret_15B6B0:
 		RTS
 
@@ -6782,7 +6810,7 @@ locret_15B6BB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B6BC:
-		FAR		$4C, $17		; _b0_s51
+		FAR		$4C,$17		; _b0_s51
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7190,7 +7218,7 @@ sub_15B9FA:
 		JSR		_vblank
 		PLA
 		STA		byte_90
-		FAR		$25, $17		; _bE_s34
+		FAR		$25,$17		; _bE_s34
 		INC		byte_6AC0
 		RTS
 
