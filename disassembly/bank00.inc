@@ -5,14 +5,14 @@ _b0_s0_world_map_random_enounter_test_ptr:
 		.WORD	_b0_s0_world_map_random_enounter_test
 _b0_s1_ptr:
 		.WORD	_b0_s1
-_b0_s2_ptr:
-		.WORD	_b0_s2
+_b0_s2_pc_store_hp_ptr:
+		.WORD	_b0_s2_pc_store_hp
 _b0_s3_ptr:
 		.WORD	_b0_s3
 _b0_s4_ptr:
 		.WORD	_b0_s4
-_b0_s5_ptr:
-		.WORD	_b0_s5
+_b0_s5_pc_reduce_hp_ptr:
+		.WORD	_b0_s5_pc_reduce_hp
 _b0_s6_ptr:
 		.WORD	_b0_s6
 _b0_s7_ptr:
@@ -1558,10 +1558,10 @@ _b0_d44:
 		.BYTE	$80,$81,  0,  5,$23,  0,$80,$80,  0,  0,  0,  0,  0
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_StoreHP"
-_b0_s2:
+; stores pc.hp[byte_ce] = word_4
+_b0_s2_pc_store_hp:
 		LDA		byte_CE
-		ASL
+		ASL ; array index to pointer in u16 array
 		TAX
 		LDA		byte_71C,X
 		STA		word_4
@@ -1619,9 +1619,8 @@ loc_92F7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "_PC_SubtractHP"
-; clamps at 0
-_b0_s5:
+; actually removes HP from a PC. clamps at 0. Doesn't perform any visuals
+_b0_s5_pc_reduce_hp:
 		LDA		byte_CE
 		ASL
 		TAX
@@ -4285,11 +4284,11 @@ byte_A1F4:
 ; of redundant code. rewritten.
 ;
 _b0_s61_sram_b0_syscall_shortcuts_load:
-		LDA		#<[_sram_b0_s2]
+		LDA		#<[_sram_b0_s2_pc_store_hp]
 		STA		word_4
-		LDA		#>[_sram_b0_s2]
+		LDA		#>[_sram_b0_s2_pc_store_hp]
 		STA		word_4+1
-		LDX		#[_b0_s2_idx-_sys_idx_lib]>>1	; first sub idx in lib
+		LDX		#[_b0_s2_pc_store_hp_idx-_sys_idx_lib]>>1	; first sub idx in lib
 loc_A208a:
 		LDY		#0
 loc_A208:

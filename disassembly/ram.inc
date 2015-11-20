@@ -1327,7 +1327,7 @@ byte_63D: ; "bottommostTileVisible"
 byte_63E:
 		.BYTE	0
 ;----------------------------------------------
-; u24 u25AttackDisplayDamage - this numeric parameter is displayed in attack messages
+; u24 u24AttackDisplayDamage - this numeric parameter is displayed in attack messages (keyed to a particular special string value?)
 byte_63F:
 		.BYTE	0
 byte_640:
@@ -4846,13 +4846,13 @@ byte_6B1F:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-_sram_b0_s2:
+_sram_b0_s2_pc_store_hp:
 		.BYTE	0,0,0,0,0
 _sram_b0_s3:
 		.BYTE	0,0,0,0,0
 _sram_b0_s4:
 		.BYTE	0,0,0,0,0
-_sram_b0_s5:
+_sram_b0_s5_pc_reduce_hp:
 		.BYTE	0,0,0,0,0
 _sram_b0_s6:
 		.BYTE	0,0,0,0,0

@@ -1354,8 +1354,8 @@ loc_1588BA:
 		JSR		sub_158BA1
 		JSR		sub_158E72
 		JMP		loc_15883A
-_sys_idx_list0:
-		.BYTE	[_b0_s2_idx-_sys_idx_lib]>>1
+_sys_idx_list0: ; what is this crap?
+		.BYTE	[_b0_s2_pc_store_hp_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s6_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s3_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s7_idx-_sys_idx_lib]>>1
@@ -6224,9 +6224,9 @@ sub_15B282:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B288:
-		LDA		byte_64
-		STA		byte_CF
-		JSR		_sram_b0_s5
+		LDA		byte_64 ; "actingEnemy"
+		STA		byte_CF ; "tempdamage" - whats this doing in this bank?
+		JSR		_sram_b0_s5_pc_reduce_hp
 		PHA
 		FARX	_b4_s1A
 		PLA

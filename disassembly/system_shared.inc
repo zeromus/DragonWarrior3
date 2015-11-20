@@ -6184,12 +6184,12 @@ _bC_s38_idx:			PTR_IDX	$C,_bC_s38					; $FA _bC_s38
 _bC_s18_idx:			PTR_IDX	$C,_bC_s18					; $CF _bC_s18, used indirectly
 _bC_s1C_idx:			PTR_IDX	$C,_bC_s1C					; $F3 _bC_s1C, used indirectly
 ;
-; then SRAM shourtcuts
+; then SRAM shortcuts (so annoying)
 ;
-_b0_s2_idx:				PTR_IDX	$0,_b0_s2					; $23 _b0_s2
+_b0_s2_pc_store_hp_idx:				PTR_IDX	$0,_b0_s2_pc_store_hp					; $23 _b0_s2_pc_store_hp
 _b0_s3_idx:				PTR_IDX	$0,_b0_s3					; $24 _b0_s3
 _b0_s4_idx:				PTR_IDX	$0,_b0_s4					; $25 _b0_s4
-_b0_s5_idx:				PTR_IDX	$0,_b0_s5					; $26 _b0_s5
+_b0_s5_pc_reduce_hp_idx:				PTR_IDX	$0,_b0_s5_pc_reduce_hp					; $26 _b0_s5_pc_reduce_hp
 _b0_s6_idx:				PTR_IDX	$0,_b0_s6					; $27 _b0_s6
 _b0_s7_idx:				PTR_IDX	$0,_b0_s7					; $28 _b0_s7
 _b0_s8_idx:				PTR_IDX	$0,_b0_s8					; $29 _b0_s8
@@ -6818,6 +6818,7 @@ _sys0E_wrap_bE_s0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; this seems to be one of the main functions used to play a sound effect. not sure if there are others; not sure if it's for music.
 _sys12_wrap_bB_s3_apu_load:
 		TYA
 		FARX	_bB_s3_apu_load
