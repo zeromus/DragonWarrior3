@@ -219,16 +219,16 @@ loc_128119:
 		CMP		#$1F
 		BNE		loc_128154
 		JSR		sub_174CCF
-		FAR		$71,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$71
 		FARX	_bE_s1C
 		BEQ		loc_128139
-		FAR		$72,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$72
 		JSR		sub_174D4F
 		LDA		#$20
 		JSR		_bC_s0
 		JMP		loc_12814E
 loc_128139:
-		FAR		$73,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$73
 		JSR		sub_174D4F
 		LDA		#$21
 		JSR		_bC_s0
@@ -260,7 +260,7 @@ loc_128175:
 		CMP		#$23
 		BNE		loc_128185
 		JSR		sub_174CCF
-		FAR		$75,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$75
 		JSR		sub_174D4F
 loc_128185:
 		LDA		byte_6E1
@@ -269,7 +269,7 @@ loc_128185:
 		LDA		#$C0
 		STA		byte_60C6
 		JSR		sub_174CCF
-		FAR		$86,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$86
 		JSR		sub_174D4F
 loc_12819A:
 		LDA		byte_6E1
@@ -279,7 +279,7 @@ loc_12819A:
 		FARX	_bD_sB
 		LDA		byte_D2
 		STA		byte_D3
-		FAR		$81,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$81
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$F
 		FARX	_b0_s1
@@ -323,7 +323,7 @@ loc_1281FA:
 		CMP		#$D
 		BNE		loc_12820F
 		JSR		sub_174CCF
-		FAR		$6C,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6C
 		JSR		sub_174D4F
 		LDA		#$D
 		JSR		_bC_s0
@@ -343,7 +343,7 @@ loc_12821D:
 		CMP		#$25
 		BNE		loc_128233
 		JSR		sub_174CCF
-		FAR		$76,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$76
 		FARX	_bC_s12_vblank_count_50
 		FARX	_bC_s20
 		LDA		#$25
@@ -351,14 +351,14 @@ loc_128233:
 		CMP		#$26
 		BNE		loc_128242
 		JSR		sub_174CCF
-		FAR		$77,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$77
 		JSR		sub_174D4F
 		LDA		#$26
 loc_128242:
 		CMP		#$27
 		BNE		loc_128251
 		JSR		sub_174CCF
-		FAR		$78,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$78
 		JSR		sub_174D4F
 		LDA		#$27
 loc_128251:
@@ -389,14 +389,14 @@ loc_12827B:
 		LDA		#8
 		STA		byte_74C0
 		JSR		sub_174CCF
-		FAR		$6E,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6E
 		JMP		loc_128296
 loc_12828A:
 		PHA
 		LDA		#0
 		STA		byte_74C0
 		JSR		sub_174CCF
-		FAR		$6F,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6F
 loc_128296:
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$95
@@ -409,7 +409,7 @@ loc_128296:
 loc_1282A7:
 		PHA
 		JSR		sub_174CCF
-		FAR		$6D,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6D
 		JSR		sub_174D4F
 		PLA
 loc_1282B2:
@@ -631,7 +631,7 @@ loc_1283CA:
 		LDX		#$F
 		JSR		_vblank_count
 		JSR		sub_174CCF
-		FAR		$A5,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$A5
 		JSR		sub_174D4F
 		LDA		byte_60B6
 		ORA		#$20
@@ -2011,7 +2011,7 @@ _bC_s34:
 		BNE		locret_128F02
 		BIT		byte_60C5
 		BVC		locret_128F02
-		FAR		$21,$2F		; _sys12
+		SYSX	_sys12,$21
 		JSR		sub_128F03
 		JSR		sub_128F24
 		JSR		sub_128F4F
@@ -2097,7 +2097,7 @@ sub_128F30:
 		ASL
 		STA		word_4+1
 		JSR		sub_129074
-		FAR		$95,$2F		; _sys12
+		SYSX	_sys12,$95
 locret_128F49:
 		RTS
 
@@ -2241,7 +2241,7 @@ loc_129032:
 		JSR		sub_129060
 loc_129057:
 		JSR		sub_1742BA
-		FAR		$95,$2F		; _sys12
+		SYSX	_sys12,$95
 		JMP		sub_128F4A
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2292,20 +2292,20 @@ sub_12908F:
 		CMP		#$11
 		BCS		locret_1290E0
 		JSR		sub_174CCF
-		FAR		$93,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$93
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#2
 		FARX	_b0_s1
 		JSR		sub_174CBD
 		JSR		sub_174CCF
-		FAR		$94,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$94
 loc_1290C1:
 		FARX	_bE_s1C
 		BEQ		loc_1290CC
-		FAR		$91,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$91
 		JMP		loc_1290C1
 loc_1290CC:
-		FAR		$92,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$92
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$80
 		STA		byte_60C8
@@ -2328,7 +2328,7 @@ sub_1290E1:
 		LDA		#1
 		STA		byte_60C8
 		JSR		sub_174CCF
-		FAR		$8E,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$8E
 		LDA		#$2D
 		BNE		loc_129117
 loc_1290FF:
@@ -2339,7 +2339,7 @@ loc_1290FF:
 		LDA		#3
 		STA		byte_60C8
 		JSR		sub_174CCF
-		FAR		$8F,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$8F
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$2E
 loc_129117:
@@ -2364,7 +2364,7 @@ sub_129120:
 		LDA		#7
 		STA		byte_60C8
 		JSR		sub_174CCF
-		FAR		$90,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$90
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		JSR		sub_12911A
 		LDA		#$1E
@@ -2441,7 +2441,7 @@ loc_129199:
 		STA		byte_6DF
 		JSR		loc_1752EB
 		JSR		sub_174CCF
-		FAR		$98,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$98
 		FARX	_bE_s33
 		RTS
 
@@ -2480,7 +2480,7 @@ _bC_s11:
 		BCS		loc_129232
 		LDA		#$97
 		STA		byte_6DF
-		FAR		$04,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$04
 		JSR		sub_176C3C
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
@@ -2488,7 +2488,7 @@ _bC_s11:
 		SEC
 		RTS
 loc_129232:
-		FAR		$02,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$02
 		FARX	_bE_s33
 		SEC
 		RTS
@@ -2868,7 +2868,7 @@ loc_12949A:
 		CLC
 		RTS
 loc_1294A0:
-		FAR		$00,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$00
 		FARX	_bE_s33
 		SEC
 		RTS
@@ -3108,12 +3108,12 @@ sub_129600:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129610:
-		FAR		$68,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$68
 		JMP		loc_129745
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129616:
-		FAR		$1C,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$1C
 		JMP		loc_129742
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3139,7 +3139,7 @@ loc_12963D:
 		BEQ		loc_129647
 		JMP		loc_12970F
 loc_129647:
-		FAR		$47,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$47
 		JSR		sub_1299B6
 		JSR		_bC_s1F
 		PHP
@@ -3160,7 +3160,7 @@ loc_129647:
 		FARX	_bB_s3_apu_load
 		LDA		#$1F
 		JSR		sub_1295EB
-		FAR		$64,$67		; _sys06_msg_m00_arg0
+		SYSX	_sys06_msg_m00_arg0,$64
 		LDA		byte_8B
 		CMP		#$D3
 		BNE		loc_12967D
@@ -3199,22 +3199,22 @@ loc_129698:
 		LDA		byte_CF
 		STA		byte_640
 		JSR		_sram_b0_s1C
-		FAR		$26,$67		; _sys06_msg_m00_arg0
+		SYSX	_sys06_msg_m00_arg0,$26
 		JMP		loc_129745
 loc_1296BD:
-		FAR		$49,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$49
 		JMP		loc_129745
 loc_1296C3:
 		LDA		byte_60C5
 		BMI		loc_1296BD
-		FAR		$AC,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AC
 		JSR		sub_176C3C
 		LDA		#$C
 		BNE		loc_1296DF
 loc_1296D2:
 		LDA		byte_60C5
 		BMI		loc_1296BD
-		FAR		$AD,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AD
 		JSR		sub_176C3C
 		LDA		#$12
 loc_1296DF:
@@ -3230,7 +3230,7 @@ loc_1296E8:
 loc_1296F5:
 		LDA		_pak_data_ptr
 		PHA
-		FAR		$3E,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$3E
 		JSR		sub_176C3C
 		LDA		#$B
 		FARX	_b0_s1
@@ -3270,16 +3270,16 @@ loc_12973A:
 		INX
 		CPX		#$68
 		BNE		loc_129711
-		FAR		$47,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$47
 loc_129742:
-		FAR		$46,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$46
 loc_129745:
 		FARX	_bE_s33
 		RTS
 loc_129749:
 		LDA		byte_129B25,X
 		PHA
-		FAR		$47,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$47
 		PLA
 		STA		word_6+1
 		JSR		sub_129600
@@ -3317,7 +3317,7 @@ loc_12978A:
 		LDA		byte_110
 		CMP		#5
 		BEQ		loc_129801
-		FAR		$B2,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$B2
 		JSR		sub_176C3C
 		LDA		#$92
 		STA		byte_113
@@ -3334,7 +3334,7 @@ loc_12978A:
 loc_1297B7:
 		LDA		byte_644
 		BNE		loc_129801
-		FAR		$3B,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$3B
 		LDA		#$3D
 loc_1297C1:
 		JSR		sub_176C70
@@ -3346,14 +3346,14 @@ loc_1297C7:
 		LDA		#$42
 		BNE		loc_1297C1
 loc_1297D2:
-		FAR		$44,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$44
 		LDA		#$A9
 		BNE		loc_1297C1
 loc_1297D9:
 		LDA		byte_60CA
 		AND		#2
 		BNE		loc_129801
-		FAR		$44,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$44
 		LDA		#$4A
 		STA		_pak_data_ptr
 		JMP		loc_12986B
@@ -3373,7 +3373,7 @@ loc_1297FB:
 		CPX		#$6B
 		BCC		loc_1297EC
 loc_129801:
-		FAR		$47,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$47
 loc_129804:
 		JMP		loc_129742
 loc_129807:
@@ -3405,7 +3405,7 @@ loc_12982B:
 		ADC		#$B6
 		STA		byte_60A8
 		PHA
-		FAR		$47,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$47
 		PLA
 		STA		word_4
 		PLA
@@ -3439,7 +3439,7 @@ loc_12986B:
 		BMI		loc_129804
 loc_12986F:
 		STA		byte_D3
-		FAR		$65,$67		; _sys06_msg_m00_arg0
+		SYSX	_sys06_msg_m00_arg0,$65
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129874:
@@ -3460,25 +3460,26 @@ loc_129888:
 loc_12988F:
 		TYA
 		JSR		sub_176C6C
-		FAR		$45,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$45
 		FARX	_bE_s1C
 		BNE		loc_1298D1
 		LDA		_pak_data_ptr+1
 		BEQ		loc_1298A9
 loc_12989F:
-		FAR		$6A,$67		; _sys06_msg_m00_arg0
-		FAR		$1C,$D7		; _sys0D
+		SYSX	_sys06_msg_m00_arg0,$6A
+		SYSX	_sys0D,$1C
 		CMP		#$FF
 		BEQ		loc_1298D1
 loc_1298A9:
 		STA		_tmp_pak_data_bank
 		STA		byte_CE
-		FAR		$68,$67		; _sys06_msg_m00_arg0
-		FAR		$2D,$D7		; _sys0D
+		SYSX	_sys06_msg_m00_arg0,$68
+		SYSX	_sys0D,$2D
 		CMP		#$FF
 		BEQ		loc_1298CD
 		STA		byte_CF
-		FAR		$49,$07		; _b0_s28
+;		FAR		$49,$07		; _b0_s28
+		JSR		_sram_b0_s28
 		LDA		word_4+1
 		AND		#$7F
 		TAX
@@ -3486,7 +3487,7 @@ loc_1298A9:
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
-		FAR		$2A,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$2A
 loc_1298CD:
 		LDA		_pak_data_ptr+1
 		BNE		loc_12989F
@@ -3497,7 +3498,7 @@ loc_1298D1:
 		STA		byte_D2
 		LDA		_pak_data_ptr
 		STA		byte_D3
-		FAR		$69,$67		; _sys06_msg_m00_arg0
+		SYSX	_sys06_msg_m00_arg0,$69
 		JMP		loc_129943
 loc_1298E5:
 		LDA		_tmp_pak_data_bank
@@ -3521,7 +3522,7 @@ loc_1298E5:
 		STA		byte_D2
 		LDA		_pak_data_ptr
 		STA		byte_D4
-		FAR		$4A,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$4A
 		JMP		loc_129935
 loc_129913:
 		INY
@@ -3563,7 +3564,7 @@ loc_129943:
 		BNE		loc_129950
 		LDA		_tmp_pak_data_bank
 		STA		byte_D2
-		FAR		$4B,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$4B
 loc_129950:
 		JMP		loc_129745
 loc_129953:
@@ -4032,7 +4033,7 @@ _bC_s22:
 		BEQ		loc_129C16
 loc_129C0E:
 		JSR		sub_176C3C
-		FAR		$01,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$01
 		CLC
 		RTS
 loc_129C16:
@@ -4049,7 +4050,7 @@ loc_129C16:
 		ORA		#4
 		STA		byte_60B6
 		JSR		sub_129E5D
-		FAR		$24,$2F		; _sys12
+		SYSX	_sys12,$24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4068,7 +4069,7 @@ loc_129C16:
 		LDX		#$20
 		JSR		sub_12A1F1
 		JSR		sub_129D1B
-		FAR		$25,$2F		; _sys12
+		SYSX	_sys12,$25
 		JSR		sub_129EBC
 		JSR		sub_129EEB
 loc_129C72:
@@ -4502,7 +4503,7 @@ _bC_s25:
 		PHA
 		FARX	_bB_s4
 		JSR		sub_129E5D
-		FAR		$24,$2F		; _sys12
+		SYSX	_sys12,$24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4512,7 +4513,7 @@ _bC_s25:
 		JSR		sub_129CA1
 		LDX		#4
 		JSR		sub_129E07
-		FAR		$25,$2F		; _sys12
+		SYSX	_sys12,$25
 		JSR		sub_129EBC
 		JMP		loc_129C72
 
@@ -4533,16 +4534,16 @@ _bC_s13:
 		CMP		#9
 		BEQ		loc_129FA2
 loc_129F9D:
-		FAR		$18,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$18
 		CLC
 		RTS
 loc_129FA2:
-		FAR		$17,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$17
 		JSR		sub_176C3C
 		LDA		#0
 		FARX	_bE_sB
 		JSR		sub_129FC3
-		FAR		$97,$2F		; _sys12
+		SYSX	_sys12,$97
 		FARX	_b2_s8_screen_hit_blink
 		JSR		sub_129FE2
 		LDA		byte_60B6
@@ -4925,9 +4926,9 @@ loc_12A221:
 		AND		#2
 		BEQ		loc_12A259
 loc_12A239:
-		FAR		$1E,$2F		; _sys12
+		SYSX	_sys12,$1E
 		FARX	_bD_s22
-		FAR		$0D,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$0D
 		JSR		__pause_or_skip
 		SEC
 		RTS
@@ -4942,7 +4943,7 @@ loc_12A247:
 		LDA		byte_60B7
 		BMI		loc_12A239
 loc_12A259:
-		FAR		$1D,$2F		; _sys12
+		SYSX	_sys12,$1D
 		FARX	_bD_s22
 		SEC
 		RTS
@@ -5023,11 +5024,11 @@ _bC_s2B:
 		JSR		sub_174CCF
 		FARX	_bD_s26
 		STA		byte_D2
-		FAR		$B0,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$B0
 		LDA		#$47
 		FARX	_bD_s27
 		BCC		loc_12A2FE
-		FAR		$B1,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$B1
 		LDA		#0
 		BEQ		loc_12A308
 loc_12A2FE:
@@ -5052,7 +5053,7 @@ sub_12A312:
 		STX		word_3C
 		LDX		#[_bC_s15_idx-_sys0_sub_idx_lib]
 		STX		word_3C+1
-		FAR		$9F,$2F		; _sys12
+		SYSX	_sys12,$9F
 		JSR		_bC_s17_sys0_spr_effects_call
 loc_12A326:
 		LDA		#$3E
@@ -5383,11 +5384,11 @@ _bC_s33:
 		ORA		byte_12F
 		AND		#$FC
 		STA		byte_12F
-		FAR		$9E,$2F		; _sys12
+		SYSX	_sys12,$9E
 		JSR		sub_12A55D
 		JSR		sub_12A58F
 		JSR		sub_12A59F
-		FAR		$A0,$2F		; _sys12
+		SYSX	_sys12,$A0
 		JSR		sub_12A5CA
 		JSR		sub_12A5DB
 		LDA		#$B
@@ -5548,7 +5549,7 @@ _bC_s19:
 		BVS		loc_12A686
 		FARX	_bB_s4
 		JSR		sub_174369
-		FAR		$01,$2F		; _sys12
+		SYSX	_sys12,$01
 		FARX	_b0_s56
 		LDA		byte_60B7
 		ORA		#$40
@@ -5574,7 +5575,7 @@ _bC_s19:
 		STA		byte_8E
 		STA		word_6C
 		FARX	_bD_s19_1
-		FAR		$03,$2F		; _sys12
+		SYSX	_sys12,$03
 		JMP		sub_175B0E
 loc_12A686:
 		JSR		sub_174369
@@ -5695,7 +5696,7 @@ _bC_s21:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A743:
-		FAR		$22,$2F		; _sys12
+		SYSX	_sys12,$22
 		LDA		byte_AC
 		AND		#$E0
 		STA		byte_AC
@@ -5717,9 +5718,9 @@ sub_12A743:
 		JSR		sub_12A9CA
 		JSR		sub_12A9C1
 		JSR		_bC_s5
-		FAR		$21,$2F		; _sys12
+		SYSX	_sys12,$21
 		JSR		sub_12AA57
-		FAR		$07,$2F		; _sys12
+		SYSX	_sys12,$07
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6224,13 +6225,13 @@ loc_12AA8E:
 		JSR		sub_12AE73
 		JSR		sub_12AB1E
 		JSR		sub_12AAD4
-		FAR		$22,$2F		; _sys12
+		SYSX	_sys12,$22
 		JSR		sub_12AB31
 		JSR		sub_12AB90
 		JSR		sub_12AC5C
 		JSR		sub_12ADB1
 		JSR		sub_12AD96
-		FAR		$23,$2F		; _sys12
+		SYSX	_sys12,$23
 		JSR		sub_12AC79
 		JSR		sub_12ADD7
 		JSR		sub_12AC69
@@ -6238,7 +6239,7 @@ loc_12AA8E:
 		JSR		_vblank_count
 		JSR		sub_12AE80
 		JSR		sub_12AF78
-		FAR		$04,$2F		; _sys12
+		SYSX	_sys12,$04
 		LDA		byte_60B6
 		ORA		#8
 		STA		byte_60B6
@@ -6249,10 +6250,10 @@ loc_12AA8E:
 sub_12AAD4:
 		LDX		#$28
 		STX		word_3C
-		FAR		$20,$2F		; _sys12
+		SYSX	_sys12,$20
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
-		FAR		$21,$2F		; _sys12
+		SYSX	_sys12,$21
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
 
@@ -6371,7 +6372,7 @@ sub_12AB90:
 		LDA		#0
 		STA		word_3E+1
 loc_12AB94:
-		FAR		$98,$2F		; _sys12
+		SYSX	_sys12,$98
 		JSR		sub_12ABC3
 		INC		word_3E+1
 		LDA		word_3E+1
@@ -6982,7 +6983,7 @@ sub_12B01C:
 		JSR		_vblank
 		FARX	_bE_s10
 		JSR		sub_174CCF
-		FAR		$AF,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AF
 		FARX	_bE_s33
 locret_12B040:
 		RTS
@@ -7140,9 +7141,9 @@ _bC_s29:
 		CMP		#1
 		BNE		locret_12B163
 		JSR		sub_174CCF
-		FAR		$0A,$77		; _sys07_msg_m00_arg1
-		FAR		$00,$2F		; _sys12
-		FAR		$0C,$2F		; _sys12
+		SYSX	_sys07_msg_m00_arg1,$0A
+		SYSX	_sys12,$00
+		SYSX	_sys12,$0C
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#0
@@ -7168,7 +7169,7 @@ _bC_s2A:
 		CMP		#$31
 		BNE		locret_12B163
 		JSR		sub_174CCF
-		FAR		$A4,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$A4
 		JSR		sub_174D4F
 		LDA		#7
 		STA		byte_6E1
@@ -7181,7 +7182,7 @@ sub_12B189:
 		CMP		#$1A
 		BNE		locret_12B1A1
 		JSR		sub_174CCF
-		FAR		$41,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$41
 		FARX	_bE_s1C
 		BEQ		sub_12B1A2
 
@@ -7207,7 +7208,7 @@ loc_12B1AC:
 loc_12B1B2:
 		FARX	_bD_s26
 		STA		byte_D2
-		FAR		$AE,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AE
 		LDA		byte_60B7
 		AND		#8
 		BNE		loc_12B1F9
@@ -7226,10 +7227,10 @@ loc_12B1CB:
 		TXA
 		ORA		#$10
 		STA		byte_60B7
-		FAR		$A3,$2F		; _sys12
+		SYSX	_sys12,$A3
 		FARX	_bD_s26
 		STA		byte_D2
-		FAR		$80,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$80
 		LDA		#$13
 		STA		byte_753A
 		STA		byte_753B
@@ -7237,7 +7238,7 @@ loc_12B1CB:
 		STA		byte_7559
 		BNE		loc_12B1FC
 loc_12B1F9:
-		FAR		$40,$67		; _sys06_msg_m00_arg0
+		SYSX	_sys06_msg_m00_arg0,$40
 loc_12B1FC:
 		FARX	_bE_s33
 		RTS
@@ -7263,15 +7264,15 @@ loc_12B21B:
 		LDA		byte_60B9
 		AND		#1
 		BEQ		loc_12B22B
-		FAR		$70,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$70
 		JMP		loc_12B236
 loc_12B22B:
 		LDA		byte_60B9
 		ORA		#1
 		STA		byte_60B9
-		FAR		$6A,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6A
 loc_12B236:
-		FAR		$6B,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$6B
 		LDA		#$C
 		JSR		_bC_s0
 		JMP		sub_174D4F
@@ -7388,7 +7389,7 @@ sub_12B2EB:
 		FARX	_bD_s26
 		STA		byte_D2
 		JSR		sub_174CCF
-		FAR		$26,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$26
 		FARX	_bE_s33
 locret_12B30C:
 		RTS
@@ -7414,14 +7415,14 @@ loc_12B30D:
 		STA		byte_D2
 		LDA		word_4
 		BNE		loc_12B346
-		FAR		$29,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$29
 		JMP		loc_12B349
 loc_12B346:
-		FAR		$2A,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$2A
 loc_12B349:
-		FAR		$2B,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$2B
 loc_12B34C:
-		FAR		$2C,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$2C
 		FARX	_bE_s33
 		RTS
 
@@ -7538,10 +7539,10 @@ sub_12B3D1:
 		JSR		loc_12B448
 loc_12B41C:
 		JSR		sub_174DF2
-		FAR		$99,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$99
 		FARX	_bE_s1C
 		BEQ		loc_12B42E
-		FAR		$9A,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$9A
 		FARX	_bE_s33
 locret_12B42D:
 		RTS
@@ -7582,10 +7583,10 @@ loc_12B453:
 		STA		byte_D4
 		LDA		word_4
 		BEQ		loc_12B484
-		FAR		$AA,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$AA
 		JMP		loc_12B487
 loc_12B484:
-		FAR		$A5,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$A5
 loc_12B487:
 		JSR		sub_174D4F
 		LDA		byte_60B7
@@ -7608,20 +7609,20 @@ sub_12B493:
 		ORA		#$10
 		STA		byte_60BA
 		JSR		sub_174CCF
-		FAR		$9D,$3F		; _sys13_msg_m00_arg6
-		FAR		$9E,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$9D
+		SYSX	_sys13_msg_m00_arg6,$9E
 		FARX	_bE_s1C
 		BEQ		loc_12B4BE
-		FAR		$9F,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$9F
 loc_12B4BE:
-		FAR		$A0,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$A0
 		FARX	_bC_s12_vblank_count_50
 		JSR		sub_174369
 		JSR		_ppu_screen_clear
 		FARX	_bC_s1A
 		JSR		sub_174DF2
 		JSR		_pal_fade_in
-		FAR		$A1,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$A1
 		JSR		sub_174369
 		LDA		#8
 		STA		byte_30
@@ -7643,7 +7644,7 @@ loc_12B4BE:
 		FARX	_bD_s19_1
 		JSR		sub_175B0E
 		JSR		sub_174CCF
-		FAR		$A2,$3F		; _sys13_msg_m00_arg6
+		SYSX	_sys13_msg_m00_arg6,$A2
 		JSR		sub_174D4F
 		LDA		#$1D
 		JMP		_bC_s0
@@ -7663,7 +7664,7 @@ sub_12B518:
 		CMP		#$1C
 		BNE		locret_12B517
 		JSR		sub_174CCF
-		FAR		$8A,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$8A
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		_cur_message_speed
 		PHA
@@ -7683,10 +7684,10 @@ sub_12B518:
 		JSR		sub_174CCF
 		LDA		byte_6A65
 		BNE		loc_12B564
-		FAR		$8B,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$8B
 loc_12B564:
 		FARX	_bD_sB
-		FAR		$8C,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$8C
 		LDA		#$80
 		STA		byte_118
 		LDA		#>[byte_118]
@@ -7714,7 +7715,7 @@ loc_12B564:
 		ORA		#$10
 		STA		byte_60B9
 		FARX	_bE_s33
-		FAR		$07,$2F		; _sys12
+		SYSX	_sys12,$07
 locret_12B5AC:
 		RTS
 
@@ -7745,7 +7746,7 @@ sub_12B5AD:
 		STX		byte_7A27
 		LDA		#1
 		STA		byte_60C4
-		FAR		$95,$2F		; _sys12
+		SYSX	_sys12,$95
 		JMP		loc_12B6A2
 loc_12B5EA:
 		LDA		byte_60C4
@@ -7762,7 +7763,7 @@ loc_12B5F3:
 		CMP		#$1B
 		BNE		loc_12B615
 		JSR		sub_174CCF
-		FAR		$7F,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7F
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		JMP		loc_12B61D
 byte_12B612:
@@ -7884,7 +7885,7 @@ loc_12B6C9:
 		CMP		#$F
 		BCS		locret_12B6AE
 		JSR		sub_174CCF
-		FAR		$7A,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7A
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#3
 		FARX	_b0_s1
@@ -7896,12 +7897,12 @@ loc_12B6C9:
 		JSR		sub_12B7AD
 		JSR		sub_174CBD
 		JSR		sub_174CCF
-		FAR		$7B,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7B
 loc_12B70E:
-		FAR		$7C,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7C
 		FARX	_bE_s1C
 		BEQ		loc_12B74D
-		FAR		$7D,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7D
 		JMP		loc_12B70E
 loc_12B71C:
 		LDA		byte_644
@@ -7914,7 +7915,7 @@ loc_12B71C:
 		CMP		#$10
 		BNE		locret_12B739
 		JSR		sub_174CCF
-		FAR		$74,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$74
 		JSR		sub_174D4F
 locret_12B739:
 		RTS
@@ -7924,10 +7925,10 @@ loc_12B73A:
 		ORA		#$80
 		STA		byte_60B7
 		JSR		sub_174CCF
-		FAR		$79,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$79
 		JMP		sub_174D4F
 loc_12B74D:
-		FAR		$7E,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$7E
 		JSR		sub_174D4F
 		LDA		#$28
 		BNE		loc_12B764
@@ -7950,7 +7951,7 @@ loc_12B767:
 		CMP		#$10
 		BNE		locret_12B739
 		JSR		sub_174CCF
-		FAR		$41,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$41
 		FARX	_bE_s1C
 		BEQ		loc_12B786
 		JMP		_bC_s20
@@ -8063,7 +8064,7 @@ sub_12B820:
 		BCS		locret_12B81C
 		JSR		sub_174CCF
 		FARX	_bD_sB
-		FAR		$82,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$82
 		JSR		_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#8
 		FARX	_b0_s1
@@ -8071,7 +8072,7 @@ sub_12B820:
 		JSR		sub_174CBD
 		JSR		sub_174CCF
 		FARX	_bD_sB
-		FAR		$A7,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$A7
 		LDA		#[_bC_s18_idx-_sys0_sub_idx_lib]
 		STA		word_3C
 		LDA		#[_bC_s1C_idx-_sys0_sub_idx_lib]
@@ -8099,7 +8100,7 @@ sub_12B877:
 		JSR		_bC_s12_vblank_count_50
 loc_12B88A:
 		FARX	_bD_s19_1
-		FAR		$9B,$2F		; _sys12
+		SYSX	_sys12,$9B
 		JSR		_bC_s12_vblank_count_50
 		LDA		word_6C
 		CLC

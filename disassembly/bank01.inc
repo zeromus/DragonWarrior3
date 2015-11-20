@@ -1540,7 +1540,7 @@ loc_209E6:
 		TXA
 		LDX		#0
 		FARX	_bE_s6_msg_mFF_0
-		FAR		$13,$2F		; _sys12
+		SYSX	_sys12,$13
 		FARX	_b0_s50
 		LDA		byte_60BA
 		AND		#1
@@ -1581,7 +1581,7 @@ _b1_sD:
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		FAR		$16,$2F		; _sys12
+		SYSX	_sys12,$16
 		JSR		sub_20CAA
 		LDX		#$E
 		FARX	_b4_s1C
@@ -1595,7 +1595,7 @@ loc_20A4C:
 		FARX	_b4_s9
 		JMP		loc_20A76
 loc_20A5A:
-		FAR		$16,$2F		; _sys12
+		SYSX	_sys12,$16
 		JSR		sub_20CAA
 		LDX		#$5D
 		FARX	_b4_s1C
@@ -1697,7 +1697,7 @@ loc_20B04:
 		FARX	_b4_s9
 		JSR		sub_20D11
 		STA		byte_D2
-		FAR		$8F,$2F		; _sys12
+		SYSX	_sys12,$8F
 		LDA		#$64
 		FARX	_b4_s9
 		PLA
@@ -1726,8 +1726,8 @@ loc_20B5E:
 		LDA		#$45
 		LDX		#1
 		FARX	_bE_s4_msg_m00_1
-		FAR		$86,$2F		; _sys12
-		FAR		$1D,$E7		; _sys0E
+		SYSX	_sys12,$86
+		SYSX	_sys0E,$1D
 		CMP		#0
 		BEQ		loc_20B87
 loc_20B6F:

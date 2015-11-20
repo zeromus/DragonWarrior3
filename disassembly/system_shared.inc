@@ -2115,7 +2115,7 @@ locret_174DF1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174DF2:
-		FAR		$3E,$D7		; _sys0D
+		SYSX	_sys0D,$3E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2751,7 +2751,7 @@ loc_17527F:
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		FAR		$04,$2F		; _sys12
+		SYSX	_sys12,$04
 locret_175291:
 		RTS
 loc_175292:
@@ -2799,7 +2799,7 @@ loc_1752D9:
 		ORA		#1
 		STA		byte_2F
 		FARX	_bB_s4
-		FAR		$82,$2F		; _sys12
+		SYSX	_sys12,$82
 		JSR		sub_174369
 		JSR		sub_1759B8
 loc_1752EB:
@@ -2870,7 +2870,7 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		FAR		$11,$2F		; _sys12
+		SYSX	_sys12,$11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3191,7 +3191,7 @@ sub_175596:
 		BEQ		loc_1755A0
 		FARX	_bB_s4
 loc_1755A0:
-		FAR		$82,$2F		; _sys12
+		SYSX	_sys12,$82
 		JSR		sub_174369
 		PLA
 		PLA
@@ -3537,7 +3537,7 @@ loc_17580C:
 		CMP		byte_2B
 		BEQ		loc_175824
 loc_175818:
-		FAR		$A2,$2F		; _sys12
+		SYSX	_sys12,$A2
 loc_17581B:
 		SEC
 		RTS
@@ -3585,7 +3585,7 @@ sub_175853:
 		CMP		#$18
 		BNE		loc_175877
 		JSR		sub_174CCF
-		FAR		$87,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$87
 		DEC		byte_101
 		DEC		byte_31
 		FARX	_bE_s33
@@ -3613,7 +3613,7 @@ loc_17588B:
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		FAR		$A2,$2F		; _sys12
+		SYSX	_sys12,$A2
 loc_17589F:
 		SEC
 		RTS
@@ -3695,7 +3695,7 @@ sub_17590B:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		FAR		$82,$2F		; _sys12
+		SYSX	_sys12,$82
 		JSR		sub_174369
 		FARX	_bE_s1B
 		PLA
@@ -6625,7 +6625,7 @@ _bA_s17_idx:			PTR_IDX	_bA_s17					; $1A9 _bA_s17
 		ECHO "filesystem entries", [.-_sys0_sub_idx_lib]
 
 ; =============== S U B	R O U T	I N E =======================================
-_get_msg_ptr_by_idx:
+_get_msg_bank_by_idx:
 		TAY
 		LDA		_mmc_cur_prg_bank
 		PHA

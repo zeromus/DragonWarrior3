@@ -209,7 +209,7 @@ loc_68122:
 		JSR		__pause_or_skip
 		JMP		loc_680D6
 loc_68138:
-		FAR		$29,$2F		; _sys12
+		SYSX	_sys12,$29
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		JMP		loc_680DC
 
@@ -1551,8 +1551,8 @@ loc_6894A:
 		BPL		loc_68974
 		LDA		#$CB
 		JSR		_b4_s9
-		FAR		$86,$2F		; _sys12
-		FAR		$45,$E7		; _sys0E
+		SYSX	_sys12,$86
+		SYSX	_sys0E,$45
 		PHA
 		JSR		sub_6AA51
 		PLA
@@ -1701,7 +1701,7 @@ loc_68A7D:
 		LDA		byte_531,X
 		AND		#$10
 		BEQ		loc_68A92
-		FAR		$73,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
 		JSR		_b4_sA
 loc_68A8F:
 		JSR		sub_6870D
@@ -1788,20 +1788,20 @@ sub_68B00:
 		AND		#$FC
 		ORA		word_4
 		STA		byte_530,X
-		FAR		$1B,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B
 loc_68B24:
 		LDA		byte_531,X
 		AND		#$DF
 		STA		byte_531,X
-		FAR		$1C,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68B2F:
-		FAR		$00,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$00
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68B32:
-		FAR		$04,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68B35:
@@ -1836,14 +1836,14 @@ loc_68B5D:
 		CMP		#$A0
 		BCS		loc_68B84
 		JSR		sub_68BB6
-		FAR		$22,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
 loc_68B75:
 		LDX		byte_CE
 		LDA		byte_6A9B,X
 		AND		#8
 		BNE		loc_68B5D
 		JSR		sub_68BB6
-		FAR		$07,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
 loc_68B84:
 		LDA		byte_565
 		LDX		byte_64
@@ -1873,14 +1873,14 @@ loc_68BAB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB0:
-		FAR		$8B,$2F		; _sys12
-		FAR		$01,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys12,$8B
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB6:
 		LDA		#$20
 		JSR		sub_6B2BB
-		FAR		$8D,$2F		; _sys12
+		SYSX	_sys12,$8D
 		JSR		sub_6B2A3
 		BMI		loc_68BC6
 		JMP		sub_6B3D2
@@ -1896,8 +1896,8 @@ sub_68BC9:
 loc_68BD3:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
-		FAR		$88,$2F		; _sys12
-		FAR		$11,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys12,$88
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
 		JSR		sub_6B763
 		LDA		byte_59
 		STA		word_4
@@ -1956,7 +1956,7 @@ sub_68C42:
 sub_68C48:
 		JSR		sub_6B2B3
 		STA		byte_64
-		FAR		$83,$2F		; _sys12
+		SYSX	_sys12,$83
 		LDA		#$50
 		JSR		sub_6A96F
 		JSR		sub_6ADBF
@@ -1969,7 +1969,7 @@ sub_68C48:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68C64:
-		FAR		$4B,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
 		JSR		sub_6B2B3
 		STA		byte_64
 		JSR		sub_6B91D
@@ -2076,7 +2076,7 @@ loc_68CED:
 		STA		byte_54C,X
 		JSR		sub_6B5B7
 		INC		byte_4D
-		FAR		$4C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4C
 		JMP		sub_6AA34
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2086,7 +2086,7 @@ sub_68D39:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D3F:
-		FAR		$4B,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
 		LDX		byte_51
 		LDA		byte_558,X
 		SEC
@@ -2097,7 +2097,7 @@ sub_68D3F:
 		BCC		loc_68D56
 		JMP		loc_68C7C
 loc_68D56:
-		FAR		$4D,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D59:
@@ -2141,7 +2141,7 @@ byte_68D88:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D8D:
-		FAR		$3A,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3A
 		LDA		#1
 		JSR		sub_6B307
 		JSR		sub_6B30E
@@ -2163,7 +2163,7 @@ nullsub_5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68DB1:
-		FAR		$91,$2F		; _sys12
+		SYSX	_sys12,$91
 		LDA		#$36
 		STA		word_4
 		LDX		byte_51
@@ -2194,7 +2194,7 @@ loc_68DD5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68DEC:
-		FAR		$30,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$30
 		JSR		sub_6B32F
 		JSR		sub_6B2A3
 		BMI		loc_68DFD
@@ -2205,7 +2205,7 @@ loc_68DFD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E00:
-		FAR		$31,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$31
 		JSR		sub_6B32F
 		LDA		off_68E16
 		STA		word_3E
@@ -2238,17 +2238,17 @@ sub_68E1E:
 		LDA		byte_73D,X
 		ORA		#$20
 		STA		byte_73D,X
-		FAR		$1D,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D
 locret_68E42:
 		RTS
 loc_68E43:
 		JSR		sub_6B2EF
 		BNE		locret_68E42
-		FAR		$32,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$32
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E4B:
-		FAR		$33,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$33
 		JSR		sub_6B32F
 		LDA		off_68E61
 		STA		word_3E
@@ -2281,13 +2281,13 @@ sub_68E69:
 		LDA		byte_73D,X
 		ORA		#$40
 		STA		byte_73D,X
-		FAR		$34,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$34
 locret_68E8D:
 		RTS
 loc_68E8E:
 		JSR		sub_6B2EF
 		BNE		locret_68E8D
-		FAR		$35,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$35
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E96:
@@ -2301,7 +2301,7 @@ sub_68E96:
 		LDA		byte_6B490,X
 		STA		byte_D3
 		STA		byte_49
-		FAR		$02,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		sub_6BEB9
@@ -2326,7 +2326,7 @@ sub_68EC7:
 		LDA		byte_6B494,X
 		STA		byte_49
 		STA		byte_D3
-		FAR		$02,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_68EE6:
@@ -2411,13 +2411,13 @@ loc_68F59:
 locret_68F6C:
 		RTS
 loc_68F6D:
-		FAR		$83,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83
 loc_68F70:
 		JMP		loc_6991A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F73:
-		FAR		$7E,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7E
 		LDA		#$55
 		JSR		_b4_s20
 		JMP		_sram_b0_s2A
@@ -2500,7 +2500,7 @@ sub_68FEB:
 		FARX	_b2_s7_screen_spell_blink
 		PLA
 		STA		byte_D3
-		FAR		$02,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FF8:
@@ -2542,7 +2542,7 @@ loc_69032:
 		JSR		sub_68F8C
 		JSR		_b4_s1A
 		DEC		byte_4C
-		FAR		$2C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
 		JMP		sub_69053
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2569,7 +2569,7 @@ loc_6905D:
 		LDA		byte_531,X
 		BPL		locret_69078
 		JSR		sub_6B5B7
-		FAR		$2D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D
 		JSR		sub_6ADBF
 		JSR		_b4_s5_do_message_speed_delay
 locret_69078:
@@ -2755,14 +2755,14 @@ loc_6918F:
 		LDA		byte_73D,X
 		ORA		#$10
 		STA		byte_73D,X
-		FAR		$46,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46
 		JMP		_b4_s6
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_691BA:
 		JMP		sub_6B3D8
 loc_691BD:
-		FAR		$85,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$85
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_691C0:
@@ -2815,7 +2815,7 @@ loc_6920F:
 		STA		byte_6A9F,X
 		PLA
 		JSR		sub_6B2CF
-		FAR		$3E,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3E
 locret_69219:
 		RTS
 loc_6921A:
@@ -2864,7 +2864,7 @@ loc_69251:
 loc_69264:
 		JMP		sub_6B3D8
 loc_69267:
-		FAR		$4F,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4F
 		LDA		byte_CE
 		STA		byte_CF
 		TAX
@@ -2922,7 +2922,7 @@ sub_692B7:
 		ORA		#$F
 		STA		byte_531,X
 		JSR		sub_6B5B7
-		FAR		$48,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_692D4:
@@ -2932,7 +2932,7 @@ sub_692D4:
 		FARX	_bB_s3_apu_load
 		FARX	_b2_s8_screen_hit_blink
 		FARX	_b2_s8_screen_hit_blink
-		FAR		$76,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$76
 		LDA		byte_500
 		PHA
 		LDA		byte_501
@@ -3074,10 +3074,10 @@ loc_693CB:
 		STA		byte_6A77,X
 		INC		byte_4D
 		JSR		sub_6B5B7
-		FAR		$3C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3C
 		JMP		sub_6AA34
 loc_693EA:
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 loc_693ED:
 		JSR		sub_6B91D
 		LDX		byte_59
@@ -3088,7 +3088,7 @@ loc_693ED:
 		LDA		#$80
 		STA		byte_6A77,X
 		JSR		sub_6B5B7
-		FAR		$3D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3D
 		PLA
 		TAX
 		PLA
@@ -3123,7 +3123,7 @@ loc_6942E:
 		TAX
 		LDA		byte_6B49C,X
 		STA		byte_D3
-		FAR		$02,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		sub_6BEF5
@@ -3158,7 +3158,7 @@ loc_6946C:
 		TAX
 		LDA		byte_6B49F,X
 		STA		byte_D3
-		FAR		$02,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_6947E:
@@ -3267,7 +3267,7 @@ loc_694FD:
 		BEQ		loc_69536
 loc_6952A:
 		FARX	_bA_sA
-		FAR		$73,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
 		JSR		_b4_sA
 		JMP		loc_6953C
 loc_69536:
@@ -3308,7 +3308,7 @@ loc_69562:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6957D:
-		FAR		$38,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$38
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69580:
@@ -3339,7 +3339,7 @@ sub_69589:
 		STA		byte_73C,X
 		LDA		byte_CE
 		STA		byte_D2
-		FAR		$1B,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B
 loc_695B4:
 		TXA
 		LSR
@@ -3349,7 +3349,7 @@ loc_695B4:
 		STA		byte_6A9B,X
 		LDA		byte_CE
 		STA		byte_D2
-		FAR		$1C,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_695C6:
@@ -3392,11 +3392,11 @@ sub_69604:
 		BMI		loc_6960C
 		JMP		sub_696E8
 loc_6960C:
-		FAR		$89,$2F		; _sys12
-		FAR		$01,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys12,$89
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
 		JSR		sub_6B0E5
 		BCC		loc_6961A
-		FAR		$7C,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$7C
 loc_6961A:
 		LDA		byte_CE
 		PHA
@@ -3419,9 +3419,9 @@ loc_6962A:
 		CMP		#$A0
 		BCS		loc_69647
 loc_6963E:
-		FAR		$8C,$2F		; _sys12
+		SYSX	_sys12,$8C
 		JSR		sub_6B5B7
-		FAR		$22,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
 loc_69647:
 		LDA		byte_575
 		AND		#8
@@ -3478,8 +3478,8 @@ loc_696AD:
 		CMP		word_6+1
 		BCS		loc_696C9
 loc_696B6:
-		FAR		$88,$2F		; _sys12
-		FAR		$10,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys12,$88
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10
 		JSR		_sram_b0_s17
 		JSR		sub_6ADA4
 		LDX		#word_4
@@ -3498,8 +3498,8 @@ loc_696DC:
 		JMP		loc_6A42E
 loc_696DF:
 		JSR		sub_6B5B7
-		FAR		$8C,$2F		; _sys12
-		FAR		$07,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys12,$8C
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_696E8:
@@ -3507,7 +3507,7 @@ sub_696E8:
 		LDA		word_6
 		CMP		#$FF
 		BNE		loc_696F4
-		FAR		$01,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
 loc_696F4:
 		AND		#$18
 		BEQ		loc_69709
@@ -3517,9 +3517,9 @@ loc_696F4:
 		BNE		loc_69709
 		JSR		sub_6975F
 		BCC		locret_69735
-		FAR		$24,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24
 loc_69709:
-		FAR		$01,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
 		LDA		word_6
 		AND		#3
 		STA		byte_CE
@@ -3537,7 +3537,7 @@ loc_69709:
 		LDA		byte_73D,X
 		AND		#$EF
 		STA		byte_73D,X
-		FAR		$74,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$74
 locret_69735:
 		RTS
 loc_69736:
@@ -3549,9 +3549,9 @@ loc_69736:
 		AND		#7
 		CMP		#7
 		BCC		loc_6974C
-		FAR		$25,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$25
 loc_6974C:
-		FAR		$1C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1C
 		LDX		byte_CE
 		LDA		byte_6A9B,X
 		AND		#$F7
@@ -3566,7 +3566,7 @@ sub_6975F:
 		AND		#3
 		STA		byte_CE
 		STA		byte_D3
-		FAR		$23,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$23
 		LDA		byte_D3
 		STA		byte_D2
 		JSR		sub_6A4D9
@@ -3622,16 +3622,16 @@ loc_697B6:
 loc_697C5:
 		LDA		byte_D3
 		JSR		sub_68FEB
-		FAR		$20,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$20
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697CD:
-		FAR		$04,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697D0:
-		FAR		$91,$2F		; _sys12
-		FAR		$36,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys12,$91
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36
 		LDA		#$14
 		STA		byte_55
 		LDA		#$AA
@@ -3696,7 +3696,7 @@ nullsub_11:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6983C:
-		FAR		$8E,$2F		; _sys12
+		SYSX	_sys12,$8E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3857,7 +3857,7 @@ loc_6993E:
 		JSR		sub_6A337
 		BCS		loc_6993B
 loc_6994B:
-		FAR		$83,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83
 locret_6994E:
 		RTS
 
@@ -3897,7 +3897,7 @@ sub_69973:
 		PHA
 		STA		byte_D2
 		STA		byte_CE
-		FAR		$2D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
@@ -3938,7 +3938,7 @@ loc_699C0:
 loc_699CB:
 		JSR		_b4_sB
 		JSR		sub_6B5B7
-		FAR		$2C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
 		LDA		#$FF
 		STA		byte_65
 		STA		byte_CF
@@ -4120,7 +4120,7 @@ loc_69B0E:
 		STA		byte_518,X
 		PLA
 		JSR		sub_6B2CF
-		FAR		$3E,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E
 loc_69B18:
 		JMP		sub_6B3D8
 
@@ -4160,7 +4160,7 @@ loc_69B54:
 		STA		byte_6A9F,X
 		LDA		word_4
 		JSR		sub_6B2CF
-		FAR		$45,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B5F:
@@ -4198,7 +4198,7 @@ loc_69B95:
 		STA		byte_518,X
 		LDA		byte_59
 		JSR		sub_6B2CF
-		FAR		$45,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69BA0:
@@ -4328,13 +4328,13 @@ sub_69C62:
 		AND		#$F7
 		STA		byte_6A9B,X
 		INC		byte_4C
-		FAR		$3C,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C
 loc_69C7A:
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 locret_69C7D:
 		RTS
 loc_69C7E:
-		FAR		$3D,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69C81:
@@ -4384,12 +4384,12 @@ sub_69CA7:
 		LDA		byte_73C,X
 		ORA		#3
 		STA		byte_73C,X
-		FAR		$19,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
 		JMP		_b4_s6
 loc_69CDD:
 		JSR		sub_6B2EF
 		BNE		locret_69D1C
-		FAR		$1A,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
 off_69CE5:
 		.WORD	sub_69CE7
 
@@ -4411,7 +4411,7 @@ loc_69CF7:
 		LDA		#6
 		JSR		sub_6A337
 		BCC		sub_69D1D
-		FAR		$19,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
 		JSR		sub_6A35A
 		LDA		byte_531,X
 		ORA		#$20
@@ -4424,7 +4424,7 @@ locret_69D1C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D1D:
-		FAR		$1A,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D20:
@@ -4459,9 +4459,9 @@ loc_69D3D:
 		STA		byte_6A9B,Y
 		LDA		#$70
 		STA		byte_54C,Y
-		FAR		$1C,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 loc_69D5C:
-		FAR		$24,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24
 locret_69D5F:
 		RTS
 
@@ -4502,7 +4502,7 @@ loc_69D81:
 		LDA		byte_73C,X
 		ORA		#$20
 		STA		byte_73C,X
-		FAR		$41,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41
 locret_69DAB:
 		RTS
 loc_69DAC:
@@ -4521,7 +4521,7 @@ loc_69DB9:
 		LDA		#7
 		JSR		sub_6A337
 		BCC		loc_69DAC
-		FAR		$41,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41
 		JSR		sub_6A35A
 		LDA		byte_530,X
 		ORA		#$20
@@ -4570,7 +4570,7 @@ loc_69E00:
 		LDA		byte_73C,X
 		ORA		#$10
 		STA		byte_73C,X
-		FAR		$2F,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F
 locret_69E24:
 		RTS
 loc_69E25:
@@ -4594,7 +4594,7 @@ loc_69E38:
 		LDA		#9
 		JSR		sub_6A337
 		BCC		loc_69E56
-		FAR		$2F,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F
 		JSR		sub_6A35A
 		LDA		byte_530,X
 		ORA		#$10
@@ -4623,7 +4623,7 @@ sub_69E5B:
 		TXS
 		JMP		loc_174E92
 loc_69E7C:
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E7F:
@@ -4658,7 +4658,7 @@ sub_69E98:
 loc_69EBE:
 		JMP		sub_6B3D8
 loc_69EC1:
-		FAR		$85,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$85
 locret_69EC4:
 		RTS
 
@@ -4688,7 +4688,7 @@ sub_69ECB:
 		STA		byte_6AA4,X
 		LDA		#$C8
 		STA		byte_6AA3,X
-		FAR		$47,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$47
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69EF8:
@@ -4696,7 +4696,7 @@ sub_69EF8:
 		AND		#$3F
 		ORA		#$C0
 		STA		byte_566
-		FAR		$54,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$54
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F05:
@@ -4782,14 +4782,14 @@ sub_69F85:
 		LDA		byte_73D,X
 		ORA		#$F
 		STA		byte_73D,X
-		FAR		$48,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F97:
 		LDA		#0
 		STA		byte_D2
 		JSR		_b4_sB
-		FAR		$49,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$49
 		LDY		#0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4830,7 +4830,7 @@ loc_69FD3:
 		LDA		byte_73C,X
 		ORA		#8
 		STA		byte_73C,X
-		FAR		$4A,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A
 loc_69FE6:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4855,7 +4855,7 @@ loc_6A009:
 		BNE		locret_69FC4
 		ORA		byte_565
 		STA		byte_565
-		FAR		$4A,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A017:
@@ -4882,7 +4882,7 @@ loc_6A038:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A044:
-		FAR		$57,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$57
 		LDY		#0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4893,7 +4893,7 @@ sub_6A049:
 		JSR		sub_68F0C
 		BPL		loc_6A058
 		JSR		_b4_sB
-		FAR		$89,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$89
 loc_6A058:
 		PLA
 		TAY
@@ -4911,7 +4911,7 @@ off_6A06E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A070:
-		FAR		$50,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$50
 		JSR		sub_6ADBF
 		JMP		sub_6A3CB
 
@@ -5011,7 +5011,7 @@ sub_6A106:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A10C:
-		FAR		$2C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
 		LDA		#$FF
 		STA		byte_65
 		STA		byte_66
@@ -5026,7 +5026,7 @@ sub_6A121:
 		LDA		byte_568
 		AND		#$10
 		BNE		sub_6A134
-		FAR		$58,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$58
 		LDA		byte_568
 		ORA		#$10
 		STA		byte_568
@@ -5034,7 +5034,7 @@ sub_6A121:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A134:
-		FAR		$59,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$59
 		LDA		#$20
 		JMP		sub_6B2F7
 
@@ -5054,7 +5054,7 @@ sub_6A13C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A158:
-		FAR		$5A,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5A
 		JSR		sub_6B2B3
 		ORA		#$C
 		STA		word_4
@@ -5066,7 +5066,7 @@ sub_6A158:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A16D:
-		FAR		$8B,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8B
 		LDA		#0
 		STA		byte_42
 loc_6A174:
@@ -5141,12 +5141,12 @@ sub_6A1E2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1E8:
-		FAR		$5D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5D
 		JMP		sub_6ADC8
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1EE:
-		FAR		$5B,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5B
 		LDA		byte_566
 		AND		#$C3
 		ORA		#8
@@ -5196,7 +5196,7 @@ sub_6A235:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A23B:
-		FAR		$8C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8C
 		JMP		_b4_s5_do_message_speed_delay
 off_6A241:
 		.WORD	sub_6A044
@@ -5270,9 +5270,9 @@ loc_6A282:
 		STA		byte_6AAC,X
 		RTS
 loc_6A2C5:
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 loc_6A2C8:
-		FAR		$86,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$86
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A2CB:
@@ -5292,7 +5292,7 @@ loc_6A2D9:
 		LDA		byte_73D,X
 		AND		#$DF
 		STA		byte_73D,X
-		FAR		$44,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$44
 		JMP		_b4_s6
 locret_6A2F6:
 		RTS
@@ -5375,7 +5375,7 @@ sub_6A35F:
 		CMP		byte_65
 		BCS		loc_6A37D
 		STA		byte_64
-		FAR		$20,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$20
 		JMP		loc_6A38F
 loc_6A37D:
 		JSR		sub_6B70B
@@ -5388,7 +5388,7 @@ loc_6A37D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A38A:
 		BEQ		loc_6A392
-		FAR		$1E,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1E
 loc_6A38F:
 		PLA
 		PLA
@@ -5397,7 +5397,7 @@ loc_6A392:
 		LDA		byte_568
 		AND		#$10
 		BEQ		locret_6A39E
-		FAR		$81,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$81
 		PLA
 		PLA
 locret_6A39E:
@@ -5456,10 +5456,10 @@ sub_6A3D3:
 		LDA		byte_568
 		AND		#1
 		BEQ		loc_6A3F1
-		FAR		$88,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$88
 		JMP		sub_6ADBF
 loc_6A3F1:
-		FAR		$3F,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3F
 		JSR		sub_6ADB6
 locret_6A3F7:
 		RTS
@@ -5511,9 +5511,9 @@ loc_6A42E:
 		BCS		loc_6A45F
 		LDA		byte_6A6B
 		BNE		loc_6A45F
-		FAR		$99,$2F		; _sys12
-		FAR		$7D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		FAR		$0E,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys12,$99
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E
 		JSR		sub_6ADB6
 		JMP		_b4_s5_do_message_speed_delay
 loc_6A45F:
@@ -5548,7 +5548,7 @@ loc_6A478:
 		LDA		word_4+1
 		PHA
 		JSR		sub_6B697
-		FAR		$87,$2F		; _sys12
+		SYSX	_sys12,$87
 		LDA		#$C
 		JSR		sub_6A96F
 		JSR		sub_6AA3C
@@ -5571,7 +5571,7 @@ loc_6A478:
 locret_6A4C8:
 		RTS
 loc_6A4C9:
-		FAR		$8C,$2F		; _sys12
+		SYSX	_sys12,$8C
 		LDY		#$22
 		JSR		sub_6B2B3
 		BPL		loc_6A4D5
@@ -5639,7 +5639,7 @@ loc_6A542:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A544:
-		FAR		$27,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$27
 		LDA		byte_CE
 		ASL
 		TAX
@@ -5655,7 +5655,7 @@ sub_6A544:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A560:
-		FAR		$8D,$2F		; _sys12
+		SYSX	_sys12,$8D
 		JSR		sub_6A569
 		JMP		loc_6A4C9
 
@@ -5718,7 +5718,7 @@ sub_6A5B8:
 		LDA		#0
 		STA		byte_641
 		JSR		_sram_b0_s5
-		FAR		$8A,$2F		; _sys12
+		SYSX	_sys12,$8A
 		LDA		#$13
 		JMP		sub_6A96F
 
@@ -5737,7 +5737,7 @@ loc_6A5E0:
 		STA		byte_66
 		JSR		_b4_s19
 		JSR		sub_6B5B7
-		FAR		$14,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$14
 locret_6A5F6:
 		RTS
 
@@ -5757,7 +5757,7 @@ loc_6A604:
 		LDA		word_4+1
 		STA		byte_D0
 		JSR		_sram_b0_s4
-		FAR		$14,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14
 		JSR		_b4_s1A
 		JMP		_b4_s6
 
@@ -5842,7 +5842,7 @@ loc_6A6B5:
 		STA		byte_65
 		JMP		loc_6A659
 loc_6A6BD:
-		FAR		$12,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$12
 loc_6A6C0:
 		LDA		#0
 		STA		byte_65
@@ -5893,7 +5893,7 @@ loc_6A708:
 		JSR		sub_6A823
 		JSR		sub_6A71B
 		JSR		sub_6A82E
-		FAR		$16,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$16
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A71B:
@@ -5956,7 +5956,7 @@ loc_6A76B:
 		JSR		sub_6A839
 		JSR		sub_6A71B
 		JSR		sub_6A844
-		FAR		$15,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$15
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A78A:
@@ -5985,7 +5985,7 @@ loc_6A7AA:
 		JSR		sub_6A823
 		JSR		sub_6A7E9
 		JSR		sub_6A82E
-		FAR		$3B,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B
 locret_6A7BB:
 		RTS
 
@@ -6012,7 +6012,7 @@ loc_6A7D9:
 		JSR		sub_6A839
 		JSR		sub_6A7E9
 		JSR		sub_6A844
-		FAR		$3B,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A7E9:
@@ -7029,7 +7029,7 @@ loc_6ADDB:
 		JSR		sub_6AA38
 		LDA		byte_64
 		PHA
-		FAR		$0D,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADE4:
@@ -7162,8 +7162,8 @@ loc_6AEAF:
 		INX
 		CPX		#$7F
 		BNE		loc_6AEA6
-		FAR		$03,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$03
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 loc_6AEBA:
 		INY
 		CPX		word_4
@@ -7227,7 +7227,7 @@ sub_6AF0E:
 		JSR		sub_1743B8
 		CMP		#$19
 		BCS		locret_6AF33
-		FAR		$A6,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$A6
 		LDA		#$4E
 		JSR		_b4_s20
 		JMP		_sram_b0_s2A
@@ -7254,13 +7254,13 @@ off_6AF51:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF53:
 		JSR		sub_6B3D2
-		FAR		$9C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF5C:
 		JSR		sub_6B5B7
-		FAR		$9C,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7354,7 +7354,7 @@ sub_6AFD2:
 loc_6AFEF:
 		LDA		word_4
 		JSR		sub_6B2CF
-		FAR		$A8,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$A8
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFF7:
@@ -7386,7 +7386,7 @@ off_6B01C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B01E:
 		JSR		sub_6B5B7
-		FAR		$B0,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B0
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7394,17 +7394,17 @@ sub_6B027:
 		LDA		byte_6A6F
 		CMP		#$85
 		BNE		loc_6B048
-		FAR		$B1,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B1
 		FARX	_bA_s8
 		JSR		_b4_sB
-		FAR		$B2,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B2
 		JSR		_b4_s5_do_message_speed_delay
 		JSR		_b4_s5_do_message_speed_delay
 		LDA		#$86
 		STA		_enemy_roster_index_list
 		JMP		_b4_s26
 loc_6B048:
-		FAR		$40,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B04B:
@@ -7497,7 +7497,7 @@ sub_6B0C1:
 		LDA		byte_558,X
 		STA		byte_42
 		JSR		sub_6B076
-		FAR		$06,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$06
 		JSR		_b4_sA
 		JMP		sub_695C6
 
@@ -7505,7 +7505,7 @@ sub_6B0C1:
 sub_6B0DB:
 		FARX	_bB_s3_apu_load
 		FARX	_bB_s7
-		FAR		$10,$2F		; _sys12
+		SYSX	_sys12,$10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7898,7 +7898,7 @@ loc_6B372:
 		JSR		sub_6B2F7
 		LDA		#$9A
 		FARX	_bB_s3_apu_load
-		FAR		$56,$F7		; _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$56
 		JSR		_b4_sB
 		JSR		sub_6B2B3
 		BMI		loc_6B38F
@@ -7959,7 +7959,7 @@ sub_6B3D2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B3D8:
-		FAR		$12,$0F		; _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$12
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B3DB:

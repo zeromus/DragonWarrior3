@@ -110,16 +110,14 @@ _ddt = $76
 		.BYTE	[[{1}_ptr-SYSCALL_PTR_ORG]>>1]
 	ENDM
 	
-	MAC SYS_IDX
-		IF [{1}_idx-_sys0_sub_idx_lib]&$FF00
-			[{1}_idx-_sys0_sub_idx_lib-256]&FF
-		ELSE
-			[{1}_idx-_sys0_sub_idx_lib]
-		ENDIF
-	ENDM
-
 	MAC FARX
 		BRK
 		.BYTE	[[{1}_idx-_sys0_sub_idx_lib]&$FF]
 		.BYTE	[$07|[[[{1}_idx-_sys0_sub_idx_lib]>>4]&$10]]
+	ENDM
+	
+	MAC SYSX
+		BRK
+		.BYTE	{2}
+		.BYTE	[$07|[[[{1}_idx-_syscall_lib]>>2]&$08]|[[[{1}_idx-_syscall_lib]<<3]&$F0]]
 	ENDM

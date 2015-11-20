@@ -2725,7 +2725,7 @@ loc_83ED2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s5:
-		FAR		$AA,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AA
 		JSR		sub_174D4F
 		LDA		#<[byte_114]
 		STA		word_6C
@@ -2740,7 +2740,7 @@ _b5_s5:
 		LDX		#0
 		FARX	_bC_sB
 		JSR		sub_174CCF
-		FAR		$AB,$77		; _sys07_msg_m00_arg1
+		SYSX	_sys07_msg_m00_arg1,$AB
 		FARX	_bC_s2E_vblank_count_50_wait_50_or_skip
 		LDA		#$10
 		FARX	_b0_s1
