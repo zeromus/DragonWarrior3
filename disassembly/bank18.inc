@@ -1,85 +1,82 @@
 
 		ORG $8000
 
-		.WORD _b18_s0		; data used at 8000
-		.WORD _b18_s1		; data used at 8000
+		.WORD _b18_s0
+		.WORD _b18_s1
 
 ; =============== S U B	R O U T	I N E =======================================
-_b18_s0:				; CODE XREF: _b17_s1+46-P
-					; DATA XREF: BANK18:8000-o
-		JSR		sub_24C156	; code used at 8000
-		JSR		sub_24C0CC	; code used at 8000
-		JSR		sub_24C097	; code used at 8000
-		JSR		sub_24C17A	; code used at 8000
-		JSR		sub_24E747	; code used at 8000
-		JSR		sub_24E91A	; code used at 8000
-		JSR		nullsub_1	; code used at 8000
-loc_24C019:				; CODE XREF: sub_24E747+14E-j
-					; sub_24E91A+F-j
-		LDX		#1		; code used at 8000
-		JSR		sub_24C0F3	; code used at 8000
-		JSR		sub_24C227	; code used at 8000
+_b18_s0:
+		JSR		sub_24C156
+		JSR		sub_24C0CC
+		JSR		sub_24C097
+		JSR		sub_24C17A
+		JSR		sub_24E747
+		JSR		sub_24E91A
+		JSR		nullsub_1
+loc_24C019:
+		LDX		#1
+		JSR		sub_24C0F3
+		JSR		sub_24C227
 		BRK
 		.BYTE $A1, 7		; ofs 0x00020008, -> dst _b1_s4
-		LDA		#0		; code used at 8000
-		STA		byte_F		; code used at 8000
-		LDA		#4		; code used at 8000
-		STA		byte_10		; code used at 8000
-loc_24C02C:				; CODE XREF: _b18_s0+4F-j
-		LDA		#$E		; code used at 8000
-		STA		byte_11		; code used at 8000
-		LDX		byte_F		; code used at 8000
-		LDY		#0		; code used at 8000
-loc_24C034:				; CODE XREF: _b18_s0+3A-j
-		LDA		byte_24C2E1,X	; code used at 8000
-		STA		_ram_pal_buf+1,Y ; code	used at	8000
-		INX				; code used at 8000
-		INY				; code used at 8000
-		CPY		#$18		; code used at 8000
-		BCC		loc_24C034	; code used at 8000
-		STX		byte_F		; code used at 8000
-loc_24C042:				; CODE XREF: _b18_s0+4B-j
-		JSR		sub_17435B	; code used at 8000
-		LDX		#1		; code used at 8000
-		JSR		sub_24C0F3	; code used at 8000
-		JSR		sub_24C227	; code used at 8000
-		DEC		byte_11		; code used at 8000
-		BNE		loc_24C042	; code used at 8000
-		DEC		byte_10		; code used at 8000
-		BNE		loc_24C02C	; code used at 8000
+		LDA		#0
+		STA		byte_F
+		LDA		#4
+		STA		byte_10
+loc_24C02C:
+		LDA		#$E
+		STA		byte_11
+		LDX		byte_F
+		LDY		#0
+loc_24C034:
+		LDA		byte_24C2E1,X
+		STA		_ram_pal_buf+1,Y
+		INX
+		INY
+		CPY		#$18
+		BCC		loc_24C034
+		STX		byte_F
+loc_24C042:
+		JSR		sub_17435B
+		LDX		#1
+		JSR		sub_24C0F3
+		JSR		sub_24C227
+		DEC		byte_11
+		BNE		loc_24C042
+		DEC		byte_10
+		BNE		loc_24C02C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C055:				; CODE XREF: sub_24C084+10-j
-					; sub_24E747+A8-j
-		LDA		#0		; code used at 8000
+sub_24C055:
+		LDA		#0
 		BRK
 		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		LDA		#0		; code used at 8000
+		LDA		#0
 		BRK
 		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
-		LDX		#0		; code used at 8000
-		LDA		#$F		; code used at 8000
-loc_24C063:				; CODE XREF: sub_24C055+14-j
-		STA		_ram_pal_buf,X	; code used at 8000
-		INX				; code used at 8000
-		CPX		#$19		; code used at 8000
-		BCC		loc_24C063	; code used at 8000
-		JSR		sub_17435B	; code used at 8000
-		LDX		#1		; code used at 8000
-		JSR		sub_24C0F3	; code used at 8000
-		LDA		#0		; code used at 8000
-		TAX				; code used at 8000
-loc_24C076:				; CODE XREF: sub_24C055+26-j
-		STA		word_4,X	; code used at 8000
-		INX				; code used at 8000
-		CPX		#$10		; code used at 8000
-		BCC		loc_24C076	; code used at 8000
-		STA		byte_6D0	; code used at 8000
-		STA		byte_6D1	; code used at 8000
-		RTS				; code used at 8000
+		LDX		#0
+		LDA		#$F
+loc_24C063:
+		STA		_ram_pal_buf,X
+		INX
+		CPX		#$19
+		BCC		loc_24C063
+		JSR		sub_17435B
+		LDX		#1
+		JSR		sub_24C0F3
+		LDA		#0
+		TAX
+loc_24C076:
+		STA		word_4,X
+		INX
+		CPX		#$10
+		BCC		loc_24C076
+		STA		byte_6D0
+		STA		byte_6D1
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C084:				; CODE XREF: sub_24E747+B2-j
+sub_24C084:
 		JSR		sub_174369
 		LDX		#$14
 		JSR		sub_24C0F3
@@ -91,174 +88,163 @@ sub_24C084:				; CODE XREF: sub_24E747+B2-j
 		JMP		sub_24C055
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C097:				; CODE XREF: _b18_s0+6-p
-		LDA		_PPU_STATUS	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		_PPU_ADDR	; code used at 8000
-		STY		_PPU_ADDR	; code used at 8000
-		LDA		off_24E745	; code used at 8000
-		STA		_tmp12		; code used at 8000
-		LDA		off_24E745+1	; code used at 8000
-		STA		_tmp12+1	; code used at 8000
-		LDX		#$10		; code used at 8000
-		JSR		sub_24C0E5	; code used at 8000
-		LDA		_PPU_STATUS	; code used at 8000
-		LDA		#$10		; code used at 8000
-		STA		_PPU_ADDR	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		_PPU_ADDR	; code used at 8000
-		LDA		off_24E743	; code used at 8000
-		STA		_tmp12		; code used at 8000
-		LDA		off_24E743+1	; code used at 8000
-		STA		_tmp12+1	; code used at 8000
-		LDX		#$10		; code used at 8000
-		BNE		sub_24C0E5	; code used at 8000
+sub_24C097:
+		LDA		_PPU_STATUS
+		LDY		#0
+		STY		_PPU_ADDR
+		STY		_PPU_ADDR
+		LDA		off_24E745
+		STA		_tmp12
+		LDA		off_24E745+1
+		STA		_tmp12+1
+		LDX		#$10
+		JSR		sub_24C0E5
+		LDA		_PPU_STATUS
+		LDA		#$10
+		STA		_PPU_ADDR
+		LDY		#0
+		STY		_PPU_ADDR
+		LDA		off_24E743
+		STA		_tmp12
+		LDA		off_24E743+1
+		STA		_tmp12+1
+		LDX		#$10
+		BNE		sub_24C0E5
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C0CC:				; CODE XREF: _b18_s0+3-p
-		LDA		off_24C741	; code used at 8000
-		STA		_tmp12		; code used at 8000
-		LDA		off_24C741+1	; code used at 8000
-		STA		_tmp12+1	; code used at 8000
-		LDA		_PPU_STATUS	; code used at 8000
-		LDA		#$20       ; code used at 8000
-		STA		_PPU_ADDR	; code used at 8000
-		LDY		#0		; code used at 8000
-		STY		_PPU_ADDR	; code used at 8000
-		LDX		#4		; code used at 8000
+sub_24C0CC:
+		LDA		off_24C741
+		STA		_tmp12
+		LDA		off_24C741+1
+		STA		_tmp12+1
+		LDA		_PPU_STATUS
+		LDA		#$20
+		STA		_PPU_ADDR
+		LDY		#0
+		STY		_PPU_ADDR
+		LDX		#4
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C0E5:				; CODE XREF: sub_24C097+17-p
-					; sub_24C097+33-j sub_24C0E5+6-j
-					; sub_24C0E5+B-j
-		LDA		(_tmp12),Y	; code used as ind data	at 8000
-		STA		_PPU_DATA	; code used as ind data	at 8000
-		INY				; code used as ind data	at 8000
-		BNE		sub_24C0E5	; code used as ind data	at 8000
-		INC		_tmp12+1	; code used at 8000
-		DEX				; code used at 8000
-		BNE		sub_24C0E5	; code used at 8000
-		RTS				; code used at 8000
+sub_24C0E5:
+		LDA		(_tmp12),Y
+		STA		_PPU_DATA
+		INY
+		BNE		sub_24C0E5
+		INC		_tmp12+1
+		DEX
+		BNE		sub_24C0E5
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C0F3:				; CODE XREF: _b18_s0+17-p _b18_s0+43-p
-					; sub_24C055+1B-p sub_24C084+5-p
-					; sub_24C0F3+19-j sub_24C156+1B-p
-					; sub_24E747+10-p sub_24E747+2F-p
-					; sub_24E747+41-p sub_24E747+62-p
-					; sub_24E747+8A-p sub_24E747+115-p
-					; sub_24E89C+11-p sub_24E8B1+12-p
-		LDA		#$FD       ; code used at 8000
-		STA		byte_32		; code used at 8000
-		LDA		byte_60B7	; code used at 8000
-		ORA		#$20       ; code used at 8000
-		STA		byte_60B7	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		byte_33		; code used at 8000
-		JSR		_vblank		; code used at 8000
-		JSR		sub_24C20F	; code used at 8000
-		BCS		loc_24C113	; code used at 8000
-		DEX				; code used at 8000
-		BNE		sub_24C0F3	; code used at 8000
-		LDA		#$FF		; code used at 8000
-		STA		word_6		; code used at 8000
-		RTS				; code used at 8000
-loc_24C113:				; CODE XREF: sub_24C0F3+16-j
-		LDA		#0		; code used at 8000
-		STA		word_6		; code used at 8000
-		RTS				; code used at 8000
+sub_24C0F3:
+		LDA		#$FD
+		STA		byte_32
+		LDA		byte_60B7
+		ORA		#$20
+		STA		byte_60B7
+		LDA		#0
+		STA		byte_33
+		JSR		_vblank
+		JSR		sub_24C20F
+		BCS		loc_24C113
+		DEX
+		BNE		sub_24C0F3
+		LDA		#$FF
+		STA		word_6
+		RTS
+loc_24C113:
+		LDA		#0
+		STA		word_6
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b18_s1:				; CODE XREF: _b18_s1+32-j
-					; sub_24E747+12A-p _b19_s0+5C-P
-					; sub_264077+7-P
-					; DATA XREF: BANK18:8002-o
-		JSR		sub_17435B	; code used at 8000
-		LDA		#2		; code used at 8000
-		JSR		sub_1740E9	; code used at 8000
-		JSR		sub_24C20F	; code used at 8000
-		BCS		loc_24C151	; code used at 8000
-		JSR		sub_24C2B1	; code used at 8000
-		LDA		#$FD       ; code used at 8000
-		STA		byte_32		; code used at 8000
-		LDA		byte_60B7	; code used at 8000
-		ORA		#$20       ; code used at 8000
-		STA		byte_60B7	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		byte_33		; code used at 8000
-		JSR		_vblank		; code used at 8000
-		JSR		sub_24C227	; code used at 8000
-		LDA		_nmi_counter	; code used at 8000
-		AND		#$F		; code used at 8000
-		BNE		loc_24C148	; code used at 8000
-		JSR		sub_24C29D	; code used at 8000
-loc_24C148:				; CODE XREF: _b18_s1+2B-j
-		DEC		word_6+1	; code used at 8000
-		BNE		_b18_s1		; code used at 8000
-		LDA		#$FF		; code used at 8000
-		STA		word_6		; code used at 8000
-		RTS				; code used at 8000
-loc_24C151:				; CODE XREF: _b18_s1+B-j
-		LDA		#0		; code used at 8000
-		STA		word_6		; code used at 8000
-		RTS				; code used at 8000
+_b18_s1:
+		JSR		sub_17435B
+		LDA		#2
+		JSR		sub_1740E9
+		JSR		sub_24C20F
+		BCS		loc_24C151
+		JSR		sub_24C2B1
+		LDA		#$FD
+		STA		byte_32
+		LDA		byte_60B7
+		ORA		#$20
+		STA		byte_60B7
+		LDA		#0
+		STA		byte_33
+		JSR		_vblank
+		JSR		sub_24C227
+		LDA		_nmi_counter
+		AND		#$F
+		BNE		loc_24C148
+		JSR		sub_24C29D
+loc_24C148:
+		DEC		word_6+1
+		BNE		_b18_s1
+		LDA		#$FF
+		STA		word_6
+		RTS
+loc_24C151:
+		LDA		#0
+		STA		word_6
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C156:				; CODE XREF: _b18_s0-p
-		LDA		#$FD       ; code used at 8000
-		STA		byte_32		; code used at 8000
-		LDA		byte_60B7	; code used at 8000
-		ORA		#$20       ; code used at 8000
-		STA		byte_60B7	; code used at 8000
-		LDA		#$F		; code used at 8000
-		LDX		#$19		; code used at 8000
-loc_24C166:				; CODE XREF: sub_24C156+14-j
-		STA		_ram_pal_buf,X	; code used at 8000
-		DEX				; code used at 8000
-		BPL		loc_24C166	; code used at 8000
-		JSR		sub_17435B	; code used at 8000
-		LDX		#1		; code used at 8000
-		JSR		sub_24C0F3	; code used at 8000
-		JSR		_ppu_screen_clear ; code used at 8000
-		JMP		_vblank_and_render_off_flag10_set ; code used at 8000
+sub_24C156:
+		LDA		#$FD
+		STA		byte_32
+		LDA		byte_60B7
+		ORA		#$20
+		STA		byte_60B7
+		LDA		#$F
+		LDX		#$19
+loc_24C166:
+		STA		_ram_pal_buf,X
+		DEX
+		BPL		loc_24C166
+		JSR		sub_17435B
+		LDX		#1
+		JSR		sub_24C0F3
+		JSR		_ppu_screen_clear
+		JMP		_vblank_and_render_off_flag10_set
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C17A:				; CODE XREF: _b18_s0+9-p
-		LDA		#$F		; code used at 8000
-		STA		_cur_mmc_cmd	; code used at 8000
-		LDA		#$10		; code used at 8000
-		STA		_cur_chr0_bank_prg_hi ;	code used at 8000
-		JSR		_mmc1_chr_set	; code used at 8000
-		JSR		__render_on_flag10_clear_reinit	; code used at 8000
-		LDA		#$1E		; code used at 8000
-		STA		byte_6D4	; code used at 8000
-		RTS				; code used at 8000
+sub_24C17A:
+		LDA		#$F
+		STA		_cur_mmc_cmd
+		LDA		#$10
+		STA		_cur_chr0_bank_prg_hi
+		JSR		_mmc1_chr_set
+		JSR		__render_on_flag10_clear_reinit
+		LDA		#$1E
+		STA		byte_6D4
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
+; unreferenced code
 sub_24C190:
 		LDA		_nmi_counter
-		AND		#$20 
+		AND		#$20
 		BNE		loc_24C19D
 		LDA		#0
 		STA		word_4
 		BEQ		loc_24C1A1
-loc_24C19D:				; CODE XREF: sub_24C190+5-j
+loc_24C19D:
 		LDA		#8
 		STA		word_4
-loc_24C1A1:				; CODE XREF: sub_24C190+B-j
+loc_24C1A1:
 		LDY		#0
-		LDA		#$A2 
+		LDA		#$A2
 		STA		byte_300,Y
 		INY
 		LDA		#4
 		STA		byte_300,Y
 		INY
-		LDA		#$82 
+		LDA		#$82
 		STA		byte_300,Y
 		INY
 		LDX		word_4
-loc_24C1B7:				; CODE XREF: sub_24C190+31-j
+loc_24C1B7:
 		LDA		byte_24C1F7,X
 		STA		byte_300,Y
 		INY
@@ -267,20 +253,20 @@ loc_24C1B7:				; CODE XREF: sub_24C190+31-j
 		BCC		loc_24C1B7
 		STY		byte_6D8
 		INC		byte_6D9
-		LDA		#$A2 
+		LDA		#$A2
 		STA		byte_300,Y
 		INY
 		LDA		#4
 		STA		byte_300,Y
 		INY
-		LDA		#$A2 
+		LDA		#$A2
 		STA		byte_300,Y
 		INY
 		LDA		word_4
 		CLC
 		ADC		#4
 		TAX
-loc_24C1E1:				; CODE XREF: sub_24C190+5B-j
+loc_24C1E1:
 		LDA		byte_24C1F7,X
 		STA		byte_300,Y
 		INY
@@ -293,156 +279,142 @@ loc_24C1E1:				; CODE XREF: sub_24C190+5B-j
 		RTS
 byte_24C1F7:
 		.BYTE $13,$14,$15,$16,$23,$24,$25,$26,	8,  9, $E, $F,$18,$19,$1E,$1F
-					; DATA XREF: sub_24C190:loc_24C1B7-r
-					; sub_24C190:loc_24C1E1-r
 		.BYTE $A0,$A1,$B0,$B1,$BC,$BD,$CC,$CD
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C20F:				; CODE XREF: sub_24C0F3+13-p _b18_s1+8-p
-					; sub_24E747+F1-p
-		PHA				; code used at 8000
-		TXA				; code used at 8000
-		PHA				; code used at 8000
-		TYA				; code used at 8000
-		PHA				; code used at 8000
-		JSR		_calc_pads	; code used at 8000
-		PLA				; code used at 8000
-		TAY				; code used at 8000
-		PLA				; code used at 8000
-		TAX				; code used at 8000
-		LDA		_pads		; code used at 8000
-		AND		#8		; code used at 8000
-		BNE		loc_24C224	; code used at 8000
-		PLA				; code used at 8000
-		CLC				; code used at 8000
-		RTS				; code used at 8000
-loc_24C224:				; CODE XREF: sub_24C20F+10-j
-		PLA				; code used at 8000
-		SEC				; code used at 8000
-		RTS				; code used at 8000
+sub_24C20F:
+		PHA
+		TXA
+		PHA
+		TYA
+		PHA
+		JSR		_calc_pads
+		PLA
+		TAY
+		PLA
+		TAX
+		LDA		_pads
+		AND		#8
+		BNE		loc_24C224
+		PLA
+		CLC
+		RTS
+loc_24C224:
+		PLA
+		SEC
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C227:				; CODE XREF: _b18_s0+1A-p _b18_s0+46-p
-					; _b18_s1+23-p sub_24E747+118-p
-		PHA				; code used at 8000
-		TXA				; code used at 8000
-		PHA				; code used at 8000
-		TYA				; code used at 8000
-		PHA				; code used at 8000
-		LDX		#0		; code used at 8000
-		STX		_tmp12		; code used at 8000
-loc_24C230:				; CODE XREF: sub_24C227+C-j
-		BIT		_PPU_STATUS	; code used at 8000
-		BVC		loc_24C230	; code used at 8000
-loc_24C235:				; CODE XREF: sub_24C227+30-j
-		LDA		byte_9,X	; code used at 8000
-		STA		_PPU_SCROLL	; code used at 8000
-		LDA		#0		; code used at 8000
-		STA		_PPU_SCROLL	; code used at 8000
-		LDX		_tmp12		; code used at 8000
-		LDA		byte_24C293,X	; code used at 8000
-		TAY				; code used at 8000
-loc_24C245:				; CODE XREF: sub_24C227+28-j
-		LDX		_tmp12		; code used at 8000
-		LDA		byte_24C298,X	; code used at 8000
-		TAX				; code used at 8000
-loc_24C24B:				; CODE XREF: sub_24C227+25-j
-		DEX				; code used at 8000
-		BNE		loc_24C24B	; code used at 8000
-		DEY				; code used at 8000
-		BNE		loc_24C245	; code used at 8000
-		INC		_tmp12		; code used at 8000
-		LDX		_tmp12		; code used at 8000
-		CPX		#5		; code used at 8000
-		BCC		loc_24C235	; code used at 8000
-		LDY		_nmi_counter	; code used at 8000
-		LDX		#0		; code used at 8000
-loc_24C25E:				; CODE XREF: sub_24C227+4E-j
-		TYA				; code used at 8000
-		AND		byte_24C28B,X	; code used at 8000
-		CMP		byte_24C28F,X	; code used at 8000
-		BNE		loc_24C272	; code used at 8000
-		CPX		#2		; code used at 8000
-		BCS		loc_24C270	; code used at 8000
-		INC		byte_9,X	; code used at 8000
-		JMP		loc_24C272	; code used at 8000
-loc_24C270:				; CODE XREF: sub_24C227+42-j
-		DEC		byte_9,X	; code used at 8000
-loc_24C272:				; CODE XREF: sub_24C227+3E-j
-					; sub_24C227+46-j
-		INX				; code used at 8000
-		CPX		#4		; code used at 8000
-		BCC		loc_24C25E	; code used at 8000
-		LDA		_nmi_counter	; code used at 8000
-		AND		#1		; code used at 8000
-		BNE		loc_24C281	; code used at 8000
-		INC		byte_6D0	; code used at 8000
-loc_24C281:				; CODE XREF: sub_24C227+55-j
-		PLA				; code used at 8000
-		TAY				; code used at 8000
-		PLA				; code used at 8000
-		TAX				; code used at 8000
-		PLA				; code used at 8000
-		RTS				; code used at 8000
+sub_24C227:
+		PHA
+		TXA
+		PHA
+		TYA
+		PHA
+		LDX		#0
+		STX		_tmp12
+loc_24C230:
+		BIT		_PPU_STATUS
+		BVC		loc_24C230
+loc_24C235:
+		LDA		byte_9,X
+		STA		_PPU_SCROLL
+		LDA		#0
+		STA		_PPU_SCROLL
+		LDX		_tmp12
+		LDA		byte_24C293,X
+		TAY
+loc_24C245:
+		LDX		_tmp12
+		LDA		byte_24C298,X
+		TAX
+loc_24C24B:
+		DEX
+		BNE		loc_24C24B
+		DEY
+		BNE		loc_24C245
+		INC		_tmp12
+		LDX		_tmp12
+		CPX		#5
+		BCC		loc_24C235
+		LDY		_nmi_counter
+		LDX		#0
+loc_24C25E:
+		TYA
+		AND		byte_24C28B,X
+		CMP		byte_24C28F,X
+		BNE		loc_24C272
+		CPX		#2
+		BCS		loc_24C270
+		INC		byte_9,X
+		JMP		loc_24C272
+loc_24C270:
+		DEC		byte_9,X
+loc_24C272:
+		INX
+		CPX		#4
+		BCC		loc_24C25E
+		LDA		_nmi_counter
+		AND		#1
+		BNE		loc_24C281
+		INC		byte_6D0
+loc_24C281:
+		PLA
+		TAY
+		PLA
+		TAX
+		PLA
+		RTS
 _unused_30:
 		.BYTE $30,  0,$23,$C0
 byte_24C28B:
-		.BYTE	3,  7, $F,  7	; DATA XREF: sub_24C227+38-r
-					; data used at 8000
+		.BYTE	3,  7, $F,  7
 byte_24C28F:
-		.BYTE	3,  7, $F,  7	; DATA XREF: sub_24C227+3B-r
-					; data used at 8000
+		.BYTE	3,  7, $F,  7
 byte_24C293:
-		.BYTE $15, $D,	9,  5,	1 ; DATA XREF: sub_24C227+1A-r
-					; data used at 8000
+		.BYTE $15, $D,	9,  5,	1 
 byte_24C298:
-		.BYTE $28,$27,$20,$26,	1 ; DATA XREF: sub_24C227+20-r
-					; data used at 8000
+		.BYTE $28,$27,$20,$26,	1 
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C29D:				; CODE XREF: _b18_s1+2D-p
-		LDX		byte_E		; code used at 8000
-		CPX		#$B		; code used at 8000
-		BCC		loc_24C2A7	; code used at 8000
-		LDX		#0		; code used at 8000
-		STX		byte_E		; code used at 8000
-loc_24C2A7:				; CODE XREF: sub_24C29D+4-j
-		LDA		byte_24C2D6,X	; code used at 8000
-		STA		_ram_pal_buf+$A	; code used at 8000
-		INX				; code used at 8000
-		STX		byte_E		; code used at 8000
-		RTS				; code used at 8000
+sub_24C29D:
+		LDX		byte_E
+		CPX		#$B
+		BCC		loc_24C2A7
+		LDX		#0
+		STX		byte_E
+loc_24C2A7:
+		LDA		byte_24C2D6,X
+		STA		_ram_pal_buf+$A
+		INX
+		STX		byte_E
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24C2B1:				; CODE XREF: _b18_s1+D-p
-		LDA		word_4+1	; code used at 8000
-		BEQ		locret_24C2BC	; code used at 8000
-		CMP		#$FF		; code used at 8000
-		BEQ		locret_24C2BC	; code used at 8000
+sub_24C2B1:
+		LDA		word_4+1
+		BEQ		locret_24C2BC
+		CMP		#$FF
+		BEQ		locret_24C2BC
 		BRK
 		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
-locret_24C2BC:				; CODE XREF: sub_24C2B1+2-j
-					; sub_24C2B1+6-j
-		RTS				; code used at 8000
+locret_24C2BC:
+		RTS
 _unused_31:
 		.BYTE $FF,$27,$18,  8,$1B,$18,	8,$1B, $C,$1C, $F,$18,	8,$11,$37,$30
 		.BYTE  $B,$2B,$30,$16,$27,$37,$30,$2B,$30
 byte_24C2D6:
 		.BYTE  $F,  7,	6,$16,$15,$15,$15,$16,	6,  7, $F
-					; DATA XREF: sub_24C29D:loc_24C2A7-r
-					; data used at 8000
 byte_24C2E1:
 		.BYTE $27,$17,	7,$18,$17,  7,$18, $C,$1C, $F,$17,  7,$11,$37,$30, $A
-					; DATA XREF: _b18_s0:loc_24C034-r
-		.BYTE $2A,$30,$16,$27,$37,$30,$2A,$30,$17,  7, $F,  8,	7, $F,	8, $F ;	data used at 8000
+		.BYTE $2A,$30,$16,$27,$37,$30,$2A,$30,$17,  7, $F,  8,	7, $F,	8, $F
 		.BYTE  $C, $F,	7, $F,	1,$27,$20, $F,$1A,$20,	6,$17,$27,$20,$1A,$20
 		.BYTE	7, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F,$17,$10, $F
 		.BYTE  $A,$10, $F,  7,$17,$10, $A,$10, $F, $F, $F, $F, $F, $F, $F, $F
 		.BYTE  $F, $F, $F, $F, $F,  7,	0, $F, $F,  0, $F, $F,	7,  0, $F,  0
 byte_24C341:
 		.BYTE $58,$59,$5A,$5B,$54,$55,$56,$57,$58,$59,$5A,$5B,$54,$55,$56,$57
-					; DATA XREF: BANK18:off_24C741-o
-		.BYTE $58,$59,$5A,$5B,$54,$55,$56,$57,$58,$59,$5A,$5B,$54,$55,$56,$57 ;	ind data used at 8000
+		.BYTE $58,$59,$5A,$5B,$54,$55,$56,$57,$58,$59,$5A,$5B,$54,$55,$56,$57
 		.BYTE $54,$55,$56,$57,$58,$59,$5A,$5B,$54,$55,$56,$57,$58,$59,$5A,$5B
 		.BYTE $54,$55,$56,$57,$58,$59,$5A,$5B,$54,$55,$56,$57,$58,$59,$5A,$5B
 		.BYTE $44,$45,$46,$47,$48,$49,$4A,$4B,$44,$45,$46,$47,$48,$49,$4A,$4B
@@ -506,12 +478,10 @@ byte_24C341:
 		.BYTE $5A,$5A,$5A,$9A,$AA,$AA,$AA,$5A,$59,$16,$F5,$F5,$F5,$F5,$45,$59
 		.BYTE $15,  0,	0,  0,	0,  0,	0,$45,	0,  0,	0,  0,	0,  0,	0,  0
 off_24C741:
-		.WORD byte_24C341	; DATA XREF: sub_24C0CC-r sub_24C0CC+5-r
-					; data used at 8000
+		.WORD byte_24C341
 byte_24C743:
 		.BYTE $FF,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
-					; DATA XREF: BANK18:off_24E745-o
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0 ;	ind data used at 8000
+		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
 		.BYTE	3, $F,$1F, $B,	6,  2,	0,  6,	0,  0,	0,  4,	1,  5,	7,  1
 		.BYTE $F0,$FC,$FF,$FE,$FF,$BC,$BE,$F0,	0,  0,	0,  0,	0,$40,$40,  0
 		.BYTE $1D,$3D,$3D,$8B,$70,$18,	0,  0, $A, $A,	6,$33,$88,$60,$18,  0
@@ -768,8 +738,7 @@ byte_24C743:
 		.BYTE $10,$E0,$80,  0,	0,  0,	0,  0,$E0,  0,	0,  0,	0,  0,	0,  0
 byte_24D743:
 		.BYTE $FD,$BA,$5A,$5D,$B7,$EB,$EB,$D7,	0,  0,	0,  0,	0,  0,	0,  0
-					; DATA XREF: BANK18:off_24E743-o
-		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0 ;	ind data used at 8000
+		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
@@ -1025,101 +994,96 @@ byte_24D743:
 		.BYTE $C5,$7E,$9D,$56,$4A,$47,$CB,$B4,$FF,$ED,$FB,$EF,$FF,$FE,$FF,$DF
 		.BYTE $75,$F2,$AE,$DD,$2A,$41,$32,$E9,$FF,$EF,$FF,$7B,$F7,$FF,$FF,$7F
 off_24E743:
-		.WORD byte_24D743	; DATA XREF: sub_24C097+27-r
-					; sub_24C097+2C-r
-					; data used at a000
+		.WORD byte_24D743
 off_24E745:
-		.WORD byte_24C743	; DATA XREF: sub_24C097+B-r
-					; sub_24C097+10-r
-					; data used at a000
+		.WORD byte_24C743
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E747:				; CODE XREF: _b18_s0+C-p
-		LDX		#5		; code used at a000
-		LDA		#0		; code used at a000
-		STA		_tmp12+1	; code used at a000
-loc_24E74D:				; CODE XREF: sub_24E747+9-j
-		STA		byte_9,X	; code used at a000
-		DEX				; code used at a000
-		BPL		loc_24E74D	; code used at a000
-		JSR		sub_24E89C	; code used at a000
-		LDX		#$14		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		LDA		word_6		; code used at a000
-		BNE		loc_24E761	; code used at a000
+sub_24E747:
+		LDX		#5
+		LDA		#0
+		STA		_tmp12+1
+loc_24E74D:
+		STA		byte_9,X
+		DEX
+		BPL		loc_24E74D
+		JSR		sub_24E89C
+		LDX		#$14
+		JSR		sub_24C0F3
+		LDA		word_6
+		BNE		loc_24E761
 		JMP		loc_24E7E8
-loc_24E761:				; CODE XREF: sub_24E747+15-j
-		LDA		#$10		; code used at a000
+loc_24E761:
+		LDA		#$10
 		BRK
 		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
-		LDA		#0		; code used at a000
+		LDA		#0
 		BRK
 		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		JSR		sub_24E8B1	; code used at a000
-		JSR		sub_24E89C	; code used at a000
+		JSR		sub_24E8B1
+		JSR		sub_24E89C
 		BRK
 		.BYTE $A6, $2F		; _syscall12
-		LDX		#$96       ; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		LDA		word_6		; code used at a000
-		BEQ		loc_24E7DB	; code used at a000
-		JSR		sub_24E8CA	; code used at a000
-		JSR		sub_24E8B1	; code used at a000
-		JSR		sub_24E89C	; code used at a000
-		LDX		#$A		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		LDA		word_6		; code used at a000
-		BEQ		loc_24E7DB	; code used at a000
+		LDX		#$96
+		JSR		sub_24C0F3
+		LDA		word_6
+		BEQ		loc_24E7DB
+		JSR		sub_24E8CA
+		JSR		sub_24E8B1
+		JSR		sub_24E89C
+		LDX		#$A
+		JSR		sub_24C0F3
+		LDA		word_6
+		BEQ		loc_24E7DB
 		BRK
 		.BYTE $A6, $2F		; _syscall12
-		JSR		sub_24E8DA	; code used at a000
-		JSR		sub_24E8B1	; code used at a000
-		JSR		sub_24E89C	; code used at a000
+		JSR		sub_24E8DA
+		JSR		sub_24E8B1
+		JSR		sub_24E89C
 		BRK
 		.BYTE $A6, $2F		; _syscall12
-		LDY		#0		; code used at a000
-loc_24E7A0:				; CODE XREF: sub_24E747+6C-j
-		TYA				; code used at a000
-		PHA				; code used at a000
+		LDY		#0
+loc_24E7A0:
+		TYA
+		PHA
 		BRK
 		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		PLA				; code used at a000
-		TAY				; code used at a000
-		LDX		#7		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		LDA		word_6		; code used at a000
-		BEQ		loc_24E7DB	; code used at a000
-		INY				; code used at a000
-		CPY		#$A		; code used at a000
-		BCC		loc_24E7A0	; code used at a000
-		LDA		off_24EA87	; code used at a000
-		STA		word_6C		; code used at a000
-		LDA		off_24EA87+1	; code used at a000
-		STA		word_6C+1	; code used at a000
-		LDX		#0		; code used at a000
-loc_24E7C1:				; CODE XREF: sub_24E747+83-j
-		LDA		byte_24EA27,X	; code used at a000
-		STA		_ram_pal_buf,X	; code used at a000
-		INX				; code used at a000
-		CPX		#$19		; code used at a000
-		BCC		loc_24E7C1	; code used at a000
-		JSR		sub_17435B	; code used at a000
-		LDX		#1		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		JSR		sub_24E90E	; code used at a000
-		LDX		#0		; code used at a000
-		BEQ		loc_24E7FC	; code used at a000
-loc_24E7DB:				; CODE XREF: sub_24E747+34-j
-					; sub_24E747+46-j sub_24E747+67-j
-		LDX		#$32 
-loc_24E7DD:				; CODE XREF: sub_24E747+9F-j
+		PLA
+		TAY
+		LDX		#7
+		JSR		sub_24C0F3
+		LDA		word_6
+		BEQ		loc_24E7DB
+		INY
+		CPY		#$A
+		BCC		loc_24E7A0
+		LDA		off_24EA87
+		STA		word_6C
+		LDA		off_24EA87+1
+		STA		word_6C+1
+		LDX		#0
+loc_24E7C1:
+		LDA		byte_24EA27,X
+		STA		_ram_pal_buf,X
+		INX
+		CPX		#$19
+		BCC		loc_24E7C1
+		JSR		sub_17435B
+		LDX		#1
+		JSR		sub_24C0F3
+		JSR		sub_24E90E
+		LDX		#0
+		BEQ		loc_24E7FC
+loc_24E7DB:
+		LDX		#$32
+loc_24E7DD:
 		LDA		_nmi_counter
-loc_24E7E0:				; CODE XREF: sub_24E747+9C-j
+loc_24E7E0:
 		CMP		_nmi_counter
 		BEQ		loc_24E7E0
 		DEX
 		BNE		loc_24E7DD
-loc_24E7E8:				; CODE XREF: sub_24E747+17-j
+loc_24E7E8:
 		LDA		#2
 		STA		byte_6A36
 		PLA
@@ -1130,164 +1094,151 @@ loc_24E7E8:				; CODE XREF: sub_24E747+17-j
 		PLA
 		PLA
 		JMP		sub_24C084
-loc_24E7FC:				; CODE XREF: sub_24E747+92-j
-					; sub_24E747+BE-j
-		LDA		byte_24E898,X	; code used at a000
-		STA		_spr_ram,X	; code used at a000
-		INX				; code used at a000
-		CPX		#4		; code used at a000
-		BCC		loc_24E7FC	; code used at a000
-		LDA		#9		; code used at a000
-		STA		byte_8		; code used at a000
-		LDA		#$18		; code used at a000
-		STA		byte_F		; code used at a000
-		LDA		#3		; code used at a000
-		STA		byte_10		; code used at a000
-loc_24E813:				; CODE XREF: sub_24E747+121-j
-		LDA		#$E		; code used at a000
-		STA		byte_11		; code used at a000
-		LDX		byte_F		; code used at a000
-		LDY		#0		; code used at a000
-loc_24E81B:				; CODE XREF: sub_24E747+DE-j
-		LDA		byte_24EA27,X	; code used at a000
-		STA		_ram_pal_buf+1,Y ; code	used at	a000
-		INX				; code used at a000
-		INY				; code used at a000
-		CPY		#$18		; code used at a000
-		BCC		loc_24E81B	; code used at a000
-		STX		byte_F		; code used at a000
-loc_24E829:				; CODE XREF: sub_24E747+E7-j
-					; sub_24E747+11D-j
-		JSR		sub_24F4DC	; code used at a000
-		BCS		locret_24E88D	; code used at a000
-		BVS		loc_24E829	; code used at a000
-		JSR		sub_17435B	; code used at a000
-		LDA		#2		; code used at a000
-		JSR		sub_1740E9	; code used at a000
-		JSR		sub_24C20F	; code used at a000
-		BCS		loc_24E88E	; code used at a000
-		LDA		word_4+1	; code used at a000
-		BEQ		loc_24E848	; code used at a000
-		CMP		#$FF		; code used at a000
-		BEQ		loc_24E848	; code used at a000
+loc_24E7FC:
+		LDA		byte_24E898,X
+		STA		_spr_ram,X
+		INX
+		CPX		#4
+		BCC		loc_24E7FC
+		LDA		#9
+		STA		byte_8
+		LDA		#$18
+		STA		byte_F
+		LDA		#3
+		STA		byte_10
+loc_24E813:
+		LDA		#$E
+		STA		byte_11
+		LDX		byte_F
+		LDY		#0
+loc_24E81B:
+		LDA		byte_24EA27,X
+		STA		_ram_pal_buf+1,Y
+		INX
+		INY
+		CPY		#$18
+		BCC		loc_24E81B
+		STX		byte_F
+loc_24E829:
+		JSR		sub_24F4DC
+		BCS		locret_24E88D
+		BVS		loc_24E829
+		JSR		sub_17435B
+		LDA		#2
+		JSR		sub_1740E9
+		JSR		sub_24C20F
+		BCS		loc_24E88E
+		LDA		word_4+1
+		BEQ		loc_24E848
+		CMP		#$FF
+		BEQ		loc_24E848
 		BRK
 		.BYTE $A0, 7		; ofs 0x00020006, -> dst _b1_s3_far_apu_load
-loc_24E848:				; CODE XREF: sub_24E747+F8-j
-					; sub_24E747+FC-j
-		LDA		_nmi_counter	; code used at a000
-		AND		#7		; code used at a000
-		BNE		loc_24E85A	; code used at a000
-		LDA		byte_8		; code used at a000
-		CMP		#$11		; code used at a000
-		BCS		loc_24E85A	; code used at a000
+loc_24E848:
+		LDA		_nmi_counter
+		AND		#7
+		BNE		loc_24E85A
+		LDA		byte_8
+		CMP		#$11
+		BCS		loc_24E85A
 		BRK
 		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		INC		byte_8		; code used at a000
-loc_24E85A:				; CODE XREF: sub_24E747+106-j
-					; sub_24E747+10C-j
-		LDX		#1		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		JSR		sub_24C227	; code used at a000
-		DEC		byte_11		; code used at a000
-		BNE		loc_24E829	; code used at a000
-		DEC		byte_10		; code used at a000
-		BNE		loc_24E813	; code used at a000
-loc_24E86A:				; CODE XREF: sub_24E747+128-j
-					; sub_24E747:loc_24E88A-j
-		JSR		sub_24F4DC	; code used at a000
-		BCS		locret_24E88D	; code used at a000
-		BVS		loc_24E86A	; code used at a000
-		JSR		_b18_s1		; code used at a000
-		LDA		word_6		; code used at a000
-		BEQ		loc_24E88E	; code used at a000
-		LDA		_nmi_counter	; code used at a000
-		AND		#7		; code used at a000
-		BNE		loc_24E88A	; code used at a000
-		LDA		byte_8		; code used at a000
-		CMP		#$11		; code used at a000
-		BCS		loc_24E88A	; code used at a000
+		INC		byte_8
+loc_24E85A:
+		LDX		#1
+		JSR		sub_24C0F3
+		JSR		sub_24C227
+		DEC		byte_11
+		BNE		loc_24E829
+		DEC		byte_10
+		BNE		loc_24E813
+loc_24E86A:
+		JSR		sub_24F4DC
+		BCS		locret_24E88D
+		BVS		loc_24E86A
+		JSR		_b18_s1
+		LDA		word_6
+		BEQ		loc_24E88E
+		LDA		_nmi_counter
+		AND		#7
+		BNE		loc_24E88A
+		LDA		byte_8
+		CMP		#$11
+		BCS		loc_24E88A
 		BRK
 		.BYTE $A5, 7		; ofs 0x0002000e, -> dst _b1_s7
-		INC		byte_8		; code used at a000
-loc_24E88A:				; CODE XREF: sub_24E747+136-j
-					; sub_24E747+13C-j
-		JMP		loc_24E86A	; code used at a000
-locret_24E88D:				; CODE XREF: sub_24E747+E5-j
-					; sub_24E747+126-j
-		RTS				; code used at a000
-loc_24E88E:				; CODE XREF: sub_24E747+F4-j
-					; sub_24E747+12F-j
+		INC		byte_8
+loc_24E88A:
+		JMP		loc_24E86A
+locret_24E88D:
+		RTS
+loc_24E88E:
 		LDA		#2
 		STA		byte_6A36
 		PLA
 		PLA
 		JMP		loc_24C019
 byte_24E898:
-		.BYTE $30,  0,$23,$C0	; DATA XREF: sub_24E747:loc_24E7FC-r
-					; data used at a000
+		.BYTE $30,  0,$23,$C0
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E89C:				; CODE XREF: sub_24E747+B-p
-					; sub_24E747+27-p sub_24E747+3C-p
-					; sub_24E747+51-p
-		LDX		#0		; code used at a000
-		LDA		#$F		; code used at a000
-loc_24E8A0:				; CODE XREF: sub_24E89C+A-j
-		STA		_ram_pal_buf,X	; code used at a000
-		INX				; code used at a000
-		CPX		#$19		; code used at a000
-		BCC		loc_24E8A0	; code used at a000
-		JSR		sub_17435B	; code used at a000
-		LDX		#5		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		RTS				; code used at a000
+sub_24E89C:
+		LDX		#0
+		LDA		#$F
+loc_24E8A0:
+		STA		_ram_pal_buf,X
+		INX
+		CPX		#$19
+		BCC		loc_24E8A0
+		JSR		sub_17435B
+		LDX		#5
+		JSR		sub_24C0F3
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E8B1:				; CODE XREF: sub_24E747+24-p
-					; sub_24E747+39-p sub_24E747+4E-p
-		LDX		#0		; code used at a000
-loc_24E8B3:				; CODE XREF: sub_24E8B1+B-j
-		LDA		byte_24E8C7,X	; code used at a000
-		STA		_ram_pal_buf+7,X ; code	used at	a000
-		INX				; code used at a000
-		CPX		#3		; code used at a000
-		BCC		loc_24E8B3	; code used at a000
-		JSR		sub_17435B	; code used at a000
-		LDX		#3		; code used at a000
-		JSR		sub_24C0F3	; code used at a000
-		RTS				; code used at a000
+sub_24E8B1:
+		LDX		#0
+loc_24E8B3:
+		LDA		byte_24E8C7,X
+		STA		_ram_pal_buf+7,X
+		INX
+		CPX		#3
+		BCC		loc_24E8B3
+		JSR		sub_17435B
+		LDX		#3
+		JSR		sub_24C0F3
+		RTS
 byte_24E8C7:
-		.BYTE  $F,$30,$10	; DATA XREF: sub_24E8B1:loc_24E8B3-r
-					; data used at a000
+		.BYTE  $F,$30,$10
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E8CA:				; CODE XREF: sub_24E747+36-p
-		LDX		#0		; code used at a000
-loc_24E8CC:				; CODE XREF: sub_24E8CA+D-j
-		LDA		byte_24E945,X	; code used at a000
-		CMP		#$FF		; code used at a000
-		BEQ		locret_24E8D9	; code used at a000
-		STA		_spr_ram,X	; code used at a000
-		INX				; code used at a000
-		BNE		loc_24E8CC	; code used at a000
-locret_24E8D9:				; CODE XREF: sub_24E8CA+7-j
-		RTS				; code used at a000
+sub_24E8CA:
+		LDX		#0
+loc_24E8CC:
+		LDA		byte_24E945,X
+		CMP		#$FF
+		BEQ		locret_24E8D9
+		STA		_spr_ram,X
+		INX
+		BNE		loc_24E8CC
+locret_24E8D9:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E8DA:				; CODE XREF: sub_24E747+4B-p
-		LDX		#0		; code used at a000
-loc_24E8DC:				; CODE XREF: sub_24E8DA+D-j
-		LDA		byte_24E9B6,X	; code used at a000
-		CMP		#$FF		; code used at a000
-		BEQ		locret_24E8E9	; code used at a000
-		STA		_spr_ram,X	; code used at a000
-		INX				; code used at a000
-		BNE		loc_24E8DC	; code used at a000
-locret_24E8E9:				; CODE XREF: sub_24E8DA+7-j
-		RTS				; code used at a000
+sub_24E8DA:
+		LDX		#0
+loc_24E8DC:
+		LDA		byte_24E9B6,X
+		CMP		#$FF
+		BEQ		locret_24E8E9
+		STA		_spr_ram,X
+		INX
+		BNE		loc_24E8DC
+locret_24E8E9:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
+; unreferenced code
 sub_24E8EA:
 		LDY		#0
 		LDX		#0
@@ -1298,55 +1249,53 @@ sub_24E8EA:
 		INC		word_6C
 		BNE		loc_24E8FC
 		INC		word_6C+1
-loc_24E8FC:				; CODE XREF: sub_24E8EA+E-j
-					; sub_24E8EA+20-j
+loc_24E8FC:
 		LDA		(word_6C),Y
 		STA		_spr_ram,X
 		INX
 		INC		word_6C
 		BNE		loc_24E908
 		INC		word_6C+1
-loc_24E908:				; CODE XREF: sub_24E8EA+1A-j
+loc_24E908:
 		DEC		_tmp12+1
 		BNE		loc_24E8FC
 		CLC
-locret_24E90D:				; CODE XREF: sub_24E8EA+8-j
+locret_24E90D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E90E:				; CODE XREF: sub_24E747+8D-p
-		LDX		#0		; code used at a000
-		LDA		#$F8       ; code used at a000
-loc_24E912:				; CODE XREF: sub_24E90E+8-j
-		STA		_spr_ram,X	; code used at a000
-		INX				; code used at a000
-		BNE		loc_24E912	; code used at a000
-		RTS				; code used at a000
+sub_24E90E:
+		LDX		#0
+		LDA		#$F8
+loc_24E912:
+		STA		_spr_ram,X
+		INX
+		BNE		loc_24E912
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-nullsub_1:				; CODE XREF: _b18_s0+12-p
-		RTS				; code used at a000
+nullsub_1:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24E91A:				; CODE XREF: _b18_s0+F-p
+sub_24E91A:
 		BRK
 		.BYTE 0, $9F		; ofs 0x00264000, -> dst _b19_s0
-		LDA		word_6		; code used at a000
-		BEQ		loc_24E922	; code used at a000
-		RTS				; code used at a000
-loc_24E922:				; CODE XREF: sub_24E91A+5-j
-		LDA		#2		; code used at a000
-		STA		byte_6A36	; code used at a000
-		PLA				; code used at a000
-		PLA				; code used at a000
-		JMP		loc_24C019	; code used at a000
+		LDA		word_6
+		BEQ		loc_24E922
+		RTS
+loc_24E922:
+		LDA		#2
+		STA		byte_6A36
+		PLA
+		PLA
+		JMP		loc_24C019
 _unused_32:
 		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F
 		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F
 byte_24E945:
 		.BYTE $30,  0,$23,$C0,$78,  9,	0,$A8,$80,$19,	0,$A8,$80,$35,	0,$B0
-					; DATA XREF: sub_24E8CA:loc_24E8CC-r
-		.BYTE $88,$44,	0,$A8,$88,$45,	0,$B0,$90,$54,	0,$A8,$90,$55,	0,$B0 ;	data used at a000
+		.BYTE $88,$44,	0,$A8,$88,$45,	0,$B0,$90,$54,	0,$A8,$90,$55,	0,$B0
 		.BYTE $38,$36,	1,$40,$38,$37,	1,$48,$38,$38,	1,$50,$38,$63,	1,$58
 		.BYTE $38,$64,	1,$60,$40,$46,	1,$40,$40,$47,	1,$48,$40,$48,	1,$50
 		.BYTE $40,$73,	1,$58,$40,$74,	1,$60,$48,$56,	1,$40,$48,$57,	1,$48
@@ -1355,8 +1304,7 @@ byte_24E945:
 		.BYTE $FF
 byte_24E9B6:
 		.BYTE $30,  0,$23,$C0,$70,  9,	0,$A0,$78,$19,	0,$A0,$78,$35,	0,$A8
-					; DATA XREF: sub_24E8DA:loc_24E8DC-r
-		.BYTE $80,$44,	0,$A0,$80,$45,	0,$A8,$88,$54,	0,$A0,$88,$55,	0,$A8 ;	data used at a000
+		.BYTE $80,$44,	0,$A0,$80,$45,	0,$A8,$88,$54,	0,$A0,$88,$55,	0,$A8
 		.BYTE $40,$36,	1,$48,$40,$37,	1,$50,$40,$38,	1,$58,$40,$63,	1,$60
 		.BYTE $40,$64,	1,$68,$48,$46,	1,$48,$48,$47,	1,$50,$48,$48,	1,$58
 		.BYTE $48,$73,	1,$60,$48,$74,	1,$68,$50,$56,	1,$48,$50,$57,	1,$50
@@ -1365,21 +1313,16 @@ byte_24E9B6:
 		.BYTE $FF
 byte_24EA27:
 		.BYTE  $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F, $F,  7,	0, $F
-					; DATA XREF: sub_24E747:loc_24E7C1-r
-					; sub_24E747:loc_24E81B-r
-		.BYTE  $F,  0, $F, $F,	7,  0, $F,  0,	7, $F, $F, $F, $F, $F, $F, $F ;	data used at a000
+		.BYTE  $F,  0, $F, $F,	7,  0, $F,  0,	7, $F, $F, $F, $F, $F, $F, $F
 		.BYTE  $F, $F, $F, $F, $F,$17,$10, $F, $A,$10, $F,  7,$17,$10, $A,$10
 		.BYTE $17,  7, $F,  8,	7, $F,	8, $F, $C, $F,	7, $F,	1,$27,$20, $F
 		.BYTE $1A,$20,	6,$17,$27,$20,$1A,$20,$27,$17,	7,$18,$17,  7,$18, $C
 		.BYTE $1C, $F,$17,  7,$11,$37,$30, $A,$2A,$30,$16,$27,$37,$30,$2A,$30
 off_24EA87:
-		.WORD byte_24EA89	; DATA XREF: sub_24E747+6E-r
-					; sub_24E747+73-r
-					; data used at a000
+		.WORD byte_24EA89
 byte_24EA89:
 		.BYTE	1,$EC,	0,  1,$48,$36,	1,$50,$48,$37,	1,$58,$48,$38,	1,$60
-					; DATA XREF: BANK18:off_24EA87-o
-		.BYTE $48,$63,	1,$68,$48,$64,	1,$70,$50,$46,	1,$50,$50,$47,	1,$58 ;	ind data used at a000
+		.BYTE $48,$63,	1,$68,$48,$64,	1,$70,$50,$46,	1,$50,$50,$47,	1,$58
 		.BYTE $50,$48,	1,$60,$50,$73,	1,$68,$50,$74,	1,$70,$58,$56,	1,$50
 		.BYTE $58,$57,	1,$58,$58,$82,	1,$60,$58,$83,	1,$68,$60,$93,	1,$68
 		.BYTE $40,  1,	1,$60,$40,  1,	1,$68,$60,$92,	1,$60,$F8,  1,	1,$78
@@ -1506,384 +1449,29 @@ byte_24EA89:
 		.BYTE	0,$90,$FF,  0,$40,$D0,	1,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_24F261:
 		JMP		sub_24F414
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_24F264:
 		JMP		sub_24F431
 
 ; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
 sub_24F267:
 		JMP		sub_24F44E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F26A:				; CODE XREF: sub_24F326+2-p
-					; sub_24F4DC:loc_24F5AD-j
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4		; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F276	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F276:				; CODE XREF: sub_24F26A+8-j
-		LDY		#$14		; code used at a000
-		LDX		#7		; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDA		_spr_ram+$BB	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$BB	; code used at a000
-		LDA		_spr_ram+$E3	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$E3	; code used at a000
-		LDA		_spr_ram+$E7	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$E7	; code used at a000
-		LDA		_spr_ram+$EB	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$EB	; code used at a000
-		LDA		_spr_ram+$EF	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$EF	; code used at a000
-		LDY		#$10		; code used at a000
-		LDX		#$7B       ; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4		; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F2BD	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F2BD:				; CODE XREF: sub_24F26A+4F-j
-		LDY		#$12		; code used at a000
-		LDX		#4		; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDY		#$10		; code used at a000
-		LDX		#$78       ; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F2D5	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F2D5:				; CODE XREF: sub_24F26A+67-j
-		STA		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F2DB:				; CODE XREF: sub_24F326+7-p
-					; sub_24F4DC:loc_24F5B0-j
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4		; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F2E7	; code used at a000
-		INC		word_6C+1
-loc_24F2E7:				; CODE XREF: sub_24F2DB+8-j
-		LDY		#9		; code used at a000
-		LDX		#$57       ; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDA		_spr_ram+$C3	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$C3	; code used at a000
-		LDA		_spr_ram+$C7	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram+$C7	; code used at a000
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4		; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F30C	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F30C:				; CODE XREF: sub_24F2DB+2D-j
-		LDY		#9		; code used at a000
-		LDX		#$54       ; code used at a000
-		JSR		sub_24F337	; code used at a000
-		LDY		#0		; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F31D	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F31D:				; CODE XREF: sub_24F2DB+3E-j
-		STA		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F323:				; CODE XREF: sub_24F4DC:loc_24F5B3-j
-		JMP		sub_24F3C7
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F326:				; CODE XREF: sub_24F4DC:loc_24F5BF-j
-		TXA
-		PHA
-		JSR		sub_24F26A
-		PLA
-		TAX
-		JSR		sub_24F2DB
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F331:				; CODE XREF: sub_24F4DC:loc_24F5B6-j
-		JMP		sub_24F35D	; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F334:				; CODE XREF: sub_24F4DC:loc_24F5BC-j
-		JMP		sub_24F39D	; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F337:				; CODE XREF: sub_24F26A+10-p
-					; sub_24F26A+44-p sub_24F26A+57-p
-					; sub_24F26A+5E-p sub_24F2DB+10-p
-					; sub_24F2DB+35-p sub_24F46B+10-p
-					; sub_24F46B+44-p sub_24F46B+57-p
-					; sub_24F46B+5E-p
-		PHA				; code used at a000
-loc_24F338:				; CODE XREF: sub_24F337+F-j
-		LDA		_spr_ram,X	; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		STA		_spr_ram,X	; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		DEY				; code used at a000
-		BNE		loc_24F338	; code used at a000
-		PLA				; code used at a000
-		RTS				; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-; unused
-sub_24F34A:
-		PHA
-loc_24F34B:				; CODE XREF: sub_24F34A+F-j
-		LDA		_spr_ram,X
-		SEC
-		SBC		word_4
-		STA		_spr_ram,X
-		INX
-		INX
-		INX
-		INX
-		DEY
-		BNE		loc_24F34B
-		PLA
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F35D:				; CODE XREF: sub_24F331-j
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F365	; code used at a000
-		INC		word_6C+1
-loc_24F365:				; CODE XREF: sub_24F35D+4-j
-		TAX				; code used at a000
-		LDA		off_24F39B	; code used at a000
-		STA		word_6E		; code used at a000
-		LDA		off_24F39B+1	; code used at a000
-		STA		word_6E+1	; code used at a000
-		TXA				; code used at a000
-		BEQ		loc_24F381	; code used at a000
-loc_24F373:				; CODE XREF: sub_24F35D+22-j
-		LDA		word_6E		; code used at a000
-		CLC				; code used at a000
-		ADC		#$14		; code used at a000
-		STA		word_6E		; code used at a000
-		BCC		loc_24F37E	; code used at a000
-		INC		word_6E+1
-loc_24F37E:				; CODE XREF: sub_24F35D+1D-j
-		DEX				; code used at a000
-		BNE		loc_24F373	; code used at a000
-loc_24F381:				; CODE XREF: sub_24F35D+14-j
-		LDY		#0		; code used at a000
-		LDX		#0		; code used at a000
-loc_24F385:				; CODE XREF: sub_24F35D+34-j
-		LDA		(word_6E),Y	; code used at a000
-		STA		_spr_ram+5,X	; code used at a000
-		INY				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		CPY		#$14		; code used at a000
-		BCC		loc_24F385	; code used at a000
-		LDA		#0		; code used at a000
-loc_24F395:				; code used at a000
-		STA		word_4
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-off_24F39B:
-		.WORD byte_24FAC1	; DATA XREF: sub_24F35D+9-r
-					; sub_24F35D+E-r
-					; data used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F39D:				; CODE XREF: sub_24F334-j
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-loc_24F3A1:				; code used at a000
-		BNE		loc_24F3A5
-		INC		word_6C+1
-loc_24F3A5:				; CODE XREF: sub_24F39D:loc_24F3A1-j
-		STA		word_4		; code used at a000
-		ASL		; code used at a000
-		ASL		; code used at a000
-		ASL		; code used at a000
-		CLC				; code used at a000
-		ADC		word_4		; code used at a000
-		TAY				; code used at a000
-		LDX		#0		; code used at a000
-loc_24F3B0:				; CODE XREF: sub_24F39D+20-j
-		LDA		byte_24FBED,Y	; code used at a000
-		STA		_spr_ram+$55,X	; code used at a000
-		INY				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-loc_24F3BB:				; code used at a000
-		CPX		#$24 
-		BCC		loc_24F3B0	; code used at a000
-		LDA		#0		; code used at a000
-		STA		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F3C7:				; CODE XREF: sub_24F323-j
-		LDA		(word_6C),Y
-		INC		word_6C
-		BNE		loc_24F3CF
-		INC		word_6C+1
-loc_24F3CF:				; CODE XREF: sub_24F3C7+4-j
-		ASL
-		ASL
-		ASL
-		ASL
-		TAY
-		LDX		#0
-loc_24F3D6:				; CODE XREF: sub_24F3C7+1C-j
-		LDA		byte_24FCBC,Y
-		STA		_spr_ram+$79,X
-		INY
-		INX
-		INX
-		INX
-		INX
-		CPX		#$40 
-		BCC		loc_24F3D6
-		LDX		#0
-		LDY		#0
-loc_24F3E9:				; CODE XREF: sub_24F3C7+33-j
-		LDA		byte_24F404,X
-		CLC
-		ADC		_spr_ram+$28
-		STA		_spr_ram+$78,Y
-		INY
-		INY
-		INY
-		INY
-		INX
-		CPX		#$10
-		BCC		loc_24F3E9
-		LDA		#0
-		STA		word_4
-		BIT		word_4
-		CLC
-		RTS
-byte_24F404:
-		.BYTE	0,  0,	8,  8,	8,$10,$10,$10,$18,$18,$18,$20,$20,$20,$28,$28
-					; DATA XREF: sub_24F3C7:loc_24F3E9-r
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F414:				; CODE XREF: sub_24F261-j sub_24F69A-p
-					; sub_24F727-p
-		LDX		#0		; code used at a000
-loc_24F416:				; CODE XREF: sub_24F414+13-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		_spr_ram+5,X	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F421	; code used at a000
-		INC		word_6C+1
-loc_24F421:				; CODE XREF: sub_24F414+9-j
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		CPX		#$50       ; code used at a000
-		BCC		loc_24F416	; code used at a000
-		LDA		#0		; code used at a000
-		STA		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F431:				; CODE XREF: sub_24F264-j sub_24F71C-p
-		LDX		#0
-loc_24F433:				; CODE XREF: sub_24F431+13-j
-		LDA		(word_6C),Y
-		STA		_spr_ram+$55,X
-		INC		word_6C
-		BNE		loc_24F43E
-		INC		word_6C+1
-loc_24F43E:				; CODE XREF: sub_24F431+9-j
-		INX
-		INX
-		INX
-		INX
-		CPX		#$24 
-		BCC		loc_24F433
-		LDA		#0
-		STA		word_4
-		BIT		word_4
-		CLC
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F44E:				; CODE XREF: sub_24F267-j
-		LDX		#0
-loc_24F450:				; CODE XREF: sub_24F44E+13-j
-		LDA		(word_6C),Y
-		STA		_spr_ram+$79,X
-		INC		word_6C
-		BNE		loc_24F45B
-		INC		word_6C+1
-loc_24F45B:				; CODE XREF: sub_24F44E+9-j
-		INX
-		INX
-		INX
-		INX
-		CPX		#$40 
-		BCC		loc_24F450
-		LDA		#0
-		STA		word_4
-		BIT		word_4
-		CLC
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_24F46B:				; CODE XREF: sub_24F4DC:loc_24F5B9-j
+sub_24F26A:
 		LDY		#0
 		LDA		(word_6C),Y
 		STA		word_4
 		INC		word_6C
-		BNE		loc_24F477
+		BNE		loc_24F276
 		INC		word_6C+1
-loc_24F477:				; CODE XREF: sub_24F46B+8-j
+loc_24F276:
 		LDY		#$14
 		LDX		#7
 		JSR		sub_24F337
@@ -1908,7 +1496,351 @@ loc_24F477:				; CODE XREF: sub_24F46B+8-j
 		ADC		word_4
 		STA		_spr_ram+$EF
 		LDY		#$10
-		LDX		#$7B 
+		LDX		#$7B
+		JSR		sub_24F337
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_24F2BD
+		INC		word_6C+1
+loc_24F2BD:
+		LDY		#$12
+		LDX		#4
+		JSR		sub_24F337
+		LDY		#$10
+		LDX		#$78
+		JSR		sub_24F337
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F2D5
+		INC		word_6C+1
+loc_24F2D5:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F2DB:
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_24F2E7
+		INC		word_6C+1
+loc_24F2E7:
+		LDY		#9
+		LDX		#$57
+		JSR		sub_24F337
+		LDA		_spr_ram+$C3
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$C3
+		LDA		_spr_ram+$C7
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$C7
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_24F30C
+		INC		word_6C+1
+loc_24F30C:
+		LDY		#9
+		LDX		#$54
+		JSR		sub_24F337
+		LDY		#0
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F31D
+		INC		word_6C+1
+loc_24F31D:
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F323:
+		JMP		sub_24F3C7
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F326:
+		TXA
+		PHA
+		JSR		sub_24F26A
+		PLA
+		TAX
+		JSR		sub_24F2DB
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F331:
+		JMP		sub_24F35D
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F334:
+		JMP		sub_24F39D
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F337:
+		PHA
+loc_24F338:
+		LDA		_spr_ram,X
+		CLC
+		ADC		word_4
+		STA		_spr_ram,X
+		INX
+		INX
+		INX
+		INX
+		DEY
+		BNE		loc_24F338
+		PLA
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+; unreferenced code
+sub_24F34A:
+		PHA
+loc_24F34B:
+		LDA		_spr_ram,X
+		SEC
+		SBC		word_4
+		STA		_spr_ram,X
+		INX
+		INX
+		INX
+		INX
+		DEY
+		BNE		loc_24F34B
+		PLA
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F35D:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F365
+		INC		word_6C+1
+loc_24F365:
+		TAX
+		LDA		off_24F39B
+		STA		word_6E
+		LDA		off_24F39B+1
+		STA		word_6E+1
+		TXA
+		BEQ		loc_24F381
+loc_24F373:
+		LDA		word_6E
+		CLC
+		ADC		#$14
+		STA		word_6E
+		BCC		loc_24F37E
+		INC		word_6E+1
+loc_24F37E:
+		DEX
+		BNE		loc_24F373
+loc_24F381:
+		LDY		#0
+		LDX		#0
+loc_24F385:
+		LDA		(word_6E),Y
+		STA		_spr_ram+5,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPY		#$14
+		BCC		loc_24F385
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+off_24F39B:
+		.WORD byte_24FAC1
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F39D:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F3A5
+		INC		word_6C+1
+loc_24F3A5:
+		STA		word_4
+		ASL
+		ASL
+		ASL
+		CLC
+		ADC		word_4
+		TAY
+		LDX		#0
+loc_24F3B0:
+		LDA		byte_24FBED,Y
+		STA		_spr_ram+$55,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPX		#$24
+		BCC		loc_24F3B0
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F3C7:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F3CF
+		INC		word_6C+1
+loc_24F3CF:
+		ASL
+		ASL
+		ASL
+		ASL
+		TAY
+		LDX		#0
+loc_24F3D6:
+		LDA		byte_24FCBC,Y
+		STA		_spr_ram+$79,X
+		INY
+		INX
+		INX
+		INX
+		INX
+		CPX		#$40
+		BCC		loc_24F3D6
+		LDX		#0
+		LDY		#0
+loc_24F3E9:
+		LDA		byte_24F404,X
+		CLC
+		ADC		_spr_ram+$28
+		STA		_spr_ram+$78,Y
+		INY
+		INY
+		INY
+		INY
+		INX
+		CPX		#$10
+		BCC		loc_24F3E9
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+byte_24F404:
+		.BYTE	0,  0,	8,  8,	8,$10,$10,$10,$18,$18,$18,$20,$20,$20,$28,$28
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F414:
+		LDX		#0
+loc_24F416:
+		LDA		(word_6C),Y
+		STA		_spr_ram+5,X
+		INC		word_6C
+		BNE		loc_24F421
+		INC		word_6C+1
+loc_24F421:
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_24F416
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F431:
+		LDX		#0
+loc_24F433:
+		LDA		(word_6C),Y
+		STA		_spr_ram+$55,X
+		INC		word_6C
+		BNE		loc_24F43E
+		INC		word_6C+1
+loc_24F43E:
+		INX
+		INX
+		INX
+		INX
+		CPX		#$24
+		BCC		loc_24F433
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F44E:
+		LDX		#0
+loc_24F450:
+		LDA		(word_6C),Y
+		STA		_spr_ram+$79,X
+		INC		word_6C
+		BNE		loc_24F45B
+		INC		word_6C+1
+loc_24F45B:
+		INX
+		INX
+		INX
+		INX
+		CPX		#$40
+		BCC		loc_24F450
+		LDA		#0
+		STA		word_4
+		BIT		word_4
+		CLC
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+sub_24F46B:
+		LDY		#0
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_24F477
+		INC		word_6C+1
+loc_24F477:
+		LDY		#$14
+		LDX		#7
+		JSR		sub_24F337
+		LDA		_spr_ram+$BB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$BB
+		LDA		_spr_ram+$E3
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$E7
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$EB
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$EF
+		CLC
+		ADC		word_4
+		STA		_spr_ram+$EF
+		LDY		#$10
+		LDX		#$7B
 		JSR		sub_24F337
 		LDY		#0
 		LDA		(word_6C),Y
@@ -1916,94 +1848,93 @@ loc_24F477:				; CODE XREF: sub_24F46B+8-j
 		INC		word_6C
 		BNE		loc_24F4BE
 		INC		word_6C+1
-loc_24F4BE:				; CODE XREF: sub_24F46B+4F-j
+loc_24F4BE:
 		LDY		#$14
 		LDX		#4
 		JSR		sub_24F337
 		LDY		#$10
-		LDX		#$78 
+		LDX		#$78
 		JSR		sub_24F337
 		LDY		#0
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24F4D6
 		INC		word_6C+1
-loc_24F4D6:				; CODE XREF: sub_24F46B+67-j
+loc_24F4D6:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F4DC:				; CODE XREF: sub_24E747:loc_24E829-p
-					; sub_24E747:loc_24E86A-p
-		LDY		#$FF		; code used at a000
-		STY		word_4+1	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_6+1	; code used at a000
-		INC		word_6+1	; code used at a000
-		LDA		(word_6C),Y	; code used at a000
-		BEQ		loc_24F537	; code used at a000
-		CMP		#$FF		; code used at a000
-		BEQ		loc_24F564	; code used at a000
-		TAX				; code used at a000
-		BMI		loc_24F56C	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F4F7	; code used at a000
+sub_24F4DC:
+		LDY		#$FF
+		STY		word_4+1
+		LDY		#0
+		STY		word_6+1
+		INC		word_6+1
+		LDA		(word_6C),Y
+		BEQ		loc_24F537
+		CMP		#$FF
+		BEQ		loc_24F564
+		TAX
+		BMI		loc_24F56C
+		INC		word_6C
+		BNE		loc_24F4F7
 		INC		word_6C+1
-loc_24F4F7:				; CODE XREF: sub_24F4DC+17-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4		; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F501	; code used at a000
+loc_24F4F7:
+		LDA		(word_6C),Y
+		STA		word_4
+		INC		word_6C
+		BNE		loc_24F501
 		INC		word_6C+1
-loc_24F501:				; CODE XREF: sub_24F4DC+21-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_4+1	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F50B	; code used at a000
+loc_24F501:
+		LDA		(word_6C),Y
+		STA		word_4+1
+		INC		word_6C
+		BNE		loc_24F50B
 		INC		word_6C+1
-loc_24F50B:				; CODE XREF: sub_24F4DC+2B-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		word_6+1	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F515	; code used at a000
+loc_24F50B:
+		LDA		(word_6C),Y
+		STA		word_6+1
+		INC		word_6C
+		BNE		loc_24F515
 		INC		word_6C+1
-loc_24F515:				; CODE XREF: sub_24F4DC+35-j
-		TXA				; code used at a000
-		LDX		#0		; code used at a000
-		CMP		#1		; code used at a000
-		BEQ		loc_24F598	; code used at a000
-		CMP		#2		; code used at a000
-		BEQ		loc_24F59B	; code used at a000
-		CMP		#3		; code used at a000
-		BEQ		loc_24F59E	; code used at a000
-		CMP		#4		; code used at a000
-		BEQ		loc_24F5A1	; code used at a000
-		CMP		#5		; code used at a000
-		BEQ		loc_24F5A4	; code used at a000
-		CMP		#6		; code used at a000
-		BEQ		loc_24F5A7	; code used at a000
-		CMP		#7		; code used at a000
-		BEQ		loc_24F5AA	; code used at a000
-loc_24F534:				; CODE XREF: sub_24F4DC:loc_24F534-j
+loc_24F515:
+		TXA
+		LDX		#0
+		CMP		#1
+		BEQ		loc_24F598
+		CMP		#2
+		BEQ		loc_24F59B
+		CMP		#3
+		BEQ		loc_24F59E
+		CMP		#4
+		BEQ		loc_24F5A1
+		CMP		#5
+		BEQ		loc_24F5A4
+		CMP		#6
+		BEQ		loc_24F5A7
+		CMP		#7
+		BEQ		loc_24F5AA
+loc_24F534:
 		JMP		loc_24F534
-loc_24F537:				; CODE XREF: sub_24F4DC+C-j
-		INC		word_6C		; code used at a000
-		BNE		loc_24F53D	; code used at a000
+loc_24F537:
+		INC		word_6C
+		BNE		loc_24F53D
 		INC		word_6C+1
-loc_24F53D:				; CODE XREF: sub_24F4DC+5D-j
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F545	; code used at a000
+loc_24F53D:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F545
 		INC		word_6C+1
-loc_24F545:				; CODE XREF: sub_24F4DC+65-j
-		CMP		#1		; code used at a000
-		BEQ		loc_24F5C2	; code used at a000
-		CMP		#2		; code used at a000
-		BEQ		loc_24F5C5	; code used at a000
-		CMP		#3		; code used at a000
-		BEQ		loc_24F5C8	; code used at a000
+loc_24F545:
+		CMP		#1
+		BEQ		loc_24F5C2
+		CMP		#2
+		BEQ		loc_24F5C5
+		CMP		#3
+		BEQ		loc_24F5C8
 		CMP		#4
 		BEQ		loc_24F5CB
 		CMP		#5
@@ -2012,165 +1943,162 @@ loc_24F545:				; CODE XREF: sub_24F4DC+65-j
 		BEQ		loc_24F5D1
 		CMP		#7
 		BEQ		loc_24F5D4
-loc_24F561:				; CODE XREF: sub_24F4DC:loc_24F561-j
+loc_24F561:
 		JMP		loc_24F561
-loc_24F564:				; CODE XREF: sub_24F4DC+10-j
-		INC		word_6C		; code used at a000
-		BNE		loc_24F56A	; code used at a000
+loc_24F564:
+		INC		word_6C
+		BNE		loc_24F56A
 		INC		word_6C+1
-loc_24F56A:				; CODE XREF: sub_24F4DC+8A-j
-		SEC				; code used at a000
-		RTS				; code used at a000
-loc_24F56C:				; CODE XREF: sub_24F4DC+13-j
-		INC		word_6C		; code used at a000
-		BNE		loc_24F572	; code used at a000
+loc_24F56A:
+		SEC
+		RTS
+loc_24F56C:
+		INC		word_6C
+		BNE		loc_24F572
 		INC		word_6C+1
-loc_24F572:				; CODE XREF: sub_24F4DC+92-j
-		LDA		#1		; code used at a000
-		STA		word_6+1	; code used at a000
-		TXA				; code used at a000
-		AND		#$70       ; code used at a000
-		CMP		#$10		; code used at a000
-		BEQ		loc_24F5AD	; code used at a000
-		CMP		#$20       ; code used at a000
-		BEQ		loc_24F5B0	; code used at a000
-		CMP		#$30       ; code used at a000
-		BEQ		loc_24F5BF	; code used at a000
-		CMP		#$40       ; code used at a000
-		BEQ		loc_24F5B3	; code used at a000
-		CMP		#$50       ; code used at a000
-		BEQ		loc_24F5B6	; code used at a000
-		CMP		#$60       ; code used at a000
-		BEQ		loc_24F5BC	; code used at a000
-		CMP		#$70 
+loc_24F572:
+		LDA		#1
+		STA		word_6+1
+		TXA
+		AND		#$70
+		CMP		#$10
+		BEQ		loc_24F5AD
+		CMP		#$20
+		BEQ		loc_24F5B0
+		CMP		#$30
+		BEQ		loc_24F5BF
+		CMP		#$40
+		BEQ		loc_24F5B3
+		CMP		#$50
+		BEQ		loc_24F5B6
+		CMP		#$60
+		BEQ		loc_24F5BC
+		CMP		#$70
 		BEQ		loc_24F5B9
-loc_24F595:				; CODE XREF: sub_24F4DC:loc_24F595-j
+loc_24F595:
 		JMP		loc_24F595
-loc_24F598:				; CODE XREF: sub_24F4DC+3E-j
-		JMP		loc_24F5D7	; code used at a000
-loc_24F59B:				; CODE XREF: sub_24F4DC+42-j
-		JMP		loc_24F5EF	; code used at a000
-loc_24F59E:				; CODE XREF: sub_24F4DC+46-j
+loc_24F598:
+		JMP		loc_24F5D7
+loc_24F59B:
+		JMP		loc_24F5EF
+loc_24F59E:
 		JMP		loc_24F654
-loc_24F5A1:				; CODE XREF: sub_24F4DC+4A-j
+loc_24F5A1:
 		JMP		sub_24F69A
-loc_24F5A4:				; CODE XREF: sub_24F4DC+4E-j
+loc_24F5A4:
 		JMP		sub_24F704
-loc_24F5A7:				; CODE XREF: sub_24F4DC+52-j
+loc_24F5A7:
 		JMP		sub_24F71C
-loc_24F5AA:				; CODE XREF: sub_24F4DC+56-j
-		JMP		sub_24F727	; code used at a000
-loc_24F5AD:				; CODE XREF: sub_24F4DC+9F-j
-		JMP		sub_24F26A	; code used at a000
-loc_24F5B0:				; CODE XREF: sub_24F4DC+A3-j
-		JMP		sub_24F2DB	; code used at a000
-loc_24F5B3:				; CODE XREF: sub_24F4DC+AB-j
+loc_24F5AA:
+		JMP		sub_24F727
+loc_24F5AD:
+		JMP		sub_24F26A
+loc_24F5B0:
+		JMP		sub_24F2DB
+loc_24F5B3:
 		JMP		sub_24F323
-loc_24F5B6:				; CODE XREF: sub_24F4DC+AF-j
-		JMP		sub_24F331	; code used at a000
-loc_24F5B9:				; CODE XREF: sub_24F4DC+B7-j
+loc_24F5B6:
+		JMP		sub_24F331
+loc_24F5B9:
 		JMP		sub_24F46B
-loc_24F5BC:				; CODE XREF: sub_24F4DC+B3-j
-		JMP		sub_24F334	; code used at a000
-loc_24F5BF:				; CODE XREF: sub_24F4DC+A7-j
+loc_24F5BC:
+		JMP		sub_24F334
+loc_24F5BF:
 		JMP		sub_24F326
-loc_24F5C2:				; CODE XREF: sub_24F4DC+6B-j
-		JMP		sub_24F834	; code used at a000
-loc_24F5C5:				; CODE XREF: sub_24F4DC+6F-j
-		JMP		sub_24F8B1	; code used at a000
-loc_24F5C8:				; CODE XREF: sub_24F4DC+73-j
-		JMP		sub_24F904	; code used at a000
-loc_24F5CB:				; CODE XREF: sub_24F4DC+77-j
+loc_24F5C2:
+		JMP		sub_24F834
+loc_24F5C5:
+		JMP		sub_24F8B1
+loc_24F5C8:
+		JMP		sub_24F904
+loc_24F5CB:
 		JMP		sub_24F95D
-loc_24F5CE:				; CODE XREF: sub_24F4DC+7B-j
+loc_24F5CE:
 		JMP		sub_24F95D
-loc_24F5D1:				; CODE XREF: sub_24F4DC+7F-j
+loc_24F5D1:
 		JMP		sub_24F9BD
-loc_24F5D4:				; CODE XREF: sub_24F4DC+83-j
+loc_24F5D4:
 		JMP		sub_24F9D7
-loc_24F5D7:				; CODE XREF: sub_24F4DC:loc_24F598-j
-					; sub_24F4DC+109-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		_spr_ram+4,X	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F5E2	; code used at a000
-		INC		word_6C+1	; code used at a000
-loc_24F5E2:				; CODE XREF: sub_24F4DC+102-j
-		INX				; code used at a000
-		DEC		word_4		; code used at a000
-		BNE		loc_24F5D7	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F5EF:				; CODE XREF: sub_24F4DC:loc_24F59B-j
-		LDA		(word_6C),Y	; code used at a000
-		INC		word_6C		; code used at a000
-		BNE		loc_24F5F7	; code used at a000
+loc_24F5D7:
+		LDA		(word_6C),Y
+		STA		_spr_ram+4,X
+		INC		word_6C
+		BNE		loc_24F5E2
 		INC		word_6C+1
-loc_24F5F7:				; CODE XREF: sub_24F4DC+117-j
-		CMP		#1		; code used at a000
-		BEQ		loc_24F612	; code used at a000
-		CMP		#2		; code used at a000
-		BEQ		loc_24F61F	; code used at a000
-		CMP		#3		; code used at a000
-		BEQ		loc_24F626	; code used at a000
-		CMP		#4		; code used at a000
-		BEQ		loc_24F633	; code used at a000
-		CMP		#5		; code used at a000
-		BEQ		loc_24F63A	; code used at a000
-		CMP		#6		; code used at a000
-		BEQ		loc_24F647	; code used at a000
-loc_24F60F:				; CODE XREF: sub_24F4DC:loc_24F60F-j
+loc_24F5E2:
+		INX
+		DEC		word_4
+		BNE		loc_24F5D7
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F5EF:
+		LDA		(word_6C),Y
+		INC		word_6C
+		BNE		loc_24F5F7
+		INC		word_6C+1
+loc_24F5F7:
+		CMP		#1
+		BEQ		loc_24F612
+		CMP		#2
+		BEQ		loc_24F61F
+		CMP		#3
+		BEQ		loc_24F626
+		CMP		#4
+		BEQ		loc_24F633
+		CMP		#5
+		BEQ		loc_24F63A
+		CMP		#6
+		BEQ		loc_24F647
+loc_24F60F:
 		JMP		loc_24F60F
-loc_24F612:				; CODE XREF: sub_24F4DC+11D-j
+loc_24F612:
 		LDA		_spr_ram+$48
 		STA		_spr_ram+$B8
 		LDA		#8
 		STA		_spr_ram+$B9
 		BNE		loc_24F64C
-loc_24F61F:				; CODE XREF: sub_24F4DC+121-j
-		LDA		#1		; code used at a000
-		STA		_spr_ram+$B9	; code used at a000
-		BNE		loc_24F64C	; code used at a000
-loc_24F626:				; CODE XREF: sub_24F4DC+125-j
-		LDA		_spr_ram+$64	; code used at a000
-		STA		_spr_ram+$C0	; code used at a000
-		LDA		#8		; code used at a000
-		STA		_spr_ram+$C1	; code used at a000
-		BNE		loc_24F64C	; code used at a000
-loc_24F633:				; CODE XREF: sub_24F4DC+129-j
-		LDA		#1		; code used at a000
-		STA		_spr_ram+$C1	; code used at a000
-		BNE		loc_24F64C	; code used at a000
-loc_24F63A:				; CODE XREF: sub_24F4DC+12D-j
+loc_24F61F:
+		LDA		#1
+		STA		_spr_ram+$B9
+		BNE		loc_24F64C
+loc_24F626:
+		LDA		_spr_ram+$64
+		STA		_spr_ram+$C0
+		LDA		#8
+		STA		_spr_ram+$C1
+		BNE		loc_24F64C
+loc_24F633:
+		LDA		#1
+		STA		_spr_ram+$C1
+		BNE		loc_24F64C
+loc_24F63A:
 		LDA		_spr_ram+$64
 		STA		_spr_ram+$C4
 		LDA		#8
 		STA		_spr_ram+$C5
 		BNE		loc_24F64C
-loc_24F647:				; CODE XREF: sub_24F4DC+131-j
-		LDA		#1		; code used at a000
-		STA		_spr_ram+$C5	; code used at a000
-loc_24F64C:				; CODE XREF: sub_24F4DC:loc_24F61D-j
-					; sub_24F4DC+148-j sub_24F4DC+155-j
-					; sub_24F4DC+15C-j sub_24F4DC+169-j
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F654:				; CODE XREF: sub_24F4DC:loc_24F59E-j
+loc_24F647:
+		LDA		#1
+		STA		_spr_ram+$C5
+loc_24F64C:
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F654:
 		LDA		word_4
 		PHA
-loc_24F657:				; CODE XREF: sub_24F4DC+18C-j
+loc_24F657:
 		LDA		(word_6C),Y
 		STA		_spr_ram+$79,X
 		INC		word_6C
 		BNE		loc_24F662
 		INC		word_6C+1
-loc_24F662:				; CODE XREF: sub_24F4DC+182-j
+loc_24F662:
 		INX
 		INX
 		INX
@@ -2180,7 +2108,7 @@ loc_24F662:				; CODE XREF: sub_24F4DC+182-j
 		PLA
 		STA		word_4
 		LDX		#0
-loc_24F66F:				; CODE XREF: sub_24F4DC+1A4-j
+loc_24F66F:
 		LDA		byte_24F68A,X
 		CLC
 		ADC		_spr_ram+$28
@@ -2199,13 +2127,12 @@ loc_24F66F:				; CODE XREF: sub_24F4DC+1A4-j
 		RTS
 byte_24F68A:
 		.BYTE	0,  0,	8,  8,	8,$10,$10,$10,$18,$18,$18,$20,$20,$20,$28,$28
-					; DATA XREF: sub_24F4DC:loc_24F66F-r
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F69A:				; CODE XREF: sub_24F4DC:loc_24F5A1-j
+sub_24F69A:
 		JSR		sub_24F414
 		LDA		_spr_ram+$4C
-		CMP		#$F8 
+		CMP		#$F8
 		BNE		loc_24F6D6
 		LDA		_spr_ram+$14
 		STA		_spr_ram+$4C
@@ -2216,26 +2143,26 @@ sub_24F69A:				; CODE XREF: sub_24F4DC:loc_24F5A1-j
 		INC		word_6C
 		BNE		loc_24F6BA
 		INC		word_6C+1
-loc_24F6BA:				; CODE XREF: sub_24F69A+1C-j
+loc_24F6BA:
 		LDX		#0
-loc_24F6BC:				; CODE XREF: sub_24F69A+32-j
+loc_24F6BC:
 		LDA		_spr_ram+6,X
-		AND		#$FC 
+		AND		#$FC
 		ORA		word_4
 		STA		_spr_ram+6,X
 		INX
 		INX
 		INX
 		INX
-		CPX		#$50 
+		CPX		#$50
 		BCC		loc_24F6BC
 		LDY		#0
 		STY		word_4
 		BIT		word_4
 		CLC
 		RTS
-loc_24F6D6:				; CODE XREF: sub_24F69A+8-j
-		LDA		#$F8 
+loc_24F6D6:
+		LDA		#$F8
 		STA		_spr_ram+$4C
 		STA		_spr_ram+$50
 		LDA		(word_6C),Y
@@ -2243,18 +2170,18 @@ loc_24F6D6:				; CODE XREF: sub_24F69A+8-j
 		INC		word_6C
 		BNE		loc_24F6E8
 		INC		word_6C+1
-loc_24F6E8:				; CODE XREF: sub_24F69A+4A-j
+loc_24F6E8:
 		LDX		#0
-loc_24F6EA:				; CODE XREF: sub_24F69A+60-j
+loc_24F6EA:
 		LDA		_spr_ram+6,X
-		AND		#$FC 
+		AND		#$FC
 		ORA		word_4
 		STA		_spr_ram+6,X
 		INX
 		INX
 		INX
 		INX
-		CPX		#$50 
+		CPX		#$50
 		BCC		loc_24F6EA
 		LDY		#0
 		STY		word_4
@@ -2264,14 +2191,13 @@ locret_24F703:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F704:				; CODE XREF: sub_24F4DC:loc_24F5A4-j
-					; sub_24F704+E-j
+sub_24F704:
 		LDA		(word_6C),Y
 		STA		_spr_ram+$C8,X
 		INC		word_6C
 		BNE		loc_24F70F
 		INC		word_6C+1
-loc_24F70F:				; CODE XREF: sub_24F704+7-j
+loc_24F70F:
 		INX
 		DEC		word_4
 		BNE		sub_24F704
@@ -2282,7 +2208,7 @@ loc_24F70F:				; CODE XREF: sub_24F704+7-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F71C:				; CODE XREF: sub_24F4DC:loc_24F5A7-j
+sub_24F71C:
 		JSR		sub_24F431
 		LDY		#0
 		STY		word_4
@@ -2291,21 +2217,21 @@ sub_24F71C:				; CODE XREF: sub_24F4DC:loc_24F5A7-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F727:				; CODE XREF: sub_24F4DC:loc_24F5AA-j
-		JSR		sub_24F414	; code used at a000
-		LDA		_spr_ram+6	; code used at a000
-		AND		#$40       ; code used at a000
-		BEQ		loc_24F734	; code used at a000
-		JMP		loc_24F7B4	; code used at a000
-loc_24F734:				; CODE XREF: sub_24F727+8-j
-		LDA		_spr_ram+$C	; code used at a000
-		CMP		_spr_ram+$40	; code used at a000
-		BCS		loc_24F785	; code used at a000
+sub_24F727:
+		JSR		sub_24F414
+		LDA		_spr_ram+6
+		AND		#$40
+		BEQ		loc_24F734
+		JMP		loc_24F7B4
+loc_24F734:
+		LDA		_spr_ram+$C
+		CMP		_spr_ram+$40
+		BCS		loc_24F785
 		SEC
 		SBC		#8
 		STA		_spr_ram+$40
 		STA		_spr_ram+$44
-		LDA		#$F8 
+		LDA		#$F8
 		STA		_spr_ram+$4C
 		STA		_spr_ram+$50
 		LDA		_spr_ram+$43
@@ -2330,59 +2256,59 @@ loc_24F734:				; CODE XREF: sub_24F727+8-j
 		BIT		word_4
 		CLC
 		RTS
-loc_24F785:				; CODE XREF: sub_24F727+13-j
-		LDA		_spr_ram+$48	; code used at a000
-		STA		_spr_ram+$40	; code used at a000
-		STA		_spr_ram+$44	; code used at a000
-		STA		_spr_ram+$4C	; code used at a000
-		STA		_spr_ram+$50	; code used at a000
-		LDA		_spr_ram+$E3	; code used at a000
-		STA		_spr_ram+$43	; code used at a000
-		LDA		_spr_ram+$E7	; code used at a000
-		STA		_spr_ram+$47	; code used at a000
-		LDA		_spr_ram+$EB	; code used at a000
-		STA		_spr_ram+$4F	; code used at a000
-		LDA		_spr_ram+$EF	; code used at a000
-		STA		_spr_ram+$53	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F7B4:				; CODE XREF: sub_24F727+A-j
-		LDA		_spr_ram+$C	; code used at a000
-		CMP		_spr_ram+$40	; code used at a000
-		BCS		loc_24F805	; code used at a000
-		SEC				; code used at a000
-		SBC		#8		; code used at a000
-		STA		_spr_ram+$40	; code used at a000
-		STA		_spr_ram+$44	; code used at a000
-		LDA		#$F8       ; code used at a000
-		STA		_spr_ram+$4C	; code used at a000
-		STA		_spr_ram+$50	; code used at a000
-		LDA		_spr_ram+$43	; code used at a000
-		STA		_spr_ram+$E3	; code used at a000
-		LDA		_spr_ram+$47	; code used at a000
-		STA		_spr_ram+$E7	; code used at a000
-		LDA		_spr_ram+$4F	; code used at a000
-		STA		_spr_ram+$EB	; code used at a000
-		LDA		_spr_ram+$53	; code used at a000
-		STA		_spr_ram+$EF	; code used at a000
-		LDA		_spr_ram+$F	; code used at a000
-		STA		_spr_ram+$43	; code used at a000
-		LDA		_spr_ram+$13	; code used at a000
-		STA		_spr_ram+$47	; code used at a000
-		LDA		_spr_ram+$17	; code used at a000
-		SEC				; code used at a000
-		SBC		#8		; code used at a000
-		STA		_spr_ram+$4F	; code used at a000
-		STA		_spr_ram+$53	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F805:				; CODE XREF: sub_24F727+93-j
+loc_24F785:
+		LDA		_spr_ram+$48
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$E3
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$E7
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$EB
+		STA		_spr_ram+$4F
+		LDA		_spr_ram+$EF
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F7B4:
+		LDA		_spr_ram+$C
+		CMP		_spr_ram+$40
+		BCS		loc_24F805
+		SEC
+		SBC		#8
+		STA		_spr_ram+$40
+		STA		_spr_ram+$44
+		LDA		#$F8
+		STA		_spr_ram+$4C
+		STA		_spr_ram+$50
+		LDA		_spr_ram+$43
+		STA		_spr_ram+$E3
+		LDA		_spr_ram+$47
+		STA		_spr_ram+$E7
+		LDA		_spr_ram+$4F
+		STA		_spr_ram+$EB
+		LDA		_spr_ram+$53
+		STA		_spr_ram+$EF
+		LDA		_spr_ram+$F
+		STA		_spr_ram+$43
+		LDA		_spr_ram+$13
+		STA		_spr_ram+$47
+		LDA		_spr_ram+$17
+		SEC
+		SBC		#8
+		STA		_spr_ram+$4F
+		STA		_spr_ram+$53
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F805:
 		LDA		_spr_ram+$48
 		STA		_spr_ram+$40
 		STA		_spr_ram+$44
@@ -2403,55 +2329,54 @@ loc_24F805:				; CODE XREF: sub_24F727+93-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F834:				; CODE XREF: sub_24F4DC:loc_24F5C2-j
-		LDX		#0		; code used at a000
-loc_24F836:				; CODE XREF: sub_24F834+10-j
-		LDA		_spr_ram+6,X	; code used at a000
-		EOR		#$40       ; code used at a000
-		STA		_spr_ram+6,X	; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		CPX		#$50       ; code used at a000
-		BCC		loc_24F836	; code used at a000
-		LDX		#0		; code used at a000
-		LDY		#0		; code used at a000
-		LDA		_spr_ram+6	; code used at a000
-		AND		#$40       ; code used at a000
-		BEQ		loc_24F881	; code used at a000
-loc_24F851:				; CODE XREF: sub_24F834+2E-j
-		LDA		byte_24FA5F,X	; code used at a000
-		CLC				; code used at a000
-		ADC		_spr_ram+7,Y	; code used at a000
-		STA		_spr_ram+7,Y	; code used at a000
-		INX				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		CPY		#$50       ; code used at a000
-		BCC		loc_24F851	; code used at a000
-		LDY		#0		; code used at a000
-loc_24F866:				; CODE XREF: sub_24F834+43-j
-		LDA		byte_24FA5F,X	; code used at a000
-		CLC				; code used at a000
-		ADC		_spr_ram+$E3,Y	; code used at a000
-		STA		_spr_ram+$E3,Y	; code used at a000
-		INX				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		CPY		#$10		; code used at a000
-		BCC		loc_24F866	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F881:				; CODE XREF: sub_24F834+1B-j
-					; sub_24F834+5E-j
+sub_24F834:
+		LDX		#0
+loc_24F836:
+		LDA		_spr_ram+6,X
+		EOR		#$40
+		STA		_spr_ram+6,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$50
+		BCC		loc_24F836
+		LDX		#0
+		LDY		#0
+		LDA		_spr_ram+6
+		AND		#$40
+		BEQ		loc_24F881
+loc_24F851:
+		LDA		byte_24FA5F,X
+		CLC
+		ADC		_spr_ram+7,Y
+		STA		_spr_ram+7,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$50
+		BCC		loc_24F851
+		LDY		#0
+loc_24F866:
+		LDA		byte_24FA5F,X
+		CLC
+		ADC		_spr_ram+$E3,Y
+		STA		_spr_ram+$E3,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$10
+		BCC		loc_24F866
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F881:
 		LDA		byte_24FA77,X
 		CLC
 		ADC		_spr_ram+7,Y
@@ -2461,10 +2386,10 @@ loc_24F881:				; CODE XREF: sub_24F834+1B-j
 		INY
 		INY
 		INY
-		CPY		#$50 
+		CPY		#$50
 		BCC		loc_24F881
 		LDY		#0
-loc_24F896:				; CODE XREF: sub_24F834+73-j
+loc_24F896:
 		LDA		byte_24FA77,X
 		CLC
 		ADC		_spr_ram+$E3,Y
@@ -2483,43 +2408,41 @@ loc_24F896:				; CODE XREF: sub_24F834+73-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F8B1:				; CODE XREF: sub_24F4DC:loc_24F5C5-j
-		LDX		#0		; code used at a000
-loc_24F8B3:				; CODE XREF: sub_24F8B1+10-j
-		LDA		_spr_ram+$56,X	; code used at a000
-		EOR		#$40       ; code used at a000
-		STA		_spr_ram+$56,X	; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-loc_24F8BF:				; code used at a000
-		CPX		#$24 
-		BCC		loc_24F8B3	; code used at a000
-		LDX		#0		; code used at a000
-		LDY		#0		; code used at a000
-		LDA		_spr_ram+$56	; code used at a000
-		AND		#$40       ; code used at a000
-		BEQ		loc_24F8E9	; code used at a000
-loc_24F8CE:				; CODE XREF: sub_24F8B1+2E-j
-		LDA		byte_24FA8F,X	; code used at a000
-		CLC				; code used at a000
-		ADC		_spr_ram+$57,Y	; code used at a000
-		STA		_spr_ram+$57,Y	; code used at a000
-		INX				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		CPY		#$24       ; code used at a000
-		BCC		loc_24F8CE	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F8E9:				; CODE XREF: sub_24F8B1+1B-j
-					; sub_24F8B1+49-j
+sub_24F8B1:
+		LDX		#0
+loc_24F8B3:
+		LDA		_spr_ram+$56,X
+		EOR		#$40
+		STA		_spr_ram+$56,X
+		INX
+		INX
+		INX
+		INX
+		CPX		#$24
+		BCC		loc_24F8B3
+		LDX		#0
+		LDY		#0
+		LDA		_spr_ram+$56
+		AND		#$40
+		BEQ		loc_24F8E9
+loc_24F8CE:
+		LDA		byte_24FA8F,X
+		CLC
+		ADC		_spr_ram+$57,Y
+		STA		_spr_ram+$57,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$24
+		BCC		loc_24F8CE
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F8E9:
 		LDA		byte_24FA98,X
 		CLC
 		ADC		_spr_ram+$57,Y
@@ -2529,7 +2452,7 @@ loc_24F8E9:				; CODE XREF: sub_24F8B1+1B-j
 		INY
 		INY
 		INY
-		CPY		#$24 
+		CPY		#$24
 		BCC		loc_24F8E9
 		LDY		#0
 		STY		word_4
@@ -2538,59 +2461,55 @@ loc_24F8E9:				; CODE XREF: sub_24F8B1+1B-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F904:				; CODE XREF: sub_24F4DC:loc_24F5C8-j
-		LDX		#0		; code used at a000
-loc_24F906:				; CODE XREF: sub_24F904+10-j
-		LDA		_spr_ram+$7A,X	; code used at a000
-		EOR		#$40       ; code used at a000
-		STA		_spr_ram+$7A,X	; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-		INX				; code used at a000
-loc_24F911:				; code used at a000
+sub_24F904:
+		LDX		#0
+loc_24F906:
+		LDA		_spr_ram+$7A,X
+		EOR		#$40
+		STA		_spr_ram+$7A,X
 		INX
-		CPX		#$40       ; code used at a000
-		BCC		loc_24F906	; code used at a000
-		LDX		#0		; code used at a000
-		LDY		#0		; code used at a000
-loc_24F91A:				; code used at a000
+		INX
+		INX
+		INX
+		CPX		#$40
+		BCC		loc_24F906
+		LDX		#0
+		LDY		#0
 		LDA		_spr_ram+$7A
-loc_24F91D:				; code used at a000
-		AND		#$40 
-		BEQ		loc_24F93F	; code used at a000
-loc_24F921:				; CODE XREF: sub_24F904+31-j
-		LDA		byte_24FAA1,X	; code used at a000
-		CLC				; code used at a000
-		ADC		_spr_ram+$7B,Y	; code used at a000
-		SEC				; code used at a000
-		SBC		#$40       ; code used at a000
-		STA		_spr_ram+$7B,Y	; code used at a000
-		INX				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		INY				; code used at a000
-		CPY		#$40       ; code used at a000
-		BCC		loc_24F921	; code used at a000
-		LDY		#0		; code used at a000
-		STY		word_4		; code used at a000
-		BIT		word_4		; code used at a000
-		CLC				; code used at a000
-		RTS				; code used at a000
-loc_24F93F:				; CODE XREF: sub_24F904+1B-j
-					; sub_24F904+4F-j
-		LDA		byte_24FAB1,X
+		AND		#$40
+		BEQ		loc_24F93F
+loc_24F921:
+		LDA		byte_24FAA1,X
 		CLC
 		ADC		_spr_ram+$7B,Y
-		CLC
-		ADC		#$40 
+		SEC
+		SBC		#$40
 		STA		_spr_ram+$7B,Y
 		INX
 		INY
 		INY
 		INY
 		INY
-		CPY		#$40 
+		CPY		#$40
+		BCC		loc_24F921
+		LDY		#0
+		STY		word_4
+		BIT		word_4
+		CLC
+		RTS
+loc_24F93F:
+		LDA		byte_24FAB1,X
+		CLC
+		ADC		_spr_ram+$7B,Y
+		CLC
+		ADC		#$40
+		STA		_spr_ram+$7B,Y
+		INX
+		INY
+		INY
+		INY
+		INY
+		CPY		#$40
 		BCC		loc_24F93F
 		LDY		#0
 		STY		word_4
@@ -2599,24 +2518,23 @@ loc_24F93F:				; CODE XREF: sub_24F904+1B-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F95D:				; CODE XREF: sub_24F4DC:loc_24F5CB-j
-					; sub_24F4DC:loc_24F5CE-j
+sub_24F95D:
 		LDX		#0
-loc_24F95F:				; CODE XREF: sub_24F95D+9-j
+loc_24F95F:
 		LDA		_spr_ram+$54,X
 		PHA
 		INX
 		CPX		#$10
 		BCC		loc_24F95F
 		LDX		#0
-loc_24F96A:				; CODE XREF: sub_24F95D+16-j
+loc_24F96A:
 		LDA		_spr_ram+$A8,X
 		STA		_spr_ram+$54,X
 		INX
 		CPX		#$10
 		BCC		loc_24F96A
 		LDX		#$F
-loc_24F977:				; CODE XREF: sub_24F95D+1F-j
+loc_24F977:
 		PLA
 		STA		_spr_ram+$A8,X
 		DEX
@@ -2626,17 +2544,17 @@ loc_24F977:				; CODE XREF: sub_24F95D+1F-j
 		INC		word_6C
 		BNE		loc_24F988
 		INC		word_6C+1
-loc_24F988:				; CODE XREF: sub_24F95D+27-j
+loc_24F988:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
+; unreferenced code
 sub_24F98E:
 		LDX		#0
-loc_24F990:				; CODE XREF: sub_24F98E+9-j
+loc_24F990:
 		LDA		_spr_ram+$A8,X
 		PHA
 		INX
@@ -2644,7 +2562,7 @@ loc_24F990:				; CODE XREF: sub_24F98E+9-j
 		BCC		loc_24F990
 		LDX		#0
 		LDY		#$F
-loc_24F99D:				; CODE XREF: sub_24F98E+1D-j
+loc_24F99D:
 		LDA		_spr_ram+$54,X
 		STA		_spr_ram+$A8,Y
 		PLA
@@ -2658,18 +2576,18 @@ loc_24F99D:				; CODE XREF: sub_24F98E+1D-j
 		INC		word_6C
 		BNE		loc_24F9B7
 		INC		word_6C+1
-loc_24F9B7:				; CODE XREF: sub_24F98E+25-j
+loc_24F9B7:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F9BD:				; CODE XREF: sub_24F4DC:loc_24F5D1-j
+sub_24F9BD:
 		LDX		#0
 		LDY		#0
-		LDA		#$F8 
-loc_24F9C3:				; CODE XREF: sub_24F9BD+10-j
+		LDA		#$F8
+loc_24F9C3:
 		STA		_spr_ram+$78,X
 		INX
 		INX
@@ -2685,122 +2603,111 @@ loc_24F9C3:				; CODE XREF: sub_24F9BD+10-j
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_24F9D7:				; CODE XREF: sub_24F4DC:loc_24F5D4-j
+sub_24F9D7:
 		LDY		#0
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24F9E1
 		INC		word_6C+1
-loc_24F9E1:				; CODE XREF: sub_24F9D7+6-j
+loc_24F9E1:
 		CMP		#1
 		BEQ		loc_24F9F0
 		CMP		#2
 		BEQ		loc_24FA17
 		CMP		#3
 		BEQ		loc_24FA3B
-loc_24F9ED:				; CODE XREF: sub_24F9D7:loc_24F9ED-j
+loc_24F9ED:
 		JMP		loc_24F9ED
-loc_24F9F0:				; CODE XREF: sub_24F9D7+C-j
+loc_24F9F0:
 		LDY		#0
 		LDX		#0
-loc_24F9F4:				; CODE XREF: sub_24F9D7+2E-j
+loc_24F9F4:
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24F9FC
 		INC		word_6C+1
-loc_24F9FC:				; CODE XREF: sub_24F9D7+21-j
+loc_24F9FC:
 		STA		_spr_ram+4,X
 		INX
 		INX
 		INX
 		INX
-		CPX		#$50 
+		CPX		#$50
 		BCC		loc_24F9F4
 		LDY		#0
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24FA11
 		INC		word_6C+1
-loc_24FA11:				; CODE XREF: sub_24F9D7+36-j
+loc_24FA11:
 		STA		word_4
 		BIT		word_4
 		CLC
 locret_24FA16:
 		RTS
-loc_24FA17:				; CODE XREF: sub_24F9D7+10-j
+loc_24FA17:
 		LDY		#0
 		LDX		#0
-loc_24FA1B:				; CODE XREF: sub_24F9D7+52-j
+loc_24FA1B:
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24FA23
 		INC		word_6C+1
-loc_24FA23:				; CODE XREF: sub_24F9D7+48-j
+loc_24FA23:
 		STA		_spr_ram+$78,X
 		INX
-		CPX		#$40 
+		CPX		#$40
 		BCC		loc_24FA1B
 		LDY		#0
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24FA35
 		INC		word_6C+1
-loc_24FA35:				; CODE XREF: sub_24F9D7+5A-j
+loc_24FA35:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
-loc_24FA3B:				; CODE XREF: sub_24F9D7+14-j
+loc_24FA3B:
 		LDY		#0
 		LDX		#0
-loc_24FA3F:				; CODE XREF: sub_24F9D7+76-j
+loc_24FA3F:
 		LDA		(word_6C),Y
 		STA		_spr_ram+4,X
 		INC		word_6C
 		BNE		loc_24FA4A
 		INC		word_6C+1
-loc_24FA4A:				; CODE XREF: sub_24F9D7+6F-j
+loc_24FA4A:
 		INX
-		CPX		#$50 
+		CPX		#$50
 		BCC		loc_24FA3F
 		LDY		#0
 		LDA		(word_6C),Y
 		INC		word_6C
 		BNE		loc_24FA59
 		INC		word_6C+1
-loc_24FA59:				; CODE XREF: sub_24F9D7+7E-j
+loc_24FA59:
 		STA		word_4
 		BIT		word_4
 		CLC
 		RTS
 byte_24FA5F:
 		.BYTE $20,$10,	0,$F0,$E0,$20,$10,  0,$F0,$E0,$20,$10,	0,$F0,$F0,  0
-					; DATA XREF: sub_24F834:loc_24F851-r
-					; sub_24F834:loc_24F866-r
-		.BYTE	8,  0,$D0,$D0,	0,  8,$E0,$E0 ;	data used at a000
+		.BYTE	8,  0,$D0,$D0,	0,  8,$E0,$E0
 byte_24FA77:
 		.BYTE $E0,$F0,	0,$10,$20,$E0,$F0,  0,$10,$20,$E0,$F0,	0,$10,$10,  0
-					; DATA XREF: sub_24F834:loc_24F881-r
-					; sub_24F834:loc_24F896-r
 		.BYTE $F8,  0,$30,$30,	0,$F8,$20,$20
 byte_24FA8F:
 		.BYTE	8,$F8,	8,$F8,	8,$F8,	8,$18,$18
-					; DATA XREF: sub_24F8B1:loc_24F8CE-r
-					; data used at a000
 byte_24FA98:
 		.BYTE $F8,  8,$F8,  8,$F8,  8,$F8,$E8,$E8
-					; DATA XREF: sub_24F8B1:loc_24F8E9-r
 byte_24FAA1:
 		.BYTE $20,$10,$20,$10,	0,$10,	0,$F0,	0,$F0,$E0,  0,$F0,$E0,$F0,$E0
-					; DATA XREF: sub_24F904:loc_24F921-r
-					; data used at a000
 byte_24FAB1:
 		.BYTE $E0,$F0,$E0,$F0,	0,$F0,	0,$10,	0,$10,$20,  0,$10,$20,$10,$20
-					; DATA XREF: sub_24F904:loc_24F93F-r
 byte_24FAC1:
 		.BYTE $60,$61,$62,$63,$64,$70,$71,$72,$73,$74,$80,$81,$82,$83,$93,  1
-					; DATA XREF: BANK18:off_24F39B-o
-		.BYTE	1,$92,	1,  1,$36,$37,$38,$63,$64,$46,$47,$48,$73,$74,$56,$57 ;	ind data used at a000
+		.BYTE	1,$92,	1,  1,$36,$37,$38,$63,$64,$46,$47,$48,$73,$74,$56,$57
 		.BYTE $82,$83,$93,  1,	1,$92,	1,  1,	1,  1,$3B,$63,$64,$49,$4A,$4B
 		.BYTE $73,$74,$59,$5A,$82,$83,$93,  1,	1,$92,	1,  1,	1,  1,$3E,$63
 		.BYTE $64,$4C,$4D,$4E,$73,$74,$56,$57,$5E,$5F,$3D,  1,	1,$92,	1,  1
@@ -2820,7 +2727,6 @@ byte_24FAC1:
 		.BYTE $73,$4F,$80,$81,$90,$91,$A1,  1,	1,$A0,	1,  1
 byte_24FBED:
 		.BYTE $50,$51,$10,$11,$20,$21,	1,  1,	1,  2,	3,$12,$11,$22,$23,  1
-					; DATA XREF: sub_24F39D:loc_24F3B0-r
 		.BYTE	1,  1,$50,$51,$17,$11,$20,$21,	1,  1,$16, $A, $B,$1A,$1B,$2A
 		.BYTE $2B,  1,	1,  1,$19,$51,$29,$11,	4,  5,	9,  1,	1,$50,$51,$18
 		.BYTE $11,$28,$27,  1,	1,  1, $C, $D,$1C,$1D,$2C,$2D,	1,  1,	1, $C
@@ -2835,7 +2741,6 @@ byte_24FBED:
 		.BYTE $11,$20,$21,  1,	1,  1,$5B,$69,$6D,$11,$22,$23,	1,  1,	1
 byte_24FCBC:
 		.BYTE $EA,$EB,$FA,$FB,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1,	1,  1
-					; DATA XREF: sub_24F3C7:loc_24F3D6-r
 		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$DD,  1,	1,  1,	1,  1,	1,  1,	1,  1
 		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$EC,$ED,$FC,$DD,	1,  1,	1,  1,	1,  1
 		.BYTE $EA,$EB,$FA,$CC,$ED,$DC,$EC,$ED,$FC,$DE,$DF,  1,$EE,$EF,$FD,$FE

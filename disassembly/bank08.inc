@@ -2,7 +2,7 @@
 		ORG $8000
 
 _chr_character_sprites_data:
-		.BYTE  $E,$27,$3F,$3F,$1F,	7,$18,$2F, $E,$27,$3F,$3F,$1F,$1F,$7F,$DF ; ind	data used at 8000
+		.BYTE  $E,$27,$3F,$3F,$1F,	7,$18,$2F, $E,$27,$3F,$3F,$1F,$1F,$7F,$DF
 		.BYTE $80,$40,$E0,$E0,$F0,$C0,$30,$E0,$84,$42,$E2,$E2,$F1,$F1,$F1,$C1
 		.BYTE $37,$6F,$37,$3F,$3F,$7F,$7F,$FC,$D9,$FE,$FC,$F8,$71,$63,$67,$FF
 		.BYTE $70,$BB,$F9,$E3,$1E,$FC, $C,$F6,$B9,$FF,$7E,$FC,$FE,$FC,$FC, $E
@@ -1021,56 +1021,56 @@ _unused_15:
 		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_CBF80:				; CODE XREF: sub_174D1B+5-P
-		LDA		byte_60CB	; code used at a000
-		AND		#$10		; code used at a000
-		BEQ		locret_CBF96	; code used at a000
-		LDA		#$80 
+sub_CBF80:
+		LDA		byte_60CB
+		AND		#$10
+		BEQ		locret_CBF96
+		LDA		#$80
 		LDX		#$18
-loc_CBF8B:				; CODE XREF: sub_CBF80+14-j
+loc_CBF8B:
 		STA		byte_100,X
 		INX
 		INX
 		INX
 		INX
-		CPX		#$34 
+		CPX		#$34
 		BNE		loc_CBF8B
-locret_CBF96:				; CODE XREF: sub_CBF80+5-j
-		RTS				; code used at a000
+locret_CBF96:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_CBF97:				; CODE XREF: sub_174D26+5-P
+sub_CBF97:
 		LDA		byte_30
 		CMP		#5
 		BNE		locret_CBFAD
 		LDX		#$14
 		LDA		byte_6DF
-		CMP		#$78 
+		CMP		#$78
 		BCC		loc_CBFA8
 		LDX		#$14
-loc_CBFA8:				; CODE XREF: sub_CBF97+D-j
+loc_CBFA8:
 		LDA		#$A
 		STA		byte_101,X
-locret_CBFAD:				; CODE XREF: sub_CBF97+4-j
+locret_CBFAD:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_CBFAE:				; CODE XREF: sub_174D31+5-P
+sub_CBFAE:
 		LDA		byte_60B9
 		BMI		locret_CBFCB
 		LDA		byte_60CA
 		BPL		locret_CBFCB
 		LDX		#6
 		LDA		byte_6DF
-		CMP		#$78 
+		CMP		#$78
 		BCC		loc_CBFCC
 		ROR		byte_131
 		STX		byte_121
 		INX
 		STX		byte_125
-locret_CBFCB:				; CODE XREF: sub_CBFAE+3-j sub_CBFAE+8-j
+locret_CBFCB:
 		RTS
-loc_CBFCC:				; CODE XREF: sub_CBFAE+11-j
+loc_CBFCC:
 		SEC
 		ROR		byte_131
 		STX		byte_121

@@ -3,9 +3,7 @@
 
 _chr_terrain_bg_data0:
 		.BYTE $FF,$FF,$FF,$FE,$C4,$82,$CE,$D9,$FF,$8C,$63,$4F,$BF,$7F,$BF,$BF
-					; DATA XREF: sub_176305+AE-o
-					; sub_176305+B2-o
-		.BYTE $FF,$FF,$FE,$30,$1C,$76,$C3,$82,$FF,$8C,$33,$CF,$FF,$FF,$FF,$FF ;	ind data used at 8000
+		.BYTE $FF,$FF,$FE,$30,$1C,$76,$C3,$82,$FF,$8C,$33,$CF,$FF,$FF,$FF,$FF
 		.BYTE $FF,$FF,$7F,$13,$62,$95,$3D,$C6,$FF,$8C,$F3,$FC,$FF,$FF,$FF,$FF
 		.BYTE $FF,$FF,$FF,$5F,$2F,$67,$97, $F,$FF,$1B,$65,$F9,$FB,$FB,$FD,$FD
 		.BYTE $D1,$F2,$EC,$C4,$C3,$C3,$B6,$9C,$BF,$5F,$DF,$3F,$7F,$BF,$7F,$FF
@@ -33,8 +31,6 @@ _chr_terrain_bg_data0:
 		.BYTE $12,$48,$10,$40,	8,  0,	0,  0,$BA,$5A,$18,$4A,$48,$40,	8,$40
 _chr_terrain_bg_data1:
 		.BYTE   8,  8,  8,$18,$24,$FA,$87,  2,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-					; DATA XREF: sub_176305+B6-o
-					; sub_176305+BA-o
 		.BYTE $14,$18,	8,$1C,$16,$23,$C2,$45,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE	1,  1,	1,  2,$84,$C7,$7A,$9C,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE $EE,$72,$43,$81,$80,$C0,$41,$23,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -930,8 +926,7 @@ _chr_terrain_bg_data1:
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0
 byte_E3990:
 		.BYTE	2,  7, $C, $E,$1C,$28,$21, $F, $A,$1E,$12,$30,$18,$5F,$50,$5A
-					; DATA XREF: sub_174D3F+5-r
-		.BYTE $10,$30,$21,$6E,$64,$37,$32,$41,	5,$37,$55,$1E,$78,$3F,$4D,$23 ;	data used at a000
+		.BYTE $10,$30,$21,$6E,$64,$37,$32,$41,	5,$37,$55,$1E,$78,$3F,$4D,$23
 		.BYTE	4, $A, $C,$1C,$19,$20,$28,$14,$4B,$16, $F,$17,$1E,$41,$28,$14
 		.BYTE	8,  1,$28,$10,$32,$2D,$37,$23,	4, $C,$28,$32,$23,  7,$1E,  6
 		.BYTE $10,  8,$23,  8,$FF,  2,$19
@@ -939,129 +934,124 @@ _unused_16:
 		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E39E0:				; CODE XREF: sub_174CFF+5-P
-		LDA		#$10		; code used at a000
-		STA		word_4+1	; code used at a000
-		LDX		#0		; code used at a000
-		BEQ		sub_E3A01	; code used at a000
-loc_E39E8:				; CODE XREF: sub_174D0D+5-P
-		LDA		#0		; code used at a000
-		LDX		#2		; code used at a000
-		STX		word_4+1	; code used at a000
-		JSR		sub_E3A01	; code used at a000
-		LDA		#0		; code used at a000
-		STA		word_4+1	; code used at a000
-		LDA		#$20       ; code used at a000
-		STA		word_6E+1	; code used at a000
-		LDA		#1		; code used at a000
-		STA		word_6E		; code used at a000
-		LDX		#4		; code used at a000
-		BNE		loc_E3A05	; code used at a000
+sub_E39E0:
+		LDA		#$10
+		STA		word_4+1
+		LDX		#0
+		BEQ		sub_E3A01
+loc_E39E8:
+		LDA		#0
+		LDX		#2
+		STX		word_4+1
+		JSR		sub_E3A01
+		LDA		#0
+		STA		word_4+1
+		LDA		#$20
+		STA		word_6E+1
+		LDA		#1
+		STA		word_6E
+		LDX		#4
+		BNE		loc_E3A05
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A01:				; CODE XREF: sub_E39E0+6-j sub_E39E0+E-p
-		STA		word_6E+1	; code used at a000
-		STA		word_6E		; code used at a000
-loc_E3A05:				; CODE XREF: sub_E39E0+1F-j
-		LDA		off_E3A8E,X	; code used at a000
-		STA		word_6C		; code used at a000
-		LDA		off_E3A8E+1,X	; code used at a000
-		STA		word_6C+1	; code used at a000
-		LDA		#$A		; code used at a000
-		STA		word_4		; code used at a000
-loc_E3A13:				; CODE XREF: sub_E3A01+46-j
-		LDA		word_6E		; code used at a000
-		ORA		#$80       ; code used at a000
-		STA		byte_300	; code used at a000
-		LDA		#$40       ; code used at a000
-		STA		byte_301	; code used at a000
-		LDA		word_6E+1	; code used at a000
-		STA		byte_302	; code used at a000
-		LDX		#0		; code used at a000
-		JSR		sub_E3A4A	; code used at a000
-		JSR		sub_E3A4A	; code used at a000
-		JSR		sub_E3A4A	; code used at a000
-		JSR		sub_E3A4A	; code used at a000
-		LDA		#1		; code used at a000
-		STA		byte_6D9	; code used at a000
-		JSR		sub_E3A77	; code used at a000
-		LDA		word_6E+1	; code used at a000
-		CLC				; code used at a000
-		ADC		#$40       ; code used at a000
-		STA		word_6E+1	; code used at a000
-		BCC		loc_E3A45	; code used at a000
-		INC		word_6E		; code used at a000
-loc_E3A45:				; CODE XREF: sub_E3A01+40-j
-		DEC		word_4		; code used at a000
-		BNE		loc_E3A13	; code used at a000
-		RTS				; code used at a000
+sub_E3A01:
+		STA		word_6E+1
+		STA		word_6E
+loc_E3A05:
+		LDA		off_E3A8E,X
+		STA		word_6C
+		LDA		off_E3A8E+1,X
+		STA		word_6C+1
+		LDA		#$A
+		STA		word_4
+loc_E3A13:
+		LDA		word_6E
+		ORA		#$80
+		STA		byte_300
+		LDA		#$40
+		STA		byte_301
+		LDA		word_6E+1
+		STA		byte_302
+		LDX		#0
+		JSR		sub_E3A4A
+		JSR		sub_E3A4A
+		JSR		sub_E3A4A
+		JSR		sub_E3A4A
+		LDA		#1
+		STA		byte_6D9
+		JSR		sub_E3A77
+		LDA		word_6E+1
+		CLC
+		ADC		#$40
+		STA		word_6E+1
+		BCC		loc_E3A45
+		INC		word_6E
+loc_E3A45:
+		DEC		word_4
+		BNE		loc_E3A13
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A4A:				; CODE XREF: sub_E3A01+25-p
-					; sub_E3A01+28-p sub_E3A01+2B-p
-					; sub_E3A01+2E-p
-		JSR		sub_E3A51	; code used at a000
-		LDA		word_4+1	; code used at a000
-		BNE		sub_E3A6B	; code used at a000
+sub_E3A4A:
+		JSR		sub_E3A51
+		LDA		word_4+1
+		BNE		sub_E3A6B
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A51:				; CODE XREF: sub_E3A4A-p
-		LDY		#0		; code used at a000
-loc_E3A53:				; CODE XREF: sub_E3A51+C-j
-		LDA		(word_6C),Y	; code used at a000
-		STA		byte_303,X	; code used at a000
-		INX				; code used at a000
-		INY				; code used at a000
-		TYA				; code used at a000
-		AND		#7		; code used at a000
-		BNE		loc_E3A53	; code used at a000
-		LDA		word_6C		; code used at a000
-		CLC				; code used at a000
-		ADC		#8		; code used at a000
-		STA		word_6C		; code used at a000
-		BCC		locret_E3A6A	; code used at a000
-		INC		word_6C+1	; code used at a000
-locret_E3A6A:				; CODE XREF: sub_E3A51+15-j
-		RTS				; code used at a000
+sub_E3A51:
+		LDY		#0
+loc_E3A53:
+		LDA		(word_6C),Y
+		STA		byte_303,X
+		INX
+		INY
+		TYA
+		AND		#7
+		BNE		loc_E3A53
+		LDA		word_6C
+		CLC
+		ADC		#8
+		STA		word_6C
+		BCC		locret_E3A6A
+		INC		word_6C+1
+locret_E3A6A:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A6B:				; CODE XREF: sub_E3A4A+5-j sub_E3A6B+9-j
-		LDA		#0		; code used at a000
-		STA		byte_303,X	; code used at a000
-		INX				; code used at a000
-		TXA				; code used at a000
-		AND		#$F		; code used at a000
-		BNE		sub_E3A6B	; code used at a000
-		RTS				; code used at a000
+sub_E3A6B:
+		LDA		#0
+		STA		byte_303,X
+		INX
+		TXA
+		AND		#$F
+		BNE		sub_E3A6B
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A77:				; CODE XREF: sub_E3A01+36-p
-		JSR		sub_E3A81	; code used at a000
-loc_E3A7A:				; CODE XREF: sub_E3A77+7-j
-		LDA		#4		; code used as ind data	at a000
-		AND		_nmi_flags	; code used as ind data	at a000
-		BNE		loc_E3A7A	; code used as ind data	at a000
-		RTS				; code used at a000
+sub_E3A77:
+		JSR		sub_E3A81
+loc_E3A7A:
+		LDA		#4
+		AND		_nmi_flags
+		BNE		loc_E3A7A
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3A81:				; CODE XREF: sub_E3A77-p sub_E3A81+4-j
-		LDA		#4		; code used at a000
-		AND		_nmi_flags	; code used at a000
-		BNE		sub_E3A81	; code used at a000
-		LDA		#4		; code used at a000
-		ORA		_nmi_flags	; code used at a000
-		STA		_nmi_flags	; code used at a000
-		RTS				; code used at a000
+sub_E3A81:
+		LDA		#4
+		AND		_nmi_flags
+		BNE		sub_E3A81
+		LDA		#4
+		ORA		_nmi_flags
+		STA		_nmi_flags
+		RTS
 off_E3A8E:
-		.WORD byte_E3A94	; DATA XREF: sub_E3A01:loc_E3A05-r
-					; sub_E3A01+9-r
-					; data used at a000
-		.WORD byte_E3BBC	; data used at a000
-		.WORD byte_E3C4C	; data used at a000
+		.WORD byte_E3A94
+		.WORD byte_E3BBC
+		.WORD byte_E3C4C
 byte_E3A94:
 		.BYTE $1E,$33,$73,$67,$E6,$CE,$CC,$78,	6,$1E, $C, $C,$18,$18,$30,$F8
-					; DATA XREF: BANK9:off_E3A8E-o
-		.BYTE $1E,$33,	3,  6,$1C,$30,$60,$FC,$1E,$33,	3, $E,	6,  6,$CC,$78 ;	ind data used at a000
+		.BYTE $1E,$33,	3,  6,$1C,$30,$60,$FC,$1E,$33,	3, $E,	6,  6,$CC,$78
 		.BYTE	7, $F,$1A,$36,$6C,$FE,$18,$3C,$3F,$30,$60,$7C,	6,  6,$CC,$78
 		.BYTE	7,$18,$30,$7C,$66,$C6,$CC,$78,$3F,$63,$46, $C,$18,$18,$30,$30
 		.BYTE  $E,$19,$19,$1E,$6C,$C4,$CC,$78,$1E,$33,$63,$66,$3E, $C,$18,$E0
@@ -1081,8 +1071,7 @@ byte_E3A94:
 		.BYTE $3C,$42,$99,$A1,$A1,$99,$42,$3C
 byte_E3BBC:
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,$1C,$1F,$1F,$1F,	7,  0,	0,  0
-					; DATA XREF: BANK9:BA90-o
-		.BYTE	0,$80,$F8,$FF,$FF,$FF,$3F,  7,	0,  0,	0,$80,$C0,$C0,$E0,$E0 ;	ind data used at a000
+		.BYTE	0,$80,$F8,$FF,$FF,$FF,$3F,  7,	0,  0,	0,$80,$C0,$C0,$E0,$E0
 		.BYTE	0,  0,	1,  1,	1,  1,	1,  1,	0,  0, $E, $F, $F, $F,	1,  0
 		.BYTE	1,  1,	0,$E0,$FE,$FF,$FF,$3F,$E0,$E0,$F0,$F0,$F0,$F0,$F8,$F8
 		.BYTE	1,  1,	3, $F,$1F,$1F,$1F,$3F,	0,  0,	0,  6,	7,  7,	7,  1
@@ -1092,176 +1081,155 @@ byte_E3BBC:
 		.BYTE $1C,$1C,$1C,$3C,$38,$18,	0,  0, $E, $E, $E, $E, $E, $E, $E, $E
 byte_E3C4C:
 		.BYTE $3F,$3F,$7F,$FF,$FF,$FC,$F3,$EF,	0,  0,	0,  0,	0,  0,	3, $F
-					; DATA XREF: BANK9:BA92-o
-		.BYTE $EF,$DF,$DF,$DF,$DF,$DF,$EF,$EF, $F,$1F,$1F,$1F,$1F,$1F, $F, $F ;	ind data used at a000
+		.BYTE $EF,$DF,$DF,$DF,$DF,$DF,$EF,$EF, $F,$1F,$1F,$1F,$1F,$1F, $F, $F
 		.BYTE $F3,$FC,$FF,$7F,$1F, $E, $E, $E,	3,  0,	0,  0,	0,  0,	0,  0
 		.BYTE $FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_E3C80:				; CODE XREF: sub_177E23+5-P
-		LDA		byte_8B		; code used as ind data	at a000
-		STA		word_3E		; code used as ind data	at a000
-		BIT		byte_60B7	; code used as ind data	at a000
-		BVS		loc_E3C93	; code used as ind data	at a000
-		LDX		byte_60CD	; code used as ind data	at a000
-		CMP		#$72       ; code used as ind data at a000
-		BNE		loc_E3C9C	; code used as ind data	at a000
-		JMP		loc_E3D37	; ind data used	at a000
-loc_E3C93:				; CODE XREF: sub_E3C80+7-j
-		JMP		loc_E3D17	; code used as ind data	at a000
-loc_E3C96:				; CODE XREF: sub_E3C80+1E-j
-		JMP		loc_E3D2A	; ind data used	at a000
-loc_E3C99:				; CODE XREF: sub_E3C80+2A-j
-		JMP		loc_E3D48	; ind data used	at a000
-loc_E3C9C:				; CODE XREF: sub_E3C80+E-j
-		CMP		#$75       ; code used as ind data at a000
-		BEQ		loc_E3C96	; code used as ind data	at a000
-		LDX		byte_2A		; code used as ind data	at a000
-		CPX		#$D7       ; code used as ind data at a000
-		BNE		loc_E3CAC	; code used as ind data	at a000
-		LDY		byte_2B		; ind data used	at a000
-		CPY		#$9A       ; ind data used at a000
-		BEQ		loc_E3C99	; ind data used	at a000
-loc_E3CAC:				; CODE XREF: sub_E3C80+24-j
-		CMP		#$E		; code used as ind data	at a000
-		BNE		loc_E3CC4	; code used as ind data	at a000
-		LDX		byte_60BA	; ind data used	at a000
-		BPL		loc_E3CB9	; ind data used	at a000
-		LDA		#$C2       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3CB9:				; CODE XREF: sub_E3C80+33-j
-		LDA		byte_60CA	; ind data used	at a000
-		AND		#4		; ind data used	at a000
-		BEQ		locret_E3D16	; ind data used	at a000
-		LDA		#$C0       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3CC4:				; CODE XREF: sub_E3C80+2E-j
-		CMP		#$7D       ; code used as ind data at a000
-		BNE		loc_E3CD1	; code used as ind data	at a000
-		LDX		byte_60BA	; ind data used	at a000
-		BPL		loc_E3D14	; ind data used	at a000
-		LDA		#$C1       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3CD1:				; CODE XREF: sub_E3C80+46-j
-		CMP		#$23       ; code used as ind data at a000
-		BNE		loc_E3CE0	; code used as ind data	at a000
-		LDA		byte_60CA	; ind data used	at a000
-		AND		#$20       ; ind data used at a000
-		BEQ		locret_E3D16	; ind data used	at a000
-		LDA		#$95       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3CE0:				; CODE XREF: sub_E3C80+53-j
-		CMP		#$47       ; code used as ind data at a000
-		BNE		loc_E3CED	; code used as ind data	at a000
-		LDX		byte_60CB	; code used as ind data	at a000
-		BPL		locret_E3D16	; code used as ind data	at a000
-		LDA		#$AC       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3CED:				; CODE XREF: sub_E3C80+62-j
-		CMP		#$6B       ; code used as ind data at a000
-		BNE		loc_E3CFA	; code used as ind data	at a000
-		LDX		byte_60C5	; code used as ind data	at a000
-		BPL		locret_E3D16	; code used as ind data	at a000
-		LDA		#$AB       ; code used as ind data at a000
-		BNE		loc_E3D14	; code used as ind data	at a000
-loc_E3CFA:				; CODE XREF: sub_E3C80+6F-j
-		CMP		#$17		; code used as ind data	at a000
-		BNE		loc_E3D07	; code used as ind data	at a000
-		LDX		byte_60B9	; ind data used	at a000
-		BPL		locret_E3D16	; ind data used	at a000
-		LDA		#$B7       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3D07:				; CODE XREF: sub_E3C80+7C-j
-		CMP		#$8A       ; code used as ind data at a000
-		BNE		loc_E3D14	; code used as ind data	at a000
-		LDX		byte_60B9	; ind data used	at a000
-		BPL		locret_E3D16	; ind data used	at a000
-		LDA		#$B8       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3D14:				; CODE XREF: sub_E3C80+37-j
-					; sub_E3C80+42-j sub_E3C80+4B-j
-					; sub_E3C80+4F-j sub_E3C80+5E-j
-					; sub_E3C80+6B-j sub_E3C80+78-j
-					; sub_E3C80+85-j sub_E3C80+89-j
-					; sub_E3C80+A8-j sub_E3C80+AC-j
-					; sub_E3C80+B5-j sub_E3C80+B9-j
-					; sub_E3C80+BE-j sub_E3C80+C4-j
-					; sub_E3C80+E4-j
-		STA		word_3E		; code used as ind data	at a000
-locret_E3D16:				; CODE XREF: sub_E3C80+3E-j
-					; sub_E3C80+5A-j sub_E3C80+67-j
-					; sub_E3C80+74-j sub_E3C80+81-j
-					; sub_E3C80+8E-j sub_E3C80+9C-j
-					; sub_E3C80+B1-j sub_E3C80+C6-j
-					; sub_E3C80+DA-j sub_E3C80+E0-j
-		RTS				; code used as ind data	at a000
-loc_E3D17:				; CODE XREF: sub_E3C80:loc_E3C93-j
-		LDX		#0		; code used as ind data	at a000
-loc_E3D19:				; CODE XREF: sub_E3C80+A3-j
-					; sub_E3C80+D3-j
-		LDY		byte_E3D66,X	; code used as ind data	at a000
-		BEQ		locret_E3D16	; code used as ind data	at a000
-		CPY		word_3E		; code used as ind data	at a000
-		BEQ		loc_E3D25	; code used as ind data	at a000
-		INX				; code used as ind data	at a000
-		BNE		loc_E3D19	; code used as ind data	at a000
-loc_E3D25:				; CODE XREF: sub_E3C80+A0-j
-		LDA		byte_E3D74,X	; code used as ind data	at a000
-		BNE		loc_E3D14	; code used as ind data	at a000
-loc_E3D2A:				; CODE XREF: sub_E3C80:loc_E3C96-j
-		CPX		#$FF		; ind data used	at a000
-		BNE		loc_E3D14	; ind data used	at a000
-		LDA		byte_60B7	; ind data used	at a000
-		BMI		locret_E3D16	; ind data used	at a000
-		LDA		#$CE       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
-loc_E3D37:				; CODE XREF: sub_E3C80+10-j
-		CPX		#0		; ind data used	at a000
-		BEQ		loc_E3D14	; ind data used	at a000
-		BIT		byte_60B7	; ind data used	at a000
-		BMI		loc_E3D14	; ind data used	at a000
-		TXA				; ind data used	at a000
-		LSR		; ind data used	at a000
-		LDA		#$CD       ; ind data used at a000
-		BCS		loc_E3D14	; ind data used	at a000
-		BCC		locret_E3D16	; ind data used	at a000
-loc_E3D48:				; CODE XREF: sub_E3C80:loc_E3C99-j
-		LDA		byte_60CD	; ind data used	at a000
-		AND		#$20       ; ind data used at a000
-		BEQ		loc_E3D55	; ind data used	at a000
-		LDA		word_3E		; ind data used	at a000
-		LDX		#7		; ind data used	at a000
-		BNE		loc_E3D19	; ind data used	at a000
-loc_E3D55:				; CODE XREF: sub_E3C80+CD-j
-		LDA		byte_60CA	; ind data used	at a000
-		AND		#8		; ind data used	at a000
-		BEQ		locret_E3D16	; ind data used	at a000
-		LDA		byte_8B		; ind data used	at a000
-		CMP		#6		; ind data used	at a000
-		BNE		locret_E3D16	; ind data used	at a000
-		LDA		#$F3       ; ind data used at a000
-		BNE		loc_E3D14	; ind data used	at a000
+sub_E3C80:
+		LDA		byte_8B
+		STA		word_3E
+		BIT		byte_60B7
+		BVS		loc_E3C93
+		LDX		byte_60CD
+		CMP		#$72
+		BNE		loc_E3C9C
+		JMP		loc_E3D37
+loc_E3C93:
+		JMP		loc_E3D17
+loc_E3C96:
+		JMP		loc_E3D2A
+loc_E3C99:
+		JMP		loc_E3D48
+loc_E3C9C:
+		CMP		#$75
+		BEQ		loc_E3C96
+		LDX		byte_2A
+		CPX		#$D7
+		BNE		loc_E3CAC
+		LDY		byte_2B
+		CPY		#$9A
+		BEQ		loc_E3C99
+loc_E3CAC:
+		CMP		#$E
+		BNE		loc_E3CC4
+		LDX		byte_60BA
+		BPL		loc_E3CB9
+		LDA		#$C2
+		BNE		loc_E3D14
+loc_E3CB9:
+		LDA		byte_60CA
+		AND		#4
+		BEQ		locret_E3D16
+		LDA		#$C0
+		BNE		loc_E3D14
+loc_E3CC4:
+		CMP		#$7D
+		BNE		loc_E3CD1
+		LDX		byte_60BA
+		BPL		loc_E3D14
+		LDA		#$C1
+		BNE		loc_E3D14
+loc_E3CD1:
+		CMP		#$23
+		BNE		loc_E3CE0
+		LDA		byte_60CA
+		AND		#$20
+		BEQ		locret_E3D16
+		LDA		#$95
+		BNE		loc_E3D14
+loc_E3CE0:
+		CMP		#$47
+		BNE		loc_E3CED
+		LDX		byte_60CB
+		BPL		locret_E3D16
+		LDA		#$AC
+		BNE		loc_E3D14
+loc_E3CED:
+		CMP		#$6B
+		BNE		loc_E3CFA
+		LDX		byte_60C5
+		BPL		locret_E3D16
+		LDA		#$AB
+		BNE		loc_E3D14
+loc_E3CFA:
+		CMP		#$17
+		BNE		loc_E3D07
+		LDX		byte_60B9
+		BPL		locret_E3D16
+		LDA		#$B7
+		BNE		loc_E3D14
+loc_E3D07:
+		CMP		#$8A
+		BNE		loc_E3D14
+		LDX		byte_60B9
+		BPL		locret_E3D16
+		LDA		#$B8
+		BNE		loc_E3D14
+loc_E3D14:
+		STA		word_3E
+locret_E3D16:
+		RTS
+loc_E3D17:
+		LDX		#0
+loc_E3D19:
+		LDY		byte_E3D66,X
+		BEQ		locret_E3D16
+		CPY		word_3E
+		BEQ		loc_E3D25
+		INX
+		BNE		loc_E3D19
+loc_E3D25:
+		LDA		byte_E3D74,X
+		BNE		loc_E3D14
+loc_E3D2A:
+		CPX		#$FF
+		BNE		loc_E3D14
+		LDA		byte_60B7
+		BMI		locret_E3D16
+		LDA		#$CE
+		BNE		loc_E3D14
+loc_E3D37:
+		CPX		#0
+		BEQ		loc_E3D14
+		BIT		byte_60B7
+		BMI		loc_E3D14
+		TXA
+		LSR
+		LDA		#$CD
+		BCS		loc_E3D14
+		BCC		locret_E3D16
+loc_E3D48:
+		LDA		byte_60CD
+		AND		#$20
+		BEQ		loc_E3D55
+		LDA		word_3E
+		LDX		#7
+		BNE		loc_E3D19
+loc_E3D55:
+		LDA		byte_60CA
+		AND		#8
+		BEQ		locret_E3D16
+		LDA		byte_8B
+		CMP		#6
+		BNE		locret_E3D16
+		LDA		#$F3
+		BNE		loc_E3D14
 byte_E3D66:
 		.BYTE	1,$4A,$4C,$4D,$49,$48,	0,$61,$62,$5D,$60,$5F,	6,  0
-					; DATA XREF: sub_E3C80:loc_E3D19-r
-					; ind data used	at a000
 byte_E3D74:
 		.BYTE $AD,$AE,$AF,$B0,$B1,$B3,	0,$F4,$F5,$F6,$F7,$F8,$F9,  0
-					; DATA XREF: sub_E3C80:loc_E3D25-r
-					; ind data used	at a000
 _unused_22:
-		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ;	ind data used at a000
+		.BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 		.BYTE $FF,$FF,$FF,$FF,$FF,$FF
 _chr_data_unk5:
 		.BYTE	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	0,  0,	8,  4,	3,  1
-					; DATA XREF: BANKF:C1CB-o
-		.BYTE	0,  0,	0,  0,	0,  0,	0,$40,	0,  0,	0,  4,	8,  0,$50,$B8 ;	ind data used at a000
+		.BYTE	0,  0,	0,  0,	0,  0,	0,$40,	0,  0,	0,  4,	8,  0,$50,$B8
 		.BYTE	0,  0,	2,  0,	0,  0,	0,  0,	9,  6,	5, $E,$10,  0,	0,  0
 		.BYTE $E0,$40,	0,  0,	0,  0,	0,  0,$10,$A4,$40,$20,$10,  0,	0,  0
 _chr_data_unk6:
 		.BYTE	0,  0,	0,  0,	2,  7,$23, $C,$40,$20,$10,$1B,$8D,$68,$4C,$33
-					; DATA XREF: BANKF:C1CE-o
-		.BYTE	0,  0,	0,$60,$60,$84,$60,$A0,	4,$88,$78,$12,$94,$7A,$84,$51 ;	ind data used at a000
+		.BYTE	0,  0,	0,$60,$60,$84,$60,$A0,	4,$88,$78,$12,$94,$7A,$84,$51
 		.BYTE  $C,  3,	1,  6,	2,  0,	0,  0,$13,$2C,$42,  9, $D,$16,$21,  0
 		.BYTE $D0,$38,$B0,  0,	0,  0,	0,  0,$2A,$C4,$4C,$B8,$28,  4,	0,$80
 		.BYTE	3,  8,$26,$5B,$1D,$78,$4C,$B3,	0,  0,	0,  0,	2,  7,$23, $C
@@ -1278,8 +1246,7 @@ _chr_data_unk6:
 		.BYTE	0,$60,$C0,  0,	0,  0,	0,  0,$E0,$80,	0,  0,	0,  0,	0,  0
 _chr_data_unk7:
 		.BYTE	0,  0,	2, $C,$10,$21,$40,$82,	0,$1C,$3C,$31,$63, $C,$1C,$5C
-					; DATA XREF: BANKF:C1D1-o
-		.BYTE	0,  8,$14,  0,$21,$50,$90,  8,$1C,$36,$C1,$C9,$DC,$8E,$6E,$76 ;	ind data used at a000
+		.BYTE	0,  8,$14,  0,$21,$50,$90,  8,$1C,$36,$C1,$C9,$DC,$8E,$6E,$76
 		.BYTE $16,$4A,$30,  0,	1,  0,	0,  0,$48,$21,	0,  5, $C,  6,	0,  0
 		.BYTE	5,$59,$28,$24,$41,$80,$14,  8,$F0,$86,$C7,$C2,$88,$1C,	8,  0
 		.BYTE	2,$10, $A,  5,$2A,$D4,	1,$1E, $C,$CE,$E4,$E0,$D1,  3,$66,$E0

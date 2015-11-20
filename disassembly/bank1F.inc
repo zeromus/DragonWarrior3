@@ -1,6 +1,6 @@
 
 		ORG SYSTEM_SHARED_ORG
-		
+
 		INCBIN "system_shared.bin"
 
 		ORG SYSTEM_DPCM_ORG
@@ -179,7 +179,7 @@ _pcm_data:
 		.BYTE $AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$AE,$FE
 
 		ORG SYSTEM_FOOTER_ORG
-	
+
 		INCBIN "system_footer.bin"
 
 		ORG $FFE0
