@@ -617,7 +617,6 @@ loc_174344:
 ; suspend for desired number of frames is over, do only basic sync job in process
 ; like sprite shuffling, input arg in X - number of frames to suspend
 ;
-;"sub_Sleep_X"
 _sleep_X:
 		LDA		_nmi_counter
 .sleep_loop:
@@ -5215,7 +5214,7 @@ sub_1762C9:
 		TAX
 		LDA		byte_83438,X
 		ORA		#$80
-		STA		byte_62
+		STA		_battle_type_fight
 		LDA		byte_83438+1,X
 		STA		word_60+1
 		JSR		sub_176275
@@ -5734,7 +5733,7 @@ loc_17664C:
 loc_176656:
 		LDA		#3
 		STA		word_60
-		LDA		byte_62
+		LDA		_battle_type_fight
 		STA		_ppu_queue_buf
 		LDA		word_60+1
 		STA		_ppu_queue_buf+2

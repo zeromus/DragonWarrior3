@@ -326,9 +326,10 @@ _b0_s67_ptr:
 ;		.BYTE	  1,  2,  3,  4,  5
 
 ; =============== S U B	R O U T	I N E =======================================
+; launches an FF type battle. bypasses some of the more normal battle startup logic, probably random encounter related
 _b0_s52:
 		LDA		#$FF
-		STA		byte_62
+		STA		_battle_type_fight
 		JMP		loc_861A
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -439,8 +440,9 @@ _b0_s53:
 		BNE		loc_8292
 
 ; =============== S U B	R O U T	I N E =======================================
+; called once per step, probably evaluating whether there should be a random encounter
 sub_8261:
-		LDA		byte_9A
+		LDA		byte_9A ; tilesetNumber_9A, but that must not be what it really means
 		BNE		loc_828E
 		LDA		byte_AD
 		AND		#$7F
@@ -465,9 +467,10 @@ loc_828E:
 		LDA		#0
 		STA		word_5E
 loc_8292:
+; begin setting up for a normal battle?
 		LDA		#0
 		STA		byte_4C
-		STA		byte_62
+		STA		_battle_type_fight
 		LDA		byte_2F
 		AND		#1
 		BNE		loc_8310
@@ -952,11 +955,12 @@ loc_85E9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; eventually launches a battle, after setting up some other stuff. does it select a random enemy party?
 _b0_s1:
 		TAY
 		JSR		sub_85DB
 		INY
-		STY		byte_62
+		STY		_battle_type_fight
 		LDX		#0
 loc_85F9:
 		DEY
@@ -977,9 +981,13 @@ loc_8606:
 		INX
 		INY
 		BNE		loc_8606
+
+;; FALLTHROUGH ;;
+
+;many other subroutines branch to this label
 loc_861A:
 		JSR		sub_8650
-		LDA		_enemy_roster_index_list
+		LDA		_enemy_roster_index_list ; see if the first enemy group is empty?
 		CMP		#$FF
 		BNE		sub_8683
 		RTS
@@ -1002,9 +1010,9 @@ sub_8650:
 loc_8654:
 		LDA		_enemy_roster_index_list,X
 		STA		word_4A
-		CMP		#$8B
+		CMP		#ENEMY_COUNT
 		BCS		loc_866B
-		LDA		byte_571,X
+		LDA		byte_571,X ; enemyGroupCount
 		BEQ		loc_866B
 		STA		byte_571,Y
 		LDA		word_4A
@@ -1027,46 +1035,59 @@ locret_8682:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; this is the entire battle sequence. it flashes the screen, fades in the battle, runs the battle
+; shows XP wrap-up at the end, and returns when it's time to go back to the map
 sub_8683:
 		JSR		_nmi_allow_ppu_dequeue
-		JSR		sub_88BD
+		JSR		sub_88BD ; pre-battle screen flash
 		LDA		#0
 		LDX		#$77
 loc_868D:
 		STA		byte_580,X
 		DEX
 		BPL		loc_868D
-		LDA		byte_62
+		LDA		_battle_type_fight
 		CMP		#$FF
-		BNE		loc_86A4
+		BNE		.dont_patch_fight
+
+; patch FIGHT! over the wipe bitmap. see _wipe_fight_tbl for more details
 		LDX		#$1B
-loc_869B:
-		LDA		byte_88A1,X
+.iterate_patch_fight:
+		LDA		_wipe_fight_tbl,X
 		STA		byte_5B0,X
 		DEX
-		BPL		loc_869B
-loc_86A4:
-		LDA		#$10
-		LDX		byte_62
+		BPL		.iterate_patch_fight
+
+.dont_patch_fight:
+; choose the battle music depending on the value of _battle_type_fight
+		LDA		#$10 ; SEQ_BATTLE
+		LDX		_battle_type_fight
 		CPX		#9
 		BNE		loc_86AE
-		LDA		#$12
+		LDA		#$12 ; SEQ_EVIL_LOCATION (someone needs to get the real names for these songs)
 loc_86AE:
+; play the battle music
 		FARX	_bB_s3_apu_load
+; runs the pre-battle screen wipe, largely
 		JSR		sub_8841
+; oddly, after it's done, theres still something left in the PPU queue. this will cause a few more tiles to go out (to blank the screen) but it won't be complete
+; however, in case FIGHT! was displayed, everything but the FIGHT! text will be gone
 		JSR		_ppu_force_dequeue
-		LDA		byte_62
+; if the screen says FIGHT! then hold a moment, so we can read it i guess
+		LDA		_battle_type_fight
 		CMP		#$FF
 		BNE		loc_86C2
 		LDX		#$14
 		JSR		_sleep_X
 loc_86C2:
+; now, finally, the last bit of the screen will be blanked
 		JSR		_ppu_screen_clear
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
+;reset screen scroll position to 0,0 so the battle can appear there regardless of where the map was located
 		LDA		#0
 		STA		_ppu_scroll_shadow
 		STA		_ppu_scroll_shadow+1
@@ -1075,7 +1096,7 @@ loc_86C2:
 		STA		_ppu_ctrl_shadow
 		JSR		sub_872B
 		JSR		_wait_for_vblank_render_off
-		LDA		byte_62
+		LDA		_battle_type_fight
 		CMP		#$FF
 		BNE		loc_86F5
 		LDA		#$30
@@ -1090,19 +1111,27 @@ loc_86F5:
 		JSR		sub_872B
 		JSR		_ppu_enable
 		JSR		_pal_fade_in
-		LDA		byte_62
+
+; start up the battle differently depending on battle type
+		LDA		_battle_type_fight
+; branch to special logic for battle type 1
 		CMP		#1
-		BEQ		loc_871B
+		BEQ		.is_battle_type_1
+; branch to special logic for battle type != FF
 		CMP		#$FF
-		BNE		loc_8721
+		BNE		.is_battle_type_0
+; must be battle type FF
 		FARX	_b4_s24
-		JMP		loc_8724
-loc_871B:
+		JMP		.end_battle_cleanup
+
+.is_battle_type_1:
 		FARX	_b4_s25
-		JMP		loc_8724
-loc_8721:
+		JMP		.end_battle_cleanup
+
+.is_battle_type_0:
 		FARX	_b4_s0
-loc_8724:
+.end_battle_cleanup:
+; clean up after battle, I think
 		LDA		#0
 		STA		_spr_force_shuffle_mode
 		STA		byte_5C
@@ -1119,6 +1148,7 @@ byte_8734:
 		.BYTE	$20,$1E,$20,$1E
 
 ; =============== S U B	R O U T	I N E =======================================
+; related to the pre-battle screen wipe, runs multiple times per stage
 sub_8738:
 		LDX		#0
 loc_873A:
@@ -1197,10 +1227,13 @@ loc_87B0:
 		BEQ		locret_87C5
 
 ; =============== S U B	R O U T	I N E =======================================
+; gets called when a random battle happens, after the screen flashes
+; called repeatedly while the sqirly screen wipe happens
+; byte swapps an array u16 words_4D[4]
 sub_87BA:
 		LDX		#$4D
 loc_87BC:
-		JSR		sub_8828
+		JSR		_byteswap_word_at_X
 		INX
 		INX
 		CPX		#$55
@@ -1266,7 +1299,8 @@ byte_8820:
 		.BYTE	  1,  2,  4,  8,$10,$20,$40,$80
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_8828:
+; byteswaps u16[X]
+_byteswap_word_at_X:
 		LDA		byte_0,X
 		LDY		byte_1,X
 		STY		byte_0,X
@@ -1274,6 +1308,7 @@ sub_8828:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; related to pre-battle screen wipe, runs multiple times per stage
 sub_8831:
 		LDY		#0
 loc_8833:
@@ -1286,6 +1321,7 @@ loc_8833:
 		JMP		sub_8738
 
 ; =============== S U B	R O U T	I N E =======================================
+; runs most, but not all, of the pre-battle screen wipe
 sub_8841:
 		LDX		#$10
 		STX		byte_58
@@ -1336,12 +1372,20 @@ loc_8885:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; related to the pre-battle screen wipe, seems to run more commonly than some of the other subroutines but still not onc per stage
 sub_8897:
 		LDX		#$58
 		JSR		sub_8831
 		LDX		#$5C
 		JMP		sub_8831
-byte_88A1:
+
+; =============== T A B L E =================================================
+
+; a slim table that defines "FIGHT!" which appears during the wipe before some battles
+; it takes the form of the bitmask that appears at $580
+; however, this is put at $5B0 (since the table is slim, it is patched in at just the right location)
+; it appears to be continually written on top of the bitmap that the swirly wipe generates, but im not 100% sure about that
+_wipe_fight_tbl:
 		.BYTE	$BC,$73,$D2,$27,  4,$89,$12,$21,  4,  9,$12,$21,$1C,  9,$1E,$21
 		.BYTE	  4,$E9,$12,$21,  4,$89,$12,  1,$84,$F3,$12,$21
 
@@ -3215,17 +3259,18 @@ sub_9B78:
 		LDA		word_4
 		JMP		_mul16_to_8
 
+; shortcuts to PC stats tables and other unknown things
 off_9B85:
-		.WORD	byte_700
-		.WORD	byte_71C
-		.WORD	byte_744
-		.WORD	byte_75C
+		.WORD	byte_700 ; pc.level
+		.WORD	byte_71C ; pc.hp
+		.WORD	byte_744 ; pc.exp
+		.WORD	byte_75C ; pc.name
 		.WORD	byte_6A4B
 		.WORD	byte_7C1
 		.WORD	byte_B0
-		.WORD	byte_6A9B
-		.WORD	byte_6AA3
-		.WORD	byte_540
+		.WORD	byte_6A9B ; pc.stuff
+		.WORD	byte_6AA3 ; pc.def
+		.WORD	byte_540 ; some battle related table
 byte_9B99:
 		.BYTE	  1,  2,  3,  8,  1,  1,  1,  1,  2,  1
 byte_9BA3:

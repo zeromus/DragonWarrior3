@@ -1650,7 +1650,7 @@ loc_20ADF:
 		CPX		#4
 		BNE		loc_20ADF
 loc_20AED:
-		LDA		byte_62
+		LDA		_battle_type_fight
 		CMP		#$FF
 		BNE		loc_20AF6
 		JMP		loc_20BE7
