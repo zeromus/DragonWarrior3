@@ -6177,6 +6177,8 @@ loc_6A921:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "printing something during battle"
+; "message to print comes in A"
 sub_6A927:
 		JSR		sub_6AA51
 		JMP		_b4_s6
@@ -6201,7 +6203,8 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		LDX		#0
 		LDA		_tmp12+1
 		FARX	_bE_s6_msg_mFF
-		JSR		__message_delay_or_wait_for_keypress
+		JSR		_message_delay_or_wait_for_keypress
+; "begin unpacking results of AI from stack...?"
 		PLA
 		STA		byte_CE
 		PLA
@@ -6211,6 +6214,7 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		PLA
 		STA		word_4+1
 		PLA
+; "writes a damage value?"
 		STA		word_4
 		PLA
 		TAY
@@ -6315,6 +6319,7 @@ _b4_s7_window_display_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; progresses text at 2x speed
 _b4_s21_message_half_delay_or_wait_for_keypress:
 		LDA		_cur_message_speed
 		CMP		#7
@@ -6322,29 +6327,33 @@ _b4_s21_message_half_delay_or_wait_for_keypress:
 		JMP		_b4_s16_do_half_message_speed_delay
 
 ; =============== S U B	R O U T	I N E =======================================
-__message_delay_or_wait_for_keypress:
+; progresses text at 1x speed
+_message_delay_or_wait_for_keypress:
 		LDA		_cur_message_speed
 		CMP		#7
 		BCS		_message_speed_delay_until_keypress
 		JMP		_b4_s5_do_message_speed_delay
 
 ; =============== S U B	R O U T	I N E =======================================
+; for use by speed=7 delay mode, blink arrow every #$C frames waiting for pad press
 _message_speed_delay_until_keypress:
-		LDA		#$74
-		JSR		sub_6A9FF
+		LDA		#_downarrow
+		JSR		_message_set_blink_arrow_tile
 		JSR		_test_for_keypress
 		BNE		locret_6A9FE
-		LDA		#0
-		JSR		sub_6A9FF
+		LDA		#_nulltile
+		JSR		_message_set_blink_arrow_tile
 		JSR		_test_for_keypress
 		BEQ		_message_speed_delay_until_keypress
 locret_6A9FE:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A9FF:
+; stores the blinking down arrow tile in the bottom right of the messagebox
+; input: a tile to write at X=26,Y=26
+_message_set_blink_arrow_tile:
 		PHA
-		LDA		#$1A
+		LDA		#26
 		STA		word_4
 		STA		word_4+1
 		PLA
@@ -6352,6 +6361,7 @@ sub_6A9FF:
 		JMP		_ppu_set_dequeue_flag
 
 ; =============== S U B	R O U T	I N E =======================================
+; actually this should be called a "wait" or a "sleep" function, as it's suspending the game until the button is pressed
 _test_for_keypress:
 		LDX		#$C
 loc_6AA0F:
@@ -6404,6 +6414,7 @@ sub_6AA3E:
 		PHA
 		JSR		sub_6B595
 		LDY		byte_42
+; "definitely makes bad guy blink"
 		JSR		_sys0_safe
 		PLA
 		TAY
@@ -8970,13 +8981,15 @@ loc_6BA3F:
 _get_cur_message_speed_delay:
 		LDX		_cur_message_speed
 		CPX		#7
-		BCS		loc_6BA52
+		BCS		.adjustSpeedDelayForType7
 		LDA		_message_speed_delays_list,X
 		TAX
 		RTS
-loc_6BA52:
+.adjustSpeedDelayForType7:
 		LDX		#1
 		RTS
+
+; =============== T A B	L E =================================================
 _message_speed_delays_list:
 		.BYTE	$18,$24,$30,$3C,$48,$54,$64
 
@@ -9120,6 +9133,7 @@ sub_6BACB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; this is used to read an "enemy prop" 
 _get_bank0_ptr_byte_safe:
 		LDA		#0
 		JMP		_far_byte_read_by_ptr

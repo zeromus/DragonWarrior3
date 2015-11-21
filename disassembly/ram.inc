@@ -44,7 +44,7 @@ byte_11:
 		.BYTE	0
 _tmp12:
 		.BYTE	0,0
-_pads:
+_pads: ; 13
 		.BYTE	0,0,0,0,0,0
 		.BYTE	0
 _nmi_flags:
@@ -390,7 +390,7 @@ byte_C8:
 		.BYTE	0
 byte_C9:
 		.BYTE	0
-_pads_tmp:
+_pads_tmp: ;ca
 		.BYTE	0,0,0,0
 byte_CE: ; "target" - current target for many AI and inventory functions
 		.BYTE	0
@@ -1149,7 +1149,7 @@ byte_575:
 		.BYTE	0
 byte_576:
 		.BYTE	0
-_prev_pads:
+_prev_pads: ; 578
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -1590,7 +1590,7 @@ byte_6DA:
 		.BYTE	0
 ;----------------------------------------------
 ; 00 is fast, 06 is slow. 07 is slowest, but messages will prompt you to wait between each print
-_cur_message_speed:
+_cur_message_speed: ;6DD
 		.BYTE	0
 ;----------------------------------------------
 byte_6DE:
