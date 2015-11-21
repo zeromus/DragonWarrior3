@@ -859,10 +859,14 @@ loc_17445B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; A = u8[A:(u16[X]+Y)]
 ; input args:
 ; X - offset of the src ptr in RAM
 ; A - prg bank to read from
-;
+; Y - offset within target pointer to read from
+; effective address of read in _tmp21 .. dont know whether this is important
+; output in A
+; output in _tmp21+2 .. dont know whether this is important
 _far_byte_read_by_ptr:
 		STA		_irq_a_saved
 		LDA		_mmc_cur_prg_bank
@@ -876,7 +880,7 @@ _far_byte_read_by_ptr:
 		LDA		1,X
 		STA		_tmp21+1
 		LDA		(_tmp21),Y
-		STA		_tmp21+2
+		STA		_tmp21+2 ; stash result here
 		PLA
 		JSR		_mmc1_prg_set
 		LDX		_irq_x_saved
@@ -1791,17 +1795,22 @@ loc_17684B:
 		STA		_PPU_CTRL
 
 ; =============== S U B	R O U T	I N E =======================================
+; this seems to be a major longjmp target. it gets jmped to after you die, besides just when the game resets
 _MAIN_ENTRY:
 		LDX		#$FF
 		TXS
 		LDA		byte_6A58
 		BEQ		loc_174BC7
 loc_174BBB:
+; INTERESTING POINT:
 		JSR		__pause_or_skip
 		FARX	_bB_s4
 		JSR		_pal_fade_out
 		JSR		sub_1743B5
 loc_174BC7:
+; inspect some kind of a "main game mode flag"
+; if its clear, the game just booted
+; if its set, then we longjmped here from in-game, probably after a death
 		LDA		byte_6A58
 		BNE		loc_174BF2
 		FARX	_b17_s0_copyrights_screen
@@ -1819,11 +1828,16 @@ loc_174BCF:
 		STA		byte_60C7
 		FARX	_bA_sF
 		JMP		loc_174C5C
+
+;we end up here after a death
+;check how/where to respawn: at the shrine or at the last king
 loc_174BF2:
 		LDA		byte_60BA
 		AND		#1
-		BNE		loc_174BFC
-		FARX	_b0_s64
+		BNE		loc_174BFC 
+		FARX	_b0_s64 ; respawn at a king or other save point i suppose
+
+;respawn at a shrine:
 loc_174BFC:
 		LDA		#$50
 		STA		byte_60C6

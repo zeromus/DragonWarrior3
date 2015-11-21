@@ -6572,10 +6572,45 @@ _wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe:
 		PLA
 		JMP		_wrap_bE_s4_msg_m00_arg0_safe
 
+; struct EnemyInfo
+;	{
+;		u8 level; //0
+;		u16 xp; //1
+;		u8 agility; //3
+;		u8 gold_lsb; //4
+;		u8 atk_lsb //5
+;		u8 def_lsb; //6
+;		u8 hp_lsb; //7
+;		u8 mp; //8 no MSB here. 255 will mean infinite
+;		u8 item_dropped; //9
+;		u8 moveset[8]; //$A
+;		union {
+;			struct { //only bottom 2 bits used for all these
+;				u8 gold_msb; //$12
+;				u8 atk_msb; //$13
+;				u8 def_msb; //$14
+;				u8 hp_msb; //$15
+;			};
+;			struct { // only top 6 bits used for all these
+;				u8 protections; //$12
+;					BFI?DNxx - not all bits known
+;						B - Blaze protection
+;						F - Fire protection
+;						I - Ice protection
+;						D - Defeat protection
+;						N - iNfernos protection
+;				u8 oddflags[3]; // $13,$14,$15 - unknown meanings
+;			};
+;		};
+;		u8 drop_odds; //$16 presumably, a value a random byte roll has to exceed, but thats just a wild guess. note the $B4 odds of dropping a $B0 item (wayfarer's clothes) for enemy $12... ENEMY_GAS_CLOUDS ? well, that seems unlikely.
+; }
+; one day I'd like to work out a procedure for building these from a text file. maybe a small lua or c# script that can run and convert an input configuration file to a .bin for INCBIN at this point.
+; it might also be nice to reprogram the table to be less dumb, that would be good practice programming. could move it to a spare bank
 _b0_d43_enemies_lib:
+;		       LV  |XP   |AGI| GP|ATK|DEF| HP| MP|ITM|        MOVES                  |  A   B   C   D|ODDS 
 		.BYTE	  1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
-		.BYTE	  1,  5,  0,  6,  2, $A,  6,  9,  0,$E5,$82,  2,  2,  2,  2,  2,  2,  2,  0,  0,$30,$30,$25
-		.BYTE	  2,  7,  0,  5,  2, $C,  8, $A,  0,$E5,$82,  7,  2,  2,  2,  7,  2,  2,  0,  0,$30,$30,$22
+		.BYTE	  1,  5,  0,  6,  2, $A,  6,  9,  0,$E5,$82,  2,  2,  2,  2,  2,  2,  2,  0,  0,$30,$30,$25 ; black raven
+		.BYTE	  2,  7,  0,  5,  2, $C,  8, $A,  0,$E5,$82,  7,  2,  2,  2,  7,  2,  2,  0,  0,$30,$30,$22 ; pretty good drop odds, lets check it: that's a horned rabbit with 1/16 odds of dropping a medical herb
 		.BYTE	  3,  8,  0,  6,  3, $D,  8, $D,  0,$C5,$82,  2,$82,  2,  2,  2,  2,  2,  0,  0,$70,$30,$24
 		.BYTE	$43,  6,  0,  8,  4, $B,  7, $C, $C,$68,  2,$82,$82,  2,$26,  2,$26,  2,  0,  0,$40,$10,$14
 		.BYTE	$43, $B,  0,  7,  3, $E,  8, $F,  0,$65,  2,  2,  1,$82,  2,  2,  2,  2,  0,  0,$30,$30,$22
@@ -6674,7 +6709,7 @@ _b0_d43_enemies_lib:
 		.BYTE	$62,$DF,  2,$64,$2A,$5E,$4E,$F0, $A,$8F,$82,  2,$27,$A7,$A7,$A2,$14,$20,$A4,$20,$B4,$4C,$A6
 		.BYTE	$22,$A6,  4,$3A,$49,$73,$3F,$82,  0,$8E,$82,  2,$12,  2,$82,$92,  2,  2,$54,$60,$B0,$78,$56
 		.BYTE	$22,$10,  4,$3B,$2A,$43,$2F,$55,$14,$D5,  2,$1F,  2,$20,  2,$1F,  2,$20,$B4,$70,$94,$54,$56
-		.BYTE	$3F,$68,$1F,$32,$C8,$78,$44,$2C, $C,$1D,$8B,  2,$8B,  2,$82,$8B,$82,$8B,$C0,$3C,$74,$7D,$F0
+		.BYTE	$3F,$68,$1F,$32,$C8,$78,$44,$2C, $C,$1D,$8B,  2,$8B,  2,$82,$8B,$82,$8B,$C0,$3C,$74,$7D,$F0 ; orichi: note the 0 drop odds (100% of time)
 		.BYTE	$25,$F4,  6,$1D,$3E,$8C,$28,$C3,  0,$34,  3,  2,  2,  2,  2,  2,  2,$82,$94,$64,$74,$B8,$35
 		.BYTE	$2A,$70,$17,$46,$B4,$96,$3B,$C8,  0,$5F, $C,  2, $C,  2, $C,  2,  2, $C,$80,$20,$B4,$78,$75
 		.BYTE	$3F,  8,  0,  7,  2,$12,  6,  6,  0,$65,  2,  2,  7,  2,  7,  2,  7,  2,  0,  0,  0,  0,$34
@@ -6705,13 +6740,13 @@ _b0_d43_enemies_lib:
 		.BYTE	$2E,$1C,$25,$32,$5E,$F0,$32,$26,  0,$35,  2,  2,  2,  2,$8B,$82,$8B,$8B,$D1,$3C,$B4,$FE,$F5
 		.BYTE	$3F,$A8,$2F,$48,$C2,$D2,$C8,$C2,$FF,$BC, $C,$99,  2,$19, $C,$99,  2,$99,$55,$7C,$E4,$7D,$F6
 		.BYTE	$3F,$DC,$37,  0, $F,$68,  0,$84,  0,$93,  2,  2,  2,  2,  2,  2,  2,$82,  0,$3D,$FC,$BF,$F6
-		.BYTE	$3F,$FF,$FF,$55,  0,$DC,$64,$84,$FF,$4B,$19,$82,$8C,$95,$AA,$82,$99,$A8,$94,$3C,$A4,$7F,$F7
-		.BYTE	$3F,  0,  0,$FF,  0,$26,$2C,$FF,$FF,$41, $F,$9B,$8F,$82,$AB,$8F,$AC,$8F,$B8,$7E,$F1,$3F,$F7
-		.BYTE	$3F,  0,  0,$50,  0,$40,$C8,$FF,$FF,$41,$9B, $E,  2,  2,$82,$AB,$8F,$AB,$FC,$3D,$F0,$FF,$F7
-		.BYTE	$3F,  0,  0,$64,  0,$E6,$DC,$90,$1B,  0,$9E,  2,$22,$82,  2,$33,$33,$33,$3C,$FC,$FC,$FD,$F7
-		.BYTE	$7F,$98,  8,$13,  0,$41,$2A,$96,  0,  0,  2,  1,  2,  2,  3,  2,  2,  2,$50,$3C,$74,$7C,$F7
-		.BYTE	$3F,$C0,$12,$23,  0,$59,$28,$90,  0,  0,$82,  3,  2,$82,  2,  2,  2,$82,$50,$3C,$F4,$FD,$F7
-		.BYTE	$3F,$50,  0,$14,  0,$37,$1F,$3C,  0,$80,  2,  2,  2,  2,  2,  2,  2,  2,$40,$3C,$74,$7C,$F7
+		.BYTE	$3F,$FF,$FF,$55,  0,$DC,$64,$84,$FF,$4B,$19,$82,$8C,$95,$AA,$82,$99,$A8,$94,$3C,$A4,$7F,$F7 ; meteorite armband!!
+		.BYTE	$3F,  0,  0,$FF,  0,$26,$2C,$FF,$FF,$41, $F,$9B,$8F,$82,$AB,$8F,$AC,$8F,$B8,$7E,$F1,$3F,$F7 ; mysterious hat!!
+		.BYTE	$3F,  0,  0,$50,  0,$40,$C8,$FF,$FF,$41,$9B, $E,  2,  2,$82,$AB,$8F,$AB,$FC,$3D,$F0,$FF,$F7 ; mysterious hat!!
+		.BYTE	$3F,  0,  0,$64,  0,$E6,$DC,$90,$1B,  0,$9E,  2,$22,$82,  2,$33,$33,$33,$3C,$FC,$FC,$FD,$F7 ; cypress stick!
+		.BYTE	$7F,$98,  8,$13,  0,$41,$2A,$96,  0,  0,  2,  1,  2,  2,  3,  2,  2,  2,$50,$3C,$74,$7C,$F7 ; cypress stick! (checks out on wikis)
+		.BYTE	$3F,$C0,$12,$23,  0,$59,$28,$90,  0,  0,$82,  3,  2,$82,  2,  2,  2,$82,$50,$3C,$F4,$FD,$F7 ; cypress stick! (checks out on wikis)
+		.BYTE	$3F,$50,  0,$14,  0,$37,$1F,$3C,  0,$80,  2,  2,  2,  2,  2,  2,  2,  2,$40,$3C,$74,$7C,$F7 ; (equipped?) cypress stick! (checks out on wikis)
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s65:

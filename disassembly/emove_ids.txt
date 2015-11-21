@@ -1,0 +1,65 @@
+Assessing the situation
+Protects itself
+Regular attack
+Attack could be critical
+Attack could cause sleep
+Attack could cause poison
+Attack could cause numbness
+Enemy will flee
+Call for reinforcements (same enemy)
+Curious dance
+Flaming breath (10-20 HP attack)
+Flaming breath (30-50 HP attack)
+Flaming breath (80-100 HP attack)
+Blizzard breath (10-20 HP attack)
+Blizzard Breath (40-60 HP attack)
+Blizzard breath (100-140 HP attack)
+Emits gales of sweet breath (causes sleep)
+Emits gales of toxic breath (causes poison)
+Emits gales of scorching breath (causes numbness)
+Chants Blaze
+Chants Blazemore
+Chants Blazemost
+Chants Icebolt
+Chants Firebal
+Chants Firebane
+Chants Explodet
+Chants Snowblast
+Chants Snowstorm
+Chants Infernos
+Chants Infermore
+Chants Infermost
+Chants Beat
+Chants Defeat
+Chants Sacrifice
+Chants Sleep
+Chants Stopspell
+Chants Sap
+Chants Defence
+Chants Surround
+Chants Robmagic
+Chants Chaos
+Chants Slow
+Chants Limbo
+Freeze beam shoots out of Zoma's fingertip
+Chants Bounce
+Chants Increase
+Chants Increase 2
+Chants Vivify
+Chants Revive
+Chants Heal
+Chants Healmore
+Chants Healall
+Chants Healus
+Chants Healusall
+Chants Heal 2
+Chants Healmore 2
+Chants Healall 2
+Chants Healus 2
+Chants Healusall 2
+Calls for reinforcements (Healer)
+Calls for reinforcements (Granite Titan)
+Calls for reinforcements (Hork)
+Calls for reinforcements (Elysium Bird)
+Calls for reinforcements (Voodoo Shaman)
+; now we're at $80. After this are maybe dups, or maybe $80 is a flag. They're definitely used, though
