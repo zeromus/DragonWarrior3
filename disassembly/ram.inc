@@ -109,8 +109,10 @@ byte_38:
 		.BYTE	0
 byte_3B:
 		.BYTE	0
+;----------------------------------------------
 word_3C:
 		.BYTE	0,0
+;----------------------------------------------
 word_3E:
 		.BYTE	0,0
 word_40: ; 41 - "previousMapNumber?"
@@ -4602,8 +4604,11 @@ byte_6A5D:
 		.BYTE	0
 byte_6A62:
 		.BYTE	0
+;----------------------------------------------
+;setting this nonzero makes enemies go nuts and fight each other and the battle to run oddly with maybe no player turn. is it for the arena?
 byte_6A63:
 		.BYTE	0
+;----------------------------------------------
 byte_6A64:
 		.BYTE	0
 byte_6A65:
@@ -4685,10 +4690,8 @@ byte_6A9F:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u16[] pc.def - DEF cached for 4 PCs (modified realtime values e.g by spells and effects?)
-byte_6AA3:
-		.BYTE	0
-byte_6AA4:
-		.BYTE	0,0,0,0,0,0,0
+_u16_pc_defs:
+		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u16[] pc.atk - ATK cached for 4 PCs (modified realtime values e.g by spells and effects?)
 byte_6AAB:
