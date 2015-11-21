@@ -403,9 +403,9 @@ loc_6825C:
 		ASL
 		TAX
 		LDA		word_4
-		STA		byte_6AA3,X
+		STA		_u16_pc_defs,X
 		LDA		word_4+1
-		STA		byte_6AA4,X
+		STA		_u16_pc_defs+1,X
 		LDA		byte_51
 		ASL
 		TAX
@@ -1793,22 +1793,23 @@ loc_68B24:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68B2F:
+_bs_emove_00_assessing:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$00
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68B32:
+; interesting that it just seems to print a message. same for the player's parry command. where does the parry flag get set?
+_bs_emove_01_protects_itself:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68B35:
+_bs_emove_02_regular_attack:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68B3B:
 		JSR		sub_6AD2B
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_68B49
 		JSR		sub_6AD8F
 		JMP		loc_68B5D
@@ -1853,7 +1854,7 @@ loc_68B8A:
 		ASL		word_4
 		ROL		word_4+1
 loc_68B94:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68BAB
 		STA		byte_D2
 		STA		byte_CE
@@ -1878,24 +1879,24 @@ sub_68BB6:
 		LDA		#$20
 		JSR		sub_6B2BB
 		SYSX	_sys12_wrap_bB_s3_apu_load,$8D
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68BC6
 		JMP		sub_6B3D2
 loc_68BC6:
 		JMP		sub_6B5B7
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68BC9:
+_bs_emove_03_attack_maybe_crit:
 		JSR		sub_6ACBE
 		CMP		#$20
 		BCC		loc_68BD3
-		JMP		sub_68B35
+		JMP		_bs_emove_02_regular_attack
 loc_68BD3:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
 		SYSX	_sys12_wrap_bB_s3_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
-		JSR		sub_6B763
+		JSR		_bs_load_enemy_prop_ATK
 		LDA		byte_59
 		STA		word_4
 		LDA		byte_5A
@@ -1904,13 +1905,13 @@ loc_68BD3:
 		JMP		loc_68B94
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68BF0:
+_bs_emove_04_attack_maybe_sleep:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
 		BNE		locret_68C09
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		LDA		byte_CE
 		JSR		sub_6B2E6
 		JSR		sub_69C9D
@@ -1918,26 +1919,26 @@ locret_68C09:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68C0A:
+_bs_emove_05_attack_maybe_poison:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
 		BNE		locret_68C09
 		JSR		sub_6B2E6
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_68E1E
 		JMP		_b4_s6
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68C26:
+_bs_emove_06_attack_maybe_numb:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
 		BNE		locret_68C09
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_6B2E6
 		JSR		sub_68E69
@@ -1950,7 +1951,7 @@ sub_68C42:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68C48:
+_bs_emove_07_try_flee:
 		JSR		sub_6B2B3
 		STA		byte_64
 		SYSX	_sys12_wrap_bB_s3_apu_load,$83
@@ -1965,7 +1966,7 @@ sub_68C48:
 		JMP		_b4_s21_message_half_delay_or_wait_for_keypress
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68C64:
+_bs_emove_08_reinforce_own_type:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
 		JSR		sub_6B2B3
 		STA		byte_64
@@ -2077,7 +2078,7 @@ loc_68CED:
 		JMP		sub_6AA34
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68D39:
+_bs_emove_reinforce_specific:
 		JSR		sub_68D3F
 		JMP		sub_6B3DB
 
@@ -2137,12 +2138,12 @@ byte_68D88:
 		.BYTE	  9,$75,$47,$56,$59
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68D8D:
+_bs_emove_09_curious_dance:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3A
 		LDA		#1
 		JSR		sub_6B307
 		JSR		sub_6B30E
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68DA8
 		STA		byte_CE
 		TAY
@@ -2157,7 +2158,8 @@ locret_68DB0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68DB1:
+; several breath attacks are handled by this one
+_bs_emove_0A_through_0F_breath_attacks:
 		SYSX	_sys12_wrap_bB_s3_apu_load,$91
 		LDA		#$36
 		STA		word_4
@@ -2171,7 +2173,7 @@ loc_68DC5:
 		LDA		word_4
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JSR		sub_6B32F
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68DD5
 		JMP		loc_68EE6
 loc_68DD5:
@@ -2188,10 +2190,10 @@ loc_68DD5:
 		JMP		sub_697DE
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68DEC:
+_bs_emove_10_sweet_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$30
 		JSR		sub_6B32F
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68DFD
 		JSR		sub_69096
 		JMP		sub_694C1
@@ -2199,7 +2201,7 @@ loc_68DFD:
 		JMP		sub_69C86
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68E00:
+_bs_emove_11_toxic_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$31
 		JSR		sub_6B32F
 		LDA		#<[sub_68E18]
@@ -2240,7 +2242,7 @@ loc_68E43:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$32
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68E4B:
+_bs_emove_12_scorching_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$33
 		JSR		sub_6B32F
 		LDA		#<[sub_68E63]
@@ -2281,7 +2283,8 @@ loc_68E8E:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$35
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68E96:
+; enemy chants an offensive spell on a single party member
+_bs_emove_spell_single:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
@@ -2297,7 +2300,7 @@ sub_68E96:
 		JSR		sub_6B30E
 		JSR		sub_6BEB9
 loc_68EB8:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68EC4
 		STA		byte_CE
 		STA		byte_D2
@@ -2306,7 +2309,8 @@ loc_68EC4:
 		JMP		loc_6989F
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68EC7:
+; enemy chants an offensive spell on the entire party
+_bs_emove_spell_party:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
@@ -2321,7 +2325,7 @@ sub_68EC7:
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_68EE6:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68F09
 		LDY		#0
 loc_68EED:
@@ -2363,13 +2367,13 @@ sub_68F16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68F21:
+_bs_emove_1F_chant_beat:
 		LDA		#$12
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_68F2C:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_68F70
 		STA		byte_CE
 		LDA		#$20
@@ -2453,8 +2457,8 @@ sub_68F98:
 		JMP		loc_6A582
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68FBC:
-		JSR		sub_6B2A3
+_bs_emove_20_chant_beat:
+		JSR		_bs_extract_target_from_move
 		BMI		sub_68FE0
 		JSR		sub_68FD5
 		LDA		#$20
@@ -2479,7 +2483,7 @@ sub_68FD5:
 sub_68FE0:
 		LDA		#$13
 		JSR		sub_68FEB
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		JMP		sub_6995B
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2492,12 +2496,12 @@ sub_68FEB:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68FF8:
+_bs_emove_21_chant_sacrifice:
 		LDA		#$14
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B32F
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69079
 		LDY		#0
 loc_6900A:
@@ -2569,8 +2573,8 @@ loc_69079:
 		JMP		loc_6905D
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69081:
-		JSR		sub_6B2A3
+_bs_emove_22_chant_sleep:
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6908E
 		JSR		sub_69096
 		LDA		#$22
@@ -2594,8 +2598,8 @@ sub_690A3:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_690A9:
-		JSR		sub_6B2A3
+_bs_emove_23_chant_stopspell:
+		JSR		_bs_extract_target_from_move
 		BMI		loc_690BD
 		LDA		#<[sub_690C7]
 		STA		word_3E
@@ -2614,7 +2618,7 @@ sub_690C7:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_690CD:
+_bs_emove_24_chant_sap:
 		LDA		#$2B
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2622,7 +2626,7 @@ sub_690CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690D8:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_690E6
 		STA		byte_CE
 		LDA		#0
@@ -2632,8 +2636,8 @@ loc_690E6:
 		JMP		loc_69F16
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_690E9:
-		JSR		sub_6B2A3
+_bs_emove_25_chant_defence:
+		JSR		_bs_extract_target_from_move
 		BMI		loc_690FD
 		LDA		#<[sub_69107]
 		STA		word_3E
@@ -2654,8 +2658,8 @@ sub_69107:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69111:
-		JSR		sub_6B2A3
+_bs_emove_26_chant_surround:
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69125
 		LDA		#<[sub_6912F]
 		STA		word_3E
@@ -2674,12 +2678,12 @@ sub_6912F:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69135:
+_bs_emove_27_chant_robmagic:
 		LDA		#$17
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69166
 		STA		byte_CE
 		TAY
@@ -2707,13 +2711,13 @@ loc_69166:
 		JMP		loc_69158
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69173:
+_bs_emove_28_chant_chaos:
 		LDA		#$27
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_6917E:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_691C0
 		STA		byte_CE
 		JSR		sub_6B347
@@ -2746,8 +2750,8 @@ loc_691C0:
 		JMP		sub_69E7F
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_691C3:
-		JSR		sub_6B2A3
+_bs_emove_29_chant_slow:
+		JSR		_bs_extract_target_from_move
 		BMI		sub_6921D
 		LDA		#<[sub_691D9]
 		STA		word_3E
@@ -2803,13 +2807,13 @@ sub_6921D:
 		JMP		sub_69ABF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69225:
+_bs_emove_2A_chant_limbo:
 		LDA		#$16
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_69230:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69238
 		JMP		loc_69A3B
 loc_69238:
@@ -2885,7 +2889,7 @@ locret_692B6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_692B7:
+_bs_emove_2C_chant_bounce:
 		LDA		#$30
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2900,7 +2904,7 @@ sub_692B7:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_692D4:
+_bs_emove_2B_zoma_freeze_beam:
 		LDA		#$AD
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		#$9C
@@ -2943,13 +2947,13 @@ loc_6931B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69322:
+_bs_emove_2D_chant_increase:
 		LDA		#$2E
 		STA		byte_47
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 loc_6932C:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_6933E
 		LDA		#<[sub_69346]
 		STA		word_40
@@ -2968,12 +2972,12 @@ sub_69346:
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6934C:
+_bs_emove_2E_chant_increase2:
 		LDA		#$2F
 		STA		byte_47
 		JSR		sub_68FEB
 		JSR		sub_6A35F
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_6933E
 		LDA		#<[sub_69346]
 		STA		word_40
@@ -2983,13 +2987,15 @@ sub_6934C:
 		JMP		sub_6A3B1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6936A:
+_bs_emove_30_chant_revive:
 		LDA		#$21
 		BNE		sub_69370
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6936E:
+_bs_emove_2F_chant_vivify:
 		LDA		#$20
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69370:
@@ -2997,7 +3003,7 @@ sub_69370:
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69383
 		JMP		loc_6940A
 loc_69383:
@@ -3077,7 +3083,7 @@ loc_6940A:
 		JMP		sub_69C0B
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69415:
+_bs_emove_heal_various_single:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$36
@@ -3103,7 +3109,7 @@ loc_6942E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69443:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69450
 		STA		byte_64
 		JSR		sub_6BEF5
@@ -3112,7 +3118,7 @@ loc_69450:
 		JMP		loc_69BA3
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69453:
+_bs_emove_heal_various_multi:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$34
@@ -3135,7 +3141,7 @@ loc_6946C:
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_6947E:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_694B5
 		JSR		sub_6A8B3
 		STA		byte_46
@@ -3325,7 +3331,7 @@ loc_695B4:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_695C6:
+_bs_pcAction_00_attack:
 		JSR		_sram_b0_s16_player_ATK_read
 		LDA		byte_CE
 		ASL
@@ -3361,7 +3367,7 @@ locret_69603:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69604:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6960C
 		JMP		sub_696E8
 loc_6960C:
@@ -3559,7 +3565,7 @@ loc_6977A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69782:
+_bs_pcAction_01_chant:
 		JSR		sub_6B2F5
 		LDX		byte_51
 		LDA		byte_558,X
@@ -3567,6 +3573,7 @@ sub_69782:
 		STA		byte_D3
 		TAX
 		LDA		_b4_dD_spells_list,X
+; these entries have two parts, get the bottom 6 bits (must be the MP cost)
 		AND		#$3F
 		FARX	_b0_s67
 		JSR		_sram_b0_sB_player_MP_consume
@@ -3577,19 +3584,21 @@ sub_69782:
 		JSR		sub_68FEB
 		JSR		sub_6A39F
 loc_697AA:
+; the table begins at entry #$12; spells less than that use entry 0
 		LDA		byte_49
 		CMP		#$12
 		BCS		loc_697B4
 		LDA		#0
-		BEQ		loc_697B6
+		BEQ		loc_697B6 ; unconditional
 loc_697B4:
 		SBC		#$11
 loc_697B6:
+; shift left for index-to-pointer and reference table
 		ASL
 		TAX
-		LDA		off_6BE3A,X
+		LDA		_bs_pc_spell_effect_fptr_tbl,X
 		STA		word_3C
-		LDA		off_6BE3A+1,X
+		LDA		_bs_pc_spell_effect_fptr_tbl+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
 loc_697C5:
@@ -3598,7 +3607,7 @@ loc_697C5:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$20
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_697CD:
+_bs_pcAction_02_parry:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3692,7 +3701,7 @@ sub_69840:
 		CMP		#$11
 		BCC		loc_69892
 loc_69862:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6986A
 		JMP		loc_698EF
 loc_6986A:
@@ -3721,7 +3730,7 @@ loc_6988C:
 		JSR		sub_6BEA4
 		JMP		loc_68EB8
 loc_69892:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_6988C
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -3739,7 +3748,7 @@ loc_6989F:
 locret_698B3:
 		RTS
 loc_698B4:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_698E0
 		STA		byte_47
 		LDY		#0
@@ -3794,7 +3803,7 @@ locret_6990C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6990D:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_69955
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -3846,7 +3855,7 @@ sub_69955:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6995B:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_69955
 		JSR		sub_69966
 		JMP		sub_6A3AB
@@ -3929,7 +3938,7 @@ loc_699E9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_699F1:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69A03
 		LDA		#<[sub_69A0F]
 		STA		word_40
@@ -3961,7 +3970,7 @@ loc_69A28:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69A2E:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_69A7A
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4009,7 +4018,7 @@ sub_69A7A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69A80:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69A99
 		JSR		sub_6A61F
 		BIT		byte_567
@@ -4042,7 +4051,7 @@ locret_69ABE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69ABF:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69AD1
 		LDA		#<[sub_69ADB]
 		STA		word_40
@@ -4093,7 +4102,7 @@ loc_69B18:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B1B:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		sub_69B5F
 		LDA		#<[sub_69B2E]
 		LDX		#>[sub_69B2E]
@@ -4167,7 +4176,7 @@ loc_69B95:
 sub_69BA0:
 		JSR		sub_6BF22
 loc_69BA3:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69BAD
 		STA		byte_CE
 		JMP		sub_6A5F7
@@ -4200,7 +4209,7 @@ byte_69BDD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69BE0:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		sub_69C03
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4237,7 +4246,7 @@ sub_69C09:
 ; =============== S U B	R O U T	I N E =======================================
 sub_69C0B:
 		STA		byte_47
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69C4C
 		STA		byte_D2
 		STA		byte_CE
@@ -4306,7 +4315,7 @@ sub_69C81:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69C86:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69C98
 		LDA		#<[sub_69CE7]
 		STA		word_40
@@ -4426,7 +4435,7 @@ locret_69D5F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D60:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69D72
 		LDA		#<[sub_69DD9]
 		STA		word_40
@@ -4494,7 +4503,7 @@ sub_69DD9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69DDF:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69DF1
 		LDA		#<[sub_69E28]
 		STA		word_40
@@ -4582,7 +4591,7 @@ loc_69E7C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E7F:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		sub_69EC5
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4640,9 +4649,9 @@ sub_69ECB:
 		LDA		#1
 		STA		byte_6AAC,X
 		LDA		#0
-		STA		byte_6AA4,X
+		STA		_u16_pc_defs+1,X
 		LDA		#$C8
-		STA		byte_6AA3,X
+		STA		_u16_pc_defs,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$47
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4657,7 +4666,7 @@ sub_69EF8:
 sub_69F05:
 		LDA		#0
 		STA		byte_47
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69F1D
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4674,7 +4683,7 @@ loc_69F1D:
 sub_69F23:
 		LDA		#$FF
 		STA		byte_47
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_69F39
 		LDA		#<[sub_6A78A]
 		STA		word_40
@@ -4690,7 +4699,7 @@ loc_69F39:
 sub_69F43:
 		LDA		#0
 		STA		byte_47
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69F51
 		STA		byte_CE
 		JMP		sub_6A790
@@ -4709,7 +4718,7 @@ locret_69F63:
 sub_69F64:
 		LDA		#$FF
 		STA		byte_47
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69F7A
 		LDA		#<[sub_69F7F]
 		STA		word_3E
@@ -4768,7 +4777,7 @@ locret_69FC4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69FC5:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_69FE6
 		STA		byte_CE
 		JSR		sub_6B347
@@ -5154,7 +5163,7 @@ off_6A241:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A263:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6A2C5
 		STA		byte_D3
 		TAY
@@ -5191,9 +5200,9 @@ loc_6A282:
 		PLA
 		TAX
 		LDA		word_4
-		STA		byte_6AA3,X
+		STA		_u16_pc_defs,X
 		LDA		word_4+1
-		STA		byte_6AA4,X
+		STA		_u16_pc_defs+1,X
 		TXA
 		PHA
 		JSR		_sram_b0_s16_player_ATK_read
@@ -5211,7 +5220,7 @@ loc_6A2C8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A2CB:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6A2F7
 		STA		byte_CE
 		JSR		sub_6B347
@@ -5238,7 +5247,7 @@ loc_6A2F7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A2FF:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		loc_6A333
 		STA		byte_CE
 		JSR		sub_6B347
@@ -5355,7 +5364,7 @@ sub_6A39F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A3AB:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		JSR		sub_6A8B3
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5718,7 +5727,7 @@ loc_6A604:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A61F:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_6B3D2
 		JSR		sub_68F0C
@@ -5810,7 +5819,7 @@ sub_6A6C7:
 		STA		byte_66
 		STA		byte_640
 		STA		byte_641
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_64
 		JMP		sub_6B5B7
 
@@ -5835,10 +5844,10 @@ loc_6A6E9:
 		TAX
 		LDA		byte_47
 		BEQ		loc_6A708
-		LDA		byte_6AA4,X
+		LDA		_u16_pc_defs+1,X
 		LSR
 		STA		word_4+1
-		LDA		byte_6AA3,X
+		LDA		_u16_pc_defs,X
 		ROR
 		STA		word_4
 loc_6A708:
@@ -6005,18 +6014,18 @@ loc_6A813:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A823:
-		LDA		byte_6AA3,X
+		LDA		_u16_pc_defs,X
 		STA		word_6
-		LDA		byte_6AA4,X
+		LDA		_u16_pc_defs+1,X
 		STA		word_6+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A82E:
 		LDA		byte_8
-		STA		byte_6AA3,X
+		STA		_u16_pc_defs,X
 		LDA		byte_9
-		STA		byte_6AA4,X
+		STA		_u16_pc_defs+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6672,9 +6681,9 @@ loc_6ABAE:
 loc_6ABC3:
 		LDA		byte_CE
 		ASL
-		LDA		byte_6AA3,X
+		LDA		_u16_pc_defs,X
 		STA		byte_59
-		LDA		byte_6AA4,X
+		LDA		_u16_pc_defs+1,X
 		STA		byte_5A
 		LDA		byte_CE
 		PHA
@@ -6852,12 +6861,13 @@ sub_6ACD9:
 		SBC		byte_5A
 		BCC		loc_6AD1F
 		STA		word_4+1
-		BNE		loc_6AD00
+		BNE		._bs_atkadv_gt_atkreduced
 		LDA		word_4
 		CMP		#2
 		BCC		loc_6AD1F
-loc_6AD00:
-		JSR		sub_6BA64
+._bs_atkadv_gt_atkreduced:
+		JSR		sub_6BA64 ; get a random value, seemingly completely in [0,255]
+; clamp(randval,0x66,0x99) - IOW clamps to [40%,60%]
 		LDA		word_3C
 		CMP		#$66
 		BCS		loc_6AD0D
@@ -6868,12 +6878,17 @@ loc_6AD0D:
 		BCC		loc_6AD13
 		LDA		#$99
 loc_6AD13:
+; "currently this contains AtkAdv"
+; "divide clamped rand by 4"
 		LDX		#word_4
 		LSR
 		LSR
+; _AtkAdv*=roll/4:
 		JSR		_mul16_to_8
 		LDA		#$40
+; threaded call. after this, something like a damage is left in $4
 		JMP		_div16_to_8
+
 loc_6AD1F:
 		JSR		sub_6ACBE
 		AND		#1
@@ -6883,48 +6898,56 @@ loc_6AD1F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "sub_CalcEattackDmg"
 sub_6AD2B:
-		LDX		byte_51
-		LDA		byte_54C,X
+; movetable must contain the PC target as bottom 2 bits of entry from movetable
+		LDX		byte_51 ; "curractor"
+		LDA		byte_54C,X ; "movetable"
 		AND		#3
 		PHA
-		JSR		sub_6B763
+		JSR		_bs_load_enemy_prop_ATK
 		PLA
+; build offset into array and load PC defence
 		ASL
 		TAX
-		LDA		byte_6AA3,X
+		LDA		_u16_pc_defs,X
 		STA		word_4
-		LDA		byte_6AA4,X
+		LDA		_u16_pc_defs+1,X
 loc_6AD41:
 		STA		word_4+1
+; divide pDEF by 2
 		LSR		word_4+1
 		ROR		word_4
 		SEC
+; subtract eATK from pDEF/2
 		LDA		byte_59
 		SBC		word_4
 		STA		word_4
 		LDA		byte_5A
 		SBC		word_4+1
-		BCS		loc_6AD58
+; clamp at 0
+		BCS		.difference_nonnegative
 		LDA		#0
 		STA		word_4
-loc_6AD58:
+.difference_nonnegative:
 		STA		word_4+1
-		BNE		loc_6AD00
+		BNE		._bs_atkadv_gt_atkreduced
+; divide eATK by 8 (multiple precision SHR 3 over 5A and 59)
 		LSR		byte_5A
 		ROR		byte_59
 		LSR		byte_5A
 		ROR		byte_59
 		LSR		byte_5A
 		ROR		byte_59
+; compare eATK/8 to pDEF/2-eATK
 		LDA		word_4+1
 		CMP		byte_5A
 		BCC		loc_6AD79
-		BNE		loc_6AD00
+		BNE		._bs_atkadv_gt_atkreduced
 		LDA		byte_59
 		CMP		word_4
 		BCS		loc_6AD79
-		JMP		loc_6AD00
+		JMP		._bs_atkadv_gt_atkreduced
 loc_6AD79:
 		LDA		byte_59
 		BEQ		loc_6AD87
@@ -6941,9 +6964,9 @@ loc_6AD87:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AD8F:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		PHA
-		JSR		sub_6B763
+		JSR		_bs_load_enemy_prop_ATK
 		PLA
 		ASL
 		TAX
@@ -7088,9 +7111,9 @@ loc_6AE66:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AE6C:
+_bs_pcAction_03_item:
 		JSR		sub_6B2FE
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_D4
 		BPL		loc_6AE7D
 		STA		byte_64
@@ -7225,7 +7248,7 @@ sub_6AF5C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF65:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JMP		sub_68E69
 
@@ -7366,7 +7389,7 @@ loc_6B048:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B04B:
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_6B071
 		JSR		sub_6AABA
 		LDA		#$14
@@ -7447,7 +7470,7 @@ sub_6B0B9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B0C1:
+_bs_pcAction_06_equip_attack:
 		LDA		#0
 		STA		byte_42
 		FARX	_b0_s63
@@ -7457,7 +7480,7 @@ sub_6B0C1:
 		JSR		sub_6B076
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$06
 		JSR		_b4_sA
-		JMP		sub_695C6
+		JMP		_bs_pcAction_00_attack
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B0DB:
@@ -7497,7 +7520,7 @@ loc_6B109:
 loc_6B118:
 		CPY		#4
 		BCC		loc_6B142
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BPL		loc_6B145
 		CPY		#4
 		BNE		loc_6B132
@@ -7686,9 +7709,12 @@ _b4_s1A:
 		JMP		_wait_for_nmi_is_over
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B2A3:
+; I don't remember 100% what this does, but it gets used a lot
+_bs_extract_target_from_move:
 		LDX		byte_51
 		LDA		byte_54C,X
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B2A8:
@@ -7702,6 +7728,7 @@ loc_6B2AF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; references "someBattleActionTable"
 sub_6B2B3:
 		LDX		byte_51
 		LDA		byte_540,X
@@ -7787,7 +7814,7 @@ sub_6B30E:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B310:
 		STA		word_4
-		JSR		sub_6B2A3
+		JSR		_bs_extract_target_from_move
 		BMI		locret_6B32E
 		STA		byte_D2
 		LDA		byte_566
@@ -8453,7 +8480,7 @@ sub_6B746:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop ATK (requires reading 2 prop bytes)
-sub_6B763:
+_bs_load_enemy_prop_ATK:
 		JSR		sub_6B888
 		LDY		#5
 		JSR		_get_bank0_ptr_byte_safe
@@ -9049,6 +9076,7 @@ _message_speed_delays_list:
 		.BYTE	$18,$24,$30,$3C,$48,$54,$64
 
 ; =============== S U B	R O U T	I N E =======================================
+; calculates a random number between [0,120]??
 _b4_sE:
 		LDA		#$1F
 		STA		byte_42
@@ -9056,12 +9084,18 @@ _b4_sE:
 		BNE		sub_6BA6A
 
 ; =============== S U B	R O U T	I N E =======================================
+; i think: calculates a random number between [0,255]?? but uhhh why not just roll a rand? i dont get it.
 sub_6BA64:
 		LDA		#$F
 		STA		byte_42
 		LDX		#$20
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
+; coming in here X is important. it's saved right shifted by 1 into 3C, and 3C+1 is cleared to 0
+; it's actually going to be usd as a counter, and we'll throw that many dice
+; so we have word_3c = (X>>1) + randish&byte_42 + randish&byte_42 etc. X times
 sub_6BA6A:
 		TXA
 		PHA
@@ -9071,8 +9105,9 @@ sub_6BA6A:
 		STA		word_3C+1
 loc_6BA74:
 		JSR		_rand
-		LDA		_rand_seed
-		AND		byte_42
+		LDA		_rand_seed ; 1C contains some portion of the random data returned by _rand. not sure why the A=_rand() return value is insufficient
+		AND		byte_42 ; AND that random data by a mask set earlier (1F, F, others?)
+; multiple precision add to word_3c
 		CLC
 		ADC		word_3C
 		STA		word_3C
@@ -9081,16 +9116,20 @@ loc_6BA74:
 loc_6BA84:
 		DEX
 		BNE		loc_6BA74
+; done looping X times. pop the original X value
 		PLA
 		TAX
+; load the value we just worked on and do a multiple precision subtract #$80. 
 		LDA		word_3C
 		SEC
 		SBC		#$80
 		STA		word_3C
 		LDA		word_3C+1
 		SBC		#0
+; roll again if it's too high? what?
+; so I guess we're trying to come up with a +/-127 and aborting if it's underflowing? or overflowing, for that matter. the MSB should end up being 0 regardless
 		BNE		sub_6BA6A
-		STA		word_3C+1
+		STA		word_3C+1 ; must be 0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -9318,8 +9357,8 @@ sub_6BBDD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BBE4:
-		LDA		byte_6AA3,Y
-		ORA		byte_6AA4,Y
+		LDA		_u16_pc_defs,Y
+		ORA		_u16_pc_defs+1,Y
 		JMP		sub_6BBF9
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -9583,106 +9622,118 @@ byte_6BD82:
 		.BYTE	  2,  6, $C,  3,  4,  6,$12,  6, $C,  4,  6,  9,  5,  8,  1,  3
 		.BYTE	  4,  3,  4,  4,  0,  5,  3,  7,  0,  8,  4,  5, $A,$14,  3,  6
 		.BYTE	  7,$12,$3E,  3,  6,  9,$12,$3E
+
+; =============== T A B L E =================================================
+; a table of function pointers for each type of enemy move
+_bs_emove_fptr_tbl:
 off_6BDAA:
-		.WORD	sub_68B2F
-		.WORD	sub_68B32
-		.WORD	sub_68B35
-		.WORD	sub_68BC9
-		.WORD	sub_68BF0
-		.WORD	sub_68C0A
-		.WORD	sub_68C26
-		.WORD	sub_68C48
-		.WORD	sub_68C64
-		.WORD	sub_68D8D
-		.WORD	sub_68DB1
-		.WORD	sub_68DB1
-		.WORD	sub_68DB1
-		.WORD	sub_68DB1
-		.WORD	sub_68DB1
-		.WORD	sub_68DB1
-		.WORD	sub_68DEC
-		.WORD	sub_68E00
-		.WORD	sub_68E4B
-		.WORD	sub_68E96
-		.WORD	sub_68E96
-		.WORD	sub_68E96
-		.WORD	sub_68E96
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68EC7
-		.WORD	sub_68F21
-		.WORD	sub_68FBC
-		.WORD	sub_68FF8
-		.WORD	sub_69081
-		.WORD	sub_690A9
-		.WORD	sub_690CD
-		.WORD	sub_690E9
-		.WORD	sub_69111
-		.WORD	sub_69135
-		.WORD	sub_69173
-		.WORD	sub_691C3
-		.WORD	sub_69225
-		.WORD	sub_692D4
-		.WORD	sub_692B7
-		.WORD	sub_69322
-		.WORD	sub_6934C
-		.WORD	sub_6936E
-		.WORD	sub_6936A
-		.WORD	sub_69415
-		.WORD	sub_69415
-		.WORD	sub_69415
-		.WORD	sub_69453
-		.WORD	sub_69453
-		.WORD	sub_69415
-		.WORD	sub_69415
-		.WORD	sub_69415
-		.WORD	sub_69453
-		.WORD	sub_69453
-		.WORD	sub_68D39
-		.WORD	sub_68D39
-		.WORD	sub_68D39
-		.WORD	sub_68D39
-		.WORD	sub_68D39
+		.WORD	_bs_emove_00_assessing
+		.WORD	_bs_emove_01_protects_itself
+		.WORD	_bs_emove_02_regular_attack
+		.WORD	_bs_emove_03_attack_maybe_crit
+		.WORD	_bs_emove_04_attack_maybe_sleep
+		.WORD	_bs_emove_05_attack_maybe_poison
+		.WORD	_bs_emove_06_attack_maybe_numb
+		.WORD	_bs_emove_07_try_flee
+		.WORD	_bs_emove_08_reinforce_own_type
+		.WORD	_bs_emove_09_curious_dance
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_10_sweet_breath
+		.WORD	_bs_emove_11_toxic_breath
+		.WORD	_bs_emove_12_scorching_breath
+		.WORD	_bs_emove_spell_single
+		.WORD	_bs_emove_spell_single
+		.WORD	_bs_emove_spell_single
+		.WORD	_bs_emove_spell_single
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_spell_party
+		.WORD	_bs_emove_1F_chant_beat
+		.WORD	_bs_emove_20_chant_beat
+		.WORD	_bs_emove_21_chant_sacrifice
+		.WORD	_bs_emove_22_chant_sleep
+		.WORD	_bs_emove_23_chant_stopspell
+		.WORD	_bs_emove_24_chant_sap
+		.WORD	_bs_emove_25_chant_defence
+		.WORD	_bs_emove_26_chant_surround
+		.WORD	_bs_emove_27_chant_robmagic
+		.WORD	_bs_emove_28_chant_chaos
+		.WORD	_bs_emove_29_chant_slow
+		.WORD	_bs_emove_2A_chant_limbo
+		.WORD	_bs_emove_2B_zoma_freeze_beam
+		.WORD	_bs_emove_2C_chant_bounce
+		.WORD	_bs_emove_2D_chant_increase
+		.WORD	_bs_emove_2E_chant_increase2
+		.WORD	_bs_emove_2F_chant_vivify
+		.WORD	_bs_emove_30_chant_revive
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_multi
+		.WORD	_bs_emove_heal_various_multi
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_single
+		.WORD	_bs_emove_heal_various_multi
+		.WORD	_bs_emove_heal_various_multi
+		.WORD	_bs_emove_reinforce_specific
+		.WORD	_bs_emove_reinforce_specific
+		.WORD	_bs_emove_reinforce_specific
+		.WORD	_bs_emove_reinforce_specific
+		.WORD	_bs_emove_reinforce_specific
+
+; =============== T A B L E =================================================
+; a table of function pointers for each major PC action
 off_6BE2A:
-		.WORD	sub_695C6
-		.WORD	sub_69782
-		.WORD	sub_697CD
-		.WORD	sub_6AE6C
+		.WORD	_bs_pcAction_00_attack
+		.WORD	_bs_pcAction_01_chant
+		.WORD	_bs_pcAction_02_parry
+		.WORD	_bs_pcAction_03_item ;sub_6AE6C
+		.WORD	sub_697D0 ; some kind of nonsense? "gales of flaming breath" .. is this used by BeDragon? why two of them?
 		.WORD	sub_697D0
-		.WORD	sub_697D0
-		.WORD	sub_6B0C1
-		.WORD	nullsub_11
-off_6BE3A:
-		.WORD	sub_69840
-		.WORD	sub_6990D
-		.WORD	sub_6995B
+		.WORD	_bs_pcAction_06_equip_attack
+		.WORD	nullsub_11 ; bypass the player's action
+
+; =============== T A B L E =================================================
+; a table of spell effect function pointers for PC spells
+; it's only a portion of the spells though, starting with "Lightning". Earlier spells (blaze, etc.) are handled by special case code with the same handler as 'Lighting'
+; note, this is including spell effects for spells you dont expect to do anything in battle, like stepguard..
+_bs_pc_spell_effect_fptr_tbl:
+		.WORD	sub_69840 ; Lightning
+		.WORD	sub_6990D ; Beat
+		.WORD	sub_6995B ; Defeat
 		.WORD	sub_69973
 		.WORD	sub_699F1
 		.WORD	sub_69A2E
 		.WORD	sub_69A80
 		.WORD	sub_69ABF
 		.WORD	sub_69B1B
+		.WORD	sub_69BA0 ; Heal
 		.WORD	sub_69BA0
 		.WORD	sub_69BA0
-		.WORD	sub_69BA0
-		.WORD	sub_69BE0
-		.WORD	sub_69BE0
-		.WORD	sub_69BE0
-		.WORD	sub_69C09
+		.WORD	sub_69BE0 ; ?
+		.WORD	sub_69BE0 ; Healus
+		.WORD	sub_69BE0 ; Healusall
+		.WORD	sub_69C09 
 		.WORD	sub_69C81
-		.WORD	sub_69C86
+		.WORD	sub_69C86 ; Sleep
 		.WORD	sub_69D20
 		.WORD	sub_69D60
 		.WORD	sub_69DDF
 		.WORD	sub_69E5B
 		.WORD	sub_69E7F
 		.WORD	sub_6A263
-		.WORD	sub_69ECB
+		.WORD	sub_69ECB ; BeDragon
 		.WORD	sub_69EF8
 		.WORD	sub_69F05
 		.WORD	sub_69F23
@@ -9705,12 +9756,12 @@ off_6BE3A:
 		.WORD	sub_6AFA5
 		.WORD	sub_6AF97
 		.WORD	sub_6AF89
-		.WORD	sub_6AFD2
-		.WORD	sub_6AFF7
-		.WORD	nullsub_12
+		.WORD	sub_6AFD2 ; Day-Night "maximum HP goes up by 2!? what?"
+		.WORD	sub_6AFF7 ; Open - "enemy has recovered??"
+		.WORD	nullsub_12 ; X-ray
 		.WORD	sub_6B008
-		.WORD	sub_6B027
-		.WORD	sub_6B04B
+		.WORD	sub_6B027 ; "but nothing happens..."
+		.WORD	sub_6B04B ; StepGuard
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEA4:

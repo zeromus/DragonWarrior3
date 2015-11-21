@@ -3264,7 +3264,7 @@ off_9B85:
 		.WORD	byte_7C1
 		.WORD	byte_B0
 		.WORD	byte_6A9B ; pc.stuff
-		.WORD	byte_6AA3 ; pc.def
+		.WORD	_u16_pc_defs
 		.WORD	byte_540 ; some battle related table
 byte_9B99:
 		.BYTE	  1,  2,  3,  8,  1,  1,  1,  1,  2,  1

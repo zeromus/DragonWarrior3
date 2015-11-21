@@ -1638,7 +1638,7 @@ loc_B29D3:
 		TAX
 		LDY		#0
 loc_B29F2:
-		LDA		_default_character_names,X
+		LDA		_txt_default_character_names,X
 		STA		byte_9,Y
 		INX
 		INY
@@ -2146,7 +2146,7 @@ off_B2D2B:
 		.WORD	sub_B2A83
 byte_B2D3F:
 		.BYTE	  4,  1,  2
-_default_character_names:
+_txt_default_character_names:
 		.BYTE	_B,_r,_i,_n,_d,_a,_r,0
 		.BYTE	_R,_a,_g,_n,_a,_r,0,0
 		.BYTE	_A,_d,_a,_n,0,0,0,0
