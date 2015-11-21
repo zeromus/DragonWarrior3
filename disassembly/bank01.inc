@@ -1262,7 +1262,7 @@ loc_207F7:
 loc_2080F:
 		LDA		#$44
 		STA		byte_CF
-		FARX	_b0_s45
+		FARX	_b0_s45_check_if_item_equipped
 		LDA		word_4
 		CMP		#$C4
 		BNE		loc_20828
@@ -1270,9 +1270,9 @@ loc_2080F:
 		PHA
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ORA		#$10
-		STA		byte_73D,X
+		STA		_players_status+1,X
 loc_20828:
 		PLA
 		TAX
@@ -1383,7 +1383,7 @@ loc_208F6:
 		FARX	_b4_sA
 		RTS
 loc_208FA:
-		LDA		byte_571,X
+		LDA		_enemy_group_count,X
 		BNE		loc_20902
 		JMP		loc_20876
 loc_20902:
@@ -1427,7 +1427,7 @@ loc_2094D:
 		LDA		_enemy_roster_index_list,X
 		CMP		#$FF
 		BEQ		loc_2094D
-		LDA		byte_571,X
+		LDA		_enemy_group_count,X
 		BEQ		loc_2094D
 		INY
 		CPX		#4
@@ -1466,7 +1466,7 @@ loc_2098D:
 		LDA		_enemy_roster_index_list,X
 		CMP		#$FF
 		BEQ		loc_2099A
-		LDA		byte_571,X
+		LDA		_enemy_group_count,X
 		BEQ		loc_2099A
 		INY
 loc_2099A:
@@ -1477,7 +1477,7 @@ loc_2099A:
 		BNE		loc_209C0
 		LDX		#0
 loc_209A5:
-		LDA		byte_571,X
+		LDA		_enemy_group_count,X
 		CMP		#1
 		BEQ		loc_209B3
 		INX
@@ -1527,15 +1527,15 @@ loc_209E6:
 		RTS
 loc_209FA:
 		LDA		#$80
-		STA		byte_73C
-		STA		byte_73D
+		STA		_players_status
+		STA		_players_status+1
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_b0_s3
+		JSR		_sram_b0_s3_player_MAX_HP_read
 		LDA		word_4
-		STA		byte_71C
+		STA		_players_hp
 		LDA		word_4+1
-		STA		byte_71D
+		STA		_players_hp+1
 		FARX	_b0_s4F
 		FARX	_bC_s2F
 		RTS
@@ -1747,7 +1747,7 @@ loc_20B87:
 		AND		#$7F
 		STA		byte_D3
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BNE		loc_20B75
@@ -1811,10 +1811,10 @@ loc_20C36:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_20C4A
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		AND		#7
 		CMP		#5
 		BEQ		loc_20C4F
@@ -1858,7 +1858,7 @@ loc_20C95:
 		LDA		#$29
 		FARX	_b4_s9
 		LDA		#$3C
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		JMP		loc_20C83
 loc_20CA2:
 		LDA		#$2A
@@ -1880,8 +1880,8 @@ loc_20CB6:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BMI		loc_20CC6
 		INX
 		CPX		#4
@@ -1910,10 +1910,10 @@ loc_20CE0:
 		TYA
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_20D03
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BNE		loc_20D03
 		TXA
@@ -1921,7 +1921,7 @@ loc_20CE0:
 		ASL
 		TAX
 loc_20CF6:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		sub_20D0C
 		INX
@@ -1947,10 +1947,10 @@ sub_20D11:
 		JSR		sub_20CDB
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_20D2A
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BNE		loc_20D2A
 		LDY		word_4
@@ -1962,10 +1962,10 @@ loc_20D2F:
 		TYA
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_20D41
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BEQ		sub_20D0C
 loc_20D41:
@@ -1978,7 +1978,7 @@ loc_20D41:
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sE:
 		LDX		byte_CE
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		AND		#7
 		CMP		#7
 		BNE		loc_20D64
@@ -1997,29 +1997,29 @@ loc_20D5D:
 loc_20D64:
 		LDX		byte_CE
 		LDA		#1
-		STA		byte_700,X
-		LDA		byte_718,X
+		STA		_players_level,X
+		LDA		_players_class_gender,X
 		AND		#$F8
 		ORA		byte_CF
-		STA		byte_718,X
-		LSR		byte_704,X
-		LSR		byte_708,X
-		LSR		byte_70C,X
-		LSR		byte_710,X
-		LSR		byte_714,X
+		STA		_players_class_gender,X
+		LSR		_players_strength,X
+		LSR		_players_agility,X
+		LSR		_players_intelligence,X
+		LSR		_players_luck,X
+		LSR		_players_vitality,X
 		TXA
 		ASL
 		TAX
-		LSR		byte_72D,X
-		ROR		byte_72C,X
-		LSR		byte_735,X
-		ROR		byte_734,X
-		LSR		byte_725,X
-		ROR		byte_724,X
-		LDA		byte_725,X
-		STA		byte_71D,X
-		LDA		byte_724,X
-		STA		byte_71C,X
+		LSR		_players_mp+1,X
+		ROR		_players_mp,X
+		LSR		_players_max_mp+1,X
+		ROR		_players_max_mp,X
+		LSR		_players_max_hp+1,X
+		ROR		_players_max_hp,X
+		LDA		_players_max_hp+1,X
+		STA		_players_hp+1,X
+		LDA		_players_max_hp,X
+		STA		_players_hp,X
 		LDX		byte_CE
 		JSR		sub_20DCE
 		LDA		#0
@@ -2033,11 +2033,11 @@ loc_20D64:
 		TAX
 		LDY		#8
 loc_20DBD:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		loc_20DC9
 		AND		#$7F
-		STA		byte_77C,X
+		STA		_players_inventory_list,X
 loc_20DC9:
 		INX
 		DEY
@@ -2092,7 +2092,7 @@ sub_294028:
 		LDA		#0
 loc_294039:
 		STA		byte_CE
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		CMP		#$B
 		BCS		loc_29404A
@@ -2161,7 +2161,7 @@ loc_29409C:
 		LDX		#0
 		LDA		#1
 loc_2940AA:
-		STA		byte_571,X
+		STA		_enemy_group_count,X
 		INX
 		CPX		#4
 		BCC		loc_2940AA

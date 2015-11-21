@@ -208,7 +208,7 @@ _text_lib_ptrs:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s1:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_F816D
 		LDA		byte_176
@@ -614,7 +614,7 @@ _bA_sA:
 		JSR		_sram_b0_s33
 		DEC		word_4
 		BEQ		locret_F8461
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		loc_F8416
 		CMP		#7
@@ -635,7 +635,7 @@ loc_F8416:
 		CMP		#$50
 		BCC		loc_F8462
 		LDX		byte_CE
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		LDX		#[_b0_d58_idx-_sys_idx_lib]>>1
 		AND		#7
 		BEQ		loc_F843F
@@ -1838,7 +1838,7 @@ _bA_sF:
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		JSR		_pal_fade_out
 		LDY		#1
-		STY		byte_2F
+		STY		_location_type
 		DEY
 		LDA		#$80
 		JSR		sub_1762C3
@@ -1899,10 +1899,10 @@ _bA_s11:
 		LDA		#$32
 		STA		byte_7BC
 		LDX		#$FF
-		STX		byte_77E
-		STX		byte_77F
-		STX		byte_780
-		STX		byte_781
+		STX		_players_inventory_list+2
+		STX		_players_inventory_list+3
+		STX		_players_inventory_list+4
+		STX		_players_inventory_list+5
 		LDX		#0
 		STX		byte_7BE
 		STX		byte_7BD
@@ -1926,15 +1926,15 @@ loc_F9170:
 		STA		byte_CE
 		ASL
 		TAY
-		LDA		byte_73C,Y
+		LDA		_players_status,Y
 		BPL		loc_F918B
-		LDA		byte_73D,Y
+		LDA		_players_status+1,Y
 		BMI		loc_F9185
 		LDA		#$80
-		STA		byte_73D,Y
+		STA		_players_status+1,Y
 loc_F9185:
-		JSR		_sram_b0_s4
-		JSR		_sram_b0_s8
+		JSR		_sram_b0_s4_player_HP_add
+		JSR		_sram_b0_s8_player_MP_add
 loc_F918B:
 		PLA
 		TAX

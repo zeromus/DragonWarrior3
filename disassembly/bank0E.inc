@@ -218,7 +218,7 @@ loc_158153:
 		LDA		byte_2B
 		CMP		byte_9F
 		BNE		sub_15819F
-		LDA		byte_2F
+		LDA		_location_type
 		BNE		sub_15819F
 		JSR		sub_1580A1
 		FARX	_bE_s32
@@ -473,7 +473,7 @@ sub_15830F:
 		LDA		byte_8B
 		CMP		#$C
 		BNE		loc_158349
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		locret_15830E
 		LDA		word_6C
@@ -481,7 +481,7 @@ sub_15830F:
 		BNE		locret_15830E
 		LDA		#1
 		STA		byte_CE
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDX		#1
 		STX		byte_D2
 		LDA		word_4
@@ -507,7 +507,7 @@ loc_158349:
 		CMP		#$F
 		BNE		locret_158373
 		LDX		#$44
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_158358
 		LDX		#$2C
@@ -516,7 +516,7 @@ loc_158358:
 		BNE		locret_158373
 		LDA		#1
 		STA		byte_CE
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		#1
 		STA		byte_D2
 		LDX		#6
@@ -582,7 +582,7 @@ sub_1583D0:
 		ORA		word_6
 		ORA		word_6+1
 		BEQ		loc_1583FC
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		loc_1583EA
 		SYSX	_sys0D_wrap_bE_sC,$0B
@@ -623,7 +623,7 @@ loc_158417:
 		JMP		sub_1580A1
 loc_158421:
 		STA		byte_CE
-		JSR		_sram_b0_s1E
+		JSR		_sram_b0_s1E_player_euipped_item_read
 		LDA		word_4+1
 		STA		byte_6AB3
 		SEC
@@ -731,7 +731,7 @@ loc_1584E7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1584ED:
-		JSR		_sram_b0_s1E
+		JSR		_sram_b0_s1E_player_euipped_item_read
 		LDA		word_4+1
 		CMP		byte_6AB3
 		BEQ		loc_158507
@@ -777,13 +777,13 @@ sub_15851F:
 		LDA		byte_CF
 		PHA
 		STX		byte_CF
-		FARX	_b0_s5E
+		FARX	_b0_s5E_check_if_item_can_be_equipped
 		PLA
 		STA		byte_CF
 		PLA
 		TAX
 		BCC		loc_158550
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
@@ -847,14 +847,14 @@ sub_158581:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15858D:
 		PHA
-		JSR		_sram_b0_s1E
+		JSR		_sram_b0_s1E_player_euipped_item_read
 		PLA
 		TAX
 		LDA		word_4,X
 		AND		#$7F
 		STA		byte_D2
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BNE		loc_1585A5
@@ -888,7 +888,7 @@ _bE_s13:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585C4:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_1585CD
 		JMP		sub_15868F
@@ -1004,7 +1004,7 @@ sub_158666:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158678:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_15868E
 		LDY		#0
@@ -1085,7 +1085,7 @@ locret_1586EB:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s34:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_1586F5
 		JMP		sub_15874F
@@ -1355,20 +1355,20 @@ loc_1588BA:
 		JSR		sub_158E72
 		JMP		loc_15883A
 _sys_idx_list0: ; what is this crap?
-		.BYTE	[_b0_s2_pc_store_hp_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s6_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s3_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s7_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s11_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s12_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s13_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s14_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s15_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s16_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s18_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s6_player_MP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s3_player_MAX_HP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s7_player_MAX_MP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s11_player_STR_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s12_player_AGI_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s13_player_VIT_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s14_player_INT_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s15_player_LUCK_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s16_player_ATK_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s18_player_DEF_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s1B_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s19_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_sC_char_get_level_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_sD_idx-_sys_idx_lib]>>1
 		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
 loc_1588D3:
@@ -1442,7 +1442,7 @@ loc_158951:
 		ASL
 		TAX
 		LDY		#0
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		BMI		loc_15896B
 		LDA		byte_7E
 		CMP		#$4E
@@ -1459,11 +1459,11 @@ loc_158970:
 		JMP		sub_158B52
 loc_15897F:
 		LDX		#5
-		LDA		#[_b0_s2D_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_s2C_player_CLASS_read_idx-_sys_idx_lib]>>1
 		BNE		loc_158989
 loc_158985:
 		LDX		#6
-		LDA		#[_b0_s2F_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_s2F_player_gender_read_idx-_sys_idx_lib]>>1
 loc_158989:
 		STX		byte_6AC5
 		PHA
@@ -1588,10 +1588,10 @@ _sys_idx_list1:
 		.BYTE	[_b0_s20_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s22_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s28_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -2383,7 +2383,7 @@ byte_158F53:
 
 ; =============== S U B	R O U T	I N E =======================================
 _char_special_status_display:
-		CMP		#[_b0_sC_char_get_level_idx-_sys_idx_lib]>>1
+		CMP		#[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
 		BNE		locret_158F79
 		LDX		word_4+1
 		BEQ		locret_158F79
@@ -4132,7 +4132,7 @@ sub_15A5DD:
 		STA		byte_74
 		LDA		byte_2B
 		STA		byte_75
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_15A5F3
 		LDA		byte_30
@@ -5261,7 +5261,7 @@ loc_15AC63:
 loc_15AC6B:
 		LDY		byte_6A35
 loc_15AC6E:
-		LDA		byte_718,Y
+		LDA		_players_class_gender,Y
 		LSR
 		LSR
 		LSR
@@ -6018,10 +6018,10 @@ loc_15B11B:
 		BNE		locret_15B117
 ; test status bits on all 4 PCs
 ; TODO - re-code this so it doesnt reference 73F, etc. directly
-		LDA		byte_73D
-		ORA		byte_73F
-		ORA		byte_741
-		ORA		byte_743
+		LDA		_players_status+1
+		ORA		_players_status+3
+		ORA		_players_status+5
+		ORA		_players_status+7
 		AND		#$20
 		BEQ		locret_15B117
 		JSR		sub_15B1BD
@@ -6037,7 +6037,7 @@ loc_15B140:
 		STA		byte_CE
 		ASL
 		TAY
-		LDA		byte_73D,Y
+		LDA		_players_status+1,Y
 		AND		#$20
 		BEQ		loc_15B161
 		LDA		_battle_type_fight
@@ -6064,10 +6064,10 @@ _bE_s24:
 		AND		#$90
 		CMP		#$80
 		BEQ		locret_15B169
-		LDA		byte_73D
-		ORA		byte_73F
-		ORA		byte_741
-		ORA		byte_743
+		LDA		_players_status+1
+		ORA		_players_status+3
+		ORA		_players_status+5
+		ORA		_players_status+7
 		AND		#$40
 		BEQ		loc_15B1B7
 		JSR		_sram_b0_s31
@@ -6078,7 +6078,7 @@ _bE_s24:
 loc_15B192:
 		TXA
 		PHA
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BEQ		loc_15B1AF
 		JSR		_rand
@@ -6086,9 +6086,9 @@ loc_15B192:
 		BNE		loc_15B1AF
 		PLA
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$BF
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		JMP		loc_15B1B1
 loc_15B1AF:
 		PLA
@@ -6111,7 +6111,7 @@ sub_15B1BD:
 		STA		byte_66
 		STA		byte_CE
 loc_15B1CA:
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		BPL		loc_15B1D9
 		LDX		byte_66
@@ -6228,7 +6228,7 @@ sub_15B282:
 sub_15B288:
 		LDA		byte_64 ; "actingEnemy"
 		STA		byte_CF ; "tempdamage" - whats this doing in this bank?
-		JSR		_sram_b0_s5_pc_reduce_hp
+		JSR		_sram_b0_s5_player_HP_subtract
 		PHA
 		FARX	_b4_s1A
 		PLA
@@ -6238,7 +6238,7 @@ sub_15B288:
 		ASL
 		TAX
 		LDA		#0
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		DEC		byte_48
 		FARX	_b4_s1A
 		JSR		_bE_sD
@@ -6281,7 +6281,7 @@ _bE_s31:
 		LDA		#0
 		STA		byte_6EB
 loc_15B2F5:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		loc_15B30A
 		LDA		byte_2A
@@ -6305,7 +6305,7 @@ loc_15B316:
 loc_15B318:
 		LDA		byte_9A
 		BNE		loc_15B327
-		LDA		byte_2F
+		LDA		_location_type
 		LDX		#4
 		AND		#2
 		BEQ		loc_15B316
@@ -7130,7 +7130,7 @@ sub_15B920:
 loc_15B933:
 		LDA		byte_6AC1
 		STA		byte_CE
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
 		BPL		loc_15B9B6
 		LDA		word_4+1
@@ -7149,10 +7149,10 @@ loc_15B957:
 		BIT		byte_60B7
 		LDA		#$F
 		BVS		loc_15B952
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		STA		byte_6ABF
-		JSR		_sram_b0_s1E
+		JSR		_sram_b0_s1E_player_euipped_item_read
 		LDA		word_4+1
 		CMP		#$AA
 		BNE		loc_15B976
@@ -7160,10 +7160,10 @@ loc_15B957:
 		STA		byte_6ABF
 		BNE		loc_15B99C
 loc_15B976:
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_15B99C
-		JSR		_sram_b0_s1E
+		JSR		_sram_b0_s1E_player_euipped_item_read
 		LDA		word_4+1
 		CMP		#$B1
 		BEQ		loc_15B98A
@@ -7202,7 +7202,7 @@ loc_15B9B6:
 loc_15B9C6:
 		LDA		byte_6AC1
 		STA		byte_CE
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
 		BPL		loc_15B9EC
 		LDA		word_4+1

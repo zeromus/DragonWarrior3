@@ -32,7 +32,7 @@ sub_176CB9:
 		STX		word_4A+1
 		STY		byte_77
 		JSR		sub_176F1C
-		LDA		byte_2F
+		LDA		_location_type
 		BEQ		loc_176CCD
 		CMP		#2
 		BEQ		loc_176CE3
@@ -108,7 +108,7 @@ sub_176D3A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_176D3F:
 		JSR		sub_176F1C
-		LDA		byte_2F
+		LDA		_location_type
 		CMP		#2
 		BEQ		sub_176D12
 		STX		byte_74
@@ -141,7 +141,7 @@ sub_176D3F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _get_world_map_data_ptr:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		loc_176D9E
 		TYA
@@ -178,7 +178,7 @@ loc_176D9E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176DB9:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BEQ		loc_176DC4
 		LDA		#$9D
@@ -526,7 +526,7 @@ sub_176FDF:
 		CMP		#1
 		BNE		loc_176FFA
 		PHA
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		loc_176FF8
 		LDA		byte_77
@@ -544,7 +544,7 @@ locret_176FF9:
 		RTS
 loc_176FFA:
 		PHA
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BEQ		loc_176FF8
 		LDA		byte_60B6
@@ -742,7 +742,7 @@ sub_177113:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177116:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		sub_1770EA
 		LDA		byte_90
@@ -827,9 +827,9 @@ loc_1771A4:
 		LDA		word_72
 		LSR
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		BPL		sub_1771F8
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BEQ		loc_1771C5
 		LDA		byte_645
@@ -998,7 +998,7 @@ loc_1772C3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1772CC:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		locret_1772F3
 		LDA		byte_2C
@@ -1129,7 +1129,7 @@ locret_1773A5:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1773A6:
 		JSR		sub_1773CE
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		locret_1773A5
 		JSR		sub_1772F4
@@ -1253,7 +1253,7 @@ loc_177484:
 		BNE		locret_17745D
 		JSR		sub_1778B5
 		LDX		#$F7
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_177497
 		LDX		#$F3
@@ -1301,7 +1301,7 @@ loc_1774E0:
 		BNE		locret_1774DF
 		JSR		sub_1778B5
 		LDX		#$EF
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_1774F3
 		LDX		#$EB
@@ -1673,7 +1673,7 @@ loc_17774B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17775E:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_17776D
 		LDY		#3
@@ -1871,7 +1871,7 @@ loc_177877:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17787B:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_177889
 		LDA		byte_81
@@ -1895,7 +1895,7 @@ loc_17788E:
 		ADC		#8
 		STA		byte_8
 		DEC		byte_8
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_1778B4
 		LDA		word_4
@@ -1911,7 +1911,7 @@ locret_1778B4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1778B5:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_1778C3
 		LDA		byte_80
@@ -2706,7 +2706,7 @@ sub_177D53:
 		LDX		#$10
 		LDA		#1
 		STA		word_3C
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_177D62
 		ASL		word_3C
@@ -2957,7 +2957,7 @@ sub_177EFC:
 		JSR		sub_177E23
 		LDA		#$10
 		STA		word_4+1
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_177F10
 		LSR		word_4+1
@@ -2984,7 +2984,7 @@ loc_177F24:
 		STA		word_4+1
 		INY
 		INY
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_177F61
 		LDY		#0
@@ -3016,7 +3016,7 @@ loc_177F61:
 		LDA		(word_6C),Y
 		STA		word_4
 		LDY		#1
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_177F78
 		LDY		#0

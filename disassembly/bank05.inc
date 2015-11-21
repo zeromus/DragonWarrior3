@@ -2047,7 +2047,7 @@ loc_83AAC:
 		LDA		byte_2C
 		CMP		#1
 		BNE		loc_83AE2
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_83AC5
 		LDA		_spr_ram,X
@@ -2090,7 +2090,7 @@ sub_83AEC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_83AF8:
 		DEC		_spr_ram,X
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		sub_83B0A
 		LDA		_spr_ram,X
@@ -2108,7 +2108,7 @@ sub_83B0A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_83B13:
 		INC		_spr_ram,X
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_83B25
 		LDA		_spr_ram,X
@@ -2225,7 +2225,7 @@ locret_83BDA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83BDB:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_83BDA
 		TXA
@@ -2398,7 +2398,7 @@ loc_83CD7:
 		LDA		_tmp12+1
 		BNE		loc_83CD7
 		STA		byte_85
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_83CF8
 		FARX	_bD_sD
@@ -2640,7 +2640,7 @@ sub_83E6F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83E7E:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_83E87
 		LDA		byte_30
@@ -2651,7 +2651,7 @@ loc_83E87:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83E8A:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_83E93
 		LDA		byte_31
