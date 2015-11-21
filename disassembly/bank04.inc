@@ -113,14 +113,20 @@ loc_68080:
 		CMP		#$FF
 		BNE		loc_680AA
 loc_680A0:
-		FARX	_b1_sC
+; this is happening at game over after defeat in battle
+; does some combination of change status to DEad, changes screen to red, clears textbox. probably all of the above. it's the main death sequence
+		FARX	_b1_sC 
+; so this would be some kind of last battle-exiting final cleanup before doing the longjmp to _MAIN_ENTRY
 		LDA		#0
 		STA		_spr_force_shuffle_mode
+; and then to main entry? so weird! is this just effectively like a longjmp? did the above set it up correctly?
+; notably, the "<player> is dead under this scenario appears instantly, so it must already be in the PPU queue
+; therefore, we hang waiting for a key at INTERESTING POINT in _MAIN_ENTRY
 		JMP		_MAIN_ENTRY
 loc_680AA:
 		CMP		#$FE
 		BNE		loc_680B4
-		FARX	_b1_sD
+		FARX	_b1_sD ; seems to be some kind of battle system high level logic or loop, but not sure
 		JMP		loc_680D6
 loc_680B4:
 		BIT		byte_6A63
@@ -8310,6 +8316,7 @@ loc_6B6AF:
 		JMP		loc_6B681
 
 ; =============== S U B	R O U T	I N E =======================================
+; u16[59] = enemy prop HP (requires reading 2 prop bytes)
 sub_6B6B8:
 		JSR		sub_6B888
 		LDY		#7
@@ -8322,6 +8329,7 @@ sub_6B6B8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u8[59] = enemy prop level, preserving registers (i guess because it's called externally)
 _b4_s4:
 		PHA
 		TXA
@@ -8403,6 +8411,7 @@ sub_6B725:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u16[59] = enemy prop MP, MSB safely cleared even though MP is only one byte
 sub_6B72F:
 		JSR		sub_6B888
 		LDY		#8
@@ -8420,6 +8429,7 @@ sub_6B73E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u8[59] = enemy prop AGI
 sub_6B746:
 		JSR		sub_6B888
 		LDY		#3
@@ -8442,6 +8452,7 @@ sub_6B746:
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u16[59] = enemy prop ATK (requires reading 2 prop bytes)
 sub_6B763:
 		JSR		sub_6B888
 		LDY		#5
@@ -8465,6 +8476,7 @@ sub_6B777:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u16[59] = enemy prop DEF (requires reading 2 prop bytes)
 sub_6B786:
 		JSR		sub_6B888
 		LDY		#6
@@ -8529,24 +8541,32 @@ sub_6B786:
 ;		BEQ		loc_6B7DF
 
 ; =============== S U B	R O U T	I N E =======================================
+; accumulate the enemy's XP and GP into _bs_reward_XP and _bs_reward_GP
 sub_6B7F2:
+; first, accumulate enemy GP
 		JSR		sub_6B8F3
-		BCS		locret_6B81C
+		BCS		locret_6B81C ; if carry set (overflow adding GP?) then abort ?!
+; reading XP
 		JSR		sub_6B888
 		LDY		#1
 		JSR		_get_bank0_ptr_byte_safe
+; accumulate into u24 _bs_reward_XP
 		CLC
 		ADC		byte_5D
 		STA		byte_5D
-		INY
+		INY ; next enemy prop byte
 		PHP
+; read next byte of enemy prop (MSB of XP)
 		JSR		_get_bank0_ptr_byte_safe
 		PLP
+; continue accumulation
 		ADC		word_5E
 		STA		word_5E
 		BCC		locret_6B81C
+; multiple precision to 3rd byte
 		INC		word_5E+1
-		BNE		locret_6B81C
+		BNE		locret_6B81C ; return if u24's MSB didn't overflow
+; saturate _bs_reward_XP at FFFFFF
 		LDA		#$FF
 		STA		byte_5D
 		STA		word_5E
@@ -8555,6 +8575,7 @@ locret_6B81C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; _bs_reward_GP += enemy prop GP note the accumulation
 sub_6B81D:
 		JSR		sub_6B8F3
 		BCS		locret_6B83C
@@ -8575,63 +8596,97 @@ locret_6B83C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; FYI - theres only one loot drop chance per enemy group. it isn't per enemy
+; u8[59] = enemy prop item_dropped
+; u8[5A] = ememy prop drop_odds (actually, the user doesnt care about this, it's just used as temp)
+; some related stuff here but its about the GBC version: http://www.gamefaqs.com/boards/450388-dragon-warrior-iii/67292816
 _b4_s17:
 		LDY		byte_64
 		JSR		loc_6B892
 		LDY		#9
 		JSR		_get_bank0_ptr_byte_safe
-		AND		#$7F
-		CMP		#$7F
-		BEQ		loc_6B874
+; ignore the equip bit, why would this even be set in the first place?
+		AND		#ITEM_TYPE_MASK
+; if it was this, it was really meant to mean no item
+		CMP		#ITEM_SWORD_HORNED
+		BEQ		.drop_no_item
+; OK, the item passes. store it in u8[59]
 		STA		byte_59
 		LDY		#$16
 		JSR		_get_bank0_ptr_byte_safe
+; only use bottom 3 bits of drop odds. interesting
 		AND		#7
+; drop odds 0 causes an immediate return, without storing or clearing the drop odds. that means always drop
 		BEQ		locret_6B873
+; if drop odds are 7, then run some special logic to get an exactly rare drop chance. seems to be used only for big bosses (at the end of the enemy list)
 		CMP		#7
 		BEQ		loc_6B879
+; otherwise calculate Y = 7 - odds (so we can have Y=6,5,4,3,2,1)
 		STA		byte_5A
 		LDA		#7
 		SEC
 		SBC		byte_5A
 		TAY
 		LDA		#0
-loc_6B866:
+
+; now we go into the thing that uses the odds
+; note that from the subtraction above C=1, and A=0, so first perform a multi bit shift, resulting in
+; A = 1<<(Y-1) or therefore A=1,2,4,8,16,32
+.multishift:
 		ROL
 		DEY
-		BNE		loc_6B866
+		BNE		.multishift
+; now if(rand() >= A) drop no item. 
+; that means, "drop_odds" of 1 turned into 6 and therefore drop no item if we roll >= 32. therefore it's 1 in 8 odds
+; so:
+; drop_odds = 1 -> 1/8 (>=32)
+; drop_odds = 2 -> 1/16 (>=16)
+; drop_odds = 3 -> 1/32 (>=8)
+; drop_odds = 4 -> 1/64 (>=4)
+; drop_odds = 5 -> 1/128 (>=2)
+; drop_odds = 6 -> 1/256 (>=1)
 		STA		byte_5A
 		JSR		_rand
 		CMP		byte_5A
-		BCS		loc_6B874
+		BCS		.drop_no_item
+; ok, we drop the item
 locret_6B873:
 		RTS
-loc_6B874:
+.drop_no_item:
 		LDA		#$FF
 		STA		byte_59
 		RTS
 loc_6B879:
+; select a random drop odds for u8[5A]
 		JSR		_rand
 		STA		byte_5A
-		BNE		loc_6B874
+; now, if we got a nonzero value (255 in 256 chance) branch up and select no item
+		BNE		.drop_no_item
+; roll again
 		JSR		_rand
 		CMP		#$20
-		BCS		loc_6B874
+		BCS		.drop_no_item ; rand() >= #$20 -> drop no item
+; that was a 7 in 8 chance.
+; if we make it here, we get to keep the drop
+; that means we have a (1/256)*(1/8) chance of getting the drop = 1/2048. geeze. 
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; prepares pointers for reading from enemies_lib
+; sets up pointer in X (and has X pointing at that pointer) for use by _far_byte_read_by_ptr
 sub_6B888:
 		JSR		sub_6B91D
 		TAX
-		LDY		byte_6A73,X
-		JMP		loc_6B892
+		LDY		byte_6A73,X ; value to multiply by 17
+		JMP		loc_6B892 ; TODO - redundant jmp, remove during a non-neutral edit
 loc_6B892:
+;multiply by #$17 to get an offset into the enemies lib, and leave pointer parked in word_4A and 
 		LDA		#$17
 		STA		word_4A
 		LDA		#0
 		STA		word_4A+1
-		LDX		#word_4A
-		TYA
+		LDX		#word_4A ; target of _mul16_to_8
+		TYA ; restore multiplication factor
 		JSR		_mul16_to_8
 		LDA		#<[_b0_d43_enemies_lib]
 		CLC
@@ -8640,7 +8695,7 @@ loc_6B892:
 		LDA		#>[_b0_d43_enemies_lib]
 		ADC		word_4A+1
 		STA		word_4A+1
-		LDX		#word_4A
+		LDX		#word_4A ; leave X pointing at the correct pointer
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -9133,9 +9188,11 @@ sub_6BACB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; this is used to read an "enemy prop" 
+; this is used to read an "enemy prop"  TODO rename me, I'm only usd for enemy props
+; X and Y must be setup appropriately already
+; result stored in A
 _get_bank0_ptr_byte_safe:
-		LDA		#0
+		LDA		#0 ; specify bank 0
 		JMP		_far_byte_read_by_ptr
 
 ; =============== S U B	R O U T	I N E =======================================

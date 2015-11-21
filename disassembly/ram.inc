@@ -169,18 +169,26 @@ byte_57: ; "tileNumberForTileLoad_57"
 		.BYTE	0
 byte_58: ; "tileNumberForTileLoadHi_58"
 		.BYTE	0
+;----------------------------------------------
+; u16 _enemyProp; seems to contain enemy props read from the enemy lib. when querying them, they show up here. MSB is not always cleared, user must know how big the prop is
+; sometimes 5A is just used as a temp
 byte_59: ; "enemyMiscStats"
 		.BYTE	0
 byte_5A:
 		.BYTE	0
+;----------------------------------------------
 byte_5B:
 		.BYTE	0
 byte_5C:
 		.BYTE	0
+;----------------------------------------------
+; u24 _bs_reward_XP ; XP prop from enemy is _accumulated_ into here when queried
 byte_5D:
 		.BYTE	0
 word_5E:
 		.BYTE	0,0
+;----------------------------------------------
+; u16 _bs_reward_GP; GP prop from enemy is _accumulated_ into here when queried. 
 word_60:
 		.BYTE	0,0
 ;----------------------------------------------
@@ -2204,8 +2212,11 @@ byte_60B8:
 		.BYTE	0
 byte_60B9:
 		.BYTE	0
+;----------------------------------------------
+; if byte_60BA.0 is set, then we're in the "shrine where you may try your courage". After dying you respawn there
 byte_60BA:
 		.BYTE	0
+;----------------------------------------------
 byte_60BB:
 		.BYTE	0
 		.BYTE	0
@@ -4611,8 +4622,11 @@ byte_6A4B:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+;----------------------------------------------
+; controls what _MAIN_ENTRY does, maybe has other functions
 byte_6A58:
 		.BYTE	0
+;----------------------------------------------
 byte_6A59:
 		.BYTE	0
 		.BYTE	0

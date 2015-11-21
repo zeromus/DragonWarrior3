@@ -1656,6 +1656,7 @@ loc_20AED:
 		JMP		loc_20BE7
 loc_20AF6:
 		STA		byte_64
+; runs loot drop calculator
 		FARX	_b4_s17
 		LDA		byte_59
 		CMP		#$FF
