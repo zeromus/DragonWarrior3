@@ -71,8 +71,8 @@ _bD_s26_ptr:
 		.WORD	_bD_s26
 _bD_s27_ptr:
 		.WORD	_bD_s27
-_bD_s28_ptr:
-		.WORD	_bD_s28
+_bD_s28_frame_palette_by_status_adjust_ptr:
+		.WORD	_bD_s28_frame_palette_by_status_adjust
 _bD_s29_ptr:
 		.WORD	_bD_s29
 
@@ -129,7 +129,7 @@ _bD_s1E:
 		STX		byte_80
 		LDY		byte_2E
 		STY		byte_81
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_1400B2
 		JSR		sub_1777B7
@@ -173,7 +173,7 @@ _bD_s1C:
 _bD_s1D:
 		JSR		sub_177305
 loc_1400F6:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		locret_14011C
 		STX		byte_80
@@ -568,47 +568,50 @@ _bD_d1:
 		.BYTE	$90,$2E,$D2,$19,$15,  0
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s28:
+; calculates the color of the window and dialog frames palette value (idx 01)
+; based on current players status.
+;
+_bD_s28_frame_palette_by_status_adjust:
 		LDX		#0
 		STX		byte_10
 loc_1415A4:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		EOR		byte_73D,Y
+		LDA		_players_status,Y		; test if any players dead (80)
+		EOR		_players_status+1,Y
 		BPL		loc_1415B1
-		INC		byte_10
+		INC		byte_10					; death people counter
 loc_1415B1:
 		INX
 		CPX		#4
 		BNE		loc_1415A4
 		LDA		byte_10
-		BNE		loc_141612
+		BNE		loc_141612				; at least one is dead, then color is orange
 		LDX		#0
 		STX		byte_10
 loc_1415BE:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_1415EF
-		LDA		byte_724,Y
+		LDA		_players_max_hp,Y
 		STA		byte_11
-		LDA		byte_725,Y
+		LDA		_players_max_hp+1,Y
 		STA		_tmp12
 		LSR		_tmp12
 		ROR		byte_11
 		LSR		_tmp12
 		ROR		byte_11
-		LDA		byte_71D,Y
+		LDA		_players_hp+1,Y
 		CMP		_tmp12
 		BEQ		loc_1415E6
 		BCC		loc_1415ED
 		BCS		loc_1415EF
 loc_1415E6:
-		LDA		byte_71C,Y
+		LDA		_players_hp,Y
 		CMP		byte_11
 		BCS		loc_1415EF
 loc_1415ED:
@@ -625,7 +628,7 @@ loc_1415FC:
 		LDA		byte_60B7
 		AND		#$20
 		BNE		loc_14160A
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_14160E
 loc_14160A:
@@ -635,14 +638,14 @@ loc_14160E:
 		LDA		#$21
 		BNE		loc_141614
 loc_141612:
-		LDA		#$27
+		LDA		#$27				; orange (death)
 loc_141614:
 		LDX		byte_6A58
 		BNE		loc_14161B
 		LDA		#$30
 loc_14161B:
 		STA		_ram_pal_buf+1
-		STA		byte_6E0
+		STA		_current_pc_status_pal_value
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -661,7 +664,7 @@ loc_141631:
 		TXA
 		PHA
 		FARX	_b4_sE
-		LDA		byte_700
+		LDA		_players_level
 		LDX		#word_3C
 		JSR		_mul16_to_8
 		LDA		#$64
@@ -682,7 +685,7 @@ loc_141650:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s2:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_141666
 		JSR		sub_14193F
@@ -1191,7 +1194,7 @@ sub_14193F:
 		LDA		byte_90
 		AND		#$3F
 		BNE		locret_14193E
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		locret_14193E
 		LDA		byte_8F
@@ -1411,7 +1414,7 @@ locret_141AAF:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141AB0:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		locret_141AAF
 		LDA		byte_9D
@@ -1472,7 +1475,7 @@ sub_141B0B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s6:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_141B1C
 		JMP		sub_141AB0
@@ -1734,7 +1737,7 @@ loc_141CC4:
 		JMP		sub_141D09
 loc_141CCB:
 		DEC		word_4
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_141CDB
 		LDA		word_4
@@ -1748,7 +1751,7 @@ loc_141CDB:
 		BNE		sub_141D09
 loc_141CE3:
 		INC		word_4
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_141CF3
 		LDA		word_4
@@ -1785,7 +1788,7 @@ locret_141D21:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141D22:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		locret_141D21
 		TXA
@@ -1937,7 +1940,7 @@ sub_141E22:
 		LDA		word_72
 		LSR
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		BPL		locret_141E21
 		LDX		_tmp21
 		LDY		#3
@@ -2032,10 +2035,10 @@ sub_141EBA:
 _bD_s26:
 		LDX		#0
 loc_141ED0:
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_141EDF
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BEQ		loc_141EE9
 loc_141EDF:
@@ -2102,7 +2105,7 @@ _bD_s12:
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#3
 		TAX
@@ -2509,7 +2512,7 @@ loc_1421AA:
 		LDA		byte_C5
 		STA		byte_CF
 		STA		byte_D3
-		FARX	_b0_s5E
+		FARX	_b0_s5E_check_if_item_can_be_equipped
 		BCS		loc_1421C0
 		SYSX	_sys08_msg_m00_arg2,$26
 		FARX	_bE_s1C
@@ -2521,7 +2524,7 @@ loc_1421C0:
 		STA		byte_CE
 		LDA		byte_C5
 		STA		byte_CF
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		BIT		word_4
 		BMI		loc_1421D8
 		SYSX	_sys08_msg_m00_arg2,$27
@@ -2619,7 +2622,7 @@ loc_14226F:
 loc_142290:
 		JMP		loc_1422DD
 loc_142293:
-		FARX	_b0_s5F
+		FARX	_b0_s5E_check_if_item_can_be_used
 		BCS		loc_1422B0
 		LDA		byte_C3
 		STA		byte_D2
@@ -2636,7 +2639,7 @@ loc_1422B0:
 		LDA		byte_C3
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		BIT		word_4
 		BMI		loc_1422C6
 		SYSX	_sys08_msg_m00_arg2,$34
@@ -2690,7 +2693,7 @@ loc_142303:
 		CMP		#$5E
 		BEQ		loc_142333
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_14233A
@@ -2741,7 +2744,7 @@ loc_142377:
 		AND		#$80
 		BEQ		loc_1423AA
 		LDX		byte_C5
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
@@ -2873,7 +2876,7 @@ loc_142482:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142486:
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_142493
 		SYSX	_sys08_msg_m00_arg2,$17
@@ -2947,32 +2950,32 @@ sub_142504:
 loc_142515:
 		DEX
 		STX		byte_CE
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		BPL		loc_142531
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$BF
-		STA		byte_73D,X
-		JSR		_sram_b0_s4
-		JSR		_sram_b0_s8
+		STA		_players_status+1,X
+		JSR		_sram_b0_s4_player_HP_add
+		JSR		_sram_b0_s8_player_MP_add
 loc_142531:
 		LDX		byte_CE
 		CPX		#0
 		BNE		loc_142515
 		SYSX	_sys12_wrap_bB_s3_apu_load,$14
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		loc_142545
 		LDA		#0
-		STA		byte_6DF
+		STA		_world_map_steps_count
 loc_142545:
 		JSR		sub_1743B5
 		FARX	_bE_s1B
 		JSR		sub_177CFC
-		FARX	_bD_s28
+		FARX	_bD_s28_frame_palette_by_status_adjust
 		FARX	_bC_s27
 		FARX	_bC_s1A
 		JSR		sub_1424E4
@@ -2989,7 +2992,7 @@ loc_142545:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142573:
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_142580
 		SYSX	_sys08_msg_m00_arg2,$00
@@ -3025,12 +3028,12 @@ loc_1425AA:
 		JSR		sub_141FC6
 		BCS		loc_142618
 		STA		byte_CE
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		AND		#$A0
 		CMP		#$A0
 		BNE		loc_142605
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		LSR
 		LSR
@@ -3089,7 +3092,7 @@ loc_142629:
 		BCC		loc_142684
 		LDA		word_4
 		STA		byte_BD
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
 		LDA		#0
@@ -3132,7 +3135,7 @@ loc_14269C:
 		STA		byte_CE
 		STA		byte_D2
 		STA		byte_C3
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		BPL		loc_1426AC
 		JMP		loc_142722
@@ -3141,7 +3144,7 @@ loc_1426AC:
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
 		LDX		#byte_C0
@@ -3180,8 +3183,8 @@ loc_1426F1:
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JSR		_sram_b0_s4
-		JSR		_sram_b0_s8
+		JSR		_sram_b0_s4_player_HP_add
+		JSR		_sram_b0_s8_player_MP_add
 		JSR		_bD_s22
 		JSR		sub_142780
 		FARX	_b4_s1A
@@ -3206,11 +3209,11 @@ loc_142722:
 ;		DEX
 ;		BMI		loc_14275C
 ;		STX		byte_CE
-;		JSR		_sram_b0_s7
+;		JSR		_sram_b0_s7_player_MAX_MP_read
 ;		LDA		word_4
 ;		ORA		word_4+1
 ;		BEQ		loc_14273A
-;		JSR		_sram_b0_sC_char_get_level
+;		JSR		_sram_b0_sC_player_LV_read
 ;		CLC
 ;		LDA		byte_C0
 ;		ADC		word_4
@@ -3268,7 +3271,7 @@ loc_14279B:
 		DEX
 		STX		byte_C4
 		STX		byte_CE
-		JSR		_sram_b0_s8
+		JSR		_sram_b0_s8_player_MP_add
 		LDX		byte_C4
 		BNE		loc_14279B
 		RTS
@@ -3544,7 +3547,7 @@ loc_142A1B:
 		BPL		loc_142A41
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
@@ -3713,7 +3716,7 @@ loc_142B82:
 		SYSX	_sys0D_wrap_bE_sC,$68
 		LDA		byte_C3
 		STA		byte_CE
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		BIT		word_4+1
 		BMI		loc_142B99
 		SYSX	_sys08_msg_m00_arg2,$34
@@ -3801,13 +3804,13 @@ sub_142C17:
 		BCS		loc_142C59
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		BMI		loc_142C37
 		SYSX	_sys08_msg_m00_arg2,$9A
 		JMP		loc_142C5C
 loc_142C37:
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BNE		loc_142C44
 		SYSX	_sys08_msg_m00_arg2,$43
@@ -3816,7 +3819,7 @@ loc_142C44:
 		STA		byte_C6
 		STA		byte_D3
 		STA		byte_CF
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		CMP		#$14
 		BCS		loc_142C60
@@ -3877,7 +3880,7 @@ sub_142CBB:
 		BEQ		loc_142CD8
 		LDA		#$4C
 		STA		byte_CF
-		FARX	_b0_s45
+		FARX	_b0_s45_check_if_item_equipped
 		INC		word_4
 		BNE		loc_142CD8
 		SYSX	_sys0D_wrap_bE_sC,$4F
@@ -3998,7 +4001,7 @@ loc_142DAE:
 		BNE		sub_142E2F
 		LDA		byte_C3
 		STA		byte_CE
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BNE		loc_142DD0
 		LDA		byte_60B7
@@ -4164,7 +4167,7 @@ _bD_sF:
 		STA		byte_C1
 		STA		byte_C2
 		STA		byte_641
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
 		JSR		sub_141F44
@@ -4477,7 +4480,7 @@ _bD_sB:
 loc_1430D3:
 		DEC		byte_CE
 		BMI		loc_1430E0
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		loc_1430E4
 		BNE		loc_1430D3
@@ -4487,14 +4490,14 @@ loc_1430E0:
 loc_1430E4:
 		LDA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		STA		word_6+1
-		JMP		_sram_b0_sE
+		JMP		_sram_b0_sE_player_STATUS_read
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1430F2:
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		STA		word_4
 		CMP		#$78
 		RTS
@@ -5214,11 +5217,11 @@ loc_1435B3:
 		LDA		#0
 		STA		byte_CE
 loc_1435C8:
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
 		AND		word_4+1
 		BPL		loc_1435DA
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		CMP		#5
 		BEQ		loc_1435E5
@@ -5337,7 +5340,7 @@ _npc_hndlE:
 		LDA		#0
 		STA		byte_CE
 loc_14368E:
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_14369F
@@ -5346,9 +5349,9 @@ loc_14368E:
 		CMP		#3
 		BNE		loc_14368E
 loc_14369F:
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		BEQ		loc_1436AE
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_1436AE
 		SYSX	_sys04_msg_m00_b3_break,$F6
@@ -5404,10 +5407,10 @@ _npc_hndl12:
 loc_1436FE:
 		DEC		byte_CE
 		BMI		loc_143711
-		JSR		_sram_b0_s2C
+		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		locret_143710
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BNE		loc_1436FE
 locret_143710:
@@ -6355,14 +6358,14 @@ _npc_hndl65:
 		DEX
 		STX		byte_CE
 loc_143D19:
-		JSR		_sram_b0_sE
+		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
 		AND		word_4+1
 		BPL		loc_143D2B
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
-		JSR		_sram_b0_s8
+		JSR		_sram_b0_s8_player_MP_add
 loc_143D2B:
 		DEC		byte_CE
 		BPL		loc_143D19
@@ -6555,7 +6558,7 @@ sub_143E67:
 loc_143E75:
 		LDA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_sC_char_get_level
+		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		CMP		#$63
 		BNE		loc_143E88

@@ -1930,7 +1930,7 @@ _bC_s3:
 sub_128CC1:
 		STX		_players_pos_list
 		STY		_players_pos_list+1
-		LDA		byte_73E
+		LDA		_players_status+2
 		BPL		loc_128CD5
 		STX		_players_pos_list+4
 		STY		_players_pos_list+5
@@ -1943,7 +1943,7 @@ loc_128CD5:
 		EOR		#$80
 		STA		_players_pos_list+5
 loc_128CE1:
-		LDA		byte_740
+		LDA		_players_status+4
 		BPL		loc_128CEF
 		STX		_players_pos_list+8
 		STY		_players_pos_list+9
@@ -1956,7 +1956,7 @@ loc_128CEF:
 		EOR		#$80
 		STA		_players_pos_list+9
 loc_128CFB:
-		LDA		byte_742
+		LDA		_players_status+6
 		BPL		loc_128D09
 		STX		_players_pos_list+$C
 		STY		_players_pos_list+$D
@@ -2014,19 +2014,19 @@ _bC_s35:
 		LDA		#<[_players_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
-		LDA		byte_73E
+		LDA		_players_status+2
 		BPL		loc_128D7E
 		LDA		#<[_players_pos_list+4]
 		STA		word_6C
 		FARX	_bD_s19
 loc_128D7E:
-		LDA		byte_740
+		LDA		_players_status+4
 		BPL		loc_128D8A
 		LDA		#<[_players_pos_list+8]
 		STA		word_6C
 		FARX	_bD_s19
 loc_128D8A:
-		LDA		byte_742
+		LDA		_players_status+6
 		BPL		locret_128D96
 		LDA		#<[_players_pos_list+$C]
 		STA		word_6C
@@ -2114,19 +2114,19 @@ loc_128E11:
 		LDY		_players_pos_list+$D
 		JSR		sub_176F34
 		STA		byte_96
-		LDA		byte_73E
+		LDA		_players_status+2
 		BMI		loc_128E66
 		LDA		#$80
 		STA		_players_pos_list+4
 		STA		_players_pos_list+5
 loc_128E66:
-		LDA		byte_740
+		LDA		_players_status+4
 		BMI		loc_128E73
 		LDA		#$80
 		STA		_players_pos_list+8
 		STA		_players_pos_list+9
 loc_128E73:
-		LDA		byte_742
+		LDA		_players_status+6
 		BMI		loc_128E80
 		LDA		#$80
 		STA		_players_pos_list+$C
@@ -2361,7 +2361,7 @@ sub_129007:
 		ASL
 		STA		word_3C+1
 		LDA		#$78
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		LDA		#0
 		STA		word_4
 loc_12902A:
@@ -2586,7 +2586,7 @@ loc_129199:
 		LDA		#$12
 		STA		byte_92
 		LDA		#$78
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		JSR		loc_1752EB
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$98
@@ -2606,14 +2606,14 @@ _bC_s10:
 		BEQ		loc_12923A
 loc_1291F6:
 		FARX	_bC_s20
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		STA		byte_C5
 		CMP		#$78
 		LDA		#$97
 		BCC		loc_129206
 		LDA		#$3D
 loc_129206:
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		JSR		sub_12923C
 		SEC
 		RTS
@@ -2622,12 +2622,12 @@ loc_129206:
 _bC_s11:
 		JSR		sub_1293DA
 		BCS		loc_12923A
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		STA		byte_C5
 		CMP		#$78
 		BCS		loc_129232
 		LDA		#$97
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		SYSX	_sys07_msg_m00_arg1,$04
 		JSR		_sleep_30
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
@@ -2652,7 +2652,7 @@ sub_12923C:
 		BNE		sub_1292B0
 		LDX		#6
 loc_129246:
-		LDA		#[_b6_d9_idx-_sys_idx_lib]>>1
+		LDA		#[_b6_d9_world_map_step_daytime_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		CMP		byte_C5
 		BCC		loc_129254
@@ -2661,7 +2661,7 @@ loc_129246:
 		BNE		loc_129246
 loc_129254:
 		STX		byte_C5
-		LDA		#[_b6_dA_idx-_sys_idx_lib]>>1
+		LDA		#[_b6_dA_world_pal_ofs_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		TAY
 		CPX		#4
@@ -2769,7 +2769,7 @@ sub_129323:
 		LDX		#$C
 loc_129325:
 		LDA		_ram_pal_buf,X
-		STA		_pak_data_ptr+1,X
+		STA		_tmp_ptrB4+1,X
 		DEX
 		BNE		loc_129325
 		RTS
@@ -2874,7 +2874,7 @@ loc_1293BE:
 		LDA		#$F
 		BNE		loc_1293C6
 loc_1293C2:
-		LDA		_pak_data_ptr+1,X
+		LDA		_tmp_ptrB4+1,X
 		AND		#$F
 loc_1293C6:
 		STA		_ram_pal_buf,X
@@ -2886,14 +2886,14 @@ loc_1293CA:
 		ADC		#$10
 		BNE		loc_1293C6
 loc_1293D2:
-		CMP		_pak_data_ptr+1,X
+		CMP		_tmp_ptrB4+1,X
 		BCS		locret_1293C9
 		ADC		#$10
 		BNE		loc_1293C6
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1293DA:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BNE		loc_129436
 		LDA		byte_2C
@@ -2967,7 +2967,7 @@ _bC_sD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129446:
-		STA		_tmp_pak_data_bank
+		STA		_tmp_varB6
 		LDA		#$10
 		STA		byte_BA
 		STA		word_4
@@ -3001,13 +3001,13 @@ loc_12946E:
 		AND		#$F
 		CMP		#$D
 		BNE		loc_129490
-		LSR		_tmp_pak_data_bank
+		LSR		_tmp_varB6
 		BNE		sub_1294D0
 		BEQ		loc_1294A0
 loc_129490:
 		CMP		#$C
 		BNE		loc_12949A
-		LSR		_tmp_pak_data_bank
+		LSR		_tmp_varB6
 		BCS		sub_1294D0
 		BCC		loc_1294A0
 loc_12949A:
@@ -3208,7 +3208,7 @@ locret_1295CC:
 ; =============== S U B	R O U T	I N E =======================================
 ; unused
 ;_bC_s36:
-;		STA		_pak_data_ptr
+;		STA		_tmp_ptrB4
 ;		STA		byte_CE
 ;		JMP		sub_129874
 
@@ -3300,7 +3300,7 @@ loc_129647:
 		TAY
 		LDA		#[_bA_d15_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_y
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 		LDY		word_4
 		PLP
 		BCS		loc_129688
@@ -3315,7 +3315,7 @@ loc_129647:
 		BNE		loc_12967D
 		JSR		loc_1296F5
 loc_12967D:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		BMI		loc_12968B
 		CMP		#$7F
 		BEQ		loc_129698
@@ -3337,7 +3337,7 @@ loc_129698:
 		STX		byte_641
 		STX		byte_D0
 		STX		byte_CF
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		ASL
 		ASL
 		ROL		byte_CF
@@ -3372,12 +3372,12 @@ loc_1296DF:
 		JMP		loc_129745
 loc_1296E8:
 		LDA		#$4B
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 		JSR		loc_12986F
 		FARX	_b6_s18
 		JMP		loc_129745
 loc_1296F5:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		PHA
 		SYSX	_sys07_msg_m00_arg1,$3E
 		JSR		_sleep_30
@@ -3386,7 +3386,7 @@ loc_1296F5:
 		JSR		sub_174CBD
 		JSR		sub_174CCF
 		PLA
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 		STA		byte_CE
 		RTS
 loc_12970F:
@@ -3504,7 +3504,7 @@ loc_1297D9:
 		BNE		loc_129801
 		SYSX	_sys07_msg_m00_arg1,$44
 		LDA		#$4A
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 		JMP		loc_12986B
 loc_1297EA:
 		LDX		#$68
@@ -3535,7 +3535,7 @@ loc_12980E:
 		LDA		byte_129B25,X
 		PHA
 		AND		#$7F
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 		CMP		#$79
 		BNE		loc_12982B
 		LDA		byte_60CD
@@ -3545,7 +3545,7 @@ loc_12980E:
 		BPL		loc_12982B
 loc_129827:
 		LDA		#$FF
-		STA		_pak_data_ptr
+		STA		_tmp_ptrB4
 loc_12982B:
 		TXA
 		LSR
@@ -3564,12 +3564,12 @@ loc_12982B:
 		JSR		loc_129A20
 		BCC		loc_129868
 loc_129847:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		JSR		sub_129A62
 		JMP		loc_129856
 loc_12984F:
 		LDX		#0
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		JSR		sub_129A69
 loc_129856:
 		BCS		loc_129804
@@ -3584,7 +3584,7 @@ loc_12985A:
 loc_129868:
 		JSR		sub_129A38
 loc_12986B:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		BMI		loc_129804
 loc_12986F:
 		STA		byte_D3
@@ -3595,7 +3595,7 @@ sub_129874:
 		JSR		_sram_b0_s31
 		LDY		word_4
 		DEY
-		STY		_pak_data_ptr+1
+		STY		_tmp_ptrB4+1
 		FARX	_b0_s3C
 		BCC		loc_129888
 		LDA		word_4
@@ -3603,7 +3603,7 @@ sub_129874:
 		JMP		loc_129939
 loc_129888:
 		LDY		#$67
-		LDA		_pak_data_ptr+1
+		LDA		_tmp_ptrB4+1
 		BNE		loc_12988F
 		DEY
 loc_12988F:
@@ -3612,7 +3612,7 @@ loc_12988F:
 		SYSX	_sys07_msg_m00_arg1,$45
 		FARX	_bE_s1C
 		BNE		loc_1298D1
-		LDA		_pak_data_ptr+1
+		LDA		_tmp_ptrB4+1
 		BEQ		loc_1298A9
 loc_12989F:
 		SYSX	_sys06_msg_m00_arg0,$6A
@@ -3620,7 +3620,7 @@ loc_12989F:
 		CMP		#$FF
 		BEQ		loc_1298D1
 loc_1298A9:
-		STA		_tmp_pak_data_bank
+		STA		_tmp_varB6
 		STA		byte_CE
 		SYSX	_sys06_msg_m00_arg0,$68
 		SYSX	_sys0D_wrap_bE_sC,$2D
@@ -3631,25 +3631,25 @@ loc_1298A9:
 		LDA		word_4+1
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
 		SYSX	_sys07_msg_m00_arg1,$2A
 loc_1298CD:
-		LDA		_pak_data_ptr+1
+		LDA		_tmp_ptrB4+1
 		BNE		loc_12989F
 loc_1298D1:
 		JSR		loc_129A20
 		JSR		sub_129A46
 		LDA		#0
 		STA		byte_D2
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		STA		byte_D3
 		SYSX	_sys06_msg_m00_arg0,$69
 		JMP		loc_129943
 loc_1298E5:
-		LDA		_tmp_pak_data_bank
+		LDA		_tmp_varB6
 		STA		byte_CE
 		JSR		_sram_b0_s28
 		LDA		word_4+1
@@ -3658,17 +3658,17 @@ loc_1298E5:
 		STA		byte_D4
 		JSR		_sram_b0_s2A
 		LDY		#$3F
-		LDA		_tmp_pak_data_bank
+		LDA		_tmp_varB6
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BCC		loc_129914
 		BMI		loc_129913
 		TXA
 		LSR
 		STA		byte_D2
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		STA		byte_D4
 		SYSX	_sys07_msg_m00_arg1,$4A
 		JMP		loc_129935
@@ -3678,11 +3678,11 @@ loc_129914:
 		TXA
 		LSR
 		STA		byte_D3
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		STA		byte_D5
 		LDX		#0
 loc_12991E:
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BCC		loc_129926
 		BPL		loc_12992D
@@ -3699,31 +3699,31 @@ loc_12992D:
 		TYA
 		JSR		_wrap_bE_s4_msg_m00_arg1
 loc_129935:
-		LDA		_tmp_pak_data_bank
+		LDA		_tmp_varB6
 		STA		byte_CE
 loc_129939:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		STA		byte_CF
 		JSR		_sram_b0_s29
 		JSR		loc_129953
 loc_129943:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		CMP		#$5B
 		BNE		loc_129950
-		LDA		_tmp_pak_data_bank
+		LDA		_tmp_varB6
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$4B
 loc_129950:
 		JMP		loc_129745
 loc_129953:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		CMP		#$7A
 		BNE		loc_129961
 		LDA		byte_60CD
 		ORA		#8
 		STA		byte_60CD
 loc_129961:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		AND		#$7F
 		CMP		#$77
 		BCC		loc_12997D
@@ -4024,7 +4024,7 @@ sub_129AD6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129ADB:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		AND		#$7F
 		SEC
 		SBC		#$76
@@ -4163,7 +4163,7 @@ _bC_s22:
 		CLC
 		ADC		#$5D
 		JSR		_wrap_bE_s4_msg_m00_arg1
-		LDA		byte_2F
+		LDA		_location_type
 		LSR
 		BCS		loc_129C0E
 		LDA		byte_2A
@@ -4668,7 +4668,7 @@ _bC_s25:
 ; =============== S U B	R O U T	I N E =======================================
 ; hardcode logic looking for a specific spot on a map (Magic Ball)
 _bC_s13:
-		LDA		byte_2F
+		LDA		_location_type
 		LSR
 		BCC		loc_129F9D
 		LDA		byte_8B ; mapNumber
@@ -5057,7 +5057,7 @@ loc_12A1F6:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_sC:
-		LDA		byte_2F
+		LDA		_location_type
 		BEQ		loc_12A239
 		LDA		byte_60CE
 		LDX		#6
@@ -5751,7 +5751,7 @@ _bC_s28:
 		STA		byte_60BA
 		JSR		sub_12A6C8
 		LDY		#$19
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12A6C4
 		LDY		#$39
@@ -5820,7 +5820,7 @@ _bC_s2F:
 		LDA		#$C
 		STA		byte_31
 		LDA		#1
-		STA		byte_2F
+		STA		_location_type
 		LDA		#$F
 		STA		byte_8B
 		LDA		#$6C
@@ -5874,28 +5874,28 @@ sub_12A743:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A78C:
-		LDA		byte_73C
+		LDA		_players_status
 		BPL		locret_12A7C0
 		LDA		#0
 		BEQ		sub_12A7AE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A795:
-		LDA		byte_73E
+		LDA		_players_status+2
 		BPL		locret_12A7C0
 		LDA		#1
 		BNE		sub_12A7AE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A79E:
-		LDA		byte_740
+		LDA		_players_status+4
 		BPL		locret_12A7C0
 		LDA		#2
 		BNE		sub_12A7AE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A7A7:
-		LDA		byte_742
+		LDA		_players_status+6
 		BPL		locret_12A7C0
 		LDA		#3
 
@@ -6231,28 +6231,28 @@ locret_12A9C0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A9C1:
-		LDA		byte_73C
+		LDA		_players_status
 		BPL		locret_12A9C0
 		LDA		#0
 		BEQ		loc_12A9E3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A9CA:
-		LDA		byte_73E
+		LDA		_players_status+2
 		BPL		locret_12A9C0
 		LDA		#4
 		BNE		loc_12A9E3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A9D3:
-		LDA		byte_740
+		LDA		_players_status+4
 		BPL		locret_12A9C0
 		LDA		#8
 		BNE		loc_12A9E3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A9DC:
-		LDA		byte_742
+		LDA		_players_status+6
 		BPL		locret_12A9C0
 		LDA		#$C
 loc_12A9E3:
@@ -6309,7 +6309,7 @@ sub_12AA2E:
 		LDA		word_6C
 		LSR
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		BPL		loc_12AA4F
 		LDA		byte_30
 		STA		byte_80
@@ -7155,7 +7155,7 @@ sub_12B041:
 		LDA		byte_31
 		CMP		#$D
 		BNE		loc_12B070
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_12B070
 		LDA		byte_AC
@@ -7188,7 +7188,7 @@ loc_12B08A:
 		AND		#2
 		BEQ		loc_12B09D
 		STY		byte_CE
-		JSR		_sram_b0_s4
+		JSR		_sram_b0_s4_player_HP_add
 loc_12B09D:
 		INC		word_3C+1
 		LDA		word_3C+1
@@ -7201,7 +7201,7 @@ sub_12B0A6:
 		LDX		word_3E
 		INC		word_3E
 		INC		word_3E
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 locret_12B0AF:
 		RTS
 
@@ -7403,7 +7403,7 @@ sub_12B200:
 		LDA		byte_60CD
 		AND		#$20
 		BNE		locret_12B21A
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12B21B
 locret_12B21A:
@@ -7438,7 +7438,7 @@ sub_12B241:
 		LDA		_npcs_pos_list+1
 		CMP		#7
 		BNE		locret_12B262
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		locret_12B262
 		LDA		#$13
@@ -7459,7 +7459,7 @@ sub_12B263:
 		BNE		locret_12B262
 		LDX		#$14
 		LDY		#$14
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12B285
 		LDX		#$14
@@ -7516,7 +7516,7 @@ loc_12B2D0:
 		CMP		#$18
 		BNE		locret_12B2BC
 		LDY		#$17
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12B2E7
 		LDY		#$37
@@ -7559,7 +7559,7 @@ loc_12B30D:
 		BEQ		loc_12B34C
 		LDA		#1
 		STA		byte_CE
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		#1
 		STA		byte_D2
 		LDA		word_4
@@ -7726,7 +7726,7 @@ loc_12B453:
 		JSR		sub_174CCF
 		LDA		#1
 		STA		byte_CE
-		JSR		_sram_b0_s2F
+		JSR		_sram_b0_s2F_player_gender_read
 		LDA		#1
 		STA		byte_D2
 		STA		byte_D4
@@ -8464,7 +8464,7 @@ sub_12BA11:
 		AND		#1
 		BEQ		nullsub_14
 		LDX		#$10
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12BA23
 		LDX		#$10
@@ -8577,7 +8577,7 @@ sub_12BAD3:
 		BNE		loc_12BB0C
 		BEQ		locret_12BB11
 loc_12BAE1:
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_12BAF1
 		LDA		byte_60B7
@@ -8809,7 +8809,7 @@ sub_CBF97:
 		CMP		#5
 		BNE		locret_CBFAD
 		LDX		#$14
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_CBFA8
 		LDX		#$14
@@ -8826,7 +8826,7 @@ sub_CBFAE:
 		LDA		byte_60CA
 		BPL		locret_CBFCB
 		LDX		#6
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_CBFCC
 		ROR		_npcs_pos_list+$21

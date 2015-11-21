@@ -5,52 +5,52 @@ _b0_s0_world_map_random_enounter_test_ptr:
 		.WORD	_b0_s0_world_map_random_enounter_test
 _b0_s1_ptr:
 		.WORD	_b0_s1
-_b0_s2_pc_store_hp_ptr:
-		.WORD	_b0_s2_pc_store_hp
-_b0_s3_ptr:
-		.WORD	_b0_s3
-_b0_s4_ptr:
-		.WORD	_b0_s4
-_b0_s5_pc_reduce_hp_ptr:
-		.WORD	_b0_s5_pc_reduce_hp
-_b0_s6_ptr:
-		.WORD	_b0_s6
-_b0_s7_ptr:
-		.WORD	_b0_s7		; used only in unreferenced sub_142728 in bank D
-_b0_s8_ptr:
-		.WORD	_b0_s8
-_b0_s9_ptr:
-		.WORD	_b0_s9
-_b0_sA_ptr:
-		.WORD	_b0_sA
-_b0_sB_ptr:
-		.WORD	_b0_sB
-_b0_sC_char_get_level_ptr:
-		.WORD	_b0_sC_char_get_level
+_b0_s2_player_HP_read_ptr:
+		.WORD	_b0_s2_player_HP_read
+_b0_s3_player_MAX_HP_read_ptr:
+		.WORD	_b0_s3_player_MAX_HP_read
+_b0_s4_player_HP_add_ptr:
+		.WORD	_b0_s4_player_HP_add
+_b0_s5_player_HP_subtract_ptr:
+		.WORD	_b0_s5_player_HP_subtract
+_b0_s6_player_MP_read_ptr:
+		.WORD	_b0_s6_player_MP_read
+_b0_s7_player_MAX_MP_read_ptr:
+		.WORD	_b0_s7_player_MAX_MP_read		; used only in unreferenced sub_142728 in bank D
+_b0_s8_player_MP_add_ptr:
+		.WORD	_b0_s8_player_MP_add
+_b0_s9_player_MP_subtract_ptr:
+		.WORD	_b0_s9_player_MP_subtract
+_b0_sA_player_MP_set_sero_ptr:
+		.WORD	_b0_sA_player_MP_set_sero
+_b0_sB_player_MP_consume_ptr:
+		.WORD	_b0_sB_player_MP_consume
+_b0_sC_player_LV_read_ptr:
+		.WORD	_b0_sC_player_LV_read
 _b0_sD_ptr:
 		.WORD	_b0_sD
-_b0_sE_ptr:
-		.WORD	_b0_sE
+_b0_sE_player_STATUS_read_ptr:
+		.WORD	_b0_sE_player_STATUS_read
 _b0_sF_ptr:
 		.WORD	_b0_sF
 _b0_s10_ptr:
 		.WORD	_b0_s10
-_b0_s11_ptr:
-		.WORD	_b0_s11
-_b0_s12_ptr:
-		.WORD	_b0_s12
-_b0_s13_ptr:
-		.WORD	_b0_s13
-_b0_s14_ptr:
-		.WORD	_b0_s14
-_b0_s15_ptr:
-		.WORD	_b0_s15
-_b0_s16_ptr:
-		.WORD	_b0_s16
+_b0_s11_player_STR_read_ptr:
+		.WORD	_b0_s11_player_STR_read
+_b0_s12_player_AGI_read_ptr:
+		.WORD	_b0_s12_player_AGI_read
+_b0_s13_player_VIT_read_ptr:
+		.WORD	_b0_s13_player_VIT_read
+_b0_s14_player_INT_read_ptr:
+		.WORD	_b0_s14_player_INT_read
+_b0_s15_player_LUCK_read_ptr:
+		.WORD	_b0_s15_player_LUCK_read
+_b0_s16_player_ATK_read_ptr:
+		.WORD	_b0_s16_player_ATK_read
 _b0_s17_ptr:
 		.WORD	_b0_s17
-_b0_s18_ptr:
-		.WORD	_b0_s18
+_b0_s18_player_DEF_read_ptr:
+		.WORD	_b0_s18_player_DEF_read
 _b0_s19_ptr:
 		.WORD	_b0_s19
 _b0_s1A_ptr:
@@ -61,8 +61,8 @@ _b0_s1C_ptr:
 		.WORD	_b0_s1C
 _b0_s1D_ptr:
 		.WORD	_b0_s1D
-_b0_s1E_ptr:
-		.WORD	_b0_s1E
+_b0_s1E_player_euipped_item_read_ptr:
+		.WORD	_b0_s1E_player_euipped_item_read
 _b0_s1F_ptr:
 		.WORD	_b0_s1F
 _b0_s20_ptr:
@@ -89,14 +89,12 @@ _b0_s2A_ptr:
 		.WORD	_b0_s2A
 _b0_s2B_ptr:
 		.WORD	_b0_s2B
-_b0_s2C_ptr:
-		.WORD	_b0_s2C
-_b0_s2D_ptr:
-		.WORD	_b0_s2D
+_b0_s2C_player_CLASS_read_ptr:
+		.WORD	_b0_s2C_player_CLASS_read
 _b0_s2E_ptr:
 		.WORD	_b0_s2E
-_b0_s2F_ptr:
-		.WORD	_b0_s2F
+_b0_s2F_player_gender_read_ptr:
+		.WORD	_b0_s2F_player_gender_read
 _b0_s30_ptr:
 		.WORD	_b0_s30
 _b0_s31_ptr:
@@ -129,12 +127,12 @@ _b0_s3E_ptr:
 		.WORD	_b0_s3E
 _b0_d3F_ptr:
 		.WORD	_b0_d3F
-_b0_d42_effects_list_ptr:
-		.WORD	_b0_d42_effects_list
+_b0_d42_item_use_effects_list_ptr:
+		.WORD	_b0_d42_item_use_effects_list
 _b0_d44_ptr:
 		.WORD	_b0_d44
-_b0_s45_ptr:
-		.WORD	_b0_s45
+_b0_s45_check_if_item_equipped_ptr:
+		.WORD	_b0_s45_check_if_item_equipped
 _b0_s46_ptr:
 		.WORD	_b0_s46
 _b0_s47_ptr:
@@ -173,14 +171,14 @@ _b0_s5C_ptr:
 		.WORD	_b0_s5C
 _b0_s5D_ptr:
 		.WORD	_b0_s5D
-_b0_s5E_ptr:
-		.WORD	_b0_s5E
-_b0_s5F_ptr:
-		.WORD	_b0_s5F
+_b0_s5E_check_if_item_can_be_equipped_ptr:
+		.WORD	_b0_s5E_check_if_item_can_be_equipped
+_b0_s5E_check_if_item_can_be_used_ptr:
+		.WORD	_b0_s5E_check_if_item_can_be_used
 _b0_s60_ptr:
 		.WORD	_b0_s60
-_b0_s61_sram_b0_syscall_shortcuts_load_ptr:
-		.WORD	_b0_s61_sram_b0_syscall_shortcuts_load
+_b0_s61_sram_shortcuts_init_ptr:
+		.WORD	_b0_s61_sram_shortcuts_init
 _b0_s62_ptr:
 		.WORD	_b0_s62
 _b0_s63_ptr:
@@ -229,7 +227,7 @@ _b0_s67_ptr:
 ;		LDX		byte_4D
 ;		STA		_enemy_roster_index_list,X
 ;		LDA		#1
-;		STA		byte_571,X
+;		STA		_enemy_group_count,X
 ;		DEC		byte_4D
 ;		BPL		loc_80E9
 ;		BRK
@@ -239,7 +237,7 @@ _b0_s67_ptr:
 ;		LDA		#0
 ;loc_8113:
 ;		CLC
-;		ADC		byte_571,X
+;		ADC		_enemy_group_count,X
 ;		DEX
 ;		BPL		loc_8113
 ;		CMP		#2
@@ -385,7 +383,7 @@ sub_81FE:
 loc_8207:
 		LDA		(word_60),Y
 		AND		#$3F
-		CMP		byte_700
+		CMP		_players_level
 		BEQ		loc_8212
 		BCS		locret_8221
 loc_8212:
@@ -471,10 +469,10 @@ loc_8292:
 		LDA		#0
 		STA		byte_4C
 		STA		_battle_type_fight
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_8310
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#2
 		BEQ		loc_82C3
 		LDA		byte_2A
@@ -632,9 +630,9 @@ loc_83AE:
 		LDA		#0
 		STA		byte_4E
 		LDX		byte_4F
-		LDA		byte_2F
+		LDA		_location_type
 		BNE		loc_83C1
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_83C6
 loc_83C1:
@@ -749,7 +747,7 @@ loc_847E:
 		ADC		byte_8640,Y
 		BEQ		loc_84A5
 		LDX		byte_53
-		STA		byte_571,X
+		STA		_enemy_group_count,X
 		LDA		byte_52
 		CLC
 		ADC		#2
@@ -771,7 +769,7 @@ loc_84B3:
 		JMP		loc_851C
 loc_84B6:
 		LDA		#1
-		STA		byte_571
+		STA		_enemy_group_count
 loc_84BB:
 		LDA		(word_4A+1),Y
 		STA		_enemy_roster_index_list
@@ -792,7 +790,7 @@ loc_84C7:
 		BEQ		loc_84C7
 		STA		_enemy_roster_index_list+1
 		LDA		#8
-		STA		byte_572
+		STA		_enemy_group_count+1
 loc_84E4:
 		LDY		#5
 		JMP		loc_84B6
@@ -825,7 +823,7 @@ loc_8507:
 		JSR		sub_1743F1
 		CLC
 		ADC		byte_8634,X
-		STA		byte_571
+		STA		_enemy_group_count
 		JMP		loc_84BB
 loc_851C:
 		LDA		#0
@@ -878,7 +876,7 @@ loc_8571:
 		LDX		#3
 		LDA		#1
 loc_8578:
-		STA		byte_571,X
+		STA		_enemy_group_count,X
 		DEX
 		BPL		loc_8578
 loc_857E:
@@ -890,16 +888,16 @@ loc_857E:
 		TAX
 		LDA		byte_4F,X
 		BNE		loc_857E
-		INC		byte_571,X
+		INC		_enemy_group_count,X
 		JMP		loc_857E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_8595:
-		LDA		byte_2F
+		LDA		_location_type
 		BEQ		loc_859A
 		RTS
 loc_859A:
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_85AC
 		CPY		#4
@@ -918,14 +916,14 @@ loc_85AC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_85B3:
 		JSR		_enemy_roster_get_levels
-		LDA		byte_700
+		LDA		_players_level
 		SEC
 		SBC		word_5E+1
 		BCS		loc_85C0
 		LDA		#0
 loc_85C0:
 		STA		byte_6A6A
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BNE		loc_861A
 		LDA		byte_AD
@@ -949,7 +947,7 @@ loc_85DF:
 		LDA		#0
 		LDX		#3
 loc_85E9:
-		STA		byte_571,X
+		STA		_enemy_group_count,X
 		DEX
 		BPL		loc_85E9
 		RTS
@@ -977,7 +975,7 @@ loc_8606:
 		BEQ		sub_8683
 		STA		_enemy_roster_index_list,Y
 		LDA		byte_8909,X
-		STA		byte_571,Y
+		STA		_enemy_group_count,Y
 		INX
 		INY
 		BNE		loc_8606
@@ -1012,9 +1010,9 @@ loc_8654:
 		STA		word_4A
 		CMP		#ENEMY_COUNT
 		BCS		loc_866B
-		LDA		byte_571,X ; enemyGroupCount
+		LDA		_enemy_group_count,X
 		BEQ		loc_866B
-		STA		byte_571,Y
+		STA		_enemy_group_count,Y
 		LDA		word_4A
 		STA		_enemy_roster_index_list,Y
 		INY
@@ -1028,7 +1026,7 @@ loc_8670:
 		LDA		#$FF
 		STA		_enemy_roster_index_list,Y
 		LDA		#0
-		STA		byte_571,Y
+		STA		_enemy_group_count,Y
 		INY
 		JMP		loc_8670
 locret_8682:
@@ -1101,7 +1099,7 @@ loc_86C2:
 		BNE		loc_86F5
 		LDA		#$30
 		STA		_ram_pal_buf+1
-		STA		byte_6E0
+		STA		_current_pc_status_pal_value
 loc_86F5:
 		FARX	_b2_s0
 		FARX	_b2_s2
@@ -1554,35 +1552,52 @@ byte_90F3:
 		.BYTE	$14,$28,$37,$46,$64,$78,$8C,$96,$A5,$AF,$D7,$E2,$F1,$40,$80,$B1,  1
 		.BYTE	$12,$32,$3F,$44,$67,$71,$84,$9D,$B0,$BF,$DD,$E2,$F1,$40,$10,$B4,  2
 		.BYTE	 $A,$14,$26,$30,$76,$76,$80,$8A,$9C,$A6,$EC,$F6,$FF,$40,  0,$93,  1
+
 ;----------------------------------------------
-; <zero> nope, that's wrong. its a class equip permission mask. 
+; hgfedcba - bits for every character class,
+; 	bit = 0 means item can't be equipped by this class
+; 	bit = 1 means item can be equipped
+; a - 
+; b - wizard class
+; c - 
+; d - 
+; e - 
+; f - 
+; g - soldier class
+; h - 
+;
 ; ex. everyone can equip cypress stick (0th entry)
 ; ex. wizard (1<<1 = $02) can equip poison needle (8th entry)
 ; ex. soldier (1<<6 = $40) can equip iron claw (9th entry)
-_b0_d40_gear_equip_allow_list:
+; 
+_b0_d40_class_equip_permission_mask_list:
 		.BYTE	$FF,$FD,$FD,$FF,$FD,$F1,$79, $A,  2,$40,$B9,$10,$FD,$11,$11,$10
 		.BYTE	 $E,$11, $E,$11,$11, $E,$B0,$3D,$29,$10,$11, $A,  1,$19,$11, $C
 		.BYTE	$FF,$C8,$3D,$80,$31,$11,$1D,$FF,  1,$20,$FF,$48, $C,$11,  2,$3D
 		.BYTE	$BF,$FF,$FF,$3D,$11,$11,$11, $E,$BD,$31,$11,  1,$11,$3D,$1D,$BF
 		.BYTE	$1D,$AE,$11,$A0,$FF,$BF,$11,  1,$FF,$FF,$40,$FF,$FF,$FF,$FF
+
 ;----------------------------------------------
-;whether items can be used by a given class.
-;first $20 entries are weapons, final $7 entries are items $47-$4F
-;sanity checks:
-;ITEM_SACRED_AMULET $01 (only hero, as reported)
-;ITEM_GOLDEN_CLAW $40 (only soldier, as per common sense)
-;ITEM_BOOK_OF_SATORI $04 (only by pilgrim? that's odd. "but nothing happens". game checks out OK)
-;ITEM_WIZARDS_RING $F (only hero, wizard, pilgrim, sage: yep)
+; whether items can be used by a given class.
+; first $20 entries are weapons, final $7 entries are items $47-$4F
+; sanity checks:
+; ITEM_SACRED_AMULET $01 (only hero, as reported)
+; ITEM_GOLDEN_CLAW $40 (only soldier, as per common sense)
+; ITEM_BOOK_OF_SATORI $04 (only by pilgrim? that's odd. "but nothing happens". game checks out OK)
+; ITEM_WIZARDS_RING $F (only hero, wizard, pilgrim, sage: yep)
+;
 _b0_d41_item_use_list:
 		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$11,$11,$FF
 		.BYTE	 $E,$FF, $E,$FF,$FF,$FF,$FF,$FF,$20,$FF,$11,$FF,  1,$19,$FF, $C
 		.BYTE	  1,$FF,$FF,$40,$FF,  4, $E, $F
+
 ;----------------------------------------------
-;aka item use effects (in battle) list
-;sanity checks: 
-;ITEM_WIZARDS_WAND $E2 (casts spells, yep)
-;THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
-_b0_d42_effects_list:
+; aka item use effects (in battle) list
+; sanity checks: 
+; ITEM_WIZARDS_WAND $E2 (casts spells, yep)
+; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
+;
+_b0_d42_item_use_effects_list:
 		.BYTE	  0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
 		.BYTE	$F3,$14,$83, $B, $B,  2,$F0,  2,  3,  2,$A2,$E2,$F3,$E3,  3,$E2
 		.BYTE	  1,  1,  1,  2,  2,  2,  2,  2,$10,  2,  1,  2,  2, $B,  2,  1
@@ -1602,77 +1617,87 @@ _b0_d44:
 		.BYTE	$80,$81,  0,  5,$23,  0,$80,$80,  0,  0,  0,  0,  0
 
 ; =============== S U B	R O U T	I N E =======================================
-; stores pc.hp[byte_ce] = word_4
-_b0_s2_pc_store_hp:
+; returns player's HP value, player index is in byte_CE,
+; result value written in word_4 temp var
+;
+;"sub_PC_StoreHP"
+_b0_s2_player_HP_read:
 		LDA		byte_CE
-		ASL ; array index to pointer in u16 array
+		ASL
 		TAX
-		LDA		byte_71C,X
+		LDA		_players_hp,X
 		STA		word_4
-		LDA		byte_71D,X
+		LDA		_players_hp+1,X
 		STA		word_4+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_StoreMHP"
-; who calls this? should only be at levelup time?
-_b0_s3:
+; returns player's MAX HP value, player index is in byte_CE
+; result value written in word_4 temp var
+; used at least twice in sram shourtucts and directly here
+;
+;"sub_PC_StoreMHP"
+_b0_s3_player_MAX_HP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_724,X
+		LDA		_players_max_hp,X
 		STA		word_4
-		LDA		byte_725,X
+		LDA		_players_max_hp+1,X
 		STA		word_4+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_AddHP"
-; clamps at MHP
-_b0_s4:
+; adds to the player's HP value stored in byte_CF/byte_D0, clamps at MHP
+;
+;"sub_PC_AddHP"
+_b0_s4_player_HP_add:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_71C,X
+		LDA		_players_hp,X
 		CLC
 		ADC		byte_CF
 		STA		word_4
-		LDA		byte_71D,X
+		LDA		_players_hp+1,X
 		ADC		byte_D0
 		BCS		loc_92ED
 		STA		word_4+1
-		LDA		byte_725,X
+		LDA		_players_max_hp+1,X
 		CMP		word_4+1
 		BEQ		loc_92E6
 		BCS		loc_92F7
 		BCC		loc_92ED
 loc_92E6:
-		LDA		byte_724,X
+		LDA		_players_max_hp,X
 		CMP		word_4
 		BCS		loc_92F7
 loc_92ED:
-		LDA		byte_724,X
+		LDA		_players_max_hp,X
 		STA		word_4
-		LDA		byte_725,X
+		LDA		_players_max_hp+1,X
 		STA		word_4+1
 loc_92F7:
 		LDA		word_4
-		STA		byte_71C,X
+		STA		_players_hp,X
 		LDA		word_4+1
-		STA		byte_71D,X
+		STA		_players_hp+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; actually removes HP from a PC. clamps at 0. Doesn't perform any visuals
-_b0_s5_pc_reduce_hp:
+; subtract to the player's HP value stored in byte_CF/byte_D0, clamps at 0
+; returns indication of whether HP was 0
+;
+;"_PC_SubtractHP"
+_b0_s5_player_HP_subtract:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_71C,X
+		LDA		_players_hp,X
 		SEC
 		SBC		byte_CF
 		STA		word_4
-		LDA		byte_71D,X
+		LDA		_players_hp+1,X
 		SBC		byte_D0
 		STA		word_4+1
 		BCS		loc_931D
@@ -1681,144 +1706,155 @@ _b0_s5_pc_reduce_hp:
 		STA		word_4+1
 loc_931D:
 		LDA		word_4
-		STA		byte_71C,X
+		STA		_players_hp,X
 		LDA		word_4+1
-		STA		byte_71D,X
+		STA		_players_hp+1,X
 		LDA		word_4
 		ORA		word_4+1
-; returns indication of whether HP was 0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_SetMP"
-; uses target ($CE)
-_b0_s6:
+; returns player's MP value, player index is in byte_CE, store it in word_4 and
+; returns indication of whether MP was 0
+;
+;"sub_PC_SetMP"
+_b0_s6_player_MP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_72C,X
+		LDA		_players_mp,X
 		STA		word_4
-		LDA		byte_72D,X
+		LDA		_players_mp+1,X
 		STA		word_4+1
 		ORA		word_4
-; returns indication of whether MP was 0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_SetMMP"
-; uses target ($CE)
-; returns void
-; who uses this? should only be at levelup?
-_b0_s7:
+; returns player's MAX MP value, player index is in byte_CE, store it in word_4 and
+; should be used in info screens at least.
+;
+;"sub_PC_SetMMP"
+_b0_s7_player_MAX_MP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_734,X
+		LDA		_players_max_mp,X
 		STA		word_4
-		LDA		byte_735,X
+		LDA		_players_max_mp+1,X
 		STA		word_4+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_AddMP"
-; boost from tempdamage $CF; clamps at MMP
-; returns void
-_b0_s8:
+; adds to the player's MP value stored in byte_CF/byte_D0, clamps at MMP
+;
+;"sub_PC_AddMP"
+_b0_s8_player_MP_add:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_72C,X
+		LDA		_players_mp,X
 		CLC
 		ADC		byte_CF
 		STA		word_4
-		LDA		byte_72D,X
+		LDA		_players_mp+1,X
 		ADC		byte_D0
 		BCS		loc_9373
 		STA		word_4+1
-		LDA		byte_735,X
+		LDA		_players_max_mp+1,X
 		CMP		word_4+1
 		BEQ		loc_936C
 		BCS		loc_937D
 		BCC		loc_9373
 loc_936C:
-		LDA		byte_734,X
+		LDA		_players_max_mp,X
 		CMP		word_4
 		BCS		loc_937D
 loc_9373:
-		LDA		byte_734,X
+		LDA		_players_max_mp,X
 		STA		word_4
-		LDA		byte_735,X
+		LDA		_players_max_mp+1,X
 		STA		word_4+1
 loc_937D:
 		LDA		word_4
-		STA		byte_72C,X
+		STA		_players_mp,X
 		LDA		word_4+1
-		STA		byte_72D,X
+		STA		_players_mp+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_SubtractMP"
+; subtract to the player's HP value stored in byte_CF/byte_D0, clamps at 0
+; returns indication of whether HP was 0
 ; return with C=0 if insufficient MP. also word_4 has curr MP
 ; return with C=1 if suffient MP, and MP is deducted
-_b0_s9:
+;
+;"sub_PC_SubtractMP"
+_b0_s9_player_MP_subtract:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_72C,X
+		LDA		_players_mp,X
 		SEC
 		SBC		byte_CF
 		STA		word_4
-		LDA		byte_72D,X
+		LDA		_players_mp+1,X
 		SBC		byte_D0
 		STA		word_4+1
 		BCS		loc_93A9
-		LDA		byte_72C,X
+		LDA		_players_mp,X
 		STA		word_4
-		LDA		byte_72D,X
+		LDA		_players_mp+1,X
 		STA		word_4+1
 		CLC
 		RTS
 loc_93A9:
 		LDA		word_4
-		STA		byte_72C,X
+		STA		_players_mp,X
 		LDA		word_4+1
-		STA		byte_72D,X
+		STA		_players_mp+1,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_ZeroMP"
-; sets MP to 0 in status and word_4
-unused ; huh?
-_b0_sA:
+; sets player's MP to 0 and return 0 in word_4 temp var
+; never used by any part of the program, not with the sram shourtucts,
+; not with direct links. if there is such operation somewhere, it
+; seems performed directly
+;
+;"sub_PC_ZeroMP"
+_b0_sA_player_MP_set_sero:
 		LDA		byte_CE
 		ASL
 		TAX
 		LDA		#0
-		STA		byte_72C,X
-		STA		byte_72D,X
+		STA		_players_mp,X
+		STA		_players_mp+1,X
 		STA		word_4
 		STA		word_4+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_TestMP"
-; appears to check whether MP is sufficient for casting
-; returns C=1 if MP sufficient for casting
-_b0_sB:
-		JSR		_b0_s9
+; consume MP while casting, attepmting to subtract the desired amount of
+; MP, if success, return CF=0, or else return subtracted back and return C=1
+;
+;"sub_PC_TestMP"
+_b0_sB_player_MP_consume:
+		JSR		_b0_s9_player_MP_subtract
 		BCC		locret_93CF
-		JSR		_b0_s8
+		JSR		_b0_s8_player_MP_add
 		SEC
 locret_93CF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_sC_char_get_level:
-		JSR		_b0_sE
+; returns of the player's LEVEL with additional flag parameters,
+; return level in word_4 first byte, return additional flags in word_4+1
+; (death, poison, etc. other flags)
+;
+_b0_sC_player_LV_read:
+		JSR		_b0_sE_player_STATUS_read
 		BIT		word_4+1
-		BPL		loc_9403
-		BVS		loc_9407
+		BPL		loc_9403	; bit 80 of the second byte is 0, so player is dead
+		BVS		loc_9407	; bit 40 of the second byte is 1, so ...
 		LDA		byte_60B7
 		AND		#$20
 		BEQ		loc_93EF
@@ -1838,15 +1874,15 @@ loc_93F5:
 		LDA		#0
 		STA		word_6
 		LDX		byte_CE
-		LDA		byte_700,X
+		LDA		_players_level,X
 		STA		word_4
 		RTS
 loc_9403:
 		LDA		#3
-		BNE		loc_93F5
+		BNE		loc_93F5	; dead status
 loc_9407:
 		LDA		#2
-		BNE		loc_93F5
+		BNE		loc_93F5	; 40 bit set
 loc_940B:
 		LDA		#1
 		BNE		loc_93F5
@@ -1879,13 +1915,16 @@ loc_9431:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_sE:
+; returns current player's status word, player index is byte_CE,
+; return value in word_4
+;
+_b0_sE_player_STATUS_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		STA		word_4
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		STA		word_4+1
 		RTS
 
@@ -1912,15 +1951,14 @@ _b0_s10:
 		JSR		_b0_s32
 		LDX		byte_CE
 		CPX		word_4
-		BCS		loc_9479 ; branch down to return empty string
+		BCS		loc_9479 		; branch down to return empty string
 		LDA		word_4+1,X
 		ASL
 		ASL
 		ASL
 		TAY
 		LDX		#0
-loc_946D:
-; loop 8 times, copying bytes of name?
+loc_946D:						; loop 8 times, copying bytes of name?
 		LDA		_character_names,Y
 		STA		word_4,X
 		INY
@@ -1929,76 +1967,77 @@ loc_946D:
 		BNE		loc_946D
 		RTS
 loc_9479:
-;set an empty string as a result ($FF null terminator?)
-		LDA		#$FF
+		LDA		#$FF			;set an empty string as a result ($FF null terminator?)
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_calc_EffSTR" - calculates Eff STR (same as STR in this game) for PC to word_4 and A
-_b0_s11:
+; returns player's STR parameter to word_4 and A
+;
+;"sub_calc_EffSTR"
+_b0_s11_player_STR_read:
 		LDX		byte_CE
-		LDA		byte_704,X ; reference STR stat
+		LDA		_players_strength,X 	; reference STR stat
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_calc_EffAGI" - calculates Eff AGIfor PC to word_4 and A
+; calculates effective player's AGI parameter to word_4 and A
 ; factors in whether the meteorite armband is equipped
-_b0_s12:
-; check whether meteorite armband is equipped
-		LDA		#ITEM_METEORITE_ARMBAND
-		STA		byte_CF ; stash parameter in byte_CF
-		JSR		_b0_s45 ; "sub_checkIfItemEquipped"
+;
+;"PC_calc_EffAGI"
+_b0_s12_player_AGI_read:
+		LDA		#ITEM_METEORITE_ARMBAND		; check whether meteorite armband is equipped
+		STA		byte_CF 					; stash parameter in byte_CF
+		JSR		_b0_s45_check_if_item_equipped
 		CMP		#ITEM_EMETEORITE_ARMBAND
 		BEQ		.armband_equipped
 .no_armband_equipped:
-		LDX		byte_CE ; load target player
-		LDA		byte_708,X ; read AGI stat
-;store return value
-loc_9496:
-		STA		word_4
+		LDX		byte_CE 					; load target player
+		LDA		_players_agility,X 			; read AGI stat
+loc_9496:									
+		STA		word_4						; store return value
 locret_9498:
 		RTS
 .armband_equipped:
-; first, cache the base AGI
-		JSR		.no_armband_equipped
-; apply a 2x bonus
-		ASL		word_4
-; return if theres no overflow
-		BCC		locret_9498
-; clamp to 255 otherwise
-		LDA		#$FF
+		JSR		.no_armband_equipped		; first, cache the base AGI
+		ASL		word_4						; apply a 2x bonus
+		BCC		locret_9498					; return if theres no overflow
+		LDA		#$FF						; clamp to 255 otherwise
 		BNE		loc_9496
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_calc_EffVIT" - calculates Eff VIT (same as VIT in this game) for PC to word_4 and A
-_b0_s13:
+; returns player's VIT parameter to word_4 and A
+;
+;"PC_calc_EffVIT"
+_b0_s13_player_VIT_read:
 		LDX		byte_CE
-		LDA		byte_714,X ; reference VIT stat
+		LDA		_players_vitality,X 		; reference VIT stat
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_calc_EffINT" - calculates Eff INT (same as INT in this game) for PC to word_4 and A
-_b0_s14:
-		LDX		byte_CE ; load "target"
-		LDA		byte_70C,X
+; returns player's INT parameter to word_4 and A
+;
+;"PC_calc_EffINT"
+_b0_s14_player_INT_read:
+		LDX		byte_CE 					; load "target"
+		LDA		_players_intelligence,X
 		STA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_calc_EffLUCK" - calculates effective LUCK stat in word_4 with word_5 and word_6 cleared out (setting up for a luck-based calculation?)
-_b0_s15:
-; scan inventory
-		JSR		_b0_s1E ; "sub_inv_AnalyzeEquipped"
-; load helm from inventory
-		LDA		word_6+1
+; calculates effective player's LUCK parameter to word_4 with word_5 and word_6 cleared out
+; (setting up for a luck-based calculation?)
+;
+;"PC_calc_EffLUCK"
+_b0_s15_player_LUCK_read:
+		JSR		_b0_s1E_player_euipped_item_read						; scan inventory
+		LDA		word_6+1					; load helm from inventory
 		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
-		LDX		byte_CE ; "target"
-; load pc.luck for PC=target
-		LDA		byte_710,X
+		LDX		byte_CE 					; "target"
+		LDA		_players_luck,X				; load pc.luck for PC=target
 loc_94C2:
 		STA		word_4
 		LDA		#0
@@ -2010,31 +2049,29 @@ loc_94C2:
 		BEQ		loc_94C2
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_calc_EffATK" - calculates effective ATK at u24 in word_4
-; If(unequipped) return STR;
-; If(!IsFighter) return STR+WeaponPow(weapon); (there's no POW in the table for the golden claw. only fighters can equip or use the golden claw (equip and use are equivalent, it ends up equipped)
-; //must be a fighter
-; if(equipped(IronClaw)) return STR+WeaponPow(IronClaw);
-; if(equipped(GoldenClaw)) return STR+55;
-; return clamp(STR-WeaponPow(weapon)/2,0); //yikes!
-_b0_s16:
-; fetch the PCs class and stash it
-		JSR		_b0_s2C ; "PC_FetchTargetClass"
+; calculates effective ATK at u24 in word_4
+;  If(unequipped) return STR;
+;  If(!IsFighter) return STR+WeaponPow(weapon);
+;    (there's no POW in the table for the golden claw. only fighters can equip
+;    or use the golden claw (equip and use are equivalent, it ends up equipped)
+;  //must be a fighter
+;  if(equipped(IronClaw)) return STR+WeaponPow(IronClaw);
+;  if(equipped(GoldenClaw)) return STR+55;
+;  return clamp(STR-WeaponPow(weapon)/2,0); //yikes!
+;
+;"PC_calc_EffATK"
+_b0_s16_player_ATK_read:
+		JSR		_b0_s2C_player_CLASS_read		; fetch the PCs class and stash it
 		PHA
-		JSR		_b0_s1E ; "sub_inv_AnalyzeEquipped"
-; restore class and stash it elsewhere
+		JSR		_b0_s1E_player_euipped_item_read							; restore class and stash it elsewhere
 		PLA
 		STA		word_6+1
-; fetch A=found weapon
-		LDA		word_4
-; check whether it's equipped
-		BPL		.no_weapon_equipped
-; check whether it's vacant
-		CMP		#ITEM_EMPTY
+		LDA		word_4							; fetch A=found weapon
+		BPL		.no_weapon_equipped				; check whether it's equipped
+		CMP		#ITEM_EMPTY						; check whether it's vacant
 		BNE		.weapon_equipped
 .no_weapon_equipped:
-; just return the PC's strength 
-		JSR		_b0_s11 ; "sub_calc_EffSTR"
+		JSR		_b0_s11_player_STR_read			; just return the PC's strength 
 		LDA		#0
 		STA		word_4+1 ; clear out high 
 		STA		word_6
@@ -2042,47 +2079,40 @@ _b0_s16:
 .weapon_equipped:
 		AND		#ITEM_TYPE_MASK
 		TAY
-; begin accumulating attack power in u24 at word_4 by storing Effective STR
-		JSR		_b0_s11 ; "sub_calc_EffSTR"
+		JSR		_b0_s11_player_STR_read			; begin accumulating attack power in u24 at word_4 by storing Effective STR
 		LDA		#0
 		STA		word_4+1
-; load the stashed player class, check whether its fighter. fighter ATK is calculated differently
-		LDX		word_6+1
+		LDX		word_6+1						; load the stashed player class, check whether its fighter. fighter ATK is 
+												; calculated differently
 		CPX		#CLASS_FIGHTER
 		BEQ		.calc_ATK_for_fighter
-		LDX		#$04 ; meaning unknown
-;ok, he's not a fighter
-.power_from_weapon:
-; read power of weapon
-		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
+		LDX		#word_4							; destination RAM offset in X (base 0) for _add8_to_16
+.power_from_weapon:								; ok, he's not a fighter
+		JSR		_far_read_pri_stat_tbl			; read power of weapon
 loc_9500:
-; accumulate into Effective ATK
-		JSR		_add8_to_16
+		JSR		_add8_to_16						; accumulate into Effective ATK
 loc_9503:
-; clear high order bytes of u24 result and return
-		LDA		#0
+		LDA		#0								; clear high order bytes of u24 result and return
 		STA		word_6
 		RTS
 .calc_ATK_for_fighter:
-;check whether we're using weapons the fighter is allowed to equip
-		LDX		#$04
-		CPY		#ITEM_IRON_CLAW
+		LDX		#word_4							; destination RAM offset in X (base 0) for _add8_to_16
+		CPY		#ITEM_IRON_CLAW					; check whether we're using weapons the fighter is allowed to equip
 		BEQ		.power_from_weapon
 		CPY		#ITEM_GOLDEN_CLAW
-		BNE		.fighter_weapon_penalty ; branch down if it's not any kind of claw
-;attack power of golden claw is $37 (55 decimal). Why did this have to be hardcoded? Different for fighter, i guess. Not sure how it even gets calculated for non-fighters.
-		LDA		#$37
-		BNE		loc_9500 ; this is not conditional, at this pointer
+		BNE		.fighter_weapon_penalty 		; branch down if it's not any kind of claw
+		LDA		#$37							; attack power of golden claw is $37 (55 decimal). Why did this have to
+												; be hardcoded? Different for fighter, i guess. Not sure how it even gets
+												; calculated for non-fighters.
+		BNE		loc_9500						; this is not conditional, at this pointer
 .fighter_weapon_penalty:
-; use the weapon's power divided by 2 as a PENALTY from the fighter's base strength. that's weird.
-		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
+		JSR		_far_read_pri_stat_tbl			; use the weapon's power divided by 2 as a PENALTY from the fighter's
+												; base strength. that's weird.
 		LSR
 		JSR		_add8_to_neg16
-; clamp at 0
-		BCS		loc_9503
+		BCS		loc_9503						; clamp at 0
 		LDA		#0
-;store results and exit
-		STA		word_4
+		STA		word_4							;store results and exit
 		STA		word_4+1
 		BEQ		loc_9503
 
@@ -2105,57 +2135,48 @@ _b0_s17:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_PC_CalcEffDEF"
+; calculates effective player's DEF
 ; EffDEF = EffAGI/2 + (armor.def + shield.def + helm.def)
 ; returns it as u24 in word_4
-_b0_s18:
-		JSR		_b0_s1E ;"sub_inv_AnalyzeEquipped
-; push the armor type
-		LDA		word_4+1
+;
+;"sub_PC_CalcEffDEF"
+_b0_s18_player_DEF_read:
+		JSR		_b0_s1E_player_euipped_item_read
+		LDA		word_4+1					; push the armor type
 		PHA
-; calculate effective AGI and divide by 2, stashing result
-		JSR		_b0_s12 ; "sub_PC_CalcEffAGI"
+		JSR		_b0_s12_player_AGI_read 	; calculate effective AGI and divide by 2, stashing result
 		LSR		word_4
 		LDA		#0
 		STA		word_4+1
-; pop the armor type
-		PLA
-; check if it was empty (no armor equipped)
-		CMP		#ITEM_EMPTY
+		PLA									; pop the armor type
+		CMP		#ITEM_EMPTY					; check if it was empty (no armor equipped)
 		BEQ		.no_armor_equipped
-; mask off equip bit
-		AND		#ITEM_TYPE_MASK
-; fetch DEF and incorporate into running total
-		TAY ; setup Y=item to query
-		LDX		#word_4 ; meaning unknown
-		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
+		AND		#ITEM_TYPE_MASK				; mask off equip bit
+											; fetch DEF and incorporate into running total
+		TAY 								; setup Y=item to query
+		LDX		#word_4						; destination RAM offset in X (base 0)
+		JSR		_far_read_pri_stat_tbl
 		JSR		_add8_to_16
 .no_armor_equipped:
-; load shield type
-		LDA		word_6
-; check if it was empty(no shield equipped)
-		CMP		#ITEM_EMPTY
+		LDA		word_6						; load shield type
+		CMP		#ITEM_EMPTY					; check if it was empty(no shield equipped)
 		BEQ		.no_shield_equipped
 		AND		#ITEM_TYPE_MASK
-; fetch DEF and incorporate into running total
-		TAY
-		LDX		#word_4 ; meaning unknown
-		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
+		TAY									; fetch DEF and incorporate into running total
+		LDX		#word_4						; destination RAM offset in X (base 0)
+		JSR		_far_read_pri_stat_tbl
 		JSR		_add8_to_16
 .no_shield_equipped:
-; load shield type
-		LDA		word_6+1
+		LDA		word_6+1					; load shield type
 		CMP		#ITEM_EMPTY
 		BEQ		.no_helm_equipped
 		AND		#ITEM_TYPE_MASK
-; fetch DEF and incorporate into running total
-		TAY
-		LDX		#word_4 ; meaning unknown
-		JSR		_read_pri_stat_tbl ; "read_pri_stat_tbl"
+		TAY									; fetch DEF and incorporate into running total
+		LDX		#word_4						; destination RAM offset in X (base 0)
+		JSR		_far_read_pri_stat_tbl		; "read_pri_stat_tbl"
 		JSR		_add8_to_16
 .no_helm_equipped:
-; clear MSB of u24 temp value
-		LDA		#0
+		LDA		#0							; clear MSB of u24 temp value
 		STA		word_6
 		RTS
 
@@ -2175,7 +2196,7 @@ loc_958D:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s1A:
-		JSR		_b0_sE
+		JSR		_b0_sE_player_STATUS_read
 		LDA		word_4
 		AND		word_4+1
 		BPL		locret_95EC
@@ -2293,36 +2314,28 @@ loc_9663:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s1E:
-; "sub_inv_AnalyzeEquipped"
-; analyzes the targeted player's equipped items; reports them in $4-$7
-		LDA		byte_CE
+; analyzes the targeted player's equipped items; reports them in word_4/word_6
+;
+;"sub_inv_AnalyzeEquipped"
+_b0_s1E_player_euipped_item_read:
+		LDA		byte_CE				; setup PCx8 inventory ptr:
+		ASL							; the desired player's inventory slot 0 is pointed to by X
+		ASL							; initialize itemTypeCounter:
 		ASL
-		ASL
-		ASL
-; setup PCx8 inventory ptr:
-; the desired player's inventory slot 0 is pointed to by X
-		TAX
-; initialize itemTypeCounter:
-; $13 will store the item types we're scanning inventory for
+		TAX							
 		LDA		#0
-		STA		_tmp12+1
+		STA		_tmp12+1			; $13 will store the item types we're scanning inventory for
 .load_8slot_counter:
 		LDY		#8
 		TXA
 		PHA
 .iterate_inventory ; 9676
-; checking inventory for something special? equipped?
-		LDA		byte_77C,X
-; skip if nonequipped
-		BPL		.nextslot
-; skip if nulled
-		CMP		#$FF
-		BEQ		.nextslot
-; mask off equipbit?
+		LDA		_players_inventory_list,X	; checking inventory for something special? equipped?
+		BPL		.nextslot			; skip if nonequipped
+		CMP		#$FF				; skip if nulled
+		BEQ		.nextslot			; mask off equipbit?
 		AND		#$7F
-		JSR		_b0_s60 ; AKA sub_classifyItemType_returnA
-; test against desired type
+		JSR		_b0_s60				; test against desired type
 		CMP		_tmp12+1
 		BEQ		loc_9690
 .nextslot:
@@ -2332,18 +2345,15 @@ _b0_s1E:
 		LDA		#$FF
 		BNE		loc_9693
 loc_9690:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 loc_9693:
 		LDY		_tmp12+1
-; storing some inventory item in $4?
-		STA		word_4,Y
+		STA		word_4,Y			; storing some inventory item in $4?
 		PLA
 		TAX
-; move to next player
-		INY
+		INY							; move to next player
 		STY		_tmp12+1
-; check done analyzing
-		CPY		#4
+		CPY		#4					; check done analyzing
 		BNE		.load_8slot_counter
 		RTS
 
@@ -2381,14 +2391,14 @@ sub_96B8:
 		LDA		#8
 		STA		_tmp12
 loc_96C4:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		loc_96DB
 		AND		#$7F
 		JSR		_b0_s60
 		CMP		byte_42
 		BNE		loc_96DB
-		LDA		byte_77C,X ; check inventory
+		LDA		_players_inventory_list,X				; check inventory
 		STA		word_4+1,Y
 		INY
 loc_96DB:
@@ -2446,7 +2456,7 @@ _b0_s27:
 loc_971D:
 		DEC		_tmp12+1
 		BEQ		loc_9740
-		LDA		byte_77C,X ; check inventory
+		LDA		_players_inventory_list,X ; check inventory
 		CMP		#$FF
 		BEQ		loc_9736
 		AND		#$7F
@@ -2458,9 +2468,9 @@ loc_971D:
 		BNE		loc_971D
 		DEX
 loc_9736:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		ORA		#$80
-		STA		byte_77C,X
+		STA		_players_inventory_list,X
 		INX
 		RTS
 loc_9740:
@@ -2478,7 +2488,7 @@ _b0_s63:
 loc_974D:
 		DEC		_tmp12+1
 		BEQ		locret_976F
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		locret_976F
 		AND		#$7F
@@ -2487,51 +2497,44 @@ loc_974D:
 		CMP		byte_42
 		BNE		loc_974D
 		DEX
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		AND		#$7F
-		STA		byte_77C,X
+		STA		_players_inventory_list,X
 		INX
 		JMP		loc_974D
 locret_976F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_checkItemCanBeEquipped"
-_b0_s5E:
-; load item of interest, reference a table, and store it in word_5
-		LDX		byte_CF
-		LDA		_b0_d40_gear_equip_allow_list,X
+; 
+;"sub_checkItemCanBeEquipped"
+_b0_s5E_check_if_item_can_be_equipped:
+		LDX		byte_CF						; load item of interest, reference a table, and store it in word_5
+		LDA		_b0_d40_class_equip_permission_mask_list,X
 		STA		word_4+1
-; load item of interest and check against book of satori, a sentinel for the end of accessories
-		LDA		byte_CF
-		CMP		#ITEM_BOOK_OF_SATORI
+		LDA		byte_CF						; load item of interest and check against book of satori,
+		CMP		#ITEM_BOOK_OF_SATORI		; a sentinel for the end of accessories
 		BCS		.not_equippable
 _checkClassMask:
-; normal gear
-		JSR		_b0_s2C ; "PC_FetchTargetClass"
+		JSR		_b0_s2C_player_CLASS_read	; normal gear
 		LDA		#0
 		LDX		word_4
-; make a bitmask based on X (our class)
-		INX
+		INX									; make a bitmask based on X (our class)
 		SEC
 loc_9786:
 		ROL
 		DEX
 		BNE		loc_9786
-		AND		word_4+1 ; AND our class mask bit vs the equip_allow_list_entry
+		AND		word_4+1					; AND our class mask bit vs the equip_allow_list_entry
 		BNE		.class_can_equip
 .not_equippable:
 		CLC
 		RTS
 .class_can_equip:
-;but now check whether we're gender-blocked
-		JSR		_b0_s2F ; PC_FetchGender
-;if we're female, theres no extra restrictions
-		BNE		_return_true_in_C
-; reload item of interest to check against a hardcoded list
-		LDA		byte_CF
-; deny males equipping some things
-		CMP		#ITEM_SWORD_OF_ILLUSION
+		JSR		_b0_s2F_player_gender_read	; but now check whether we're gender-blocked
+		BNE		_return_true_in_C			; if we're female, theres no extra restrictions
+		LDA		byte_CF						; reload item of interest to check against a hardcoded list
+		CMP		#ITEM_SWORD_OF_ILLUSION		; deny males equipping some things
 		BEQ		.not_equippable
 		CMP		#ITEM_REVEALING_SWIMSUIT
 		BEQ		.not_equippable
@@ -2542,26 +2545,22 @@ _return_true_in_C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_checkItemCanBeUsed"
-; [$CF] contains item of interest
-_b0_s5F:
-;items > BLACK_PEPPER are always allowed, as theyre items
-		LDX		byte_CF
+; byte_CF contains item of interest
+;
+;"sub_checkItemCanBeUsed"
+_b0_s5E_check_if_item_can_be_used:
+		LDX		byte_CF					; items > BLACK_PEPPER are always allowed, as theyre items
 		CPX		#ITEM_BLACK_PEPPER
 		BCS		_return_true_in_C
-;check if it's a weapon
-		CPX		#$20
-		BCC		.check_item_use_table
-;check non-weapon gear by looking for items < ITEM_SACRED_AMULET
-		CPX		#ITEM_SACRED_AMULET
+		CPX		#$20					; check if it's a weapon
+		BCC		.check_item_use_table	
+		CPX		#ITEM_SACRED_AMULET		; check non-weapon gear by looking for items < ITEM_SACRED_AMULET
 		BCC		_return_true_in_C
-;accessories are $47-$4F. weapons are $00 to $1F. subtract $27 to turn accessories into $20-$27, and therefore stacked onto the end of the usability table controlling the items
-		TXA
-		SBC		#$27
-		TAX
+		TXA								; accessories are $47-$4F. weapons are $00 to $1F. subtract $27 to
+		SBC		#$27					; turn accessories into $20-$27, and therefore stacked onto the
+		TAX								; end of the usability table controlling the items
 .check_item_use_table:
-;query the item use table and branch up to check against the class mask
-		LDA		_b0_d41_item_use_list,X
+		LDA		_b0_d41_item_use_list,X	; query the item use table and branch up to check against the class mask
 		STA		word_4+1
 		JMP		_checkClassMask
 
@@ -2589,7 +2588,7 @@ loc_97D5:
 		BNE		loc_97D5
 		STY		word_4
 loc_97DD:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		loc_97EA
 		INC		word_4
@@ -2635,7 +2634,7 @@ sub_9813:
 		LDY		#7
 		LDA		#$FF
 loc_981E:
-		STA		byte_77C,X
+		STA		_players_inventory_list,X
 		INX
 		DEY
 		BPL		loc_981E
@@ -2646,7 +2645,7 @@ loc_9828:
 		LDA		word_4+1,Y
 		CMP		#$FF
 		BEQ		loc_9833
-		STA		byte_77C,X
+		STA		_players_inventory_list,X
 		INX
 loc_9833:
 		INY
@@ -2663,7 +2662,7 @@ _b0_s2B:
 		ASL		word_4
 		LDX		#0
 loc_9845:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		AND		#$7F
 		CMP		byte_CE
 		BNE		loc_985B
@@ -2685,42 +2684,36 @@ loc_985B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_checkIfItemEquipped"
-; check target inventory for an equpped item (specified by byte_CF); 
+; check target inventory for an equpped item (specified by byte_CF)
 ; returns: C flag (set if item was equipped)
 ; returns: word_4 (the value found in the inventory)
 ; returns: A (the value found in the inventory)
-_b0_s45:
+;
+;"sub_checkIfItemEquipped"
+_b0_s45_check_if_item_equipped:
 		LDA		#$FF
 		STA		word_4
-; calculate offset to the target's inventory: mult 8 for target inventory buffer
-		LDA		byte_CE ; load target PC number
-		ASL
+		LDA		byte_CE 					; load target PC number
+		ASL									; calculate offset to the target's inventory: mult 8 for target inventory buffer
 		ASL
 		ASL
 		TAX
-; setup a loop through 8 inventory entries
-		LDY		#8
+		LDY		#8							; setup a loop through 8 inventory entries
 .checkequipped_iterate:
-		LDA		byte_77C,X ; read value from inventory
-; mask off equip flag
-		AND		#$7F
-; is it the item we were looking for?
-		CMP		byte_CF
+		LDA		_players_inventory_list,X	; read value from inventory
+		AND		#$7F						; mask off equip flag
+		CMP		byte_CF						; is it the item we were looking for?
 		BEQ		.found_item
 .next_check:
 		INX
 		DEY
 		BNE		.checkequipped_iterate
-; return if unfound: clear C flag is important here to indicate no item found
-		RTS
+		RTS									; return if unfound: clear C flag is important here to indicate no item found
 .found_item:
-		LDA		byte_77C,X ; read value from inventory again, and store in word_4
+		LDA		_players_inventory_list,X	; read value from inventory again, and store in word_4
 		STA		word_4
-; branch back if nonequipped (check top bit)
-		BPL		.next_check
-; return if found and equipped: set C flag is important here
-		RTS
+		BPL		.next_check					; branch back if nonequipped (check top bit)
+		RTS									; return if found and equipped: set C flag is important here
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s3C:
@@ -2730,7 +2723,7 @@ _b0_s3C:
 		ASL		word_4
 		LDX		#0
 loc_988F:
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		CMP		#$FF
 		BEQ		loc_98A0
 		INX
@@ -2759,13 +2752,13 @@ _b0_s5C:
 loc_98B0:
 		TYA
 		PHA
-		LDA		byte_77C,X
+		LDA		_players_inventory_list,X
 		BPL		loc_98C5
 		CMP		#$FF
 		BEQ		loc_98C5
 		AND		#$7F
 		TAY
-		LDA		_b0_d42_effects_list,Y
+		LDA		_b0_d42_item_use_effects_list,Y
 		AND		#8
 		BNE		loc_98CF
 loc_98C5:
@@ -2853,18 +2846,16 @@ loc_9932:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_FetchTargetClass"
-_b0_s2C:
+; request player's class info, player index in byte_CF, return value in word_4
+; first byte
+;
+;"PC_FetchTargetClass"
+_b0_s2C_player_CLASS_read:
 		LDX		byte_CE
-		LDA		byte_718,X ; reference pc.classgender table for target PC
-		AND		#7 ; mask off gender, leaving class only remaining
+		LDA		_players_class_gender,X ; reference pc.classgender table for target PC
+		AND		#7 						; mask off gender, leaving class only remaining
 		STA		word_4
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; just calls PC_FetchTargetClass
-_b0_s2D:
-		JMP		_b0_s2C
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s2E:
@@ -2878,16 +2869,20 @@ _b0_s2E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "PC_FetchGender" - fetches the gender of a PC and stores result in word_4 as 1 or 0
-_b0_s2F:
+; fetches the gender of a PC and stores result in word_4 as 1 or 0
+;
+;"PC_FetchGender"
+_b0_s2F_player_gender_read:
 		LDX		byte_CE
-		LDA		byte_718,X ; reference pc.classgender table for target PC
-; fall through to gender analysis
+		LDA		_players_class_gender,X		; reference pc.classgender table for target PC
+
 ; =============== S U B	R O U T	I N E =======================================
-; "GenderFromClassGender" - gets the gender from a ClassGender value, stores result in word_4 as 1 or 0
-sub_995C:
-; shift down gender bit to LSBit and isolate it
-		LSR
+; fall through to gender analysis
+; gets the gender from a ClassGender value, stores result in word_4 as 1 or 0
+;
+;"GenderFromClassGender"
+_extract_gender_bit:
+		LSR						; shift down gender bit to LSBit and isolate it
 		LSR
 		LSR
 		AND		#1
@@ -2902,7 +2897,7 @@ _b0_s30:
 		LDA		word_4+1,X
 		TAX
 		LDA		byte_611E,X
-		JMP		sub_995C
+		JMP		_extract_gender_bit
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s31:
@@ -2935,7 +2930,7 @@ loc_9992:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73D,Y
+		LDA		_players_status+1,Y
 		BPL		loc_99A1
 		INC		word_4
 loc_99A1:
@@ -2977,7 +2972,7 @@ _b0_s34:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_99CF:
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		loc_9A3D
 		CMP		#7
@@ -3261,8 +3256,8 @@ sub_9B78:
 
 ; shortcuts to PC stats tables and other unknown things
 off_9B85:
-		.WORD	byte_700 ; pc.level
-		.WORD	byte_71C ; pc.hp
+		.WORD	_players_level
+		.WORD	_players_hp
 		.WORD	byte_744 ; pc.exp
 		.WORD	byte_75C ; pc.name
 		.WORD	byte_6A4B
@@ -3373,9 +3368,9 @@ _b0_s3D:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$DF
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3383,9 +3378,9 @@ _b0_s3E:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ORA		#$80
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3535,8 +3530,8 @@ loc_9D1A:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_9D44
 		TXA
 		STA		word_6+1
@@ -3604,10 +3599,10 @@ loc_9D84:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_9D98
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		STX		word_4
 		AND		#7
 		BEQ		loc_9D9E
@@ -3634,13 +3629,13 @@ loc_9DB0:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73E,Y
+		LDA		_players_status+2,Y
 		STA		byte_6A5C,Y
-		LDA		byte_73F,Y
+		LDA		_players_status+3,Y
 		STA		byte_6A5D,Y
 		LDA		#0
-		STA		byte_73E,Y
-		STA		byte_73F,Y
+		STA		_players_status+2,Y
+		STA		_players_status+3,Y
 		INX
 		CPX		#3
 		BNE		loc_9DB0
@@ -3657,9 +3652,9 @@ loc_9DDA:
 		ASL
 		TAY
 		LDA		byte_6A5C,Y
-		STA		byte_73E,Y
+		STA		_players_status+2,Y
 		LDA		byte_6A5D,Y
-		STA		byte_73F,Y
+		STA		_players_status+3,Y
 		INX
 		CPX		#3
 		BNE		loc_9DDA
@@ -3683,7 +3678,7 @@ loc_9E0D:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		BPL		loc_9E42
 		LDX		byte_CE
 		LDY		#0
@@ -3695,7 +3690,7 @@ loc_9E1C:
 		STA		byte_CF
 		TYA
 		PHA
-		JSR		_b0_s45
+		JSR		_b0_s45_check_if_item_equipped
 		PLA
 		TAY
 		LDA		byte_CF
@@ -3782,7 +3777,7 @@ sub_9E9C:
 		LDA		#$C5
 		JMP		sub_A13A
 loc_9EB3:
-		JSR		_b0_sE
+		JSR		_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		AND		#$40
 		BEQ		loc_9EC1
@@ -3791,14 +3786,14 @@ loc_9EB3:
 loc_9EC1:
 		LDA		#$44
 		STA		byte_CF
-		JSR		_b0_s45
+		JSR		_b0_s45_check_if_item_equipped
 		LDA		word_4
 		CMP		#$C4
 		BNE		loc_9ED3
 		LDA		#$C6
 		JMP		sub_A13A
 loc_9ED3:
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 		CMP		#7
 		BEQ		loc_9EEE
 		LDA		#2
@@ -3824,7 +3819,7 @@ loc_9EF3:
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
-		JSR		_b0_sB
+		JSR		_b0_sB_player_MP_consume
 		BCS		loc_9F13
 		LDA		#$20
 		JMP		sub_A13A
@@ -3856,7 +3851,7 @@ loc_9F34:
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
-		JSR		_b0_s9
+		JSR		_b0_s9_player_MP_subtract
 		JSR		sub_A169
 		LDA		#2
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
@@ -3934,7 +3929,7 @@ sub_9FCD:
 		STA		byte_D0
 		JSR		sub_A187
 		BCC		locret_9FE9
-		JSR		_b0_s4
+		JSR		_b0_s4_player_HP_add
 		LDA		#$14
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
@@ -3979,7 +3974,7 @@ loc_9FFF:
 		LDA		#0
 		STA		byte_D0
 loc_A01D:
-		JSR		_b0_s4
+		JSR		_b0_s4_player_HP_add
 		LDA		byte_46
 		BNE		loc_A031
 		LDA		#5
@@ -4010,8 +4005,8 @@ loc_A04B:
 		ASL
 		TAX
 		LDA		#$80
-		STA		byte_73D,X
-		JSR		_b0_s3
+		STA		_players_status+1,X
+		JSR		_b0_s3_player_MAX_HP_read
 		CPY		#$20
 		BNE		loc_A05F
 		LSR		word_4+1
@@ -4021,7 +4016,7 @@ loc_A05F:
 		STA		byte_CF
 		LDA		word_4+1
 		STA		byte_D0
-		JSR		_b0_s4
+		JSR		_b0_s4_player_HP_add
 		LDA		#$3C
 loc_A06C:
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
@@ -4058,12 +4053,12 @@ locret_A09B:
 sub_A09C:
 		JSR		sub_A187
 		BCC		locret_A0B9
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$20
 		BEQ		loc_A0BA
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$DF
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		LDA		#$44
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
@@ -4078,12 +4073,12 @@ loc_A0BA:
 sub_A0BC:
 		JSR		sub_A187
 		BCC		locret_A0D9
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$40
 		BEQ		loc_A0BA
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		AND		#$BF
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		LDA		#$42
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
@@ -4195,7 +4190,7 @@ sub_A13A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s55:
-		LDA		byte_2F
+		LDA		_location_type
 		AND		#1
 		BEQ		loc_A167
 		LDA		byte_8B
@@ -4245,8 +4240,8 @@ sub_A187:
 sub_A189:
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_A195
 		SEC
 		RTS
@@ -4259,9 +4254,9 @@ sub_A197:
 		LDA		byte_50
 		ASL
 		TAX
-		LDA		byte_73C,X
+		LDA		_players_status,X
 		BPL		loc_A195
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		BMI		loc_A195
 		SEC
 		RTS
@@ -4272,7 +4267,7 @@ sub_A197:
 _b0_s67:
 		PHA
 ; this ended up scanning the inventory for a player...
-		JSR		_b0_s1E
+		JSR		_b0_s1E_player_euipped_item_read
 ; fetch the equipped hat from the player inventory scan
 		LDA		word_6+1
 ; compare to mysterious hat
@@ -4328,12 +4323,12 @@ byte_A1F4:
 ; it will wrap around. need more offsets to load the rest, so we has here a lot
 ; of redundant code. rewritten.
 ;
-_b0_s61_sram_b0_syscall_shortcuts_load:
-		LDA		#<[_sram_b0_s2_pc_store_hp]
+_b0_s61_sram_shortcuts_init:
+		LDA		#<[_sram_b0_s2_player_HP_read]
 		STA		word_4
-		LDA		#>[_sram_b0_s2_pc_store_hp]
+		LDA		#>[_sram_b0_s2_player_HP_read]
 		STA		word_4+1
-		LDX		#[_b0_s2_pc_store_hp_idx-_sys_idx_lib]>>1	; first sub idx in lib
+		LDX		#[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1	; first sub idx in lib
 loc_A208a:
 		LDY		#0
 loc_A208:
@@ -4366,11 +4361,10 @@ _sram_bank0_bn_code_end:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s64:
-;		JSR		_sram_b0_s31
 		JSR		_b0_s31
 		LDX		#0
 loc_A292:
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		AND		#7
 		BEQ		loc_A2A0
 		INX
@@ -4382,22 +4376,22 @@ loc_A2A0:
 		ASL
 		TAY
 		LDA		#$80
-		STA		byte_73C,Y
-		STA		byte_73D,Y
-		LDA		byte_724,Y
-		STA		byte_71C,Y
-		LDA		byte_725,Y
-		STA		byte_71D,Y
-		LDA		byte_734,Y
-		STA		byte_72C,Y
-		LDA		byte_735,Y
-		STA		byte_72D,Y
+		STA		_players_status,Y
+		STA		_players_status+1,Y
+		LDA		_players_max_hp,Y
+		STA		_players_hp,Y
+		LDA		_players_max_hp+1,Y
+		STA		_players_hp+1,Y
+		LDA		_players_max_mp,Y
+		STA		_players_mp,Y
+		LDA		_players_max_mp+1,Y
+		STA		_players_mp+1,Y
 		LSR		byte_7BE
 		ROR		byte_7BD
 		ROR		byte_7BC
-		FARX	_bD_s28
+		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#0
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		JMP		sub_1743B5
 ; probably an item stats related table, but not sure
 _b0_d58:
@@ -4448,7 +4442,7 @@ loc_A35D:
 sub_A36C:
 		TXA
 		PHA
-		LDA		byte_700,X
+		LDA		_players_level,X
 		LDX		#0
 		JSR		sub_A725
 		PLA
@@ -4473,11 +4467,11 @@ loc_A393:
 		LDA		byte_51
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_A3CE
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		CMP		#$63
 		BCS		loc_A3CE
 		LDA		byte_51
@@ -4506,7 +4500,6 @@ loc_A3CE:
 		BNE		loc_A393
 		LDA		byte_48
 		BEQ		locret_A3EF
-;		JSR		_sram_b0_s31
 		JSR		_b0_s31
 		LDA		word_4
 		CLC
@@ -4520,7 +4513,7 @@ locret_A3EF:
 		RTS
 loc_A3F0:
 		LDX		byte_51
-		INC		byte_700,X
+		INC		_players_level,X
 		JSR		_b0_s47
 		JMP		loc_A393
 
@@ -4548,13 +4541,13 @@ loc_A410:
 		LDA		#$C0
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDX		byte_51
-		INC		byte_700,X
+		INC		_players_level,X
 		FARX	_bB_s7
 		FARX	_bE_s31
 		FARX	_bB_s3_apu_load
 		JSR		sub_A8BB
 		LDX		byte_51
-		DEC		byte_700,X
+		DEC		_players_level,X
 		LDA		byte_51
 		STA		byte_CE
 		LDY		#0
@@ -4568,7 +4561,7 @@ loc_A448:
 		STA		word_40
 		STX		word_40+1
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		PHA
 		LDX		byte_52
 		INX
@@ -4636,17 +4629,17 @@ loc_A4C7:
 		JMP		loc_A448
 loc_A4D2:
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		LDX		#3
 		JSR		sub_A5A4
 		JSR		sub_A8A8
-		LDA		byte_725,X
+		LDA		_players_max_hp+1,X
 		CMP		word_4+1
 		BCC		loc_A4FA
 		BEQ		loc_A4EA
 		BCS		loc_A4F1
 loc_A4EA:
-		LDA		byte_724,X
+		LDA		_players_max_hp,X
 		CMP		word_4
 		BCC		loc_A4FA
 loc_A4F1:
@@ -4670,31 +4663,31 @@ loc_A50D:
 		JSR		sub_A8A8
 		LDA		byte_63F
 		CLC
-		ADC		byte_724,X
-		STA		byte_724,X
+		ADC		_players_max_hp,X
+		STA		_players_max_hp,X
 		BCC		loc_A522
-		INC		byte_725,X
+		INC		_players_max_hp+1,X
 loc_A522:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B8
 		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A52C:
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 		CMP		#4
 		BCS		loc_A58D
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		LDX		#5
 		JSR		sub_A5A4
 		JSR		sub_A8A8
-		LDA		byte_735,X
+		LDA		_players_max_mp+1,X
 		CMP		word_4+1
 		BCC		loc_A55B
 		BEQ		loc_A54B
 		BCS		loc_A552
 loc_A54B:
-		LDA		byte_734,X
+		LDA		_players_max_mp,X
 		CMP		word_4
 		BCC		loc_A55B
 loc_A552:
@@ -4718,17 +4711,17 @@ loc_A56E:
 		JSR		sub_A8A8
 		LDA		byte_63F
 		CLC
-		ADC		byte_734,X
-		STA		byte_734,X
+		ADC		_players_max_mp,X
+		STA		_players_max_mp,X
 		BCC		loc_A583
-		INC		byte_735,X
+		INC		_players_max_mp+1,X
 loc_A583:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B9
 		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A58D:
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
 		CMP		#7
 		BNE		loc_A59A
@@ -4790,7 +4783,7 @@ loc_A5EE:
 		LDA		byte_57
 		BMI		loc_A642
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		SEC
 		SBC		byte_58
 		CLC
@@ -4806,13 +4799,13 @@ loc_A604:
 		STA		word_4A
 		STY		word_4A+1
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		LDX		#5
 		JSR		sub_A725
 		LDY		#2
 		LDX		byte_51
 		SEC
-		LDA		byte_70C,X
+		LDA		_players_intelligence,X
 		SBC		word_4
 		CLC
 		ADC		#$F
@@ -4833,7 +4826,7 @@ loc_A636:
 		JMP		loc_A6E7
 loc_A642:
 		LDX		byte_51
-		LDA		byte_700,X
+		LDA		_players_level,X
 		CLC
 		ADC		#1
 		CMP		byte_58
@@ -4948,11 +4941,11 @@ off_A702:
 		.WORD	byte_79C
 		.WORD	byte_79C
 off_A70C:
-		.WORD	byte_704
-		.WORD	byte_708
-		.WORD	byte_714
-		.WORD	byte_710
-		.WORD	byte_70C
+		.WORD	_players_strength
+		.WORD	_players_agility
+		.WORD	_players_vitality
+		.WORD	_players_luck
+		.WORD	_players_intelligence
 off_A716:
 		.WORD	byte_A71C
 		.WORD	byte_A71F
@@ -4975,7 +4968,7 @@ sub_A725:
 		LDX		off_A7F4+1,Y
 		STA		word_3C
 		STX		word_3C+1
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 loc_A739:
 		DEC		word_4
 		BMI		loc_A747
@@ -5313,7 +5306,7 @@ _b0_s5D:
 		STA		byte_48
 		AND		#$7F
 		STA		byte_D3
-		JSR		_b0_s2C
+		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
 		CMP		#5
 		BNE		loc_AB3F
@@ -5349,7 +5342,7 @@ loc_AB65:
 		TAX
 		LDA		_b0_d44,X
 		BPL		loc_ABDD
-		LDA		_b0_d42_effects_list,X
+		LDA		_b0_d42_item_use_effects_list,X
 		AND		#$40
 		BEQ		loc_AB8B
 		CPX		#$67
@@ -5382,7 +5375,7 @@ loc_AB8B:
 		PLA
 		STA		byte_45
 		BCC		loc_ABE0
-		LDA		_b0_d42_effects_list,X
+		LDA		_b0_d42_item_use_effects_list,X
 		AND		#4
 		BEQ		loc_ABCF
 		CPX		#$68
@@ -5457,7 +5450,7 @@ loc_AC2E:
 		LDA		byte_48
 		AND		#$7F
 		TAX
-		LDA		_b0_d42_effects_list,X
+		LDA		_b0_d42_item_use_effects_list,X
 		AND		#$10
 		BEQ		loc_AC48
 		SYSX	_sys07_msg_m00_arg1,$2A
@@ -5558,7 +5551,7 @@ sub_ACBE:
 		LDY		#$2B
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BMI		loc_ACD9
 		BCS		loc_ACE1
@@ -5575,7 +5568,7 @@ loc_ACE1:
 		LDA		byte_47
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BMI		loc_ACEE
 		BCS		loc_ACF8
@@ -5593,7 +5586,7 @@ loc_ACFC:
 		ASL
 		TAX
 		LDY		#$34
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BMI		loc_AD09
 		BCS		loc_AD0F
@@ -5620,7 +5613,7 @@ sub_AD13:
 sub_AD1E:
 		LDX		#0
 loc_AD20:
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BMI		loc_AD28
 		BCS		loc_AD2C
@@ -5642,7 +5635,7 @@ sub_AD31:
 		LDA		byte_45
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BMI		loc_AD45
 		BCS		loc_AD4B
@@ -5659,7 +5652,7 @@ loc_AD4F:
 		LDA		byte_45
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BCS		loc_AD62
 		SYSX	_sys07_msg_m00_arg1,$26
@@ -5669,7 +5662,7 @@ loc_AD62:
 		LDA		byte_48
 		AND		#$7F
 		TAX
-		LDA		_b0_d42_effects_list,X
+		LDA		_b0_d42_item_use_effects_list,X
 		PHA
 		AND		#$10
 		BEQ		loc_AD7B
@@ -5713,7 +5706,7 @@ sub_ADAC:
 		ASL
 		TAX
 		LDY		#$26
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ASL
 		BCC		loc_ADC3
 		BPL		loc_ADC6
@@ -5722,11 +5715,11 @@ loc_ADC3:
 		TYA
 		BNE		sub_ADE0
 loc_ADC6:
-		JSR		_b0_s5F
+		JSR		_b0_s5E_check_if_item_can_be_used
 		BCC		loc_ADEC
 		LDA		#$44
 		STA		byte_CF
-		JSR		_b0_s45
+		JSR		_b0_s45_check_if_item_equipped
 		LDA		word_4
 		BPL		_return_false_in_C
 		CMP		#$FF
@@ -5762,7 +5755,7 @@ sub_ADF4:
 		BPL		_return_false_in_C
 		AND		#$7F
 		TAX
-		LDA		_b0_d42_effects_list,X
+		LDA		_b0_d42_item_use_effects_list,X
 		AND		#8
 		BEQ		_return_false_in_C
 		STX		byte_D2
@@ -5818,7 +5811,7 @@ loc_AE4F:
 		JMP		(word_3C) ; dispatch to script callback
 loc_AE52:
 ; "PLAYER holds the fairy water by the thread.. and the sailors thigh bone begins to spin." Other things?
-		LDA		byte_2F
+		LDA		_location_type
 		CMP		#2
 		BCC		loc_AE68
 		BEQ		loc_AE62
@@ -6332,7 +6325,7 @@ sub_B16B:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_D0
-		JSR		_b0_s8
+		JSR		_b0_s8_player_MP_add
 		JSR		sub_A172
 		JSR		_rand
 		CMP		#$19
@@ -6350,9 +6343,9 @@ loc_B196:
 ; <wait> "The Maximum HP goes up 2 points!". But with @704, this should be the strength?
 sub_B198:
 		LDX		byte_45 ; i called this "itemSelectedInBattle" but clearly not
-		LDA		byte_704,X
+		LDA		_players_strength,X
 		JSR		sub_B1D9
-		STA		byte_704,X
+		STA		_players_strength,X
 		SEC
 		RTS
 
@@ -6360,36 +6353,36 @@ sub_B198:
 ; <wait> "The Maximum HP goes up 2 points!".  But with @708, this should be the strength?
 sub_B1A5:
 		LDX		byte_45
-		LDA		byte_708,X
+		LDA		_players_agility,X
 		JSR		sub_B1D9
-		STA		byte_708,X
+		STA		_players_agility,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1B2:
 		LDX		byte_45
-		LDA		byte_70C,X
+		LDA		_players_intelligence,X
 		JSR		sub_B1D9
-		STA		byte_70C,X
+		STA		_players_intelligence,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1BF:
 		LDX		byte_45
-		LDA		byte_710,X
+		LDA		_players_luck,X
 		JSR		sub_B1D9
-		STA		byte_710,X
+		STA		_players_luck,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1CC:
 		LDX		byte_45
-		LDA		byte_714,X
+		LDA		_players_vitality,X
 		JSR		sub_B1D9
-		STA		byte_714,X
+		STA		_players_vitality,X
 		SEC
 		RTS
 
@@ -6427,11 +6420,11 @@ sub_B1F6:
 		ASL
 		TAX
 		CLC
-		LDA		byte_724,X
+		LDA		_players_max_hp,X
 		ADC		word_4
-		STA		byte_724,X
+		STA		_players_max_hp,X
 		BCC		loc_B212
-		INC		byte_725,X
+		INC		_players_max_hp+1,X
 loc_B212:
 		LDA		word_4
 		JSR		sub_B2AD
@@ -6509,8 +6502,8 @@ loc_B272:
 		STA		byte_D2
 		ASL
 		TAX
-		LDA		byte_73C,X
-		AND		byte_73D,X
+		LDA		_players_status,X
+		AND		_players_status+1,X
 		BPL		loc_B28C
 		LDA		#$9C
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
@@ -6533,9 +6526,9 @@ sub_B298:
 		STA		byte_D2
 		ASL
 		TAX
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		ORA		#$40
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		LDA		#$A
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
 		SEC
@@ -6785,7 +6778,7 @@ loc_BF74:
 		LDA		#$DB
 		STA		byte_2B
 		LDA		#$30
-		STA		byte_6E0
+		STA		_current_pc_status_pal_value
 		LDA		#$FF
 		STA		byte_2D
 		STA		byte_2E

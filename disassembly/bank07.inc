@@ -33,6 +33,8 @@ _b7_s1C_ptr:
 		.WORD	_b7_s1C
 _b7_s1D_ptr:
 		.WORD	_b7_s1D
+_b16_s0_location_palette_setup_ptr:
+		.WORD	_b16_s0_location_palette_setup
 
 _map_data_lib:
 		.WORD	_map0
@@ -1243,8 +1245,8 @@ loc_B272B:
 		LSR
 		TAX
 		LDA		byte_B27AA,X
-		STA		byte_6DF
-		FARX	_b6_s8
+		STA		_world_map_steps_count
+		FARX	_b6_s8_world_map_pal_update
 		JSR		_ppu_set_dequeue_flag
 		LDX		#$C
 		JSR		_sleep_X
@@ -1262,10 +1264,10 @@ loc_B272B:
 		LDX		#0
 		STX		word_40+1
 loc_B275E:
-		LDA		byte_73D,X
+		LDA		_players_status+1,X
 		BMI		loc_B278A
 		ORA		#$80
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		TXA
 		PHA
 		LSR
@@ -1289,7 +1291,7 @@ loc_B2785:
 		TAX
 loc_B278A:
 		LDA		#$80
-		STA		byte_73D,X
+		STA		_players_status+1,X
 		INX
 		INX
 		CPX		word_40
@@ -1300,7 +1302,7 @@ loc_B278A:
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$40
-		STA		byte_6DF
+		STA		_world_map_steps_count
 locret_B27A9:
 		RTS
 byte_B27AA:
@@ -1706,10 +1708,10 @@ loc_B2A62:
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
-		LDA		byte_1C
+		LDA		_rand_seed
 		STA		(word_3C),Y
 		INY
-		LDA		byte_1D
+		LDA		_rand_seed+1
 		STA		(word_3C),Y
 		RTS
 
@@ -2036,9 +2038,9 @@ sub_B2C46:
 _b7_s1D:
 		LDA		#0
 		JSR		sub_B2CD0
-		LDA		byte_1C
+		LDA		_rand_seed
 		STA		byte_63E9
-		LDA		byte_1D
+		LDA		_rand_seed+1
 		STA		byte_63EA
 		RTS
 
@@ -2061,11 +2063,11 @@ loc_B2C68:
 		LDX		#word_3C
 		JSR		_add16_to_16
 		LDY		#0
-		LDA		byte_1C
+		LDA		_rand_seed
 		CMP		(word_3C),Y
 		BNE		loc_B2C93
 		INY
-		LDA		byte_1D
+		LDA		_rand_seed+1
 		CMP		(word_3C),Y
 		BEQ		loc_B2CC8
 loc_B2C93:
@@ -2110,8 +2112,8 @@ sub_B2CD0:
 		LDX		#word_40
 		JSR		_add8_to_neg16
 		LDA		#$3A
-		STA		byte_1C
-		STA		byte_1D
+		STA		_rand_seed
+		STA		_rand_seed+1
 		LDY		#0
 loc_B2CE6:
 		LDA		(word_3C),Y
@@ -2448,7 +2450,7 @@ _b7_s14:
 		LDX		#0
 loc_B2F8C:
 		LDA		#0
-		STA		byte_700,X
+		STA		_players_level,X
 		INX
 		CPX		#$B5
 		BNE		loc_B2F8C
@@ -2505,8 +2507,8 @@ loc_B2FE0:
 		ASL
 		TAY
 		LDA		#$80
-		STA		byte_73C,Y
-		STA		byte_73D,Y
+		STA		_players_status,Y
+		STA		_players_status+1,Y
 loc_B2FF4:
 		DEX
 		BPL		loc_B2FE0
@@ -2552,8 +2554,8 @@ loc_B3030:
 		ASL
 		TAY
 		LDA		#0
-		STA		byte_73C,Y
-		STA		byte_73D,Y
+		STA		_players_status,Y
+		STA		_players_status+1,Y
 loc_B3048:
 		DEX
 		BPL		loc_B3030
@@ -2739,10 +2741,10 @@ loc_B3171:
 		TXA
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_B318A
-		LDA		byte_718,X
+		LDA		_players_class_gender,X
 		AND		#7
 		CMP		#5
 		BEQ		loc_B3190
@@ -2891,8 +2893,8 @@ off_B3285:
 		.WORD	_character_names
 		.WORD	byte_62AA
 off_B328F:
-		.WORD	byte_700
-		.WORD	byte_71C
+		.WORD	_players_level
+		.WORD	_players_hp
 		.WORD	byte_744
 		.WORD	byte_75C
 		.WORD	byte_79C
@@ -2919,8 +2921,8 @@ loc_B32C8:
 		INX
 		CPX		#$40
 		BNE		loc_B32C8
-		JSR		sub_17673A
-		FARX	_b0_s61_sram_b0_syscall_shortcuts_load
+		FARX	_b5_sB_ppu_font_load
+		FARX	_b0_s61_sram_shortcuts_init
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2950,6 +2952,7 @@ loc_B32F6:
 		CMP		#4
 		BNE		loc_B32F6
 		RTS
+		
 byte_B332B:
 		.BYTE	$6B, $A,  9,  0
 		.BYTE	$69, $B, $C,  2
@@ -3127,7 +3130,7 @@ loc_B3541:
 		LDA		word_B3574+1,X
 		STA		byte_2B
 		LDA		byte_B3576,X
-		STA		byte_2F
+		STA		_location_type
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
@@ -3330,7 +3333,7 @@ loc_B366E:
 sub_B367D:
 		LDA		#0
 		STA		word_40+1
-		STA		byte_2F
+		STA		_location_type
 		STA		byte_6ACD
 		RTS
 
@@ -3655,6 +3658,288 @@ _staff_txt_block18:
 		.BYTE	$FA,0,_h,_o,_n,_d,_a,$FF
 		.BYTE	$19,0,$6D,_e,_n,_i,_x,$FF
 		.BYTE	$2B,_a,_m,_e,_r,_i,_c,_a,$6E,$FF
+
+; =============== S U B	R O U T	I N E =======================================
+; while enter the new location, reinit the current palette according
+; to location type (world or map) and a current day-time
+;
+_b16_s0_location_palette_setup:
+		LDA		_mmc_cur_prg_bank				; don't know why they need to save bank here
+		PHA										; one more time. all far call subs saves
+		LDA		#0								; previous bank numbers in stack, so they restored
+		STA		byte_AA							; later for sure
+		JSR		_location_palette_setup
+		FARX	_bD_s28_frame_palette_by_status_adjust
+		PLA
+		STA		_mmc_cur_prg_bank
+		JSR		_mmc1_prg_set
+		LDA		#0
+		STA		byte_AB
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+_location_palette_setup:
+		LDA		#$F
+		STA		_ram_pal_buf				; default bg color 0 palette index
+		LDA		#<[_loc_maps_pal_lib_ofs]	; location palettes lib
+		STA		_tmp_ptrB4
+		LDA		#>[_loc_maps_pal_lib_ofs]
+		STA		_tmp_ptrB4+1
+		LDX		#0
+		LDA		_world_map_steps_count		; check wether the current daytime
+		CMP		#$78						; day or night
+		BCC		loc_21C14F
+		INX
+loc_21C14F:
+		STX		_tmp_varB6					; day/night temp flag
+		LDA		byte_9A
+		BNE		loc_21C060					; what location we enter
+		LDX		#6							; enter the world map
+loc_21C034:
+		LDA		_world_map_step_daytime_list,X
+		CMP		_world_map_steps_count		; look up for a palette index for current
+		BCC		loc_21C041					; daytime on the world map
+		BEQ		loc_21C041
+		DEX
+		BNE		loc_21C034
+loc_21C041:
+		LDA		_world_pal_ofs_list,X		; get the palette offset
+		TAX
+		LDY		#0
+loc_21C047:
+		STY		_tmp_varB6
+		LDA		#[_b6_dB_world_map_palette_lib_idx-_sys_idx_lib]>>1
+		JSR		_sys0_byte_read_x			; far read palette byte
+											; all world map data located in bank 6
+											; why this loop uses X, while Y is the same?
+		PHA
+		LDA		_world_map_pal_decode_table,Y	; for some reason, the palette indexes are
+		TAY										; stored in interleaved format, so we have to
+		PLA										; decode it with lookup table
+		STA		_ram_pal_buf,Y
+		LDY		_tmp_varB6
+		INX
+		INY
+		CPY		#$C
+		BCC		loc_21C047
+		RTS
+loc_21C060:									; enter the locations
+		LDA		byte_8B
+		CMP		#8
+		BEQ		loc_21C0B4
+		CMP		#$2D
+		BCC		loc_21C086
+		CMP		#$41
+		BCC		loc_21C0B8
+		CMP		#$58
+		BEQ		loc_21C0BC
+		CMP		#$5B
+		BEQ		loc_21C0C0
+		CMP		#$85
+		BEQ		loc_21C0C4
+		CMP		#$9C
+		BCC		loc_21C084
+		CMP		#$9F
+		BCC		loc_21C0A8
+		BCS		loc_21C0C8
+loc_21C084:
+		SBC		#$13
+loc_21C086:
+		PHA
+		LSR
+		LSR
+		TAX
+		LDA		_loc_maps_pal_decode_data0,X
+		STA		_tmp21+1
+		PLA
+		ASL
+		CLC
+		ADC		_tmp_varB6
+		AND		#7
+		TAY
+loc_21C097:
+		ASL		_tmp21+1
+		DEY
+		BPL		loc_21C097
+		LDA		_tmp_varB6
+		ROL
+		TAY
+		LDA		_loc_maps_pal_decode_data1,Y
+		TAY
+		JSR		_direct_palette_copy
+		RTS
+loc_21C0A8:
+		SBC		#$9B
+		LDY		_tmp_varB6
+		LDA		_loc_maps_pal_decode_data2,Y
+		TAY
+		JSR		_direct_palette_copy
+		RTS
+loc_21C0B4:
+		LDA		#0
+		BEQ		loc_21C0CA
+loc_21C0B8:
+		SBC		#$2B
+		BNE		loc_21C0CA
+loc_21C0BC:
+		LDA		#$15
+		BNE		loc_21C0CA
+loc_21C0C0:
+		LDA		#$16
+		BNE		loc_21C0CA
+loc_21C0C4:
+		LDA		#$17
+		BNE		loc_21C0CA
+loc_21C0C8:
+		SBC		#$87
+loc_21C0CA:
+		TAX
+		LDA		_loc_maps_pal_decode_data3,X
+		STA		word_4
+		LDY		byte_8B
+		CPY		#$D5
+		BEQ		loc_21C0DC
+		LDY		byte_9A
+		CPY		#$19
+		BCC		loc_21C0DF
+loc_21C0DC:
+		CLC
+		ADC		_tmp_varB6
+loc_21C0DF:
+		ASL
+		TAX
+		LDA		_loc_maps_pal_decode_data4,X
+		PHA
+		LSR
+		LSR
+		LSR
+		LSR
+		STA		word_B7
+		PLA
+		AND		#$F
+		STA		word_B7+1
+		INX
+		LDA		_loc_maps_pal_decode_data4,X
+		PHA
+		LSR
+		LSR
+		LSR
+		LSR
+		STA		byte_B9
+		PLA
+		AND		#$F
+		STA		byte_BA
+		LDA		byte_9A
+		SEC
+		SBC		#$C
+		TAX
+		LDA		_loc_maps_pal_decode_data5,X
+		STA		word_4
+		LDX		#0
+		STX		_tmp_varB6
+loc_21C10F:
+		LDA		#0
+		STA		word_4+1
+		TXA
+		PHA
+		LDX		_tmp_varB6
+		LDA		word_B7,X
+		ASL
+		ADC		word_B7,X
+		ADC		word_4
+		TAY
+		PLA
+		TAX
+loc_21C121:
+		LDA		(_tmp_ptrB4),Y
+		STA		_ram_pal_buf+1,X
+		INY
+		INX
+		INC		word_4+1
+		LDA		word_4+1
+		CMP		#3
+		BNE		loc_21C121
+		INC		_tmp_varB6
+		CPX		#$C
+		BNE		loc_21C10F
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+; some locations uses direct palette entries, without decoding, so copy
+; it here as is in one step.
+;
+_direct_palette_copy:
+		LDX		#0
+loc_21C139:
+		LDA		(_tmp_ptrB4),Y
+		STA		_ram_pal_buf+1,X
+		INY
+		INX
+		CPX		#$C
+		BNE		loc_21C139
+		RTS
+
+_loc_maps_pal_decode_data1:
+		.BYTE	  0, $C,$18,$24
+_loc_maps_pal_decode_data2:
+		.BYTE	$30,$3C
+
+_loc_maps_pal_decode_data0:
+		.BYTE	  0,  1,$20,  8,$54,  2,$8D,  5,$55,$D5,$D4,$3F,$51,$74,$75,$3C
+		.BYTE	  1,  0,$FC,  0,$3F,$55,$7F,$C0,$2F,$D5,$FF,$77,  9,$B0,$2D,$30
+		.BYTE	$10,$14
+_loc_maps_pal_lib_ofs:
+		.BYTE	$30,$11,$21,$26,$37,$15,$10,  0,$15,$29,$1A,$27,$30,$11,$21,$27
+		.BYTE	$37,$15,$10,  0,$15,$29,$1A,$27,$21, $F,  1,  6,$17,  5,  0, $F
+		.BYTE	  5, $C,  9,  7,$21, $F,  1,$17,$27,  6,  0, $F,  6,$19, $A,$17
+		.BYTE	$30,$11,$21,$17,$27,$15,$17,$27,$10,$17,$27,$11,$21, $F,  1,  7
+		.BYTE	$17,  5,  7,$17,  0,  7,$17, $F,$30,  0,$10,$10,  0,$18,$26,$37
+		.BYTE	$17,$10,  0,$17,$2B, $B,$1B,$10,  0,$17,$30,  1,$11,$10,$28,$18
+		.BYTE	$30,$11,$21,$37,  0,$10,  1,  0,$10,$30,  0,$10,$30, $B,$26,$10
+		.BYTE	  0,$18,  1,  0,$10,$30,  1,$11,$10,  0,$18,$37,$26,$17,$10,  0
+		.BYTE	$17,$2A,$1A,$17,$30,  0,$10,$27,$17,  7,$10,  0,$18,$30,  1,$11
+		.BYTE	  1,  0,$10,$30,$15,$26,$15,  0,$10,  7,$16,$26,$30,$37,$27,$10
+		.BYTE	  0,$17,$10,  0,$17,$30,$10,  0,$37,  0,$10,$30, $F,$17,$2A,$1A
+		.BYTE	$17,$37,$27,$17,$30,$27,$21,$30,$27,  1,$27,$17,  7,$27,$16,  6
+		.BYTE	$37,$26,$17,$10,  0,$15,$10,  0,$1C,$37,  0,$26,$30,  0,$21,$30
+		.BYTE	  0,  1,$30,  0,$2A,$30,  0, $A,$10,$28,$18,$37,$26,$15,$37,$27
+		.BYTE	$1C,$30,$11,$21,$30,$11,  1,$37,$26,$21,$37,$26,  1,$2A,$1A,$15
+_loc_maps_pal_decode_data4:
+		.BYTE	  1,$23,$40,$15,$40,$18,$40,$16,$40,$13,$80,$13,$80,$15,$70,$19
+		.BYTE	$70,$16,$20,$10,$62,$43,$62,$45,$12,$40,$40,$15,$20,$16,$20,$13
+		.BYTE	  6,$14,$37,$14,$32,$1C,$50,$14,$52,$13,$80,$16,$90,$16,$8A,$1B
+		.BYTE	$9A,$1B,$30,$78,$40,$78,$30,$7A,$40,$7B,$30,$72,$40,$72,$31,$79
+		.BYTE	$41,$79,$31,$7A,$41,$7B,$31,$7C,$41,$7D,$50,$7A,$60,$7B,$50,$7E
+		.BYTE	$60,$7E,$51,$7A,$61,$7B,$50,$72,$60,$72
+_loc_maps_pal_decode_data3:
+		.BYTE	  4, $E, $E,  0,  0, $C, $B,  3,  5, $D,  5, $E,$14,$14,$12,$15
+		.BYTE	$27,$29,$2B,$29,$25,  2,  3,$11,  4,  5,  5,  4, $E, $E, $F,  0
+		.BYTE	$14, $B, $B, $C, $C,$1B, $E, $E, $E, $E, $E,  6,  5,  5,  5,  6
+		.BYTE	 $D, $D, $D, $D, $D,  5,  8, $E, $E,  7,  7,  2,$14,$14,$11,  0
+		.BYTE	  1,  1,  5,  5,  8,  2,  2,  2,$13,$15,$15,$15,$15,$13,$17,$19
+		.BYTE	$19,$19,$19,$19,$21,$21,$21,$21,$21,$23,$1D,$1D,$1D,$1D,$1D,$1D
+		.BYTE	$19,$21,$21,$21,$21,$1F,  9,$21,$1B,$1B,$1B,$1B,$1B
+_loc_maps_pal_decode_data5:
+		.BYTE	$48,$54,$54,$54,$54,$54,$72,$87,$87,$9C,$9C,$9C,$54,$C3,$C3,$C3
+		.BYTE	$30,$17,$10,$2A, $C,$27,  0,$19,$1C,$2A,$2A,$27,$30,$17,$10,$2A
+		.BYTE	$1C,$37,  0,$1A,$2C,$2A,$2A,$27,$30,$17,$10,$29,$11,$37,  0,$19
+		.BYTE	$21,$29,$29,$27,$30,$17,$10,$29,  1,$27,  0,$19,$11,$29,$29,$27
+		.BYTE	$21,  7,  0,$19, $F,$17, $F,  9,  1,$19,$19,$17,$21,  7,  0, $C
+		.BYTE	 $F,$17, $F,  9,  1, $C, $C,  7,$21,  7,  0,$1A, $F,$17, $F,  9
+		.BYTE	 $C,$1A,$1A,$17
+
+; this is a copy of parameters from bank 6, used in fylesystem
+; may be merged in one bank 06 and used through files
+; or may be better to move world map palette subroutine to
+; bank 6 and use the direct reading of data instead.
+; currently there is no free space in bank 6
+;
+_world_map_pal_decode_table:
+		.BYTE	  1,  4,  7, $A,  2,  5,  8, $B,  3,  6,  9, $C
+_world_pal_ofs_list:
+		.BYTE	  0, $C,$18,$24,$30,$3C,$48
+_world_map_step_daytime_list:
+		.BYTE	  0,$1E,$3C,$5A,$78,$96,$B4
 
 		ECHO "bank 07 free space", [SAFE_STUB_ORG-.]
 

@@ -3,12 +3,12 @@
 
 _b6_s6_ptr:
 		.WORD	_b6_s6
-_b6_s8_ptr:
-		.WORD	_b6_s8
-_b6_d9_ptr:
-		.WORD	_b6_d9
-_b6_dA_ptr:
-		.WORD	_b6_dA
+_b6_s8_world_map_pal_update_ptr:
+		.WORD	_b6_s8_world_map_pal_update
+_b6_d9_world_map_step_daytime_list_ptr:
+		.WORD	_b6_d9_world_map_step_daytime_list
+_b6_dA_world_pal_ofs_list_ptr:
+		.WORD	_b6_dA_world_pal_ofs_list
 _b6_dB_world_map_palette_lib_ptr:
 		.WORD	_b6_dB_world_map_palette_lib
 _b6_sC_ptr:
@@ -1403,8 +1403,8 @@ _b6_s13:
 		BMI		loc_9B5B2
 		LDY		#$78
 loc_9B5B2:
-		STY		byte_6DF
-		STX		byte_2F
+		STY		_world_map_steps_count
+		STX		_location_type
 		ASL
 		ASL
 		TAX
@@ -1527,28 +1527,28 @@ loc_9B6B1:
 		.BYTE	$17,$18,$1E,$20
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s8:
+_b6_s8_world_map_pal_update:
 		LDA		byte_AA
 		AND		#$10
 		BNE		loc_9B6E3
-		LDA		byte_2F
+		LDA		_location_type
 		LSR
 		BCS		loc_9B736
 		LDX		#0
 loc_9B6C8:
-		LDA		_b6_d9,X
-		CMP		byte_6DF
+		LDA		_b6_d9_world_map_step_daytime_list,X
+		CMP		_world_map_steps_count
 		BEQ		loc_9B6D6
 		INX
 		CPX		#7
 		BCC		loc_9B6C8
 		RTS
 loc_9B6D6:
-		LDA		_b6_dA,X
+		LDA		_b6_dA_world_pal_ofs_list,X
 		STA		byte_AB
 		LDA		#$10
 		STA		byte_AA
-		FARX	_bD_s28
+		FARX	_bD_s28_frame_palette_by_status_adjust
 		RTS
 loc_9B6E3:
 		LDA		byte_AA
@@ -1556,7 +1556,7 @@ loc_9B6E3:
 		CMP		#$C
 		BEQ		loc_9B736
 		STA		_tmp21
-		LDA		byte_6DF
+		LDA		_world_map_steps_count
 		CMP		#$3C
 		BCS		loc_9B6FA
 		LDA		#$C
@@ -1573,7 +1573,7 @@ loc_9B6FA:
 		INX
 		TYA
 		BNE		loc_9B71A
-		LDY		byte_6E0
+		LDY		_current_pc_status_pal_value
 		CPY		#$30
 		BEQ		loc_9B71A
 		TYA
@@ -1588,7 +1588,7 @@ loc_9B721:
 		INX
 		STX		_ppu_queue_pos
 		LDY		_tmp21
-		LDX		byte_9B749,Y
+		LDX		_world_map_pal_decode_table_0,Y
 		STA		_ram_pal_buf,X
 		INC		_ppu_queue_chunks_count
 		INC		byte_AA
@@ -1598,20 +1598,22 @@ loc_9B736:
 		STA		byte_AA
 		STA		byte_AB
 		RTS
+		
 byte_9B73D:
 		.BYTE	  1,  5,  9, $D,  2,  6, $A, $E,  3,  7, $B, $F
-byte_9B749:
+_world_map_pal_decode_table_0:
 		.BYTE	  1,  4,  7, $A,  2,  5,  8, $B,  3,  6,  9, $C
 _b6_dB_world_map_palette_lib:
-		.BYTE	$30,$17,$10,$2A, $C,$27,  0,$19,$1C,$2A,$2A,$27,$30,$17,$10,$2A
-		.BYTE	$1C,$37,  0,$1A,$2C,$2A,$2A,$27,$30,$17,$10,$29,$11,$37,  0,$19
-		.BYTE	$21,$29,$29,$27,$30,$17,$10,$29,  1,$27,  0,$19,$11,$29,$29,$27
-		.BYTE	$21,  7,  0,$19, $F,$17, $F,  9,  1,$19,$19,$17,$21,  7,  0, $C
-		.BYTE	 $F,$17, $F,  9,  1, $C, $C,  7,$21,  7,  0,$1A, $F,$17, $F,  9
-		.BYTE	 $C,$1A,$1A,$17
-_b6_dA:
+		.BYTE	$30,$17,$10,$2A, $C,$27,  0,$19,$1C,$2A,$2A,$27
+		.BYTE	$30,$17,$10,$2A,$1C,$37,  0,$1A,$2C,$2A,$2A,$27
+		.BYTE	$30,$17,$10,$29,$11,$37,  0,$19,$21,$29,$29,$27
+		.BYTE	$30,$17,$10,$29,  1,$27,  0,$19,$11,$29,$29,$27
+		.BYTE	$21,  7,  0,$19, $F,$17, $F,  9,  1,$19,$19,$17
+		.BYTE	$21,  7,  0, $C, $F,$17, $F,  9,  1, $C, $C,  7
+		.BYTE	$21,  7,  0,$1A, $F,$17, $F,  9, $C,$1A,$1A,$17
+_b6_dA_world_pal_ofs_list:
 		.BYTE	  0, $C,$18,$24,$30,$3C,$48
-_b6_d9:
+_b6_d9_world_map_step_daytime_list:
 		.BYTE	  0,$1E,$3C,$5A,$78,$96,$B4
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2367,8 +2369,8 @@ loc_9BC82:
 		LDA		byte_D2
 		ASL
 		TAY
-		LDA		byte_73C,Y
-		AND		byte_73D,Y
+		LDA		_players_status,Y
+		AND		_players_status+1,Y
 		BPL		loc_9BC82
 		INX
 		BNE		loc_9BC82
@@ -2581,7 +2583,7 @@ _b6_s1D:
 		JSR		_pal_fade_out
 		FARX	_b0_s54
 		FARX	_bD_s11
-		FARX	_bD_s28
+		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#4
 		STA		byte_30
 		STA		byte_31
@@ -2592,7 +2594,7 @@ _b6_s1D:
 		STA		byte_6BC
 		FARX	_bB_s7
 		LDA		#0
-		STA		byte_6DF
+		STA		_world_map_steps_count
 		JMP		sub_174CD5
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2620,7 +2622,7 @@ sub_9BE69:
 		LDA		word_4
 		CMP		#1
 		BEQ		sub_9BE62
-		STA		_pak_data_ptr+1
+		STA		_tmp_ptrB4+1
 		CLC
 		ADC		#$47
 		FARX	_bE_sC
@@ -2630,25 +2632,25 @@ loc_9BE7C:
 		STA		byte_B9,X
 		DEX
 		BNE		loc_9BE7C
-		STX		_pak_data_ptr
+		STX		_tmp_ptrB4
 		JSR		sub_9BF18
 loc_9BE8A:
 		SYSX	_sys0D_wrap_bE_sC,$3C
 		STA		byte_CE
 		TAX
 		BPL		loc_9BEB2
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		BNE		loc_9BE9B
 		JSR		sub_9BF0D
 		SEC
 		RTS
 loc_9BE9B:
-		DEC		_pak_data_ptr
+		DEC		_tmp_ptrB4
 		JSR		sub_9BF21
 		LDA		#2
 		FARX	_bE_sB
-		LDX		_pak_data_ptr
-		LDY		_tmp_pak_data_bank,X
+		LDX		_tmp_ptrB4
+		LDY		_tmp_varB6,X
 		LDA		byte_BA,Y
 		STA		byte_7C1,Y
 		JMP		loc_9BE8A
@@ -2660,8 +2662,8 @@ loc_9BEB4:
 		BMI		loc_9BEB4
 		DEX
 		BPL		loc_9BEB4
-		LDX		_pak_data_ptr
-		STY		_tmp_pak_data_bank,X
+		LDX		_tmp_ptrB4
+		STY		_tmp_varB6,X
 		TYA
 		PHA
 		JSR		sub_9BF2C
@@ -2671,14 +2673,14 @@ loc_9BEB4:
 		STA		byte_7C1,Y
 		LDA		#2
 		FARX	_bE_sB
-		INC		_pak_data_ptr
-		LDA		_pak_data_ptr
-		CMP		_pak_data_ptr+1
+		INC		_tmp_ptrB4
+		LDA		_tmp_ptrB4
+		CMP		_tmp_ptrB4+1
 		BCC		loc_9BE8A
 		JSR		sub_9BF0D
 		LDX		#0
 loc_9BEDF:
-		LDA		_tmp_pak_data_bank,X
+		LDA		_tmp_varB6,X
 		STX		byte_CF
 		STA		byte_D0
 		PHA
@@ -2689,19 +2691,19 @@ loc_9BEDF:
 		TAX
 		TAY
 loc_9BEEE:
-		CMP		_tmp_pak_data_bank,Y
+		CMP		_tmp_varB6,Y
 		BEQ		loc_9BEF6
 		INY
 		BNE		loc_9BEEE
 loc_9BEF6:
 		PLA
-		STA		_tmp_pak_data_bank,Y
+		STA		_tmp_varB6,Y
 		INX
 		CPX		#3
 		BCC		loc_9BEDF
 		LDA		#4
 		FARX	_bE_sB
-		LDY		_pak_data_ptr+1
+		LDY		_tmp_ptrB4+1
 		DEY
 		TYA
 		FARX	_bE_sC
@@ -2723,7 +2725,7 @@ sub_9BF18:
 		LDX		#3
 loc_9BF1A:
 		TXA
-		STA		_tmp_pak_data_bank,X
+		STA		_tmp_varB6,X
 		DEX
 		BPL		loc_9BF1A
 		RTS
@@ -2748,7 +2750,7 @@ loc_9BF31:
 		DEX
 		BPL		loc_9BF31
 loc_9BF38:
-		LDA		_pak_data_ptr
+		LDA		_tmp_ptrB4
 		ASL
 		CLC
 		ADC		#$C
@@ -2786,7 +2788,7 @@ loc_9BF6D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BF72:
 		LDA		_ram_pal_buf+2
-		STA		_tmp_pak_data_bank
+		STA		_tmp_varB6
 		LDA		_ram_pal_buf+3
 		STA		word_B7
 		LDA		#6
@@ -2812,7 +2814,7 @@ loc_9BF8B:
 		DEC		word_B7+1
 		LDA		word_B7+1
 		BNE		loc_9BF80
-		LDA		_tmp_pak_data_bank
+		LDA		_tmp_varB6
 		STA		_ram_pal_buf+2
 		LDA		word_B7
 		STA		_ram_pal_buf+3

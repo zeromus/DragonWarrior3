@@ -53,10 +53,8 @@ _nmi_flags:
 							; bit 04 - 
 							; bit 08 -
 							; bin 10 - forbid nmi ppu dequeue
-byte_1C:
-		.BYTE	0
-byte_1D:
-		.BYTE	0
+_rand_seed:
+		.BYTE	0,0
 _ppuByteToWrite:
 		.BYTE	0
 byte_1F: ; ppuDMAList{low}
@@ -87,7 +85,7 @@ byte_2D:
 		.BYTE	0
 byte_2E:
 		.BYTE	0
-byte_2F:
+_location_type:
 		.BYTE	0
 byte_30: ; "playerMapX"
 		.BYTE	0
@@ -336,7 +334,7 @@ byte_A1:
 byte_A2:
 		.BYTE	0
 		.BYTE	0
-_rand_iterations_counter: ;RNG related
+_rand_iterations_counter:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -358,9 +356,9 @@ byte_B0:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-_pak_data_ptr:
+_tmp_ptrB4:
 		.BYTE	0,0
-_tmp_pak_data_bank:
+_tmp_varB6:
 		.BYTE	0
 word_B7:
 		.BYTE	0,0
@@ -1146,12 +1144,8 @@ _enemy_roster_index_list:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8 enemyGroupCount[4]
-byte_571:
-		.BYTE	0
-byte_572:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+_enemy_group_count:
+		.BYTE	0,0,0,0
 ;----------------------------------------------
 byte_575:
 		.BYTE	0
@@ -1600,12 +1594,13 @@ byte_6DA:
 ; 00 is fast, 06 is slow. 07 is slowest, but messages will prompt you to wait between each print
 _cur_message_speed: ;6DD
 		.BYTE	0
-;----------------------------------------------
-byte_6DE:
+_world_map_step_rand:				; never used in any part of the game, just randomly changes
 		.BYTE	0
-byte_6DF:
-		.BYTE	0
-byte_6E0:
+_world_map_steps_count:				; every step on the map increases this counter
+		.BYTE	0					; as well as change the rand value above.
+									; steps count up to $CB, then wrap around
+									; the day is in range $00..$78, the rest is a night.
+_current_pc_status_pal_value:
 		.BYTE	0
 _npc_anim_script_idx:
 		.BYTE	0
@@ -1646,78 +1641,69 @@ _apu_chan_ret_pc:
 byte_6FF:
 		.BYTE	0
 ;----------------------------------------------
-; u8 pc.level[4] - LEVEL stat for 4 PCs
-byte_700:
+; u8[] pc.level - LEVEL stat for 4 PCs
+;
+_players_level:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.str[4] - STR stat for 4 PCs
-byte_704:
+; u8[] pc.str - STR stat for 4 PCs
+;
+_players_strength:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.agi[4] - AGI stat for 4 PCs
-byte_708:
+; u8[] pc.agi - AGI stat for 4 PCs
+;
+_players_agility:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.int[4] - INT stat for 4 PCs
-byte_70C:
+; u8[] pc.int - INT stat for 4 PCs
+;
+_players_intelligence:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.luck[4] - LUCK stat for 4 PCs
-byte_710:
+; u8[] pc.luck - LUCK stat for 4 PCs
+;
+_players_luck:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.vit[4] - VIT stat for 4 PCs
-byte_714:
+; u8[] pc.vit - VIT stat for 4 PCs
+;
+_players_vitality:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8 pc.classgender[4] - class and gender flag for 4 PCs
+; u8[] pc.classgender - class and gender flag for 4 PCs
 ; classes: (hero,wizard,pilgrim,sage,soldier,merchant,fighter,goof-off)
-byte_718:
+;
+_players_class_gender:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u16 pc.hp[4] - HP for 4 PCs
-byte_71C: ;
-		.BYTE	0
-byte_71D:
-		.BYTE	0,0,0,0,0,0,0
+; u16[] pc.hp - HP for 4 PCs
+;
+_players_hp:
+		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16 pc.mhp[4] - MHP for 4 PCs
-byte_724:
-		.BYTE	0
-byte_725:
-		.BYTE	0,0,0,0,0,0,0
+; u16[] pc.mhp - MHP for 4 PCs
+;
+_players_max_hp:
+		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16 pc.mp[4] - MP for 4 PCs
-byte_72C:
-		.BYTE	0
-byte_72D:
-		.BYTE	0,0,0,0,0,0,0
+; u16[] pc.mp - MP for 4 PCs
+;
+_players_mp:
+		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16 pc.mmp[4] - MMP for 4 PCs
-byte_734:
-		.BYTE	0
-byte_735:
-		.BYTE	0,0,0,0,0,0,0
+; u16[] pc.mmp - MMP for 4 PCs
+;
+_players_max_mp:
+		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16 pc.status[4] - status for 4 PCs
+; u16[] pc.status - Status for 4 PCs
 ; ........ .....R..
 ; R - Affects enemy spell/breath damage reductions. if set, reductions don't apply (for spells)? Maybe this prevents double reductions from protection spells.
-byte_73C:
-		.BYTE	0
-byte_73D:
-		.BYTE	0
-byte_73E:
-		.BYTE	0
-byte_73F:
-		.BYTE	0
-byte_740:
-		.BYTE	0
-byte_741:
-		.BYTE	0
-byte_742:
-		.BYTE	0
-byte_743:
-		.BYTE	0
+;
+_players_status:
+		.WORD	0,0,0,0
+
 ;----------------------------------------------
 ; u24 pc.exp[4] - EXP stat for 4 PCs
 byte_744:
@@ -1785,36 +1771,11 @@ byte_75C:
 		.BYTE	0
 		.BYTE	0
 ;----------------------------------------------
-; u8 PC.inventory[4][8] - 8 entries for 4 PCs
-byte_77C:
-		.BYTE	0
-		.BYTE	0
-byte_77E:
-		.BYTE	0
-byte_77F:
-		.BYTE	0
-byte_780:
-		.BYTE	0
-byte_781:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+; u8[4][8] PC_inventory - 8 entries for 4 PCs
+_players_inventory_list:
+		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
@@ -4885,51 +4846,49 @@ byte_6B1F:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
-_sram_b0_s2_pc_store_hp:
+_sram_b0_s2_player_HP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s3:
+_sram_b0_s3_player_MAX_HP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s4:
+_sram_b0_s4_player_HP_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s5_pc_reduce_hp:
+_sram_b0_s5_player_HP_subtract:
 		.BYTE	0,0,0,0,0
-_sram_b0_s6:
+_sram_b0_s6_player_MP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s7:
+_sram_b0_s7_player_MAX_MP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s8:
+_sram_b0_s8_player_MP_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s9:
+_sram_b0_s9_player_MP_subtract:
 		.BYTE	0,0,0,0,0
-_sram_b0_sA:
+_sram_b0_sB_player_MP_consume:
 		.BYTE	0,0,0,0,0
-_sram_b0_sB:
-		.BYTE	0,0,0,0,0
-_sram_b0_sC_char_get_level:
+_sram_b0_sC_player_LV_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_sD:
 		.BYTE	0,0,0,0,0
-_sram_b0_sE:
+_sram_b0_sE_player_STATUS_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_sF:
 		.BYTE	0,0,0,0,0
 _sram_b0_s10:
 		.BYTE	0,0,0,0,0
-_sram_b0_s11:
+_sram_b0_s11_player_STR_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s12:
+_sram_b0_s12_player_AGI_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s13:
+_sram_b0_s13_player_VIT_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s14:
+_sram_b0_s14_player_INT_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s15:
+_sram_b0_s15_player_LUCK_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s16:
+_sram_b0_s16_player_ATK_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s17:
 		.BYTE	0,0,0,0,0
-_sram_b0_s18:
+_sram_b0_s18_player_DEF_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s19:
 		.BYTE	0,0,0,0,0
@@ -4941,7 +4900,7 @@ _sram_b0_s1C:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1D:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1E:
+_sram_b0_s1E_player_euipped_item_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1F:
 		.BYTE	0,0,0,0,0
@@ -4959,8 +4918,6 @@ _sram_b0_s25:
 		.BYTE	0,0,0,0,0
 _sram_b0_s26:
 		.BYTE	0,0,0,0,0
-_sram_b0_s27:
-		.BYTE	0,0,0,0,0
 _sram_b0_s28:
 		.BYTE	0,0,0,0,0
 _sram_b0_s29:
@@ -4969,13 +4926,11 @@ _sram_b0_s2A:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2B:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2C:
-		.BYTE	0,0,0,0,0
-_sram_b0_s2D:
+_sram_b0_s2C_player_CLASS_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2E:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2F:
+_sram_b0_s2F_player_gender_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s30:
 		.BYTE	0,0,0,0,0
@@ -5001,7 +4956,13 @@ _sram_b0_s3A:
 		.BYTE	0,0,0,0,0
 _sram_b0_s3B:
 		.BYTE	0,0,0,0,0
-_sram_bank0_select_ex:
+;_sram_b0_sA_player_MP_set_sero:
+		.BYTE	0,0,0,0,0
+;_sram_b0_s27:
+		.BYTE	0,0,0,0,0
+;_sram_b0_s2D
+		.BYTE	0,0,0,0,0
+;_sram_bank0_select_ex:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_6C70:
