@@ -1533,9 +1533,9 @@ loc_209FA:
 		STA		byte_CE
 		JSR		_sram_b0_s3_player_MAX_HP_read
 		LDA		word_4
-		STA		_players_hp
+		STA		_players_HP
 		LDA		word_4+1
-		STA		_players_hp+1
+		STA		_players_HP+1
 		FARX	_b0_s4F
 		FARX	_bC_s2F
 		RTS
@@ -2002,30 +2002,30 @@ loc_20D64:
 		AND		#$F8
 		ORA		byte_CF
 		STA		_players_class_gender,X
-		LSR		_players_strength,X
-		LSR		_players_agility,X
-		LSR		_players_intelligence,X
-		LSR		_players_luck,X
-		LSR		_players_vitality,X
+		LSR		_players_STR,X
+		LSR		_players_AGI,X
+		LSR		_players_INT,X
+		LSR		_players_LUCK,X
+		LSR		_players_VIT,X
 		TXA
 		ASL
 		TAX
-		LSR		_players_mp+1,X
-		ROR		_players_mp,X
-		LSR		_players_max_mp+1,X
-		ROR		_players_max_mp,X
-		LSR		_players_max_hp+1,X
-		ROR		_players_max_hp,X
-		LDA		_players_max_hp+1,X
-		STA		_players_hp+1,X
-		LDA		_players_max_hp,X
-		STA		_players_hp,X
+		LSR		_players_MP+1,X
+		ROR		_players_MP,X
+		LSR		_players_MMP+1,X
+		ROR		_players_MMP,X
+		LSR		_players_MHP+1,X
+		ROR		_players_MHP,X
+		LDA		_players_MHP+1,X
+		STA		_players_HP+1,X
+		LDA		_players_MHP,X
+		STA		_players_HP,X
 		LDX		byte_CE
 		JSR		sub_20DCE
 		LDA		#0
-		STA		byte_746,X
-		STA		byte_745,X
-		STA		byte_744,X
+		STA		_players_EXP+2,X
+		STA		_players_EXP+1,X
+		STA		_players_EXP,X
 		LDA		byte_CE
 		ASL
 		ASL

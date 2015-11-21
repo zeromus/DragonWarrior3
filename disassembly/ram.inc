@@ -1643,77 +1643,73 @@ _apu_chan_ret_pc:
 byte_6FF:
 		.BYTE	0
 ;----------------------------------------------
-; u8[] pc.level - LEVEL stat for 4 PCs
+; u8[4] - LEVEL stat for 4 PCs
 ;
 _players_level:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.str - STR stat for 4 PCs
+; u8[4] - STR stat for 4 PCs
 ;
-_players_strength:
+_players_STR:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.agi - AGI stat for 4 PCs
+; u8[4] - AGI stat for 4 PCs
 ;
-_players_agility:
+_players_AGI:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.int - INT stat for 4 PCs
+; u8[4] - INT stat for 4 PCs
 ;
-_players_intelligence:
+_players_INT:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.luck - LUCK stat for 4 PCs
+; u8[4] - LUCK stat for 4 PCs
 ;
-_players_luck:
+_players_LUCK:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.vit - VIT stat for 4 PCs
+; u8[4] - VIT stat for 4 PCs
 ;
-_players_vitality:
+_players_VIT:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.classgender - class and gender flag for 4 PCs
-; classes: (hero,wizard,pilgrim,sage,soldier,merchant,fighter,goof-off)
+; u8[4] - class and gender flag for 4 players
+; see class_ids.inc for meaning of classes. please write where the gender was?
 ;
 _players_class_gender:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.hp - HP for 4 PCs
+; u16[4] - HP for 4 players
 ;
-_players_hp:
+_players_HP:
 		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mhp - MHP for 4 PCs
+; u16[4] - MHP for 4 players
 ;
-_players_max_hp:
+_players_MHP:
 		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mp - MP for 4 PCs
+; u16[4] - MP for 4 players
 ;
-_players_mp:
+_players_MP:
 		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.mmp - MMP for 4 PCs
+; u16[4] - MMP for 4 players
 ;
-_players_max_mp:
+_players_MMP:
 		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.status - Status for 4 PCs
+; u16[] pc.status - Status for 4 players
 ; ........ .....R..
 ; R - Affects enemy spell/breath damage reductions. if set, reductions don't apply (for spells)? Maybe this prevents double reductions from protection spells.
 ;
 _players_status:
 		.WORD	0,0,0,0
-
 ;----------------------------------------------
-; u24 pc.exp[4] - EXP stat for 4 PCs
-byte_744:
-		.BYTE	0
-byte_745:
-		.BYTE	0
-byte_746:
-		.BYTE	0,0,0,0,0,0,0,0,0,0
+; u24[4] - EXP stat for 4 players
+;
+_players_EXP:
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u24 pc.returnlist[4] - ? ? dont remember what this was
 byte_750:
@@ -1738,54 +1734,20 @@ byte_75A:
 		.BYTE	0
 		.BYTE	0
 ;----------------------------------------------
-; u8 pc.name[4][8] - 8 character name for 4 PCs
-byte_75C:
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+; u8[4][8] - 8 character name for 4 players
+;
+_players_name:
+		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8[4][8] PC_inventory - 8 entries for 4 PCs
 _players_inventory_list:
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
-		.BYTE	0
+		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 byte_79C:
 		.BYTE	0
@@ -2447,6 +2409,7 @@ byte_61C8:
 		.BYTE	0
 		.BYTE	0
 		.BYTE	0
+; Hmmm what's the difference between this and players_name? is it the roster in the tavern?
 _character_names:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -4685,19 +4648,17 @@ byte_6A7B:
 byte_6A9B:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u8[] pc.agi - AGI (i think) cached for 4 PCs (modified realtime values e.g by spells and effects?)
-byte_6A9F:
+; u8[4] - AGI realtime value cached for 4 players (modified realtime by spells and effects)
+_players_rAGI:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.def - DEF cached for 4 PCs (modified realtime values e.g by spells and effects?)
-_u16_pc_defs:
+; u16[4] - DEF realtime value cached for 4 players (modified realtime by spells and effects)
+_players_rDEF:
 		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; u16[] pc.atk - ATK cached for 4 PCs (modified realtime values e.g by spells and effects?)
-byte_6AAB:
-		.BYTE	0
-byte_6AAC:
-		.BYTE	0,0,0,0,0,0,0
+; u16[4] - DEF realtime value cached for 4 players (modified realtime by spells and effects)
+_players_rATK:
+		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 byte_6AB3:
 		.BYTE	0

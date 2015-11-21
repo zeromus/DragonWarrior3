@@ -597,21 +597,21 @@ loc_1415BE:
 		LDA		_players_status,Y
 		AND		_players_status+1,Y
 		BPL		loc_1415EF
-		LDA		_players_max_hp,Y
+		LDA		_players_MHP,Y
 		STA		byte_11
-		LDA		_players_max_hp+1,Y
+		LDA		_players_MHP+1,Y
 		STA		_tmp12
 		LSR		_tmp12
 		ROR		byte_11
 		LSR		_tmp12
 		ROR		byte_11
-		LDA		_players_hp+1,Y
+		LDA		_players_HP+1,Y
 		CMP		_tmp12
 		BEQ		loc_1415E6
 		BCC		loc_1415ED
 		BCS		loc_1415EF
 loc_1415E6:
-		LDA		_players_hp,Y
+		LDA		_players_HP,Y
 		CMP		byte_11
 		BCS		loc_1415EF
 loc_1415ED:
@@ -6571,13 +6571,13 @@ loc_143E88:
 		TAY
 		SEC
 		LDA		byte_6A3F,Y
-		SBC		byte_744,Y
+		SBC		_players_EXP,Y
 		STA		byte_63F
 		LDA		byte_6A40,Y
-		SBC		byte_745,Y
+		SBC		_players_EXP+1,Y
 		STA		byte_640
 		LDA		byte_6A41,Y
-		SBC		byte_746,Y
+		SBC		_players_EXP+2,Y
 		STA		byte_641
 		LDA		#1
 		JSR		sub_143EBD

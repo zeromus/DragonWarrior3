@@ -1625,9 +1625,9 @@ _b0_s2_player_HP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_hp,X
+		LDA		_players_HP,X
 		STA		word_4
-		LDA		_players_hp+1,X
+		LDA		_players_HP+1,X
 		STA		word_4+1
 		RTS
 
@@ -1641,9 +1641,9 @@ _b0_s3_player_MAX_HP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		STA		word_4
-		LDA		_players_max_hp+1,X
+		LDA		_players_MHP+1,X
 		STA		word_4+1
 		RTS
 
@@ -1655,33 +1655,33 @@ _b0_s4_player_HP_add:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_hp,X
+		LDA		_players_HP,X
 		CLC
 		ADC		byte_CF
 		STA		word_4
-		LDA		_players_hp+1,X
+		LDA		_players_HP+1,X
 		ADC		byte_D0
 		BCS		loc_92ED
 		STA		word_4+1
-		LDA		_players_max_hp+1,X
+		LDA		_players_MHP+1,X
 		CMP		word_4+1
 		BEQ		loc_92E6
 		BCS		loc_92F7
 		BCC		loc_92ED
 loc_92E6:
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		CMP		word_4
 		BCS		loc_92F7
 loc_92ED:
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		STA		word_4
-		LDA		_players_max_hp+1,X
+		LDA		_players_MHP+1,X
 		STA		word_4+1
 loc_92F7:
 		LDA		word_4
-		STA		_players_hp,X
+		STA		_players_HP,X
 		LDA		word_4+1
-		STA		_players_hp+1,X
+		STA		_players_HP+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1693,11 +1693,11 @@ _b0_s5_player_HP_subtract:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_hp,X
+		LDA		_players_HP,X
 		SEC
 		SBC		byte_CF
 		STA		word_4
-		LDA		_players_hp+1,X
+		LDA		_players_HP+1,X
 		SBC		byte_D0
 		STA		word_4+1
 		BCS		loc_931D
@@ -1706,9 +1706,9 @@ _b0_s5_player_HP_subtract:
 		STA		word_4+1
 loc_931D:
 		LDA		word_4
-		STA		_players_hp,X
+		STA		_players_HP,X
 		LDA		word_4+1
-		STA		_players_hp+1,X
+		STA		_players_HP+1,X
 		LDA		word_4
 		ORA		word_4+1
 		RTS
@@ -1722,9 +1722,9 @@ _b0_s6_player_MP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_mp,X
+		LDA		_players_MP,X
 		STA		word_4
-		LDA		_players_mp+1,X
+		LDA		_players_MP+1,X
 		STA		word_4+1
 		ORA		word_4
 		RTS
@@ -1738,9 +1738,9 @@ _b0_s7_player_MAX_MP_read:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_max_mp,X
+		LDA		_players_MMP,X
 		STA		word_4
-		LDA		_players_max_mp+1,X
+		LDA		_players_MMP+1,X
 		STA		word_4+1
 		RTS
 
@@ -1752,33 +1752,33 @@ _b0_s8_player_MP_add:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_mp,X
+		LDA		_players_MP,X
 		CLC
 		ADC		byte_CF
 		STA		word_4
-		LDA		_players_mp+1,X
+		LDA		_players_MP+1,X
 		ADC		byte_D0
 		BCS		loc_9373
 		STA		word_4+1
-		LDA		_players_max_mp+1,X
+		LDA		_players_MMP+1,X
 		CMP		word_4+1
 		BEQ		loc_936C
 		BCS		loc_937D
 		BCC		loc_9373
 loc_936C:
-		LDA		_players_max_mp,X
+		LDA		_players_MMP,X
 		CMP		word_4
 		BCS		loc_937D
 loc_9373:
-		LDA		_players_max_mp,X
+		LDA		_players_MMP,X
 		STA		word_4
-		LDA		_players_max_mp+1,X
+		LDA		_players_MMP+1,X
 		STA		word_4+1
 loc_937D:
 		LDA		word_4
-		STA		_players_mp,X
+		STA		_players_MP,X
 		LDA		word_4+1
-		STA		_players_mp+1,X
+		STA		_players_MP+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1792,25 +1792,25 @@ _b0_s9_player_MP_subtract:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		_players_mp,X
+		LDA		_players_MP,X
 		SEC
 		SBC		byte_CF
 		STA		word_4
-		LDA		_players_mp+1,X
+		LDA		_players_MP+1,X
 		SBC		byte_D0
 		STA		word_4+1
 		BCS		loc_93A9
-		LDA		_players_mp,X
+		LDA		_players_MP,X
 		STA		word_4
-		LDA		_players_mp+1,X
+		LDA		_players_MP+1,X
 		STA		word_4+1
 		CLC
 		RTS
 loc_93A9:
 		LDA		word_4
-		STA		_players_mp,X
+		STA		_players_MP,X
 		LDA		word_4+1
-		STA		_players_mp+1,X
+		STA		_players_MP+1,X
 		SEC
 		RTS
 
@@ -1826,8 +1826,8 @@ _b0_sA_player_MP_set_sero:
 		ASL
 		TAX
 		LDA		#0
-		STA		_players_mp,X
-		STA		_players_mp+1,X
+		STA		_players_MP,X
+		STA		_players_MP+1,X
 		STA		word_4
 		STA		word_4+1
 		RTS
@@ -1938,7 +1938,7 @@ _b0_sF:
 		TAY
 		LDX		#0
 loc_9450:
-		LDA		byte_75C,Y
+		LDA		_players_name,Y
 		STA		word_4,X
 		INY
 		INX
@@ -1977,7 +1977,7 @@ loc_9479:
 ;"sub_calc_EffSTR"
 _b0_s11_player_STR_read:
 		LDX		byte_CE
-		LDA		_players_strength,X 	; reference STR stat
+		LDA		_players_STR,X 	; reference STR stat
 		STA		word_4
 		RTS
 
@@ -1994,7 +1994,7 @@ _b0_s12_player_AGI_read:
 		BEQ		.armband_equipped
 .no_armband_equipped:
 		LDX		byte_CE 					; load target player
-		LDA		_players_agility,X 			; read AGI stat
+		LDA		_players_AGI,X 			; read AGI stat
 loc_9496:									
 		STA		word_4						; store return value
 locret_9498:
@@ -2012,7 +2012,7 @@ locret_9498:
 ;"PC_calc_EffVIT"
 _b0_s13_player_VIT_read:
 		LDX		byte_CE
-		LDA		_players_vitality,X 		; reference VIT stat
+		LDA		_players_VIT,X 		; reference VIT stat
 		STA		word_4
 		RTS
 
@@ -2022,7 +2022,7 @@ _b0_s13_player_VIT_read:
 ;"PC_calc_EffINT"
 _b0_s14_player_INT_read:
 		LDX		byte_CE 					; load "target"
-		LDA		_players_intelligence,X
+		LDA		_players_INT,X
 		STA		word_4
 		RTS
 
@@ -2037,7 +2037,7 @@ _b0_s15_player_LUCK_read:
 		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
 		LDX		byte_CE 					; "target"
-		LDA		_players_luck,X				; load pc.luck for PC=target
+		LDA		_players_LUCK,X				; load pc.luck for PC=target
 loc_94C2:
 		STA		word_4
 		LDA		#0
@@ -2126,9 +2126,9 @@ _b0_s17:
 		AND		#3
 		ASL
 		TAX
-		LDA		byte_6AAB,X
+		LDA		_players_rATK,X
 		STA		word_4
-		LDA		byte_6AAC,X
+		LDA		_players_rATK+1,X
 		STA		word_4+1
 		PLA
 		TAX
@@ -2186,7 +2186,7 @@ _b0_s19:
 		JSR		sub_9C55
 		LDY		#0
 loc_958D:
-		LDA		byte_744,X
+		LDA		_players_EXP,X
 		STA		word_4,Y
 		INX
 		INY
@@ -2234,7 +2234,7 @@ loc_95D9:
 		LDY		#0
 loc_95E0:
 		LDA		word_4,Y
-		STA		byte_744,X
+		STA		_players_EXP,X
 		INX
 		INY
 		CPY		#3
@@ -3257,14 +3257,14 @@ sub_9B78:
 ; shortcuts to PC stats tables and other unknown things
 off_9B85:
 		.WORD	_players_level
-		.WORD	_players_hp
-		.WORD	byte_744 ; pc.exp
-		.WORD	byte_75C ; pc.name
+		.WORD	_players_HP
+		.WORD	_players_EXP ; pc.exp
+		.WORD	_players_name ; pc.name
 		.WORD	byte_6A4B
 		.WORD	byte_7C1
 		.WORD	byte_B0
 		.WORD	byte_6A9B ; pc.stuff
-		.WORD	_u16_pc_defs
+		.WORD	_players_rDEF
 		.WORD	byte_540 ; some battle related table
 byte_9B99:
 		.BYTE	  1,  2,  3,  8,  1,  1,  1,  1,  2,  1
@@ -4378,14 +4378,14 @@ loc_A2A0:
 		LDA		#$80
 		STA		_players_status,Y
 		STA		_players_status+1,Y
-		LDA		_players_max_hp,Y
-		STA		_players_hp,Y
-		LDA		_players_max_hp+1,Y
-		STA		_players_hp+1,Y
-		LDA		_players_max_mp,Y
-		STA		_players_mp,Y
-		LDA		_players_max_mp+1,Y
-		STA		_players_mp+1,Y
+		LDA		_players_MHP,Y
+		STA		_players_HP,Y
+		LDA		_players_MHP+1,Y
+		STA		_players_HP+1,Y
+		LDA		_players_MMP,Y
+		STA		_players_MP,Y
+		LDA		_players_MMP+1,Y
+		STA		_players_MP+1,Y
 		LSR		byte_7BE
 		ROR		byte_7BD
 		ROR		byte_7BC
@@ -4478,19 +4478,19 @@ loc_A393:
 		ASL
 		ADC		byte_51
 		TAX
-		LDA		byte_746,X
+		LDA		_players_EXP+2,X
 		CMP		byte_6A41,X
 		BCC		loc_A3CE
 		BEQ		loc_A3BA
 		BCS		sub_A3FB
 loc_A3BA:
-		LDA		byte_745,X
+		LDA		_players_EXP+1,X
 		CMP		byte_6A40,X
 		BCC		loc_A3CE
 		BEQ		loc_A3C6
 		BCS		sub_A3FB
 loc_A3C6:
-		LDA		byte_744,X
+		LDA		_players_EXP,X
 		CMP		byte_6A3F,X
 		BCS		sub_A3FB
 loc_A3CE:
@@ -4633,13 +4633,13 @@ loc_A4D2:
 		LDX		#3
 		JSR		sub_A5A4
 		JSR		sub_A8A8
-		LDA		_players_max_hp+1,X
+		LDA		_players_MHP+1,X
 		CMP		word_4+1
 		BCC		loc_A4FA
 		BEQ		loc_A4EA
 		BCS		loc_A4F1
 loc_A4EA:
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		CMP		word_4
 		BCC		loc_A4FA
 loc_A4F1:
@@ -4663,10 +4663,10 @@ loc_A50D:
 		JSR		sub_A8A8
 		LDA		byte_63F
 		CLC
-		ADC		_players_max_hp,X
-		STA		_players_max_hp,X
+		ADC		_players_MHP,X
+		STA		_players_MHP,X
 		BCC		loc_A522
-		INC		_players_max_hp+1,X
+		INC		_players_MHP+1,X
 loc_A522:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
@@ -4681,13 +4681,13 @@ loc_A52C:
 		LDX		#5
 		JSR		sub_A5A4
 		JSR		sub_A8A8
-		LDA		_players_max_mp+1,X
+		LDA		_players_MMP+1,X
 		CMP		word_4+1
 		BCC		loc_A55B
 		BEQ		loc_A54B
 		BCS		loc_A552
 loc_A54B:
-		LDA		_players_max_mp,X
+		LDA		_players_MMP,X
 		CMP		word_4
 		BCC		loc_A55B
 loc_A552:
@@ -4711,10 +4711,10 @@ loc_A56E:
 		JSR		sub_A8A8
 		LDA		byte_63F
 		CLC
-		ADC		_players_max_mp,X
-		STA		_players_max_mp,X
+		ADC		_players_MMP,X
+		STA		_players_MMP,X
 		BCC		loc_A583
-		INC		_players_max_mp+1,X
+		INC		_players_MMP+1,X
 loc_A583:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
@@ -4805,7 +4805,7 @@ loc_A604:
 		LDY		#2
 		LDX		byte_51
 		SEC
-		LDA		_players_intelligence,X
+		LDA		_players_INT,X
 		SBC		word_4
 		CLC
 		ADC		#$F
@@ -4941,11 +4941,11 @@ off_A702:
 		.WORD	byte_79C
 		.WORD	byte_79C
 off_A70C:
-		.WORD	_players_strength
-		.WORD	_players_agility
-		.WORD	_players_vitality
-		.WORD	_players_luck
-		.WORD	_players_intelligence
+		.WORD	_players_STR
+		.WORD	_players_AGI
+		.WORD	_players_VIT
+		.WORD	_players_LUCK
+		.WORD	_players_INT
 off_A716:
 		.WORD	byte_A71C
 		.WORD	byte_A71F
@@ -6343,9 +6343,9 @@ loc_B196:
 ; <wait> "The Maximum HP goes up 2 points!". But with @704, this should be the strength?
 sub_B198:
 		LDX		byte_45 ; i called this "itemSelectedInBattle" but clearly not
-		LDA		_players_strength,X
+		LDA		_players_STR,X
 		JSR		sub_B1D9
-		STA		_players_strength,X
+		STA		_players_STR,X
 		SEC
 		RTS
 
@@ -6353,36 +6353,36 @@ sub_B198:
 ; <wait> "The Maximum HP goes up 2 points!".  But with @708, this should be the strength?
 sub_B1A5:
 		LDX		byte_45
-		LDA		_players_agility,X
+		LDA		_players_AGI,X
 		JSR		sub_B1D9
-		STA		_players_agility,X
+		STA		_players_AGI,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1B2:
 		LDX		byte_45
-		LDA		_players_intelligence,X
+		LDA		_players_INT,X
 		JSR		sub_B1D9
-		STA		_players_intelligence,X
+		STA		_players_INT,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1BF:
 		LDX		byte_45
-		LDA		_players_luck,X
+		LDA		_players_LUCK,X
 		JSR		sub_B1D9
-		STA		_players_luck,X
+		STA		_players_LUCK,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B1CC:
 		LDX		byte_45
-		LDA		_players_vitality,X
+		LDA		_players_VIT,X
 		JSR		sub_B1D9
-		STA		_players_vitality,X
+		STA		_players_VIT,X
 		SEC
 		RTS
 
@@ -6420,11 +6420,11 @@ sub_B1F6:
 		ASL
 		TAX
 		CLC
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		ADC		word_4
-		STA		_players_max_hp,X
+		STA		_players_MHP,X
 		BCC		loc_B212
-		INC		_players_max_hp+1,X
+		INC		_players_MHP+1,X
 loc_B212:
 		LDA		word_4
 		JSR		sub_B2AD

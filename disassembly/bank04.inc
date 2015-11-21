@@ -266,7 +266,7 @@ loc_68185:
 		STY		byte_CE
 		TYA
 		PHA
-		LDA		byte_6A9F,Y
+		LDA		_players_rAGI,Y
 		STA		word_4
 		JSR		sub_68201
 		PLA
@@ -397,15 +397,15 @@ loc_6825C:
 		JSR		_sram_b0_s12_player_AGI_read
 		LDX		byte_51
 		LDA		word_4
-		STA		byte_6A9F,X
+		STA		_players_rAGI,X
 		JSR		_sram_b0_s18_player_DEF_read
 		LDA		byte_51
 		ASL
 		TAX
 		LDA		word_4
-		STA		_u16_pc_defs,X
+		STA		_players_rDEF,X
 		LDA		word_4+1
-		STA		_u16_pc_defs+1,X
+		STA		_players_rDEF+1,X
 		LDA		byte_51
 		ASL
 		TAX
@@ -420,9 +420,9 @@ loc_6825C:
 		ASL
 		TAX
 		LDA		word_4
-		STA		byte_6AAB,X
+		STA		_players_rATK,X
 		LDA		word_4+1
-		STA		byte_6AAC,X
+		STA		_players_rATK+1,X
 		LDX		byte_51
 		INX
 		CPX		#4
@@ -2779,19 +2779,19 @@ loc_691E9:
 		JSR		sub_6A84F
 		BCS		loc_6921A
 		JSR		_sram_b0_s12_player_AGI_read
-		LDA		byte_6A9F,X
+		LDA		_players_rAGI,X
 		CMP		word_4
 		BCC		loc_69204
 		LDA		word_4
 loc_69204:
 		PHA
-		LDA		byte_6A9F,X
+		LDA		_players_rAGI,X
 		SEC
 		SBC		word_4
 		BCS		loc_6920F
 		LDA		#0
 loc_6920F:
-		STA		byte_6A9F,X
+		STA		_players_rAGI,X
 		PLA
 		JSR		sub_6B2CF
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3E
@@ -3340,9 +3340,9 @@ _bs_pcAction_00_attack:
 		AND		#$40
 		BNE		loc_695DE
 		LDA		word_4
-		STA		byte_6AAB,X
+		STA		_players_rATK,X
 		LDA		word_4+1
-		STA		byte_6AAC,X
+		STA		_players_rATK+1,X
 loc_695DE:
 		JSR		_sram_b0_s1E_player_euipped_item_read
 		LDA		word_4
@@ -4123,15 +4123,15 @@ sub_69B34:
 loc_69B3E:
 		JSR		sub_6B3D2
 		JSR		_sram_b0_s12_player_AGI_read
-		LDA		byte_6A9F,X
+		LDA		_players_rAGI,X
 		ADC		word_4
 		BCC		loc_69B54
 		LDA		#$FF
-		SBC		byte_6A9F,X
+		SBC		_players_rAGI,X
 		STA		word_4
 		LDA		#$FF
 loc_69B54:
-		STA		byte_6A9F,X
+		STA		_players_rAGI,X
 		LDA		word_4
 		JSR		sub_6B2CF
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
@@ -4637,7 +4637,7 @@ sub_69ECB:
 		STA		byte_D2
 		TAX
 		LDA		#$64
-		STA		byte_6A9F,X
+		STA		_players_rAGI,X
 		TXA
 		ASL
 		TAX
@@ -4645,13 +4645,13 @@ sub_69ECB:
 		ORA		#$40
 		STA		_players_status,X
 		LDA		#$2C
-		STA		byte_6AAB,X
+		STA		_players_rATK,X
 		LDA		#1
-		STA		byte_6AAC,X
+		STA		_players_rATK+1,X
 		LDA		#0
-		STA		_u16_pc_defs+1,X
+		STA		_players_rDEF+1,X
 		LDA		#$C8
-		STA		_u16_pc_defs,X
+		STA		_players_rDEF,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$47
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5048,7 +5048,7 @@ loc_6A198:
 		LDA		_players_status,Y
 		BPL		loc_6A1A9
 		LDA		byte_56
-		CMP		_players_hp+1,Y
+		CMP		_players_HP+1,Y
 		BCC		loc_6A1B1
 		BEQ		loc_6A1C0
 loc_6A1A9:
@@ -5058,15 +5058,15 @@ loc_6A1A9:
 		LDX		byte_57
 		RTS
 loc_6A1B1:
-		LDA		_players_hp,Y
+		LDA		_players_HP,Y
 		STA		byte_55
-		LDA		_players_hp+1,Y
+		LDA		_players_HP+1,Y
 		STA		byte_56
 		STX		byte_57
 		JMP		loc_6A1A9
 loc_6A1C0:
 		LDA		byte_55
-		CMP		_players_hp,Y
+		CMP		_players_HP,Y
 		BCS		loc_6A1A9
 		BCC		loc_6A1B1
 
@@ -5188,8 +5188,8 @@ loc_6A282:
 		ORA		word_4
 		ORA		#$10
 		STA		byte_6A9B,X
-		LDA		_players_agility,Y
-		STA		byte_6A9F,X
+		LDA		_players_AGI,Y
+		STA		_players_rAGI,X
 		LDA		#5
 		STA		byte_6A4B,X
 		STY		byte_CE
@@ -5200,18 +5200,18 @@ loc_6A282:
 		PLA
 		TAX
 		LDA		word_4
-		STA		_u16_pc_defs,X
+		STA		_players_rDEF,X
 		LDA		word_4+1
-		STA		_u16_pc_defs+1,X
+		STA		_players_rDEF+1,X
 		TXA
 		PHA
 		JSR		_sram_b0_s16_player_ATK_read
 		PLA
 		TAX
 		LDA		word_4
-		STA		byte_6AAB,X
+		STA		_players_rATK,X
 		LDA		word_4+1
-		STA		byte_6AAC,X
+		STA		_players_rATK+1,X
 		RTS
 loc_6A2C5:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
@@ -5844,10 +5844,10 @@ loc_6A6E9:
 		TAX
 		LDA		byte_47
 		BEQ		loc_6A708
-		LDA		_u16_pc_defs+1,X
+		LDA		_players_rDEF+1,X
 		LSR
 		STA		word_4+1
-		LDA		_u16_pc_defs,X
+		LDA		_players_rDEF,X
 		ROR
 		STA		word_4
 loc_6A708:
@@ -6014,18 +6014,18 @@ loc_6A813:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A823:
-		LDA		_u16_pc_defs,X
+		LDA		_players_rDEF,X
 		STA		word_6
-		LDA		_u16_pc_defs+1,X
+		LDA		_players_rDEF+1,X
 		STA		word_6+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A82E:
 		LDA		byte_8
-		STA		_u16_pc_defs,X
+		STA		_players_rDEF,X
 		LDA		byte_9
-		STA		_u16_pc_defs+1,X
+		STA		_players_rDEF+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6681,9 +6681,9 @@ loc_6ABAE:
 loc_6ABC3:
 		LDA		byte_CE
 		ASL
-		LDA		_u16_pc_defs,X
+		LDA		_players_rDEF,X
 		STA		byte_59
-		LDA		_u16_pc_defs+1,X
+		LDA		_players_rDEF+1,X
 		STA		byte_5A
 		LDA		byte_CE
 		PHA
@@ -6763,7 +6763,7 @@ sub_6AC36:
 		JSR		sub_6B2B3
 		LDA		#$FF
 		SEC
-		SBC		_players_intelligence,X
+		SBC		_players_INT,X
 		JSR		_b4_sF
 		LSR
 		LSR
@@ -6910,9 +6910,9 @@ sub_6AD2B:
 ; build offset into array and load PC defence
 		ASL
 		TAX
-		LDA		_u16_pc_defs,X
+		LDA		_players_rDEF,X
 		STA		word_4
-		LDA		_u16_pc_defs+1,X
+		LDA		_players_rDEF+1,X
 loc_6AD41:
 		STA		word_4+1
 ; divide pDEF by 2
@@ -7256,45 +7256,45 @@ sub_6AF65:
 sub_6AF6D:
 		JSR		sub_6B2B3
 		TAX
-		LDA		_players_strength,X
+		LDA		_players_STR,X
 		JSR		sub_6AFB3
-		STA		_players_strength,X
+		STA		_players_STR,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF7B:
 		JSR		sub_6B2B3
 		TAX
-		LDA		_players_agility,X
+		LDA		_players_AGI,X
 		JSR		sub_6AFB3
-		STA		_players_agility,X
+		STA		_players_AGI,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF89:
 		JSR		sub_6B2B3
 		TAX
-		LDA		_players_intelligence,X
+		LDA		_players_INT,X
 		JSR		sub_6AFB3
-		STA		_players_intelligence,X
+		STA		_players_INT,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF97:
 		JSR		sub_6B2B3
 		TAX
-		LDA		_players_luck,X
+		LDA		_players_LUCK,X
 		JSR		sub_6AFB3
-		STA		_players_luck,X
+		STA		_players_LUCK,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFA5:
 		JSR		sub_6B2B3
 		TAX
-		LDA		_players_vitality,X
+		LDA		_players_VIT,X
 		JSR		sub_6AFB3
-		STA		_players_vitality,X
+		STA		_players_VIT,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7329,11 +7329,11 @@ sub_6AFD2:
 		ASL
 		TAX
 		CLC
-		LDA		_players_max_hp,X
+		LDA		_players_MHP,X
 		ADC		word_4
-		STA		_players_max_hp,X
+		STA		_players_MHP,X
 		BCC		loc_6AFEF
-		INC		_players_max_hp+1,X
+		INC		_players_MHP+1,X
 loc_6AFEF:
 		LDA		word_4
 		JSR		sub_6B2CF
@@ -9357,19 +9357,19 @@ sub_6BBDD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BBE4:
-		LDA		_u16_pc_defs,Y
-		ORA		_u16_pc_defs+1,Y
+		LDA		_players_rDEF,Y
+		ORA		_players_rDEF+1,Y
 		JMP		sub_6BBF9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BBED:
-		LDA		byte_6A9F,X
+		LDA		_players_rAGI,X
 		JMP		sub_6BBF9
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BBF3:
-		LDA		_players_mp,Y
-		ORA		_players_mp+1,Y
+		LDA		_players_MP,Y
+		ORA		_players_MP+1,Y
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BBF9:
