@@ -6,6 +6,7 @@ SAFE_STUB_ORG		=   $BFD8
 
 ; == FONTS ==
 
+_nulltile = $00
 ___ = $50
 _  = $60
 __ = $61
@@ -92,6 +93,8 @@ _str = $6B
 _dot = $6C
 _que = $6F
 _exc = $70
+; when textbox is waiting for user to scroll
+_downarrow = $74
 ; colon
 _col = $75
 ; dot dot

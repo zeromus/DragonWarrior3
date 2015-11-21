@@ -505,7 +505,6 @@ loc_1742B3:
 ; =============== S U B	R O U T	I N E =======================================
 ; wait for ppu queue is empty, then set ppu queue flush request flag
 ; 
-;"sub_unk_vbl_ntbuf_flush"
 _ppu_set_dequeue_flag:
 		LDA		#4
 		AND		_nmi_flags
@@ -518,17 +517,15 @@ _ppu_set_dequeue_flag:
 ; =============== S U B	R O U T	I N E =======================================
 ; sets a tile value A to screen at coords $temp16 (accomodating scroll)
 ;
-;"printChar"
 _print_char:
 		STA		_ppuByteToWrite
 		JSR		_ppu_calc_nt_offset
 		JMP		_ppu_queue_tile
 
 ; =============== S U B	R O U T	I N E =======================================
-; calculates an NT addr into u16_1f from temp16 based on current scroll parameters
+; calculates an NT addr into u16_1f from u16_4 based on current scroll parameters
 ; and outputs a good PPU address at $1F-$20
 ;
-;"sub_printChar_calcNTAddr"
 _ppu_calc_nt_offset:
 		LDA		_ppu_ctrl_shadow
 		ASL
