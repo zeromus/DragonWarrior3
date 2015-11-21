@@ -2894,9 +2894,9 @@ off_B3285:
 		.WORD	byte_62AA
 off_B328F:
 		.WORD	_players_level
-		.WORD	_players_hp
-		.WORD	byte_744
-		.WORD	byte_75C
+		.WORD	_players_HP
+		.WORD	_players_EXP
+		.WORD	_players_name
 		.WORD	byte_79C
 byte_B3299:
 		.BYTE	  7,  5,  2,  2,  1
