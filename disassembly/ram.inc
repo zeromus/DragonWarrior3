@@ -1389,14 +1389,9 @@ byte_63D: ; "bottommostTileVisible"
 byte_63E:
 		.BYTE	0
 ;----------------------------------------------
-; u24 u24AttackDisplayDamage - this numeric parameter is displayed in attack messages (keyed to a particular special string value?)
-; (due for renaming, this is well understood now)
-byte_63F:
-		.BYTE	0
-byte_640:
-		.BYTE	0
-byte_641:
-		.BYTE	0
+; u24 - a numeric parameter displayed in the main message box
+_msg_number_parameter_F8:
+		.BYTE	0,0,0
 ;----------------------------------------------
 byte_642:
 		.BYTE	0

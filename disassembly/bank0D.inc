@@ -2713,7 +2713,7 @@ loc_14233A:
 		LDX		#2
 loc_142348:
 		LDA		byte_C0,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142348
 		SYSX	_sys0D_wrap_bE_sC,$12
@@ -2803,7 +2803,7 @@ loc_1423F5:
 		LDX		#2
 loc_142400:
 		LDA		byte_C0,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142400
 		SYSX	_sys02_msg_m00_b3,$36
@@ -2840,9 +2840,9 @@ sub_14244C:
 		LSR		byte_C2
 		ROR		byte_C1
 		ROR		byte_C0
-		LSR		byte_641
-		ROR		byte_640
-		ROR		byte_63F
+		LSR		_msg_number_parameter_F8+2
+		ROR		_msg_number_parameter_F8+1
+		ROR		_msg_number_parameter_F8
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2892,14 +2892,14 @@ loc_142496:
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		JSR		_sram_b0_s33
 		LDA		word_4
 		LDX		#byte_C0
 		JSR		_mul16_to_8
 		LDA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		SYSX	_sys08_msg_m00_arg2,$19
 		SYSX	_sys0D_wrap_bE_sC,$68
 		FARX	_bE_s1C
@@ -3040,12 +3040,12 @@ loc_1425AA:
 		CLC
 		ADC		#4
 		STA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
 		STA		byte_C1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		STA		byte_C2
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		SYSX	_sys08_msg_m00_arg2,$09
 		JSR		sub_1427A8
 		BNE		loc_14260F
@@ -3098,14 +3098,14 @@ loc_142629:
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		LDA		#$1E
 		LDX		#byte_C0
 		JSR		_mul16_to_8
 		LDA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		byte_C1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		SYSX	_sys08_msg_m00_arg2,$09
 		JSR		sub_1427A8
 		BNE		loc_14260F
@@ -3143,7 +3143,7 @@ loc_1426AC:
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
@@ -3159,9 +3159,9 @@ loc_1426AC:
 		STA		byte_C1
 		JSR		sub_141F44
 		LDA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		byte_C1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		SYSX	_sys08_msg_m00_arg2,$09
 		JSR		sub_1427A8
 		BEQ		loc_1426E9
@@ -3203,7 +3203,7 @@ loc_142722:
 ;		STA		byte_C0
 ;		STA		byte_C1
 ;		STA		byte_C2
-;		STA		byte_641
+;		STA		_msg_number_parameter_F8+2
 ;loc_14273A:
 ;		LDX		byte_CE
 ;		DEX
@@ -3227,9 +3227,9 @@ loc_142722:
 ;		LDA		#3
 ;		JSR		_mul16_to_8
 ;		LDA		byte_C0
-;		STA		byte_63F
+;		STA		_msg_number_parameter_F8
 ;		LDA		byte_C1
-;		STA		byte_640
+;		STA		_msg_number_parameter_F8+1
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3532,7 +3532,7 @@ loc_142A00:
 		LDX		#2
 loc_142A02:
 		LDA		byte_C0,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142A02
 		SYSX	_sys08_msg_m00_arg2,$70
@@ -3674,7 +3674,7 @@ loc_142B2A:
 		LDX		#2
 loc_142B2C:
 		LDA		byte_C0,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142B2C
 		SYSX	_sys08_msg_m00_arg2,$7C
@@ -3766,7 +3766,7 @@ sub_142BD2:
 		LDX		#2
 loc_142BE5:
 		LDA		byte_C0,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		STA		byte_CE,X
 		DEX
 		BPL		loc_142BE5
@@ -4166,16 +4166,16 @@ _bD_sF:
 		STA		byte_CE
 		STA		byte_C1
 		STA		byte_C2
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
 		JSR		sub_141F44
 		LDA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		STA		byte_6A3B
 		LDA		byte_C1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		STA		byte_6A3C
 		SYSX	_sys08_msg_m00_arg2,$8C
 		SYSX	_sys0D_wrap_bE_sC,$68
@@ -4277,13 +4277,13 @@ loc_142F91:
 loc_142FC6:
 		LDA		word_6+1
 		STA		byte_C0
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		byte_8
 		STA		byte_C1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		byte_9
 		STA		byte_C2
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		LDX		#7
 loc_142FDD:
 		PLA
@@ -6572,13 +6572,13 @@ loc_143E88:
 		SEC
 		LDA		byte_6A3F,Y
 		SBC		_players_EXP,Y
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		byte_6A40,Y
 		SBC		_players_EXP+1,Y
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		byte_6A41,Y
 		SBC		_players_EXP+2,Y
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		LDA		#1
 		JSR		sub_143EBD
 loc_143EAF:

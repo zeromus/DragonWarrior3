@@ -3334,7 +3334,7 @@ loc_12968B:
 		BEQ		loc_1296E8
 loc_129698:
 		LDX		#0
-		STX		byte_641
+		STX		_msg_number_parameter_F8+2
 		STX		byte_D0
 		STX		byte_CF
 		LDA		_tmp_ptrB4
@@ -3343,10 +3343,10 @@ loc_129698:
 		ROL		byte_CF
 		ASL
 		ROL		byte_CF
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		STA		byte_CE
 		LDA		byte_CF
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		JSR		_sram_b0_s1C
 		SYSX	_sys06_msg_m00_arg0,$26
 		JMP		loc_129745

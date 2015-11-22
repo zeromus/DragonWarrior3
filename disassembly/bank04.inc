@@ -5484,12 +5484,12 @@ loc_6A467:
 loc_6A478:
 		LDA		word_4
 		STA		byte_65
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		word_4+1
 		STA		byte_66
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		#0
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		LDA		word_4
 		ORA		word_4+1
 		BEQ		loc_6A4C9
@@ -5622,9 +5622,9 @@ sub_6A569:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A56E:
-		LDA		byte_63F
+		LDA		_msg_number_parameter_F8
 		STA		word_4
-		LDA		byte_640
+		LDA		_msg_number_parameter_F8+1
 		STA		word_4+1
 locret_6A578:
 		RTS
@@ -5674,12 +5674,12 @@ _bs_run_PC_Damage:
 ; copy word_4 to u16[CF] and u24[63F]
 		LDA		word_4
 		STA		byte_CF
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		word_4+1
 		STA		byte_D0
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		#0 ; make sure MSB is cleared
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 ; reduce HP 
 		JSR		_sram_b0_s5_player_HP_subtract
 		SYSX	_sys12_wrap_bB_s3_apu_load,$8A ; play sfx hit!
@@ -5747,7 +5747,7 @@ loc_6A633:
 		JSR		_sram_b0_s6_player_MP_read
 		LDA		word_4
 		STA		byte_CF
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 loc_6A650:
 		JSR		_sram_b0_s9_player_MP_subtract
 		JSR		_b4_s6
@@ -5790,19 +5790,19 @@ loc_6A693:
 		STA		byte_65
 		JSR		_bs_load_acting_enemy_MP
 		LDA		byte_59
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		JSR		_bs_deduct_acting_enemy_MP
 		BEQ		loc_6A6B2
 		LDA		byte_65
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		JMP		loc_6A6B5
 loc_6A6B2:
 		JSR		sub_6B725
 loc_6A6B5:
-		LDA		byte_63F
+		LDA		_msg_number_parameter_F8
 		STA		byte_65
 		JMP		loc_6A659
 loc_6A6BD:
@@ -5817,8 +5817,8 @@ loc_6A6C0:
 sub_6A6C7:
 		LDA		#0
 		STA		byte_66
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		JSR		_bs_extract_target_from_move
 		STA		byte_64
 		JMP		sub_6B5B7
@@ -5878,11 +5878,11 @@ sub_6A71B:
 		STA		word_4+1
 loc_6A738:
 		LDA		word_4
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		word_4+1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		#0
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 locret_6A747:
 		RTS
 
@@ -6005,11 +6005,11 @@ loc_6A802:
 		STA		word_4+1
 loc_6A813:
 		LDA		word_4
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		word_4+1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		LDA		#0
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7308,7 +7308,7 @@ sub_6AFB3:
 		JSR		sub_6B2CF
 		PLA
 		CLC
-		ADC		byte_63F
+		ADC		_msg_number_parameter_F8
 		BCC		loc_6AFC7
 		LDA		#$FF
 loc_6AFC7:
@@ -7755,10 +7755,10 @@ sub_6B2C4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B2CF:
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

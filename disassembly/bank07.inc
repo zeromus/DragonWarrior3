@@ -2078,11 +2078,11 @@ loc_B2C93:
 		JSR		sub_B2C46
 		TAX
 		INX
-		STX		byte_63F
+		STX		_msg_number_parameter_F8
 		LDA		#0
 		STA		byte_6A3E
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		LDA		#$17
 		FARX	_bB_s3_apu_load
 		SYSX	_sys0E_wrap_bE_s0,$3E

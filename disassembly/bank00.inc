@@ -4659,7 +4659,7 @@ loc_A448:
 
 .one_stat_gain:
 ; final stat gain is in A. put in textbox system for display
-		JSR		sub_A8AD
+		JSR		_set_u8_in_msg_number_parameter_F8
 ; add gain to the target stat. clamp at 255 if needed
 		LDY		byte_51 ; target player
 		CLC
@@ -4720,9 +4720,9 @@ loc_A4FA:
 		BMI		loc_A52C
 		BEQ		loc_A52C
 loc_A50D:
-		JSR		sub_A8AD
+		JSR		_set_u8_in_msg_number_parameter_F8
 		JSR		sub_A8A8
-		LDA		byte_63F
+		LDA		_msg_number_parameter_F8
 		CLC
 		ADC		_players_MHP,X
 		STA		_players_MHP,X
@@ -4768,9 +4768,9 @@ loc_A55B:
 		BMI		loc_A58D
 		BEQ		loc_A58D
 loc_A56E:
-		JSR		sub_A8AD
+		JSR		_set_u8_in_msg_number_parameter_F8
 		JSR		sub_A8A8
-		LDA		byte_63F
+		LDA		_msg_number_parameter_F8
 		CLC
 		ADC		_players_MMP,X
 		STA		_players_MMP,X
@@ -4977,7 +4977,7 @@ loc_A6CD:
 		STA		(word_3E),Y
 		LDA		#1
 		STA		byte_45
-		JSR		sub_A8AD
+		JSR		_set_u8_in_msg_number_parameter_F8
 		JMP		loc_A6A1
 loc_A6E7:
 		INC		byte_52
@@ -5342,14 +5342,14 @@ sub_A8A8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; stores a u8 in the u24AttackDisplayDamage text variable. preserves stack
+; stores a u8 in the _msg_number_parameter_F8 text variable. preserves stack
 ; A: u8 to store
-sub_A8AD:
+_set_u8_in_msg_number_parameter_F8:
 		PHA
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		PLA
 		RTS
 
@@ -6307,20 +6307,20 @@ byte_B006:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B026:
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		LDA		byte_9C
 		SEC
 		SBC		byte_2B
 		BMI		loc_B03C
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#$12
 		BNE		loc_B045
 loc_B03C:
 		EOR		#$FF
 		TAX
 		INX
-		STX		byte_63F
+		STX		_msg_number_parameter_F8
 		LDA		#$10
 loc_B045:
 		JSR		_wrap_bE_s4_msg_m00_arg1
@@ -6328,14 +6328,14 @@ loc_B045:
 		SEC
 		SBC		byte_2A
 		BMI		loc_B056
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#$11
 		BNE		loc_B05F
 loc_B056:
 		EOR		#$FF
 		TAX
 		INX
-		STX		byte_63F
+		STX		_msg_number_parameter_F8
 		LDA		#$13
 loc_B05F:
 		JSR		_wrap_bE_s4_msg_m00_arg1
@@ -6598,7 +6598,7 @@ sub_B1D9:
 		JSR		sub_B2AD
 		PLA ; unstash the stat we came in here with
 		CLC
-		ADC		byte_63F ; add bonus to stat (sneakily we pull it out of the spot we just saved it for printing)
+		ADC		_msg_number_parameter_F8 ; add bonus to stat (sneakily we pull it out of the spot we just saved it for printing)
 		PHA ; push sum
 		LDA		byte_48
 		CLC
@@ -6737,10 +6737,10 @@ sub_B298:
 ; =============== S U B	R O U T	I N E =======================================
 ; sets the text parameter u24AttackDisplayDamage=A
 sub_B2AD:
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
