@@ -6277,6 +6277,8 @@ sub_6A96F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; prints "you have vanquished all of your foes. <hero> thereby gains 23 experience points. you obtain 10 pieces of gold"
+; 
 _b4_s9:
 		LDX		#0
 		FARX	_bE_s4_msg_m00
@@ -9076,15 +9078,17 @@ _message_speed_delays_list:
 		.BYTE	$18,$24,$30,$3C,$48,$54,$64
 
 ; =============== S U B	R O U T	I N E =======================================
-; calculates a random number between [0,120]??
+; calculates a random number between [0,255] with a SHARP BELL CURVE (more tosses, more likely to approach mean)
+; 
 _b4_sE:
 		LDA		#$1F
 		STA		byte_42
 		LDX		#$10
-		BNE		sub_6BA6A
+		BNE		_random_bell_curve
 
 ; =============== S U B	R O U T	I N E =======================================
-; i think: calculates a random number between [0,255]?? but uhhh why not just roll a rand? i dont get it.
+; calculates a random number between [0,255] (not completely sure) with a BELL CURVE
+;
 sub_6BA64:
 		LDA		#$F
 		STA		byte_42
@@ -9093,10 +9097,11 @@ sub_6BA64:
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-; coming in here X is important. it's saved right shifted by 1 into 3C, and 3C+1 is cleared to 0
-; it's actually going to be usd as a counter, and we'll throw that many dice
-; so we have word_3c = (X>>1) + randish&byte_42 + randish&byte_42 etc. X times
-sub_6BA6A:
+; X: number of dice throws
+; byte_42: number of sides on dice
+; effect
+;
+_random_bell_curve:
 		TXA
 		PHA
 		STX		word_3C
@@ -9120,15 +9125,15 @@ loc_6BA84:
 		PLA
 		TAX
 ; load the value we just worked on and do a multiple precision subtract #$80. 
+; I think the purpose is to move the mean from ~256 to ~128
 		LDA		word_3C
 		SEC
 		SBC		#$80
 		STA		word_3C
 		LDA		word_3C+1
 		SBC		#0
-; roll again if it's too high? what?
-; so I guess we're trying to come up with a +/-127 and aborting if it's underflowing? or overflowing, for that matter. the MSB should end up being 0 regardless
-		BNE		sub_6BA6A
+; roll again if we didnt get it to a [0,255] value? what? why not just clamp it?
+		BNE		_random_bell_curve
 		STA		word_3C+1 ; must be 0
 		RTS
 

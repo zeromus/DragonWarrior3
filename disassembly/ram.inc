@@ -43,7 +43,9 @@ byte_10:
 byte_11:
 		.BYTE	0
 _tmp12:
-		.BYTE	0,0
+		.BYTE	0
+_tmp13:
+		.BYTE	0
 _pads: ; 13
 		.BYTE	0,0,0,0,0,0
 		.BYTE	0
@@ -117,6 +119,8 @@ word_3E:
 		.BYTE	0,0
 word_40: ; 41 - "previousMapNumber?"
 		.BYTE	0,0
+;----------------------------------------------
+; 42-47 are used for math...
 byte_42:
 		.BYTE	0
 byte_43:
@@ -1386,6 +1390,7 @@ byte_63E:
 		.BYTE	0
 ;----------------------------------------------
 ; u24 u24AttackDisplayDamage - this numeric parameter is displayed in attack messages (keyed to a particular special string value?)
+; (due for renaming, this is well understood now)
 byte_63F:
 		.BYTE	0
 byte_640:
