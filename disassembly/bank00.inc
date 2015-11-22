@@ -2058,6 +2058,8 @@ loc_94C2:
 ;  if(equipped(IronClaw)) return STR+WeaponPow(IronClaw);
 ;  if(equipped(GoldenClaw)) return STR+55;
 ;  return clamp(STR-WeaponPow(weapon)/2,0); //yikes!
+; 
+; TODO - rename to something like calculate
 ;
 ;"PC_calc_EffATK"
 _b0_s16_player_ATK_read:
@@ -4439,6 +4441,7 @@ loc_A35D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; leveling-up related, i'm pretty sure
 sub_A36C:
 		TXA
 		PHA
@@ -4541,28 +4544,35 @@ loc_A410:
 		LDA		#$C0
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDX		byte_51
+; player levels-up here
 		INC		_players_level,X
+; delays and jingles?
 		FARX	_bB_s7
 		FARX	_bE_s31
 		FARX	_bB_s3_apu_load
 		JSR		sub_A8BB
+; take player's level back down 1?
 		LDX		byte_51
 		DEC		_players_level,X
 		LDA		byte_51
 		STA		byte_CE
+; initialize a loop across stats (STR first, then ?, etc.)
 		LDY		#0
 		STY		byte_52
 loc_A448:
-		LDA		byte_52
+; for the current stat, find the location of the players stats in ram and store in word_40
+		LDA		byte_52 
 		ASL
 		TAY
-		LDA		off_A70C,Y
-		LDX		off_A70C+1,Y
+		LDA		_levelup_stat_ptr_tbl,Y
+		LDX		_levelup_stat_ptr_tbl+1,Y
 		STA		word_40
 		STX		word_40+1
+; push the player's level
 		LDX		byte_51
 		LDA		_players_level,X
 		PHA
+; remember which stat is being worked on. but increment it by 1? that's weird.
 		LDX		byte_52
 		INX
 		JSR		sub_A725
@@ -4612,6 +4622,7 @@ loc_A4AA:
 		BCC		loc_A4B6
 		LDA		#$FF
 loc_A4B6:
+; this is storing an increased strength stat, probably others
 		STA		(word_40),Y
 		LDA		byte_52
 		CLC
@@ -4940,12 +4951,17 @@ off_A702:
 		.WORD	byte_7A0
 		.WORD	byte_79C
 		.WORD	byte_79C
-off_A70C:
+
+; =============== T A B L E =================================================
+; When leveling up, stats are increased in a loop. this table points to the ram containing each current stat
+;
+_levelup_stat_ptr_tbl:
 		.WORD	_players_STR
 		.WORD	_players_AGI
 		.WORD	_players_VIT
 		.WORD	_players_LUCK
 		.WORD	_players_INT
+
 off_A716:
 		.WORD	byte_A71C
 		.WORD	byte_A71F
@@ -4958,9 +4974,12 @@ byte_A722:
 		.BYTE	$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
+; X: a stat type, I think... sometimes we come in here with X incremented from a reasonable stat type, and off_A7F4 is one entry too big, so I'm confused
+;
 sub_A725:
 		STA		_tmp12+1
 		STX		byte_10
+; adjust stat type index to table offset and store ptr from that table in word_3C
 		TXA
 		ASL
 		TAY
@@ -4969,14 +4988,18 @@ sub_A725:
 		STA		word_3C
 		STX		word_3C+1
 		JSR		_b0_s2C_player_CLASS_read
+; class is now stored in word_4.
 loc_A739:
+; this is a loop that advances the ptr in word_3c N times (5 bytes) where N=class type
 		DEC		word_4
 		BMI		loc_A747
 		LDA		#5
 		LDX		#word_3C
 		JSR		_add8_to_16
 		JMP		loc_A739
+; done advancing word_3C
 loc_A747:
+; preparing a ptr to store in word_3E. it might be byte_A806, or it might be [word_3C] which we just built, or it might be something based on off_A802
 		LDA		#<[byte_A806]
 		LDY		#>[byte_A806]
 		LDX		byte_10
@@ -4991,11 +5014,17 @@ loc_A75B:
 		LDA		off_A802,X
 		LDY		off_A802+1,X
 loc_A761:
+; well, we finally have a value ready to put in word_3E...
 		STA		word_3E
 		STY		word_3E+1
+; clear _temp12, we'll be building a value in there
 		LDA		#0
 		STA		_tmp12
+; setup a 4 times loop? or maybe 5 times
 		LDY		#4
+; we're going to be reading the entry[4] from the table at word_3c, and then shifting it down 4
+; then we'll be reading the entry[3] from that table, and shifting it down 3 (after masking by #$80) each time
+; this is really bizarre
 loc_A76B:
 		TYA
 		PHA
@@ -5005,12 +5034,15 @@ loc_A771:
 		LSR
 		DEY
 		BPL		loc_A771
+; done shifting. incorporate it into _tmp12
 		ORA		_tmp12
 		STA		_tmp12
 		PLA
 		TAY
 		DEY
 		BPL		loc_A76B
+; done looping
+; so, shift down 2 more times, ehhhh?
 		LSR		_tmp12
 		LSR		_tmp12
 		LDA		byte_10
@@ -5019,20 +5051,25 @@ loc_A771:
 		AND		#$F
 		STA		_tmp12
 loc_A78C:
+; clear byte at word_4 for accumulation
 		LDY		#0
 		STY		word_4
 loc_A790:
+; now we're inspecting the bottom 7 bits of those table entries?
+; accumulate into word_4
 		LDA		(word_3C),Y
 		AND		#$7F
 		CLC
 		ADC		word_4
 		STA		word_4
-		CMP		_tmp12+1
+		CMP		_tmp12+1 ; who even set this up?
 		BCS		loc_A7A2
+; next table entry. we can't loop more than 5 times or we run out of table
 		INY
 		CPY		#5
 		BNE		loc_A790
 loc_A7A2:
+; store the resulting index in byte_11, and i dont know what the hell this is all about
 		STY		byte_11
 		LDA		#0
 		LDY		#$A
@@ -5079,6 +5116,7 @@ loc_A7EF:
 		BNE		loc_A7BE
 locret_A7F3:
 		RTS
+
 off_A7F4:
 		.WORD	_b0_s4B
 		.WORD	byte_A8FE
@@ -5212,30 +5250,71 @@ loc_A8D2:
 		STA		byte_CE
 		RTS
 
+; the tables below are organized into 5 entries per class times 8 classes
+; based on the tables like byte_A806, etc, the way the entries are shifted according to their position, and guessing out of my ass, 
+; it almost seems like these are coefficients for a polynomial curve. so the game would try to keep your stats (or the deltas) near the point defined by the curve
+; i guess it's easier than editing tables of numbers, in the 1980s without spreadsheets to help you...
+
 _b0_s4B:
-		.BYTE	$81,$88,$84,$1C,$FF,  2,$88,$85,$9C,$FF,  2,$88,$86,$9A,$7F,$82
-		.BYTE	  8,$86,$19,$7F,  2,$88,$88,$16,$7F,  2,$88,  7,$99,$7F,$82,  8
-		.BYTE	  5,$9B,$7F,  2,$88,  8,$98,$FF
+		.BYTE	$81,$88,$84,$1C,$FF ; controls how many times you levelup. setting this to all 0 means youll levelup all the way to level 99
+		.BYTE	$02,$88,$85,$9C,$FF
+		.BYTE	$02,$88,$86,$9A,$7F
+		.BYTE	$82,$08,$86,$19,$7F
+		.BYTE	$02,$88,$88,$16,$7F
+		.BYTE	$02,$88,$07,$99,$7F
+		.BYTE	$82,$08,$05,$9B,$7F
+		.BYTE	$02,$88,$08,$98,$FF
+
 byte_A8FE:
-		.BYTE	$82,$20, $A,$80,$FF,  4,$28,  5,$31,$FF,  0,$12,$29,$A7,$7F,$80
-		.BYTE	$25, $C,$82,$7F,$80,  9,$23,$80,$FF,$86,$17,  0,$80,$FF,$86,  8
-		.BYTE	$80,$23,$7F,$84,$2B,  0,$1B,$FF
+		.BYTE	$82,$20,$0A,$80,$FF ; definitely controls how much strength the hero gains from a levelup, if i set it to all FF then i get 9 points
+		.BYTE	$04,$28,$05,$31,$FF
+		.BYTE	$00,$12,$29,$A7,$7F
+		.BYTE	$80,$25,$0C,$82,$7F
+		.BYTE	$80,$09,$23,$80,$FF
+		.BYTE	$86,$17,$00,$80,$FF
+		.BYTE	$86,$08,$80,$23,$7F
+		.BYTE	$84,$2B,$00,$1B,$FF
+
 byte_A926:
-		.BYTE	$82,$20, $C,$80,$7F,$8E,$10,  0,$93,$FF,$87,  7, $F,$80,$7F,$80
-		.BYTE	$1B,$16,$86,$7F,$80,$62,  0,  0,$FF,$80,$3B,  0,$80,$7F,$80, $B
-		.BYTE	$8D,$14,$7F,  0,  9,$46,$8A,$7F
+		.BYTE	$82,$20,$0C,$80,$7F ; etc. for AGI
+		.BYTE	$8E,$10,$00,$93,$FF
+		.BYTE	$87,$07,$0F,$80,$7F
+		.BYTE	$80,$1B,$16,$86,$7F
+		.BYTE	$80,$62,$00,$00,$FF
+		.BYTE	$80,$3B,$00,$80,$7F
+		.BYTE	$80,$0B,$8D,$14,$7F
+		.BYTE	$00,$09,$46,$8A,$7F
+
 byte_A94E:
-		.BYTE	$85,$1F,$88,  0,$7F,$83,  6,$28,$85,$7F,$81,  8, $F,$94,$7F,$80
-		.BYTE	$2E,  8,$80,$FF,$84, $A,$8E, $B,$7F,  0,$24,$26,$98,$FF,$82,  9
-		.BYTE	$26,$80,$FF,$82,  3, $E,$85,$7F
+		.BYTE	$85,$1F,$88,$00,$7F
+		.BYTE	$83,$06,$28,$85,$7F
+		.BYTE	$81,$08,$0F,$94,$7F
+		.BYTE	$80,$2E,$08,$80,$FF
+		.BYTE	$84,$0A,$8E,$0B,$7F
+		.BYTE	$00,$24,$26,$98,$FF
+		.BYTE	$82,$09,$26,$80,$FF
+		.BYTE	$82,$03,$0E,$85,$7F
+
 byte_A976:
-		.BYTE	 $A,$27,$31,$80,$FF,$82,  9,$25,$80,$FF,$83,$1D, $E,$80,$FF,$80
-		.BYTE	$27,$3B,$80,$7F,  0,$1D,$45,  0,$FF,$95,$1C, $A,$80,$7F,$84,  5
-		.BYTE	$1E,$8A,$FF,  0,$89, $A,$85,$7F
+		.BYTE	$0A,$27,$31,$80,$FF
+		.BYTE	$82,$09,$25,$80,$FF
+		.BYTE	$83,$1D,$0E,$80,$FF
+		.BYTE	$80,$27,$3B,$80,$7F
+		.BYTE	$00,$1D,$45,$00,$FF
+		.BYTE	$95,$1C,$0A,$80,$7F
+		.BYTE	$84,$05,$1E,$8A,$FF
+		.BYTE	$00,$89,$0A,$85,$7F
+
 byte_A99E:
-		.BYTE	$8E,$23,  0,$80,$7F,$80, $E,$37,$80,$7F,$80, $E,$37,$80,$7F,$80
-		.BYTE	$18,$4A,$80,$7F,  4,$1E,$40,  0,$FF,$80, $D,  0,$42,$FF,$82,$43
-		.BYTE	  0,  0,$FF,  0,  5,$4A,$80,$FF
+		.BYTE	$8E,$23,$00,$80,$7F ; etc for INT
+		.BYTE	$80,$0E,$37,$80,$7F
+		.BYTE	$80,$0E,$37,$80,$7F
+		.BYTE	$80,$18,$4A,$80,$7F
+		.BYTE	$04,$1E,$40,$00,$FF
+		.BYTE	$80,$0D,$00,$42,$FF
+		.BYTE	$82,$43,$00,$00,$FF
+		.BYTE	$00,$05,$4A,$80,$FF
+
 byte_A9C6:
 		.BYTE	  2,$3F,$3F, $A,$17,$3F,$3F,$1F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F
 		.BYTE	$1A,$29,$3F,$3F,$3F,  6,$3F,$3F,$3F,$3F,  4,$1D,$21,$3F,$3F,$26
