@@ -1814,9 +1814,10 @@ loc_20C36:
 		LDA		_players_status,Y
 		AND		_players_status+1,Y
 		BPL		loc_20C4A
+; fetch player's class. setting up money multiplier for merchant?
 		LDA		_players_class_gender,X
 		AND		#7
-		CMP		#5
+		CMP		#CLASS_MERCHANT
 		BEQ		loc_20C4F
 loc_20C4A:
 		DEX
@@ -1835,8 +1836,11 @@ loc_20C4F:
 		STA		byte_640
 		JSR		_sram_b0_s1C
 		LDA		#$B6
+; print a message "you have vanquished all of your foes"
 		FARX	_b4_s9
 loc_20C6F:
+; calls a level-up related 3-times setup loop.
+; is this the main post-battle leveling up process?
 		FARX	_b0_s47
 		FARX	_b0_s46
 		LDA		byte_6A6B

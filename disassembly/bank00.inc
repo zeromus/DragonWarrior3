@@ -3260,8 +3260,8 @@ sub_9B78:
 off_9B85:
 		.WORD	_players_level
 		.WORD	_players_HP
-		.WORD	_players_EXP ; pc.exp
-		.WORD	_players_name ; pc.name
+		.WORD	_players_EXP
+		.WORD	_players_name
 		.WORD	byte_6A4B
 		.WORD	byte_7C1
 		.WORD	byte_B0
@@ -4426,12 +4426,14 @@ _b0_d3F:
 		.BYTE	$20,$21,$22,$23
 
 ; =============== S U B	R O U T	I N E =======================================
+; Seemingly the main post-battle leveling loop. Runs 4 times for 4 players
+;
 _b0_s47:
 		LDX		#0
 loc_A35D:
 		TXA
 		PHA
-		STA		byte_CE
+		STA		byte_CE ; store this player in a variable to be used by nested leveling logic
 		JSR		sub_A36C
 		PLA
 		TAX
@@ -4441,28 +4443,34 @@ loc_A35D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; leveling-up related, i'm pretty sure
+; level-up one player?
+; X: player number to levelup
+;
 sub_A36C:
 		TXA
+; save X for later
 		PHA
 		LDA		_players_level,X
-		LDX		#0
-		JSR		sub_A725
+		LDX		#0 ; select EXP stat curve
+		JSR		_eval_stat_curve
+; restore A, multiply by 3 to slot it into the table at byte_6A3F
 		PLA
 		STA		word_6+1
 		ASL
 		ADC		word_6+1
 		TAX
+; store u24[4] to table byte_6A3F
 		LDA		word_4
 		STA		byte_6A3F,X
 		LDA		word_4+1
-		STA		byte_6A40,X
-		LDA		word_6
-		STA		byte_6A41,X
+		STA		byte_6A3F+1,X
+		LDA		word_4+2
+		STA		byte_6A3F+2,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s46:
+; evaluating experience value (u24) setup previously at 6A3F. that's definitely the target XP for levelup
 		LDX		#0
 		STX		byte_48
 		STX		byte_51
@@ -4515,6 +4523,7 @@ loc_A3CE:
 locret_A3EF:
 		RTS
 loc_A3F0:
+; levelup player and repeat leveling process as needed?
 		LDX		byte_51
 		INC		_players_level,X
 		JSR		_b0_s47
@@ -4556,7 +4565,7 @@ loc_A410:
 		DEC		_players_level,X
 		LDA		byte_51
 		STA		byte_CE
-; initialize a loop across stats (STR first, then ?, etc.)
+; initialize a loop in byte_52 across stats (STR first, etc.)
 		LDY		#0
 		STY		byte_52
 loc_A448:
@@ -4568,62 +4577,100 @@ loc_A448:
 		LDX		_levelup_stat_ptr_tbl+1,Y
 		STA		word_40
 		STX		word_40+1
+
 ; push the player's level
 		LDX		byte_51
 		LDA		_players_level,X
 		PHA
-; remember which stat is being worked on. but increment it by 1? that's weird.
+
+; remember which stat is being worked on. but increment it by 1 since _eval_stat_curve uses a numbering scheme rebased with EXP at 0
 		LDX		byte_52
 		INX
-		JSR		sub_A725
+		JSR		_eval_stat_curve
+
+; reference results of _eval_stat_curve, add 10. stash into byte_42 as a holder for result
 		LDA		word_4
 		CLC
-		ADC		#$A
+		ADC		#10
 		STA		byte_42
+
+; pop player's level, shr by 1, and add it into byte_42 holder
+; this appears to be an absolute minimum baseline for the development of all stats.
+; it's probably why according to "game mechanics FAQ" you kind of alternate between 0 or 1 gains when youre struggling
 		PLA
 		LSR
 		CLC
 		ADC		byte_42
+
+; at this point we have the target baseline for the stat
+; reload the player number. reference _levelup_stat_ptr_tbl to read the current stat value
+; compare our current stat to the target baseline. branch if target stat >= curr stat
 		LDY		byte_51
-		CMP		(word_40),Y
-		BCS		loc_A47D
-loc_A474:
+		CMP		(word_40),Y 
+		BCS		.under_baseline
+
+; target stat < curr stat; we're over the baseline
+; we have a 50/50 roll here
+.run_stat_as_50_50:
 		JSR		_rand
 		AND		#1
-		BEQ		loc_A4C7
-		BNE		loc_A4AA
-loc_A47D:
-		LDY		byte_11
+		BEQ		.no_stat_gain ; 50% chance of gaining no stat. skip processing and message entirely
+		BNE		.one_stat_gain ; 50% chance of gaining 1 stat point. the 1 present in A is important, it'll be used for the gain value
+
+.under_baseline:
+; reference some output from _eval_stat_curve - use the selected scaling table and stat curve index to get a scaling factor
+		LDY		byte_11 ; 
 		LDA		(word_3E),Y
+
+; set up for multiplication. I hope u24[4,5,6] is empty prior to this. maybe its known to be for normal stats or maybe it doesnt matter
+; we'll reference more output from _eval_stat_curve - _tmp12, which is the generic scaling factor for the target stat for the relevant class
+; u24[4,5,6] = _tmp12 * scaling (keeping in mind `scaling` is a fx 4.4 value)
 		STA		word_4
 		LDA		_tmp12
 		LDX		#word_4
 		LDY		#word_4
-		JSR		_div24_to_16
+		JSR		_mul_u24_by_fx44
+
+; now we have a scaling factor in u8[4]. itll be something in the range of (0.0 to 2.0)*_tmp12
+; roll a random bell curve byte into word_3c
+; u8[$3C] *= combined_scaling
 		FARX	_b4_sE
 		LDA		word_4
 		LDX		#word_3C
 		JSR		_mul16_to_8
+; divide that back down for reasons unknown, probably just renormalizing
 		LDA		#$6E
 		JSR		_div16_to_8
+
+; take result of random*scaling work
+; I'm not real confident about what comes next, it uses some values from lower in the callstack
 		LDA		word_3C
-		BEQ		loc_A474
-		LDX		byte_52
-		BEQ		loc_A4A6
-		STA		byte_54,X
-loc_A4A6:
+		BEQ		.run_stat_as_50_50 ; if we got a zero, run stat as 50/50
+
+		LDX		byte_52 ; reload current stat number?
+		BEQ		.senseless; branch if we're on stat 0? that doesnt make sense
+		STA		byte_54,X  ; uhh store resulting scaling factor onto byte_54, for what purpose i dont know
+
+.senseless:
+; this seems impossible, maybe ap rogramming error when "run_stat_as_50_50" as added
+; here, A is always equal to the gain we calculated, and we would have taken the above branch
 		CMP		#0
-		BEQ		loc_A4C7
-loc_A4AA:
+		BEQ		.no_stat_gain
+
+.one_stat_gain:
+; final stat gain is in A. put in textbox system for display
 		JSR		sub_A8AD
-		LDY		byte_51
+; add gain to the target stat. clamp at 255 if needed
+		LDY		byte_51 ; target player
 		CLC
 		ADC		(word_40),Y
-		BCC		loc_A4B6
+		BCC		.no_clamp_stat
 		LDA		#$FF
-loc_A4B6:
-; this is storing an increased strength stat, probably others
+.no_clamp_stat:
+; store increased stat
 		STA		(word_40),Y
+
+; reload current stat number and add #$A0 to get a message index.. display a couple of messages per stat
 		LDA		byte_52
 		CLC
 		ADC		#$A0
@@ -4632,12 +4679,15 @@ loc_A4B6:
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg0
-loc_A4C7:
+
+.no_stat_gain:
+; go to next target stat. loop back 
 		INC		byte_52
 		LDA		byte_52
 		CMP		#5
 		BEQ		loc_A4D2
 		JMP		loc_A448
+
 loc_A4D2:
 		LDX		byte_51
 		LDA		_players_level,X
@@ -4749,7 +4799,7 @@ loc_A5A1:
 ; =============== S U B	R O U T	I N E =======================================
 sub_A5A4:
 		PHA
-		JSR		sub_A725
+		JSR		_eval_stat_curve
 		LDA		#4
 		LDX		#word_4
 		JSR		_mul16_to_8
@@ -4812,7 +4862,7 @@ loc_A604:
 		LDX		byte_51
 		LDA		_players_level,X
 		LDX		#5
-		JSR		sub_A725
+		JSR		_eval_stat_curve
 		LDY		#2
 		LDX		byte_51
 		SEC
@@ -4974,17 +5024,28 @@ byte_A722:
 		.BYTE	$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-; X: a stat type, I think... sometimes we come in here with X incremented from a reasonable stat type, and off_A7F4 is one entry too big, so I'm confused
+; selects, for the target player's class and a target stat, a 'stat curve' which is a function of level. Evaluates it.
+; A: the player's current level. we should be using this as input to the defined curve
+; X: target stat type. 0=EXP, 1=STR, etc. That's offset by 1 from the normal sense of stat types.
+; output: u24[4,5,6] - result of the evaluation
+; output: word_3C
+; output: word_3E - a scaling table to use 
+; output: _tmp12 - the mysterious value calculated from the MSBits of the stat curve
 ;
-sub_A725:
-		STA		_tmp12+1
-		STX		byte_10
+; WHY IS THIS SUCH INSANE GARBAGE?
+; Well, the developers wanted to have several knobs to tune without having to rebuild giant tables full of bugs.
+; But the structure of the stat curve table with the #$80 bit and LSBits is unforgivable, that should be broken out
+; Maybe it's inherited all the way from DW1
+;
+_eval_stat_curve:
+		STA		_tmp13 ; stash the player's current level
+		STX		byte_10 ; stash the requested stat
 ; adjust stat type index to table offset and store ptr from that table in word_3C
 		TXA
 		ASL
 		TAY
-		LDA		off_A7F4,Y
-		LDX		off_A7F4+1,Y
+		LDA		_stat_curve_tbl,Y
+		LDX		_stat_curve_tbl+1,Y
 		STA		word_3C
 		STX		word_3C+1
 		JSR		_b0_s2C_player_CLASS_read
@@ -4999,32 +5060,37 @@ loc_A739:
 		JMP		loc_A739
 ; done advancing word_3C
 loc_A747:
-; preparing a ptr to store in word_3E. it might be byte_A806, or it might be [word_3C] which we just built, or it might be something based on off_A802
+; preparing a ptr to store in word_3E. it might be byte_A806, or it might be [word_3C] which we just built, or it might be something based on _stat_curve_scale_tbl
 		LDA		#<[byte_A806]
 		LDY		#>[byte_A806]
-		LDX		byte_10
-		BEQ		loc_A761
+		LDX		byte_10 ; remember requested stat
+		BEQ		.for_exp; branch down if requested stat is EXP
+
+; requested stat is not EXP.
+; choose one of X=0 or X=2 depending on MSBit of our word_3C ptr
 		LDY		#0
-		LDX		#0
+		LDX		#0 ; use table #0 by default ($00,$10,$08,$10,$20)
 		LDA		(word_3C),Y
 		BPL		loc_A75B
+; use table #1 instead (must be an aggressive gainer?) ($08,$10,$18,$20,$08)
 		INX
 		INX
 loc_A75B:
-		LDA		off_A802,X
-		LDY		off_A802+1,X
-loc_A761:
+		LDA		_stat_curve_scale_tbl,X
+		LDY		_stat_curve_scale_tbl+1,X
+.for_exp:
 ; well, we finally have a value ready to put in word_3E...
+; we'll use it in this function for EXP, otherwise it's considered output for the caller to use
 		STA		word_3E
 		STY		word_3E+1
+
 ; clear _temp12, we'll be building a value in there
 		LDA		#0
 		STA		_tmp12
 ; setup a 4 times loop? or maybe 5 times
 		LDY		#4
-; we're going to be reading the entry[4] from the table at word_3c, and then shifting it down 4
-; then we'll be reading the entry[3] from that table, and shifting it down 3 (after masking by #$80) each time
-; this is really bizarre
+; we're going to begin reading the final entry in the stat curve.. entry[4].. and shifting it down 4 (after masking by #$80)
+; repeat for each entry. this is really bizarre
 loc_A76B:
 		TYA
 		PHA
@@ -5042,15 +5108,20 @@ loc_A771:
 		DEY
 		BPL		loc_A76B
 ; done looping
+
+; so what, after all that? we just built a value that could be in another damn byte. its utterly constant for a given stat curve
 ; so, shift down 2 more times, ehhhh?
 		LSR		_tmp12
 		LSR		_tmp12
-		LDA		byte_10
-		BEQ		loc_A78C
+		LDA		byte_10 ; requested stat
+		BEQ		.for_exp2 ; branch down if its = (EXP)
+
+; not an EXP stat: mask result to a smaller value? what the heck? why would we have even put a larger value in the table? well, we usually do. wtf.
 		LDA		_tmp12
 		AND		#$F
 		STA		_tmp12
-loc_A78C:
+
+.for_exp2:
 ; clear byte at word_4 for accumulation
 		LDY		#0
 		STY		word_4
@@ -5062,81 +5133,125 @@ loc_A790:
 		CLC
 		ADC		word_4
 		STA		word_4
-		CMP		_tmp12+1 ; who even set this up?
-		BCS		loc_A7A2
+		CMP		_tmp13 ; remember the input level
+		BCS		loc_A7A2 ; run again if we're not up to the target level.
 ; next table entry. we can't loop more than 5 times or we run out of table
 		INY
 		CPY		#5
 		BNE		loc_A790
 loc_A7A2:
-; store the resulting index in byte_11, and i dont know what the hell this is all about
+; so, we found out which stat curve entry we're on by which level we're on
+; store the resulting index in byte_11... the caller will want this. it's not useful to us.
 		STY		byte_11
+
+; clear 11 values (backwards) starting at u8[4]: so, u8[4,5,6,7,8,9,A,B,C,D,E]
+; we'll be doing u24 math in this range and storing other temp values in here
 		LDA		#0
-		LDY		#$A
+		LDY		#10
 loc_A7A8:
 		STA		word_4,Y
 		DEY
 		BPL		loc_A7A8
+
+; I think this is setting a constant? it's initializing u24[7,8,9] to $000010
 		LDA		#$10
-		STA		word_6+1
-		LDA		byte_10
-		BEQ		loc_A7BE
+		STA		$07
+
+		LDA		byte_10 ; load requested stat
+		BEQ		loc_A7BE ; check whether its EXP
+
+; for non-EXP: copy _tmp12 to u24[4,5,6] (accumulation will occur begin with that)
 		LDA		_tmp12
-		STA		word_4
-		DEC		_tmp12+1
+		STA		word_4 
+
+; if target level is finished counting down, return
+		DEC		_tmp13
 		BEQ		locret_A7F3
+; target level not finished counting down..
+
 loc_A7BE:
+; byte_E contains a 0-4 step through a stat curve
+; read the current entry and select the bottom 7 bits (the level span) which will go into byte_F
 		LDY		byte_E
 		LDA		(word_3C),Y
 		AND		#$7F
-		BEQ		loc_A7EF
-		STA		byte_F
+		BEQ		loc_A7EF ; skip subsequent logic if level span is 0 (would it be harmful, anyway? maybe wrecked by off by one indexing values)
+		STA		byte_F ; stash that entry for counting down
+
 loc_A7C8:
-		LDX		#word_6+1
-		LDY		#byte_B
+; u24[4,5,6] += u24[7,8,9] * _temp12 (intermediate in u24[B,C,D])
+		LDX		#$07
+		LDY		#$0B
 		LDA		_tmp12
-		JSR		_div24_to_16
-		LDX		#byte_B
-		LDY		#word_4
+		JSR		_mul_u24_by_fx44
+		LDX		#$0B
+		LDY		#$04
 		JSR		_add_24_to_24
-		LDA		byte_10
-		BNE		loc_A7E7
-		LDY		byte_E
+
+; if it's EXP, then reference our 3E table to scale the result (why did we even setup word_3e otherwise?)
+; u24[7,8,9] *= (word_3E),Y
+		LDA		byte_10 ; load requested stat
+		BNE		.not_exp ; check whether its not EXP
+		LDY		byte_E ; E contains our position 0-4 in the stat curve based on level... I think
 		LDA		(word_3E),Y
-		LDX		#word_6+1
-		LDY		#word_6+1
-		JSR		_div24_to_16
-loc_A7E7:
-		DEC		_tmp12+1
-		BEQ		locret_A7F3
-		DEC		byte_F
-		BNE		loc_A7C8
+		LDX		#$07
+		LDY		#$07
+		JSR		_mul_u24_by_fx44
+
+.not_exp:
+		DEC		_tmp13 ; decrement the memory of the input level
+		BEQ		locret_A7F3 ; bail if we're done (no need to step through the stat curve beyond the target level)
+
+; if we're not done...
+		DEC		byte_F ; decrement the level span counter
+		BNE		loc_A7C8 ; step the stat curve again unless we're done with the level span
+
+; done with the level span. bounce to the next level span
 loc_A7EF:
 		INC		byte_E
-		BNE		loc_A7BE
+		BNE		loc_A7BE ; well, this is unexpected. we should never get anywhere near this high. it should be stopping at 5 or something like that. maybe extra looping is benign
+
+; at this point u24[4,5,6] contains the results we needed
+
 locret_A7F3:
 		RTS
 
-off_A7F4:
-		.WORD	_b0_s4B
-		.WORD	byte_A8FE
-		.WORD	byte_A926
-		.WORD	byte_A94E
-		.WORD	byte_A976
-		.WORD	byte_A99E
-off_A802:
-		.WORD	byte_A80B
-		.WORD	byte_A810
+; =============== T A B L E =======================================
+; Pointers to stat curves
+_stat_curve_tbl:
+		.WORD	_b0_s4B ; EXP
+		.WORD	_stat_curve_STR_tbl
+		.WORD	_stat_curve_AGI_tbl
+		.WORD	_stat_curve_VIT_tbl
+		.WORD	_stat_curve_LUCK_tbl
+		.WORD	_stat_curve_INT_tbl
+
+; =============== T A B L E =======================================
+; Selects one of the two tables below for non-exp stat curves
+;
+_stat_curve_scale_tbl:
+		.WORD	_stat_curve_scale_tbl_0
+		.WORD	_stat_curve_scale_tbl_1
+
+; =============== T A B L E S =======================================
+; These might be fx 4.4 scalers used for stat curves
+;
+
+; this one is used for EXP
 byte_A806:
 		.BYTE	$20,$18,$14,$12,$10
-byte_A80B:
-		.BYTE	  0,$10,  8,$10,$20
-byte_A810:
-		.BYTE	  8,$10,$18,$20,  8
+
+; these are used for other stats
+_stat_curve_scale_tbl_0:
+		.BYTE	$00,$10,$08,$10,$20
+_stat_curve_scale_tbl_1:
+		.BYTE	$08,$10,$18,$20,$08
 
 ; =============== S U B	R O U T	I N E =======================================
-_div24_to_16:
-		JSR		_div24_to_8
+; u24[Y] = (u24[X] * A) >> 4
+;
+_mul_u24_by_fx44:
+		JSR		_mul_u24_by_u8
 		LDA		#4
 		STA		byte_47
 		TYA
@@ -5151,9 +5266,12 @@ loc_A81E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_div24_to_8:
-		PHA
+; u24[Y] = u24[X] * A
+;
+_mul_u24_by_u8:
+		PHA ; save A from clobbering
 		STA		byte_42
+; clear u8[43-47] for workspace
 		LDA		#0
 		STA		byte_43
 		STA		byte_44
@@ -5201,6 +5319,8 @@ loc_A869:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; u24[Y] += u24[X]
+;
 _add_24_to_24:
 		CLC
 		LDA		0,X
@@ -5222,6 +5342,8 @@ sub_A8A8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; stores a u8 in the u24AttackDisplayDamage text variable. preserves stack
+; A: u8 to store
 sub_A8AD:
 		PHA
 		STA		byte_63F
@@ -5250,13 +5372,12 @@ loc_A8D2:
 		STA		byte_CE
 		RTS
 
+; "stat curves"
 ; the tables below are organized into 5 entries per class times 8 classes
-; based on the tables like byte_A806, etc, the way the entries are shifted according to their position, and guessing out of my ass, 
-; it almost seems like these are coefficients for a polynomial curve. so the game would try to keep your stats (or the deltas) near the point defined by the curve
-; i guess it's easier than editing tables of numbers, in the 1980s without spreadsheets to help you...
-
+; see _eval_stat_curve for more details than you care to know, where these are all used
+;
 _b0_s4B:
-		.BYTE	$81,$88,$84,$1C,$FF ; controls how many times you levelup. setting this to all 0 means youll levelup all the way to level 99
+		.BYTE	$81,$88,$84,$1C,$FF ; exp
 		.BYTE	$02,$88,$85,$9C,$FF
 		.BYTE	$02,$88,$86,$9A,$7F
 		.BYTE	$82,$08,$86,$19,$7F
@@ -5265,8 +5386,8 @@ _b0_s4B:
 		.BYTE	$82,$08,$05,$9B,$7F
 		.BYTE	$02,$88,$08,$98,$FF
 
-byte_A8FE:
-		.BYTE	$82,$20,$0A,$80,$FF ; definitely controls how much strength the hero gains from a levelup, if i set it to all FF then i get 9 points
+_stat_curve_STR_tbl:
+		.BYTE	$82,$20,$0A,$80,$FF ; stat curves for STR
 		.BYTE	$04,$28,$05,$31,$FF
 		.BYTE	$00,$12,$29,$A7,$7F
 		.BYTE	$80,$25,$0C,$82,$7F
@@ -5275,7 +5396,7 @@ byte_A8FE:
 		.BYTE	$86,$08,$80,$23,$7F
 		.BYTE	$84,$2B,$00,$1B,$FF
 
-byte_A926:
+_stat_curve_AGI_tbl:
 		.BYTE	$82,$20,$0C,$80,$7F ; etc. for AGI
 		.BYTE	$8E,$10,$00,$93,$FF
 		.BYTE	$87,$07,$0F,$80,$7F
@@ -5285,7 +5406,7 @@ byte_A926:
 		.BYTE	$80,$0B,$8D,$14,$7F
 		.BYTE	$00,$09,$46,$8A,$7F
 
-byte_A94E:
+_stat_curve_VIT_tbl:
 		.BYTE	$85,$1F,$88,$00,$7F
 		.BYTE	$83,$06,$28,$85,$7F
 		.BYTE	$81,$08,$0F,$94,$7F
@@ -5295,7 +5416,7 @@ byte_A94E:
 		.BYTE	$82,$09,$26,$80,$FF
 		.BYTE	$82,$03,$0E,$85,$7F
 
-byte_A976:
+_stat_curve_LUCK_tbl:
 		.BYTE	$0A,$27,$31,$80,$FF
 		.BYTE	$82,$09,$25,$80,$FF
 		.BYTE	$83,$1D,$0E,$80,$FF
@@ -5305,7 +5426,7 @@ byte_A976:
 		.BYTE	$84,$05,$1E,$8A,$FF
 		.BYTE	$00,$89,$0A,$85,$7F
 
-byte_A99E:
+_stat_curve_INT_tbl:
 		.BYTE	$8E,$23,$00,$80,$7F ; etc for INT
 		.BYTE	$80,$0E,$37,$80,$7F
 		.BYTE	$80,$0E,$37,$80,$7F
