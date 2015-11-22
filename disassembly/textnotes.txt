@@ -6,6 +6,6 @@ $F2 - Enemy actor letter
 $F3 - Name of spell target
 $F4 - Item name
 $F5 - Actor/User (PC or enemy) name
-$F8 - A number
+$F8 - A number (u24)
 $F9 - Hero's name?
 $FD - Some control code probably

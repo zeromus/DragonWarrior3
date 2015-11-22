@@ -4680,7 +4680,7 @@ sub_15A918:
 sub_15A91C:
 		LDX		#2
 loc_15A91E:
-		LDA		byte_63F,X
+		LDA		_msg_number_parameter_F8,X
 		STA		word_4,X
 		DEX
 		BPL		loc_15A91E
@@ -5314,13 +5314,13 @@ loc_15ACB6:
 		CMP		#3
 		BCC		loc_15ACC8
 		LDA		#2
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		BNE		loc_15ACD3
 loc_15ACC8:
 		LDA		#0
-		STA		byte_63F
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 loc_15ACD3:
 		JSR		sub_15AD31
 		BCC		loc_15ACDD
@@ -5384,10 +5384,10 @@ sub_15AD31:
 		PHA
 		TXA
 		PHA
-		LDA		byte_641
-		ORA		byte_640
+		LDA		_msg_number_parameter_F8+2
+		ORA		_msg_number_parameter_F8+1
 		BNE		loc_15AD47
-		LDX		byte_63F
+		LDX		_msg_number_parameter_F8
 		BEQ		loc_15AD44
 		DEX
 		BNE		loc_15AD47
@@ -5436,7 +5436,7 @@ sub_15AD6E:
 		PHA
 		LDA		word_4+1
 		PHA
-		LDA		byte_63F
+		LDA		_msg_number_parameter_F8
 		ASL
 		TAX
 		LDA		off_15ADD9,X

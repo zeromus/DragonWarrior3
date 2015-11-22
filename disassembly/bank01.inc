@@ -1387,10 +1387,10 @@ loc_208FA:
 		BNE		loc_20902
 		JMP		loc_20876
 loc_20902:
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		#0
-		STA		byte_640
-		STA		byte_641
+		STA		_msg_number_parameter_F8+1
+		STA		_msg_number_parameter_F8+2
 		LDA		byte_52
 		ORA		#$80
 		STA		byte_D2
@@ -1622,7 +1622,7 @@ loc_20AB7:
 		STX		word_4
 loc_20ABB:
 		LDA		byte_5D,X
-		STA		byte_63F,X
+		STA		_msg_number_parameter_F8,X
 		ORA		word_4
 		STA		word_4
 		INX
@@ -1790,15 +1790,15 @@ loc_20BE7:
 		STA		word_60+1
 loc_20C0C:
 		LDA		word_60
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		STA		byte_CE
 		ORA		word_60+1
 		BEQ		loc_20C6F
 		LDA		word_60+1
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		STA		byte_CF
 		LDA		#0
-		STA		byte_641
+		STA		_msg_number_parameter_F8+2
 		STA		byte_D0
 		JSR		_sram_b0_s1C
 		LDA		#$26
@@ -1831,9 +1831,9 @@ loc_20C4F:
 		LDA		#1
 		JSR		_add8_to_16	; A = value
 		LDA		byte_CE
-		STA		byte_63F
+		STA		_msg_number_parameter_F8
 		LDA		byte_CF
-		STA		byte_640
+		STA		_msg_number_parameter_F8+1
 		JSR		_sram_b0_s1C
 		LDA		#$B6
 ; print a message "you have vanquished all of your foes"
