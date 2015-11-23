@@ -5035,7 +5035,6 @@ byte_A722:
 ; WHY IS THIS SUCH INSANE GARBAGE?
 ; Well, the developers wanted to have several knobs to tune without having to rebuild giant tables full of bugs.
 ; But the structure of the stat curve table with the #$80 bit and LSBits is unforgivable, that should be broken out
-; Maybe it's inherited all the way from DW1
 ;
 _eval_stat_curve:
 		STA		_tmp13 ; stash the player's current level
@@ -5067,24 +5066,25 @@ loc_A747:
 		BEQ		.for_exp; branch down if requested stat is EXP
 
 ; requested stat is not EXP.
-; choose one of X=0 or X=2 depending on MSBit of our word_3C ptr
+; choose one of X=0 or X=2 depending on MSBit of [word_3C] (that's the first entry of the stat curve)
 		LDY		#0
-		LDX		#0 ; use table #0 by default ($00,$10,$08,$10,$20)
+		LDX		#0 ; use _stat_curve_scale_tbl_0 by default ($00,$10,$08,$10,$20)
 		LDA		(word_3C),Y
 		BPL		loc_A75B
-; use table #1 instead (must be an aggressive gainer?) ($08,$10,$18,$20,$08)
+; use _stat_curve_scale_tbl_1 instead (must be an aggressive gainer?) ($08,$10,$18,$20,$08)
 		INX
 		INX
 loc_A75B:
 		LDA		_stat_curve_scale_tbl,X
 		LDY		_stat_curve_scale_tbl+1,X
+
 .for_exp:
 ; well, we finally have a value ready to put in word_3E...
 ; we'll use it in this function for EXP, otherwise it's considered output for the caller to use
 		STA		word_3E
 		STY		word_3E+1
 
-; clear _temp12, we'll be building a value in there
+; clear _tmp12, we'll be building a value in there
 		LDA		#0
 		STA		_tmp12
 ; setup a 4 times loop? or maybe 5 times
@@ -5179,7 +5179,7 @@ loc_A7BE:
 		STA		byte_F ; stash that entry for counting down
 
 loc_A7C8:
-; u24[4,5,6] += u24[7,8,9] * _temp12 (intermediate in u24[B,C,D])
+; u24[4,5,6] += u24[7,8,9] * _tmp12 (intermediate in u24[B,C,D])
 		LDX		#$07
 		LDY		#$0B
 		LDA		_tmp12
@@ -5188,7 +5188,7 @@ loc_A7C8:
 		LDY		#$04
 		JSR		_add_24_to_24
 
-; if it's EXP, then reference our 3E table to scale the result (why did we even setup word_3e otherwise?)
+; if it's EXP, then reference our 3E table to scale the result here (for non-EXP, this table is used by the caller of this function)
 ; u24[7,8,9] *= (word_3E),Y
 		LDA		byte_10 ; load requested stat
 		BNE		.not_exp ; check whether its not EXP
@@ -5387,17 +5387,17 @@ _b0_s4B:
 		.BYTE	$02,$88,$08,$98,$FF
 
 _stat_curve_STR_tbl:
-		.BYTE	$82,$20,$0A,$80,$FF ; stat curves for STR
-		.BYTE	$04,$28,$05,$31,$FF
-		.BYTE	$00,$12,$29,$A7,$7F
-		.BYTE	$80,$25,$0C,$82,$7F
-		.BYTE	$80,$09,$23,$80,$FF
-		.BYTE	$86,$17,$00,$80,$FF
-		.BYTE	$86,$08,$80,$23,$7F
-		.BYTE	$84,$2B,$00,$1B,$FF
+		.BYTE	$82,$20,$0A,$80,$FF ; 6 - here i calculated the mystery byte
+		.BYTE	$04,$28,$05,$31,$FF ; 2
+		.BYTE	$00,$12,$29,$A7,$7F ; 4
+		.BYTE	$80,$25,$0C,$82,$7F ; 4
+		.BYTE	$80,$09,$23,$80,$FF ; 6
+		.BYTE	$86,$17,$00,$80,$FF ; 6
+		.BYTE	$86,$08,$80,$23,$7F ; 8
+		.BYTE	$84,$2B,$00,$1B,$FF ; 2
 
 _stat_curve_AGI_tbl:
-		.BYTE	$82,$20,$0C,$80,$7F ; etc. for AGI
+		.BYTE	$82,$20,$0C,$80,$7F
 		.BYTE	$8E,$10,$00,$93,$FF
 		.BYTE	$87,$07,$0F,$80,$7F
 		.BYTE	$80,$1B,$16,$86,$7F
