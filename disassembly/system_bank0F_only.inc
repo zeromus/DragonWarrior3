@@ -449,14 +449,14 @@ sub_176F3E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176F56:
-		DEC		byte_88
-		LDA		byte_88
-		INC		byte_88
+		DEC		_mapWidth
+		LDA		_mapWidth
+		INC		_mapWidth
 		CMP		byte_74
 		BCC		loc_176F6D
-		DEC		byte_89
-		LDA		byte_89
-		INC		byte_89
+		DEC		_mapHeight
+		LDA		_mapHeight
+		INC		_mapHeight
 		CMP		byte_77
 		BCC		loc_176F6D
 		JMP		sub_176FB2
@@ -467,7 +467,7 @@ loc_176F6D:
 		LDA		byte_8A
 		CMP		#$19
 		BEQ		loc_176F8A
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$A
 		BNE		loc_176F9F
 		LDA		byte_77
@@ -500,7 +500,7 @@ byte_176FAA:
 sub_176FB2:
 		LDA		#0
 		STA		byte_25
-		LDA		byte_88
+		LDA		_mapWidth
 		STA		byte_24
 		LDX		#byte_24
 		LDY		byte_77
@@ -508,7 +508,7 @@ sub_176FB2:
 		TYA
 		JSR		_mul16_to_8
 		LDX		#byte_24
-		LDA		byte_88
+		LDA		_mapWidth
 		JSR		_add8_to_neg16
 		LDA		byte_74
 		LDX		#byte_24
@@ -796,7 +796,7 @@ loc_177159:
 		BEQ		loc_17718A
 		CMP		#2
 		BEQ		loc_17718A
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_17717C
 		CMP		#$78
@@ -815,7 +815,7 @@ loc_17718A:
 		BNE		sub_1771F8
 		LDA		byte_2C
 		BEQ		loc_1771A4
-		LDA		byte_8F
+		LDA		_blockPlayerInputDuringMap
 		BNE		loc_1771A4
 		LDA		word_72
 		CMP		#4
@@ -854,13 +854,13 @@ loc_1771C5:
 		BPL		sub_1771F5
 		LDA		byte_80
 		SEC
-		SBC		byte_30
+		SBC		_playerMapX
 		CLC
 		ADC		#8
 		STA		word_4
 		LDA		byte_81
 		SEC
-		SBC		byte_31
+		SBC		_playerMapY
 		CLC
 		ADC		#7
 		STA		word_4+1
@@ -1179,10 +1179,10 @@ sub_1773E9:
 		BEQ		loc_17745E
 		CMP		#2
 		BEQ		loc_177410
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		AND		#7
 		BNE		locret_17740C
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		CMP		#$10
 		BNE		loc_177413
 locret_17740C:
@@ -1200,7 +1200,7 @@ loc_177413:
 		LDX		#2
 		LDY		byte_6BB
 		INY
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BNE		loc_17742E
 		LDX		#0
 		LDY		byte_6BB
@@ -1230,7 +1230,7 @@ loc_17742E:
 locret_17745D:
 		RTS
 loc_17745E:
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		AND		#7
 		BEQ		locret_17745D
 		JSR		sub_17787B
@@ -1240,7 +1240,7 @@ loc_17745E:
 		JSR		sub_17775E
 		LDX		#0
 		LDY		byte_6BB
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		CMP		#$F
 		BEQ		loc_17742E
 		LDX		#2
@@ -1248,7 +1248,7 @@ loc_17745E:
 		INY
 		JMP		loc_17742E
 loc_177484:
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		AND		#7
 		BNE		locret_17745D
 		JSR		sub_1778B5
@@ -1265,7 +1265,7 @@ loc_177497:
 		LDY		byte_6BB
 		INY
 		INY
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		CMP		#$10
 		BEQ		loc_1774B0
 		LDX		#0
@@ -1296,7 +1296,7 @@ loc_1774B0:
 locret_1774DF:
 		RTS
 loc_1774E0:
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		AND		#7
 		BNE		locret_1774DF
 		JSR		sub_1778B5
@@ -1311,7 +1311,7 @@ loc_1774F3:
 		JSR		sub_17775E
 		LDX		#0
 		LDY		byte_6BB
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		CMP		#$10
 		BEQ		loc_1774B0
 		LDX		#4
@@ -1340,7 +1340,7 @@ sub_177517:
 		STA		word_6E
 		LDA		off_17750F+1,X
 		STA		word_6E+1
-		LDA		byte_30
+		LDA		_playerMapX
 		SEC
 		SBC		#8
 		STA		byte_639
@@ -1348,11 +1348,11 @@ sub_177517:
 		LDA		#0
 loc_17753E:
 		STA		byte_63A
-		LDA		byte_30
+		LDA		_playerMapX
 		CLC
 		ADC		#7
 		STA		byte_63B
-		LDA		byte_31
+		LDA		_playerMapY
 		SEC
 		SBC		#7
 		STA		byte_638
@@ -1360,7 +1360,7 @@ loc_17753E:
 		LDA		#0
 loc_177555:
 		STA		byte_63C
-		LDA		byte_31
+		LDA		_playerMapY
 		CLC
 		ADC		#7
 		STA		byte_63D
@@ -1493,7 +1493,7 @@ sub_177619:
 		PLA
 		AND		#$3C
 		STA		byte_6BB
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		CMP		#9
 		BCS		loc_17764D
 		CMP		#8
@@ -1588,7 +1588,7 @@ loc_1776CC:
 		INY
 		CPY		#4
 		BNE		loc_1776CC
-		LDA		byte_30
+		LDA		_playerMapX
 		SEC
 		SBC		#8
 		LDY		#0
@@ -1598,7 +1598,7 @@ loc_1776CC:
 		ADC		#$F
 		CMP		(word_4),Y
 		BEQ		loc_1776B5
-		LDA		byte_31
+		LDA		_playerMapY
 		SEC
 		SBC		#7
 		INY
@@ -1693,41 +1693,41 @@ loc_17776E:
 		BEQ		loc_1777A8
 		LDA		word_6+1
 		CLC
-		ADC		byte_87
+		ADC		_heroTileMovePixelsRemain
 		STA		word_6+1
 		LDA		byte_B
 		CLC
-		ADC		byte_87
+		ADC		_heroTileMovePixelsRemain
 		STA		byte_B
 		RTS
 loc_17778A:
 		LDA		word_6+1
 		SEC
-		SBC		byte_87
+		SBC		_heroTileMovePixelsRemain
 		STA		word_6+1
 		LDA		byte_B
 		SEC
-		SBC		byte_87
+		SBC		_heroTileMovePixelsRemain
 		STA		byte_B
 		RTS
 loc_177799:
 		LDA		word_4
 		CLC
-		ADC		byte_87
+		ADC		_heroTileMovePixelsRemain
 		STA		word_4
 		LDA		byte_8
 		CLC
-		ADC		byte_87
+		ADC		_heroTileMovePixelsRemain
 		STA		byte_8
 		RTS
 loc_1777A8:
 		LDA		word_4
 		SEC
-		SBC		byte_87
+		SBC		_heroTileMovePixelsRemain
 		STA		word_4
 		LDA		byte_8
 		SEC
-		SBC		byte_87
+		SBC		_heroTileMovePixelsRemain
 		STA		byte_8
 		RTS
 
@@ -1741,17 +1741,17 @@ sub_1777B7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1777C2:
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		word_6
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		word_6+1
 		JMP		sub_1777E0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1777CD:
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		word_6
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		word_6+1
 		LDA		#6
 		STA		byte_8
@@ -1813,9 +1813,9 @@ loc_177824:
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 sub_177827:
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		word_6
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		word_6+1
 		JMP		loc_17783A
 
@@ -1876,7 +1876,7 @@ sub_17787B:
 		BEQ		loc_177889
 		LDA		byte_81
 		SEC
-		SBC		byte_31
+		SBC		_playerMapY
 		JMP		loc_17788E
 loc_177889:
 		LDA		byte_81
@@ -1916,7 +1916,7 @@ sub_1778B5:
 		BEQ		loc_1778C3
 		LDA		byte_80
 		SEC
-		SBC		byte_30
+		SBC		_playerMapX
 		JMP		loc_1778C8
 loc_1778C3:
 		LDA		byte_80
@@ -2085,11 +2085,11 @@ sub_1779A8:
 		LDA		#>[byte_7400]
 		STA		word_72+1
 		PLA
-		LDY		byte_89
+		LDY		_mapHeight
 		STY		word_4
 		LDY		#0
 loc_1779BB:
-		LDX		byte_88
+		LDX		_mapWidth
 loc_1779BD:
 		STA		(word_72),Y
 		INC		word_72
@@ -2207,14 +2207,14 @@ sub_177A5B:
 		STA		byte_B
 		LDA		word_4+1
 		STA		byte_C
-		LDA		byte_88
+		LDA		_mapWidth
 		LDX		#word_4
 		JSR		_div16_to_8
 		STA		word_6+1
 		LDA		word_4
 		STA		byte_8
 		JSR		sub_1779EB
-		LDA		byte_88
+		LDA		_mapWidth
 		LDX		#word_4
 		JSR		_div16_to_8
 		STA		byte_9
@@ -2287,7 +2287,7 @@ loc_177AC6:
 		JSR		sub_177B25
 		DEX
 		BNE		loc_177AAA
-		LDA		byte_88
+		LDA		_mapWidth
 		SEC
 		SBC		word_6+1
 		SEC
@@ -2302,7 +2302,7 @@ loc_177B0A:
 		JSR		sub_177B25
 		DEX
 		BNE		loc_177AAA
-		LDA		byte_88
+		LDA		_mapWidth
 		SEC
 		SBC		word_6+1
 		CLC
@@ -2336,7 +2336,7 @@ locret_177B37:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177B38:
-		LDA		byte_88
+		LDA		_mapWidth
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177B3A:
@@ -2455,7 +2455,7 @@ loc_177BEB:
 sub_177BF4:
 		LDA		byte_C
 		SEC
-		SBC		byte_88
+		SBC		_mapWidth
 		STA		byte_C
 		BCS		locret_177BFF
 		DEC		byte_D
@@ -2473,7 +2473,7 @@ sub_177C00:
 sub_177C07:
 		LDA		byte_C
 		CLC
-		ADC		byte_88
+		ADC		_mapWidth
 		STA		byte_C
 		BCC		locret_177BFF
 		INC		byte_D
@@ -2506,7 +2506,7 @@ sub_177C27:
 		INY
 		LDA		byte_7A
 		JSR		sub_177C46
-		LDY		byte_88
+		LDY		_mapWidth
 		LDA		byte_7B
 		JSR		sub_177C46
 		INY
@@ -2549,7 +2549,7 @@ sub_177C62:
 		INY
 		LDA		byte_7A
 		JSR		sub_177C7D
-		LDY		byte_88
+		LDY		_mapWidth
 		LDA		byte_7B
 		JSR		sub_177C7D
 		INY
@@ -2596,7 +2596,7 @@ sub_177C99:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177CB0:
-		LDA		byte_88
+		LDA		_mapWidth
 		CLC
 		ADC		word_6C
 		STA		word_6C
@@ -2609,7 +2609,7 @@ locret_177CBB:
 sub_177CBC:
 		LDA		word_6C
 		SEC
-		SBC		byte_88
+		SBC		_mapWidth
 		STA		word_6C
 		BCS		locret_177CBB
 		DEC		word_6C+1
@@ -2630,7 +2630,7 @@ sub_177CC8:
 sub_177CD6:
 		TXA
 		PHA
-		LDA		byte_88
+		LDA		_mapWidth
 		STA		word_6
 		LDA		#0
 		STA		word_6+1
@@ -2674,7 +2674,7 @@ loc_177D19:
 		AND		#$7F
 		LSR
 		LSR
-		LDY		byte_8B
+		LDY		_mapNumber
 		CPY		#$CB
 		BNE		loc_177D3A
 		CMP		#4
@@ -2832,7 +2832,7 @@ sub_177E23:
 		STA		word_6C
 		LDA		#>[_bD_d1]
 		STA		word_6C+1
-		LDA		byte_8B
+		LDA		_mapNumber
 		BEQ		locret_177E5D
 		LDA		word_3E
 loc_177E44:
@@ -2902,7 +2902,7 @@ byte_177EAD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177EB1:
-		LDY		byte_8B
+		LDY		_mapNumber
 		CMP		#4
 		BEQ		loc_177ED1
 		CMP		#8

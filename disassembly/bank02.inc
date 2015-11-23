@@ -2650,7 +2650,7 @@ loc_3A1E8:
 		TXA
 		LDX		#$40
 loc_3A1F4:
-		STA		_ram_pal_buf+$18,X
+		STA		byte_400-1,X
 		DEX
 		BNE		loc_3A1F4
 		STX		byte_BA
@@ -3530,7 +3530,7 @@ loc_3A7F9:
 		BNE		loc_3A805
 		LDA		#$8E
 		FARX	_bB_s3_apu_load
-		FARX	_b2_s7_screen_spell_blink
+		JSR		_b2_s7_screen_spell_blink
 loc_3A805:
 		JSR		sub_3A7E9
 		LDX		byte_47

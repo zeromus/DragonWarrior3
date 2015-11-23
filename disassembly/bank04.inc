@@ -146,8 +146,7 @@ loc_680CD:
 		BNE		loc_68080
 		BEQ		loc_680A0
 loc_680D6:
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 loc_680DC:
 		FARX	_b0_s50
 		LDA		byte_60B7
@@ -210,7 +209,7 @@ loc_68122:
 		JSR		__pause_or_skip
 		JMP		loc_680D6
 loc_68138:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$29
+		SYSX	_apu_load,$29
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		JMP		loc_680DC
 
@@ -1548,7 +1547,7 @@ loc_6894A:
 		BPL		loc_68974
 		LDA		#$CB
 		JSR		_b4_s9
-		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_apu_load,$86
 		SYSX	_sys0E_wrap_bE_s0,$45
 		PHA
 		JSR		sub_6AA51
@@ -1871,14 +1870,14 @@ loc_68BAB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB0:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8B
+		SYSX	_apu_load,$8B
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB6:
 		LDA		#$20
 		JSR		sub_6B2BB
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8D
+		SYSX	_apu_load,$8D
 		JSR		_bs_extract_target_from_move
 		BMI		loc_68BC6
 		JMP		sub_6B3D2
@@ -1894,7 +1893,7 @@ _bs_emove_03_attack_maybe_crit:
 loc_68BD3:
 		JSR		sub_68BB0
 		JSR		sub_6B30E
-		SYSX	_sys12_wrap_bB_s3_apu_load,$88
+		SYSX	_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
 		JSR		_bs_load_enemy_prop_ATK
 		LDA		byte_59
@@ -1954,7 +1953,7 @@ sub_68C42:
 _bs_emove_07_try_flee:
 		JSR		sub_6B2B3
 		STA		byte_64
-		SYSX	_sys12_wrap_bB_s3_apu_load,$83
+		SYSX	_apu_load,$83
 		LDA		#$50
 		JSR		sub_6A96F
 		JSR		sub_6ADBF
@@ -2160,7 +2159,7 @@ locret_68DB0:
 ; =============== S U B	R O U T	I N E =======================================
 ; several breath attacks are handled by this one
 _bs_emove_0A_through_0F_breath_attacks:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$91
+		SYSX	_apu_load,$91
 		LDA		#$36
 		STA		word_4
 		LDX		byte_51
@@ -3371,7 +3370,7 @@ sub_69604:
 		BMI		loc_6960C
 		JMP		sub_696E8
 loc_6960C:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$89
+		SYSX	_apu_load,$89
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
 		JSR		sub_6B0E5
 		BCC		loc_6961A
@@ -3398,7 +3397,7 @@ loc_6962A:
 		CMP		#$A0
 		BCS		loc_69647
 loc_6963E:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
+		SYSX	_apu_load,$8C
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
 loc_69647:
@@ -3457,7 +3456,7 @@ loc_696AD:
 		CMP		word_6+1
 		BCS		loc_696C9
 loc_696B6:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$88
+		SYSX	_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10
 		JSR		_sram_b0_s17
 		JSR		sub_6ADA4
@@ -3477,7 +3476,7 @@ loc_696DC:
 		JMP		loc_6A42E
 loc_696DF:
 		JSR		sub_6B5B7
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
+		SYSX	_apu_load,$8C
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3612,7 +3611,7 @@ _bs_pcAction_02_parry:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697D0:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$91
+		SYSX	_apu_load,$91
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36
 		LDA		#$14
 		STA		byte_55
@@ -3678,7 +3677,7 @@ nullsub_11:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6983C:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8E
+		SYSX	_apu_load,$8E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5461,7 +5460,7 @@ loc_6A42E:
 		BCS		loc_6A45F
 		LDA		byte_6A6B
 		BNE		loc_6A45F
-		SYSX	_sys12_wrap_bB_s3_apu_load,$99
+		SYSX	_apu_load,$99
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E
 		JSR		sub_6ADB6
@@ -5498,7 +5497,7 @@ loc_6A478:
 		LDA		word_4+1
 		PHA
 		JSR		sub_6B697
-		SYSX	_sys12_wrap_bB_s3_apu_load,$87
+		SYSX	_apu_load,$87
 		LDA		#$C
 ; printing damage for counterattack
 		JSR		sub_6A96F
@@ -5523,7 +5522,7 @@ loc_6A478:
 locret_6A4C8:
 		RTS
 loc_6A4C9:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8C
+		SYSX	_apu_load,$8C
 		LDY		#$22
 		JSR		sub_6B2B3
 		BPL		loc_6A4D5
@@ -5611,7 +5610,7 @@ sub_6A544:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A560:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8D
+		SYSX	_apu_load,$8D
 		JSR		sub_6A569
 		JMP		loc_6A4C9
 
@@ -5682,7 +5681,7 @@ _bs_run_PC_Damage:
 		STA		_msg_number_parameter_F8+2
 ; reduce HP 
 		JSR		_sram_b0_s5_player_HP_subtract
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8A ; play sfx hit!
+		SYSX	_apu_load,$8A ; play sfx hit!
 		LDA		#$13
 		JMP		sub_6A96F
 
@@ -7488,7 +7487,7 @@ _bs_pcAction_06_equip_attack:
 sub_6B0DB:
 		FARX	_bB_s3_apu_load
 		FARX	_bB_s7
-		SYSX	_sys12_wrap_bB_s3_apu_load,$10
+		SYSX	_apu_load,$10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

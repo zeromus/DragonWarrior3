@@ -3,8 +3,8 @@
 
 _bE_s0_ptr:
 		.WORD	_bE_s0
-_bE_s1_ptr:
-		.WORD	_bE_s1
+_bE_s1_MainLoopCheckAButton_ptr:
+		.WORD	_bE_s1_MainLoopCheckAButton
 _bE_s2_ptr:
 		.WORD	_bE_s2
 _bE_s3_ptr:
@@ -71,8 +71,8 @@ _bE_s2F_ptr:
 		.WORD	_bE_s2F
 _bE_s30_ptr:
 		.WORD	_bE_s30
-_bE_s31_ptr:
-		.WORD	_bE_s31
+_bE_s31_get_map_music_idx_ptr:
+		.WORD	_bE_s31_get_map_music_idx
 _bE_s32_ptr:
 		.WORD	_bE_s32
 _bE_s33_ptr:
@@ -81,28 +81,28 @@ _bE_s34_ptr:
 		.WORD	_bE_s34
 _bE_s36_ptr:
 		.WORD	_bE_s36
-_bE_s38_ptr:
-		.WORD	_bE_s38
+_bE_s38_print_char_force_dequeue_ptr:
+		.WORD	_bE_s38_print_char_force_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
-; "sub_MainLoopCheckAButton" - called from main loop
-_bE_s1:
-		LDA		byte_87 ; heroTileMovePixelsRemain
+; called from main loop
+;
+;"sub_MainLoopCheckAButton"
+_bE_s1_MainLoopCheckAButton:
+		LDA		_heroTileMovePixelsRemain	; heroTileMovePixelsRemain
 		BNE		.processRemainingPixelMove
-; this affects NPC motion some way i dont understand. bitmask for autopilot entities or NPCs or autopiloted player?
-		LDA		byte_86
+		LDA		byte_86						; this affects NPC motion some way i dont understand.
+											; bitmask for autopilot entities or NPCs or autopiloted player?
 		BEQ		.processRemainingPixelMove
-		LDA		byte_8F ; blockPlayerInputDuringMap
+		LDA		_blockPlayerInputDuringMap
 		BNE		locret_158092
-; if above checks pass, we're OK to read A button input
 .okToReadInput:
-		JSR		_calc_pads
+		JSR		_calc_pads					; if above checks pass, we're OK to read A button input
 		LDA		_pads
 		ORA		byte_6BD
 		STA		byte_6BD
 		LDA		byte_90 ; EntityUpdateCycle_90
-; only handle input every 16th frame
-		AND		#$F
+		AND		#$F							; only handle input every 16th frame
 		BNE		locret_158092
 		JMP		sub_15812C
 locret_158092:
@@ -177,14 +177,14 @@ loc_1580EB:
 		STA		byte_2C
 		FARX	_bC_s32
 		FARX	_bD_s18
-		SYSX	_sys12_wrap_bB_s3_apu_load,$04
+		SYSX	_apu_load,$04
 locret_15811A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15811B:
 		JSR		_bE_sD
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys06_msg_m00_arg0,$BE
 		LDA		#0
 		STA		byte_6BD
@@ -221,7 +221,7 @@ loc_158153:
 		LDA		_location_type
 		BNE		sub_15819F
 		JSR		sub_1580A1
-		FARX	_bE_s32
+		JSR		_bE_s32
 		LDX		#$10
 loc_15816B:
 		LDA		_spr_ram,X
@@ -249,7 +249,7 @@ loc_158181:
 		BNE		loc_158181
 		LDA		#2
 		STA		byte_2C
-		SYSX	_sys12_wrap_bB_s3_apu_load,$0E
+		SYSX	_apu_load,$0E
 		LDA		#0
 		STA		byte_6C9
 		RTS
@@ -260,7 +260,7 @@ sub_15819F:
 		STA		byte_8E
 		JSR		_bE_sD
 		JSR		sub_15856C
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		SYSX	_sys0D_wrap_bE_sC,$14
 		CMP		#$FF
 		BNE		loc_1581B8
@@ -293,10 +293,10 @@ loc_1581DE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1581E1:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$F
 		BNE		sub_158203
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#3
 		BNE		sub_158203
 		LDA		_players_pos_list+3
@@ -311,9 +311,9 @@ sub_1581E1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158203:
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		word_6
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		word_6+1
 		LDA		#0
 		STA		byte_8
@@ -355,7 +355,7 @@ loc_15824C:
 		STA		word_6C
 		BCC		loc_158240
 loc_158255:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$0E
 		JMP		_bE_s33
 loc_15825E:
@@ -391,7 +391,7 @@ loc_15825E:
 		LDA		word_6
 		AND		#$20
 		BNE		loc_1582D6
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$60
 		BEQ		loc_1582AE
 		CMP		#$B
@@ -435,7 +435,7 @@ loc_1582D6:
 		LDA		byte_8
 		PHA
 		FARX	_bD_s19
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		PLA
 		STA		byte_8
 		PLA
@@ -470,7 +470,7 @@ locret_15830E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15830F:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$C
 		BNE		loc_158349
 		LDA		_world_map_steps_count
@@ -529,41 +529,41 @@ locret_158373:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158374:
-		JMP		sub_1580A1
-
-; =============== S U B	R O U T	I N E =======================================
 sub_158377:
 		BIT		byte_60B7
 		BVC		loc_158385
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$66
 		JMP		_bE_s33
 loc_158385:
 		SYSX	_sys0D_wrap_bE_sC,$1E
 		CMP		#$FF
-		BEQ		sub_158374
+		BEQ		loc_158374
 		CMP		#1
 		BEQ		sub_1583C2
 		CMP		#2
-		BEQ		sub_158405
+		BEQ		_wrap_b6_s1E
 		SYSX	_sys0D_wrap_bE_sC,$23
 		CMP		#$FF
-		BEQ		sub_158374
+		BEQ		loc_158374
 		STA		byte_CE
 		SYSX	_sys0D_wrap_bE_sC,$68
 		SYSX	_sys0D_wrap_bE_sC,$09
 		JSR		__pause_or_skip
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		SYSX	_sys0D_wrap_bE_sC,$08
 		SYSX	_sys0D_wrap_bE_sC,$0A
 		JSR		__pause_or_skip
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		LDA		#1
 		STA		byte_D0
 		JSR		sub_1583D0
 		JSR		sub_1583D0
+loc_158374:
 		JMP		sub_1580A1
+_wrap_b6_s1E:
+		FARX	_b6_s1E
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1583C2:
@@ -591,10 +591,10 @@ loc_1583EA:
 		SYSX	_sys0D_wrap_bE_sC,$65
 loc_1583ED:
 		JSR		__pause_or_skip
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		SYSX	_sys0D_wrap_bE_sC,$0C
 		JSR		__pause_or_skip
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 loc_1583FC:
 		INC		byte_D0
 		RTS
@@ -603,11 +603,6 @@ loc_1583FC:
 _bE_s33:
 		JSR		__pause_or_skip
 		JMP		sub_1580A1
-
-; =============== S U B	R O U T	I N E =======================================
-sub_158405:
-		FARX	_b6_s1E
-		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158409:
@@ -741,7 +736,7 @@ sub_1584ED:
 		JSR		sub_15850B
 		BNE		loc_158507
 loc_158504:
-		FARX	_bE_s10
+		JSR		_bE_s10
 loc_158507:
 		FARX	_b0_s50
 		RTS
@@ -869,7 +864,7 @@ loc_1585A5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$17
+		SYSX	_apu_load,$17
 		FARX	_bD_s22
 		CLC
 		RTS
@@ -966,11 +961,11 @@ sub_158622:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158643:
 		JSR		sub_158655
-		LDA		byte_30
+		LDA		_playerMapX
 		SEC
 		SBC		#8
 		STA		word_6
-		LDA		byte_31
+		LDA		_playerMapY
 		SEC
 		SBC		#7
 		STA		word_6+1
@@ -1175,7 +1170,7 @@ loc_158786:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1C:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_apu_load,$86
 		SYSX	_sys0D_wrap_bE_sC,$1D
 		PHA
 		LDA		byte_80
@@ -1272,15 +1267,15 @@ sub_15881A:
 		AND		#$40
 		BEQ		loc_158835
 loc_15882C:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		CMP		#$FF
 		BNE		loc_15882C
 		BEQ		loc_15883A
 loc_158835:
 		LDA		#$B
-		STA		byte_6AC3
+		STA		_wnd_cmd_byte_pos
 loc_15883A:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		BPL		loc_158870
 		CMP		#$FF
 		BEQ		loc_158876
@@ -1317,13 +1312,13 @@ loc_15887A:
 loc_15887D:
 		JMP		sub_158B81
 loc_158880:
-		JMP		loc_15897F
+		JMP		sub_15897F
 loc_158883:
-		JMP		loc_158985
+		JMP		sub_158985
 loc_158886:
 		JMP		loc_1589E8
 loc_158889:
-		JMP		loc_1588D3
+		JMP		sub_1588D3
 loc_15888C:
 		JMP		sub_158AA6
 loc_15888F:
@@ -1333,28 +1328,35 @@ loc_158892:
 loc_158895:
 		CMP		#$E
 		BNE		loc_1588A3
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B47
 		LDX		#$E
 		BNE		loc_1588AF
 loc_1588A3:
 		PHA
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
 		JSR		sub_158C89
 		PLA
 		TAX
 loc_1588AF:
-		LDA		_sys_idx_list0,X
-		PHA
-		JSR		_sys_safe_select
+		LDA		_sys_idx_list0,X				; list of main param routines indexes (in filesystem)
+		PHA										; backup
+		JSR		_sys_safe_select				; call it
 		PLA
-		JSR		_char_special_status_display
+		JSR		_char_special_status_display	; a special test for DE/PO etc. statuses.
 loc_1588BA:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		JSR		sub_158E72
 		JMP		loc_15883A
-_sys_idx_list0: ; what is this crap?
+
+; this is part of menu/message display routines, which can display
+; as well the players parameters, they requested with common param
+; read functions in bank0.
+; every param in menu windows described with special code, so they
+; need a table of param read routines coresponding to special codes
+;
+_sys_idx_list0:
 		.BYTE	[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s6_player_MP_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s3_player_MAX_HP_read_idx-_sys_idx_lib]>>1
@@ -1371,10 +1373,12 @@ _sys_idx_list0: ; what is this crap?
 		.BYTE	[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_sD_idx-_sys_idx_lib]>>1
 		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
-loc_1588D3:
+
+; =============== S U B	R O U T	I N E =======================================
+sub_1588D3:
 		LDA		byte_C9
 		BNE		loc_1588DD
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		JMP		loc_15883A
 loc_1588DD:
 		LDA		byte_6AC1
@@ -1393,7 +1397,7 @@ loc_1588EB:
 loc_1588F4:
 		CMP		#$11
 		BNE		loc_15893F
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B47
 		JSR		_sram_b0_s10
 		LDA		word_4
@@ -1403,7 +1407,7 @@ loc_1588F4:
 loc_15890A:
 		LDX		#0
 loc_15890C:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		INX
 		CPX		#$D
 		BNE		loc_15890C
@@ -1414,7 +1418,7 @@ loc_15890C:
 		BNE		loc_15892F
 		LDY		#0
 loc_158921:
-		LDA		byte_158932,Y
+		LDA		_txt_another_world,Y
 		JSR		sub_158DB9
 		INY
 		CPY		#$D
@@ -1422,12 +1426,14 @@ loc_158921:
 		STY		byte_6ACA
 loc_15892F:
 		JMP		loc_15883A
-byte_158932:
-		.BYTE	$25,$32,$33,$38,$2C,$29,$36,  0,$3B,$33,$36,$30,$28
+
+_txt_another_world:
+		.BYTE	_A,_N,_O,_T,_H,_E,_R,0,_W,_O,_R,_L,_D
+
 loc_15893F:
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		PHA
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		LDX		byte_6AC1
 		LSR
 		PLA
@@ -1452,24 +1458,30 @@ loc_15896B:
 		STY		byte_8
 		JMP		sub_158B55
 loc_158970:
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
 		JSR		sub_158C89
 		FARX	_b7_sE_player_log_list
 		JMP		sub_158B52
-loc_15897F:
+		
+; =============== S U B	R O U T	I N E =======================================
+sub_15897F:
 		LDX		#5
 		LDA		#[_b0_s2C_player_CLASS_read_idx-_sys_idx_lib]>>1
 		BNE		loc_158989
-loc_158985:
+		
+; =============== S U B	R O U T	I N E =======================================
+sub_158985:
 		LDX		#6
 		LDA		#[_b0_s2F_player_gender_read_idx-_sys_idx_lib]>>1
+		
+; =============== S U B	R O U T	I N E =======================================
 loc_158989:
 		STX		byte_6AC5
 		PHA
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		LSR
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		BCC		loc_1589A0
 		JSR		sub_158B47
 		TSX
@@ -1485,34 +1497,43 @@ loc_1589A6:
 		LDA		word_4
 		PHA
 		LDX		byte_6AC5
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		PLA
 		TAX
 		PLA
 		CMP		#$2B
 		BNE		loc_1589D5
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		AND		#$F0
 		CMP		#$20
 		BNE		loc_1589D2
 		TXA
 		ASL
 		TAX
-		LDA		byte_1589D8,X
+		LDA		_txt_classes_disp_chars_lib,X
 		STA		word_4
 		INX
-		LDA		byte_1589D8,X
+		LDA		_txt_classes_disp_chars_lib,X
 		STA		word_4+1
 loc_1589D2:
 		JMP		sub_158B55
 loc_1589D5:
 		JMP		sub_158B52
-byte_1589D8:
-		.BYTE	$40,$41,$46,$47,$44,$45,$4E,$4F,$42,$43,$4A,$4B,$48,$49,$4C,$4D
+		
+_txt_classes_disp_chars_lib:
+		.BYTE	$40,$41	; Hr
+		.BYTE	$46,$47	; Wz
+		.BYTE	$44,$45	; Pr
+		.BYTE	$4E,$4F	; Sg
+		.BYTE	$42,$43	; Sr
+		.BYTE	$4A,$4B	; Mr
+		.BYTE	$48,$49	; Fr
+		.BYTE	$4C,$4D	; Gf
+		
 loc_1589E8:
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		PHA
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		AND		#$F
 		TAX
 		PHA
@@ -1556,7 +1577,7 @@ loc_158A31:
 		TAX
 		PLA
 		AND		#$7F
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		JMP		sub_158B55
 loc_158A3D:
 		PLA
@@ -1573,15 +1594,17 @@ loc_158A43:
 		BCS		loc_158A5E
 		LDY		#0
 loc_158A53:
-		LDA		byte_158A61,Y
+		LDA		_txt_non_equipped,Y
 		JSR		sub_158DB9
 		INY
 		CPY		#$C
 		BNE		loc_158A53
 loc_158A5E:
 		JMP		loc_15883A
-byte_158A61:
-		.BYTE	$32,$33,$32,  0,$29,$35,$39,$2D,$34,$34,$29,$28
+		
+_txt_non_equipped:
+		.BYTE	_N,_O,_N,0,_E,_Q,_U,_I,_P,_P,_E,_D
+		
 _sys_idx_list1:
 		.BYTE	[_b0_s1F_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s21_idx-_sys_idx_lib]>>1
@@ -1637,7 +1660,7 @@ loc_158AC3:
 		STA		byte_64
 		FARX	_b4_s2
 loc_158AC8:
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
 		PHA
 		CLC
@@ -1645,7 +1668,7 @@ loc_158AC8:
 		TAX
 		LDA		byte_59
 		FARX	_b2_sC
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		JSR		sub_158B5B
 		PLA
 		BNE		loc_158B0B
@@ -1674,7 +1697,7 @@ loc_158B0B:
 loc_158B0E:
 		LDA		byte_6AC1
 		STA		byte_CF
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
 		CMP		#0
 		BEQ		loc_158B26
@@ -1684,7 +1707,7 @@ loc_158B0E:
 		ADC		byte_CF
 		STA		byte_CF
 loc_158B26:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		AND		#1
 		TAX
 		LDA		_sys_idx_list2,X
@@ -1693,11 +1716,12 @@ loc_158B26:
 		CMP		#$FF
 		BEQ		loc_158B40
 		LDX		#4
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		JMP		sub_158B55
 loc_158B40:
 		LDY		#9
 		JMP		sub_158B8A
+		
 _sys_idx_list2:
 		.BYTE	[_b0_s34_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s35_idx-_sys_idx_lib]>>1
@@ -1713,7 +1737,7 @@ sub_158B47:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B52:
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B55:
@@ -1722,10 +1746,10 @@ sub_158B55:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B5B:
-		LSR		byte_6AC4
-		LSR		byte_6AC4
-		LSR		byte_6AC4
-		LSR		byte_6AC4
+		LSR		_wnd_cur_cmd_byte
+		LSR		_wnd_cur_cmd_byte
+		LSR		_wnd_cur_cmd_byte
+		LSR		_wnd_cur_cmd_byte
 		LDY		#0
 loc_158B69:
 		LDA		word_4,Y
@@ -1739,13 +1763,13 @@ loc_158B76:
 		JSR		sub_158DB9
 		INY
 loc_158B7B:
-		CPY		byte_6AC4
+		CPY		_wnd_cur_cmd_byte
 		BNE		loc_158B69
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B81:
-		LDA		byte_6AC4
+		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
 		TAY
 		INY
@@ -1771,16 +1795,11 @@ sub_158B95:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158B9D:
-		FARX	_b2_sC
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_158BA1:
-		LDY		byte_6AC3
-		INC		byte_6AC3
+_wnd_fetch_cmd_byte:
+		LDY		_wnd_cmd_byte_pos
+		INC		_wnd_cmd_byte_pos
 		LDA		(word_6C),Y
-		STA		byte_6AC4
+		STA		_wnd_cur_cmd_byte
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1875,7 +1894,7 @@ loc_158C42:
 		CPX		#0
 		BEQ		loc_158C54
 loc_158C49:
-		LDA		_txt_window_names,Y
+		LDA		_txt_window_names_lib,Y
 		INY
 		CMP		#$FF
 		BNE		loc_158C49
@@ -1885,7 +1904,7 @@ loc_158C54:
 		LDA		#$79
 		JSR		sub_158DB9
 loc_158C59:
-		LDA		_txt_window_names,Y
+		LDA		_txt_window_names_lib,Y
 		CMP		#$FF
 		BEQ		locret_158C67
 		JSR		sub_158DB9
@@ -2012,7 +2031,7 @@ loc_158CF5:
 		STA		byte_6AC9
 		STA		byte_6ACA
 		LDA		#$B
-		STA		byte_6AC3
+		STA		_wnd_cmd_byte_pos
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2218,8 +2237,8 @@ sub_158E57:
 		ASL
 		TAX
 loc_158E67:
-		LDA		_ram_pal_buf+$18,X
-		STA		_ram_pal_buf+$18,Y
+		LDA		byte_400-1,X
+		STA		byte_400-1,Y
 		DEX
 		DEY
 		BNE		loc_158E67
@@ -2382,6 +2401,12 @@ byte_158F53:
 		.BYTE	  0,$FE
 
 ; =============== S U B	R O U T	I N E =======================================
+; when displaying a level, there must be non-numeric values according to
+; special statuses retrieved previously in _b0_sC_player_LV_read_idx in
+; temp var word_4+1, so here we check to this particular routine and wether
+; it return any special codes. if any, display special status instead of
+; number and break back to the main window display loop
+;
 _char_special_status_display:
 		CMP		#[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
 		BNE		locret_158F79
@@ -2397,7 +2422,7 @@ _char_special_status_display:
 		LDX		word_4+1
 		LDA		_char_status_abbreviations_list+1,X
 		JSR		sub_158DB9
-		JSR		sub_158BA1
+		JSR		_wnd_fetch_cmd_byte
 		PLA
 		PLA
 		JMP		loc_15883A
@@ -2520,13 +2545,28 @@ _windows_lib:
 		.WORD	_wnd69
 		.WORD	_wnd6A
 		.WORD	_wnd6B
+
+; the window resource format:
+; header: 11 bytes
+;  header byte  0   - window width
+;  header byte  1   - window height (number of lines including header)
+;  header byte  2   -
+;  header byte  3   -
+;  header byte  4-11-
+; lines data [header byte 1] chunks, each $FF terminated
+;  immediate data ($80 clear)
+;  commands ($80 set)
+;
 _wnd00:
-		.BYTE	  8,  4,$AA,$81,$60,$21,$22,$23,  0,  0,  0,$2C,$80,  3,$FF,$31
-		.BYTE	$81,  3,$FF,$92,$20,$8D,  2,$FF
+		.BYTE	  8,  4,$AA,$81,$60,$21,$22,$23,  0,  0,  0
+		.BYTE	$2C,$80,  3,$FF
+		.BYTE	$31,$81,  3,$FF
+		.BYTE	$92,$20,$8D,  2,$FF
 _wnd01:
-		.BYTE	 $C,  4,$A8,$A0,$20,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
-		.BYTE	$A0,  3,$FF,$31,$81,  3,  0,$31,$A1,  3,$FF,$92,$20,$8D,  2,  0
-		.BYTE	$B2,$20,$AD,  2,$FF
+		.BYTE	 $C,  4,$A8,$A0,$20,$21,$22,$23,  0,  0,  0
+		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,$FF
+		.BYTE	$31,$81,  3,  0,$31,$A1,  3,$FF
+		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,$FF
 _wnd02:
 		.BYTE	$12,  4,$A5,$C1,$60,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
 		.BYTE	$A0,  3,  0,$2C,$C0,  3,$FF,$31,$81,  3,  0,$31,$A1,  3,  0,$31
@@ -2550,22 +2590,25 @@ _wnd07:
 		.BYTE	$80,$12
 		.WORD	_wnd03
 _wnd08:
-		.BYTE	 $C,  6,$32,$81,$25,$21,$22,$23,$40,  0,  0,  0,$92,$80,$FF,$37
-		.BYTE	$29,$3C,$75,$94,$60,$FF,$30,$29,$3A,$29,$30,$75,$8D,  2,$FF,$9E
-		.BYTE	$2C,$34,$75,$80,  3,$FF,$9E,$31,$34,$75,$81,  3,$FF
+		.BYTE	 $C,  6,$32,$81,$25,$21,$22,$23,$40,  0,  0
+		.BYTE	  0,$92,$80,$FF
+		.BYTE	 _S,_E,_X,_col,$94,$60,$FF
+		.BYTE	 _L,_E,_V,_E,_L,_col,$8D,  2,$FF
+		.BYTE	$9E,_H,_P,_col,$80,  3,$FF
+		.BYTE	$9E,_M,_P,_col,$81,  3,$FF
 _wnd09:
-		.BYTE	$14, $B,$34,  0,$20,$61,$22,$23,$40,  0,  0,$FE,  0,$37,$1E,$1C
-		.BYTE	 $F,$18,$11,$1E,$12,$75,$84,  3,$FF,$FF,$FE,$9E,$25,$11,$13,$16
-		.BYTE	$13,$1E,$23,$75,$85,  3,$FF,$FF,$FE,  0,$3A,$13,$1E, $B,$16,$13
-		.BYTE	$1E,$23,$75,$86,  3,$FF,$FF,$9E,$2D,$18,$1E, $F,$16,$16,$13,$11
-		.BYTE	 $F,$18, $D, $F,$75,$87,  3,$FF,$FF,$FE,$FE,$30,$1F, $D,$15,$75
-		.BYTE	$88,  3,$FF,$FF,$9E,$31, $B,$22,$13,$17,$1F,$17,  0,$2C,$6C,$34
-		.BYTE	$6C,$75,$82,  3,$FF,$FF,$9E,$31, $B,$22,$13,$17,$1F,$17,  0,$31
-		.BYTE	$6C,$34,$6C,$75,$83,  3,$FF,$FF,$9E,$25,$1E,$1E, $B, $D,$15,  0
-		.BYTE	$34,$19,$21, $F,$1C,$75,$89,  3,$FF,$FF,  0,$28, $F,$10, $F,$18
-		.BYTE	 $D, $F,  0,$34,$19,$21, $F,$1C,$75,$8A,  3,$FF,$FF,$29,$22,$1A
-		.BYTE	 $F,$1C,$13, $F,$18, $D, $F,$FF,$DE,$34,$19,$13,$18,$1E,$1D,$75
-		.BYTE	$8C,  7,$FF
+		.BYTE	$14, $B,$34,  0,$20,$61,$22,$23,$40,  0,  0
+		.BYTE	$FE,  0,_S,_t,_r,_e,_n,_g,_t,_h,_col,$84,  3,$FF,$FF
+		.BYTE	$FE,$9E,_A,_g,_i,_l,_i,_t,_y,_col,$85,  3,$FF,$FF
+		.BYTE	$FE,  0,_V,_i,_t,_a,_l,_i,_t,_y,_col,$86,  3,$FF,$FF
+		.BYTE	$9E,_I,_n,_t,_e,_l,_l,_i,_g,_e,_n,_c,_e,_col,$87,  3,$FF,$FF
+		.BYTE	$FE,$FE,_L,_u,_c,_k,_col,$88,  3,$FF,$FF
+		.BYTE	$9E,_M,_a,_x,_i,_m,_u,_m,0,_H,_dot,_P,_dot,_col,$82,  3,$FF,$FF
+		.BYTE	$9E,_M,_a,_x,_i,_m,_u,_m,0,_M,_dot,_P,_dot,_col,$83,  3,$FF,$FF
+		.BYTE	$9E,_A,_t,_t,_a,_c,_k,0,_P,_o,_w,_e,_r,_col,$89,  3,$FF,$FF
+		.BYTE	  0,_D,_e,_f,_e,_n,_c,_e,0,_P,_o,_w,_e,_r,_col,$8A,  3,$FF,$FF
+		.BYTE	 _E,_x,_p,_e,_r,_i,_e,_n,_c,_e,$FF
+		.BYTE	$DE,_P,_o,_i,_n,_t,_s,_col,$8C,  7,$FF
 _wnd0A:
 		.BYTE	$10,  5,$92,  0,$60,$61,$22,$23,$C0,  0,  0,$96,$D5,$FF,$9E,$B6
 		.BYTE	$B5,$FF,$96,$D6,$FF,$9E,$B6,$B6,$FF,$96,$D7,$FF,$9E,$B6,$B7,$FF
@@ -2873,14 +2916,17 @@ _wnd68:
 		.BYTE	$80,$1A
 		.WORD	_wnd12
 _wnd69:
-		.BYTE	$10,  9,$18,  0,$60,$A1,$22,$23,  0,  0,  0,$FF
-_wnd6A:
-		.BYTE	  8,$10,$35,$83,$42,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
-_wnd6B:
-		.BYTE	$10,  9,$18,  0,$60,$E1,$22,$A3,$41,  1,  0,$9E,$B6,$B4
+		.BYTE	$10,  9,$18,  0,$60,$A1,$22,$23,  0,  0,  0
 		.BYTE	$FF
+_wnd6A:
+		.BYTE	  8,$10,$35,$83,$42,$A1,$22,$A3,  1,  2,  0
+		.BYTE	$90,$41,$FF
+_wnd6B:
+		.BYTE	$10,  9,$18,  0,$60,$E1,$22,$A3,$41,  1,  0
+		.BYTE	$9E,$B6,$B4,$FF
 		.BYTE	$96,$D4,$FF,$FF
-_txt_window_names:
+		
+_txt_window_names_lib:
 		.BYTE	_C,_O,_M,_M,_A,_N,_D,$FF
 		.BYTE	_S,_T,_A,_T,_U,_S,$FF
 		.BYTE	_I,_T,_E,_M,$FF
@@ -3154,7 +3200,34 @@ locret_159F0B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bE_s38:
+_print_00_74_char_force_dequeue:
+		LDA		byte_76
+		CLC
+		ADC		#8
+		STA		byte_76
+		BMI		_print_00_char_force_dequeue
+		LDA		#$74
+		BNE		_bE_s38_print_char_force_dequeue
+		
+; =============== S U B	R O U T	I N E =======================================
+_print_00_73_char_force_dequeue:
+		LDA		byte_76
+		CLC
+		ADC		#8
+		STA		byte_76
+		BMI		_print_00_char_force_dequeue
+
+; =============== S U B	R O U T	I N E =======================================
+_print_73_char_force_dequeue:
+		LDA		#$73
+		BNE		_bE_s38_print_char_force_dequeue
+		
+; =============== S U B	R O U T	I N E =======================================
+_print_00_char_force_dequeue:
+		LDA		#0
+
+; =============== S U B	R O U T	I N E =======================================
+_bE_s38_print_char_force_dequeue:
 		STA		word_6+1
 		PHA
 		TXA
@@ -3244,7 +3317,7 @@ loc_159F93:
 		JSR		sub_15A028
 		JSR		sub_15A048
 		JSR		sub_15A068
-		JSR		sub_15A198
+		JSR		_print_00_73_char_force_dequeue
 		JMP		loc_159F93
 loc_159FAB:
 		JMP		sub_15A1AA
@@ -3259,7 +3332,7 @@ sub_159FAE:
 		LDA		_pads+2
 		ORA		#$10
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		DEC		byte_75
 		DEC		word_4+1
 		DEC		word_4+1
@@ -3276,7 +3349,7 @@ loc_159FCB:
 		LDA		_pads+2
 		ORA		#$10
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		LDA		byte_6ACA
 		STA		word_4+1
 		JMP		sub_15A180
@@ -3294,7 +3367,7 @@ sub_159FEB:
 		LDA		_pads+2
 		ORA		#$20
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		INC		byte_75
 		INC		word_4+1
 		INC		word_4+1
@@ -3308,7 +3381,7 @@ loc_15A00F:
 		LDA		_pads+2
 		ORA		#$20
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		LDA		byte_6ACB
 		STA		word_4+1
 		JMP		sub_15A180
@@ -3323,7 +3396,7 @@ sub_15A028:
 		LDA		_pads+2
 		ORA		#$40
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		DEC		byte_74
 		LDA		word_4
 		SEC
@@ -3343,7 +3416,7 @@ sub_15A048:
 		LDA		_pads+2
 		ORA		#$80
 		STA		_pads+2
-		JSR		_wrap_bE_s38_arg00
+		JSR		_print_00_char_force_dequeue
 		INC		byte_74
 		LDA		word_4
 		CLC
@@ -3366,8 +3439,8 @@ sub_15A068:
 locret_15A074:
 		RTS
 loc_15A075:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
-		JSR		_wrap_bE_s38_arg73
+		SYSX	_apu_load,$85
+		JSR		_print_73_char_force_dequeue
 		PLA
 		PLA
 		BIT		byte_6AC9
@@ -3551,27 +3624,6 @@ sub_15A185:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A198:
-		LDA		byte_76
-		CLC
-		ADC		#8
-		STA		byte_76
-		BMI		_wrap_bE_s38_arg00
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s38_arg73:
-		LDA		#$73
-		BNE		_wrap_bE_s38
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s38_arg00:
-		LDA		#0
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s38:
-		JMP		_bE_s38
-
-; =============== S U B	R O U T	I N E =======================================
 sub_15A1AA:
 		JSR		sub_15A2B0
 loc_15A1AD:
@@ -3739,7 +3791,7 @@ sub_15A2A1:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A2A3:
 		TYA
-		JMP		_bE_s38
+		JMP		_bE_s38_print_char_force_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A2A7:
@@ -3838,10 +3890,11 @@ sub_15A325:
 		AND		#$F
 		ORA		#$10
 		STA		byte_471
-		INX
-		LDA		byte_15A346,X
+;		INX
+		LDA		byte_15A346+1,X
 		STA		byte_470
 		RTS
+		
 byte_15A346:
 		.BYTE	$DF,$D1,$B8,$A6,$54,$94,$48,$42,$4B,$D3,$55,$98,$33,$5B,$8E,$81
 		.BYTE	$98,$96,$47,$87,$5C,$D2,$35,$79,$24,$4A,$34,$5A,$98,$86,$FE,$E1
@@ -4135,9 +4188,9 @@ sub_15A5DD:
 		LDA		_location_type
 		AND		#1
 		BEQ		locret_15A5F3
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		byte_74
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		byte_75
 locret_15A5F3:
 		RTS
@@ -4521,7 +4574,7 @@ loc_15A80C:
 		LDX		#1
 		STY		byte_83
 		PHA
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		PLA
 		LDY		byte_83
 		LDX		word_4
@@ -4561,7 +4614,7 @@ loc_15A849:
 		LDX		#3
 		STY		byte_83
 		PHA
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		PLA
 		LDY		byte_83
 		LDX		word_4
@@ -4638,7 +4691,7 @@ loc_15A8DC:
 		STA		word_4
 loc_15A8E7:
 		JSR		sub_15A8F0
-		JSR		sub_15A90B
+		JSR		_print_00_74_char_force_dequeue
 		JMP		loc_15A8E7
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4649,32 +4702,14 @@ sub_15A8F0:
 		BNE		loc_15A8FA
 		RTS
 loc_15A8FA:
-		JSR		sub_15A916
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		JSR		_print_00_char_force_dequeue
+		SYSX	_apu_load,$85
 		LDX		#2
 		JSR		_sleep_X
 		LDA		byte_580
 		PLA
 		PLA
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_15A90B:
-		LDX		#$74
-		LDA		byte_76
-		CLC
-		ADC		#8
-		STA		byte_76
-		BPL		sub_15A918
-
-; =============== S U B	R O U T	I N E =======================================
-sub_15A916:
-		LDX		#0
-
-; =============== S U B	R O U T	I N E =======================================
-sub_15A918:
-		TXA
-		JMP		_bE_s38
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A91C:
@@ -4741,7 +4776,7 @@ sub_15A96C:
 sub_15A96E:
 		STY		byte_83
 		PHA
-		JSR		sub_158B9D
+		FARX	_b2_sC
 		LDY		byte_83
 		LDX		#0
 loc_15A978:
@@ -4802,10 +4837,10 @@ sub_15A99E:
 		JMP		loc_15AA56
 loc_15A9C3:
 		PHP
-		JSR		_bE_s38
+		JSR		_bE_s38_print_char_force_dequeue
 		LDA		byte_6AD0
 		BEQ		loc_15A9CF
-		SYSX	_sys12_wrap_bB_s3_apu_load,$96
+		SYSX	_apu_load,$96
 loc_15A9CF:
 		PLP
 		BCC		locret_15A9D5
@@ -5706,9 +5741,9 @@ _bE_s1D:
 		LDA		#0
 		STA		word_4
 		STA		word_6C+1
-		LDA		byte_88
+		LDA		_mapWidth
 		STA		word_6C
-		LDA		byte_89
+		LDA		_mapHeight
 		LDX		#word_6C
 		JSR		_mul16_to_8
 		LDA		#<[byte_7400-1]
@@ -5733,7 +5768,7 @@ _bE_s20:
 		LDA		#<[byte_7400]
 ; remove buffer base #$7400
 		JSR		_add16_to_neg16
-		LDA		byte_88 ; mapWidth
+		LDA		_mapWidth
 ; divide by width
 		JSR		_div16_to_8
 ; setup result in X and Y
@@ -5753,14 +5788,14 @@ _bE_s21:
 		LDY		word_3C+1
 		STX		byte_74
 		STY		byte_77
-		DEC		byte_88
-		LDA		byte_88
-		INC		byte_88
+		DEC		_mapWidth
+		LDA		_mapWidth
+		INC		_mapWidth
 		CMP		byte_74
 		BCC		loc_15AF96
-		DEC		byte_89
-		LDA		byte_89
-		INC		byte_89
+		DEC		_mapHeight
+		LDA		_mapHeight
+		INC		_mapHeight
 		CMP		byte_77
 		BCC		loc_15AF96
 		LDX		word_3C
@@ -5837,7 +5872,7 @@ loc_15AFD2:
 		LDA		byte_6AE6
 		ORA		#$80
 		STA		byte_6AE6
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#9
 		BNE		loc_15B007
 		LDA		byte_60B7
@@ -5850,7 +5885,7 @@ loc_15B007:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s22:
 		FARX	_bD_s5
-		SYSX	_sys12_wrap_bB_s3_apu_load,$93
+		SYSX	_apu_load,$93
 		LDA		#$F8
 		LDX		#0
 loc_15B013:
@@ -5859,7 +5894,7 @@ loc_15B013:
 		CPX		#$10
 		BNE		loc_15B013
 		LDA		#2
-		STA		byte_8F
+		STA		_blockPlayerInputDuringMap
 loc_15B01F:
 		FARX	_bD_s7
 		FARX	_bD_s7
@@ -5878,11 +5913,11 @@ loc_15B02D:
 		CMP		#$10
 		BNE		loc_15B02D
 		JSR		_wait_for_nmi_is_over
-		INC		byte_8F
-		INC		byte_8F
-		LDA		byte_8F
+		INC		_blockPlayerInputDuringMap
+		INC		_blockPlayerInputDuringMap
+		LDA		_blockPlayerInputDuringMap
 		JSR		sub_15B08E
-		LDA		byte_8F
+		LDA		_blockPlayerInputDuringMap
 		BNE		loc_15B01F
 		RTS
 
@@ -5891,7 +5926,7 @@ _bE_s32:
 		FARX	_bD_s5
 		JSR		sub_15B0EF
 		LDA		#2
-		STA		byte_8F
+		STA		_blockPlayerInputDuringMap
 loc_15B05C:
 		FARX	_bD_s7
 		LDA		#1
@@ -5908,24 +5943,22 @@ loc_15B067:
 		CMP		#$10
 		BNE		loc_15B067
 		JSR		_wait_for_nmi_is_over
-		INC		byte_8F
-		LDA		byte_8F
+		INC		_blockPlayerInputDuringMap
+		LDA		_blockPlayerInputDuringMap
 		JSR		sub_15B08E
-		LDA		byte_8F
+		LDA		_blockPlayerInputDuringMap
 		BNE		loc_15B05C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s26:
 		FARX	_bD_s7
-; increment timer
-		INC		byte_8F ; blockPlayerInputDuringMap
-		LDA		byte_8F ; blockPlayerInputDuringMap
+		INC		_blockPlayerInputDuringMap ; increment timer
+		LDA		_blockPlayerInputDuringMap
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B08E:
-; checking weird special values..
-		CMP		#$12
+		CMP		#$12			; checking weird special values..
 		BEQ		loc_15B09B
 		CMP		#$22
 		BEQ		loc_15B0A2
@@ -5945,11 +5978,11 @@ loc_15B0A9:
 		LDY		#$C
 		JSR		sub_15B0D5
 		LDA		#0
-		STA		byte_8F
+		STA		_blockPlayerInputDuringMap
 		LDA		byte_2C
 		CMP		#1
 		BNE		locret_15B0D4
-		SYSX	_sys12_wrap_bB_s3_apu_load,$0B
+		SYSX	_apu_load,$0B
 		LDA		byte_2A
 		CMP		#$A2
 		BNE		locret_15B0D4
@@ -6004,7 +6037,7 @@ _bE_s25:
 		ORA		#2
 		STA		byte_60CD
 loc_15B112:
-		INC		byte_8F
+		INC		_blockPlayerInputDuringMap
 		FARX	_bD_s5
 locret_15B117:
 		RTS
@@ -6242,12 +6275,12 @@ sub_15B288:
 		DEC		byte_48
 		FARX	_b4_s1A
 		JSR		_bE_sD
-		FARX	_bE_s10
+		JSR		_bE_s10
 		JSR		_bE_s34
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		LDA		byte_48
 		BNE		loc_15B2D0
-		SYSX	_sys12_wrap_bB_s3_apu_load,$13
+		SYSX	_apu_load,$13
 		LDA		#0
 		STA		byte_D2
 		LDX		#$27
@@ -6268,14 +6301,19 @@ loc_15B2D0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bE_s31:
+; select and return the current map music index, mostly used in conjunction
+; with _apu_load FARX call. even if there is a macro subroutine in the system
+; bank exists that calls both at the same time, they were used mostly two
+; opcodes in a lot of places. now replaced with macro subroutine
+;
+_bE_s31_get_map_music_idx:
 		LDA		byte_60C5
 		BPL		loc_15B2F5
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$6B
 		BNE		loc_15B2F5
-		LDA		#$32
-		FARX	_bC_s0_npc_anim_script_init
+		LDA		#$32							; special case for particular location
+		FARX	_bC_s0_npc_anim_script_init		; start the npc automation script
 		LDA		#$1C
 		STA		byte_6EF
 		LDA		#0
@@ -6312,35 +6350,42 @@ loc_15B318:
 		LDA		#5
 		RTS
 loc_15B327:
-		LDA		byte_8B
+		LDA		_mapNumber
 		LDY		#0
 loc_15B32B:
-		LDX		byte_15B388,Y
+		LDX		_map_mus_list0,Y			; short music lookup list
 		BEQ		loc_15B338
-		CMP		byte_15B37C,Y
+		CMP		_map_lookup_table0,Y		; faster music select for common locations
 		BEQ		loc_15B316
 		INY
 		BNE		loc_15B32B
 loc_15B338:
-		LDX		#0
+		LDX		#0							; if nothing found in the first list
 loc_15B33A:
-		CMP		byte_15B346,X
+		CMP		_map_lookup_table1,X		; check a larger one
 		BCC		loc_15B342
 		INX
 		BNE		loc_15B33A
 loc_15B342:
-		LDA		byte_15B361,X
+		LDA		_map_mus_list1,X			; don't know, why they need so weird behaviour
 		RTS
-byte_15B346:
+		
+_map_lookup_table0:
+		.BYTE	  4,  8,$17,$71,$87,$8A,$33,  3,$5C,$6D,$6E,  9
+_map_mus_list0:
+		.BYTE	 $A,  7,  6,  3, $F,  6,  3,  7,  3, $D, $D, $D,  0
+		
+; note, that at least two locations sits in both lists with different music assigned for them
+; is there are some special cases or just dead links?
+; map $04 - A or 3
+; map $6D - D or 3
+;
+_map_lookup_table1:
 		.BYTE	  1,  4,$13,$1B,$2D,$3B,$3C,$41,$45,$50,$53,$58,$5D,$5F,$65,$68
 		.BYTE	$6D,$82,$8F,$96,$97,$99,$9B,$9F,$CD,$D6,$FF
-byte_15B361:
+_map_mus_list1:
 		.BYTE	 $F,  3, $F, $D, $A,  7,  9,  8, $F,  3, $F,  3,  7, $F,  3, $F
 		.BYTE	  3, $F, $D, $A, $F,  7, $F,  3,  7,  9,  8
-byte_15B37C:
-		.BYTE	  4,  8,$17,$71,$87,$8A,$33,  3,$5C,$6D,$6E,  9
-byte_15B388:
-		.BYTE	 $A,  7,  6,  3, $F,  6,  3,  7,  3, $D, $D, $D,  0
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unused
@@ -6359,7 +6404,7 @@ _bE_s2E:
 		LDX		#0
 loc_15B3A3:
 		LDA		byte_15B3C2,X
-		CMP		byte_8B
+		CMP		_mapNumber
 		BEQ		loc_15B3B2
 		CMP		#$FF
 		BEQ		locret_15B3B1
@@ -6393,10 +6438,10 @@ off_15B3D7:
 		.WORD	sub_15B698
 		.WORD	sub_15B6A6
 		.WORD	sub_15B6B1
-		.WORD	sub_15B6BC
-		.WORD	sub_15B6BC
-		.WORD	sub_15B6BC
-		.WORD	sub_15B6BC
+		.WORD	_wrap_b1B_s0
+		.WORD	_wrap_b1B_s0
+		.WORD	_wrap_b1B_s0
+		.WORD	_wrap_b1B_s0
 		.WORD	sub_15B6C0
 		.WORD	sub_15B6CD
 		.WORD	sub_15B6D8
@@ -6476,10 +6521,10 @@ locret_15B46C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B46D:
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$17
 		BNE		locret_15B481
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#1
 		BNE		locret_15B481
 		LDA		byte_60B7
@@ -6521,11 +6566,11 @@ loc_15B4A4:
 		STX		word_6,Y
 		JMP		loc_15B49D
 loc_15B4B3:
-		LDA		byte_89
+		LDA		_mapHeight
 		STA		word_4+1
 loc_15B4B7:
 		LDY		#0
-		LDA		byte_88
+		LDA		_mapWidth
 		STA		word_4
 loc_15B4BD:
 		LDA		(word_6C),Y
@@ -6605,7 +6650,7 @@ loc_15B538:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s30:
-		FARX	_bE_s1D
+		JSR		_bE_s1D
 		LDA		#<[_ppu_mask_shadow0]
 		STA		word_3C
 		LDA		#>[_ppu_mask_shadow0]
@@ -6634,13 +6679,13 @@ loc_15B561:
 		BNE		loc_15B549
 		RTS
 loc_15B572:
-		FARX	_bE_s20
+		JSR		_bE_s20
 		STX		word_3E
 		STY		word_3E+1
 		LDY		#0
 loc_15B57B:
 		LDA		(word_3C),Y
-		CMP		byte_8B
+		CMP		_mapNumber
 		BEQ		loc_15B58F
 		CMP		#$FF
 		BEQ		loc_15B561
@@ -6676,7 +6721,7 @@ loc_15B58F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s16:
-		FARX	_bE_s1D
+		JSR		_bE_s1D
 		LDA		#<[byte_7400]
 		STA		word_6E
 		LDA		#>[byte_7400]
@@ -6729,11 +6774,11 @@ _bE_s36:
 		LDA		byte_15B630,X
 		STA		word_4+1
 		LDA		byte_15B630+1,X
-		STA		byte_30
+		STA		_playerMapX
 		LDA		byte_15B630+2,X
-		STA		byte_31
+		STA		_playerMapY
 		LDA		byte_15B630+3,X
-		STA		byte_8B
+		STA		_mapNumber
 		FARX	_b6_s13
 		DEC		byte_2B
 		LDA		#$40
@@ -6772,7 +6817,7 @@ sub_15B667:
 		STA		(word_4),Y
 		INY
 		STA		(word_4),Y
-		LDY		byte_88
+		LDY		_mapWidth
 		STA		(word_4),Y
 		INY
 		STA		(word_4),Y
@@ -6827,7 +6872,7 @@ locret_15B6BB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15B6BC:
+_wrap_b1B_s0:
 		FARX	_b1B_s0
 		RTS
 
@@ -6880,7 +6925,7 @@ _bE_sE:
 		LDY		#$16
 loc_15B705:
 		LDA		byte_15B8FB,Y
-		CMP		byte_8B
+		CMP		_mapNumber
 		BEQ		loc_15B711
 		DEY
 		BPL		loc_15B705
@@ -6940,10 +6985,10 @@ loc_15B754:
 		SEC
 		RTS
 loc_15B75B:
-		LDA		byte_31
+		LDA		_playerMapY
 		BEQ		loc_15B751
 		LDA		#$EC
-		STA		byte_8B
+		STA		_mapNumber
 		BNE		loc_15B754
 loc_15B765:
 		LDA		byte_644
@@ -6951,23 +6996,23 @@ loc_15B765:
 		BEQ		loc_15B751
 		BNE		loc_15B750
 loc_15B76D:
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$10
 		BCC		loc_15B751
 		BCS		loc_15B750
 loc_15B775:
 		LDY		#$21
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$1E
 		BCS		loc_15B751
 		CMP		#$C
 		JMP		loc_15B7B1
 loc_15B782:
 		LDY		#$11
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$14
 		BCC		loc_15B751
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#$14
 		JMP		loc_15B7B1
 loc_15B791:
@@ -6978,7 +7023,7 @@ loc_15B795:
 loc_15B797:
 		STA		word_4
 		LDY		#$14
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		word_4
 		BCC		loc_15B7A9
 		LDY		#$17
@@ -6986,7 +7031,7 @@ loc_15B797:
 		BCC		loc_15B7A9
 		LDY		#$1A
 loc_15B7A9:
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		word_4
 		BCC		loc_15B751
 		CMP		#$E
@@ -6996,21 +7041,21 @@ loc_15B7B3:
 		BCS		loc_15B74F
 loc_15B7B5:
 		LDY		#$1D
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#8
 		BCC		loc_15B7C7
 		CMP		#$17
 		BCS		loc_15B7C7
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#8
 		BCC		loc_15B751
 loc_15B7C7:
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$10
 		BCC		loc_15B7DB
 		CMP		#$15
 		BCS		loc_15B7DB
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#$C
 		BCC		loc_15B7DB
 		CMP		#$13
@@ -7020,14 +7065,14 @@ loc_15B7DB:
 		RTS
 loc_15B7DD:
 		LDY		#$1F
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$1C
 		BCS		loc_15B7B3
 		CMP		#$12
 		BCC		loc_15B7F3
 		CMP		#$17
 		BCS		loc_15B7F3
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#8
 		BCC		loc_15B7B1
 loc_15B7F3:
@@ -7035,12 +7080,12 @@ loc_15B7F3:
 		LDA		byte_644
 		LSR
 		BCS		loc_15B800
-		DEC		byte_30
-		DEC		byte_30
+		DEC		_playerMapX
+		DEC		_playerMapX
 loc_15B800:
-		LDA		byte_31
+		LDA		_playerMapY
 		ADC		#$A
-		STA		byte_31
+		STA		_playerMapY
 		JMP		loc_15B754
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7050,20 +7095,20 @@ sub_15B809:
 		ASL
 		TAY
 		LDA		byte_15B84B,Y
-		STA		byte_8B
+		STA		_mapNumber
 		LDA		byte_15B84B+3,Y
 		STA		word_6
 		JSR		sub_15B82E
 		CLC
 		ADC		byte_15B84B+1,Y
 		BMI		loc_15B822
-		STA		byte_30
+		STA		_playerMapX
 loc_15B822:
 		JSR		sub_15B82E
 		CLC
 		ADC		byte_15B84B+2,Y
 		BMI		locret_15B82D
-		STA		byte_31
+		STA		_playerMapY
 locret_15B82D:
 		RTS
 
@@ -7236,7 +7281,7 @@ sub_15B9FA:
 		JSR		_wait_for_nmi_is_over
 		PLA
 		STA		byte_90
-		FARX	_bE_s34
+		JSR		_bE_s34
 		INC		byte_6AC0
 		RTS
 

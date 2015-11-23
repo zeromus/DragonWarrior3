@@ -1007,7 +1007,7 @@ loc_24E761:
 		FARX	_bB_s6
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
+		SYSX	_apu_load,$A6
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1019,11 +1019,11 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
+		SYSX	_apu_load,$A6
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_sys12_wrap_bB_s3_apu_load,$A6
+		SYSX	_apu_load,$A6
 		LDY		#0
 loc_24E7A0:
 		TYA

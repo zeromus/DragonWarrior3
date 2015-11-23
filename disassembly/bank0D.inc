@@ -141,7 +141,7 @@ loc_1400B2:
 		LDA		byte_2C
 		CMP		#1
 		BNE		loc_1400D6
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		byte_80
 		LDA		byte_2B
 		STA		byte_81
@@ -697,7 +697,7 @@ loc_141666:
 		LDA		byte_90
 		AND		#$F
 		BNE		locret_141665
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_14167B
 		CMP		#$78
@@ -794,14 +794,14 @@ _bD_sE:
 		LDY		#0
 		LDA		(word_72),Y
 		SEC
-		SBC		byte_30
+		SBC		_playerMapX
 		CLC
 		ADC		#8
 		STA		word_4
 		INY
 		LDA		(word_72),Y
 		SEC
-		SBC		byte_31
+		SBC		_playerMapY
 		CLC
 		ADC		#7
 		STA		word_4+1
@@ -907,7 +907,7 @@ locret_1417B8:
 ;sub_1417B9:
 ;		JSR		sub_141831
 ;		BCS		locret_1417B8
-;		LDA		byte_87
+;		LDA		_heroTileMovePixelsRemain
 ;		BEQ		loc_1417C9
 ;		LDA		byte_644
 ;		AND		#1
@@ -922,7 +922,7 @@ locret_1417B8:
 ;sub_1417CB:
 ;		JSR		sub_141831
 ;		BCS		locret_1417CA
-;		LDA		byte_87
+;		LDA		_heroTileMovePixelsRemain
 ;		BEQ		loc_1417C9
 ;		LDA		byte_644
 ;		AND		#1
@@ -934,7 +934,7 @@ locret_1417B8:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1417DD:
 		JSR		_rand
-		LDX		byte_87
+		LDX		_heroTileMovePixelsRemain
 		BEQ		locret_141801
 		PHA
 		LDY		#0
@@ -1091,10 +1091,10 @@ loc_1418B9:
 sub_1418BB:
 		JSR		sub_141935
 		TXA
-		CMP		byte_88
+		CMP		_mapWidth
 		BCS		locret_1418C6
 		TYA
-		CMP		byte_89
+		CMP		_mapHeight
 locret_1418C6:
 		RTS
 
@@ -1117,13 +1117,13 @@ sub_1418D5:
 		JSR		sub_141935
 		TXA
 		SEC
-		SBC		byte_30
+		SBC		_playerMapX
 		CLC
 		ADC		#8
 		STA		word_4
 		TYA
 		SEC
-		SBC		byte_31
+		SBC		_playerMapY
 		CLC
 		ADC		#7
 		STA		word_4+1
@@ -1142,7 +1142,7 @@ sub_1418F4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1418FE:
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BEQ		loc_1418F2
 		LDA		byte_644
 		CMP		#3
@@ -1151,7 +1151,7 @@ sub_1418FE:
 		BEQ		loc_14191C
 		BNE		loc_1418F2
 loc_14190F:
-		LDA		byte_30
+		LDA		_playerMapX
 		SEC
 		SBC		#8
 loc_141914:
@@ -1161,7 +1161,7 @@ loc_141914:
 		SEC
 		RTS
 loc_14191C:
-		LDA		byte_30
+		LDA		_playerMapX
 		CLC
 		ADC		#7
 		JMP		loc_141914
@@ -1197,7 +1197,7 @@ sub_14193F:
 		LDA		_location_type
 		AND		#2
 		BNE		locret_14193E
-		LDA		byte_8F
+		LDA		_blockPlayerInputDuringMap
 		BNE		locret_14193E
 		LDX		byte_9B
 		LDY		byte_9C
@@ -1294,7 +1294,7 @@ loc_1419EF:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1419FB:
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BEQ		loc_141A50
 		LDA		byte_644
 		BEQ		loc_141A2E
@@ -1641,7 +1641,7 @@ sub_141C10:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141C1C:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$4E
 		BNE		locret_141C0F
 		LDA		#5
@@ -1658,10 +1658,10 @@ sub_141C1C:
 		ADC		_npcs_pos_list+8
 		CMP		#$F
 		BNE		locret_141C0F
-		LDX		byte_30
+		LDX		_playerMapX
 		STX		word_3C
 loc_141C46:
-		LDY		byte_31
+		LDY		_playerMapY
 		INC		word_3C
 		LDX		word_3C
 		JSR		sub_176F34
@@ -1670,7 +1670,7 @@ loc_141C46:
 		BEQ		loc_141C46
 		LDA		word_3C
 		SEC
-		SBC		byte_30
+		SBC		_playerMapX
 		CLC
 		ADC		#8
 		ASL
@@ -1685,7 +1685,7 @@ loc_141C46:
 		LDA		#$1B
 		STA		byte_7470
 		FARX	_bC_sA
-		SYSX	_sys12_wrap_bB_s3_apu_load,$95
+		SYSX	_apu_load,$95
 		JMP		_ppu_set_dequeue_flag
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1850,8 +1850,8 @@ loc_141D74:
 		TAY
 		JSR		sub_1777C2
 		BCC		loc_141DB9
-		LDX		byte_30
-		LDY		byte_31
+		LDX		_playerMapX
+		LDY		_playerMapY
 		JSR		sub_176F34
 		AND		#$E0
 		STA		byte_79
@@ -1881,7 +1881,7 @@ _bD_s9:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		locret_141DCE
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BNE		loc_141DCF
 		LDA		byte_86
 		BEQ		loc_141DCF
@@ -1904,7 +1904,7 @@ _bD_s7:
 		LDX		#4
 		JSR		sub_1741FD
 		LDA		byte_97
-		LDX		byte_8F
+		LDX		_blockPlayerInputDuringMap
 		CPX		#$12
 		BCS		loc_141DFC
 		AND		#$7F
@@ -1915,7 +1915,7 @@ _bD_s7:
 loc_141DFC:
 		JSR		sub_141E76
 loc_141DFF:
-		LDX		byte_8F
+		LDX		_blockPlayerInputDuringMap
 		CPX		#$22
 		BCS		loc_141E13
 		LDA		byte_97
@@ -2412,8 +2412,7 @@ loc_1420D0:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s22:
 		FARX	_bB_s7
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2748,7 +2747,7 @@ loc_142377:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
-		SYSX	_sys12_wrap_bB_s3_apu_load,$17
+		SYSX	_apu_load,$17
 		JSR		_bD_s22
 		LDA		byte_C5
 		STA		byte_D2
@@ -2965,7 +2964,7 @@ loc_142531:
 		LDX		byte_CE
 		CPX		#0
 		BNE		loc_142515
-		SYSX	_sys12_wrap_bB_s3_apu_load,$14
+		SYSX	_apu_load,$14
 		LDA		_location_type
 		AND		#2
 		BNE		loc_142545
@@ -2975,16 +2974,15 @@ loc_142545:
 		JSR		sub_1743B5
 		FARX	_bE_s1B
 		JSR		sub_177CFC
-		FARX	_bD_s28_frame_palette_by_status_adjust
+		JSR		_bD_s28_frame_palette_by_status_adjust
 		FARX	_bC_s27
 		FARX	_bC_s1A
 		JSR		sub_1424E4
-		FARX	_bD_sD
+		JSR		_bD_sD
 		FARX	_bE_s13
 		FARX	_bB_s7
 		JSR		sub_175B0E
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		LDA		#0
 		STA		byte_81
 		STA		byte_80
@@ -3058,7 +3056,7 @@ loc_1425AA:
 		LDA		byte_C3
 		STA		byte_D2
 		SYSX	_sys08_msg_m00_arg2,$0A
-		SYSX	_sys12_wrap_bB_s3_apu_load,$15
+		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
 		FARX	_b0_s3D
@@ -3115,7 +3113,7 @@ loc_142629:
 		SYSX	_sys0D_wrap_bE_sC,$68
 		FARX	_bB_s4
 		SYSX	_sys08_msg_m00_arg2,$0D
-		SYSX	_sys12_wrap_bB_s3_apu_load,$15
+		SYSX	_apu_load,$15
 		LDA		byte_BD
 		STA		byte_CF
 		JSR		_sram_b0_s2A
@@ -3176,7 +3174,7 @@ loc_1426F1:
 		SYSX	_sys08_msg_m00_arg2,$02
 		FARX	_bB_s4
 		SYSX	_sys08_msg_m00_arg2,$10
-		SYSX	_sys12_wrap_bB_s3_apu_load,$15
+		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
 		FARX	_b0_s3E
@@ -3551,7 +3549,7 @@ loc_142A1B:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
-		SYSX	_sys12_wrap_bB_s3_apu_load,$17
+		SYSX	_apu_load,$17
 		JSR		_bD_s22
 		LDA		byte_C5
 		STA		byte_D2
@@ -4014,7 +4012,7 @@ loc_142DD0:
 		LDX		word_4
 		DEX
 		BNE		loc_142DE7
-		FARX	_bD_s26
+		JSR		_bD_s26
 		LDA		word_4
 		CMP		byte_C3
 		BNE		loc_142DE7
@@ -4638,7 +4636,7 @@ loc_1431A3:
 		JSR		___msg_m00_param_break_b0
 		.BYTE	$4E
 loc_1431B6:
-		LDA		byte_8B
+		LDA		_mapNumber
 		BEQ		loc_1431C2
 		CMP		#$41
 		BCC		sub_1431F7
@@ -4680,7 +4678,7 @@ sub_1431F7:
 		LDA		word_6
 		AND		#$1F
 		STA		word_6
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_143207
 		CMP		#$78
@@ -6142,7 +6140,7 @@ _npc_hndl4D:
 loc_143BD8:
 		LDA		#$39
 		STA		byte_CE
-		FARX	_bD_s26
+		JSR		_bD_s26
 		BCS		loc_143BF9
 		LDA		#$58
 		JSR		sub_14312B

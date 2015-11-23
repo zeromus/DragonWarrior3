@@ -1131,7 +1131,7 @@ _b6_sC:
 		LDA		byte_9A
 		CMP		#$C
 		BCC		locret_9B408
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$CC
 		BEQ		loc_9B456
 		LDA		byte_60C4
@@ -1163,7 +1163,7 @@ loc_9B417:
 		FARX	_bC_s20
 		LDA		byte_2C
 		BNE		loc_9B431
-		SYSX	_sys12_wrap_bB_s3_apu_load,$9F
+		SYSX	_apu_load,$9F
 		LDY		#$C9
 		STY		word_3C
 		INY
@@ -1182,7 +1182,7 @@ sub_9B433:
 		BNE		loc_9B454
 		LDA		byte_60B7
 		BPL		loc_9B44E
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$C
 		BEQ		loc_9B454
 		CMP		#$7A
@@ -1227,8 +1227,8 @@ locret_9B47A:
 _b6_s10:
 		LDA		byte_9A
 		BEQ		locret_9B47A
-		LDX		byte_30
-		LDY		byte_31
+		LDX		_playerMapX
+		LDY		_playerMapY
 		LDA		byte_644
 		BEQ		loc_9B494
 		CMP		#1
@@ -1316,7 +1316,7 @@ _b6_s11:
 		LDA		byte_60B6
 		ORA		#$40
 		STA		byte_60B6
-		SYSX	_sys12_wrap_bB_s3_apu_load,$26
+		SYSX	_apu_load,$26
 loc_9B510:
 		SEC
 		RTS
@@ -1326,7 +1326,7 @@ _b6_s6:
 		LDA		byte_9A
 		CMP		#$C
 		BCC		loc_9B529
-		LDA		byte_8B
+		LDA		_mapNumber
 		LDX		#2
 loc_9B51C:
 		CMP		byte_9B526,X
@@ -1339,7 +1339,7 @@ loc_9B524:
 byte_9B526:
 		.BYTE	$85,$58,$33
 loc_9B529:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$60
 		BEQ		loc_9B524
 		LDA		byte_60BA
@@ -1347,13 +1347,13 @@ loc_9B529:
 		BNE		loc_9B524
 		LDA		byte_60B7
 		BPL		loc_9B545
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$C
 		BEQ		loc_9B524
 		CMP		#$7A
 		BEQ		loc_9B524
 loc_9B545:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$60
 		BEQ		loc_9B524
 		LDA		byte_2C
@@ -1370,7 +1370,7 @@ loc_9B557:
 		FARX	_b0_s66
 		LDA		#2
 		STA		byte_644
-		SYSX	_sys12_wrap_bB_s3_apu_load,$92
+		SYSX	_apu_load,$92
 		JSR		_pal_fade_out
 		LDA		byte_60B7
 		AND		#$7F
@@ -1382,8 +1382,7 @@ loc_9B557:
 		FARX	_bE_sF
 		FARX	_b5_s9
 		FARX	_bC_s3
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		JSR		sub_175B0E
 		LDA		#0
 		STA		byte_6B9
@@ -1472,7 +1471,7 @@ word_9B60C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s12:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_9B668
 		CMP		#$78
@@ -1765,7 +1764,7 @@ loc_9B8A2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _name_entry_screen_data_enter:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		LDA		_pads+2
 		ORA		#1
 		STA		_pads+2
@@ -1886,7 +1885,7 @@ loc_9B958:
 		STA		word_4+1
 		LDA		word_6
 		STA		byte_9,X
-		FARX	_bE_s38
+		FARX	_bE_s38_print_char_force_dequeue
 		LDA		byte_74
 		CMP		#$13
 		BNE		loc_9B981
@@ -1947,7 +1946,7 @@ sub_9B9D7:
 		LDA		#7
 		STA		word_4+1
 		TXA
-		FARX	_bE_s38
+		FARX	_bE_s38_print_char_force_dequeue
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1977,7 +1976,7 @@ sub_9B9F6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9B9F8:
-		FARX	_bE_s38
+		FARX	_bE_s38_print_char_force_dequeue
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1989,7 +1988,7 @@ sub_9B9FC:
 		LDA		#7
 		STA		word_4+1
 		LDA		#$78
-		FARX	_bE_s38
+		FARX	_bE_s38_print_char_force_dequeue
 		SYSX	_sys0D_wrap_bE_sC,$40
 		LDA		#$C
 		STA		byte_74
@@ -2142,7 +2141,7 @@ sub_9BADD:
 sub_9BB0B:
 		SYSX	_sys08_msg_m00_arg2,$52
 		SYSX	_sys0D_wrap_bE_sC,$41
-		FARX	_b6_s14_name_entry_screen
+		JSR		_b6_s14_name_entry_screen
 		JMP		sub_9BB26
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2267,7 +2266,9 @@ loc_9BBEA:
 sub_9BBED:
 		LDX		#0
 		FARX	_bD_s10
-		JMP		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
+		RTS
+
 byte_9BBF5:
 		.BYTE	  4,  2,  1,  6,  5,  7
 
@@ -2484,7 +2485,7 @@ _b6_s1A:
 		LDA		byte_6BB
 		FARX	_b5_s4
 		FARX	_bD_s19
-		SYSX	_sys12_wrap_bB_s3_apu_load,$9B
+		SYSX	_apu_load,$9B
 		RTS
 byte_9BD60:
 		.BYTE	$24,$34,$30,$20,$1C,$28
@@ -2508,7 +2509,7 @@ loc_9BD6A:
 		CPX		#$30
 		BNE		loc_9BD6A
 		JSR		sub_174D4F
-		SYSX	_sys12_wrap_bB_s3_apu_load,$22
+		SYSX	_apu_load,$22
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$A
@@ -2527,7 +2528,7 @@ loc_9BDA0:
 		LDA		#$80
 		STA		_players_pos_list,X
 		FARX	_bC_s38
-		SYSX	_sys12_wrap_bB_s3_apu_load,$95
+		SYSX	_apu_load,$95
 		LDX		#$1E
 		JSR		_sleep_X
 		INC		word_3C
@@ -2553,7 +2554,7 @@ byte_9BDDE:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1C:
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
-		SYSX	_sys12_wrap_bB_s3_apu_load,$03
+		SYSX	_apu_load,$03
 		LDA		#$FF
 		STA		byte_750
 		STA		byte_753
@@ -2579,16 +2580,16 @@ sub_9BE1D:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1D:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$14
+		SYSX	_apu_load,$14
 		JSR		_pal_fade_out
 		FARX	_b0_s54
 		FARX	_bD_s11
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#4
-		STA		byte_30
-		STA		byte_31
+		STA		_playerMapX
+		STA		_playerMapY
 		LDA		#$41
-		STA		byte_8B
+		STA		_mapNumber
 		LDA		#2
 		STA		byte_644
 		STA		byte_6BC
@@ -2612,7 +2613,7 @@ loc_9BE5A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE62:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$43
 		RTS
 
@@ -2774,7 +2775,7 @@ _b6_s1F:
 		JSR		sub_9BFB3
 		BCC		loc_9BF6D
 		FARX	_bC_s20
-		SYSX	_sys12_wrap_bB_s3_apu_load,$1A
+		SYSX	_apu_load,$1A
 		JSR		sub_9BF72
 		JSR		sub_9BFC3
 		FARX	_bD_s22
