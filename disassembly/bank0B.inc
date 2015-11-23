@@ -1,8 +1,12 @@
 
 		ORG $8000
 
-_bB_s2_ptr:
-		.WORD	_bB_s2
+; =======================
+; == SOUND ENGINE BANK ==
+; =======================
+
+_bB_s2_apu_init_ptr:
+		.WORD	_bB_s2_apu_init
 _bB_s3_apu_load_ptr:
 		.WORD	_bB_s3_apu_load
 _bB_s4_ptr:
@@ -14,7 +18,7 @@ _bB_s6_ptr:
 _bB_s7_ptr:
 		.WORD	_bB_s7
 
-_apu_music_lib0:
+_apu_music_lib:
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,_chnl_stop
 		.WORD	byte_2DCE17,byte_2DCE28,_chnl_stop,_chnl_stop
 		.WORD	byte_2DC63E,byte_2DC719,_chnl_stop,_chnl_stop
@@ -47,7 +51,6 @@ _apu_music_lib0:
 		.WORD	byte_2DCF8E,byte_2DCFB4,byte_2DCF7E,_chnl_stop
 		.WORD	byte_2DCFC4,byte_2DCFD0,byte_2DCFDB,_chnl_stop
 		.WORD	byte_2DC690,byte_2DC73E,byte_2DC785,_chnl_stop
-_apu_music_lib1:
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,byte_2DCFE4
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,byte_2DCFEC
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,byte_2DCFF1
@@ -2748,7 +2751,9 @@ loc_2DF8C0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bB_s2:
+; init APU registers, stop sounds
+;
+_bB_s2_apu_init:
 		SEI
 		LDA		#0
 		STA		_APU_STATUS
@@ -2781,6 +2786,9 @@ _bB_s5:
 		JMP		loc_2DF915
 
 ; =============== S U B	R O U T	I N E =======================================
+; init music track or sound effect, all data is in the same library, so has
+; a common indexes
+;
 _bB_s3_apu_load:
 		JSR		sub_2DF9B3
 		ASL
@@ -2800,15 +2808,15 @@ loc_2DF915:
 		LDY		#6
 loc_2DF920:
 		BCS		loc_2DF931
-		LDA		_apu_music_lib0+1,X
+		LDA		_apu_music_lib+1,X
 		STA		_apu_chan_pc+1,Y
-		LDA		_apu_music_lib0,X
+		LDA		_apu_music_lib,X
 		STA		_apu_chan_pc,Y
 		JMP		loc_2DF93D
 loc_2DF931:
-		LDA		_apu_music_lib1+1,X
+		LDA		_apu_music_lib+257,X
 		STA		_apu_chan_pc+1,Y
-		LDA		_apu_music_lib1,X
+		LDA		_apu_music_lib+256,X
 		STA		_apu_chan_pc,Y
 loc_2DF93D:
 		LDA		#1
@@ -2867,25 +2875,27 @@ loc_2DF99B:
 		LDA		#0
 		STA		word_F4+1
 		STA		byte_47A
-		JSR		sub_2DF9BC
-		RTS
+		JMP		sub_2DF9BC
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_2DF9B3:
 		PHA
 		LDA		byte_6F0
 		AND		#$FE
-		JMP		loc_2DF9C2
+		JMP		sub_2DF9C2
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_2DF9BC:
 		PHA
 		LDA		byte_6F0
 		ORA		#1
-loc_2DF9C2:
+		
+; =============== S U B	R O U T	I N E =======================================
+sub_2DF9C2:
 		STA		byte_6F0
 		PLA
 		RTS
+		
 word_2DF9C7:
 		.WORD	 $6AD, $643, $5F3, $59D, $54C, $500, $4B8, $474
 		.WORD	 $434, $3F8, $3BF, $389, $356, $326, $2F9, $2CE

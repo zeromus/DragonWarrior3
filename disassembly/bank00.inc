@@ -16,7 +16,7 @@ _b0_s5_player_HP_subtract_ptr:
 _b0_s6_player_MP_read_ptr:
 		.WORD	_b0_s6_player_MP_read
 _b0_s7_player_MAX_MP_read_ptr:
-		.WORD	_b0_s7_player_MAX_MP_read		; used only in unreferenced sub_142728 in bank D
+		.WORD	_b0_s7_player_MAX_MP_read
 _b0_s8_player_MP_add_ptr:
 		.WORD	_b0_s8_player_MP_add
 _b0_s9_player_MP_subtract_ptr:
@@ -450,7 +450,7 @@ sub_8261:
 		AND		#$7F
 		BNE		loc_828E
 		FARX	_bE_sD
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		LDA		byte_AD
 		AND		#$80
 		BEQ		loc_8285
@@ -559,7 +559,7 @@ loc_8327:
 		LDX		#0
 		STX		word_4A
 loc_832B:
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		byte_8377,X
 		BCS		loc_8333
 		RTS
@@ -569,7 +569,7 @@ loc_8333:
 		SBC		byte_8377,X
 		STA		word_4A
 		INX
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		byte_8377,X
 		BCS		loc_8348
 		ADC		word_4A
@@ -1035,9 +1035,10 @@ locret_8682:
 ; =============== S U B	R O U T	I N E =======================================
 ; this is the entire battle sequence. it flashes the screen, fades in the battle, runs the battle
 ; shows XP wrap-up at the end, and returns when it's time to go back to the map
+;
 sub_8683:
 		JSR		_nmi_allow_ppu_dequeue
-		JSR		sub_88BD ; pre-battle screen flash
+		JSR		sub_88BD			; pre-battle screen flash
 		LDA		#0
 		LDX		#$77
 loc_868D:
@@ -1047,47 +1048,38 @@ loc_868D:
 		LDA		_battle_type_fight
 		CMP		#$FF
 		BNE		.dont_patch_fight
-
-; patch FIGHT! over the wipe bitmap. see _wipe_fight_tbl for more details
-		LDX		#$1B
+		LDX		#$1B				; patch FIGHT! over the wipe bitmap. see _wipe_fight_tbl for more details
 .iterate_patch_fight:
 		LDA		_wipe_fight_tbl,X
 		STA		byte_5B0,X
 		DEX
 		BPL		.iterate_patch_fight
-
 .dont_patch_fight:
-; choose the battle music depending on the value of _battle_type_fight
-		LDA		#$10 ; SEQ_BATTLE
+		LDA		#$10				; SEQ_BATTLE
 		LDX		_battle_type_fight
 		CPX		#9
-		BNE		loc_86AE
-		LDA		#$12 ; SEQ_EVIL_LOCATION (someone needs to get the real names for these songs)
+		BNE		loc_86AE			; choose the battle music depending on the value of _battle_type_fight
+		LDA		#$12				; SEQ_EVIL_LOCATION (someone needs to get the real names for these songs)
 loc_86AE:
-; play the battle music
-		FARX	_bB_s3_apu_load
-; runs the pre-battle screen wipe, largely
-		JSR		sub_8841
-; oddly, after it's done, theres still something left in the PPU queue. this will cause a few more tiles to go out (to blank the screen) but it won't be complete
-; however, in case FIGHT! was displayed, everything but the FIGHT! text will be gone
-		JSR		_ppu_force_dequeue
-; if the screen says FIGHT! then hold a moment, so we can read it i guess
-		LDA		_battle_type_fight
+		FARX	_bB_s3_apu_load		; play the battle music
+		JSR		sub_8841			; runs the pre-battle screen wipe, largely
+		JSR		_ppu_force_dequeue	; oddly, after it's done, theres still something left in the PPU queue.
+									; this will cause a few more tiles to go out (to blank the screen) but it won't be complete
+									; however, in case FIGHT! was displayed, everything but the FIGHT! text will be gone
+		LDA		_battle_type_fight	; if the screen says FIGHT! then hold a moment, so we can read it i guess
 		CMP		#$FF
 		BNE		loc_86C2
 		LDX		#$14
 		JSR		_sleep_X
 loc_86C2:
-; now, finally, the last bit of the screen will be blanked
-		JSR		_ppu_screen_clear
+		JSR		_ppu_screen_clear	; now, finally, the last bit of the screen will be blanked
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
 		LDA		byte_60B7
 		ORA		#$20
 		STA		byte_60B7
-;reset screen scroll position to 0,0 so the battle can appear there regardless of where the map was located
-		LDA		#0
-		STA		_ppu_scroll_shadow
+		LDA		#0					; reset screen scroll position to 0,0 so the battle can appear there
+		STA		_ppu_scroll_shadow	;  regardless of where the map was located
 		STA		_ppu_scroll_shadow+1
 		LDA		_ppu_ctrl_shadow
 		AND		#$FE
@@ -1109,28 +1101,20 @@ loc_86F5:
 		JSR		sub_872B
 		JSR		_ppu_enable
 		JSR		_pal_fade_in
-
-; start up the battle differently depending on battle type
-		LDA		_battle_type_fight
-; branch to special logic for battle type 1
-		CMP		#1
+		LDA		_battle_type_fight				; start up the battle differently depending on battle type
+		CMP		#1								; branch to special logic for battle type 1
 		BEQ		.is_battle_type_1
-; branch to special logic for battle type != FF
-		CMP		#$FF
+		CMP		#$FF							; branch to special logic for battle type != FF
 		BNE		.is_battle_type_0
-; must be battle type FF
-		FARX	_b4_s24
+		FARX	_b4_s24							; must be battle type FF
 		JMP		.end_battle_cleanup
-
 .is_battle_type_1:
 		FARX	_b4_s25
 		JMP		.end_battle_cleanup
-
 .is_battle_type_0:
 		FARX	_b4_s0
 .end_battle_cleanup:
-; clean up after battle, I think
-		LDA		#0
+		LDA		#0								; clean up after battle, I think
 		STA		_spr_force_shuffle_mode
 		STA		byte_5C
 		RTS
@@ -3508,7 +3492,7 @@ _b0_s49:
 		LDX		#0
 loc_9CF7:
 		LDA		byte_9E5C,X
-		CMP		byte_8B
+		CMP		_mapNumber
 		BEQ		loc_9D05
 		INX
 		CPX		#$14
@@ -3857,8 +3841,9 @@ loc_9F34:
 		JSR		sub_A169
 		LDA		#2
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
-		LDA		#$8E
-		FARX	_bB_s3_apu_load
+;		LDA		#$8E
+;		FARX	_bB_s3_apu_load
+		SYSX	_apu_load,$8E
 		FARX	_b2_s7_screen_spell_blink
 		LDA		byte_50
 		STA		byte_CE
@@ -4195,7 +4180,7 @@ _b0_s55:
 		LDA		_location_type
 		AND		#1
 		BEQ		loc_A167
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$38
 		BEQ		loc_A165
 		CMP		#$C3
@@ -4546,8 +4531,8 @@ loc_A410:
 		LDA		#0
 		STA		byte_56
 		STA		byte_58
-		FARX	_bB_s3_apu_load
-		SYSX	_sys12_wrap_bB_s3_apu_load,$01
+		FARX	_bB_s3_apu_load				; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
+		SYSX	_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$C0
@@ -4557,8 +4542,7 @@ loc_A410:
 		INC		_players_level,X
 ; delays and jingles?
 		FARX	_bB_s7
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		JSR		sub_A8BB
 ; take player's level back down 1?
 		LDX		byte_51
@@ -5602,7 +5586,7 @@ loc_ABCF:
 loc_ABDA:
 		JMP		loc_ACA2
 loc_ABDD:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 loc_ABE0:
 		CPX		#$6B
 		BEQ		loc_AC0D
@@ -5646,7 +5630,7 @@ loc_AC10:
 loc_AC2E:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5693,7 +5677,7 @@ sub_AC74:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC7D:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		LDA		byte_47
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$69
@@ -5728,7 +5712,7 @@ sub_ACA5:
 sub_ACA9:
 		LDA		#0
 		STA		byte_8E
-		FARX	_b0_s50
+		JSR		_b0_s50
 		RTS
 byte_ACB1:
 		.BYTE	$52,$57,$76
@@ -5743,7 +5727,7 @@ sub_ACB4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		JSR		sub_AD1E
 		LDA		byte_45
 		CMP		byte_47
@@ -5848,7 +5832,7 @@ loc_AD4B:
 		TYA
 		JMP		_wrap_bE_s4_msg_m00_arg1
 loc_AD4F:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		LDA		byte_45
 		ASL
 		TAX
@@ -5931,7 +5915,7 @@ loc_ADC6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADE0:
 		PHA
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg1
 		SEC
@@ -5944,7 +5928,7 @@ _return_false_in_C:
 
 ; =============== S U B	R O U T	I N E =======================================
 loc_ADEC:
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys06_msg_m00_arg0,$BF
 		SEC
 		RTS
@@ -5959,8 +5943,8 @@ sub_ADF4:
 		AND		#8
 		BEQ		_return_false_in_C
 		STX		byte_D2
-		SYSX	_sys12_wrap_bB_s3_apu_load,$17
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_apu_load,$17
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		FARX	_bD_s22
 		SEC
@@ -5973,7 +5957,7 @@ sub_AE12:
 		AND		#$7F ; remove equip bit?
 		CMP		#$68 ; compare to wing of wyvern? that one's special, we need to launch a "where" places list.
 		BEQ		loc_AE1D
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 loc_AE1D:
 		LDY		#$FD ; pre-roll loop one step early
 		LDA		byte_48 ; reload target item in case above jsr whacked it..?
@@ -6055,13 +6039,13 @@ locret_AE8B:
 ; "Look! There is an image of a sleeping monster reflected in the mirror!"
 ; otherwise "But nothing happens!"
 sub_AE92:
-		LDA		byte_8B ; mapNumber
+		LDA		_mapNumber
 		CMP		#$62
 		BNE		_void_event
-		LDA		byte_30 ; playerMapX
+		LDA		_playerMapX
 		CMP		#$D
 		BNE		_void_event
-		LDA		byte_31 ; playerMapY
+		LDA		_playerMapY
 		CMP		#6
 		BNE		_void_event
 		LDA		byte_60CD ; probably some quest flags
@@ -6155,16 +6139,16 @@ sub_AEF1:
 		LDA		byte_60B6
 		AND		#$20
 		BNE		_void_event
-		LDA		byte_8B ; mapNumber
+		LDA		_mapNumber
 		CMP		#$2F ; whichever map norud's on
 ; search a range of positions for where norud might be
 		BNE		loc_AF38
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$26
 		BCC		loc_AF38
 		CMP		#$29
 		BCS		loc_AF38
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#5
 		BCC		loc_AF38
 		CMP		#7
@@ -6174,7 +6158,7 @@ sub_AEF1:
 		CMP		#$27
 		BNE		loc_AF38
 		SYSX	_sys07_msg_m00_arg1,$A1
-		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_apu_load,$86
 		SYSX	_sys0D_wrap_bE_sC,$1D
 		TAX
 		BNE		loc_AF32
@@ -6203,7 +6187,7 @@ sub_AF5B:
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
-		JSR		_wrap_sys0D_wrap_bE_sC_arg3E
+		SYSX	_sys0D_wrap_bE_sC,$3E
 		SYSX	_sys06_msg_m00_arg0,$AA
 		JSR		_sleep_30
 		FARX	_b6_s6
@@ -6236,9 +6220,9 @@ loc_AF92:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AF9A:
-		LDA		byte_30
+		LDA		_playerMapX
 		STA		word_4+1
-		LDA		byte_31
+		LDA		_playerMapY
 		STA		word_6
 		LDY		byte_644
 		BEQ		loc_AFB2
@@ -6349,17 +6333,17 @@ sub_B068:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B06C:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$1C
+		SYSX	_apu_load,$1C
 		JSR		_sleep_30
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#$EF
 		BNE		loc_B097
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$F
 		BCC		loc_B097
 		CMP		#$12
 		BCS		loc_B097
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#$11
 		BCC		loc_B097
 		CMP		#$14
@@ -6376,11 +6360,11 @@ loc_B097:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B09C:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$1B
+		SYSX	_apu_load,$1B
 		FARX	_bB_s7
 		LDA		byte_60C5
 		BMI		loc_B0B5
-		FARX	_b0_s53
+		JSR		_b0_s53
 		LDY		_enemy_roster_index_list
 		INY
 		BEQ		loc_B0B5

@@ -602,8 +602,9 @@ loc_20410:
 loc_20427:
 		LDX		#$73
 		JSR		sub_20441
-		LDA		#$85
-		FARX	_bB_s3_apu_load
+;		LDA		#$85
+;		FARX	_bB_s3_apu_load
+		SYSX	_apu_load,$85
 		LDA		byte_78
 		RTS
 
@@ -928,8 +929,8 @@ sub_20618:
 		ASL
 		TAX
 loc_2061E:
-		LDA		_ram_pal_buf+$18,X
-		STA		_ram_pal_buf+$18,Y
+		LDA		byte_400-1,X
+		STA		byte_400-1,Y
 		DEX
 		DEY
 		BNE		loc_2061E
@@ -1519,7 +1520,7 @@ loc_209E6:
 		TXA
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
-		SYSX	_sys12_wrap_bB_s3_apu_load,$13
+		SYSX	_apu_load,$13
 		FARX	_b0_s50
 		LDA		byte_60BA
 		AND		#1
@@ -1544,8 +1545,7 @@ loc_209FA:
 sub_20A1A:
 		FARX	_bA_s12
 		JSR		__pause_or_skip
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1560,7 +1560,7 @@ _b1_sD:
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		SYSX	_sys12_wrap_bB_s3_apu_load,$16
+		SYSX	_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$E
 		FARX	_b4_s1C
@@ -1574,7 +1574,7 @@ loc_20A4C:
 		FARX	_b4_s9
 		JMP		loc_20A76
 loc_20A5A:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$16
+		SYSX	_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$5D
 		FARX	_b4_s1C
@@ -1587,8 +1587,7 @@ loc_20A68:
 		CMP		#$86
 		BEQ		_pause_or_skip
 loc_20A76:
-		FARX	_bE_s31
-		FARX	_bB_s3_apu_load
+		JSR		_map_music_select_and_load
 		LDA		byte_5D
 		STA		word_4
 		LDA		word_5E
@@ -1677,7 +1676,7 @@ loc_20B04:
 		FARX	_b4_s9
 		JSR		sub_20D11
 		STA		byte_D2
-		SYSX	_sys12_wrap_bB_s3_apu_load,$8F
+		SYSX	_apu_load,$8F
 		LDA		#$64
 		FARX	_b4_s9
 		PLA
@@ -1706,7 +1705,7 @@ loc_20B5E:
 		LDA		#$45
 		LDX		#1
 		FARX	_bE_s4_msg_m00
-		SYSX	_sys12_wrap_bB_s3_apu_load,$86
+		SYSX	_apu_load,$86
 		SYSX	_sys0E_wrap_bE_s0,$1D
 		CMP		#0
 		BEQ		loc_20B87

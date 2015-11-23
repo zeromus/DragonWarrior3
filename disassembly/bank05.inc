@@ -2004,7 +2004,7 @@ _chr_font:
 _b5_s7:
 		LDA		byte_86
 		BEQ		sub_83A7A
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BNE		sub_83A7A
 		RTS
 off_83A72:
@@ -2643,7 +2643,7 @@ sub_83E7E:
 		LDA		_location_type
 		AND		#1
 		BEQ		loc_83E87
-		LDA		byte_30
+		LDA		_playerMapX
 		RTS
 loc_83E87:
 		LDA		byte_2A
@@ -2654,7 +2654,7 @@ sub_83E8A:
 		LDA		_location_type
 		AND		#1
 		BEQ		loc_83E93
-		LDA		byte_31
+		LDA		_playerMapY
 		RTS
 loc_83E93:
 		LDA		byte_2B

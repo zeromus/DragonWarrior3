@@ -1224,7 +1224,7 @@ _mapF0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s19:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$22
+		SYSX	_apu_load,$22
 		LDA		#5
 		STA		word_3C
 loc_B2711:
@@ -1235,7 +1235,7 @@ loc_B2711:
 		SYSX	_sys07_msg_m00_arg1,$A8
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s20
-		SYSX	_sys12_wrap_bB_s3_apu_load,$18
+		SYSX	_apu_load,$18
 		LDA		#0
 		STA		word_3C
 loc_B272B:
@@ -1312,10 +1312,10 @@ byte_B27AA:
 _b7_s1A:
 		LDA		byte_60C5
 		BPL		locret_B27A9
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#$A
 		BNE		locret_B27A9
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#5
 		BNE		locret_B27A9
 		JSR		sub_174CCF
@@ -1336,7 +1336,7 @@ loc_B27D7:
 		CPX		#$38
 		BCC		loc_B27D7
 		FARX	_bC_s20
-		SYSX	_sys12_wrap_bB_s3_apu_load,$02
+		SYSX	_apu_load,$02
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0_npc_anim_script_init
@@ -1346,7 +1346,7 @@ loc_B27D7:
 _b7_s1B:
 		FARX	_bB_s7
 		JSR		sub_B2806
-		SYSX	_sys12_wrap_bB_s3_apu_load,$1F
+		SYSX	_apu_load,$1F
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
 		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
@@ -1463,7 +1463,7 @@ loc_B28B5:
 		JSR		sub_B2C66
 		LDA		#$FF
 		STA		byte_6A3E
-		SYSX	_sys12_wrap_bB_s3_apu_load,$28
+		SYSX	_apu_load,$28
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B28C6:
@@ -1499,11 +1499,11 @@ sub_B28ED:
 		LDA		byte_60C7
 		BMI		loc_B2914
 		LDA		#$41
-		STA		byte_8B
+		STA		_mapNumber
 		LDA		#4
-		STA		byte_30
+		STA		_playerMapX
 		LDA		#6
-		STA		byte_31
+		STA		_playerMapY
 		LDA		#$B3
 		STA		byte_2A
 		LDA		#$DA
@@ -2936,11 +2936,11 @@ loc_B32F6:
 		ASL
 		TAX
 		LDA		byte_B332B,X
-		STA		byte_8B
+		STA		_mapNumber
 		LDA		byte_B332B+1,X
-		STA		byte_30
+		STA		_playerMapX
 		LDA		byte_B332B+2,X
-		STA		byte_31
+		STA		_playerMapY
 		LDA		byte_B332B+3,X
 		STA		byte_644
 		STA		byte_6BC
@@ -3042,7 +3042,7 @@ _b7_s1E:
 		JSR		sub_B36C8
 		LDX		#$3C
 		JSR		_sleep_X
-		SYSX	_sys12_wrap_bB_s3_apu_load,$19
+		SYSX	_apu_load,$19
 		JSR		_pal_fade_in
 		LDX		#$64
 		JSR		_sleep_X
@@ -3317,13 +3317,13 @@ loc_B365C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B3666:
 		LDA		#$10
-		STA		byte_87
+		STA		_heroTileMovePixelsRemain
 		LDA		#0
 		STA		byte_85
 loc_B366E:
 		JSR		sub_175B03
 		JSR		_wait_for_nmi_is_over
-		LDA		byte_87
+		LDA		_heroTileMovePixelsRemain
 		BNE		loc_B366E
 		LDA		#$FF
 		STA		byte_86
@@ -3357,7 +3357,7 @@ sub_B36A2:
 		STA		byte_63C9
 		LDA		#0
 		STA		byte_6A3E
-		FARX	_b7_s1D
+		JSR		_b7_s1D
 		FARX	_b1A_s0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3724,7 +3724,7 @@ loc_21C047:
 		BCC		loc_21C047
 		RTS
 loc_21C060:									; enter the locations
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#8
 		BEQ		loc_21C0B4
 		CMP		#$2D
@@ -3796,7 +3796,7 @@ loc_21C0CA:
 		TAX
 		LDA		_loc_maps_pal_decode_data3,X
 		STA		word_4
-		LDY		byte_8B
+		LDY		_mapNumber
 		CPY		#$D5
 		BEQ		loc_21C0DC
 		LDY		byte_9A

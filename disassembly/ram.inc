@@ -89,9 +89,9 @@ byte_2E:
 		.BYTE	0
 _location_type:
 		.BYTE	0
-byte_30: ; "playerMapX"
+_playerMapX:
 		.BYTE	0
-byte_31: ; "playerMapY"
+_playerMapY:
 		.BYTE	0
 _spr_force_shuffle_mode:
 		.BYTE	0
@@ -283,15 +283,15 @@ byte_85:
 		.BYTE	0
 byte_86:
 		.BYTE	0
-byte_87: ; "heroTileMovePixelsRemain" - set to $0F to track movement in direction tracked elsewhere
+_heroTileMovePixelsRemain: ; set to $0F to track movement in direction tracked elsewhere
 		.BYTE	0
-byte_88: ; "mapWidth"
+_mapWidth:
 		.BYTE	0
-byte_89: ; "mapHeight"
+_mapHeight:
 		.BYTE	0
 byte_8A: ; "tilemapOOBtile_8A" - this value is extracted during mdec init from bottom 5 bits of header[2] (OOB = out of bounds)
 		.BYTE	0
-byte_8B: ; "mapNumber"
+_mapNumber:
 		.BYTE	0
 byte_8C:
 		.BYTE	0
@@ -299,7 +299,7 @@ byte_8D: ; "mdec_bitsPerTile"
 		.BYTE	0
 byte_8E:
 		.BYTE	0
-byte_8F: ; "blockPlayerInputDuringMap" - nonzero blocks player input. $01 is frozen forever. $02 and up counts until overflow and unfreezes
+_blockPlayerInputDuringMap: ; nonzero blocks player input. $01 is frozen forever. $02 and up counts until overflow and unfreezes
 		.BYTE	0
 byte_90: ; "EntityUpdateCycle_90" - used to only allow player DPad once per 16 frames?
 		.BYTE	0
@@ -4674,9 +4674,9 @@ byte_6AC1:
 		.BYTE	0
 byte_6AC2:
 		.BYTE	0
-byte_6AC3:
+_wnd_cmd_byte_pos:
 		.BYTE	0
-byte_6AC4:
+_wnd_cur_cmd_byte:
 		.BYTE	0
 byte_6AC5:
 		.BYTE	0

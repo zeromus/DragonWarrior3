@@ -1098,7 +1098,7 @@ byte_E3C4C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_E3C80:
-		LDA		byte_8B
+		LDA		_mapNumber
 		STA		word_3E
 		BIT		byte_60B7
 		BVS		loc_E3C93
@@ -1221,7 +1221,7 @@ loc_E3D55:
 		LDA		byte_60CA
 		AND		#8
 		BEQ		locret_E3D16
-		LDA		byte_8B
+		LDA		_mapNumber
 		CMP		#6
 		BNE		locret_E3D16
 		LDA		#$F3

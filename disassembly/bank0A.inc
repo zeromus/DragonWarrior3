@@ -488,24 +488,24 @@ loc_F8309:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s8:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$81
+		SYSX	_apu_load,$81
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
-		SYSX	_sys12_wrap_bB_s3_apu_load,$91
+		SYSX	_apu_load,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		JSR		sub_F834B
 		FARX	_b4_s1A
-		SYSX	_sys12_wrap_bB_s3_apu_load,$91
+		SYSX	_apu_load,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F834B:
-		SYSX	_sys12_wrap_bB_s3_apu_load,$A1
+		SYSX	_apu_load,$A1
 		LDA		#$78
 		STA		word_4
 loc_F8352:
@@ -513,7 +513,7 @@ loc_F8352:
 		LDA		word_4
 		CMP		#$1E
 		BCS		loc_F8361
-		SYSX	_sys12_wrap_bB_s3_apu_load,$9D
+		SYSX	_apu_load,$9D
 		FARX	_b2_s7_screen_spell_blink
 loc_F8361:
 		JSR		_pal_set_no_fade
@@ -702,7 +702,7 @@ _bA_sD:
 		FARX	_b5_sA
 		JSR		sub_F8682
 		JSR		sub_F85B0
-		FARX	_bE_s31
+		FARX	_bE_s31_get_map_music_idx
 		FARX	_bB_s5
 		JSR		sub_F850A
 		LDA		#0
@@ -1293,7 +1293,7 @@ loc_F8CC7:
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
 		JSR		_wait_for_nmi_is_over
-		SYSX	_sys12_wrap_bB_s3_apu_load,$85
+		SYSX	_apu_load,$85
 		LDA		byte_588
 		RTS
 loc_F8CEC:
@@ -1862,7 +1862,7 @@ _bA_s10:
 		LDA		byte_60C6
 		AND		#$20
 		BEQ		locret_F9110
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#7
 		BNE		locret_F9110
 		LDA		#$40
@@ -1880,10 +1880,10 @@ locret_F9110:
 _bA_s11:
 		LDA		byte_60C6
 		BPL		locret_F9159
-		LDA		byte_30
+		LDA		_playerMapX
 		CMP		#9
 		BNE		locret_F9159
-		LDA		byte_31
+		LDA		_playerMapY
 		CMP		#5
 		BNE		locret_F9159
 		LDA		#$50
