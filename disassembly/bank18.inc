@@ -140,7 +140,7 @@ sub_24C0F3:
 		STA		byte_60B7
 		LDA		#0
 		STA		_ppu_spr_dma_sent
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_24C20F
 		BCS		loc_24C113
 		DEX
@@ -168,7 +168,7 @@ _b18_s1:
 		STA		byte_60B7
 		LDA		#0
 		STA		_ppu_spr_dma_sent
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_24C227
 		LDA		_nmi_counter
 		AND		#$F
@@ -1057,13 +1057,7 @@ loc_24E7C1:
 		BEQ		loc_24E7FC
 loc_24E7DB:
 		LDX		#$32
-loc_24E7DD:
-		LDA		_nmi_counter
-loc_24E7E0:
-		CMP		_nmi_counter
-		BEQ		loc_24E7E0
-		DEX
-		BNE		loc_24E7DD
+		JSR		_sleep_X
 loc_24E7E8:
 		LDA		#2
 		STA		byte_6A36

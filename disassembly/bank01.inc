@@ -526,7 +526,7 @@ byte_2038F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_203A7:
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		_calc_pads
 		LDA		_pads
 		BNE		sub_203A7
@@ -881,7 +881,7 @@ loc_205D4:
 		LDX		#0
 loc_205D6:
 		LDA		byte_205E2,X
-		STA		byte_404,X
+		STA		_window_draw_buf+4,X
 		INX
 		CPX		#6
 		BNE		loc_205D6
@@ -895,22 +895,22 @@ sub_205E8:
 		ASL
 		TAX
 		LDA		#$77
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		TXA
 		CLC
 		ADC		byte_74
 		TAX
 		LDA		#$77
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		LDA		#$7C
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		TXA
 		CLC
 		ADC		byte_74
 		TAX
 		LDA		#$7C
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -929,8 +929,8 @@ sub_20618:
 		ASL
 		TAX
 loc_2061E:
-		LDA		byte_400-1,X
-		STA		byte_400-1,Y
+		LDA		_window_draw_buf-1,X
+		STA		_window_draw_buf-1,Y
 		DEX
 		DEY
 		BNE		loc_2061E
@@ -945,7 +945,7 @@ sub_20628:
 		DEX
 		LDA		#0
 loc_20631:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		DEY
 		BNE		loc_20631
@@ -959,15 +959,15 @@ sub_2063D:
 		JSR		sub_205E8
 		JSR		sub_20618
 		LDA		#$7A
-		STA		byte_400
+		STA		_window_draw_buf
 		LDX		byte_74
 		DEX
 		LDA		#$7D
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		LDA		#$78
 loc_20656:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		BNE		loc_20656
 		RTS
@@ -984,16 +984,16 @@ sub_2065D:
 		TAX
 		DEX
 		LDA		#$7F
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		LDA		#$7E
 loc_20671:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		DEY
 		BNE		loc_20671
 		LDA		#$7B
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1008,7 +1008,7 @@ loc_20685:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20688:
 		LDX		byte_77
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INC		byte_77
 		RTS
 
@@ -1017,7 +1017,7 @@ sub_20690:
 		LDY		byte_77
 		LDA		#0
 loc_20694:
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		INY
 		DEX
 		BNE		loc_20694
@@ -1027,9 +1027,9 @@ loc_20694:
 ; =============== S U B	R O U T	I N E =======================================
 sub_2069E:
 		LDA		#0
-		STA		byte_401
+		STA		_window_draw_buf+1
 		LDA		#$64
-		STA		byte_402
+		STA		_window_draw_buf+2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1067,7 +1067,7 @@ loc_206CD:
 		TAY
 loc_206DB:
 		LDA		byte_9,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		INY
 		CPY		#7
@@ -1112,7 +1112,7 @@ loc_2070E:
 		LDX		byte_77
 		INC		byte_77
 		LDA		word_4,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INY
 		INC		byte_79
 		DEC		byte_78
@@ -1146,7 +1146,7 @@ sub_20720:
 		STX		byte_7B
 		TXA
 loc_20750:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$10
 		BNE		loc_20750
@@ -1706,7 +1706,7 @@ loc_20B5E:
 		LDX		#1
 		FARX	_bE_s4_msg_m00
 		SYSX	_apu_load,$86
-		SYSX	_sys0E_wrap_bE_s0,$1D
+		SYSX	_display_window_ex,$1D
 		CMP		#0
 		BEQ		loc_20B87
 loc_20B6F:
@@ -1993,7 +1993,7 @@ _b1_sE:
 		LDY		#8
 		LDA		#0
 loc_20D5D:
-		STA		byte_79C,X
+		STA		_players_spell,X
 		INX
 		DEY
 		BNE		loc_20D5D

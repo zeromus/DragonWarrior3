@@ -275,7 +275,7 @@ _chd_lib_data_send:
 		PHA
 		LDA		_chr_data_lib+2,X
 		JSR		_mmc1_prg_set
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#0
 		STA		byte_26
 loc_17417D:
@@ -304,7 +304,7 @@ loc_174196:
 		STY		byte_26
 		INC		_ppu_queue_chunks_count
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		byte_24
 		CMP		byte_25
 		BNE		loc_17417D
@@ -599,29 +599,43 @@ locret_174340:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; simple copy of _wait_for_nmi_is_over_sync without sprite shuffle and sync
+; were used as separate function in several different places, moved here as
+; a common system function
+;
+_wait_for_nmi_is_over:
+		LDA		_nmi_counter
+.nmi_wait_loop:
+		CMP		_nmi_counter
+		BEQ		.nmi_wait_loop
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
 ; wait for one NMI occurs and NMI routine finish its job (dequeue, etc.)
 ; used to be sure you still at vblank period and ppu is free for any other operations
 ;
 ;"sub_msg_WaitTick"
-_wait_for_nmi_is_over:
-		LDA		_nmi_counter
-loc_174344:
-		CMP		_nmi_counter
-		BEQ		loc_174344
+_wait_for_nmi_is_over_sync:
+		JSR		_wait_for_nmi_is_over
 		JMP		_spr_shuffle_safe
+
+; =============== S U B	R O U T	I N E =======================================
+; the same as Sleep_X, but with to shuffle sync
+;
+_sleep_X:
+		JSR		_wait_for_nmi_is_over
+		DEX
+		BNE		_sleep_X
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; suspend for desired number of frames is over, do only basic sync job in process
 ; like sprite shuffling, input arg in X - number of frames to suspend
 ;
-_sleep_X:
-		LDA		_nmi_counter
-.sleep_loop:
-		CMP		_nmi_counter
-		BEQ		.sleep_loop
-		JSR		_spr_shuffle_safe
+_sleep_X_sync:
+		JSR		_wait_for_nmi_is_over_sync
 		DEX
-		BNE		_sleep_X
+		BNE		_sleep_X_sync
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -657,7 +671,7 @@ _pal_fade_loop:
 		STA		_tmp21				; store current fade level
 		JSR		_pal_fade_step
 		LDX		#3
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		_tmp21
 		CLC
 		ADC		_tmp21+1
@@ -702,7 +716,7 @@ loc_1743A4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1743B5:
+_location_palette_and_rand_update:
 		FARX	_b16_s0_location_palette_setup
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -907,7 +921,7 @@ sub_174693:
 		ADC		#$40
 		TAX
 loc_1746A7:
-		LDA		byte_480,X
+		LDA		_attr_ram_buf,X
 		STA		byte_9
 		LDA		#3
 		LDY		word_6+1
@@ -921,7 +935,7 @@ loc_1746B8:
 		EOR		#$FF
 		AND		byte_9
 		ORA		byte_A
-		STA		byte_480,X
+		STA		_attr_ram_buf,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1030,14 +1044,14 @@ sub_17474C:
 sub_17474E:
 		JSR		sub_174757
 		JSR		_ppu_set_dequeue_flag
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174757:
 		PHA
 		LDA		_ppu_queue_chunks_count
 		BEQ		loc_174760
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 loc_174760:
 		LDA		#0
 		STA		byte_24
@@ -1146,7 +1160,7 @@ loc_174803:
 		PHA
 		LDY		byte_25
 loc_17481C:
-		LDA		byte_400,Y
+		LDA		_window_draw_buf,Y
 		STA		_ppu_queue_buf,X
 		INX
 		INY
@@ -1171,7 +1185,7 @@ loc_17483E:
 		PHA
 		LDA		byte_9
 		PHA
-		LDA		byte_460,Y
+		LDA		_window_draw_buf+$60,Y
 		JSR		sub_17489C
 		STA		word_4
 		PLA
@@ -1282,7 +1296,7 @@ loc_1748CA:
 		ADC		#$40
 		TAX
 loc_1748EF:
-		LDA		byte_480,X
+		LDA		_attr_ram_buf,X
 		STA		byte_D
 		LDA		#3
 		LDY		byte_C
@@ -1296,7 +1310,7 @@ loc_174900:
 		EOR		#$FF
 		AND		byte_D
 		ORA		byte_F
-		STA		byte_480,X
+		STA		_attr_ram_buf,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1640,7 +1654,7 @@ loc_174B35:
 		TXA
 		PHA
 		JSR		_calc_pads
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		PLA
 		TAX
 		INX
@@ -1649,7 +1663,7 @@ loc_174B35:
 		LDA		_pads
 		BNE		loc_174B35
 loc_174B48:
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		_calc_pads
 		LDA		_pads
 		BEQ		loc_174B48
@@ -1806,7 +1820,7 @@ loc_174BBB:
 		JSR		__pause_or_skip
 		FARX	_bB_s4
 		JSR		_pal_fade_out
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 loc_174BC7:
 ; inspect some kind of a "main game mode flag"
 ; if its clear, the game just booted
@@ -1835,7 +1849,7 @@ loc_174BF2:
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_174BFC 
-		FARX	_b0_s64 ; respawn at a king or other save point i suppose
+		FARX	_b0_s64_king_respawn ; respawn at a king or other save point i suppose
 
 ;respawn at a shrine:
 loc_174BFC:
@@ -1888,7 +1902,7 @@ sub_174C62:
 		JSR		_pal_fade_out
 		LDA		byte_9A
 		JSR		sub_1762FC
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		LDA		byte_60BA
 		AND		#1
 		BEQ		loc_174C84
@@ -1939,7 +1953,7 @@ loc_174CCA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CCF:
 		FARX	_bE_sD
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1959,7 +1973,7 @@ sub_174CE2:
 		JSR		sub_1754AD
 		FARX	_b7_s1C
 		FARX	_b5_s9
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		JSR		sub_17578E
 		LDA		#7
 		JSR		_mmc1_prg_set
@@ -2004,7 +2018,7 @@ _far_read_pri_stat_tbl:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D4F:
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		RTS
 
@@ -2022,7 +2036,7 @@ sub_174D56:
 		FARX	_bD_s6
 		JSR		sub_174DC0
 		JSR		sub_177116
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_1755AB
 		FARX	_bA_s1
 		JSR		sub_174E10
@@ -2372,7 +2386,7 @@ loc_174FBB:
 		JSR		_sram_b0_s31
 		DEC		word_4
 		LDA		word_4
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 locret_174FF1:
 		RTS
 byte_174FF2:
@@ -2618,7 +2632,7 @@ loc_1751AA:
 		LDA		byte_60BA
 		AND		#$EF
 		STA		byte_60BA
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		JSR		_ppu_disable
 		FARX	_bE_sF
 		FARX	_b5_s9
@@ -2833,7 +2847,7 @@ sub_17532D:
 		AND		#$E0
 		STA		byte_8C
 		FARX	_b5_s9
-		JMP		sub_1743B5
+		JMP		_location_palette_and_rand_update
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175342:
@@ -3196,7 +3210,7 @@ sub_1755AB:
 		AND		#1
 		BNE		locret_1755C9
 		LDX		#3
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 locret_1755C9:
 		RTS
 
@@ -5205,13 +5219,13 @@ sub_1762A8:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762C3:
 		JSR		sub_1762C9
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762C9:
 		STA		word_4A
 		STY		byte_4D
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		_mmc_cur_prg_bank
 		PHA
 		JSR		_mmc1_prg5_set_ppu_reset
@@ -5979,7 +5993,7 @@ loc_176BCF:
 ; =============== S U B	R O U T	I N E =======================================
 _sleep_30:
 		LDX		#$1E
-		JMP		_sleep_X
+		JMP		_sleep_X_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C41:
@@ -6132,10 +6146,10 @@ _sys0C_msg_m00_arg8_idx:
 		
 		; other common routines
 		;
-_sys0D_wrap_bE_sC_idx:
-		.WORD	_sys0D_wrap_bE_sC
-_sys0E_wrap_bE_s0_idx:
-		.WORD	_sys0E_wrap_bE_s0
+_display_window_idx:
+		.WORD	_display_window
+_display_window_ex_idx:
+		.WORD	_display_window_ex
 		
 		; two more external direct offsets, called from bank 4 only
 		;
@@ -6250,10 +6264,10 @@ _b0_s3B_idx:			PTR_IDX	$0,_b0_s3B					; $5C
 ; what sys page they will be
 ;
 _b0_s0_world_map_random_enounter_test_idx:	PTR_IDX	$0,_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
-_b0_s1_idx:				PTR_IDX	$0,_b0_s1					; $14E
+_b0_s1_battle_typeA_launch_idx:				PTR_IDX	$0,_b0_s1_battle_typeA_launch					; $14E
 _b0_s3C_idx:			PTR_IDX	$0,_b0_s3C					; $68
-_b0_s3D_idx:			PTR_IDX	$0,_b0_s3D					; $7A
-_b0_s3E_idx:			PTR_IDX	$0,_b0_s3E					; $7B
+_b0_s3D_player_status_20_clear_idx:			PTR_IDX	$0,_b0_s3D_player_status_20_clear					; $7A
+_b0_s3D_player_status_80_set_idx:			PTR_IDX	$0,_b0_s3D_player_status_80_set					; $7B
 _b0_s45_check_if_item_equipped_idx:			PTR_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
 _b0_s46_idx:			PTR_IDX	$0,_b0_s46					; $A9
 _b0_s47_idx:			PTR_IDX	$0,_b0_s47					; $AA
@@ -6263,7 +6277,7 @@ _b0_s4D_idx:			PTR_IDX	$0,_b0_s4D					; $12C
 _b0_s4E_idx:			PTR_IDX	$0,_b0_s4E					; $145
 _b0_s4F_idx:			PTR_IDX	$0,_b0_s4F					; $146
 _b0_s50_idx:			PTR_IDX	$0,_b0_s50					; $149
-_b0_s52_idx:			PTR_IDX	$0,_b0_s52					; $14D
+_b0_s52_battle_typeFF_launch_idx:			PTR_IDX	$0,_b0_s52_battle_typeFF_launch					; $14D
 _b0_s53_idx:			PTR_IDX	$0,_b0_s53					; $14F
 _b0_s54_idx:			PTR_IDX	$0,_b0_s54					; $155
 _b0_s55_idx:			PTR_IDX	$0,_b0_s55					; $173
@@ -6277,7 +6291,7 @@ _b0_s60_idx:			PTR_IDX	$0,_b0_s60					; $10A
 _b0_s61_sram_shortcuts_init_idx:	PTR_IDX	$0,_b0_s61_sram_shortcuts_init	; $122
 _b0_s62_idx:			PTR_IDX	$0,_b0_s62					; $12A
 _b0_s63_idx:			PTR_IDX	$0,_b0_s63					; $130
-_b0_s64_idx:			PTR_IDX	$0,_b0_s64					; $12E
+_b0_s64_king_respawn_idx:			PTR_IDX	$0,_b0_s64_king_respawn					; $12E
 _b0_s65_idx:			PTR_IDX	$0,_b0_s65					; $163
 _b0_s66_idx:			PTR_IDX	$0,_b0_s66					; $164
 _b0_s67_idx:			PTR_IDX	$0,_b0_s67					; $199
@@ -6433,7 +6447,7 @@ _bC_sE_idx:				PTR_IDX	$C,_bC_sE					; $B9
 _bC_sF_idx:				PTR_IDX	$C,_bC_sF					; $BA
 _bC_s10_idx:			PTR_IDX	$C,_bC_s10					; $BB
 _bC_s11_idx:			PTR_IDX	$C,_bC_s11					; $BC
-_bC_s12_sleep_X_50_idx:PTR_IDX	$C,_bC_s12_sleep_X_50		; $101
+_bC_s12_sleep_X_sync_50_idx:PTR_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
 _bC_s13_idx:			PTR_IDX	$C,_bC_s13					; $BE
 _bC_s14_idx:			PTR_IDX	$C,_bC_s14					; $C8
 _bC_s17_sys0_spr_effects_call_idx:	PTR_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
@@ -6454,7 +6468,7 @@ _bC_s27_idx:			PTR_IDX	$C,_bC_s27					; $147
 _bC_s28_idx:			PTR_IDX	$C,_bC_s28					; $148
 _bC_s2A_idx:			PTR_IDX	$C,_bC_s2A					; $100
 _bC_s2B_idx:			PTR_IDX	$C,_bC_s2B					; $18E
-_bC_s2E_sleep_X_50_wait_50_or_skip_idx:PTR_IDX	$C,_bC_s2E_sleep_X_50_wait_50_or_skip	; $170
+_bC_s2E_sleep_X_sync_50_wait_50_or_skip_idx:PTR_IDX	$C,_bC_s2E_sleep_X_sync_50_wait_50_or_skip	; $170
 _bC_s2F_idx:			PTR_IDX	$C,_bC_s2F					; $14A
 _bC_s30_idx:			PTR_IDX	$C,_bC_s30					; $14B
 _bC_s31_idx:			PTR_IDX	$C,_bC_s31					; $11D
@@ -6504,7 +6518,7 @@ _bD_s27_idx:			PTR_IDX	$D,_bD_s27					; $A3
 _bD_s28_frame_palette_by_status_adjust_idx:	PTR_IDX	$D,_bD_s28_frame_palette_by_status_adjust	; $12F
 _bD_s29_idx:			PTR_IDX	$D,_bD_s29					; $17A
 
-_bE_s0_idx:				PTR_IDX	$E,_bE_s0					; $00
+_bE_s0_display_window_ex_idx:				PTR_IDX	$E,_bE_s0_display_window_ex					; $00
 _bE_s1_MainLoopCheckAButton_idx:				PTR_IDX	$E,_bE_s1_MainLoopCheckAButton					; $01
 _bE_s2_idx:				PTR_IDX	$E,_bE_s2					; $02
 _bE_s3_idx:				PTR_IDX	$E,_bE_s3					; $03
@@ -6513,7 +6527,7 @@ _bE_s5_idx:				PTR_IDX	$E,_bE_s5					; $05
 _bE_s6_msg_mFF_idx:		PTR_IDX	$E,_bE_s6_msg_mFF			; $06
 _bE_s9_idx:				PTR_IDX	$E,_bE_s9					; $09
 _bE_sB_idx:				PTR_IDX	$E,_bE_sB					; $1F
-_bE_sC_idx:				PTR_IDX	$E,_bE_sC					; $20
+_bE_sC_display_window_idx:				PTR_IDX	$E,_bE_sC_display_window					; $20
 _bE_sD_idx:				PTR_IDX	$E,_bE_sD					; $21
 _bE_sE_idx:				PTR_IDX	$E,_bE_sE					; $A8
 _bE_sF_idx:				PTR_IDX	$E,_bE_sF					; $121
@@ -6821,15 +6835,15 @@ _far_bE_s4_msg_m00_break:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0D_wrap_bE_sC:
+_display_window:
 		TYA
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0E_wrap_bE_s0:
+_display_window_ex:
 		TYA
-		FARX	_bE_s0
+		FARX	_bE_s0_display_window_ex
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

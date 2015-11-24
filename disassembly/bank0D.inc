@@ -1589,7 +1589,7 @@ loc_141BA3:
 		BEQ		loc_141BCE
 		LDA		byte_6AE6
 		BPL		locret_141BA2
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 loc_141BCE:
 		INY
 		LDA		#$BF
@@ -2222,7 +2222,7 @@ sub_141FC8:
 		LDX		#2
 		LDA		byte_C4
 		FARX	_bE_s4_msg_m00
-		SYSX	_sys0D_wrap_bE_sC,$1C
+		SYSX	_display_window,$1C
 		STA		byte_C3
 		PLA
 		TAX
@@ -2247,7 +2247,7 @@ sub_141FF1:
 		LDA		byte_C2
 		STA		byte_D0
 		JSR		_sram_b0_s1D
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		PLA
 		STA		byte_D0
 		PLA
@@ -2461,11 +2461,11 @@ loc_14213F:
 		BNE		loc_14215A
 loc_142147:
 		SYSX	_sys08_msg_m00_arg2,$1F
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		LDA		#$FF
 		STA		byte_C9
 		LDA		#0
-		SYSX	_sys0D_wrap_bE_sC,$36
+		SYSX	_display_window,$36
 		CMP		#$FE
 		BCC		loc_14215D
 loc_14215A:
@@ -2565,7 +2565,7 @@ loc_1421FF:
 		STA		byte_6FF
 loc_14221D:
 		SYSX	_sys08_msg_m00_arg2,$2C
-		SYSX	_sys0D_wrap_bE_sC,$16
+		SYSX	_display_window,$16
 		LDX		#7
 		JSR		_bD_s10
 		CMP		#1
@@ -2577,11 +2577,11 @@ loc_142231:
 		JMP		sub_1422E1
 loc_142234:
 		SYSX	_sys08_msg_m00_arg2,$2D
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		LDA		#$FF
 		STA		byte_C9
 		LDA		#0
-		SYSX	_sys0D_wrap_bE_sC,$36
+		SYSX	_display_window,$36
 		CMP		#$FE
 		BCS		loc_14222E
 		TAX
@@ -2678,7 +2678,7 @@ sub_1422E1:
 		BCC		loc_1422DD
 loc_142303:
 		SYSX	_sys08_msg_m00_arg2,$39
-		SYSX	_sys0D_wrap_bE_sC,$2D
+		SYSX	_display_window,$2D
 		LDX		#$13
 		JSR		_bD_s10
 		CMP		#9
@@ -2715,7 +2715,7 @@ loc_142348:
 		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142348
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		SYSX	_sys08_msg_m00_arg2,$3B
 		FARX	_bE_s1C
 		BEQ		loc_14236C
@@ -2757,7 +2757,7 @@ loc_142377:
 loc_1423AA:
 		JSR		_sram_b0_s2A
 		JSR		sub_14200A
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		LDA		byte_C5
 		CMP		#$5E
 		BNE		loc_1423C9
@@ -2781,7 +2781,7 @@ loc_1423CF:
 loc_1423DA:
 		LDA		#0
 		STA		byte_C9
-		SYSX	_sys0D_wrap_bE_sC,$36
+		SYSX	_display_window,$36
 		CMP		#8
 		BCC		loc_1423E9
 		SYSX	_sys02_msg_m00_b3,$35
@@ -2806,7 +2806,7 @@ loc_142400:
 		DEX
 		BPL		loc_142400
 		SYSX	_sys02_msg_m00_b3,$36
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		JSR		loc_14245F
 		SYSX	_sys02_msg_m00_b3,$37
 		JSR		sub_14245C
@@ -2822,7 +2822,7 @@ loc_142426:
 		JSR		sub_141FB1
 		BCC		loc_142449
 		JSR		sub_14246C
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		LDA		byte_C3
 		STA		byte_CE
 		LDA		byte_C5
@@ -2865,7 +2865,7 @@ sub_14246C:
 		LDA		byte_C2
 		STA		byte_D0
 		JSR		_sram_b0_s1D
-		SYSX	_sys0D_wrap_bE_sC,$12
+		SYSX	_display_window,$12
 		RTS
 loc_14247F:
 		SYSX	_sys08_msg_m00_arg2,$1A
@@ -2900,7 +2900,7 @@ loc_142496:
 		LDA		byte_C0
 		STA		_msg_number_parameter_F8
 		SYSX	_sys08_msg_m00_arg2,$19
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bE_s1C
 		BNE		loc_142482
 		JSR		sub_141FB1
@@ -2940,7 +2940,7 @@ loc_142500:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142504:
 		JSR		_pal_fade_out
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		JSR		_sram_b0_s31
 		LDX		word_4
 		LDA		#$FF
@@ -2971,7 +2971,7 @@ loc_142531:
 		LDA		#0
 		STA		_world_map_steps_count
 loc_142545:
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		FARX	_bE_s1B
 		JSR		sub_177CFC
 		JSR		_bD_s28_frame_palette_by_status_adjust
@@ -3005,7 +3005,7 @@ sub_142586:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142589:
-		SYSX	_sys0D_wrap_bE_sC,$17
+		SYSX	_display_window,$17
 		LDX		#9
 		JSR		_bD_s10
 		CMP		#1
@@ -3051,7 +3051,7 @@ loc_1425AA:
 		BCC		loc_142615
 		JSR		sub_141FF1
 		STA		byte_CE
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bB_s4
 		LDA		byte_C3
 		STA		byte_D2
@@ -3059,7 +3059,7 @@ loc_1425AA:
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3D
+		FARX	_b0_s3D_player_status_20_clear
 		JMP		loc_1425A4
 loc_142605:
 		LDA		byte_C3
@@ -3110,7 +3110,7 @@ loc_142629:
 		JSR		sub_141FB1
 		BCC		loc_142615
 		JSR		sub_141FF1
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bB_s4
 		SYSX	_sys08_msg_m00_arg2,$0D
 		SYSX	_apu_load,$15
@@ -3123,7 +3123,7 @@ loc_142684:
 		JMP		loc_142618
 loc_14268A:
 		SYSX	_sys08_msg_m00_arg2,$0E
-		SYSX	_sys0D_wrap_bE_sC,$4E
+		SYSX	_display_window,$4E
 		LDX		#7
 		JSR		_bD_s10
 		CMP		#4
@@ -3170,14 +3170,14 @@ loc_1426E9:
 		JMP		loc_142615
 loc_1426F1:
 		JSR		sub_141FF1
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		SYSX	_sys08_msg_m00_arg2,$02
 		FARX	_bB_s4
 		SYSX	_sys08_msg_m00_arg2,$10
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3E
+		FARX	_b0_s3D_player_status_80_set
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
@@ -3238,7 +3238,7 @@ _bD_s10:
 		LDX		#0
 		TXA
 loc_142776:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$10
 		BNE		loc_142776
@@ -3276,7 +3276,7 @@ loc_14279B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1427A8:
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bE_s1C
 		CMP		#0
 		RTS
@@ -3424,7 +3424,7 @@ sub_142920:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142923:
 		SYSX	_sys08_msg_m00_arg2,$69
-		SYSX	_sys0D_wrap_bE_sC,$1F
+		SYSX	_display_window,$1F
 		LDX		#$B
 		JSR		_bD_s10
 		CMP		#1
@@ -3435,7 +3435,7 @@ loc_142937:
 		JMP		loc_142A86
 loc_14293A:
 		SYSX	_sys08_msg_m00_arg2,$6A
-		SYSX	_sys0D_wrap_bE_sC,$20
+		SYSX	_display_window,$20
 		LDX		#$D
 		JSR		_bD_s10
 		CMP		#1
@@ -3452,7 +3452,7 @@ loc_142951:
 		SYSX	_sys08_msg_m00_arg2,$87
 		JMP		sub_142BC0
 loc_14295D:
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		SYSX	_sys08_msg_m00_arg2,$6B
 		JSR		sub_142BF0
 		BEQ		loc_14294B
@@ -3475,7 +3475,7 @@ loc_14297E:
 loc_14298E:
 		SYSX	_sys08_msg_m00_arg2,$6D
 		JSR		_sram_b0_s1D
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		CLC
 		LDA		byte_C6
 		ADC		byte_608D
@@ -3505,7 +3505,7 @@ loc_1429CA:
 		SYSX	_sys08_msg_m00_arg2,$8B
 		LDX		#3
 		JSR		_bD_s10
-		SYSX	_sys0D_wrap_bE_sC,$2D
+		SYSX	_display_window,$2D
 		LDX		#$13
 		JSR		_bD_s10
 		CMP		#8
@@ -3534,7 +3534,7 @@ loc_142A02:
 		DEX
 		BPL		loc_142A02
 		SYSX	_sys08_msg_m00_arg2,$70
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bE_s1C
 		BEQ		loc_142A1B
 		SYSX	_sys08_msg_m00_arg2,$71
@@ -3595,7 +3595,7 @@ loc_142A83:
 		JMP		loc_1429B9
 loc_142A86:
 		SYSX	_sys08_msg_m00_arg2,$75
-		SYSX	_sys0D_wrap_bE_sC,$20
+		SYSX	_display_window,$20
 		LDX		#7
 		JSR		_bD_s10
 		CMP		#1
@@ -3611,7 +3611,7 @@ loc_142AA5:
 		LDA		byte_608D
 		JSR		sub_142BD2
 		SYSX	_sys08_msg_m00_arg2,$77
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		JSR		sub_142BF0
 		BNE		loc_142ABC
 		SYSX	_sys08_msg_m00_arg2,$71
@@ -3634,7 +3634,7 @@ loc_142ACC:
 loc_142ADC:
 		SYSX	_sys08_msg_m00_arg2,$79
 		JSR		_sram_b0_s1C
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		SEC
 		LDA		byte_608D
 		SBC		byte_C6
@@ -3676,7 +3676,7 @@ loc_142B2C:
 		DEX
 		BPL		loc_142B2C
 		SYSX	_sys08_msg_m00_arg2,$7C
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bE_s1C
 		BEQ		loc_142B45
 		SYSX	_sys08_msg_m00_arg2,$71
@@ -3711,7 +3711,7 @@ loc_142B74:
 		JMP		loc_142BAE
 loc_142B82:
 		JSR		sub_141FF1
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		LDA		byte_C3
 		STA		byte_CE
 		JSR		_sram_b0_sE_player_STATUS_read
@@ -3772,7 +3772,7 @@ loc_142BE5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142BF0:
-		SYSX	_sys0D_wrap_bE_sC,$4D
+		SYSX	_display_window,$4D
 		LDX		word_4
 		STX		byte_C0
 		LDX		word_4+1
@@ -3881,7 +3881,7 @@ sub_142CBB:
 		FARX	_b0_s45_check_if_item_equipped
 		INC		word_4
 		BNE		loc_142CD8
-		SYSX	_sys0D_wrap_bE_sC,$4F
+		SYSX	_display_window,$4F
 loc_142CCF:
 		CMP		#$FF
 		BEQ		locret_142CD7
@@ -3890,7 +3890,7 @@ loc_142CCF:
 locret_142CD7:
 		RTS
 loc_142CD8:
-		SYSX	_sys0D_wrap_bE_sC,$47
+		SYSX	_display_window,$47
 		JMP		loc_142CCF
 byte_142CDE:
 		.BYTE	  4,  2,  1,  6,  5,  3
@@ -3902,7 +3902,7 @@ sub_142CE4:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142CE7:
 		SYSX	_sys08_msg_m00_arg2,$5A
-		SYSX	_sys0D_wrap_bE_sC,$46
+		SYSX	_display_window,$46
 		LDX		#$11
 		JSR		_bD_s10
 		CMP		#1
@@ -3933,7 +3933,7 @@ loc_142D21:
 		SYSX	_sys08_msg_m00_arg2,$5D
 		LDA		#6
 		STA		byte_C6
-		SYSX	_sys0D_wrap_bE_sC,$34
+		SYSX	_display_window,$34
 		CMP		#$FF
 		BNE		loc_142D3A
 		LDX		#$10
@@ -4111,7 +4111,7 @@ loc_142E76:
 		SYSX	_sys08_msg_m00_arg2,$98
 		LDA		#7
 		STA		byte_C6
-		SYSX	_sys0D_wrap_bE_sC,$34
+		SYSX	_display_window,$34
 		CMP		#$FF
 		BNE		loc_142E8F
 		LDX		#$10
@@ -4130,10 +4130,10 @@ loc_142E8F:
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		SYSX	_sys0D_wrap_bE_sC,$09
+		SYSX	_display_window,$09
 		JSR		__pause_or_skip
-		SYSX	_sys0D_wrap_bE_sC,$08
-		SYSX	_sys0D_wrap_bE_sC,$0A
+		SYSX	_display_window,$08
+		SYSX	_display_window,$0A
 		PLA
 		STA		byte_630F
 		FARX	_b7_s14
@@ -4176,7 +4176,7 @@ _bD_sF:
 		STA		_msg_number_parameter_F8+1
 		STA		byte_6A3C
 		SYSX	_sys08_msg_m00_arg2,$8C
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		FARX	_bE_s1C
 		BNE		loc_142F4F
 		JSR		sub_141FB1
@@ -4184,7 +4184,7 @@ _bD_sF:
 		SYSX	_sys08_msg_m00_arg2,$8E
 		JMP		loc_142F52
 loc_142F1B:
-		SYSX	_sys0D_wrap_bE_sC,$66
+		SYSX	_display_window,$66
 		CMP		#4
 		BCS		loc_142F4F
 		STA		byte_6A67
@@ -4192,9 +4192,9 @@ loc_142F1B:
 		FARX	_b4_s12
 		STA		byte_D2
 		JSR		sub_141FF1
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 		SYSX	_sys08_msg_m00_arg2,$90
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDX		#0
 		JSR		_bD_s10
 		LDA		#$33
@@ -4220,7 +4220,7 @@ _bD_sC:
 		JMP		locret_143008
 loc_142F60:
 		PHA
-		SYSX	_sys0E_wrap_bE_s0,$3D
+		SYSX	_display_window_ex,$3D
 		PLA
 		CMP		#4
 		BCC		loc_142F6C
@@ -4304,7 +4304,7 @@ loc_142FED:
 		STA		byte_C2
 loc_143002:
 		JSR		sub_14200A
-		SYSX	_sys0D_wrap_bE_sC,$68
+		SYSX	_display_window,$68
 locret_143008:
 		RTS
 
@@ -4339,66 +4339,79 @@ loc_14302A:
 byte_143036:
 		.BYTE	  0,$1A,$34,$4D,$67,$80,$9A,$B4,$CD,$E7
 
+; ---------------------------------------------------------------------------
+; local set of message display routines, instead of using the global 16-bit
+; message index, it uses additional table with offsets of the first msg idx
+; for desired block, each block corresponding with message PRG bank. base
+; block for all these messages is 3.
+;
+; each routine gives lower 8-bin of the message index in data parameter
+; after the JSR opcode. every block parameter has a pair of functions,
+; one will return after displaying the message, another one will break back
+; to the caller routine.
+;
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_param_b0:
+_msg_m00_param_b0:
 		LDY		#0
-		BEQ		__msg_m00_select_param
+		BEQ		_msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
-__msg_m00_param_b1:
-		LDY		#2
-		BNE		__msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-__msg_m00_param_b2:
-		LDY		#4
-		BNE		__msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_sys02_msg_m00_b3:
-		TYA
-		LDY		#6
-		BNE		__msg_m00_select
-
-; =============== S U B	R O U T	I N E =======================================
-_sys03_msg_m00_b4:
-		TYA
-		LDY		#8
-		BNE		__msg_m00_select
-
-; =============== S U B	R O U T	I N E =======================================
-___msg_m00_param_break_b0:
+_msg_m00_param_b0_break:
 		LDY		#0
-		BEQ		___msg_m00_select_param_break
+		BEQ		_msg_m00_select_param_break
 
 ; =============== S U B	R O U T	I N E =======================================
-___msg_m00_param_break_b1:
+; never happen to be used
+;_msg_m00_param_b1:
+;		LDY		#2
+;		BNE		_msg_m00_select_param
+
+; =============== S U B	R O U T	I N E =======================================
+_msg_m00_param_b1_break:
 		LDY		#2
-		BNE		___msg_m00_select_param_break
+		BNE		_msg_m00_select_param_break
 
 ; =============== S U B	R O U T	I N E =======================================
-___msg_m00_param_break_b2:
+_msg_m00_param_b2:
 		LDY		#4
-		BNE		___msg_m00_select_param_break
+		BNE		_msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys04_msg_m00_b3_break:
-		TYA
+_msg_m00_param_b2_break:
+		LDY		#4
+		BNE		_msg_m00_select_param_break
+
+; the messages from blocks 6 and 8 has additional calculation routine at the
+; beginning, investigate.
+;
+; =============== S U B	R O U T	I N E =======================================
+_msg_m00_param_b3:
+		JSR		_bD_sB
 		LDY		#6
-		JSR		__msg_m00_select
-		BCS		_break
+		BNE		_msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys05_msg_m00_b4_break:
-		TYA
+_msg_m00_param_b3_break:
+		JSR		_bD_sB
+		LDY		#6
+		BNE		_msg_m00_select_param_break
+
+; =============== S U B	R O U T	I N E =======================================
+; never happen to be used
+;_msg_m00_param_b4:
+;		JSR		_bD_sB
+;		LDY		#8
+;		BNE		_msg_m00_select_param
+
+; =============== S U B	R O U T	I N E =======================================
+_msg_m00_param_break_b4:
+		JSR		_bD_sB
 		LDY		#8
-		JSR		__msg_m00_select
-		BCS		_break
+;		BNE		_msg_m00_select_param_break	; FALL THROUGH
 
 ; =============== S U B	R O U T	I N E =======================================
-___msg_m00_select_param_break:
-		JSR		___msg_m00_select_param
+_msg_m00_select_param_break:
+		JSR		__msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
 _break:
@@ -4407,67 +4420,81 @@ _break:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_select_param:
-		JSR		___msg_m00_select_param
+; ok, why we have here such a wrapper? because "break" type subroutine need to
+; do one more JSR so add another pointer in stack, and the param selection sub
+; know this and use 103/104 instead of 101/102 in stack offset.
+; we can't just jump here for "non break" operations, but need to JSR too.
+;
+; TODO: convert all local parametric JSR's here to SYSX far calls with the same
+; parameters (need to add more sys functions, and it's is possible now, since
+; we have no more limits for sys sub indexes
+;
+_msg_m00_select_param:
+		JSR		__msg_m00_select_param
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-___msg_m00_select_param:
-		TSX
-		INC		_players_pos_list+3,X
-		LDA		_players_pos_list+3,X
-		STA		byte_6A
+__msg_m00_select_param:
+		TSX							; stack manipulation, X is the same as S
+		INC		$103,X				; increase return pointer directly from stack
+		LDA		$103,X				; to skip parameter byte after opcode
+		STA		byte_6A				; get lower byte of parameter offset
 		BNE		loc_14308A
-		INC		_players_pos_list+4,X
+		INC		$104,X				; increase higher bits of return pointer if any
 loc_14308A:
-		LDA		_players_pos_list+4,X
-		STA		byte_6B
+		LDA		$104,X				
+		STA		byte_6B				; get higher byte
 		LDX		#0
-		LDA		(byte_6A,X)
+		LDA		(byte_6A,X)			; read parameter byte
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_select:
-		CLC
-		ADC		_msg_bank_ofs_list,Y
+_msg_m00_select:
+		CLC									; calculate the 16-bit global message idx
+		ADC		_msg_bank_ofs_list,Y		; Y already loaded by one of the functions above
 		PHA
 		LDA		#0
-		ADC		_msg_bank_ofs_list+1,Y
+		ADC		_msg_bank_ofs_list+1,Y		; so we have table[Y]+u8
 		TAX
 		PLA
-		JSR		_far_bE_s4_msg_m00_delta3
+		JSR		_far_bE_s4_msg_m00_delta3	
 		SEC
 		RTS
+		
 _msg_bank_ofs_list:
-		.WORD	  0
-		.WORD	$F7
+		.WORD	$000
+		.WORD	$0F7
 		.WORD	$1F7
 		.WORD	$2B5
 		.WORD	$3B5
 
+;----------------------------------------------------------------------------
+; only four subroutines here used as SYSX opcodes
+;
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_param_break_b3:
-		JSR		_bD_sB
+_sys02_msg_m00_b3:
+		TYA
 		LDY		#6
-		BNE		___msg_m00_select_param_break
+		BNE		_msg_m00_select
 
 ; =============== S U B	R O U T	I N E =======================================
-__msg_m00_param_break_b4:
-		JSR		_bD_sB
-		LDY		#8
-		BNE		___msg_m00_select_param_break
-
-; =============== S U B	R O U T	I N E =======================================
-__msg_m00_param_b3:
-		JSR		_bD_sB
+_sys04_msg_m00_b3_break:
+		TYA
 		LDY		#6
-		BNE		__msg_m00_select_param
+		JSR		_msg_m00_select
+		BCS		_break
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
-__msg_m00_param_b4:
-		JSR		_bD_sB
+_sys03_msg_m00_b4:
+		TYA
 		LDY		#8
-		BNE		__msg_m00_select_param
+		BNE		_msg_m00_select
+
+; =============== S U B	R O U T	I N E =======================================
+_sys05_msg_m00_b4_break:
+		TYA
+		LDY		#8
+		JSR		_msg_m00_select
+		BCS		_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sB:
@@ -4633,7 +4660,7 @@ loc_1431A3:
 		BNE		loc_1431B6
 		LDA		word_4+1
 		BNE		loc_1431B6
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	$4E
 loc_1431B6:
 		LDA		_mapNumber
@@ -4668,10 +4695,10 @@ loc_1431D9:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		LDA		#byte_69
+		LDA		#$69
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1431F7:
@@ -4687,7 +4714,7 @@ loc_143207:
 		LDA		byte_60B7
 		AND		#4
 		BNE		loc_143212
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	  2
 loc_143212:
 		LDY		#0
@@ -4724,7 +4751,7 @@ loc_143244:
 		BEQ		loc_143281
 		CMP		#1
 		BNE		loc_143256
-		JSR		__msg_m00_param_break_b4
+		JSR		_msg_m00_param_break_b4
 		.BYTE	$1F
 loc_143256:
 		CMP		#2
@@ -4745,7 +4772,7 @@ loc_14326E:
 		LDA		#$D3
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14327E:
@@ -4765,7 +4792,7 @@ loc_143288:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 loc_1432A2:
 		DEY
 		DEY
@@ -4780,7 +4807,7 @@ loc_1432A7:
 		BNE		loc_1432BC
 		LDA		byte_60BA
 		BMI		loc_1432BC
-		JSR		___msg_m00_param_break_b1
+		JSR		_msg_m00_param_b1_break
 		.BYTE	$62
 loc_1432BC:
 		LDY		#$22
@@ -5062,10 +5089,7 @@ sub_1434D9:
 		LDA		#$F7
 		LDX		#0
 		JSR		_add_arg5C_to16
-
-; =============== S U B	R O U T	I N E =======================================
-_far_bE_s4_msg_m00_delta3_arg5C:
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434E3:
@@ -5087,7 +5111,7 @@ sub_1434F4:
 		LDA		#$D
 		LDX		#0
 		JSR		_add_arg5C_to16
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143503:
@@ -5096,7 +5120,7 @@ sub_143503:
 		JSR		_add_arg5C_to16
 
 ; =============== S U B	R O U T	I N E =======================================
-__far_bE_s4_msg_m00_delta3_arg5C:
+_far_bE_s4_msg_m00_delta3_arg5C:
 		LDX		byte_5D
 		LDA		byte_5C
 
@@ -5110,7 +5134,7 @@ _far_bE_s4_msg_m00_delta3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143515:
-		JSR		__far_bE_s4_msg_m00_delta3_arg5C
+		JSR		_far_bE_s4_msg_m00_delta3_arg5C
 ;		JMP		sub_14351E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5167,14 +5191,14 @@ loc_143566:
 		SYSX	_sys02_msg_m00_b3,$03
 loc_14356E:
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		#$FF
 		STA		byte_C6
 		FARX	_b6_s1D
 		JSR		sub_174CCF
 		LDA		#$17
 		JSR		sub_143F9E
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	  4
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5202,7 +5226,7 @@ _npc_hndl3:
 		LDA		byte_60CD
 		LSR
 		BCC		loc_1435B3
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	$13
 loc_1435B3:
 		SYSX	_sys02_msg_m00_b3,$17
@@ -5267,13 +5291,13 @@ loc_143628:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$1E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5:
 		JSR		sub_143F7B
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$1F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5299,7 +5323,7 @@ _npc_hndl9:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlA:
 		JSR		sub_143F7B
-		JSR		__msg_m00_param_b3
+		JSR		_msg_m00_param_b3
 		.BYTE	$2C
 		LDA		byte_60CE
 		AND		#4
@@ -5322,9 +5346,9 @@ _npc_hndlC:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlD:
 		SYSX	_sys02_msg_m00_b3,$3F
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#5
-		FARX	_b0_s1
+		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$80
 		STA		_npcs_pos_list+4
 		STA		_npcs_pos_list+7
@@ -5595,7 +5619,7 @@ _npc_hndl1F:
 		LDA		_players_pos_list+1
 		CMP		#3
 		BNE		loc_143832
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$71
 loc_143832:
 		JSR		sub_143847
@@ -5617,7 +5641,7 @@ sub_143847:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl20:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$79
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5675,7 +5699,7 @@ loc_1438B6:
 _npc_hndl23:
 		LDA		byte_8
 		BNE		loc_1438C1
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	$63
 loc_1438C1:
 		SYSX	_sys04_msg_m00_b3_break,$87
@@ -5726,7 +5750,7 @@ _npc_hndl26:
 		BNE		loc_143911
 		SYSX	_sys04_msg_m00_b3_break,$90
 loc_143911:
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	  5
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5746,16 +5770,16 @@ locret_14392A:
 _npc_hndl28:
 		BIT		byte_60B9
 		BVC		loc_143934
-		JSR		___msg_m00_param_break_b0
+		JSR		_msg_m00_param_b0_break
 		.BYTE	$D4
 loc_143934:
 		LDA		byte_60CF
 		AND		#$3F
 		CMP		#$3F
 		BNE		loc_14394D
-		JSR		__msg_m00_param_b0
+		JSR		_msg_m00_param_b0
 		.BYTE	$D3
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		FARX	_bC_s33
 		PLA
@@ -5794,11 +5818,11 @@ loc_143980:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl29:
-		JSR		__msg_m00_param_b3
+		JSR		_msg_m00_param_b3
 		.BYTE	$9D
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$11
-		FARX	_b0_s1
+		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$B7
 		JSR		sub_143F9E
 		LDA		#$80
@@ -5886,9 +5910,9 @@ _npc_hndl2E:
 		SYSX	_sys05_msg_m00_b4_break,$5A
 loc_143A2C:
 		SYSX	_sys03_msg_m00_b4,$5B
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#1
-		FARX	_b0_s1
+		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$27
 		JSR		sub_143F9E
 		JSR		sub_177CFC
@@ -5906,7 +5930,7 @@ _npc_hndl2F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl30:
-		JSR		___msg_m00_param_break_b2
+		JSR		_msg_m00_param_b2_break
 		.BYTE	$16
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5956,12 +5980,12 @@ loc_143AA0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3E:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$D1
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3F:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$D2
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5976,7 +6000,7 @@ loc_143AB6:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl41:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$D5
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6013,7 +6037,7 @@ sub_143AEA:
 		STA		byte_D2
 loc_143AF8:
 		SYSX	_sys02_msg_m00_b3,$D9
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$2A
 		JSR		sub_143F9E
 		FARX	_bC_s19
@@ -6035,9 +6059,9 @@ loc_143B14:
 		SYSX	_sys02_msg_m00_b3,$DD
 		BCS		loc_143B11
 loc_143B21:
-		JSR		__msg_m00_param_b3
+		JSR		_msg_m00_param_b3
 		.BYTE	$DE
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s19
 		PLA
 		PLA
@@ -6046,7 +6070,7 @@ loc_143B21:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl44:
 		SYSX	_sys02_msg_m00_b3,$CD
-		JSR		___msg_m00_param_break_b2
+		JSR		_msg_m00_param_b2_break
 		.BYTE	$8E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6064,7 +6088,7 @@ _npc_hndl46:
 		BPL		loc_143B4E
 		AND		#$10
 		BNE		_npc_hndl47_exp_info_and_progress_save
-		JSR		___msg_m00_param_break_b2
+		JSR		_msg_m00_param_b2_break
 		.BYTE	$15
 loc_143B4E:
 		LDA		byte_60B7
@@ -6098,7 +6122,7 @@ loc_143B80:
 		AND		#7
 		CMP		#3
 		BEQ		loc_143B93
-		JSR		__msg_m00_param_b2
+		JSR		_msg_m00_param_b2
 		.BYTE	$F
 		JMP		loc_143B96
 loc_143B93:
@@ -6110,7 +6134,7 @@ loc_143B96:
 		BEQ		loc_143BCB
 		LDA		#5
 		JSR		sub_143EBD
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bB_s4
 		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
@@ -6118,7 +6142,7 @@ loc_143B96:
 		JSR		_pal_fade_in
 		LDA		#0
 		STA		byte_6A3E
-		JSR		__msg_m00_param_b2
+		JSR		_msg_m00_param_b2
 		.BYTE	$17
 loc_143BC0:
 		LDA		_cur_chr0_bank_prg_hi
@@ -6197,13 +6221,13 @@ _npc_hndl52:
 		JMP		sub_1434D3
 loc_143C33:
 		JSR		sub_143F7B
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$20
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl53:
 		JSR		sub_143F7B
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$21
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6265,7 +6289,7 @@ loc_143C7D:
 		STA		byte_2D
 		LDA		#8
 		STA		byte_2E
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$5B
 loc_143C9B:
 		LDA		byte_60BF
@@ -6281,7 +6305,7 @@ loc_143CA5:
 loc_143CB0:
 		LDA		#$56
 		JSR		sub_143F9E
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$59
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6299,7 +6323,7 @@ _npc_hndl5E:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5F:
-		JSR		__msg_m00_param_b0
+		JSR		_msg_m00_param_b0
 		.BYTE	$62
 		LDA		byte_60CE
 		AND		#$20
@@ -6310,12 +6334,12 @@ loc_143CD2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl60:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$78
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl61:
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$7B
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6336,9 +6360,9 @@ loc_143CED:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl64:
 		SYSX	_sys02_msg_m00_b3,$8E
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$D
-		FARX	_b0_s1
+		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$80
 		STA		_npcs_pos_list+4
 		STA		_npcs_pos_list+7
@@ -6460,7 +6484,7 @@ _npc_hndl6C:
 		LDA		byte_60BF
 		AND		#2
 		BEQ		loc_143DD7
-		JSR		__msg_m00_param_b3
+		JSR		_msg_m00_param_b3
 		.BYTE	$B0
 		FARX	_bE_s1C
 		BNE		loc_143DD4
@@ -6468,7 +6492,7 @@ _npc_hndl6C:
 loc_143DD4:
 		SYSX	_sys04_msg_m00_b3_break,$B2
 loc_143DD7:
-		JSR		__msg_m00_param_b3
+		JSR		_msg_m00_param_b3
 		.BYTE	$AD
 		FARX	_bE_s1C
 		BNE		loc_143DF0
@@ -6477,7 +6501,7 @@ loc_143DD7:
 		BCC		locret_143DF3
 		LDA		#$51
 		JSR		sub_143F9E
-		JSR		__msg_m00_param_break_b3
+		JSR		_msg_m00_param_b3_break
 		.BYTE	$AE
 loc_143DF0:
 		SYSX	_sys04_msg_m00_b3_break,$AF
@@ -6647,7 +6671,7 @@ loc_143F13:
 		LDA		#$AC
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		__far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_far_bE_s4_msg_m00_delta3_arg5C
 
 byte_143F25:
 		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A,  1,  2,  3, $B,  5

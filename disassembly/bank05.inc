@@ -2590,7 +2590,7 @@ loc_83E1A:
 		TAY
 loc_83E2D:
 		LDA		byte_7200,X
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		INX
 		INY
 		TYA
@@ -2604,7 +2604,7 @@ loc_83E2D:
 		LSR
 		TAX
 		LDA		byte_7300,X
-		STA		byte_460,Y
+		STA		_window_draw_buf+$60,Y
 		INC		byte_49
 		INC		byte_81
 		LDA		byte_81
@@ -2716,9 +2716,9 @@ _b5_s5:
 		FARX	_bC_sB
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$AB
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$10
-		FARX	_b0_s1
+		FARX	_b0_s1_battle_typeA_launch
 		LDA		byte_60CD
 		ORA		#$20
 		STA		byte_60CD

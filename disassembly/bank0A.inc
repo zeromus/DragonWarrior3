@@ -268,7 +268,7 @@ loc_F81A2:
 		JMP		_bA_s1
 loc_F81D3:
 		JSR		sub_F81DC
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JMP		sub_F81DC
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -718,7 +718,7 @@ sub_F84CE:
 		LDA		#0
 		STA		byte_28
 		STA		_nmi_force_dequeue_request_flag
-		JSR		_nmi_wait
+		JSR		_wait_for_nmi_is_over
 		LDA		#$20
 		STA		byte_28
 		JSR		sub_F8541
@@ -751,7 +751,7 @@ sub_F850A:
 		LDA		#0
 		STA		byte_28
 		STA		_nmi_force_dequeue_request_flag
-		JSR		_nmi_wait
+		JSR		_wait_for_nmi_is_over
 		LDA		#$20
 		STA		byte_28
 		JSR		sub_F8541
@@ -961,15 +961,7 @@ loc_F8679:
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8682:
 		FARX	_bC_s1A
-		JMP		_wait_for_nmi_is_over
-
-; =============== S U B	R O U T	I N E =======================================
-_nmi_wait:
-		LDA		_nmi_counter
-loc_F868B:
-		CMP		_nmi_counter
-		BEQ		loc_F868B
-		RTS
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8691:
@@ -988,7 +980,7 @@ loc_F8693:
 		STA		byte_6C70
 		LDA		byte_6CF1
 		STA		byte_6C71
-		LDA		_ppu_ctrl_shadow1
+		LDA		byte_6D31
 		PHA
 		LDX		#$3E
 loc_F86B4:
@@ -1270,7 +1262,7 @@ _bA_sE:
 		STA		byte_585
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		byte_588
 		ASL
 		CLC
@@ -1292,7 +1284,7 @@ loc_F8CC7:
 		LDA		#$73
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		SYSX	_apu_load,$85
 		LDA		byte_588
 		RTS
@@ -1350,7 +1342,7 @@ loc_F8D4F:
 		LDA		byte_585
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JMP		loc_F8CC7
 loc_F8D6C:
 		LDA		byte_585
@@ -1376,7 +1368,7 @@ sub_F8D82:
 		LDA		#0
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		INC		byte_583
 		INC		byte_583
 		LDA		#$B
@@ -1387,7 +1379,7 @@ sub_F8D82:
 		STA		byte_585
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#$10
 		STA		byte_584
 		RTS
@@ -1403,7 +1395,7 @@ sub_F8DBF:
 		LDA		#0
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		DEC		byte_583
 		DEC		byte_583
 		LDA		#$B
@@ -1414,7 +1406,7 @@ sub_F8DBF:
 		STA		byte_585
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#$10
 		STA		byte_584
 		RTS
@@ -1433,7 +1425,7 @@ sub_F8DFC:
 		LDA		#0
 		TAX
 loc_F8E15:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$10
 		BCC		loc_F8E15
@@ -1443,7 +1435,7 @@ sub_F8E1D:
 		LDA		#0
 		TAX
 loc_F8E20:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$60
 		BCC		loc_F8E20
@@ -1476,7 +1468,7 @@ loc_F8E36:
 		CMP		#$FF
 		BEQ		loc_F8E91
 		LDA		#$5F
-		STA		byte_400
+		STA		_window_draw_buf
 loc_F8E63:
 		TXA
 		AND		#$7F
@@ -1487,7 +1479,7 @@ loc_F8E6D:
 		LDA		word_4,X
 		CMP		#$60
 		BEQ		loc_F8E79
-		STA		byte_402,X
+		STA		_window_draw_buf+2,X
 		INX
 		BNE		loc_F8E6D
 loc_F8E79:
@@ -1500,7 +1492,7 @@ loc_F8E85:
 		LDA		word_4,X
 		CMP		#$60
 		BEQ		loc_F8E91
-		STA		byte_414,X
+		STA		_window_draw_buf+$14,X
 		INX
 		BNE		loc_F8E85
 loc_F8E91:
@@ -1516,7 +1508,7 @@ loc_F8E91:
 		CMP		#$FF
 		BEQ		loc_F8EDD
 		LDA		#$5F
-		STA		byte_420
+		STA		_window_draw_buf+$20
 loc_F8EAF:
 		TXA
 		AND		#$7F
@@ -1527,7 +1519,7 @@ loc_F8EB9:
 		LDA		word_4,X
 		CMP		#$60
 		BEQ		loc_F8EC5
-		STA		byte_422,X
+		STA		_window_draw_buf+$22,X
 		INX
 		BNE		loc_F8EB9
 loc_F8EC5:
@@ -1540,7 +1532,7 @@ loc_F8ED1:
 		LDA		word_4,X
 		CMP		#$60
 		BEQ		loc_F8EDD
-		STA		byte_434,X
+		STA		_window_draw_buf+$34,X
 		INX
 		BNE		loc_F8ED1
 loc_F8EDD:
@@ -1556,20 +1548,20 @@ sub_F8EEB:
 		LDA		#0
 		TAX
 loc_F8EEE:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$60
 		BCC		loc_F8EEE
 		LDA		#$77
-		STA		byte_400
-		STA		byte_410
-		STA		byte_420
-		STA		byte_430
+		STA		_window_draw_buf
+		STA		_window_draw_buf+$10
+		STA		_window_draw_buf+$20
+		STA		_window_draw_buf+$30
 		LDA		#$7C
-		STA		byte_40F
-		STA		byte_41F
-		STA		byte_42F
-		STA		byte_43F
+		STA		_window_draw_buf+$F
+		STA		_window_draw_buf+$1F
+		STA		_window_draw_buf+$2F
+		STA		_window_draw_buf+$3F
 locret_F8F12:
 		RTS
 byte_F8F13:
@@ -1589,14 +1581,14 @@ sub_F8F1F:
 sub_F8F21:
 		JSR		sub_F8F2A
 		JSR		_ppu_set_dequeue_flag
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8F2A:
 		PHA
 		LDA		_ppu_queue_chunks_count
 		BEQ		loc_F8F33
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 loc_F8F33:
 		LDA		#0
 		STA		byte_24
@@ -1705,7 +1697,7 @@ loc_F8FD6:
 		PHA
 		LDY		byte_25
 loc_F8FEF:
-		LDA		byte_400,Y
+		LDA		_window_draw_buf,Y
 		STA		_ppu_queue_buf,X
 		INX
 		INY
@@ -1802,7 +1794,7 @@ sub_F9014:
 ;		ADC		#$40
 ;		TAX
 ;loc_F907E:
-;		LDA		byte_480,X
+;		LDA		_attr_ram_buf,X
 ;		STA		byte_D
 ;		LDA		#3
 ;		LDY		byte_C
@@ -1816,7 +1808,7 @@ sub_F9014:
 ;		EOR		#$FF
 ;		AND		byte_D
 ;		ORA		byte_F
-;		STA		byte_480,X
+;		STA		_attr_ram_buf,X
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1830,12 +1822,12 @@ _bA_sF:
 		FARX	_bC_s1A
 		JSR		_ppu_and_dequeue_enable
 		JSR		sub_174CCF
-		FARX	_bC_s12_sleep_X_50
+		FARX	_bC_s12_sleep_X_sync_50
 		JSR		_pal_fade_in
 		SYSX	_sys07_msg_m00_arg1,$83
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		SYSX	_sys07_msg_m00_arg1,$03
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_pal_fade_out
 		LDY		#1
 		STY		_location_type
@@ -1848,8 +1840,8 @@ _bA_sF:
 		JSR		sub_174CD5
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$84
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
-		FARX	_bC_s12_sleep_X_50
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
+		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s20
 		LDA		#$20
 		STA		byte_60C6
@@ -1869,7 +1861,7 @@ _bA_s10:
 		STA		byte_60C6
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$85
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$2B
 		FARX	_bC_s0_npc_anim_script_init
@@ -2021,7 +2013,7 @@ sub_F9322:
 		STA		_ppu_scroll_shadow+1
 loc_F9331:
 		LDX		#4
-		JMP		_sleep_X
+		JMP		_sleep_X_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_F9336:
@@ -2136,8 +2128,8 @@ loc_F93D2:
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s17:
 		LDX		#$DC
-		JSR		_sleep_X
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
+		JSR		_sleep_X_sync
 		LDA		#$BF
 		LDX		_ppu_queue_pos
 		STA		_ppu_queue_buf,X
@@ -2154,7 +2146,7 @@ loc_F93FB:
 		INC		_ppu_queue_chunks_count
 		JSR		_ppu_force_dequeue
 		JSR		sub_F946C
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDY		#0
 loc_F9411:
 		LDA		#$3F
@@ -2177,13 +2169,13 @@ loc_F9411:
 		STA		_ppu_queue_chunks_count
 		JSR		_ppu_set_dequeue_flag
 		LDX		#$F
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		INY
 		CPY		#7
 		BNE		loc_F9411
 		LDX		#$22
-		JSR		_sleep_X
-		JMP		_sleep_X
+		JSR		_sleep_X_sync
+		JMP		_sleep_X_sync
 byte_F9457:
 		.BYTE	$30,$31,$21,$11,  1,  0
 byte_F945D:
