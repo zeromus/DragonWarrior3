@@ -210,7 +210,7 @@ loc_68122:
 		JMP		loc_680D6
 loc_68138:
 		SYSX	_apu_load,$29
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JMP		loc_680DC
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1539,7 +1539,7 @@ sub_68931:
 		LDX		#$F
 		LDA		#0
 loc_6894A:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		DEX
 		BPL		loc_6894A
 		LDX		byte_6A67
@@ -1548,7 +1548,7 @@ loc_6894A:
 		LDA		#$CB
 		JSR		_b4_s9
 		SYSX	_apu_load,$86
-		SYSX	_sys0E_wrap_bE_s0,$45
+		SYSX	_display_window_ex,$45
 		PHA
 		JSR		sub_6AA51
 		PLA
@@ -2846,9 +2846,9 @@ loc_69267:
 		LDA		byte_CE
 		STA		byte_CF
 		TAX
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		ORA		#$80
-		STA		byte_7C1,X
+		STA		_players_formation,X
 		TXA
 		ASL
 		TAX
@@ -6291,7 +6291,7 @@ _b4_sB:
 		PHA
 		FARX	_bE_s3
 		LDX		#4
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		PLA
 		TAY
 		PLA
@@ -6325,7 +6325,7 @@ _b4_s7_window_display_safe:
 		TYA
 		PHA
 		LDA		word_4
-		FARX	_bE_s0
+		FARX	_bE_s0_display_window_ex
 		STA		word_4
 		PLA
 		TAY
@@ -6383,7 +6383,7 @@ _test_for_keypress:
 loc_6AA0F:
 		TXA
 		PHA
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		_calc_pads
 		LDA		_prev_pads
 		BNE		loc_6AA21
@@ -6510,13 +6510,13 @@ sub_6AAA5:
 		LDA		#0
 		TAX
 loc_6AAA8:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$40
 		BNE		loc_6AAA8
 		TAX
 loc_6AAB1:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$10
 		BNE		loc_6AAB1
@@ -7707,7 +7707,7 @@ _b4_s1A:
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDX		#0
 		JSR		_pal_set_no_fade
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 ; I don't remember 100% what this does, but it gets used a lot
@@ -9049,7 +9049,7 @@ _b4_s5_do_message_speed_delay:
 		PHA
 		JSR		_get_cur_message_speed_delay
 loc_6BA3F:
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		PLA
 		TAX
 		PLA

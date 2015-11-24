@@ -1111,11 +1111,11 @@ loc_3980A:
 		BNE		loc_3980A
 		JSR		_pal_set_no_fade
 		LDX		byte_C8
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JSR		sub_3A2ED
 		JSR		_pal_set_no_fade
 		LDX		byte_C8
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		PLA
 		TAX
 		DEX
@@ -1126,7 +1126,7 @@ loc_3980A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_s6_screen_damage_shake:
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#2
 		STA		byte_BA
 		LDX		#0
@@ -1157,7 +1157,7 @@ loc_39851:
 		DEX
 		BNE		loc_39851
 		LDX		#2
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		byte_BA
 		EOR		#$FF
 		STA		byte_BA
@@ -1171,7 +1171,7 @@ loc_39851:
 ; =============== S U B	R O U T	I N E =======================================
 sub_39876:
 		LDA		#0
-		STA		byte_4C1
+		STA		_attr_ram_buf+$41
 		LDX		#$19
 loc_3987D:
 		STA		_tmp_ptrB4,X
@@ -1179,7 +1179,7 @@ loc_3987D:
 		BPL		loc_3987D
 		LDX		#$34
 loc_39884:
-		STA		byte_4BF,X
+		STA		_attr_ram_buf+$3F,X
 		DEX
 		BNE		loc_39884
 		LDX		#$20
@@ -1187,13 +1187,13 @@ loc_3988C:
 		STA		byte_696,X
 		DEX
 		BNE		loc_3988C
-		STX		byte_4F5
+		STX		_attr_ram_buf+$75
 		INX
-		STX		byte_4F6
+		STX		_attr_ram_buf+$76
 		LDA		#1
-		STA		byte_4F3
+		STA		_attr_ram_buf+$73
 		LDA		#$90
-		STA		byte_4F4
+		STA		_attr_ram_buf+$74
 		LDA		#$F
 		STA		_ram_pal_buf
 		LDA		_current_pc_status_pal_value
@@ -1208,13 +1208,13 @@ sub_398B3:
 		LDA		#0
 		TAX
 loc_398B6:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$70
 		BCC		loc_398B6
 		LDX		#$C
 loc_398C0:
-		STA		byte_4C2,X
+		STA		_attr_ram_buf+$42,X
 		DEX
 		BNE		loc_398C0
 		RTS
@@ -1415,9 +1415,9 @@ loc_399CD:
 		BCS		locret_399EB
 		LDX		byte_BA
 		LDY		byte_BB
-		LDA		byte_4CF,Y
+		LDA		_attr_ram_buf+$4F,Y
 		STA		byte_699,X
-		LDA		byte_4C0
+		LDA		_attr_ram_buf+$40
 		BMI		locret_399EB
 		JSR		sub_39D93
 		BCS		locret_399EB
@@ -1450,7 +1450,7 @@ loc_399F8:
 		ADC		byte_BB
 		STA		byte_BB
 		TAY
-		LDA		byte_4CF,Y
+		LDA		_attr_ram_buf+$4F,Y
 		BNE		loc_39A1B
 		JSR		sub_39AA9
 		LDY		byte_BB
@@ -1462,21 +1462,21 @@ loc_39A1B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_39A1E:
-		LDA		byte_4D2,Y
+		LDA		_attr_ram_buf+$52,Y
 		CLC
 		BNE		loc_39A25
 		RTS
 loc_39A25:
-		ADC		byte_4C1
+		ADC		_attr_ram_buf+$41
 		CMP		#$41
 		BCC		loc_39A2D
 		RTS
 loc_39A2D:
-		LDA		byte_4D7,Y
+		LDA		_attr_ram_buf+$57,Y
 		STA		byte_BD
-		LDA		word_4D5,Y
+		LDA		_attr_ram_buf+$55,Y
 		STA		_tmp_ptrB4
-		LDA		word_4D5+1,Y
+		LDA		_attr_ram_buf+$56,Y
 		STA		_tmp_ptrB4+1
 		TYA
 		TAX
@@ -1491,7 +1491,7 @@ loc_39A43:
 		JSR		_get_far_tmp_ptrB4_byte_safe
 		CLC
 		ADC		#$4F
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 loc_39A58:
 		PLA
@@ -1504,7 +1504,7 @@ loc_39A58:
 		STA		byte_BD
 loc_39A68:
 		LDX		#0
-		LDA		byte_4C1
+		LDA		_attr_ram_buf+$41
 		BEQ		loc_39A88
 		STA		byte_BE
 		LDX		#0
@@ -1526,7 +1526,7 @@ loc_39A80:
 loc_39A88:
 		LDY		#0
 loc_39A8A:
-		LDA		byte_400,Y
+		LDA		_window_draw_buf,Y
 		SEC
 		SBC		byte_BD
 		CMP		#8
@@ -1549,25 +1549,25 @@ loc_39A9F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_39AA9:
-		LDA		byte_4C0
+		LDA		_attr_ram_buf+$40
 		AND		#$7F
 		BEQ		loc_39AB2
 		SEC
 		RTS
 loc_39AB2:
 		LDX		byte_BB
-		LDA		byte_4CF,X
+		LDA		_attr_ram_buf+$4F,X
 		BEQ		loc_39ABB
 		SEC
 		RTS
 loc_39ABB:
-		LDA		byte_4F5
+		LDA		_attr_ram_buf+$75
 		STA		byte_BD
-		LDA		byte_4F6
+		LDA		_attr_ram_buf+$76
 		STA		byte_BC
-		LDA		byte_4F3
+		LDA		_attr_ram_buf+$73
 		STA		byte_BE
-		LDA		byte_4F4
+		LDA		_attr_ram_buf+$74
 		STA		byte_BF
 		LDA		#0
 		STA		_tmp_ptrB4+1
@@ -1597,11 +1597,11 @@ loc_39AEE:
 		LDY		byte_BB
 		LDX		#_tmp_ptrB4
 		JSR		_get_data_next_byte
-		STA		byte_4D7,Y
+		STA		_attr_ram_buf+$57,Y
 		JSR		_get_data_next_byte
-		STA		word_4D5,Y
+		STA		_attr_ram_buf+$55,Y
 		JSR		_get_data_next_byte
-		STA		word_4D5+1,Y
+		STA		_attr_ram_buf+$56,Y
 		JSR		_get_data_next_byte
 		PHA
 		JSR		_get_data_next_byte
@@ -1621,7 +1621,7 @@ loc_39AEE:
 loc_39B32:
 		LDX		byte_BB
 		LDA		byte_C4
-		STA		byte_4D3,X
+		STA		_attr_ram_buf+$53,X
 		LDA		byte_C0
 		AND		#$F
 		STA		byte_C2
@@ -1650,7 +1650,7 @@ loc_39B4C:
 loc_39B62:
 		LDX		byte_BB
 		LDA		byte_C4
-		STA		byte_4D4,X
+		STA		_attr_ram_buf+$54,X
 loc_39B69:
 		JSR		sub_39C5F
 		BCC		loc_39B6F
@@ -1658,21 +1658,21 @@ loc_39B69:
 loc_39B6F:
 		LDX		byte_BB
 		LDA		byte_BD
-		STA		byte_4F5
+		STA		_attr_ram_buf+$75
 		LDA		byte_BC
-		STA		byte_4F6
+		STA		_attr_ram_buf+$76
 		LDA		byte_C4
-		STA		byte_4CF,X
-		LDA		byte_4F3
-		STA		byte_4D1,X
-		LDA		byte_4F4
-		STA		byte_4D0,X
+		STA		_attr_ram_buf+$4F,X
+		LDA		_attr_ram_buf+$73
+		STA		_attr_ram_buf+$51,X
+		LDA		_attr_ram_buf+$74
+		STA		_attr_ram_buf+$50,X
 		LDA		byte_C3
-		STA		byte_4D2,X
+		STA		_attr_ram_buf+$52,X
 		LDA		byte_BE
-		STA		byte_4F3
+		STA		_attr_ram_buf+$73
 		LDA		byte_BF
-		STA		byte_4F4
+		STA		_attr_ram_buf+$74
 		CLC
 		RTS
 
@@ -1806,11 +1806,11 @@ loc_39C52:
 ; =============== S U B	R O U T	I N E =======================================
 sub_39C5F:
 		LDX		byte_BB
-		LDA		word_4D5,X
+		LDA		_attr_ram_buf+$55,X
 		STA		_tmp_ptrB4
-		LDA		word_4D5+1,X
+		LDA		_attr_ram_buf+$56,X
 		STA		_tmp_ptrB4+1
-		LDA		byte_4D7,X
+		LDA		_attr_ram_buf+$57,X
 		STA		byte_C0
 		JSR		_get_pak_data_bank
 		LDA		#0
@@ -1856,11 +1856,11 @@ loc_39CB2:
 		BCC		loc_39CBD
 		JSR		_get_far_tmp_ptrB4_byte_safe
 loc_39CBD:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		LDY		#8
 loc_39CC2:
 		ASL
-		ROR		byte_410,X
+		ROR		_window_draw_buf+$10,X
 		DEY
 		BNE		loc_39CC2
 		INX
@@ -1872,8 +1872,8 @@ loc_39CD0:
 		ORA		#7
 		TAY
 loc_39CD4:
-		LDA		byte_400,X
-		STA		byte_420,Y
+		LDA		_window_draw_buf,X
+		STA		_window_draw_buf+$20,Y
 		INX
 		DEY
 		TXA
@@ -1937,10 +1937,10 @@ loc_39D32:
 		ASL
 		ASL
 		CLC
-		ADC		#<[byte_400]
+		ADC		#<[_window_draw_buf]
 		STA		_tmp21
 		LDA		#0
-		ADC		#>[byte_400]
+		ADC		#>[_window_draw_buf]
 		STA		_tmp21+1
 		LDA		#$10
 		CLC
@@ -1993,13 +1993,13 @@ loc_39D8F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_39D93:
 		LDX		byte_BB
-		LDA		byte_4CF,X
+		LDA		_attr_ram_buf+$4F,X
 		BNE		loc_39D9C
 		SEC
 		RTS
 loc_39D9C:
 		STA		byte_C0
-		LDA		byte_4C0
+		LDA		_attr_ram_buf+$40
 		BEQ		loc_39E08
 		BPL		loc_39DA7
 		CLC
@@ -2106,7 +2106,7 @@ sub_39E39:
 		ROL
 		SEC
 		LDX		byte_BB
-		ADC		byte_4CF,X
+		ADC		_attr_ram_buf+$4F,X
 		LSR
 		ORA		#$40
 		STA		byte_471
@@ -2129,8 +2129,8 @@ sub_39E51:
 		TAX
 		LDY		#0
 loc_39E69:
-		LDA		byte_400,X
-		STA		byte_400,Y
+		LDA		_window_draw_buf,X
+		STA		_window_draw_buf,Y
 		INX
 		INY
 		CPY		_tmp21
@@ -2142,12 +2142,12 @@ loc_39E69:
 loc_39E7B:
 		CPX		#$C
 		BCC		loc_39E84
-		LDA		byte_4B7,X
+		LDA		_attr_ram_buf+$37,X
 		BCS		loc_39E87
 loc_39E84:
-		LDA		byte_460,X
+		LDA		_window_draw_buf+$60,X
 loc_39E87:
-		STA		byte_460,Y
+		STA		_window_draw_buf+$60,Y
 		INX
 		INY
 		CPY		_tmp21
@@ -2174,16 +2174,16 @@ sub_39E9E:
 		ADC		byte_BB
 		STA		byte_BB
 		TAX
-		LDA		byte_4C1
+		LDA		_attr_ram_buf+$41
 		STA		byte_C5
-		LDA		word_4D5,X
+		LDA		_attr_ram_buf+$55,X
 		STA		_tmp_ptrB4
-		LDA		word_4D5+1,X
+		LDA		_attr_ram_buf+$56,X
 		STA		_tmp_ptrB4+1
-		LDA		byte_4D7,X
+		LDA		_attr_ram_buf+$57,X
 		STA		byte_C0
 		JSR		_get_pak_data_bank
-		LDA		byte_4C0
+		LDA		_attr_ram_buf+$40
 		BMI		loc_39E9C
 		BNE		loc_39EF9
 loc_39ECE:
@@ -2208,20 +2208,20 @@ loc_39EE9:
 		DEC		byte_C0
 		BNE		loc_39ECE
 		LDA		byte_C5
-		STA		byte_4C1
+		STA		_attr_ram_buf+$41
 		RTS
 loc_39EF9:
 		LDA		byte_698,Y
 		STA		byte_C1
-		LDA		byte_4D0,X
+		LDA		_attr_ram_buf+$50,X
 		STA		byte_C7
 		DEC		byte_C7
-		LDA		byte_4D1,X
+		LDA		_attr_ram_buf+$51,X
 		STA		byte_C6
 		DEC		byte_C6
 		JSR		sub_39E39
 		JSR		sub_398B3
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 loc_39F15:
 		LDA		#0
 		STA		byte_C2
@@ -2253,7 +2253,7 @@ loc_39F35:
 		AND		#3
 		STA		byte_C4
 		LDY		byte_BB
-		LDA		byte_4D3,Y
+		LDA		_attr_ram_buf+$53,Y
 		LDY		byte_C4
 		INY
 loc_39F4D:
@@ -2293,7 +2293,7 @@ loc_39F7F:
 		AND		#3
 		TAY
 		LDX		byte_BB
-		LDA		byte_4D4,X
+		LDA		_attr_ram_buf+$54,X
 		INY
 loc_39F8E:
 		DEY
@@ -2334,12 +2334,12 @@ loc_39FC1:
 		AND		#1
 		CLC
 		ADC		word_4
-		STA		byte_4C2
+		STA		_attr_ram_buf+$42
 		LDA		word_4+1
 		ASL
 		ASL
 		STA		word_6
-		LDA		byte_4C2
+		LDA		_attr_ram_buf+$42
 		LDX		#0
 loc_39FD6:
 		STA		word_6+1
@@ -2370,10 +2370,10 @@ loc_39FF4:
 		LDA		_ppuByteToWrite
 		CPX		#$C
 		BCS		loc_3A006
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		BCC		loc_3A009
 loc_3A006:
-		STA		byte_4B7,X
+		STA		_attr_ram_buf+$37,X
 loc_3A009:
 		LDA		byte_C3
 		LSR
@@ -2397,8 +2397,8 @@ loc_3A013:
 		STA		byte_BC,X
 loc_3A029:
 		LDA		byte_BC,X
-		LDX		byte_4C2
-		STA		byte_400,X
+		LDX		_attr_ram_buf+$42
+		STA		_window_draw_buf,X
 loc_3A031:
 		LDA		byte_C3
 		BMI		loc_3A038
@@ -2409,13 +2409,13 @@ loc_3A038:
 		BEQ		loc_3A042
 		JMP		loc_39F15
 loc_3A042:
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_39E51
 		LDX		byte_BA
-		LDA		byte_4C1
+		LDA		_attr_ram_buf+$41
 		STA		byte_69A,X
 		LDA		byte_C5
-		STA		byte_4C1
+		STA		_attr_ram_buf+$41
 locret_3A055:
 		RTS
 
@@ -2423,7 +2423,7 @@ locret_3A055:
 sub_3A056:
 		LDA		byte_6B8
 		BNE		locret_3A055
-		LDA		byte_4C0
+		LDA		_attr_ram_buf+$40
 		BNE		loc_3A062
 loc_3A060:
 		SEC
@@ -2445,11 +2445,11 @@ loc_3A062:
 		STA		byte_C1
 		LDA		byte_69A,Y
 		STA		byte_C2
-		LDA		word_4D5,X
+		LDA		_attr_ram_buf+$55,X
 		STA		_tmp_ptrB4
-		LDA		word_4D5+1,X
+		LDA		_attr_ram_buf+$56,X
 		STA		_tmp_ptrB4+1
-		LDA		byte_4D7,X
+		LDA		_attr_ram_buf+$57,X
 		STA		byte_C0
 		JSR		_get_pak_data_bank
 		JSR		sub_39E39
@@ -2478,19 +2478,19 @@ loc_3A0B7:
 		JMP		loc_3A095
 loc_3A0C1:
 		JSR		sub_398B3
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_39E51
 		LDY		byte_BA
 		LDX		byte_BB
-		LDA		byte_4D2,X
+		LDA		_attr_ram_buf+$52,X
 		BEQ		loc_3A138
 		STA		byte_BD
 		LDA		byte_69A,Y
 		STA		byte_BC
-		LDA		byte_4C1
+		LDA		_attr_ram_buf+$41
 		SEC
 		SBC		byte_BD
-		STA		byte_4C1
+		STA		_attr_ram_buf+$41
 		SEC
 		SBC		byte_BC
 		BEQ		loc_3A105
@@ -2517,7 +2517,7 @@ loc_3A0F9:
 loc_3A105:
 		LDA		byte_BD
 		STA		byte_BE
-		LDA		byte_4C1
+		LDA		_attr_ram_buf+$41
 		ASL
 		ASL
 		TAX
@@ -2570,7 +2570,7 @@ loc_3A142:
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A157:
 		LDA		#0
-		STA		byte_4C0
+		STA		_attr_ram_buf+$40
 		STA		byte_6B7
 		LDX		#0
 loc_3A161:
@@ -2583,7 +2583,7 @@ loc_3A161:
 		LDA		_enemy_group_count,X
 		BNE		loc_3A1A8
 		LDA		#$80
-		STA		byte_4C0
+		STA		_attr_ram_buf+$40
 		JSR		_b2_s1
 		BCS		loc_3A188
 		JSR		_b2_s4
@@ -2598,11 +2598,11 @@ loc_3A188:
 		STA		_enemy_group_count,X
 loc_3A194:
 		LDA		#0
-		STA		byte_4C0
+		STA		_attr_ram_buf+$40
 		LDA		byte_6B8
 		BEQ		loc_3A1A3
 		LDA		#$80
-		STA		byte_4C0
+		STA		_attr_ram_buf+$40
 loc_3A1A3:
 		LDX		word_B7+1
 		JMP		loc_3A1D6
@@ -2635,7 +2635,7 @@ loc_3A1D6:
 		CPX		#4
 		BNE		loc_3A161
 		LDX		#1
-		STX		byte_4C1
+		STX		_attr_ram_buf+$41
 		LDA		byte_6B8
 		BNE		loc_3A25E
 		LDA		#$F0
@@ -2650,7 +2650,7 @@ loc_3A1E8:
 		TXA
 		LDX		#$40
 loc_3A1F4:
-		STA		byte_400-1,X
+		STA		_window_draw_buf-1,X
 		DEX
 		BNE		loc_3A1F4
 		STX		byte_BA
@@ -2679,7 +2679,7 @@ loc_3A1FC:
 		STA		byte_BA
 		TXA
 		ORA		#$80
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 loc_3A22A:
 		INX
 		INX
@@ -2695,7 +2695,7 @@ loc_3A22A:
 		STA		byte_BA
 		LDY		#0
 loc_3A23E:
-		LDA		byte_400,Y
+		LDA		_window_draw_buf,Y
 		BPL		loc_3A259
 		AND		#$1F
 		TAX
@@ -2713,7 +2713,7 @@ loc_3A259:
 		BNE		loc_3A23E
 loc_3A25E:
 		LDA		#1
-		STA		byte_4C0
+		STA		_attr_ram_buf+$40
 		LSR		byte_6B7
 		RTS
 
@@ -2787,7 +2787,7 @@ sub_3A2E1:
 		LDX		#$19
 loc_3A2E3:
 		LDA		_ram_pal_buf-1,X
-		STA		byte_400-1,X
+		STA		_window_draw_buf-1,X
 		DEX
 		BNE		loc_3A2E3
 		RTS
@@ -2796,7 +2796,7 @@ loc_3A2E3:
 sub_3A2ED:
 		LDX		#$19
 loc_3A2EF:
-		LDA		byte_400-1,X
+		LDA		_window_draw_buf-1,X
 		STA		_ram_pal_buf-1,X
 		DEX
 		BNE		loc_3A2EF
@@ -2831,7 +2831,7 @@ loc_3A30C:
 		RTS
 loc_3A31D:
 		TAY
-		LDA		byte_4CF,Y
+		LDA		_attr_ram_buf+$4F,Y
 		STA		byte_C0
 		JMP		loc_39DA7
 
@@ -3209,7 +3209,7 @@ loc_3A5A8:
 		LDA		#$D1
 		FARX	_b4_s9
 		LDX		#$1E
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JMP		loc_3A3CF
 loc_3A5C9:
 		LDA		#$3B
@@ -3249,7 +3249,7 @@ loc_3A5FD:
 		LDA		#$BF
 		FARX	_b4_s9
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JMP		loc_3A5A8
 loc_3A61D:
 		CMP		#1
@@ -3727,9 +3727,9 @@ loc_3A924:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_sE:
-		LDA		#<[byte_79C]
+		LDA		#<[_players_spell]
 		STA		word_3C
-		LDA		#>[byte_79C]
+		LDA		#>[_players_spell]
 		STA		word_3C+1
 		LDA		byte_CE
 		ASL

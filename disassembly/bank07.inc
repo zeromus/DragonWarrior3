@@ -1233,7 +1233,7 @@ loc_B2711:
 		BNE		loc_B2711
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$A8
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		SYSX	_apu_load,$18
 		LDA		#0
@@ -1249,7 +1249,7 @@ loc_B272B:
 		FARX	_b6_s8_world_map_pal_update
 		JSR		_ppu_set_dequeue_flag
 		LDX		#$C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		INC		word_3C
 		LDA		word_3C
 		CMP		#$18
@@ -1299,7 +1299,7 @@ loc_B278A:
 		FARX	_b0_s54
 		FARX	_bD_s11
 		FARX	_b4_s1A
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$40
 		STA		_world_map_steps_count
@@ -1324,7 +1324,7 @@ _b7_s1A:
 		SYSX	_sys07_msg_m00_arg1,$9E
 		SYSX	_sys07_msg_m00_arg1,$9F
 		SYSX	_sys07_msg_m00_arg1,$A0
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#8
 		LDX		#$18
 loc_B27D7:
@@ -1337,7 +1337,7 @@ loc_B27D7:
 		BCC		loc_B27D7
 		FARX	_bC_s20
 		SYSX	_apu_load,$02
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
@@ -1347,15 +1347,15 @@ _b7_s1B:
 		FARX	_bB_s7
 		JSR		sub_B2806
 		SYSX	_apu_load,$1F
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JMP		_b7_s1E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2806:
 		LDA		#$F
-		STA		byte_6AC9
+		STA		_window_frame_tmp6AC9
 		LDX		#$C
 		JSR		sub_B2821
 		LDX		#8
@@ -1363,7 +1363,7 @@ sub_B2806:
 		LDX		#4
 		JSR		sub_B2821
 		LDA		#$1E
-		STA		byte_6AC9
+		STA		_window_frame_tmp6AC9
 		LDX		#0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1385,8 +1385,8 @@ loc_B283B:
 		LDX		word_6C
 		JSR		sub_B2860
 loc_B2840:
-		LDX		byte_6AC9
-		JMP		_sleep_X
+		LDX		_window_frame_tmp6AC9
+		JMP		_sleep_X_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2846:
@@ -1519,9 +1519,9 @@ sub_B2917:
 		BEQ		locret_B295A
 		STA		byte_6A6E
 		JSR		sub_B2BB5
-		LDA		#<[byte_60D6]
+		LDA		#<[_tavern_chars_level]
 		STA		word_3E
-		LDA		#>[byte_60D6]
+		LDA		#>[_tavern_chars_level]
 		STA		word_3E+1
 		JSR		sub_B2B31
 		LDY		#0
@@ -1559,7 +1559,7 @@ sub_B295B:
 sub_B2961:
 		LDA		byte_63E7
 		STA		_cur_message_speed
-		SYSX	_sys0E_wrap_bE_s0,$57
+		SYSX	_display_window_ex,$57
 		CMP		#$FF
 		BEQ		locret_B2974
 		STA		byte_63E7
@@ -1581,11 +1581,11 @@ loc_B2985:
 		DEX
 		BPL		loc_B2985
 loc_B298D:
-		SYSX	_sys0E_wrap_bE_s0,$41
+		SYSX	_display_window_ex,$41
 		FARX	_b6_s14_name_entry_screen
 		FARX	_b6_s20_player_name_veryfy
 		BNE		loc_B29A1
-		SYSX	_sys0E_wrap_bE_s0,$58
+		SYSX	_display_window_ex,$58
 		JSR		__pause_or_skip
 		JMP		loc_B298D
 loc_B29A1:
@@ -1595,7 +1595,7 @@ loc_B29A3:
 		PHA
 		DEX
 		BPL		loc_B29A3
-		SYSX	_sys0E_wrap_bE_s0,$42
+		SYSX	_display_window_ex,$42
 		STA		word_4
 		LDX		#0
 loc_B29B0:
@@ -1614,7 +1614,7 @@ loc_B29B0:
 		LDA		#$82
 		STA		byte_624A
 		LDA		#$A2
-		STA		byte_624B
+		STA		byte_624A+1
 		LDX		#0
 loc_B29D3:
 		TXA
@@ -1638,7 +1638,7 @@ loc_B29D3:
 		TAX
 		LDY		#0
 loc_B29F2:
-		LDA		_txt_default_character_names,X
+		LDA		_txt_default_tavern_chars_name,X
 		STA		byte_9,Y
 		INX
 		INY
@@ -1662,7 +1662,7 @@ loc_B2A1F:
 		LDX		#0
 		TXA
 loc_B2A22:
-		STA		byte_60D6,X
+		STA		_tavern_chars_level,X
 		INX
 		BNE		loc_B2A22
 locret_B2A28:
@@ -1723,8 +1723,8 @@ sub_B2A83:
 		LDA		#$FE
 		STA		word_6A2F,X
 		JSR		sub_B2BB5
-		SYSX	_sys0E_wrap_bE_s0,$59
-		SYSX	_sys0E_wrap_bE_s0,$1D
+		SYSX	_display_window_ex,$59
+		SYSX	_display_window_ex,$1D
 		CMP		#0
 		BNE		locret_B2AB9
 
@@ -1771,7 +1771,7 @@ loc_B2ACF:
 		ADC		byte_42
 		STA		byte_42
 		PLA
-		FARX	_bE_s0
+		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BEQ		loc_B2AED
 		CLC
@@ -1859,7 +1859,7 @@ loc_B2B51:
 		JSR		sub_B2B73
 		ADC		#$50
 loc_B2B58:
-		FARX	_bE_s0
+		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BEQ		loc_B2B70
 		PHA
@@ -1936,8 +1936,8 @@ sub_B2BB5:
 		TXA
 		LDX		#word_3C
 		JSR		_mul16_to_8
-		LDA		#<[byte_60D6]
-		LDY		#>[byte_60D6]
+		LDA		#<[_tavern_chars_level]
+		LDY		#>[_tavern_chars_level]
 		JMP		_add16_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1945,7 +1945,7 @@ sub_B2BCE:
 		LDX		#$6F
 		LDA		#0
 loc_B2BD2:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		BPL		loc_B2BD2
 		LDA		#$1F
@@ -2085,7 +2085,7 @@ loc_B2C93:
 		STA		_msg_number_parameter_F8+2
 		LDA		#$17
 		FARX	_bB_s3_apu_load
-		SYSX	_sys0E_wrap_bE_s0,$3E
+		SYSX	_display_window_ex,$3E
 		SYSX	_sys06_msg_m00_arg0,$61
 		JSR		__pause_or_skip
 		PLA
@@ -2146,7 +2146,7 @@ off_B2D2B:
 		.WORD	sub_B2A83
 byte_B2D3F:
 		.BYTE	  4,  1,  2
-_txt_default_character_names:
+_txt_default_tavern_chars_name:
 		.BYTE	_B,_r,_i,_n,_d,_a,_r,0
 		.BYTE	_R,_a,_g,_n,_a,_r,0,0
 		.BYTE	_A,_d,_a,_n,0,0,0,0
@@ -2212,7 +2212,7 @@ loc_B2DDE:
 		LDY		#0
 loc_B2DF7:
 		LDA		byte_9,Y
-		STA		_character_names,X
+		STA		_tavern_chars_name,X
 		INY
 		INX
 		CPY		#8
@@ -2225,23 +2225,23 @@ loc_B2DF7:
 		LDX		byte_D0
 		STA		byte_611E,X
 		LDA		#1
-		STA		byte_60D6,X
+		STA		_tavern_chars_level,X
 		TXA
 		ASL
 		TAX
 		LDA		#$80
 		STA		byte_618A,X
-		STA		byte_618B,X
+		STA		byte_618A+1,X
 		TXA
 		CLC
 		ADC		byte_D0
 		TAX
 		LDA		#0
-		STA		byte_61A2,X
-		STA		byte_61A3,X
-		STA		byte_61A4,X
-		STA		byte_61C7,X
-		STA		byte_61C8,X
+		STA		_tavern_chars_EXP,X
+		STA		_tavern_chars_EXP+1,X
+		STA		_tavern_chars_EXP+2,X
+		STA		byte_61C6+1,X
+		STA		byte_61C6+2,X
 		LDA		#1
 		STA		byte_61C6,X
 		LDY		#0
@@ -2331,15 +2331,15 @@ loc_B2EB8:
 		CLC
 		ADC		#5
 		STA		byte_6142,Y
-		STA		byte_612A,Y
+		STA		_tavern_chars_HP,Y
 		LDA		#0
-		STA		byte_6143,Y
-		STA		byte_612B,Y
+		STA		byte_6142+1,Y
+		STA		_tavern_chars_HP+1,Y
 		LDA		#0
-		STA		byte_6173,Y
+		STA		byte_6172+1,Y
 		STA		byte_6172,Y
 		STA		byte_615A,Y
-		STA		byte_615B,Y
+		STA		byte_615A+1,Y
 		JSR		sub_B31E2
 		CMP		#3
 		BCS		loc_B2F01
@@ -2351,8 +2351,8 @@ loc_B2EB8:
 		STA		byte_6172,Y
 		STA		byte_615A,Y
 		LDA		#0
-		STA		byte_6173,Y
-		STA		byte_615B,Y
+		STA		byte_6172+1,Y
+		STA		byte_615A+1,Y
 loc_B2F01:
 		LDA		byte_D0
 		ASL
@@ -2363,7 +2363,7 @@ loc_B2F01:
 		LDY		#0
 loc_B2F0A:
 		LDA		#0
-		STA		byte_62AA,X
+		STA		_tavern_chars_spell,X
 		LDA		#$FF
 		CPY		#0
 		BNE		loc_B2F5C
@@ -2388,7 +2388,7 @@ loc_B2F2E:
 		TAX
 		LDA		#$A2
 loc_B2F32:
-		STA		byte_624B,X
+		STA		byte_624A+1,X
 		TXA
 		PHA
 		JSR		sub_B31E2
@@ -2438,9 +2438,9 @@ loc_B2F5F:
 		TAY
 loc_B2F7A:
 		LDA		byte_B3266,X
-		STA		byte_62AA,Y
+		STA		_tavern_chars_spell,Y
 		LDA		byte_B3266+1,X
-		STA		byte_62AD,Y
+		STA		_tavern_chars_spell+3,Y
 loc_B2F86:
 		JSR		_b7_s1D
 		RTS
@@ -2499,7 +2499,7 @@ loc_B2FD0:
 _b7_sD:
 		LDX		#3
 loc_B2FE0:
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		BPL		loc_B2FF4
 		CMP		#$FF
 		BEQ		loc_B2FF4
@@ -2549,7 +2549,7 @@ loc_B3030:
 		BPL		loc_B3048
 		LDA		#$FF
 		STA		byte_630F,X
-		STA		byte_7C1,X
+		STA		_players_formation,X
 		TXA
 		ASL
 		TAY
@@ -2589,13 +2589,13 @@ loc_B306E:
 		TXA
 		ASL
 		TAX
-		LDA		off_B3285,X
+		LDA		_tavern_chars_data_ptr_tbl,X
 		STA		word_3C
-		LDA		off_B3285+1,X
+		LDA		_tavern_chars_data_ptr_tbl+1,X
 		STA		word_3C+1
-		LDA		off_B328F,X
+		LDA		_players_data_ptr_tbl,X
 		STA		word_3E
-		LDA		off_B328F+1,X
+		LDA		_players_data_ptr_tbl+1,X
 		STA		word_3E+1
 		LDX		#3
 loc_B3093:
@@ -2696,10 +2696,10 @@ loc_B3127:
 		LDX		byte_55
 		DEX
 		LDA		#$FF
-		STA		byte_7C1,X
+		STA		_players_formation,X
 		LDX		#3
 loc_B3131:
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		STA		byte_630F,X
 		DEX
 		BPL		loc_B3131
@@ -2736,7 +2736,7 @@ _b7_s15:
 		JSR		_b7_sD
 		LDX		#0
 loc_B3171:
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		BMI		loc_B318A
 		TXA
 		ASL
@@ -2755,7 +2755,7 @@ loc_B318A:
 		RTS
 loc_B3190:
 		STX		byte_CE
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		PHA
 		JSR		_b7_s12
 		PLA
@@ -2886,18 +2886,18 @@ byte_B327B:
 		.BYTE	  6,  9,  8,  0,  1
 byte_B3280:
 		.BYTE	  4,  2,  3,  0,  2
-off_B3285:
-		.WORD	byte_60D6
-		.WORD	byte_612A
-		.WORD	byte_61A2
-		.WORD	_character_names
-		.WORD	byte_62AA
-off_B328F:
+_tavern_chars_data_ptr_tbl:
+		.WORD	_tavern_chars_level
+		.WORD	_tavern_chars_HP
+		.WORD	_tavern_chars_EXP
+		.WORD	_tavern_chars_name
+		.WORD	_tavern_chars_spell
+_players_data_ptr_tbl:
 		.WORD	_players_level
 		.WORD	_players_HP
 		.WORD	_players_EXP
 		.WORD	_players_name
-		.WORD	byte_79C
+		.WORD	_players_spell
 byte_B3299:
 		.BYTE	  7,  5,  2,  2,  1
 byte_B329E:
@@ -2906,7 +2906,7 @@ byte_B329E:
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s8:
 		JSR		_ppu_screen_clear
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		JSR		_ppu_disable
 		LDA		_PPU_STATUS
 		LDA		#$23
@@ -2964,7 +2964,7 @@ sub_B333B:
 		JSR		loc_B333E
 loc_B333E:
 		LDX		#$42
-		JMP		_sleep_X
+		JMP		_sleep_X_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1C:
@@ -3041,16 +3041,16 @@ _b7_s1E:
 		JSR		_ppu_screen_clear
 		JSR		sub_B36C8
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		SYSX	_apu_load,$19
 		JSR		_pal_fade_in
 		LDX		#$64
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		FARX	_bA_s17
 		JSR		_wait_for_vblank_render_off
 		JSR		_pal_fade_out
 		JSR		_ppu_enable
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		JSR		sub_B3687
 		JSR		sub_174CFF
 		JSR		sub_B367D
@@ -3061,7 +3061,7 @@ loc_B34D2:
 		AND		#$1F
 		BNE		loc_B34D2
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JSR		_pal_fade_out
 		JMP		sub_B36A2
 
@@ -3138,7 +3138,7 @@ loc_B3541:
 		LDA		_ppu_ctrl_shadow
 		EOR		#1
 		STA		_ppu_ctrl_shadow
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 word_B3574:
 		.WORD	$C8B1
 byte_B3576:
@@ -3212,7 +3212,7 @@ loc_B35C8:
 ;		LDY		#2
 ;loc_B35D8:
 ;		LDX		#$6B
-;		JSR		_sleep_X
+;		JSR		_sleep_X_sync
 ;		DEY
 ;		BNE		loc_B35D8
 ;		RTS
@@ -3238,7 +3238,7 @@ loc_B35F5:
 		LDA		(word_3E+1),Y
 		CMP		#$FF
 		BEQ		loc_B3602
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		INY
 		BNE		loc_B35F5
@@ -3253,7 +3253,7 @@ loc_B3602:
 loc_B360D:
 		LDA		#0
 loc_B360F:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$20
 		BNE		loc_B360F
@@ -3281,13 +3281,13 @@ loc_B362F:
 		CLC
 		ADC		_ppu_scroll_shadow
 		STA		_ppu_scroll_shadow
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		DEX
 		BNE		loc_B362F
 		LDY		#2
 loc_B363F:
 		LDX		#$91
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		DEY
 		BNE		loc_B363F
 		RTS
@@ -3322,7 +3322,7 @@ sub_B3666:
 		STA		byte_85
 loc_B366E:
 		JSR		sub_175B03
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		_heroTileMovePixelsRemain
 		BNE		loc_B366E
 		LDA		#$FF
@@ -3380,14 +3380,14 @@ sub_B36C8:
 		LDX		#0
 		TXA
 loc_B36D7:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$D
 		BNE		loc_B36D7
 		TAX
 loc_B36E0:
 		LDA		_txt_thus_legend_was_born,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INY
 		INX
 		CPX		#$34
@@ -3443,9 +3443,9 @@ sub_B3735:
 		LDY		#0
 loc_B3739:
 		LDA		#0
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		LDA		byte_45
-		STA		byte_460,Y
+		STA		_window_draw_buf+$60,Y
 		INX
 		TXA
 		LSR

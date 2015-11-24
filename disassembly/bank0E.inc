@@ -1,8 +1,8 @@
 
 		ORG $8000
 
-_bE_s0_ptr:
-		.WORD	_bE_s0
+_bE_s0_display_window_ex_ptr:
+		.WORD	_bE_s0_display_window_ex
 _bE_s1_MainLoopCheckAButton_ptr:
 		.WORD	_bE_s1_MainLoopCheckAButton
 _bE_s2_ptr:
@@ -19,8 +19,8 @@ _bE_s9_ptr:
 		.WORD	_bE_s9
 _bE_sB_ptr:
 		.WORD	_bE_sB
-_bE_sC_ptr:
-		.WORD	_bE_sC
+_bE_sC_display_window_ptr:
+		.WORD	_bE_sC_display_window
 _bE_sD_ptr:
 		.WORD	_bE_sD
 _bE_sE_ptr:
@@ -184,7 +184,7 @@ locret_15811A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15811B:
 		JSR		_bE_sD
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys06_msg_m00_arg0,$BE
 		LDA		#0
 		STA		byte_6BD
@@ -261,7 +261,7 @@ sub_15819F:
 		JSR		_bE_sD
 		JSR		sub_15856C
 		SYSX	_apu_load,$85
-		SYSX	_sys0D_wrap_bE_sC,$14
+		SYSX	_display_window,$14
 		CMP		#$FF
 		BNE		loc_1581B8
 		LDA		#3
@@ -355,7 +355,7 @@ loc_15824C:
 		STA		word_6C
 		BCC		loc_158240
 loc_158255:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$0E
 		JMP		_bE_s33
 loc_15825E:
@@ -435,7 +435,7 @@ loc_1582D6:
 		LDA		byte_8
 		PHA
 		FARX	_bD_s19
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		PLA
 		STA		byte_8
 		PLA
@@ -532,27 +532,27 @@ locret_158373:
 sub_158377:
 		BIT		byte_60B7
 		BVC		loc_158385
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$66
 		JMP		_bE_s33
 loc_158385:
-		SYSX	_sys0D_wrap_bE_sC,$1E
+		SYSX	_display_window,$1E
 		CMP		#$FF
 		BEQ		loc_158374
 		CMP		#1
 		BEQ		sub_1583C2
 		CMP		#2
 		BEQ		_wrap_b6_s1E
-		SYSX	_sys0D_wrap_bE_sC,$23
+		SYSX	_display_window,$23
 		CMP		#$FF
 		BEQ		loc_158374
 		STA		byte_CE
-		SYSX	_sys0D_wrap_bE_sC,$68
-		SYSX	_sys0D_wrap_bE_sC,$09
+		SYSX	_display_window,$68
+		SYSX	_display_window,$09
 		JSR		__pause_or_skip
 		SYSX	_apu_load,$85
-		SYSX	_sys0D_wrap_bE_sC,$08
-		SYSX	_sys0D_wrap_bE_sC,$0A
+		SYSX	_display_window,$08
+		SYSX	_display_window,$0A
 		JSR		__pause_or_skip
 		SYSX	_apu_load,$85
 		LDA		#1
@@ -571,7 +571,7 @@ sub_1583C2:
 		LDA		word_4
 		CLC
 		ADC		#$D
-		JSR		_bE_sC
+		JSR		_bE_sC_display_window
 		JMP		_bE_s33
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -585,14 +585,14 @@ sub_1583D0:
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		loc_1583EA
-		SYSX	_sys0D_wrap_bE_sC,$0B
+		SYSX	_display_window,$0B
 		JMP		loc_1583ED
 loc_1583EA:
-		SYSX	_sys0D_wrap_bE_sC,$65
+		SYSX	_display_window,$65
 loc_1583ED:
 		JSR		__pause_or_skip
 		SYSX	_apu_load,$85
-		SYSX	_sys0D_wrap_bE_sC,$0C
+		SYSX	_display_window,$0C
 		JSR		__pause_or_skip
 		SYSX	_apu_load,$85
 loc_1583FC:
@@ -608,11 +608,11 @@ _bE_s33:
 sub_158409:
 		BIT		byte_60B7
 		BVC		loc_158417
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$65
 		JMP		_bE_s33
 loc_158417:
-		SYSX	_sys0D_wrap_bE_sC,$24
+		SYSX	_display_window,$24
 		CMP		#$FF
 		BNE		loc_158421
 		JMP		sub_1580A1
@@ -633,7 +633,7 @@ loc_15842F:
 		BCC		loc_158443
 		BCS		loc_158461
 loc_15843C:
-		SYSX	_sys0D_wrap_bE_sC,$25
+		SYSX	_display_window,$25
 		CMP		#$FF
 		BNE		loc_158449
 loc_158443:
@@ -660,7 +660,7 @@ loc_158461:
 		BCC		loc_15842F
 		BCS		loc_15848E
 loc_15846E:
-		SYSX	_sys0D_wrap_bE_sC,$26
+		SYSX	_display_window,$26
 		CMP		#$FF
 		CLC
 		BEQ		loc_15842C
@@ -684,7 +684,7 @@ loc_15848E:
 		BCC		loc_158461
 		BCS		loc_1584BB
 loc_15849B:
-		SYSX	_sys0D_wrap_bE_sC,$27
+		SYSX	_display_window,$27
 		CMP		#$FF
 		CLC
 		BEQ		loc_15845E
@@ -707,7 +707,7 @@ loc_1584BB:
 		BCC		loc_15848E
 		BCS		loc_1584E7
 loc_1584C8:
-		SYSX	_sys0D_wrap_bE_sC,$28
+		SYSX	_display_window,$28
 		CMP		#$FF
 		CLC
 		BEQ		loc_15848B
@@ -754,7 +754,7 @@ locret_158515:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158516:
 		PHP
-		SYSX	_sys0D_wrap_bE_sC,$0D
+		SYSX	_display_window,$0D
 		JSR		sub_158581
 		PLP
 		RTS
@@ -782,14 +782,14 @@ sub_15851F:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$51
 		JSR		sub_1585B8
 loc_15854E:
 		SEC
 		RTS
 loc_158550:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_CE
 		STA		byte_D2
 		SYSX	_sys06_msg_m00_arg0,$BC
@@ -818,7 +818,7 @@ sub_15856C:
 		JSR		_sram_b0_s31
 		DEC		word_4
 		LDA		word_4
-		JSR		_bE_sC
+		JSR		_bE_sC_display_window
 		PLA
 		STA		byte_CE
 		RTS
@@ -856,7 +856,7 @@ sub_15858D:
 		CLC
 		RTS
 loc_1585A5:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		JSR		sub_1585B8
 		SEC
@@ -890,7 +890,7 @@ sub_1585C4:
 loc_1585CD:
 		JSR		sub_158643
 		JSR		sub_1585D6
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585D6:
@@ -1039,7 +1039,7 @@ loc_1586B3:
 		LDY		#$18
 		JSR		sub_158622
 loc_1586C2:
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586C5:
@@ -1087,7 +1087,7 @@ _bE_s34:
 loc_1586F5:
 		JSR		sub_158643
 		JSR		sub_1586FE
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586FE:
@@ -1166,12 +1166,12 @@ loc_158776:
 		BCS		loc_158786
 		FARX	_bD_s1D
 loc_158786:
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1C:
 		SYSX	_apu_load,$86
-		SYSX	_sys0D_wrap_bE_sC,$1D
+		SYSX	_display_window,$1D
 		PHA
 		LDA		byte_80
 		PHA
@@ -1182,7 +1182,7 @@ _bE_s1C:
 		LDX		#0
 		TXA
 loc_15879E:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#$10
 		BNE		loc_15879E
@@ -1194,53 +1194,53 @@ loc_15879E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bE_sC:
+_bE_sC_display_window:
 		STA		byte_7E
 		JSR		sub_159E55
 		JSR		_bE_s13
-		JMP		sub_1587BB
+		JMP		_display_window_common
 
 ; =============== S U B	R O U T	I N E =======================================
-_bE_s0:
+_bE_s0_display_window_ex:
 		STA		byte_7E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1587BB:
-		JSR		sub_1587CF
+_display_window_common:
+		JSR		_display_single_window
 		JSR		sub_159F6D
 		CMP		#$40
 		BNE		locret_1587CE
 		LDY		#7
 		LDA		(word_6C),Y
 		AND		#$7F
-		JMP		_bE_s0
+		JMP		_bE_s0_display_window_ex
 locret_1587CE:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1587CF:
-		JSR		sub_158C9F
-		JSR		sub_158DD7
-		JSR		sub_158DFA
+_display_single_window:
+		JSR		_window_display_init_ex
+		JSR		_window_buf_full_clear
+		JSR		_window_buf_draw_frame_top_side
 		JSR		sub_158BAD
 loc_1587DB:
-		JSR		sub_158DDD
-		JSR		sub_158E26
+		JSR		_window_buf_char_clear
+		JSR		_window_buf_draw_bottom_side
 		JSR		sub_1587F0
 		JSR		sub_17474C
-		JSR		sub_158E57
-		DEC		byte_6AEA
+		JSR		_window_frame_scroll_up_16px
+		DEC		_window_frame_height_var
 		BNE		loc_1587DB
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1587F0:
-		LDA		byte_6AEA
+		LDA		_window_frame_height_var
 		CMP		#1
 		BEQ		locret_15880C
-		LDA		byte_6AC2
+		LDA		_window_frame_width_add_header4_bits_add_1
 		JSR		sub_15881A
-		LDA		byte_6AEA
+		LDA		_window_frame_height_var
 		CMP		#2
 		BEQ		locret_15880C
 		LDY		#5
@@ -1250,19 +1250,19 @@ sub_1587F0:
 locret_15880C:
 		RTS
 loc_15880D:
-		LDA		byte_6AC2
+		LDA		_window_frame_width_add_header4_bits_add_1
 		CLC
-		ADC		byte_6AE9
-		STA		byte_6AEB
+		ADC		_window_frame_width_var
+		STA		_window_frame_tmp6AEB
 		JMP		loc_15883A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15881A:
-		STA		byte_6AEB
+		STA		_window_frame_tmp6AEB
 		LDY		#5
 		LDA		(word_6C),Y
 		BPL		loc_15883A
-		LDX		byte_6AC1
+		LDX		_window_frame_tmp6AC1
 		BNE		loc_158835
 		AND		#$40
 		BEQ		loc_158835
@@ -1305,7 +1305,7 @@ loc_158870:
 		JSR		sub_158DB9
 		JMP		loc_15883A
 loc_158876:
-		INC		byte_6AC1
+		INC		_window_frame_tmp6AC1
 		RTS
 loc_15887A:
 		JMP		loc_1588F4
@@ -1381,7 +1381,7 @@ sub_1588D3:
 		JSR		_wnd_fetch_cmd_byte
 		JMP		loc_15883A
 loc_1588DD:
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		LSR
 		TAX
 		FARX	_bD_s15
@@ -1411,7 +1411,7 @@ loc_15890C:
 		INX
 		CPX		#$D
 		BNE		loc_15890C
-		LDA		byte_6ACA
+		LDA		_window_frame_tmp6ACA
 		BNE		loc_15892F
 		LDA		byte_C6
 		CMP		#6
@@ -1423,7 +1423,7 @@ loc_158921:
 		INY
 		CPY		#$D
 		BNE		loc_158921
-		STY		byte_6ACA
+		STY		_window_frame_tmp6ACA
 loc_15892F:
 		JMP		loc_15883A
 
@@ -1434,7 +1434,7 @@ loc_15893F:
 		LDA		_wnd_cur_cmd_byte
 		PHA
 		JSR		_wnd_fetch_cmd_byte
-		LDX		byte_6AC1
+		LDX		_window_frame_tmp6AC1
 		LSR
 		PLA
 		BCS		loc_158951
@@ -1537,7 +1537,7 @@ loc_1589E8:
 		AND		#$F
 		TAX
 		PHA
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		LSR
 		CPX		#9
 		BCC		loc_158A04
@@ -1620,11 +1620,11 @@ byte_158A76:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158A80:
-		LDA		byte_6AEB
+		LDA		_window_frame_tmp6AEB
 		PHA
 		TAX
 loc_158A85:
-		LDA		byte_400,X
+		LDA		_window_draw_buf,X
 		CMP		#$77
 		BEQ		loc_158A94
 		CMP		#$5F
@@ -1632,18 +1632,18 @@ loc_158A85:
 		DEX
 		JMP		loc_158A85
 loc_158A94:
-		STX		byte_6AEB
+		STX		_window_frame_tmp6AEB
 		LDA		#$5F
 		JSR		sub_158DB9
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		STA		byte_7F
 		PLA
-		STA		byte_6AEB
+		STA		_window_frame_tmp6AEB
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158AA6:
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		LSR
 		LDX		byte_7E
 		CPX		#$66
@@ -1695,7 +1695,7 @@ loc_158B04:
 loc_158B0B:
 		JMP		loc_15883A
 loc_158B0E:
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		STA		byte_CF
 		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B95
@@ -1731,7 +1731,7 @@ sub_158B47:
 		JSR		sub_158B95
 		ASL
 		CLC
-		ADC		byte_6AC1
+		ADC		_window_frame_tmp6AC1
 		STA		byte_CE
 		RTS
 
@@ -1805,7 +1805,7 @@ _wnd_fetch_cmd_byte:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158BAD:
 		LDY		#3
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y				; header + 3 parameter
 		BPL		loc_158C01
 loc_158BB3:
 		STA		byte_6AC0
@@ -1814,7 +1814,7 @@ loc_158BB3:
 		BNE		loc_158BBE
 		LDA		#8
 loc_158BBE:
-		STA		byte_6AEB
+		STA		_window_frame_tmp6AEB
 		LDA		(word_6C),Y
 		LSR
 		LSR
@@ -1835,8 +1835,8 @@ loc_158BD4:
 		LSR
 		LSR
 		CLC
-		ADC		byte_6AEB
-		STA		byte_6AEB
+		ADC		_window_frame_tmp6AEB
+		STA		_window_frame_tmp6AEB
 		INC		byte_6ABF
 		DEC		byte_6ABE
 		BNE		loc_158BD4
@@ -1845,9 +1845,9 @@ loc_158BEE:
 		LDA		(word_6C),Y
 		AND		#$40
 		BEQ		locret_158C00
-		LDA		byte_6AC6
+		LDA		_window_frame_header4_bits
 		CLC
-		ADC		byte_6AE9
+		ADC		_window_frame_width_var
 		JSR		sub_15881A
 locret_158C00:
 		RTS
@@ -1952,10 +1952,10 @@ loc_158C9B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158C9F:
+_window_display_init_ex:
 		JSR		_window_display_init
 		LDA		byte_7E
-		CMP		#$3E
+		CMP		#$3E					; check for window indexes 3E, 3D
 		BEQ		loc_158CAC
 		CMP		#$3D
 		BNE		locret_158CB8
@@ -1970,7 +1970,7 @@ locret_158CB8:
 
 ; =============== S U B	R O U T	I N E =======================================
 _window_display_init:
-		LDA		byte_7E
+		LDA		byte_7E					; window res idx
 		ASL
 		TAX
 		LDA		_windows_lib,X
@@ -1980,72 +1980,75 @@ _window_display_init:
 		LDA		byte_CE
 		STA		byte_6AC7
 		LDY		#2
-		LDA		(word_6C),Y
-		STA		byte_470
+		LDA		(word_6C),Y				; header + 2
+		STA		byte_470				; screen position?
 		STA		byte_6AC8
 		LDY		#0
-		LDA		(word_6C),Y
-		BPL		loc_158CF5
-		INY
-		LDA		(word_6C),Y
-		STA		byte_470
-		STA		byte_6AC8
-		INY
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y				; header + 0
+		BPL		loc_158CF5				; check for special flag, $80
+		INY								; if it is, read additional
+		LDA		(word_6C),Y				; screen position, then get ptr
+		STA		byte_470				; to other frame window resource
+		STA		byte_6AC8				; so you haven't keep similar
+		INY								; copies of windows with different
+		LDA		(word_6C),Y				; positions on the screen
 		PHA
 		INY
 		LDA		(word_6C),Y
 		STA		word_6C+1
 		PLA
 		STA		word_6C
-		LDY		#0
+		LDY		#0						; reread the window width
 		LDA		(word_6C),Y
 loc_158CF5:
-		STA		byte_6AE9
+		STA		_window_frame_width_var	; otherwise it's is a parameter
 		LSR
 		ORA		#$10
 		STA		byte_471
-		JSR		sub_158D3C
+		JSR		_window_height_calc_setup
 		LDA		#$FF
 		STA		byte_8E
 		STA		byte_7F
 		LDY		#4
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y				; header + 4 param ?
 		CLC
 		ROL
 		ROL
 		ROL
 		AND		#3
-		STA		byte_6AEB
-		STA		byte_6AC6
-		LDA		byte_6AE9
+		STA		_window_frame_tmp6AEB				; extract higher 2 bits
+		STA		_window_frame_header4_bits
+		LDA		_window_frame_width_var
 		ASL
 		CLC
-		ADC		byte_6AEB
-		STA		byte_6AC2
-		INC		byte_6AC2
-		INC		byte_6AC6
+		ADC		_window_frame_tmp6AEB
+		STA		_window_frame_width_add_header4_bits_add_1
+		INC		_window_frame_width_add_header4_bits_add_1
+		INC		_window_frame_header4_bits
 		LDA		#0
-		STA		byte_6AEB
-		STA		byte_6AC1
-		STA		byte_6AC9
-		STA		byte_6ACA
-		LDA		#$B
-		STA		_wnd_cmd_byte_pos
+		STA		_window_frame_tmp6AEB
+		STA		_window_frame_tmp6AC1
+		STA		_window_frame_tmp6AC9
+		STA		_window_frame_tmp6ACA
+		LDA		#$B						; header is 11 bytes wide, the actual
+		STA		_wnd_cmd_byte_pos		; data starts at $B position, so set it
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158D3C:
+; read the window resource height parameter, calculates a special window
+; heights based on various displaying parameters, adjust heights parameters
+;
+_window_height_calc_setup:
 		LDY		#1
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y					; header + 1 window type
 		CMP		#$10
-		BCS		loc_158D4C
-		STA		byte_6AEA
-		STA		word_7C+1
-		DEC		word_7C+1
+		BCS		loc_158D4C					; simple window types, less than $10 rows
+		STA		_window_frame_height_var	; do no more else, just keep the height
+		STA		word_7C+1					; and actual lines in window temp =
+		DEC		word_7C+1					; (_window_frame_height_var - 1)
 		RTS
 loc_158D4C:
-		SBC		#$10
+		SBC		#$10						; check how many extra lines is here
 		CMP		#7
 		BEQ		loc_158D60
 		CMP		#8
@@ -2056,15 +2059,15 @@ loc_158D4C:
 		BEQ		loc_158D85
 		BNE		loc_158D98
 loc_158D60:
-		FARX	_bD_s14
+		FARX	_bD_s14						; extra 7 lines (23)
 		STA		word_4
 		JMP		loc_158DA7
 loc_158D68:
-		FARX	_b4_s1
+		FARX	_b4_s1						; extra 8 lines (24)
 		LDA		byte_59
 		STA		word_4
 		JMP		loc_158DA7
-loc_158D72:
+loc_158D72:									; extra 9 lines (25)
 		LDX		#1
 loc_158D74:
 		LDA		_enemy_roster_index_list,X
@@ -2077,9 +2080,9 @@ loc_158D80:
 		STX		word_4
 		JMP		loc_158DA7
 loc_158D85:
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32				; extra 10 lines (26)
 		LDA		#7
-		STA		byte_6AEA
+		STA		_window_frame_height_var
 		LDA		word_4
 		CMP		#6
 		BCC		loc_158D95
@@ -2088,7 +2091,7 @@ loc_158D95:
 		STA		word_7C+1
 		RTS
 loc_158D98:
-		PHA
+		PHA									; less than 7 or more than 10
 		TAX
 		LDA		_sys_idx_list3,X
 		JSR		_sys_safe_select
@@ -2098,9 +2101,9 @@ loc_158D98:
 		INC		word_4
 loc_158DA7:
 		LDA		word_4
-		STA		byte_6AEA
+		STA		_window_frame_height_var
 		STA		word_7C+1
-		INC		byte_6AEA
+		INC		_window_frame_height_var
 		RTS
 _sys_idx_list3:
 		.BYTE	[_b0_s31_idx-_sys_idx_lib]>>1
@@ -2113,41 +2116,43 @@ _sys_idx_list3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DB9:
-		LDX		byte_6AEB
+		LDX		_window_frame_tmp6AEB
 		BNE		loc_158DC2
 		CMP		#$79
 		BEQ		loc_158DC5
 loc_158DC2:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 loc_158DC5:
-		INC		byte_6AEB
+		INC		_window_frame_tmp6AEB
 		CMP		#$64
 		BNE		locret_158DD6
 		PHA
-		LDA		byte_6AC9
+		LDA		_window_frame_tmp6AC9
 		ORA		#$80
-		STA		byte_6AC9
+		STA		_window_frame_tmp6AC9
 		PLA
 locret_158DD6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158DD7:
+_window_buf_full_clear:
 		LDY		#$6F
 		LDX		#0
-		BEQ		loc_158DE4
+		BEQ		_window_buf_clear_ex
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158DDD:
-		LDA		byte_6AE9
+_window_buf_char_clear:
+		LDA		_window_frame_width_var
 		ASL
 		TAX
 		TAY
 		DEY
-loc_158DE4:
+
+; =============== S U B	R O U T	I N E =======================================
+_window_buf_clear_ex:
 		LDA		#0
 loc_158DE6:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		DEY
 		BPL		loc_158DE6
@@ -2159,86 +2164,97 @@ loc_158DE6:
 ;		LDA		#0
 ;		TAX
 ;loc_158DF1:
-;		STA		byte_460,X
+;		STA		_window_draw_buf+$60,X
 ;		INX
 ;		CPX		#$10
 ;		BNE		loc_158DF1
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158DFA:
-		LDA		#$7A
-		STA		byte_400
-		LDX		byte_6AE9
+; fills window buffer with +----+ topmost frame line and additionally
+; one empty row sides      |    |
+;
+_window_buf_draw_frame_top_side:
+		LDA		#$7A							; CHR idx for top-left square
+		STA		_window_draw_buf
+		LDX		_window_frame_width_var
 		DEX
 		LDA		#$7D
-		STA		byte_400,X
+		STA		_window_draw_buf,X						; CHR top-right square
 		DEX
-		LDA		#$78
+		LDA		#$78							; fills with top line between two
 loc_158E0B:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		BNE		loc_158E0B
-		LDX		byte_6AE9
+		LDX		_window_frame_width_var
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158E14:
-		LDA		#$77
-		STA		byte_400,X
+; fills window buffer with |    | of the current window row
+;
+_window_buf_draw_row_sides:
+		LDA		#$77							; left side CHR tile
+		STA		_window_draw_buf,X
 		TXA
 		CLC
-		ADC		byte_6AE9
+		ADC		_window_frame_width_var
 		TAX
 		DEX
-		LDA		#$7C
-		STA		byte_400,X
+		LDA		#$7C							; right side CHR tile
+		STA		_window_draw_buf,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158E26:
-		LDA		byte_6AE9
+; draws at least one more  |    | after the topmost side (2 rows above)
+; can draw one more if any |    |, then
+; fills the bottom frame   +----+
+;
+_window_buf_draw_bottom_side:
+		LDA		_window_frame_width_var
 		ASL
 		TAX
-		JSR		sub_158E14
+		JSR		_window_buf_draw_row_sides
 		INX
-		LDA		byte_6AEA
+		LDA		_window_frame_height_var
 		CMP		#2
-		BNE		sub_158E14
-		LDA		#$7B
-		STA		byte_400,X
+		BNE		_window_buf_draw_row_sides
+		LDA		#$7B							; bottom-left corner
+		STA		_window_draw_buf,X
 		TXA
 		CLC
-		ADC		byte_6AE9
+		ADC		_window_frame_width_var
 		TAX
 		DEX
-		LDA		#$7F
-		STA		byte_400,X
+		LDA		#$7F							; bottom-right corner
+		STA		_window_draw_buf,X
 		DEX
-		LDY		byte_6AE9
+		LDY		_window_frame_width_var
 		DEY
 		DEY
-		LDA		#$7E
+		LDA		#$7E							; fills with bottom line between
 loc_158E4F:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		DEX
 		DEY
 		BNE		loc_158E4F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158E57:
+; copy width*4 line to width*2 line in window frame buffer
+;
+_window_frame_scroll_up_16px:
 		LDA		byte_470
 		CLC
 		ADC		#$10
 		STA		byte_470
-		LDA		byte_6AE9
+		LDA		_window_frame_width_var
 		ASL
 		TAY
 		ASL
 		TAX
 loc_158E67:
-		LDA		byte_400-1,X
-		STA		byte_400-1,Y
+		LDA		_window_draw_buf-1,X
+		STA		_window_draw_buf-1,Y
 		DEX
 		DEY
 		BNE		loc_158E67
@@ -2289,9 +2305,9 @@ sub_158EA8:
 		LDA		word_6+1
 		BEQ		loc_158EB8
 		PLA
-		LDX		byte_6AEB
+		LDX		_window_frame_tmp6AEB
 		STA		byte_580,X
-		INC		byte_6AEB
+		INC		_window_frame_tmp6AEB
 		RTS
 loc_158EB8:
 		PLA
@@ -2549,8 +2565,8 @@ _windows_lib:
 ; the window resource format:
 ; header: 11 bytes
 ;  header byte  0   - window width
-;  header byte  1   - window height (number of lines including header)
-;  header byte  2   -
+;  header byte  1   - window height or special type
+;  header byte  2   - window pos?
 ;  header byte  3   -
 ;  header byte  4-11-
 ; lines data [header byte 1] chunks, each $FF terminated
@@ -2568,15 +2584,15 @@ _wnd01:
 		.BYTE	$31,$81,  3,  0,$31,$A1,  3,$FF
 		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,$FF
 _wnd02:
-		.BYTE	$12,  4,$A5,$C1,$60,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
-		.BYTE	$A0,  3,  0,$2C,$C0,  3,$FF,$31,$81,  3,  0,$31,$A1,  3,  0,$31
-		.BYTE	$C1,  3,$FF,$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD
-		.BYTE	  2,$FF
+		.BYTE	$12,  4,$A5,$C1,$60,$21,$22,$23,  0,  0,  0
+		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0,  3,$FF
+		.BYTE	$31,$81,  3,  0,$31,$A1,  3,  0,$31,$C1,  3,$FF
+		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,$FF
 _wnd03:
-		.BYTE	$16,  4,$A3,$E0,$20,$21,$22,$23,  0,  0,  0,$2C,$80,  3,  0,$2C
-		.BYTE	$A0,  3,  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF,$31,$81,  3,  0,$31
-		.BYTE	$A1,  3,  0,$31,$C1,  3,  0,$31,$E1,  3,$FF,$92,$20,$8D,  2,  0
-		.BYTE	$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,  0,$F2,$20,$ED,  2,$FF
+		.BYTE	$16,  4,$A3,$E0,$20,$21,$22,$23,  0,  0,  0
+		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF
+		.BYTE	$31,$81,  3,  0,$31,$A1,  3,  0,$31,$C1,  3,  0,$31,$E1,  3,$FF
+		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,  0,$F2,$20,$ED,  2,$FF
 _wnd04:
 		.BYTE	$80,$12
 		.WORD	_wnd00
@@ -2610,12 +2626,15 @@ _wnd09:
 		.BYTE	 _E,_x,_p,_e,_r,_i,_e,_n,_c,_e,$FF
 		.BYTE	$DE,_P,_o,_i,_n,_t,_s,_col,$8C,  7,$FF
 _wnd0A:
-		.BYTE	$10,  5,$92,  0,$60,$61,$22,$23,$C0,  0,  0,$96,$D5,$FF,$9E,$B6
-		.BYTE	$B5,$FF,$96,$D6,$FF,$9E,$B6,$B6,$FF,$96,$D7,$FF,$9E,$B6,$B7,$FF
-		.BYTE	$96,$D8,$FF,$9E,$B6,$B8,$FF,$FF
-_wnd0B:
-		.BYTE	$18, $D,$12,$87,$4E,$A1,$22,$23,$40,  0,  0,$DA,$90,$9E,$FA,$90
+		.BYTE	$10,  5,$92,  0,$60,$61,$22,$23,$C0,  0,  0
+		.BYTE	$96,$D5,$FF,$9E,$B6,$B5,$FF
+		.BYTE	$96,$D6,$FF,$9E,$B6,$B6,$FF
+		.BYTE	$96,$D7,$FF,$9E,$B6,$B7,$FF
+		.BYTE	$96,$D8,$FF,$9E,$B6,$B8,$FF
 		.BYTE	$FF
+_wnd0B:
+		.BYTE	$18, $D,$12,$87,$4E,$A1,$22,$23,$40,  0,  0
+		.BYTE	$DA,$90,$9E,$FA,$90,$FF
 _wnd0C:
 		.BYTE	 $C,  9,$18,$82,$40,$A1,$22,$23,$40,  0,  0,$9A,$91,$FF
 _wnd0D:
@@ -2754,7 +2773,8 @@ _wnd3A:
 _wnd3C:
 		.BYTE	  8,$10,$54,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$41,$FF
 _wnd3D:
-		.BYTE	$18,  5,$92,  0,$60,$A1,$22,$23,  0,  0,  0,$FF
+		.BYTE	$18,  5,$92,  0,$60,$A1,$22,$23,  0,  0,  0
+		.BYTE	$FF
 _wnd3E:
 		.BYTE	$80,$92
 		.WORD	_wnd3D
@@ -3029,16 +3049,16 @@ sub_159E23:
 ; =============== S U B	R O U T	I N E =======================================
 sub_159E25:
 		LDA		byte_74
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		LDA		byte_75
 loc_159E2D:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		byte_77
 		BNE		loc_159E2D
 		LDA		byte_76
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		RTS
 
@@ -3074,10 +3094,10 @@ sub_159E55:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_159E63:
-		LDA		byte_6AE9
+		LDA		_window_frame_width_var
 		LSR
 		STA		byte_75
-		LDA		byte_6AEA
+		LDA		_window_frame_height_var
 		STA		byte_74
 		LDA		byte_470
 		AND		#$F
@@ -3239,7 +3259,7 @@ _bE_s38_print_char_force_dequeue:
 		JSR		_ppu_set_dequeue_flag
 		LDA		#2
 		STA		_nmi_force_dequeue_request_flag
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#0
 		STA		_nmi_force_dequeue_request_flag
 		PLA
@@ -3340,17 +3360,17 @@ sub_159FAE:
 locret_159FCA:
 		RTS
 loc_159FCB:
-		BIT		byte_6AC9
+		BIT		_window_frame_tmp6AC9
 		BPL		locret_159FCA
 		BVS		locret_159FCA
-		LDA		byte_6AC9
+		LDA		_window_frame_tmp6AC9
 		ORA		#$40
-		STA		byte_6AC9
+		STA		_window_frame_tmp6AC9
 		LDA		_pads+2
 		ORA		#$10
 		STA		_pads+2
 		JSR		_print_00_char_force_dequeue
-		LDA		byte_6ACA
+		LDA		_window_frame_tmp6ACA
 		STA		word_4+1
 		JMP		sub_15A180
 
@@ -3359,7 +3379,7 @@ sub_159FEB:
 		LDA		_pads
 		AND		#$20
 		BEQ		locret_15A00E
-		BIT		byte_6AC9
+		BIT		_window_frame_tmp6AC9
 		BVS		loc_15A00F
 		LDA		byte_75
 		CMP		word_7C+1
@@ -3375,9 +3395,9 @@ sub_159FEB:
 locret_15A00E:
 		RTS
 loc_15A00F:
-		LDA		byte_6AC9
+		LDA		_window_frame_tmp6AC9
 		AND		#$BF
-		STA		byte_6AC9
+		STA		_window_frame_tmp6AC9
 		LDA		_pads+2
 		ORA		#$20
 		STA		_pads+2
@@ -3443,7 +3463,7 @@ loc_15A075:
 		JSR		_print_73_char_force_dequeue
 		PLA
 		PLA
-		BIT		byte_6AC9
+		BIT		_window_frame_tmp6AC9
 		BVS		loc_15A0A1
 		LDA		#0
 		STA		word_4+1
@@ -3495,7 +3515,7 @@ sub_15A0AC:
 		LSR
 		LSR
 		STA		word_4+1
-		STA		byte_6ACA
+		STA		_window_frame_tmp6ACA
 		INY
 		LDA		byte_7E
 		CMP		#$25
@@ -3988,7 +4008,7 @@ loc_15A3F2:
 		BCS		loc_15A41B
 		CMP		#$EC
 		BCS		loc_15A442
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 loc_15A402:
 		INY
@@ -3997,7 +4017,7 @@ loc_15A402:
 		LDX		#0
 		TXA
 loc_15A40B:
-		STA		byte_460,X
+		STA		_window_draw_buf+$60,X
 		INX
 		CPX		#9
 		BNE		loc_15A40B
@@ -4021,7 +4041,7 @@ loc_15A41B:
 		LDY		#0
 loc_15A430:
 		LDA		word_4,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		INY
 		CPY		#4
@@ -4033,7 +4053,7 @@ loc_15A442:
 		SBC		#$E5
 		TAY
 		LDA		byte_580,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		LDY		byte_6ABF
 		JMP		loc_15A402
@@ -4047,7 +4067,7 @@ loc_15A45A:
 		TAY
 		LDA		byte_6AC0
 loc_15A464:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		DEY
 		BNE		loc_15A464
@@ -4059,7 +4079,7 @@ sub_15A472:
 		LDX		#0
 		LDA		#$FF
 loc_15A476:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		CPX		#$40
 		BNE		loc_15A476
@@ -4104,26 +4124,26 @@ loc_15A4AA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A4BE:
-		LDA		byte_400,Y
+		LDA		_window_draw_buf,Y
 		CMP		#$FF
 		BNE		locret_15A4F8
 		LDA		byte_7200,X
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		INY
 		INX
 		LDA		byte_7200,X
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		INX
 		TYA
 		CLC
 		ADC		word_6+1
 		TAY
 		LDA		byte_7200,X
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		INX
 		INY
 		LDA		byte_7200,X
-		STA		byte_400,Y
+		STA		_window_draw_buf,Y
 		TXA
 		LSR
 		LSR
@@ -4135,7 +4155,7 @@ sub_15A4BE:
 		TAY
 		DEY
 		PLA
-		STA		byte_460,Y
+		STA		_window_draw_buf+$60,Y
 locret_15A4F8:
 		RTS
 off_15A4F9:
@@ -4705,7 +4725,7 @@ loc_15A8FA:
 		JSR		_print_00_char_force_dequeue
 		SYSX	_apu_load,$85
 		LDX		#2
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		byte_580
 		PLA
 		PLA
@@ -4964,12 +4984,12 @@ locret_15AA83:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AA84:
 		LDA		#$7A
-		STA		byte_400
+		STA		_window_draw_buf
 		LDX		#1
 		LDA		#$78
 		JSR		sub_15AB09
 		LDA		#$7D
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		JSR		sub_15AAFC
 		LDX		#$19
 		LDY		#0
@@ -5007,12 +5027,12 @@ sub_15AABF:
 		LDA		#0
 		JSR		sub_15AB09
 		LDA		#$7B
-		STA		byte_418
+		STA		_window_draw_buf+$18
 		LDA		#$7E
 		LDX		#$19
 		JSR		sub_15AB09
 		LDA		#$7F
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AADA:
@@ -5029,7 +5049,7 @@ sub_15AAE7:
 		STA		word_4
 loc_15AAEB:
 		LDA		byte_580,Y
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		INY
 		DEC		word_4
@@ -5046,16 +5066,16 @@ sub_15AAFC:
 		LDX		#$18
 loc_15AAFE:
 		LDA		#$77
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		LDA		#$7C
-		STA		byte_417,X
+		STA		_window_draw_buf+$17,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AB09:
 		LDY		#0
 loc_15AB0B:
-		STA		byte_400,X
+		STA		_window_draw_buf,X
 		INX
 		INY
 		CPY		#$16
@@ -5207,7 +5227,7 @@ _bE_s3:
 loc_15ABED:
 		STX		byte_81
 		STY		byte_28
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#0
 		STA		byte_80
 		RTS
@@ -5912,7 +5932,7 @@ loc_15B02D:
 		STA		word_72
 		CMP		#$10
 		BNE		loc_15B02D
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		INC		_blockPlayerInputDuringMap
 		INC		_blockPlayerInputDuringMap
 		LDA		_blockPlayerInputDuringMap
@@ -5942,7 +5962,7 @@ loc_15B067:
 		STA		word_72
 		CMP		#$10
 		BNE		loc_15B067
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		INC		_blockPlayerInputDuringMap
 		LDA		_blockPlayerInputDuringMap
 		JSR		sub_15B08E
@@ -6218,7 +6238,7 @@ loc_15B229:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B24B:
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		#$F
 		STA		_ram_pal_buf
 		LDX		#0
@@ -6229,7 +6249,7 @@ loc_15B257:
 		CPX		#$C
 		BNE		loc_15B257
 		JSR		_pal_set_no_fade
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B265:
@@ -6247,10 +6267,10 @@ locret_15B275:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B276:
-		JSR		_wait_for_nmi_is_over
-		JSR		sub_1743B5
+		JSR		_wait_for_nmi_is_over_sync
+		JSR		_location_palette_and_rand_update
 		JSR		_pal_set_no_fade
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B282:
@@ -6277,7 +6297,7 @@ sub_15B288:
 		JSR		_bE_sD
 		JSR		_bE_s10
 		JSR		_bE_s34
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_48
 		BNE		loc_15B2D0
 		SYSX	_apu_load,$13
@@ -6651,9 +6671,9 @@ loc_15B538:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s30:
 		JSR		_bE_s1D
-		LDA		#<[_ppu_mask_shadow0]
+		LDA		#<[byte_6D40]
 		STA		word_3C
-		LDA		#>[_ppu_mask_shadow0]
+		LDA		#>[byte_6D40]
 		STA		word_3C+1
 loc_15B549:
 		LDY		#0
@@ -7165,15 +7185,15 @@ _bE_s10:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B920:
-		STA		byte_6AC2
+		STA		_window_frame_width_add_header4_bits_add_1
 		JSR		_sram_b0_s31
 		LDA		word_4
 		STA		byte_6ABE
 		LDA		#0
 		STA		byte_6AC0
-		STA		byte_6AC1
+		STA		_window_frame_tmp6AC1
 loc_15B933:
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		STA		byte_CE
 		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
@@ -7227,7 +7247,7 @@ loc_15B991:
 loc_15B99C:
 		LDY		byte_6AC0
 		LDA		byte_6ABF
-		BIT		byte_6AC2
+		BIT		_window_frame_width_add_header4_bits_add_1
 		BVS		loc_15B9B0
 		JSR		sub_1762C3
 		JMP		loc_15B9B3
@@ -7238,14 +7258,14 @@ loc_15B9B0:
 loc_15B9B3:
 		JSR		sub_15B9FA
 loc_15B9B6:
-		INC		byte_6AC1
-		LDA		byte_6AC1
+		INC		_window_frame_tmp6AC1
+		LDA		_window_frame_tmp6AC1
 		CMP		byte_6ABE
 		BNE		loc_15B9AD
 		LDA		#0
-		STA		byte_6AC1
+		STA		_window_frame_tmp6AC1
 loc_15B9C6:
-		LDA		byte_6AC1
+		LDA		_window_frame_tmp6AC1
 		STA		byte_CE
 		JSR		_sram_b0_sE_player_STATUS_read
 		LDA		word_4
@@ -7254,7 +7274,7 @@ loc_15B9C6:
 		BMI		loc_15B9EC
 		LDA		#$31
 		LDY		byte_6AC0
-		BIT		byte_6AC2
+		BIT		_window_frame_width_add_header4_bits_add_1
 		BVS		loc_15B9E6
 		JSR		sub_1762C3
 		JMP		loc_15B9E9
@@ -7263,8 +7283,8 @@ loc_15B9E6:
 loc_15B9E9:
 		JSR		sub_15B9FA
 loc_15B9EC:
-		INC		byte_6AC1
-		LDA		byte_6AC1
+		INC		_window_frame_tmp6AC1
+		LDA		_window_frame_tmp6AC1
 		CMP		byte_6ABE
 		BNE		loc_15B9C6
 		JMP		_ppu_and_dequeue_enable
@@ -7278,7 +7298,7 @@ sub_15B9FA:
 		JSR		sub_177116
 		INC		byte_90
 		JSR		sub_177116
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		PLA
 		STA		byte_90
 		JSR		_bE_s34

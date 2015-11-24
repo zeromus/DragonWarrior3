@@ -2660,7 +2660,7 @@ sub_177CFC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177D0A:
-		LDA		byte_6AC2
+		LDA		_window_frame_width_add_header4_bits_add_1
 		CMP		#$FF
 		BEQ		locret_177D52
 		JSR		_ppu_disable

@@ -1378,7 +1378,7 @@ loc_9B557:
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 		FARX	_bE_sF
 		FARX	_b5_s9
 		FARX	_bC_s3
@@ -1981,7 +1981,7 @@ sub_9B9F8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9B9FC:
-		SYSX	_sys0D_wrap_bE_sC,$41
+		SYSX	_display_window,$41
 		JSR		_delay1sec
 		LDA		#$C
 		STA		word_4
@@ -1989,7 +1989,7 @@ sub_9B9FC:
 		STA		word_4+1
 		LDA		#$78
 		FARX	_bE_s38_print_char_force_dequeue
-		SYSX	_sys0D_wrap_bE_sC,$40
+		SYSX	_display_window,$40
 		LDA		#$C
 		STA		byte_74
 		LDA		#$A
@@ -2084,7 +2084,7 @@ sub_9BA90:
 		SYSX	_sys08_msg_m00_arg2,$4F
 		LDA		#7
 		STA		byte_C6
-		SYSX	_sys0D_wrap_bE_sC,$34
+		SYSX	_display_window,$34
 		LDX		#$10
 		FARX	_bD_s10
 		CMP		#$FF
@@ -2140,7 +2140,7 @@ sub_9BADD:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB0B:
 		SYSX	_sys08_msg_m00_arg2,$52
-		SYSX	_sys0D_wrap_bE_sC,$41
+		SYSX	_display_window,$41
 		JSR		_b6_s14_name_entry_screen
 		JMP		sub_9BB26
 
@@ -2192,7 +2192,7 @@ loc_9BB49:
 		TAY
 		LDX		#0
 loc_9BB5B:
-		LDA		_character_names,Y
+		LDA		_tavern_chars_name,Y
 		CMP		byte_6AB4,X
 		BNE		loc_9BB73
 		INY
@@ -2209,13 +2209,13 @@ loc_9BB73:
 		INX
 		CPX		#$C
 		BNE		loc_9BB49
-		SYSX	_sys0D_wrap_bE_sC,$43
+		SYSX	_display_window,$43
 		CMP		#$FF
 		BEQ		loc_9BBD3
 		TAX
 		LDA		byte_9BBF5,X
 		STA		byte_CF
-		SYSX	_sys0D_wrap_bE_sC,$42
+		SYSX	_display_window,$42
 		CMP		#$FF
 		BEQ		loc_9BBD3
 		STA		byte_CE
@@ -2234,15 +2234,15 @@ loc_9BB92:
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		SYSX	_sys0D_wrap_bE_sC,$09
+		SYSX	_display_window,$09
 		JSR		__pause_or_skip
-		SYSX	_sys0D_wrap_bE_sC,$08
-		SYSX	_sys0D_wrap_bE_sC,$0A
+		SYSX	_display_window,$08
+		SYSX	_display_window,$0A
 		PLA
 		STA		byte_630F
 		FARX	_b7_s14
-		SYSX	_sys0D_wrap_bE_sC,$44
-		SYSX	_sys0D_wrap_bE_sC,$45
+		SYSX	_display_window,$44
+		SYSX	_display_window,$45
 		CMP		#0
 		BEQ		loc_9BBDC
 		LDA		byte_C3
@@ -2266,7 +2266,7 @@ loc_9BBEA:
 sub_9BBED:
 		LDX		#0
 		FARX	_bD_s10
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		RTS
 
 byte_9BBF5:
@@ -2359,7 +2359,7 @@ _b6_s17:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BC74:
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_pal_fade_out
 		FARX	_b7_s15
 		FARX	_bC_s1A
@@ -2466,7 +2466,7 @@ _b6_s19:
 		LDA		#<[_npcs_pos_list+$14]
 		STA		word_6C
 		FARX	_bD_s19
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1A:
@@ -2530,7 +2530,7 @@ loc_9BDA0:
 		FARX	_bC_s38
 		SYSX	_apu_load,$95
 		LDX		#$1E
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		INC		word_3C
 		LDA		word_3C
 		CMP		#6
@@ -2553,7 +2553,7 @@ byte_9BDDE:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1C:
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		SYSX	_apu_load,$03
 		LDA		#$FF
 		STA		byte_750
@@ -2572,7 +2572,7 @@ _b6_s1C:
 		STA		byte_2E
 		LDA		#$A8
 		STA		byte_2D
-		JSR		sub_1743B5
+		JSR		_location_palette_and_rand_update
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE1D:
@@ -2613,7 +2613,7 @@ loc_9BE5A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE62:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$43
 		RTS
 
@@ -2626,7 +2626,7 @@ sub_9BE69:
 		STA		_tmp_ptrB4+1
 		CLC
 		ADC		#$47
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		LDX		#4
 loc_9BE7C:
 		LDA		byte_7C0,X
@@ -2636,7 +2636,7 @@ loc_9BE7C:
 		STX		_tmp_ptrB4
 		JSR		sub_9BF18
 loc_9BE8A:
-		SYSX	_sys0D_wrap_bE_sC,$3C
+		SYSX	_display_window,$3C
 		STA		byte_CE
 		TAX
 		BPL		loc_9BEB2
@@ -2653,13 +2653,13 @@ loc_9BE9B:
 		LDX		_tmp_ptrB4
 		LDY		_tmp_varB6,X
 		LDA		byte_BA,Y
-		STA		byte_7C1,Y
+		STA		_players_formation,Y
 		JMP		loc_9BE8A
 loc_9BEB2:
 		LDY		#$FF
 loc_9BEB4:
 		INY
-		LDA		byte_7C1,Y
+		LDA		_players_formation,Y
 		BMI		loc_9BEB4
 		DEX
 		BPL		loc_9BEB4
@@ -2671,7 +2671,7 @@ loc_9BEB4:
 		PLA
 		TAY
 		LDA		#$FF
-		STA		byte_7C1,Y
+		STA		_players_formation,Y
 		LDA		#2
 		FARX	_bE_sB
 		INC		_tmp_ptrB4
@@ -2707,7 +2707,7 @@ loc_9BEF6:
 		LDY		_tmp_ptrB4+1
 		DEY
 		TYA
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		CLC
 		RTS
 
@@ -2716,7 +2716,7 @@ sub_9BF0D:
 		LDX		#3
 loc_9BF0F:
 		LDA		byte_BA,X
-		STA		byte_7C1,X
+		STA		_players_formation,X
 		DEX
 		BPL		loc_9BF0F
 		RTS
@@ -2807,7 +2807,7 @@ loc_9BF8B:
 		INC		_ram_pal_buf+3
 		JSR		_pal_set_no_fade
 		LDX		#4
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		PLA
 		TAX
 		DEX

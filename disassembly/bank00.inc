@@ -3,8 +3,8 @@
 
 _b0_s0_world_map_random_enounter_test_ptr:
 		.WORD	_b0_s0_world_map_random_enounter_test
-_b0_s1_ptr:
-		.WORD	_b0_s1
+_b0_s1_battle_typeA_launch_ptr:
+		.WORD	_b0_s1_battle_typeA_launch
 _b0_s2_player_HP_read_ptr:
 		.WORD	_b0_s2_player_HP_read
 _b0_s3_player_MAX_HP_read_ptr:
@@ -121,10 +121,10 @@ _b0_s3B_ptr:
 		.WORD	_b0_s3B
 _b0_s3C_ptr:
 		.WORD	_b0_s3C
-_b0_s3D_ptr:
-		.WORD	_b0_s3D
-_b0_s3E_ptr:
-		.WORD	_b0_s3E
+_b0_s3D_player_status_20_clear_ptr:
+		.WORD	_b0_s3D_player_status_20_clear
+_b0_s3D_player_status_80_set_ptr:
+		.WORD	_b0_s3D_player_status_80_set
 _b0_d3F_ptr:
 		.WORD	_b0_d3F
 _b0_d42_item_use_effects_list_ptr:
@@ -141,8 +141,6 @@ _b0_s48_ptr:
 		.WORD	_b0_s48
 _b0_s49_ptr:
 		.WORD	_b0_s49
-_b0_s4B_ptr:
-		.WORD	_b0_s4B
 _b0_s4D_ptr:
 		.WORD	_b0_s4D
 _b0_s4E_ptr:
@@ -151,8 +149,8 @@ _b0_s4F_ptr:
 		.WORD	_b0_s4F
 _b0_s50_ptr:
 		.WORD	_b0_s50
-_b0_s52_ptr:
-		.WORD	_b0_s52
+_b0_s52_battle_typeFF_launch_ptr:
+		.WORD	_b0_s52_battle_typeFF_launch
 _b0_s53_ptr:
 		.WORD	_b0_s53
 _b0_s54_ptr:
@@ -183,8 +181,8 @@ _b0_s62_ptr:
 		.WORD	_b0_s62
 _b0_s63_ptr:
 		.WORD	_b0_s63
-_b0_s64_ptr:
-		.WORD	_b0_s64
+_b0_s64_king_respawn_ptr:
+		.WORD	_b0_s64_king_respawn
 _b0_s65_ptr:
 		.WORD	_b0_s65
 _b0_s66_ptr:
@@ -232,7 +230,7 @@ _b0_s67_ptr:
 ;		BPL		loc_80E9
 ;		BRK
 ;		.BYTE	$CB, 7		; _b2_s9
-;		JSR		sub_8650
+;		JSR		_enemy_roster_compress
 ;		LDX		#3
 ;		LDA		#0
 ;loc_8113:
@@ -324,11 +322,13 @@ _b0_s67_ptr:
 ;		.BYTE	  1,  2,  3,  4,  5
 
 ; =============== S U B	R O U T	I N E =======================================
-; launches an FF type battle. bypasses some of the more normal battle startup logic, probably random encounter related
-_b0_s52:
+; launches an FF type battle. bypasses some of the more normal battle startup
+; logic, probably random encounter related
+;
+_b0_s52_battle_typeFF_launch:
 		LDA		#$FF
 		STA		_battle_type_fight
-		JMP		loc_861A
+		JMP		_battle_launch_ex
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy	roster get min/max level enemy
@@ -399,7 +399,7 @@ locret_8221:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s0_world_map_random_enounter_test:
-		LDA		_pads+1			; random encounter disabled cheat from PRG1J reenabled
+		LDA		_pads+1			; random encounter disable cheat from PRG1J
 		LSR						;
 		BCS		locret_823F		;
 		LDA		_npc_anim_script_idx
@@ -450,7 +450,7 @@ sub_8261:
 		AND		#$7F
 		BNE		loc_828E
 		FARX	_bE_sD
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_AD
 		AND		#$80
 		BEQ		loc_8285
@@ -460,7 +460,7 @@ loc_8285:
 		SYSX	_sys07_msg_m00_arg1,$9A
 loc_8288:
 		FARX	_bE_s33
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 loc_828E:
 		LDA		#0
 		STA		word_5E
@@ -665,7 +665,7 @@ loc_83EB:
 		BCC		loc_83F3
 		RTS
 loc_83F3:
-		JSR		sub_85DB
+		JSR		_reset_enemy_data_buffers
 		LDA		word_4A
 		AND		#3
 		STA		byte_49
@@ -925,19 +925,19 @@ loc_85C0:
 		STA		byte_6A6A
 		LDA		_location_type
 		AND		#1
-		BNE		loc_861A
+		BNE		_battle_launch_ex
 		LDA		byte_AD
 		AND		#$7F
-		BEQ		loc_861A
+		BEQ		_battle_launch_ex
 		LDA		word_5E
-		BNE		loc_861A
+		BNE		_battle_launch_ex
 		LDA		byte_6A6A
 		CMP		#5
-		BCC		loc_861A
+		BCC		_battle_launch_ex
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_85DB:
+_reset_enemy_data_buffers:
 		LDA		#$FF
 		LDX		#3
 loc_85DF:
@@ -953,10 +953,12 @@ loc_85E9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; eventually launches a battle, after setting up some other stuff. does it select a random enemy party?
-_b0_s1:
+; eventually launches a battle, after setting up some other stuff. does it
+; select a random enemy party?
+;
+_b0_s1_battle_typeA_launch:
 		TAY
-		JSR		sub_85DB
+		JSR		_reset_enemy_data_buffers
 		INY
 		STY		_battle_type_fight
 		LDX		#0
@@ -972,7 +974,7 @@ loc_85FC:
 loc_8606:
 		LDA		byte_88DE,X
 		CMP		#$FF
-		BEQ		sub_8683
+		BEQ		_battle_sequence_handler
 		STA		_enemy_roster_index_list,Y
 		LDA		byte_8909,X
 		STA		_enemy_group_count,Y
@@ -982,12 +984,14 @@ loc_8606:
 
 ;; FALLTHROUGH ;;
 
+; =============== S U B	R O U T	I N E =======================================
 ;many other subroutines branch to this label
-loc_861A:
-		JSR		sub_8650
+;
+_battle_launch_ex:
+		JSR		_enemy_roster_compress
 		LDA		_enemy_roster_index_list ; see if the first enemy group is empty?
 		CMP		#$FF
-		BNE		sub_8683
+		BNE		_battle_sequence_handler
 		RTS
 
 byte_8628:
@@ -1002,7 +1006,10 @@ byte_8640:
 		.BYTE	  8,  4,  1,  1,  1,  2,  3,  0
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_8650:
+; if enemy roster first slot is empty, shifts all enemy data by 1 left,
+; then set the last as empty, so compress enemy list
+;
+_enemy_roster_compress:
 		LDX		#0
 		LDY		#0
 loc_8654:
@@ -1036,7 +1043,7 @@ locret_8682:
 ; this is the entire battle sequence. it flashes the screen, fades in the battle, runs the battle
 ; shows XP wrap-up at the end, and returns when it's time to go back to the map
 ;
-sub_8683:
+_battle_sequence_handler:
 		JSR		_nmi_allow_ppu_dequeue
 		JSR		sub_88BD			; pre-battle screen flash
 		LDA		#0
@@ -1070,7 +1077,7 @@ loc_86AE:
 		CMP		#$FF
 		BNE		loc_86C2
 		LDX		#$14
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 loc_86C2:
 		JSR		_ppu_screen_clear	; now, finally, the last bit of the screen will be blanked
 		LDA		#$FD
@@ -1084,7 +1091,7 @@ loc_86C2:
 		LDA		_ppu_ctrl_shadow
 		AND		#$FE
 		STA		_ppu_ctrl_shadow
-		JSR		sub_872B
+		JSR		_wait_for_nmi_is_over
 		JSR		_wait_for_vblank_render_off
 		LDA		_battle_type_fight
 		CMP		#$FF
@@ -1098,7 +1105,7 @@ loc_86F5:
 		LDA		#$40
 		STA		_tmp21
 		JSR		_pal_fade_step
-		JSR		sub_872B
+		JSR		_wait_for_nmi_is_over
 		JSR		_ppu_enable
 		JSR		_pal_fade_in
 		LDA		_battle_type_fight				; start up the battle differently depending on battle type
@@ -1119,13 +1126,6 @@ loc_86F5:
 		STA		byte_5C
 		RTS
 
-; =============== S U B	R O U T	I N E =======================================
-sub_872B:
-		LDA		_nmi_counter
-loc_872E:
-		CMP		_nmi_counter
-		BEQ		loc_872E
-		RTS
 byte_8734:
 		.BYTE	$20,$1E,$20,$1E
 
@@ -1381,7 +1381,7 @@ loc_88BF:
 		EOR		#1
 		STA		_ppu_mask_shadow
 		LDX		#3
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		PLA
 		TAX
 		DEX
@@ -1389,11 +1389,28 @@ loc_88BF:
 		LDA		_ppu_mask_shadow
 		AND		#$EF
 		STA		_ppu_mask_shadow
-		JMP		_wait_for_nmi_is_over
+		JMP		_wait_for_nmi_is_over_sync
+		
 byte_88DE:
-		.BYTE	$87,$81,$FF,$65,$FF,$88,$8A,$8A,$8A,$FF,$89,$8A,$FF,$8A,$FF,$34
-		.BYTE	$FF,$7D,$FF,$83,$FF,$85,$FF,$82,$FF,$7F,$FF,$20,$FF,$62,$FF,$5F
-		.BYTE	$FF,$75,$FF,$81,$FF,$6F,$FF,$84,$FF,$36,$FF
+		.BYTE	$87,$81,$FF
+		.BYTE	$65,$FF
+		.BYTE	$88,$8A,$8A,$8A,$FF
+		.BYTE	$89,$8A,$FF
+		.BYTE	$8A,$FF
+		.BYTE	$34,$FF
+		.BYTE	$7D,$FF
+		.BYTE	$83,$FF
+		.BYTE	$85,$FF
+		.BYTE	$82,$FF
+		.BYTE	$7F,$FF
+		.BYTE	$20,$FF
+		.BYTE	$62,$FF
+		.BYTE	$5F,$FF
+		.BYTE	$75,$FF
+		.BYTE	$81,$FF
+		.BYTE	$6F,$FF
+		.BYTE	$84,$FF
+		.BYTE	$36,$FF
 byte_8909:
 		.BYTE	  1,  1,  0,  1,  0,  1,  1,  1,  1,  0,  1,  2,  0,  5,  0,  1
 		.BYTE	  0,  2,  0,  1,  0,  1,  0,  1,  0,  2,  0,  8,  0,  1,  0,  1
@@ -1887,7 +1904,7 @@ _b0_sD:
 loc_9422:
 		LDA		word_4+1,X
 		TAX
-		LDA		byte_60D6,X
+		LDA		_tavern_chars_level,X
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
@@ -1943,7 +1960,7 @@ _b0_s10:
 		TAY
 		LDX		#0
 loc_946D:						; loop 8 times, copying bytes of name?
-		LDA		_character_names,Y
+		LDA		_tavern_chars_name,Y
 		STA		word_4,X
 		INY
 		INX
@@ -2799,7 +2816,7 @@ loc_9905:
 		LDY		#0
 loc_9907:
 		LDA		word_4+1,X
-		CMP		byte_7C1,Y
+		CMP		_players_formation,Y
 		BNE		loc_9914
 		LDA		#$FF
 		STA		word_4+1,X
@@ -2890,7 +2907,7 @@ _b0_s31:
 		LDY		#0
 		LDX		#0
 loc_997A:
-		LDA		byte_7C1,Y
+		LDA		_players_formation,Y
 		STA		word_4+1,X
 		BMI		loc_9982
 		INX
@@ -2911,7 +2928,7 @@ _b0_s33:
 		LDX		#0
 		STX		word_4
 loc_9992:
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		BMI		loc_99A1
 		TXA
 		ASL
@@ -3002,7 +3019,7 @@ loc_99F2:
 		CLC
 		ADC		_tmp12+1
 		TAY
-		LDA		byte_79C,Y
+		LDA		_players_spell,Y
 		STA		byte_F
 		LDA		byte_42
 		AND		#$18
@@ -3049,7 +3066,7 @@ loc_9A4A:
 		CLC
 		ADC		_tmp12+1
 		TAY
-		LDA		byte_79C,Y
+		LDA		_players_spell,Y
 		STA		byte_F
 		LDA		byte_42
 		AND		#$18
@@ -3247,7 +3264,7 @@ off_9B85:
 		.WORD	_players_EXP
 		.WORD	_players_name
 		.WORD	byte_6A4B
-		.WORD	byte_7C1
+		.WORD	_players_formation
 		.WORD	byte_B0
 		.WORD	byte_6A9B ; pc.stuff
 		.WORD	_players_rDEF
@@ -3334,7 +3351,7 @@ sub_9C21:
 		LDY		#$FF
 		LDX		#0
 loc_9C27:
-		LDA		byte_7C1,X
+		LDA		_players_formation,X
 		BPL		loc_9C34
 loc_9C2C:
 		INX
@@ -3350,7 +3367,9 @@ loc_9C34:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s3D:
+; poison/curse cure?
+;
+_b0_s3D_player_status_20_clear:
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3360,7 +3379,9 @@ _b0_s3D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s3E:
+; revive?
+;
+_b0_s3D_player_status_80_set:
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3608,10 +3629,10 @@ loc_9D9E:
 		STA		byte_6A62
 		LDX		#0
 loc_9DB0:
-		LDA		byte_7C2,X
+		LDA		_players_formation+1,X
 		STA		byte_6A59,X
 		LDA		#$FF
-		STA		byte_7C2,X
+		STA		_players_formation+1,X
 		TXA
 		ASL
 		TAY
@@ -3633,7 +3654,7 @@ _b0_s4F:
 loc_9DDA:
 		TXA
 		LDA		byte_6A59,X
-		STA		byte_7C2,X
+		STA		_players_formation+1,X
 		TXA
 		ASL
 		TAY
@@ -3719,7 +3740,7 @@ byte_9E5C:
 _b0_s5B:
 		BIT		byte_60B7
 		BVC		sub_9E9C
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$64
 		JMP		sub_9E8B
 
@@ -3758,7 +3779,7 @@ sub_9E9C:
 		BEQ		sub_9E92
 		STA		byte_53
 		STA		byte_CE
-		JSR		sub_A189
+		JSR		_check_if_player_is_dead_ex
 		BCS		loc_9EB3
 		LDA		#$C5
 		JMP		sub_A13A
@@ -3849,7 +3870,7 @@ loc_9F34:
 		STA		byte_CE
 		STA		byte_D2
 		LDX		#$F
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JSR		_b0_s55
 		BCS		loc_9F75
 		LDA		#$81
@@ -3901,7 +3922,7 @@ _call_indirect_3C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9FBE:
 		LDA		byte_50
-		JSR		sub_A187
+		JSR		_check_if_player_is_dead
 		BCC		locret_9FE9
 		LDA		byte_49
 		SEC
@@ -3914,7 +3935,7 @@ sub_9FCD:
 		STA		byte_CF
 		LDA		word_4+1
 		STA		byte_D0
-		JSR		sub_A187
+		JSR		_check_if_player_is_dead
 		BCC		locret_9FE9
 		JSR		_b0_s4_player_HP_add
 		LDA		#$14
@@ -3949,7 +3970,7 @@ loc_9FFF:
 		PHA
 		STA		byte_CE
 		STA		byte_D2
-		JSR		sub_A189
+		JSR		_check_if_player_is_dead_ex
 		BCC		loc_A031
 		LDA		byte_49
 		CMP		#$1F
@@ -3979,7 +4000,7 @@ loc_A031:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A039:
-		JSR		sub_A197
+		JSR		_check_if_player_exist_or_dead
 		BCC		loc_A077
 		LDY		byte_49
 		CPY		#$20
@@ -4020,7 +4041,7 @@ loc_A079:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A07D:
-		JSR		sub_A187
+		JSR		_check_if_player_is_dead
 		BCC		locret_A09B
 		JSR		_b0_s5C
 		BCC		locret_A09B
@@ -4038,7 +4059,7 @@ locret_A09B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A09C:
-		JSR		sub_A187
+		JSR		_check_if_player_is_dead
 		BCC		locret_A0B9
 		LDA		_players_status+1,X
 		AND		#$20
@@ -4058,7 +4079,7 @@ loc_A0BA:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A0BC:
-		JSR		sub_A187
+		JSR		_check_if_player_is_dead
 		BCC		locret_A0D9
 		LDA		_players_status+1,X
 		AND		#$40
@@ -4154,7 +4175,7 @@ sub_A120:
 		LDA		byte_CE
 		PHA
 		LDA		byte_44
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		STA		byte_44
 		PLA
 		STA		byte_CE
@@ -4201,7 +4222,7 @@ loc_A167:
 ; =============== S U B	R O U T	I N E =======================================
 sub_A169:
 		LDA		#$3E
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		FARX	_bE_s5
 		RTS
 
@@ -4214,17 +4235,17 @@ sub_A172:
 		LDA		word_4
 		CLC
 		ADC		#$D
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		PLA
 		STA		byte_CE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A187:
+_check_if_player_is_dead:
 		LDA		byte_50
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A189:
+_check_if_player_is_dead_ex:
 		ASL
 		TAX
 		LDA		_players_status,X
@@ -4237,7 +4258,7 @@ loc_A195:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A197:
+_check_if_player_exist_or_dead:
 		LDA		byte_50
 		ASL
 		TAX
@@ -4277,11 +4298,12 @@ _b0_s67:
 		PLA
 
 ; =============== S U B	R O U T	I N E =======================================
-_store_mp_cost: ; sub_A1C9
+_store_mp_cost:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_D0
 		RTS
+		
 off_A1D0:
 		.WORD	sub_9FBE
 		.WORD	sub_9FBE
@@ -4347,11 +4369,16 @@ _sram_bank0_bn_code:
 _sram_bank0_bn_code_end:
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s64:
+; after all players is dead, you can respawn at the king with all other players
+; except hero dead but hero is fully restored. this function is placed here
+; due to lack of the free space at the system bank. currently may be moved
+; back
+;
+_b0_s64_king_respawn:
 		JSR		_b0_s31
 		LDX		#0
 loc_A292:
-		LDA		_players_class_gender,X
+		LDA		_players_class_gender,X		; look for a HERO class
 		AND		#7
 		BEQ		loc_A2A0
 		INX
@@ -4359,7 +4386,7 @@ loc_A292:
 		BNE		loc_A292
 		LDX		#0
 loc_A2A0:
-		TXA
+		TXA									; full hero respawn
 		ASL
 		TAY
 		LDA		#$80
@@ -4375,11 +4402,12 @@ loc_A2A0:
 		STA		_players_MP+1,Y
 		LSR		byte_7BE
 		ROR		byte_7BD
-		ROR		byte_7BC
+		ROR		byte_7BC					; set the proper palette
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#0
 		STA		_world_map_steps_count
-		JMP		sub_1743B5
+		JMP		_location_palette_and_rand_update
+		
 ; probably an item stats related table, but not sure
 _b0_d58:
 		.BYTE	  0,$1A,$15,$2A,  3,$26,$24,$22
@@ -4500,7 +4528,7 @@ loc_A3CE:
 		LDA		word_4
 		CLC
 		ADC		#$D
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		JSR		__pause_or_skip
 		LDA		#0
 		STA		byte_8E
@@ -4522,7 +4550,7 @@ sub_A3FB:
 		LDA		byte_48
 		BNE		loc_A410
 		FARX	_bE_sD
-		SYSX	_sys0D_wrap_bE_sC,$3D
+		SYSX	_display_window,$3D
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
@@ -4980,11 +5008,11 @@ off_A6F8:
 		.WORD	_b0_d59
 		.WORD	_b0_d3F
 off_A702:
-		.WORD	byte_79C
-		.WORD	byte_79C
-		.WORD	byte_7A0
-		.WORD	byte_79C
-		.WORD	byte_79C
+		.WORD	_players_spell
+		.WORD	_players_spell
+		.WORD	_players_spell+4
+		.WORD	_players_spell
+		.WORD	_players_spell
 
 ; =============== T A B L E =================================================
 ; When leveling up, stats are increased in a loop. this table points to the ram containing each current stat
@@ -5203,7 +5231,7 @@ locret_A7F3:
 ; =============== T A B L E =======================================
 ; Pointers to stat curves
 _stat_curve_tbl:
-		.WORD	_b0_s4B ; EXP
+		.WORD	_stat_curve_EXP_tbl
 		.WORD	_stat_curve_STR_tbl
 		.WORD	_stat_curve_AGI_tbl
 		.WORD	_stat_curve_VIT_tbl
@@ -5350,7 +5378,7 @@ sub_A8BB:
 		AND		#$20
 		BEQ		loc_A8D2
 		TXA
-		FARX	_bE_s0
+		FARX	_bE_s0_display_window_ex
 loc_A8D2:
 		PLA
 		STA		byte_CE
@@ -5360,7 +5388,7 @@ loc_A8D2:
 ; the tables below are organized into 5 entries per class times 8 classes
 ; see _eval_stat_curve for more details than you care to know, where these are all used
 ;
-_b0_s4B:
+_stat_curve_EXP_tbl:
 		.BYTE	$81,$88,$84,$1C,$FF ; exp
 		.BYTE	$02,$88,$85,$9C,$FF
 		.BYTE	$02,$88,$86,$9A,$7F
@@ -5465,10 +5493,10 @@ _b0_s5D:
 		LDA		byte_60B7
 		AND		#$40
 		BNE		sub_AAE9
-		SYSX	_sys0D_wrap_bE_sC,$2C
+		SYSX	_display_window,$2C
 		LDX		#5
-		JSR		_sleep_X
-		SYSX	_sys0D_wrap_bE_sC,$69
+		JSR		_sleep_X_sync
+		SYSX	_display_window,$69
 		FARX	_bA_sE
 		CMP		#$FF
 		BEQ		loc_AB46
@@ -5480,7 +5508,7 @@ _b0_s5D:
 		JSR		_b0_s28
 		LDA		word_4
 		BEQ		sub_AAE5
-		SYSX	_sys0D_wrap_bE_sC,$6B
+		SYSX	_display_window,$6B
 		CMP		#$FF
 		BEQ		loc_AB46
 		STA		byte_46
@@ -5499,7 +5527,7 @@ _b0_s5D:
 loc_AB3F:
 		LDA		#$15
 loc_AB41:
-		FARX	_bE_sC
+		FARX	_bE_sC_display_window
 		CMP		#$FF
 loc_AB46:
 		BEQ		loc_AB88
@@ -5586,7 +5614,7 @@ loc_ABCF:
 loc_ABDA:
 		JMP		loc_ACA2
 loc_ABDD:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 loc_ABE0:
 		CPX		#$6B
 		BEQ		loc_AC0D
@@ -5630,7 +5658,7 @@ loc_AC10:
 loc_AC2E:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5677,7 +5705,7 @@ sub_AC74:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC7D:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_47
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$69
@@ -5719,7 +5747,7 @@ byte_ACB1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACB4:
-		SYSX	_sys0D_wrap_bE_sC,$2E
+		SYSX	_display_window,$2E
 		STA		byte_47
 		STA		byte_D4
 		STA		byte_50
@@ -5727,7 +5755,7 @@ sub_ACB4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		JSR		sub_AD1E
 		LDA		byte_45
 		CMP		byte_47
@@ -5832,7 +5860,7 @@ loc_AD4B:
 		TYA
 		JMP		_wrap_bE_s4_msg_m00_arg1
 loc_AD4F:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		LDA		byte_45
 		ASL
 		TAX
@@ -5915,7 +5943,7 @@ loc_ADC6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADE0:
 		PHA
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg1
 		SEC
@@ -5928,7 +5956,7 @@ _return_false_in_C:
 
 ; =============== S U B	R O U T	I N E =======================================
 loc_ADEC:
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys06_msg_m00_arg0,$BF
 		SEC
 		RTS
@@ -5944,7 +5972,7 @@ sub_ADF4:
 		BEQ		_return_false_in_C
 		STX		byte_D2
 		SYSX	_apu_load,$17
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$52
 		FARX	_bD_s22
 		SEC
@@ -5957,7 +5985,7 @@ sub_AE12:
 		AND		#$7F ; remove equip bit?
 		CMP		#$68 ; compare to wing of wyvern? that one's special, we need to launch a "where" places list.
 		BEQ		loc_AE1D
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 loc_AE1D:
 		LDY		#$FD ; pre-roll loop one step early
 		LDA		byte_48 ; reload target item in case above jsr whacked it..?
@@ -6072,7 +6100,7 @@ sub_AEB5:
 ; =============== S U B	R O U T	I N E =======================================
 ; delay and "A darkness oozes out from the lamp and covers ..."
 sub_AEB9:
-		FARX	_bC_s12_sleep_X_50
+		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s11
 		RTS
 
@@ -6159,11 +6187,11 @@ sub_AEF1:
 		BNE		loc_AF38
 		SYSX	_sys07_msg_m00_arg1,$A1
 		SYSX	_apu_load,$86
-		SYSX	_sys0D_wrap_bE_sC,$1D
+		SYSX	_display_window,$1D
 		TAX
 		BNE		loc_AF32
 		SYSX	_sys07_msg_m00_arg1,$A2
-		FARX	_bC_s2E_sleep_X_50_wait_50_or_skip
+		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#4
 		FARX	_bC_s0_npc_anim_script_init
 		SEC
@@ -6187,7 +6215,7 @@ sub_AF5B:
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
-		SYSX	_sys0D_wrap_bE_sC,$3E
+		SYSX	_display_window,$3E
 		SYSX	_sys06_msg_m00_arg0,$AA
 		JSR		_sleep_30
 		FARX	_b6_s6
@@ -6279,7 +6307,7 @@ loc_AFF6:
 		LDA		#$6F
 loc_AFF8:
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		FARX	_bC_s12_sleep_X_50
+		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s20
 		FARX	_b6_s10
 		SEC
@@ -6978,7 +7006,7 @@ _b0_s66:
 		LDA		#$FF
 		LDX		#0
 loc_BFA9:
-		STA		_ppu_mask_shadow0,X
+		STA		byte_6D40,X
 		INX
 		CPX		#$A0
 		BNE		loc_BFA9

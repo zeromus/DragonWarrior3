@@ -16,7 +16,7 @@ _b17_s0_copyrights_screen:
 		JSR		_copyrights_set_pal_and_show
 		JSR		_copyrights_sprites_animate
 		LDX		#$50
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		#$F
 		STA		_ram_pal_buf
 		JSR		_pal_set_no_fade
@@ -115,10 +115,10 @@ locret_2340C8:
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_sprites_animate:
 		LDX		#$28
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		JSR		_copyrights_sprites_blink
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 
 ; =============== S U B	R O U T	I N E =======================================
 _copyrights_sprites_blink:
@@ -196,7 +196,7 @@ sub_234136:
 		STA		byte_60B7
 		LDA		#0
 		STA		_ppu_spr_dma_sent
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		RTS
 _pal_copyrights:
 		.BYTE	  8, $F,$37,$27, $F,$27,$17, $F,$2B,$1B,  0,  0,  0, $F,$20,$10
@@ -599,10 +599,10 @@ loc_23580A:
 		JSR		_pal_fade_out
 		FARX	_bB_s4
 		LDX		#$64
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		FARX	_b18_s0_intro_animation
 		LDX		#$64
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDX		#0
 		LDA		#$F
 loc_23582C:
@@ -636,7 +636,7 @@ loc_235861:
 		FARX	_bB_s4
 		JSR		_pal_fade_out
 		LDX		#$3C
-		JSR		_sleep_X
+		JSR		_sleep_X_sync
 		LDA		#2
 		STA		byte_6A36
 		JMP		_ppu_and_dequeue_enable
@@ -1283,7 +1283,7 @@ sub_235C8C:
 		STA		byte_60B7
 		LDA		#0
 		STA		_ppu_spr_dma_sent
-		JSR		_wait_for_nmi_is_over
+		JSR		_wait_for_nmi_is_over_sync
 		LDA		_nmi_counter
 		AND		#7
 		BNE		locret_235CA9
