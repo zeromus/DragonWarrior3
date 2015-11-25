@@ -1137,9 +1137,9 @@ _b6_sC:
 		LDA		byte_60C4
 		AND		#$80
 		STA		byte_60C4
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		JSR		loc_175185
 		SEC
 locret_9B408:
@@ -1180,7 +1180,7 @@ sub_9B433:
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_9B454
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		loc_9B44E
 		LDA		_mapNumber
 		CMP		#$C
@@ -1345,7 +1345,7 @@ loc_9B529:
 		LDA		byte_60BA
 		AND		#1
 		BNE		loc_9B524
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		loc_9B545
 		LDA		_mapNumber
 		CMP		#$C
@@ -1372,9 +1372,9 @@ loc_9B557:
 		STA		byte_644
 		SYSX	_apu_load,$92
 		JSR		_pal_fade_out
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
@@ -1480,12 +1480,12 @@ loc_9B666:
 		CLC
 		RTS
 loc_9B668:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_9B666
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#4
-		STA		byte_60B7
+		STA		_global_game_flags
 		SYSX	_sys07_msg_m00_arg1,$1A
 		SEC
 		RTS
@@ -1597,7 +1597,7 @@ loc_9B736:
 		STA		byte_AA
 		STA		byte_AB
 		RTS
-		
+
 byte_9B73D:
 		.BYTE	  1,  5,  9, $D,  2,  6, $A, $E,  3,  7, $B, $F
 _world_map_pal_decode_table_0:
@@ -2061,10 +2061,10 @@ sub_9BA66:
 		FARX	_bE_s1C
 		BNE		sub_9BA63
 		FARX	_b7_sD
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		PHA
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		PLA
 		CLC
 		ADC		word_4
@@ -2092,7 +2092,7 @@ sub_9BA90:
 		STA		byte_BD
 		LDA		byte_630F
 		STA		byte_C4
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDX		byte_BD
 		LDA		word_4+1,X
 		BNE		sub_9BAB9
@@ -2106,7 +2106,7 @@ sub_9BAB9:
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BEQ		sub_9BADD
 		SYSX	_sys08_msg_m00_arg2,$7F
@@ -2352,9 +2352,9 @@ loc_9BC61:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s17:
 		JSR		sub_9BC74
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2399,7 +2399,7 @@ loc_9BCAE:
 		INX
 		BNE		loc_9BCAE
 loc_9BCBE:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		ASL
 		ASL
@@ -2619,7 +2619,7 @@ sub_9BE62:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE69:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#1
 		BEQ		sub_9BE62
@@ -2629,7 +2629,7 @@ sub_9BE69:
 		FARX	_bE_sC_display_window
 		LDX		#4
 loc_9BE7C:
-		LDA		byte_7C0,X
+		LDA		_players_selected_list+1,X
 		STA		byte_B9,X
 		DEX
 		BNE		loc_9BE7C
@@ -2653,13 +2653,13 @@ loc_9BE9B:
 		LDX		_tmp_ptrB4
 		LDY		_tmp_varB6,X
 		LDA		byte_BA,Y
-		STA		_players_formation,Y
+		STA		_party_players_list_formation,Y
 		JMP		loc_9BE8A
 loc_9BEB2:
 		LDY		#$FF
 loc_9BEB4:
 		INY
-		LDA		_players_formation,Y
+		LDA		_party_players_list_formation,Y
 		BMI		loc_9BEB4
 		DEX
 		BPL		loc_9BEB4
@@ -2671,7 +2671,7 @@ loc_9BEB4:
 		PLA
 		TAY
 		LDA		#$FF
-		STA		_players_formation,Y
+		STA		_party_players_list_formation,Y
 		LDA		#2
 		FARX	_bE_sB
 		INC		_tmp_ptrB4
@@ -2687,7 +2687,7 @@ loc_9BEDF:
 		PHA
 		TXA
 		PHA
-		JSR		_sram_b0_s3A
+		JSR		_sram_b0_s3A_players_data_swap
 		PLA
 		TAX
 		TAY
@@ -2716,7 +2716,7 @@ sub_9BF0D:
 		LDX		#3
 loc_9BF0F:
 		LDA		byte_BA,X
-		STA		_players_formation,X
+		STA		_party_players_list_formation,X
 		DEX
 		BPL		loc_9BF0F
 		RTS
@@ -2743,7 +2743,7 @@ loc_9BF25:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BF2C:
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDX		#3
 loc_9BF31:
 		LDA		word_4,X

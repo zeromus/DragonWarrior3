@@ -1257,7 +1257,7 @@ loc_B272B:
 		LDA		byte_60CB
 		ORA		#$20
 		STA		byte_60CB
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		ASL
 		STA		word_40
@@ -2223,7 +2223,7 @@ loc_B2DF7:
 		ASL
 		ORA		byte_CF
 		LDX		byte_D0
-		STA		byte_611E,X
+		STA		_tavern_chars_class_gender,X
 		LDA		#1
 		STA		_tavern_chars_level,X
 		TXA
@@ -2324,22 +2324,22 @@ loc_B2EB8:
 		TAX
 		ASL
 		TAY
-		LDA		byte_6112,X
+		LDA		_tavern_chars_VIT,X
 		ASL
-		ADC		byte_6112,X
+		ADC		_tavern_chars_VIT,X
 		LSR
 		CLC
 		ADC		#5
-		STA		byte_6142,Y
+		STA		_tavern_chars_MHP,Y
 		STA		_tavern_chars_HP,Y
 		LDA		#0
-		STA		byte_6142+1,Y
+		STA		_tavern_chars_MHP+1,Y
 		STA		_tavern_chars_HP+1,Y
 		LDA		#0
-		STA		byte_6172+1,Y
-		STA		byte_6172,Y
-		STA		byte_615A,Y
-		STA		byte_615A+1,Y
+		STA		_tavern_chars_MMP+1,Y
+		STA		_tavern_chars_MMP,Y
+		STA		_tavern_chars_MP,Y
+		STA		_tavern_chars_MP+1,Y
 		JSR		sub_B31E2
 		CMP		#3
 		BCS		loc_B2F01
@@ -2347,12 +2347,12 @@ loc_B2EB8:
 		TAX
 		ASL
 		TAY
-		LDA		byte_60FA,X
-		STA		byte_6172,Y
-		STA		byte_615A,Y
+		LDA		_tavern_chars_INT,X
+		STA		_tavern_chars_MMP,Y
+		STA		_tavern_chars_MP,Y
 		LDA		#0
-		STA		byte_6172+1,Y
-		STA		byte_615A+1,Y
+		STA		_tavern_chars_MMP+1,Y
+		STA		_tavern_chars_MP+1,Y
 loc_B2F01:
 		LDA		byte_D0
 		ASL
@@ -2464,7 +2464,7 @@ loc_B2F98:
 		LDX		#0
 loc_B2FA5:
 		LDA		byte_630A,X
-		STA		byte_7BC,X
+		STA		_players_gold,X
 		INX
 		CPX		#9
 		BNE		loc_B2FA5
@@ -2499,7 +2499,7 @@ loc_B2FD0:
 _b7_sD:
 		LDX		#3
 loc_B2FE0:
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		BPL		loc_B2FF4
 		CMP		#$FF
 		BEQ		loc_B2FF4
@@ -2521,7 +2521,7 @@ loc_B2FF9:
 		BNE		loc_B2FF9
 		LDX		#0
 loc_B3006:
-		LDA		byte_7BC,X
+		LDA		_players_gold,X
 		STA		byte_630A,X
 		INX
 		CPX		#9
@@ -2549,7 +2549,7 @@ loc_B3030:
 		BPL		loc_B3048
 		LDA		#$FF
 		STA		byte_630F,X
-		STA		_players_formation,X
+		STA		_party_players_list_formation,X
 		TXA
 		ASL
 		TAY
@@ -2678,7 +2678,7 @@ loc_B30FC:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s12:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_55
 		LDA		byte_CE
@@ -2689,17 +2689,17 @@ loc_B3117:
 		CPX		byte_55
 		BEQ		loc_B3127
 		STX		byte_D0
-		JSR		_sram_b0_s3A
+		JSR		_sram_b0_s3A_players_data_swap
 		INC		byte_CF
 		BNE		loc_B3117
 loc_B3127:
 		LDX		byte_55
 		DEX
 		LDA		#$FF
-		STA		_players_formation,X
+		STA		_party_players_list_formation,X
 		LDX		#3
 loc_B3131:
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		STA		byte_630F,X
 		DEX
 		BPL		loc_B3131
@@ -2736,7 +2736,7 @@ _b7_s15:
 		JSR		_b7_sD
 		LDX		#0
 loc_B3171:
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		BMI		loc_B318A
 		TXA
 		ASL
@@ -2755,7 +2755,7 @@ loc_B318A:
 		RTS
 loc_B3190:
 		STX		byte_CE
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		PHA
 		JSR		_b7_s12
 		PLA
@@ -2769,7 +2769,7 @@ _b7_sE_player_log_list:
 		JSR		sub_B2BB5
 		LDA		#$14			; check me, this may be just size constant
 		LDY		#$01			;
-		JSR		_add16_to_16	; 
+		JSR		_add16_to_16	;
 		LDY		#0
 loc_B31B2:
 		LDA		(word_3C),Y
@@ -2805,7 +2805,7 @@ sub_B31D7:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B31E2:
 		LDX		byte_D0
-		LDA		byte_611E,X
+		LDA		_tavern_chars_class_gender,X
 		AND		#7
 		RTS
 
@@ -2843,26 +2843,26 @@ sub_B3209:
 		STA		(word_3C),Y
 		RTS
 off_B3216:
-		.WORD	byte_60E2
+		.WORD	_tavern_chars_STR
 		.WORD	byte_B323E
-		.WORD	byte_60EE
+		.WORD	_tavern_chars_AGI
 		.WORD	byte_B3246
-		.WORD	byte_6112
+		.WORD	_tavern_chars_VIT
 		.WORD	byte_B324E
-		.WORD	byte_60FA
+		.WORD	_tavern_chars_INT
 		.WORD	byte_B3256
-		.WORD	byte_6106
+		.WORD	_tavern_chars_LUCK
 		.WORD	byte_B325E
 off_B322A:
-		.WORD	byte_60E2
+		.WORD	_tavern_chars_STR
 		.WORD	byte_B326C
-		.WORD	byte_60EE
+		.WORD	_tavern_chars_AGI
 		.WORD	byte_B3271
-		.WORD	byte_6112
+		.WORD	_tavern_chars_VIT
 		.WORD	byte_B3276
-		.WORD	byte_60FA
+		.WORD	_tavern_chars_INT
 		.WORD	byte_B327B
-		.WORD	byte_6106
+		.WORD	_tavern_chars_LUCK
 		.WORD	byte_B3280
 byte_B323E:
 		.BYTE	  7,  1,  3,  0,  7,  4, $F,  3
@@ -2952,7 +2952,7 @@ loc_B32F6:
 		CMP		#4
 		BNE		loc_B32F6
 		RTS
-		
+
 byte_B332B:
 		.BYTE	$6B, $A,  9,  0
 		.BYTE	$69, $B, $C,  2
@@ -2986,7 +2986,7 @@ loc_B334F:
 		BNE		loc_B334F
 		TXA
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		PLA
 		TAX
 		LDA		word_4

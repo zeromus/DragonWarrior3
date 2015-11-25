@@ -11,7 +11,7 @@ byte_3:
 ; occasionally as a u24 temporary value
 ; also used as the beginning of: u8[4] inventoryReport, containing values analyzed from a PCs inventory (see sub_inv_AnalyzeEquipped)
 ; also: struct { u8 weapon, armor, shield, helm; } ; see sub_classifyItemType_returnA
-word_4: 
+word_4:
 		.BYTE	0
 word_5
 		.BYTE	0
@@ -50,7 +50,7 @@ _pads: ; 13
 _nmi_flags:
 		.BYTE	0			; bit 01 - sprite insert busy flag
 							; bit 02 -
-							; bit 04 - 
+							; bit 04 -
 							; bit 08 -
 							; bin 10 - forbid nmi ppu dequeue
 _rand_seed:
@@ -188,7 +188,7 @@ byte_5D:
 word_5E:
 		.BYTE	0,0
 ;----------------------------------------------
-; u16 _bs_reward_GP; GP prop from enemy is _accumulated_ into here when queried. 
+; u16 _bs_reward_GP; GP prop from enemy is _accumulated_ into here when queried.
 word_60:
 		.BYTE	0,0
 ;----------------------------------------------
@@ -392,7 +392,7 @@ byte_CE: ; "target" - current target for many AI and inventory functions
 		.BYTE	0
 ;----------------------------------------------
 ; "u16 tempdamage" stores temporary damage values, including MP costs; and many, many other things
-byte_CF: 
+byte_CF:
 		.BYTE	0
 byte_D0:
 		.BYTE	0
@@ -480,7 +480,7 @@ byte_18E:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0
-		
+
 _spr_ram:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -570,17 +570,13 @@ _attr_ram_buf:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_500:
-		.BYTE	0
-byte_501:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_510:
 		.BYTE	0,0,0,0,0,0,0,0
 byte_518:
 		.BYTE	0,0,0,0,0,0,0,0
 byte_520:
-		.BYTE	0
-byte_521:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; struct { u8 one, two } enemystat[8]
 ; contains what seems to be enemy status, two bytes per enemy? one copy seems to be the round starting state and another is the current state, or something like that
@@ -593,18 +589,16 @@ byte_521:
 ; C - confused
 ; or are the PX bits the enemy type/group? like, there can be 4 enemy types per battle?
 byte_530:
-		.BYTE	0
-byte_531:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8[12] someBattleActionTable - contains something like targets? 12 entries for 4 PC + 8 monsters
 byte_540:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; $54C a table indicating the moves selected for each character "movetable"
-; perhaps we have 4 entries for player action and then entries for each enemy (0x00 is either 0th action entry, or action type 0)	
+; perhaps we have 4 entries for player action and then entries for each enemy (0x00 is either 0th action entry, or action type 0)
 ; these are cleared to 0 after the action is taken
-; for the hero, I had: 
+; for the hero, I had:
 ; 80 - attack
 ; 81 - attack (missing target?)
 ; 84 - attack
@@ -614,13 +608,13 @@ byte_540:
 ; so, I think the top nybble is basically the general action, and maybe the low nybble is a parameter?
 ; 0x - attack party, 1x - cast on party?, etc.
 ; 8x - attack, 9x - cast, Ax - parry, Bx - item, Cx - nonsense, Dx - nonsense, Ex - equip+attack, Fx - bypassed
-; (0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed) 
+; (0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed)
+; u8[12]
 byte_54C:
-		.BYTE	0,0,0,0
-byte_550:
-		.BYTE	0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; "this is a movetable which maps to exact enemy actions. Dont completely understand how the previous one is used, then."
+; u8[12]
 byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0 ; one too many?
 ;----------------------------------------------
@@ -796,7 +790,7 @@ _cur_chr0_bank_prg_hi:
 byte_6C9:
 		.BYTE	0,0,0,0,0,0,0
 ;----------------------------------------------
-_ppu_scroll_shadow: ; "ntxscroll/ntyscroll" - pixel X/Y scroll 
+_ppu_scroll_shadow: ; "ntxscroll/ntyscroll" - pixel X/Y scroll
 		.BYTE	0,0
 ;----------------------------------------------
 _nmi_counter: ; used for text system solely? not sure. <zero> I thought so too last time i debugged the game
@@ -925,9 +919,11 @@ _players_MMP:
 ; first byte is a control bytes, to check is player
 ; actually existst and track status changes
 ;
-; ........ D....R..
+; ........ DNP..R..
 ; R - Affects enemy spell/breath damage reductions. if set, reductions don't
 ;     apply (for spells)? Maybe this prevents double reductions from protection spells.
+; P - Player is poisoned
+; N - "NM" status flag
 ; D - Death flag. Character is dead if clear
 ;
 _players_status:
@@ -979,23 +975,30 @@ _players_spell:
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
-byte_7BC:
-		.BYTE	0
-byte_7BD:
-		.BYTE	0
-byte_7BE:
-		.BYTE	0
-byte_7BF:
-		.BYTE	0
-byte_7C0:
-		.BYTE	0
-_players_formation:
+_players_gold:
+		.BYTE	0,0,0
+
+;----------------------------------------------
+; 8 + 4 bits used for every possible generated
+; characters in game. When selected to the party,
+; the corresponding bit is set according to
+; order of creation (the HERO is always idx 0,
+; then three autogenerated chars 1,2,3, then
+; other generated by user)
+;
+_players_selected_list:
+		.BYTE	0,0
+; indexes of the charactes in current formation
+; in particular formation order
+;
+_party_players_list_formation:
 		.BYTE	0,0,0,0
 
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0
+; unused
+;		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
+;		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+;		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+;		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 ;$0C73#apuCurrentSq1Pitch#
 ;$0C75#apuCurrSq2Pitch#
@@ -1102,9 +1105,18 @@ byte_60B5:
 byte_60B6:
 		.BYTE	0
 ;----------------------------------------------
-; used by dialog wait loop.. some kind of battle special logic maybe..?
-; 60B7.0 seems to change class to Erdrick
-byte_60B7:
+; global game specific flags
+; bits ABCDEFGH, where
+; 	H - change class to Erdrick
+;	G - ?
+;	F - ?
+;	E - ?
+;	D - ?
+;	C - set if in battle mode (does not clear after death in battle!)
+;	B - ?
+;	A - ?
+;
+_global_game_flags:
 		.BYTE	0
 ;----------------------------------------------
 byte_60B8:
@@ -1155,30 +1167,40 @@ byte_60D0:
 ; u8[12]
 _tavern_chars_level:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_60E2:
+; u8[12] guessed
+_tavern_chars_STR:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_60EE:
+; u8[12] guessed
+_tavern_chars_AGI:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_60FA:
+; u8[12] guessed
+_tavern_chars_INT:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_6106:
+; u8[12] guessed
+_tavern_chars_LUCK:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_6112:
+; u8[12] guessed
+_tavern_chars_VIT:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-byte_611E:
+; u8[12]
+_tavern_chars_class_gender:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
-; u16[12]
+; u16[12] guessed based on the players characteristics layout
 _tavern_chars_HP:
 		.WORD	0,0,0,0,0,0,0,0,0,0,0,0
-byte_6142:
+; u8[12] guessed
+_tavern_chars_MHP:
 		.WORD	0,0,0,0,0,0,0,0,0,0,0,0
-byte_615A:
+; u8[12] guessed
+_tavern_chars_MP:
 		.WORD	0,0,0,0,0,0,0,0,0,0,0,0
-byte_6172:
+; u8[12] guessed
+_tavern_chars_MMP:
 		.WORD	0,0,0,0,0,0,0,0,0,0,0,0
+; u8[12]
 byte_618A:
 		.WORD	0,0,0,0,0,0,0,0,0,0,0,0
-; u8[12][3]
+; u24[12]
 _tavern_chars_EXP:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -1187,7 +1209,7 @@ byte_61C6:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0
-		
+
 ; there are a total 12 different characters that can be registered
 ; * the first one is always the Hero character
 ; * then three autogenerated by the game from the 12 predefined characters
@@ -1444,8 +1466,10 @@ byte_6A7B:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8 pc.stuff[4] - stuff? for 4 PCs
-; pc.stuff.$20 - parrying, or defense++'d? battle order?
-byte_6A9B:
+; battle formation order (most of time is 0 1 2 3, but there are at least two cases during the game,
+; when you may change the battle formation as well, see _b0_s3B_players_data_swap_in_battle usage)
+; and status flags: confused ($10), sleep ($08), parry? ($04)
+_player_battle_order_and_flags:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - AGI realtime value cached for 4 players (modified realtime by spells and effects)
@@ -1534,7 +1558,7 @@ byte_6B1F:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 _sram_b0_s2_player_HP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s3_player_MAX_HP_read:
+_sram_b0_s3_player_MHP_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s4_player_HP_add:
 		.BYTE	0,0,0,0,0
@@ -1542,7 +1566,7 @@ _sram_b0_s5_player_HP_subtract:
 		.BYTE	0,0,0,0,0
 _sram_b0_s6_player_MP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s7_player_MAX_MP_read:
+_sram_b0_s7_player_MMP_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s8_player_MP_add:
 		.BYTE	0,0,0,0,0
@@ -1552,13 +1576,13 @@ _sram_b0_sB_player_MP_consume:
 		.BYTE	0,0,0,0,0
 _sram_b0_sC_player_LV_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_sD:
+_sram_b0_sD_tavern_char_LV_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_sE_player_STATUS_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_sF:
+_sram_b0_sF_unassigned_formation_char_name_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s10:
+_sram_b0_s10_tavern_char_name_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s11_player_STR_read:
 		.BYTE	0,0,0,0,0
@@ -1572,65 +1596,65 @@ _sram_b0_s15_player_LUCK_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s16_player_ATK_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s17:
+_sram_b0_s17_player_rATK_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s18_player_DEF_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s19:
+_sram_b0_s19_player_EXP_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1A:
+_sram_b0_s1A_player_EXP_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1B:
+_sram_b0_s1B_players_gold_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1C:
+_sram_b0_s1B_players_gold_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1D:
+_sram_b0_s1B_players_gold_subtract:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1E_player_euipped_item_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1F:
+_sram_b0_s1F_get_weapon_from_inventory:
 		.BYTE	0,0,0,0,0
-_sram_b0_s20:
+_sram_b0_s21_shield_from_inventory:
 		.BYTE	0,0,0,0,0
-_sram_b0_s21:
+_sram_b0_s21_get_armor_from_inventory:
 		.BYTE	0,0,0,0,0
-_sram_b0_s22:
+_sram_b0_s22_helm_from_inventory:
 		.BYTE	0,0,0,0,0
-_sram_b0_s23:
+_sram_b0_s23_player_equip_weapon:
 		.BYTE	0,0,0,0,0
-_sram_b0_s24:
+_sram_b0_s24_player_equip_shield:
 		.BYTE	0,0,0,0,0
-_sram_b0_s25:
+_sram_b0_s25_player_equip_armor:
 		.BYTE	0,0,0,0,0
-_sram_b0_s26:
+_sram_b0_s24_player_equip_helm:
 		.BYTE	0,0,0,0,0
-_sram_b0_s28:
+_sram_b0_s28_player_inventory_item_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s29:
+_sram_b0_s29_player_inventory_item_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2A:
+_sram_b0_s2A_player_inventory_item_remove:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2B:
+_sram_b0_s2B_is_anybody_owns_item:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2C_player_CLASS_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2E:
+_sram_b0_s2E_tavern_char_CLASS_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2F_player_gender_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s30:
+_sram_b0_s30_tavern_char_gender_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s31:
+_sram_b0_s31_get_party_chars_list:
 		.BYTE	0,0,0,0,0
-_sram_b0_s32:
+_sram_b0_s32_get_tavern_chars_list:
 		.BYTE	0,0,0,0,0
-_sram_b0_s33:
+_sram_b0_s33_count_non_dead_party_chars:
 		.BYTE	0,0,0,0,0
-_sram_b0_s34:
+_sram_b0_s34_read_spell_related_data_byte:
 		.BYTE	0,0,0,0,0
 _sram_b0_s35:
 		.BYTE	0,0,0,0,0
-_sram_b0_s36:
+_sram_b0_s36_read_spell_related_data_byte:
 		.BYTE	0,0,0,0,0
 _sram_b0_s37:
 		.BYTE	0,0,0,0,0
@@ -1638,13 +1662,13 @@ _sram_b0_s38:
 		.BYTE	0,0,0,0,0
 _sram_b0_s39:
 		.BYTE	0,0,0,0,0
-_sram_b0_s3A:
+_sram_b0_s3A_players_data_swap:
 		.BYTE	0,0,0,0,0
-_sram_b0_s3B:
+_sram_b0_s3B_players_data_swap_in_battle:
 		.BYTE	0,0,0,0,0
 ;_sram_b0_sA_player_MP_set_sero:
 		.BYTE	0,0,0,0,0
-;_sram_b0_s27:
+;_sram_b0_s27_player_equip_item_ex:
 		.BYTE	0,0,0,0,0
 ;_sram_b0_s2D
 		.BYTE	0,0,0,0,0

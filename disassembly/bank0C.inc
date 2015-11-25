@@ -2535,7 +2535,7 @@ sub_12915C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129162:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_129199
 		ORA		byte_60B9
 		ORA		byte_60CA
@@ -2548,9 +2548,9 @@ sub_129162:
 		BNE		locret_129198
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$AC
 		STA		byte_7633
 		JSR		sub_174CBD
@@ -2597,7 +2597,7 @@ loc_129199:
 _bC_s10:
 		JSR		sub_1293DA
 		BCS		loc_12923A
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		loc_1291F6
 		LDA		_mapNumber
 		CMP		#$C
@@ -2912,7 +2912,7 @@ loc_1293ED:
 		BEQ		loc_129436
 		CMP		#$72
 		BNE		sub_129404
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_129436
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3267,10 +3267,10 @@ sub_129616:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s1D:
 		SYSX	_display_window,$3E
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$40
 		BNE		sub_129610
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		STA		byte_CE
 		LDA		#0
@@ -3346,7 +3346,7 @@ loc_129698:
 		STA		byte_CE
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1
-		JSR		_sram_b0_s1C
+		JSR		_sram_b0_s1B_players_gold_add
 		SYSX	_sys06_msg_m00_arg0,$26
 		JMP		loc_129745
 loc_1296BD:
@@ -3437,7 +3437,7 @@ loc_129749:
 		BEQ		loc_129742
 		LDA		word_6+1
 		BPL		loc_12976B
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#2
 		BEQ		loc_129742
 		LDA		word_6+1
@@ -3540,7 +3540,7 @@ loc_12980E:
 		LDA		byte_60CD
 		CMP		#$FF
 		BNE		loc_129827
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		loc_12982B
 loc_129827:
 		LDA		#$FF
@@ -3591,11 +3591,11 @@ loc_12986F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129874:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		word_4
 		DEY
 		STY		_tmp_ptrB4+1
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		BCC		loc_129888
 		LDA		word_4
 		STA		byte_CE
@@ -3626,7 +3626,7 @@ loc_1298A9:
 		CMP		#$FF
 		BEQ		loc_1298CD
 		STA		byte_CF
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		TAX
@@ -3650,12 +3650,12 @@ loc_1298D1:
 loc_1298E5:
 		LDA		_tmp_varB6
 		STA		byte_CE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
 		STA		byte_D4
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDY		#$3F
 		LDA		_tmp_varB6
 		ASL
@@ -3703,7 +3703,7 @@ loc_129935:
 loc_129939:
 		LDA		_tmp_ptrB4
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 		JSR		loc_129953
 loc_129943:
 		LDA		_tmp_ptrB4
@@ -3819,7 +3819,7 @@ _bC_s1F:
 		LDA		byte_60CD
 		CMP		#$FF
 		BNE		loc_1299FD
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_1299FD
 		INX
 		INX
@@ -3973,7 +3973,7 @@ sub_129AA8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129AAC:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		LSR
 		LSR
 		LSR
@@ -5088,7 +5088,7 @@ loc_12A247:
 		LDY		byte_60CD
 		INY
 		BNE		loc_12A239
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_12A239
 loc_12A259:
 		SYSX	_apu_load,$1D
@@ -5170,7 +5170,7 @@ _bC_s2B:
 		JSR		_bC_s3A
 		FARX	_bD_s22
 		JSR		sub_174CCF
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$B0
 		LDA		#$47
@@ -5301,7 +5301,7 @@ sub_12A3A6:
 		LSR
 		LSR
 		TAX
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		BMI		sub_12A3DC
 loc_12A3B4:
 		LDY		#0
@@ -5693,15 +5693,15 @@ sub_12A621:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s19:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVS		loc_12A686
 		FARX	_bB_s4
 		JSR		_pal_fade_out
 		SYSX	_apu_load,$01
 		FARX	_b0_s56
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$40
-		STA		byte_60B7
+		STA		_global_game_flags
 		FARX	_bB_s7
 		JSR		sub_177CFC
 		JSR		_ppu_disable
@@ -5728,9 +5728,9 @@ _bC_s19:
 loc_12A686:
 		JSR		_pal_fade_out
 		FARX	_b0_s4F
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$BF
-		STA		byte_60B7
+		STA		_global_game_flags
 		FARX	_bE_s10
 		LDA		#$12
 		STA		_playerMapX
@@ -5832,9 +5832,9 @@ _bC_s2F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s30:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$1B
 		JMP		_bC_s0_npc_anim_script_init
 
@@ -7175,7 +7175,7 @@ loc_12B07C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B080:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		word_3C
 		JSR		sub_12B0EB
@@ -7210,7 +7210,7 @@ sub_12B0B0:
 		BNE		locret_12B0AF
 		LDA		byte_2C
 		BNE		locret_12B0AF
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		word_3C
 		JSR		sub_12B0EB
@@ -7223,7 +7223,7 @@ loc_12B0C4:
 		AND		#4
 		BEQ		loc_12B0DB
 		STY		byte_CE
-		JSR		_sram_b0_s1A
+		JSR		_sram_b0_s1A_player_EXP_add
 		LDA		#$FF
 		STA		word_3C+1
 loc_12B0DB:
@@ -7250,7 +7250,7 @@ sub_12B0EB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B0FA:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		#0
 loc_12B0FF:
 		LDA		byte_93,Y
@@ -7354,18 +7354,18 @@ loc_12B1AC:
 		STA		byte_6DF3
 		RTS
 loc_12B1B2:
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$AE
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#8
 		BNE		loc_12B1F9
 		LDA		#8
-		ORA		byte_60B7
-		STA		byte_60B7
+		ORA		_global_game_flags
+		STA		_global_game_flags
 		BNE		loc_12B1FC
 loc_12B1CB:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		TAX
 		AND		#8
 		BEQ		loc_12B1AC
@@ -7374,9 +7374,9 @@ loc_12B1CB:
 		BNE		loc_12B1F9
 		TXA
 		ORA		#$10
-		STA		byte_60B7
+		STA		_global_game_flags
 		SYSX	_apu_load,$A3
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		SYSX	_sys07_msg_m00_arg1,$80
 		LDA		#$13
@@ -7480,7 +7480,7 @@ loc_12B298:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B29D:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVC		locret_12B2BC
 		LDA		_playerMapX
 		AND		#$FE
@@ -7505,7 +7505,7 @@ sub_12B2BD:
 		LDA		byte_60CD
 		CMP		#$FF
 		BNE		loc_12B2D0
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		locret_12B2BC
 loc_12B2D0:
 		LDA		_playerMapX
@@ -7534,7 +7534,7 @@ sub_12B2EB:
 		LDA		byte_60BA
 		AND		#2
 		BNE		loc_12B30D
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		JSR		sub_174CCF
 		SYSX	_sys13_msg_m00_arg6,$26
@@ -7552,7 +7552,7 @@ loc_12B30D:
 		LDA		#0
 		JSR		sub_12B353
 		JSR		sub_174CCF
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#1
 		BEQ		loc_12B34C
@@ -7584,7 +7584,7 @@ sub_12B353:
 		STA		word_6E+1
 		LDA		#>[_players_pos_list]
 		STA		word_6C+1
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		JSR		sub_12A6FD
 		LDA		word_4
 		SEC
@@ -7597,7 +7597,7 @@ sub_12B353:
 		SEC
 		SBC		word_6C
 		STA		word_6C
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_6ABE
 		PHA
@@ -7631,7 +7631,7 @@ loc_12B39F:
 		DEY
 		BPL		loc_12B39F
 loc_12B3AF:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_6ABE
 		LDA		#4
@@ -7653,7 +7653,7 @@ off_12B3CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B3D1:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		locret_12B42D
 		LDA		_playerMapX
 		CMP		#7
@@ -7666,7 +7666,7 @@ sub_12B3D1:
 		BNE		loc_12B453
 		LDA		_npcs_pos_list+$34
 		BMI		locret_12B42D
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_6A62
 		CMP		#1
@@ -7702,7 +7702,7 @@ loc_12B42E:
 		LDA		#0
 		STA		word_4+1
 		STA		word_6
-		JSR		_sram_b0_s1D
+		JSR		_sram_b0_s1B_players_gold_subtract
 		JSR		_bC_s20
 loc_12B443:
 		LDA		#$1C
@@ -7737,9 +7737,9 @@ loc_12B484:
 		SYSX	_sys13_msg_m00_arg6,$A5
 loc_12B487:
 		JSR		sub_174D4F
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 locret_12B492:
 		RTS
 
@@ -8068,10 +8068,10 @@ loc_12B71C:
 locret_12B739:
 		RTS
 loc_12B73A:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		locret_12B739
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 		JSR		sub_174CCF
 		SYSX	_sys07_msg_m00_arg1,$79
 		JMP		sub_174D4F
@@ -8195,7 +8195,7 @@ loc_12B819:
 		JSR		_bC_s34
 locret_12B81C:
 		RTS
-		
+
 byte_12B81D:
 		.BYTE	  7,  9, $F
 
@@ -8569,7 +8569,7 @@ sub_12BAC3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BAD3:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_12BAE1
 		LDA		byte_60BA
 		AND		#$10
@@ -8579,9 +8579,9 @@ loc_12BAE1:
 		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_12BAF1
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		RTS
 loc_12BAF1:
 		LDA		byte_6A62
@@ -8608,7 +8608,7 @@ byte_12BB12:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB1E:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		locret_12BB11
 		LDA		byte_60BA
 		AND		#$10
@@ -8670,9 +8670,9 @@ loc_12BB77:
 		STY		_npcs_pos_list+$11
 		STA		_npcs_pos_list+$13
 loc_12BB80:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		RTS
 loc_12BB89:
 		LDA		byte_60C6
@@ -8720,7 +8720,7 @@ sub_12BBBF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBC9:
 		LDA		byte_60B9
-		ORA		byte_60B7
+		ORA		_global_game_flags
 		ORA		byte_60CA
 		BPL		locret_12BBD9
 		LDA		#$80
@@ -8782,7 +8782,7 @@ byte_12BC24:
 		.BYTE	$24,$34,$30,$20,$1C,$28
 
 ; much interesting, this routines are from bank C, they doesn't take place there,
-; were moved to bank 08, but need to be called throught system bank obviously
+; were moved to bank 08, but need to be called through system bank obviously
 ;
 ; =============== S U B	R O U T	I N E =======================================
 sub_CBF80:
@@ -8844,9 +8844,9 @@ loc_CBFCC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BC2A:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

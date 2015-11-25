@@ -7,9 +7,9 @@
 
 ; =============== S U B	R O U T	I N E =======================================
 ; initializes registers used by the general engine display system
-; 
+;
 ;"disp_InitRegs"
-_disp_regs_init:		
+_disp_regs_init:
 		LDA		#0
 		STA		_ppu_queue_pos
 		STA		_ppu_queue_chunks_count
@@ -484,7 +484,7 @@ loc_17429B:
 		ADC		#4
 		TAX
 		RTS
-		
+
 byte_1742AB:
 		.BYTE	  4,$10,$1C,$28,$34
 
@@ -504,7 +504,7 @@ loc_1742B3:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; wait for ppu queue is empty, then set ppu queue flush request flag
-; 
+;
 _ppu_set_dequeue_flag:
 		LDA		#4
 		AND		_nmi_flags
@@ -711,7 +711,7 @@ loc_1743A4:
 		JSR		_ppu_queue_tile	; queue single palette entry
 		LDX		_tmp21+2		; check whether the palette is done
 		CPX		#$18			; there are $18 entries, after the $8 color0's are skipped
-		BNE		loc_17438C		
+		BNE		loc_17438C
 		JSR		_ppu_set_dequeue_flag	; force palette to flush, so wait until next nmi is over
 		RTS
 
@@ -1326,7 +1326,7 @@ _spr_shuffle_safe:
 		LDA		_spr_force_shuffle_mode		; if 0 or FF - force sprite shuffle
 		CMP		#$FD
 		BNE		loc_17491C
-		LDA		byte_60B7					; or else additional bit is tested
+		LDA		_global_game_flags					; or else additional bit is tested
 		AND		#$20						; both set as FD/20 in battle mode?
 		BNE		loc_17491F
 loc_17491C:
@@ -1367,7 +1367,7 @@ loc_17494B:
 		STX		_spr_shuffle_syncs_counter		; sync counter is only from 0 to 9
 locret_17494E:
 		RTS
-		
+
 _spr_ram_shuffle_offset:
 		.BYTE	$D0,$A0,$70
 
@@ -1551,7 +1551,7 @@ _nmi_dequeue:
 		CMP		#$FD
 		BEQ		loc_174A6E
 		RTS
-loc_174A6E:							
+loc_174A6E:
 		LDA		byte_28
 		BEQ		loc_174A7A
 		CMP		#$10
@@ -1604,7 +1604,7 @@ loc_174AB1:
 		ORA		_ppu_ctrl_shadow
 		STA		_PPU_CTRL
 		TYA
-		INX		
+		INX
 		LDY		_ppu_queue_buf,X			; read data block size
 		AND		#$3F						; get higher ppu offset bits
 loc_174ACC:
@@ -1848,8 +1848,8 @@ loc_174BCF:
 loc_174BF2:
 		LDA		byte_60BA
 		AND		#1
-		BNE		loc_174BFC 
-		FARX	_b0_s64_king_respawn ; respawn at a king or other save point i suppose
+		BNE		loc_174BFC
+		FARX	_b0_s64_respawn_at_the_king ; respawn at a king or other save point i suppose
 
 ;respawn at a shrine:
 loc_174BFC:
@@ -2383,7 +2383,7 @@ loc_174FBB:
 		STA		byte_8E
 		BPL		locret_174FF1
 		FARX	_bE_sD
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		DEC		word_4
 		LDA		word_4
 		FARX	_bE_sC_display_window
@@ -2626,9 +2626,9 @@ loc_1751AA:
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		byte_60BA
 		AND		#$EF
 		STA		byte_60BA
@@ -3785,7 +3785,7 @@ loc_175999:
 		BPL		loc_1759ED
 		LDX		#$A6
 		BNE		loc_1759ED
-		
+
 byte_1759A6:
 		.BYTE	  3, $F,$3F,$FF,$FF
 byte_1759AB:
@@ -6070,7 +6070,7 @@ loc_176C8B:
 ; =============== S U B	R O U T	I N E =======================================
 ; IRQ vector handler, called as soft-IRQ with BRK instruction, used for short
 ; version of routines calls with 8-bit parameters
-; 
+;
 ; format:
 ; byte 0	BRK opcode
 ; byte 1	argument
@@ -6113,72 +6113,70 @@ _syscall_lib:
 		;
 		.WORD	_sys0_safe
 		.WORD	_sys1_safe
-		
+
 		; four syscalls used only from bank D and pointed directly to this bank
+		; these functions assuming the higher bit of msg index $300+array[N],
+		; where N is in _bN_, and arr is from $000 to $3xx
+		; these four message cover indexes from $5Fx to $6xx
+		; the rest of messages from $300 to $5Fx are in bank D and used locally
 		;
-_sys02_msg_m00_b3_idx:
-		.WORD	_sys02_msg_m00_b3
-_sys03_msg_m00_b4_idx:
-		.WORD	_sys03_msg_m00_b4
-_sys04_msg_m00_b3_break_idx:
-		.WORD	_sys04_msg_m00_b3_break
-_sys05_msg_m00_b4_break_idx:
-		.WORD	_sys05_msg_m00_b4_break
-		
+_sys02_msg_m00_b3_idx:				.WORD	_sys02_msg_m00_b3
+_sys03_msg_m00_b4_idx:				.WORD	_sys03_msg_m00_b4
+_sys04_msg_m00_b3_break_idx:		.WORD	_sys04_msg_m00_b3_break
+_sys05_msg_m00_b4_break_idx:		.WORD	_sys05_msg_m00_b4_break
+
 		; more common syscall wrappers for message output, as well, takes the
 		; lower bits of message index from argument, and a higher representing
 		; the syscall index itself
+		; the routine index is immediate higher message index, these function cover
+		; the messages from $000 to $2FF
 		;
-_sys06_msg_m00_arg0_idx:
-		.WORD	_sys06_msg_m00_arg0
-_sys07_msg_m00_arg1_idx:
-		.WORD	_sys07_msg_m00_arg1
-_sys08_msg_m00_arg2_idx:
-		.WORD	_sys08_msg_m00_arg2
-_sys09_msg_m00_arg0_break_idx:
-		.WORD	_sys09_msg_m00_arg0_break
-_sys0A_msg_m00_arg1_break_idx:
-		.WORD	_sys0A_msg_m00_arg1_break
-_sys0B_msg_m00_arg2_break_idx:
-		.WORD	_sys0B_msg_m00_arg2_break
-_sys0C_msg_m00_arg8_idx:
-		.WORD	_sys0C_msg_m00_arg8
-		
-		; other common routines
-		;
-_display_window_idx:
-		.WORD	_display_window
-_display_window_ex_idx:
-		.WORD	_display_window_ex
-		
-		; two more external direct offsets, called from bank 4 only
+_sys06_msg_m00_arg0_idx:			.WORD	_sys06_msg_m00_arg0
+_sys07_msg_m00_arg1_idx:			.WORD	_sys07_msg_m00_arg1
+_sys08_msg_m00_arg2_idx:			.WORD	_sys08_msg_m00_arg2
+;_sys0x_msg_m00_arg3_idx:			.WORD	_sys08_msg_m00_arg3			; for future use
+;_sys0x_msg_m00_arg4_idx:			.WORD	_sys08_msg_m00_arg4
+;_sys0x_msg_m00_arg5_idx:			.WORD	_sys08_msg_m00_arg5
+_sys13_msg_m00_arg6_idx:			.WORD	_sys13_msg_m00_arg6
+_sys11_msg_m00_arg7_idx:			.WORD	_sys11_msg_m00_arg7
+_sys0C_msg_m00_arg8_idx:			.WORD	_sys0C_msg_m00_arg8			; this subroutine is unused
+
+_sys09_msg_m00_arg0_break_idx:		.WORD	_sys09_msg_m00_arg0_break	; this subroutine is unused
+_sys0A_msg_m00_arg1_break_idx:		.WORD	_sys0A_msg_m00_arg1_break	; this subroutine is unused
+_sys0B_msg_m00_arg2_break_idx:		.WORD	_sys0B_msg_m00_arg2_break	; this subroutine is unused
+;_sys0x_msg_m00_arg3_break_idx:		.WORD	_sys0x_msg_m00_arg3_break	; for future use
+;_sys0x_msg_m00_arg4_break_idx:		.WORD	_sys0x_msg_m00_arg4_break
+;_sys0x_msg_m00_arg5_break_idx:		.WORD	_sys0x_msg_m00_arg5_break
+;_sys0x_msg_m00_arg6_break_idx:		.WORD	_sys0x_msg_m00_arg6_break
+;_sys0x_msg_m00_arg7_break_idx:		.WORD	_sys0x_msg_m00_arg7_break
+;_sys0x_msg_m00_arg8_break_idx:		.WORD	_sys0x_msg_m00_arg8_break
+
+		; two more external direct offsets, whould called from bank 4 only
+		; and pointing directly to this bank
 		;
 _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:
 		.WORD	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
 _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break_idx:
 		.WORD	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
 
-		; the rest of syscall helpers
+		; other common routines
 		;
-_sys11_msg_m00_arg7_idx:
-		.WORD	_sys11_msg_m00_arg7
-_apu_load_idx:
-		.WORD	_apu_load
-_sys13_msg_m00_arg6_idx:
-		.WORD	_sys13_msg_m00_arg6
+_display_window_idx:				.WORD	_display_window
+_display_window_ex_idx:				.WORD	_display_window_ex
+_apu_load_idx:						.WORD	_apu_load
 
-; == FILESYSTEM DATA == 
+; == FILESYSTEM DATA ==
 
 _sys_idx_lib:
 ;
 ; keep this records within first 256 indexes!
 ; data entries goes first
 ;
-_b0_d3F_idx:			PTR_IDX	$0,_b0_d3F					; $B2
+_b0_d3F_other_spell_related_data_idx:			PTR_IDX	$0,_b0_d3F_other_spell_related_data					; $B2
 _b0_d42_item_use_effects_list_idx:	PTR_IDX	$0,_b0_d42_item_use_effects_list	; $90
-_b0_d44_idx:			PTR_IDX	$0,_b0_d44					; $92
-_b0_d58_idx:			PTR_IDX	$0,_b0_d58					; $DF
-_b0_d59_idx:			PTR_IDX	$0,_b0_d59					; $E0
+_b0_d44_item_effects_list_idx:			PTR_IDX	$0,_b0_d44_item_effects_list					; $92
+_b0_d58_hero_spell_related_data00_idx:			PTR_IDX	$0,_b0_d58_hero_spell_related_data00					; $DF
+_b0_d59_common_spell_related_data00_idx:			PTR_IDX	$0,_b0_d59_common_spell_related_data00					; $E0
 _b4_dD_spells_list_idx:	PTR_IDX	$4,_b4_dD_spells_list		; $78
 _b6_d9_world_map_step_daytime_list_idx:	PTR_IDX	$6,_b6_d9_world_map_step_daytime_list	; $89
 _b6_dA_world_pal_ofs_list_idx:	PTR_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
@@ -6205,69 +6203,69 @@ _bD_s19_idx:			PTR_IDX	$D,_bD_s19					; $FD, copy of $133, used in _bC_s17_sys0_
 ; then SRAM shourtcuts
 ;
 _b0_s2_player_HP_read_idx:		PTR_IDX	$0,_b0_s2_player_HP_read		; $23
-_b0_s3_player_MAX_HP_read_idx:	PTR_IDX	$0,_b0_s3_player_MAX_HP_read	; $24
+_b0_s3_player_MHP_read_idx:	PTR_IDX	$0,_b0_s3_player_MHP_read	; $24
 _b0_s4_player_HP_add_idx:		PTR_IDX	$0,_b0_s4_player_HP_add			; $25
 _b0_s5_player_HP_subtract_idx:	PTR_IDX	$0,_b0_s5_player_HP_subtract	; $26
 _b0_s6_player_MP_read_idx:				PTR_IDX	$0,_b0_s6_player_MP_read					; $27
-_b0_s7_player_MAX_MP_read_idx:				PTR_IDX	$0,_b0_s7_player_MAX_MP_read					; $28
+_b0_s7_player_MMP_read_idx:				PTR_IDX	$0,_b0_s7_player_MMP_read					; $28
 _b0_s8_player_MP_add_idx:				PTR_IDX	$0,_b0_s8_player_MP_add					; $29
 _b0_s9_player_MP_subtract_idx:				PTR_IDX	$0,_b0_s9_player_MP_subtract					; $2A
 _b0_sB_player_MP_consume_idx:				PTR_IDX	$0,_b0_sB_player_MP_consume					; $2C
 _b0_sC_player_LV_read_idx:	PTR_IDX	$0,_b0_sC_player_LV_read; $2D
-_b0_sD_idx:				PTR_IDX	$0,_b0_sD					; $2E
+_b0_sD_tavern_char_LV_read_idx:				PTR_IDX	$0,_b0_sD_tavern_char_LV_read					; $2E
 _b0_sE_player_STATUS_read_idx:				PTR_IDX	$0,_b0_sE_player_STATUS_read					; $2F
-_b0_sF_idx:				PTR_IDX	$0,_b0_sF					; $30
-_b0_s10_idx:			PTR_IDX	$0,_b0_s10					; $31
+_b0_sF_unassigned_formation_char_name_read_idx:				PTR_IDX	$0,_b0_sF_unassigned_formation_char_name_read					; $30
+_b0_s10_tavern_char_name_read_idx:			PTR_IDX	$0,_b0_s10_tavern_char_name_read					; $31
 _b0_s11_player_STR_read_idx:			PTR_IDX	$0,_b0_s11_player_STR_read					; $32
 _b0_s12_player_AGI_read_idx:			PTR_IDX	$0,_b0_s12_player_AGI_read					; $33
 _b0_s13_player_VIT_read_idx:			PTR_IDX	$0,_b0_s13_player_VIT_read					; $34
 _b0_s14_player_INT_read_idx:			PTR_IDX	$0,_b0_s14_player_INT_read					; $35
 _b0_s15_player_LUCK_read_idx:			PTR_IDX	$0,_b0_s15_player_LUCK_read					; $36
 _b0_s16_player_ATK_read_idx:			PTR_IDX	$0,_b0_s16_player_ATK_read					; $37
-_b0_s17_idx:			PTR_IDX	$0,_b0_s17					; $38
+_b0_s17_player_rATK_read_idx:			PTR_IDX	$0,_b0_s17_player_rATK_read					; $38
 _b0_s18_player_DEF_read_idx:			PTR_IDX	$0,_b0_s18_player_DEF_read					; $39
-_b0_s19_idx:			PTR_IDX	$0,_b0_s19					; $3A
-_b0_s1A_idx:			PTR_IDX	$0,_b0_s1A					; $3B
-_b0_s1B_idx:			PTR_IDX	$0,_b0_s1B					; $3C
-_b0_s1C_idx:			PTR_IDX	$0,_b0_s1C					; $3D
-_b0_s1D_idx:			PTR_IDX	$0,_b0_s1D					; $3E
+_b0_s19_player_EXP_read_idx:			PTR_IDX	$0,_b0_s19_player_EXP_read					; $3A
+_b0_s1A_player_EXP_add_idx:			PTR_IDX	$0,_b0_s1A_player_EXP_add					; $3B
+_b0_s1B_players_gold_read_idx:			PTR_IDX	$0,_b0_s1B_players_gold_read					; $3C
+_b0_s1B_players_gold_add_idx:			PTR_IDX	$0,_b0_s1B_players_gold_add					; $3D
+_b0_s1B_players_gold_subtract_idx:			PTR_IDX	$0,_b0_s1B_players_gold_subtract					; $3E
 _b0_s1E_player_euipped_item_read_idx:			PTR_IDX	$0,_b0_s1E_player_euipped_item_read					; $3F
-_b0_s1F_idx:			PTR_IDX	$0,_b0_s1F					; $40
-_b0_s20_idx:			PTR_IDX	$0,_b0_s20					; $41
-_b0_s21_idx:			PTR_IDX	$0,_b0_s21					; $42
-_b0_s22_idx:			PTR_IDX	$0,_b0_s22					; $43
-_b0_s23_idx:			PTR_IDX	$0,_b0_s23					; $44
-_b0_s24_idx:			PTR_IDX	$0,_b0_s24					; $45
-_b0_s25_idx:			PTR_IDX	$0,_b0_s25					; $46
-_b0_s26_idx:			PTR_IDX	$0,_b0_s26					; $47
-_b0_s28_idx:			PTR_IDX	$0,_b0_s28					; $49
-_b0_s29_idx:			PTR_IDX	$0,_b0_s29					; $4A
-_b0_s2A_idx:			PTR_IDX	$0,_b0_s2A					; $4B
-_b0_s2B_idx:			PTR_IDX	$0,_b0_s2B					; $4C
+_b0_s1F_get_weapon_from_inventory_idx:			PTR_IDX	$0,_b0_s1F_get_weapon_from_inventory					; $40
+_b0_s21_shield_from_inventory_idx:			PTR_IDX	$0,_b0_s21_shield_from_inventory					; $41
+_b0_s21_get_armor_from_inventory_idx:			PTR_IDX	$0,_b0_s21_get_armor_from_inventory					; $42
+_b0_s22_helm_from_inventory_idx:			PTR_IDX	$0,_b0_s22_helm_from_inventory					; $43
+_b0_s23_player_equip_weapon_idx:			PTR_IDX	$0,_b0_s23_player_equip_weapon					; $44
+_b0_s24_player_equip_shield_idx:			PTR_IDX	$0,_b0_s24_player_equip_shield					; $45
+_b0_s25_player_equip_armor_idx:			PTR_IDX	$0,_b0_s25_player_equip_armor					; $46
+_b0_s24_player_equip_helm_idx:			PTR_IDX	$0,_b0_s24_player_equip_helm					; $47
+_b0_s28_player_inventory_item_read_idx:			PTR_IDX	$0,_b0_s28_player_inventory_item_read					; $49
+_b0_s29_player_inventory_item_add_idx:			PTR_IDX	$0,_b0_s29_player_inventory_item_add					; $4A
+_b0_s2A_player_inventory_item_remove_idx:			PTR_IDX	$0,_b0_s2A_player_inventory_item_remove					; $4B
+_b0_s2B_is_anybody_owns_item_idx:			PTR_IDX	$0,_b0_s2B_is_anybody_owns_item					; $4C
 _b0_s2C_player_CLASS_read_idx:	PTR_IDX	$0,_b0_s2C_player_CLASS_read	; $4D
-_b0_s2E_idx:			PTR_IDX	$0,_b0_s2E					; $4F
+_b0_s2E_tavern_char_CLASS_read_idx:			PTR_IDX	$0,_b0_s2E_tavern_char_CLASS_read					; $4F
 _b0_s2F_player_gender_read_idx:			PTR_IDX	$0,_b0_s2F_player_gender_read					; $50
-_b0_s30_idx:			PTR_IDX	$0,_b0_s30					; $51
-_b0_s31_idx:			PTR_IDX	$0,_b0_s31					; $52
-_b0_s32_idx:			PTR_IDX	$0,_b0_s32					; $53
-_b0_s33_idx:			PTR_IDX	$0,_b0_s33					; $54
-_b0_s34_idx:			PTR_IDX	$0,_b0_s34					; $55
+_b0_s30_tavern_char_gender_read_idx:			PTR_IDX	$0,_b0_s30_tavern_char_gender_read					; $51
+_b0_s31_get_party_chars_list_idx:			PTR_IDX	$0,_b0_s31_get_party_chars_list					; $52
+_b0_s32_get_tavern_chars_list_idx:			PTR_IDX	$0,_b0_s32_get_tavern_chars_list					; $53
+_b0_s33_count_non_dead_party_chars_idx:			PTR_IDX	$0,_b0_s33_count_non_dead_party_chars					; $54
+_b0_s34_read_spell_related_data_byte_idx:			PTR_IDX	$0,_b0_s34_read_spell_related_data_byte					; $55
 _b0_s35_idx:			PTR_IDX	$0,_b0_s35					; $56
-_b0_s36_idx:			PTR_IDX	$0,_b0_s36					; $57
+_b0_s36_read_spell_related_data_byte_idx:			PTR_IDX	$0,_b0_s36_read_spell_related_data_byte					; $57
 _b0_s37_idx:			PTR_IDX	$0,_b0_s37					; $58
 _b0_s38_idx:			PTR_IDX	$0,_b0_s38					; $59
 _b0_s39_idx:			PTR_IDX	$0,_b0_s39					; $5A
-_b0_s3A_idx:			PTR_IDX	$0,_b0_s3A					; $5B
-_b0_s3B_idx:			PTR_IDX	$0,_b0_s3B					; $5C
+_b0_s3A_players_data_swap_idx:			PTR_IDX	$0,_b0_s3A_players_data_swap					; $5B
+_b0_s3B_players_data_swap_in_battle_idx:			PTR_IDX	$0,_b0_s3B_players_data_swap_in_battle					; $5C
 ;
-; the rest of the records list, used only in BRK instructions, no matter 
+; the rest of the records list, used only in BRK instructions, no matter
 ; what sys page they will be
 ;
 _b0_s0_world_map_random_enounter_test_idx:	PTR_IDX	$0,_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
 _b0_s1_battle_typeA_launch_idx:				PTR_IDX	$0,_b0_s1_battle_typeA_launch					; $14E
-_b0_s3C_idx:			PTR_IDX	$0,_b0_s3C					; $68
-_b0_s3D_player_status_20_clear_idx:			PTR_IDX	$0,_b0_s3D_player_status_20_clear					; $7A
-_b0_s3D_player_status_80_set_idx:			PTR_IDX	$0,_b0_s3D_player_status_80_set					; $7B
+_b0_s3C_get_free_inventory_slot_idx:			PTR_IDX	$0,_b0_s3C_get_free_inventory_slot					; $68
+_b0_s3D_player_detoxicate_idx:			PTR_IDX	$0,_b0_s3D_player_detoxicate					; $7A
+_b0_s3D_player_revive_idx:			PTR_IDX	$0,_b0_s3D_player_revive					; $7B
 _b0_s45_check_if_item_equipped_idx:			PTR_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
 _b0_s46_idx:			PTR_IDX	$0,_b0_s46					; $A9
 _b0_s47_idx:			PTR_IDX	$0,_b0_s47					; $AA
@@ -6287,11 +6285,11 @@ _b0_s5C_idx:			PTR_IDX	$0,_b0_s5C					; $129
 _b0_s5D_idx:			PTR_IDX	$0,_b0_s5D					; $EC
 _b0_s5E_check_if_item_can_be_equipped_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
 _b0_s5E_check_if_item_can_be_used_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_used					; $109
-_b0_s60_idx:			PTR_IDX	$0,_b0_s60					; $10A
+_b0_s60_get_item_type_idx:			PTR_IDX	$0,_b0_s60_get_item_type					; $10A
 _b0_s61_sram_shortcuts_init_idx:	PTR_IDX	$0,_b0_s61_sram_shortcuts_init	; $122
 _b0_s62_idx:			PTR_IDX	$0,_b0_s62					; $12A
-_b0_s63_idx:			PTR_IDX	$0,_b0_s63					; $130
-_b0_s64_king_respawn_idx:			PTR_IDX	$0,_b0_s64_king_respawn					; $12E
+_b0_s63_player_unequip_all_type_items_idx:			PTR_IDX	$0,_b0_s63_player_unequip_all_type_items					; $130
+_b0_s64_respawn_at_the_king_idx:			PTR_IDX	$0,_b0_s64_respawn_at_the_king					; $12E
 _b0_s65_idx:			PTR_IDX	$0,_b0_s65					; $163
 _b0_s66_idx:			PTR_IDX	$0,_b0_s66					; $164
 _b0_s67_idx:			PTR_IDX	$0,_b0_s67					; $199
@@ -6513,7 +6511,7 @@ _bD_s21_idx:			PTR_IDX	$D,_bD_s21					; $13E
 _bD_s22_idx:			PTR_IDX	$D,_bD_s22					; $144
 _bD_s23_idx:			PTR_IDX	$D,_bD_s23					; $18C
 _bD_s24_idx:			PTR_IDX	$D,_bD_s24					; $18D
-_bD_s26_idx:			PTR_IDX	$D,_bD_s26					; $12D
+_bD_s26_get_first_live_player_with_no_NM_status_idx:			PTR_IDX	$D,_bD_s26_get_first_live_player_with_no_NM_status					; $12D
 _bD_s27_idx:			PTR_IDX	$D,_bD_s27					; $A3
 _bD_s28_frame_palette_by_status_adjust_idx:	PTR_IDX	$D,_bD_s28_frame_palette_by_status_adjust	; $12F
 _bD_s29_idx:			PTR_IDX	$D,_bD_s29					; $17A
@@ -6574,7 +6572,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ; == removed unused, unneeded or empty filesystem entries
 ;
 ;_b0_sA_player_MP_set_sero_idx:	PTR_IDX	$0,_b0_sA_player_MP_set_sero; $2B, never used with SRAM or BRK
-;_b0_s27_idx:					PTR_IDX	$0,_b0_s27					; $48, used only directly, no SRAM or BRK
+;		.BYTE	$0,$27						; $48, _player_equip_item, used only directly, no SRAM or BRK
 ;_b0_s2D_idx:					PTR_IDX	$0,_b0_s2D					; $4E, copy of $4D, unused anymore
 ;		.BYTE	$0,$40						; $8E _b0_d40_weapon_power_list, no use here
 ;		.BYTE	$0,$41						; $8F _b0_d41_equip_list, no use here
@@ -6582,7 +6580,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$0,$4C						; $CC, bank 00, idx 4c, empty
 ;		.BYTE	$0,$4D						; $CD _b0_s4D, unused copy of $12C
 ;		.BYTE	$0,$51						; $14C _b0_s51_wrapper_for_b1B_s0, not used anymore wrapper
-;		.BYTE	$0,$5A						; $E1 _b0_d5A, no use here
+;		.BYTE	$0,$5A						; $E1 _b0_d5A_common_spell_related_data04, no use here
 ;		.BYTE	$1,  1						; $9E, bank 01, idx 01, empty
 ;		.BYTE	$1, $F						; $91, bank 01, idx 0F, empty
 ;		.BYTE	$1,$13						; $118 _b1_s13, never used
@@ -6623,7 +6621,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$A,  9						; $18F _bA_s9_nullsub, unused
 ;		.BYTE	$A,$36						; $177 _bC_s36, never used
 ;		.BYTE	$C,$26						; $10F _bC_s26, unused copy of $18A
-;		.BYTE	$C,$29						; $104 _bC_s29, no use here 
+;		.BYTE	$C,$29						; $104 _bC_s29, no use here
 ;		.BYTE	$D,  1						; $FF _bD_d1_ofs, not used anymore
 ;		.BYTE	$D, $F						; $182 _bD_sF, no use here, used directly
 ;		.BYTE	$D,$19						; $133 _bD_s19 were used as copy of $FD
@@ -6634,7 +6632,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$E,$15						; $11C, bank 0E, idx 15, empty
 ;		.BYTE	$E,$1C						; $11F _bE_s1C, different ptrs points to the same sub, the first never used
 ;		.BYTE	$E,$1E						; $87, bank 0e, idx 1E, empty
-;		.BYTE	$E,$2B						; $107 _bE_s2B, never used 
+;		.BYTE	$E,$2B						; $107 _bE_s2B, never used
 ; ==
 
 		ECHO "filesystem entries", [.-_sys_idx_lib]>>1

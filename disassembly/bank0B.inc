@@ -2889,13 +2889,13 @@ sub_2DF9BC:
 		PHA
 		LDA		byte_6F0
 		ORA		#1
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_2DF9C2:
 		STA		byte_6F0
 		PLA
 		RTS
-		
+
 word_2DF9C7:
 		.WORD	 $6AD, $643, $5F3, $59D, $54C, $500, $4B8, $474
 		.WORD	 $434, $3F8, $3BF, $389, $356, $326, $2F9, $2CE
