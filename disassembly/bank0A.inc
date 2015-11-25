@@ -352,7 +352,7 @@ sub_F824D:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BMI		loc_F825C
 locret_F825B:
 		RTS
@@ -611,7 +611,7 @@ loc_F83ED:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sA:
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		DEC		word_4
 		BEQ		locret_F8461
 		JSR		_sram_b0_s2C_player_CLASS_read
@@ -636,10 +636,10 @@ loc_F8416:
 		BCC		loc_F8462
 		LDX		byte_CE
 		LDA		_players_class_gender,X
-		LDX		#[_b0_d58_idx-_sys_idx_lib]>>1
+		LDX		#[_b0_d58_hero_spell_related_data00_idx-_sys_idx_lib]>>1
 		AND		#7
 		BEQ		loc_F843F
-		LDX		#[_b0_d59_idx-_sys_idx_lib]>>1
+		LDX		#[_b0_d59_common_spell_related_data00_idx-_sys_idx_lib]>>1
 loc_F843F:
 		TXA
 		LDX		byte_10
@@ -707,9 +707,9 @@ _bA_sD:
 		JSR		sub_F850A
 		LDA		#0
 		STA		byte_28
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$7F
-		STA		byte_60B7
+		STA		_global_game_flags
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1414,7 +1414,7 @@ sub_F8DBF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_F8DFC:
 		FARX	_bE_s5
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_586
 		STA		byte_588
@@ -1451,7 +1451,7 @@ sub_F8E2D:
 		JSR		sub_F8E1D
 loc_F8E36:
 		JSR		sub_F8EEB
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1
@@ -1497,7 +1497,7 @@ loc_F8E85:
 		BNE		loc_F8E85
 loc_F8E91:
 		INC		byte_CF
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1
@@ -1885,27 +1885,27 @@ _bA_s11:
 		SYSX	_sys07_msg_m00_arg1,$8D
 		SYSX	_sys07_msg_m00_arg1,$89
 		FARX	_bE_s33
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$32
-		STA		byte_7BC
+		STA		_players_gold
 		LDX		#$FF
 		STX		_players_inventory_list+2
 		STX		_players_inventory_list+3
 		STX		_players_inventory_list+4
 		STX		_players_inventory_list+5
 		LDX		#0
-		STX		byte_7BE
-		STX		byte_7BD
+		STX		_players_gold+2
+		STX		_players_gold+1
 locret_F9159:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s12:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$DF
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$7F
 		FARX	_b4_s9
 		FARX	_b2_s8_screen_hit_blink
@@ -2059,7 +2059,7 @@ loc_F936A:
 		FARX	_bD_sB
 		LDA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		PLA
 		TAX
 		LDY		#0

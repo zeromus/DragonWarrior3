@@ -1055,7 +1055,7 @@ _ppu_set_dequeue_flag_0:
 		ORA		_nmi_flags
 		STA		_nmi_flags
 		RTS
-		
+
 off_E3A8E:
 		.WORD	byte_E3A94
 		.WORD	byte_E3BBC
@@ -1100,7 +1100,7 @@ byte_E3C4C:
 sub_E3C80:
 		LDA		_mapNumber
 		STA		word_3E
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVS		loc_E3C93
 		LDX		byte_60CD
 		CMP		#$72
@@ -1196,14 +1196,14 @@ loc_E3D25:
 loc_E3D2A:
 		CPX		#$FF
 		BNE		loc_E3D14
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		locret_E3D16
 		LDA		#$CE
 		BNE		loc_E3D14
 loc_E3D37:
 		CPX		#0
 		BEQ		loc_E3D14
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BMI		loc_E3D14
 		TXA
 		LSR

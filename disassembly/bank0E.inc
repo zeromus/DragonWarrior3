@@ -399,7 +399,7 @@ loc_15825E:
 		CMP		#$78
 		BNE		loc_1582BF
 loc_1582A5:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_1582BF
 		BEQ		loc_1582D6
@@ -530,7 +530,7 @@ locret_158373:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158377:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVC		loc_158385
 		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$66
@@ -567,7 +567,7 @@ _wrap_b6_s1E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1583C2:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
 		ADC		#$D
@@ -606,7 +606,7 @@ _bE_s33:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158409:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVC		loc_158417
 		SYSX	_display_window,$3E
 		SYSX	_sys07_msg_m00_arg1,$65
@@ -626,7 +626,7 @@ loc_15842C:
 		JSR		sub_158516
 loc_15842F:
 		PHP
-		JSR		_sram_b0_s1F
+		JSR		_sram_b0_s1F_get_weapon_from_inventory
 		PLP
 		LDX		word_4
 		BNE		loc_15843C
@@ -644,16 +644,16 @@ loc_158449:
 		LDA		#0
 		JSR		sub_15858D
 		BCS		loc_158461
-		JSR		_sram_b0_s1F
+		JSR		_sram_b0_s1F_get_weapon_from_inventory
 		JSR		sub_15851F
 		BCC		loc_15842F
-		JSR		_sram_b0_s23
+		JSR		_sram_b0_s23_player_equip_weapon
 		SEC
 loc_15845E:
 		JSR		sub_158516
 loc_158461:
 		PHP
-		JSR		_sram_b0_s21
+		JSR		_sram_b0_s21_get_armor_from_inventory
 		PLP
 		LDX		word_4
 		BNE		loc_15846E
@@ -668,16 +668,16 @@ loc_15846E:
 		LDA		#1
 		JSR		sub_15858D
 		BCS		loc_15848E
-		JSR		_sram_b0_s21
+		JSR		_sram_b0_s21_get_armor_from_inventory
 		JSR		sub_15851F
 		BCC		loc_158461
-		JSR		_sram_b0_s25
+		JSR		_sram_b0_s25_player_equip_armor
 		SEC
 loc_15848B:
 		JSR		sub_158516
 loc_15848E:
 		PHP
-		JSR		_sram_b0_s20
+		JSR		_sram_b0_s21_shield_from_inventory
 		PLP
 		LDX		word_4
 		BNE		loc_15849B
@@ -692,15 +692,15 @@ loc_15849B:
 		LDA		#2
 		JSR		sub_15858D
 		BCS		loc_1584BB
-		JSR		_sram_b0_s20
+		JSR		_sram_b0_s21_shield_from_inventory
 		JSR		sub_15851F
 		BCC		loc_15848E
-		JSR		_sram_b0_s24
+		JSR		_sram_b0_s24_player_equip_shield
 		SEC
 		JSR		sub_158516
 loc_1584BB:
 		PHP
-		JSR		_sram_b0_s22
+		JSR		_sram_b0_s22_helm_from_inventory
 		PLP
 		LDX		word_4
 		BNE		loc_1584C8
@@ -715,10 +715,10 @@ loc_1584C8:
 		LDA		#3
 		JSR		sub_15858D
 		BCS		loc_1584E7
-		JSR		_sram_b0_s22
+		JSR		_sram_b0_s22_helm_from_inventory
 		JSR		sub_15851F
 		BCC		loc_1584BB
-		JSR		_sram_b0_s26
+		JSR		_sram_b0_s24_player_equip_helm
 		JSR		sub_158516
 loc_1584E7:
 		JSR		sub_1584ED
@@ -815,7 +815,7 @@ sub_158569:
 sub_15856C:
 		LDA		byte_CE
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		DEC		word_4
 		LDA		word_4
 		JSR		_bE_sC_display_window
@@ -1359,8 +1359,8 @@ loc_1588BA:
 _sys_idx_list0:
 		.BYTE	[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s6_player_MP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s3_player_MAX_HP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s7_player_MAX_MP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s3_player_MHP_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s7_player_MMP_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s11_player_STR_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s12_player_AGI_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s13_player_VIT_read_idx-_sys_idx_lib]>>1
@@ -1368,10 +1368,10 @@ _sys_idx_list0:
 		.BYTE	[_b0_s15_player_LUCK_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s16_player_ATK_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s18_player_DEF_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1B_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s19_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1B_players_gold_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s19_player_EXP_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_sD_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_sD_tavern_char_LV_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1399,7 +1399,7 @@ loc_1588F4:
 		BNE		loc_15893F
 		LDA		_wnd_cur_cmd_byte
 		JSR		sub_158B47
-		JSR		_sram_b0_s10
+		JSR		_sram_b0_s10_tavern_char_name_read
 		LDA		word_4
 		CMP		#$FF
 		BEQ		loc_15890A
@@ -1443,7 +1443,7 @@ loc_15893F:
 loc_158951:
 		TXA
 		JSR		sub_158C89
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDA		byte_CE
 		ASL
 		TAX
@@ -1463,18 +1463,18 @@ loc_158970:
 		JSR		sub_158C89
 		FARX	_b7_sE_player_log_list
 		JMP		sub_158B52
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_15897F:
 		LDX		#5
 		LDA		#[_b0_s2C_player_CLASS_read_idx-_sys_idx_lib]>>1
 		BNE		loc_158989
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_158985:
 		LDX		#6
 		LDA		#[_b0_s2F_player_gender_read_idx-_sys_idx_lib]>>1
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 loc_158989:
 		STX		byte_6AC5
@@ -1519,7 +1519,7 @@ loc_1589D2:
 		JMP		sub_158B55
 loc_1589D5:
 		JMP		sub_158B52
-		
+
 _txt_classes_disp_chars_lib:
 		.BYTE	$40,$41	; Hr
 		.BYTE	$46,$47	; Wz
@@ -1529,7 +1529,7 @@ _txt_classes_disp_chars_lib:
 		.BYTE	$4A,$4B	; Mr
 		.BYTE	$48,$49	; Fr
 		.BYTE	$4C,$4D	; Gf
-		
+
 loc_1589E8:
 		LDA		_wnd_cur_cmd_byte
 		PHA
@@ -1601,16 +1601,16 @@ loc_158A53:
 		BNE		loc_158A53
 loc_158A5E:
 		JMP		loc_15883A
-		
+
 _txt_non_equipped:
 		.BYTE	_N,_O,_N,0,_E,_Q,_U,_I,_P,_P,_E,_D
-		
+
 _sys_idx_list1:
-		.BYTE	[_b0_s1F_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s20_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s22_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s28_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1F_get_weapon_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_get_armor_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_shield_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s22_helm_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s28_player_inventory_item_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
@@ -1721,9 +1721,9 @@ loc_158B26:
 loc_158B40:
 		LDY		#9
 		JMP		sub_158B8A
-		
+
 _sys_idx_list2:
-		.BYTE	[_b0_s34_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s34_read_spell_related_data_byte_idx-_sys_idx_lib]>>1
 		.BYTE	[_b0_s35_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1857,13 +1857,13 @@ loc_158C01:
 		BEQ		loc_158C16
 		CMP		#$3B
 		BNE		loc_158BEE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		CMP		#5
 		BCC		loc_158BEE
 		BCS		loc_158C1F
 loc_158C16:
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDA		word_4
 		CMP		byte_C6
 		BCC		loc_158BEE
@@ -1919,7 +1919,7 @@ loc_158C68:
 loc_158C6E:
 		TXA
 		PHA
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDA		#$79
 		JSR		sub_158DB9
 		PLA
@@ -2080,7 +2080,7 @@ loc_158D80:
 		STX		word_4
 		JMP		loc_158DA7
 loc_158D85:
-		JSR		_sram_b0_s32				; extra 10 lines (26)
+		JSR		_sram_b0_s32_get_tavern_chars_list				; extra 10 lines (26)
 		LDA		#7
 		STA		_window_frame_height_var
 		LDA		word_4
@@ -2106,13 +2106,13 @@ loc_158DA7:
 		INC		_window_frame_height_var
 		RTS
 _sys_idx_list3:
-		.BYTE	[_b0_s31_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s28_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1F_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s20_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s22_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s31_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s31_get_party_chars_list_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s28_player_inventory_item_read_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s1F_get_weapon_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_get_armor_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s21_shield_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s22_helm_from_inventory_idx-_sys_idx_lib]>>1
+		.BYTE	[_b0_s31_get_party_chars_list_idx-_sys_idx_lib]>>1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DB9:
@@ -2444,7 +2444,7 @@ _char_special_status_display:
 		JMP		loc_15883A
 locret_158F79:
 		RTS
-		
+
 _char_status_abbreviations_list:
 		.BYTE	_P,_O
 		.BYTE	_N,_M
@@ -2945,7 +2945,7 @@ _wnd6B:
 		.BYTE	$10,  9,$18,  0,$60,$E1,$22,$A3,$41,  1,  0
 		.BYTE	$9E,$B6,$B4,$FF
 		.BYTE	$96,$D4,$FF,$FF
-		
+
 _txt_window_names_lib:
 		.BYTE	_C,_O,_M,_M,_A,_N,_D,$FF
 		.BYTE	_S,_T,_A,_T,_U,_S,$FF
@@ -3228,7 +3228,7 @@ _print_00_74_char_force_dequeue:
 		BMI		_print_00_char_force_dequeue
 		LDA		#$74
 		BNE		_bE_s38_print_char_force_dequeue
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 _print_00_73_char_force_dequeue:
 		LDA		byte_76
@@ -3241,7 +3241,7 @@ _print_00_73_char_force_dequeue:
 _print_73_char_force_dequeue:
 		LDA		#$73
 		BNE		_bE_s38_print_char_force_dequeue
-		
+
 ; =============== S U B	R O U T	I N E =======================================
 _print_00_char_force_dequeue:
 		LDA		#0
@@ -3586,7 +3586,7 @@ loc_15A13F:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDA		word_4
 		SEC
 		SBC		#6
@@ -3634,7 +3634,7 @@ sub_15A185:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDX		word_4
 		PLA
 		STA		word_4+1
@@ -3878,7 +3878,7 @@ loc_15A2F0:
 		BEQ		loc_15A31C
 		CMP		#1
 		BNE		loc_15A322
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		DEC		word_4
 		LDA		word_4
 		JMP		loc_15A319
@@ -3914,7 +3914,7 @@ sub_15A325:
 		LDA		byte_15A346+1,X
 		STA		byte_470
 		RTS
-		
+
 byte_15A346:
 		.BYTE	$DF,$D1,$B8,$A6,$54,$94,$48,$42,$4B,$D3,$55,$98,$33,$5B,$8E,$81
 		.BYTE	$98,$96,$47,$87,$5C,$D2,$35,$79,$24,$4A,$34,$5A,$98,$86,$FE,$E1
@@ -3932,7 +3932,7 @@ sub_15A36E:
 		SBC		#1
 		JMP		loc_15A3BB
 loc_15A381:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		ASL
 		CLC
@@ -4035,7 +4035,7 @@ loc_15A41B:
 		STY		byte_6ABF
 		TXA
 		PHA
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		PLA
 		TAX
 		LDY		#0
@@ -4671,7 +4671,7 @@ loc_15A89D:
 loc_15A8A3:
 		JSR		sub_15A987
 		STA		byte_CE
-		JSR		_sram_b0_s10
+		JSR		_sram_b0_s10_tavern_char_name_read
 		JMP		loc_15A8B9
 loc_15A8AE:
 		SEC
@@ -4679,7 +4679,7 @@ loc_15A8AE:
 loc_15A8B1:
 		STA		byte_CE
 		STA		byte_6A35
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 loc_15A8B9:
 		LDY		#0
 loc_15A8BB:
@@ -5214,7 +5214,7 @@ _bE_s2:
 		LDX		#0
 		STX		byte_6ACB
 		LDY		#2
-		BNE		loc_15ABED
+		BNE		sub_15ABED
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s3:
@@ -5224,7 +5224,11 @@ _bE_s3:
 		CLC
 		ADC		#2
 		TAY
-loc_15ABED:
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+sub_15ABED:
 		STX		byte_81
 		STY		byte_28
 		JSR		_wait_for_nmi_is_over_sync
@@ -5364,7 +5368,7 @@ loc_15ACB3:
 loc_15ACB6:
 		PLA
 		PLA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#3
 		BCC		loc_15ACC8
@@ -5895,9 +5899,9 @@ loc_15AFD2:
 		LDA		_mapNumber
 		CMP		#9
 		BNE		loc_15B007
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 loc_15B007:
 		CLC
 		RTS
@@ -6123,7 +6127,7 @@ _bE_s24:
 		ORA		_players_status+7
 		AND		#$40
 		BEQ		loc_15B1B7
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		ASL
 		STA		byte_65
@@ -6157,7 +6161,7 @@ loc_15B1B7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B1BD:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_65
 		LDA		#0
@@ -6389,12 +6393,12 @@ loc_15B33A:
 loc_15B342:
 		LDA		_map_mus_list1,X			; don't know, why they need so weird behaviour
 		RTS
-		
+
 _map_lookup_table0:
 		.BYTE	  4,  8,$17,$71,$87,$8A,$33,  3,$5C,$6D,$6E,  9
 _map_mus_list0:
 		.BYTE	 $A,  7,  6,  3, $F,  6,  3,  7,  3, $D, $D, $D,  0
-		
+
 ; note, that at least two locations sits in both lists with different music assigned for them
 ; is there are some special cases or just dead links?
 ; map $04 - A or 3
@@ -6481,8 +6485,8 @@ sub_15B407:
 		BIT		byte_60CD
 		BVS		nullsub_20
 		LDA		#$80
-		ORA		byte_60B7
-		STA		byte_60B7
+		ORA		_global_game_flags
+		STA		_global_game_flags
 		LDA		#$40
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6496,7 +6500,7 @@ nullsub_20:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B41D:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$18
 		CMP		#$18
 		BNE		nullsub_20
@@ -6547,9 +6551,9 @@ sub_15B46D:
 		LDA		_playerMapY
 		CMP		#1
 		BNE		locret_15B481
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#2
-		STA		byte_60B7
+		STA		_global_game_flags
 locret_15B481:
 		RTS
 
@@ -6884,7 +6888,7 @@ locret_15B6B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B6B1:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		locret_15B6BB
 		LDA		#$AC
 		STA		byte_7633
@@ -7186,7 +7190,7 @@ _bE_s10:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15B920:
 		STA		_window_frame_width_add_header4_bits_add_1
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_6ABE
 		LDA		#0
@@ -7211,7 +7215,7 @@ loc_15B952:
 		STA		byte_6ABF
 		BNE		loc_15B99C
 loc_15B957:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		LDA		#$F
 		BVS		loc_15B952
 		JSR		_sram_b0_s2C_player_CLASS_read

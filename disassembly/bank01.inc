@@ -47,7 +47,7 @@ loc_20079:
 		CLC
 		ADC		byte_CF
 		STA		byte_CF
-		JSR		_sram_b0_s34
+		JSR		_sram_b0_s34_read_spell_related_data_byte
 		LDA		word_4
 		RTS
 loc_2009C:
@@ -237,8 +237,8 @@ loc_201B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201B3:
-		LDX		#<[_sram_b0_s36]
-		LDY		#>[_sram_b0_s36]
+		LDX		#<[_sram_b0_s36_read_spell_related_data_byte]
+		LDY		#>[_sram_b0_s36_read_spell_related_data_byte]
 		BNE		sub_201CB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1219,7 +1219,7 @@ loc_207B8:
 		ASL
 		TAY
 		LDA		byte_530,Y
-		AND		byte_531,Y
+		AND		byte_530+1,Y
 		BPL		loc_207E7
 		FARX	_b4_s18
 		LDA		byte_59
@@ -1253,13 +1253,13 @@ loc_207F7:
 		PHA
 		STA		byte_CE
 		LDA		#$FB
-		AND		byte_6A9B,X
-		STA		byte_6A9B,X
+		AND		_player_battle_order_and_flags,X
+		STA		_player_battle_order_and_flags,X
 		AND		#8
 		BEQ		loc_2080F
 		LDA		#4
-		ORA		byte_6A9B,X
-		STA		byte_6A9B,X
+		ORA		_player_battle_order_and_flags,X
+		STA		_player_battle_order_and_flags,X
 loc_2080F:
 		LDA		#$44
 		STA		byte_CF
@@ -1283,9 +1283,9 @@ loc_20828:
 loc_2082F:
 		DEX
 		BMI		loc_2083D
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$DF
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		JMP		loc_2082F
 loc_2083D:
 		INX
@@ -1293,9 +1293,9 @@ loc_2083E:
 		TXA
 		ASL
 		TAY
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		AND		#$BF
-		STA		byte_531,Y
+		STA		byte_530+1,Y
 		INX
 		CPX		#8
 		BNE		loc_2083E
@@ -1501,9 +1501,9 @@ loc_209C0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sC:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$DF
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$3D
 		FARX	_b4_s7_window_display_safe
 		FARX	_b4_sA
@@ -1532,7 +1532,7 @@ loc_209FA:
 		STA		_players_status+1
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_b0_s3_player_MAX_HP_read
+		JSR		_sram_b0_s3_player_MHP_read
 		LDA		word_4
 		STA		_players_HP
 		LDA		word_4+1
@@ -1642,7 +1642,7 @@ loc_20ADF:
 		STX		byte_CE
 		TXA
 		PHA
-		JSR		_sram_b0_s1A
+		JSR		_sram_b0_s1A_player_EXP_add
 		PLA
 		TAX
 		INX
@@ -1669,7 +1669,7 @@ loc_20B04:
 		LDA		#$80
 		STA		byte_6A77
 		STA		byte_530
-		STA		byte_531
+		STA		byte_530+1
 		STA		byte_D2
 		LDX		#$62
 		FARX	_b4_s1C
@@ -1741,7 +1741,7 @@ loc_20B87:
 		LDA		byte_47
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
@@ -1750,7 +1750,7 @@ loc_20B87:
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BNE		loc_20B75
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDA		byte_48
 		STA		byte_D4
 		LDA		#$6B
@@ -1767,7 +1767,7 @@ loc_20BDC:
 		STA		byte_CF
 		LDA		byte_47
 		STA		byte_CE
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 loc_20BE7:
 		LDA		word_60
 		STA		word_4
@@ -1799,7 +1799,7 @@ loc_20C0C:
 		LDA		#0
 		STA		_msg_number_parameter_F8+2
 		STA		byte_D0
-		JSR		_sram_b0_s1C
+		JSR		_sram_b0_s1B_players_gold_add
 		LDA		#$26
 		FARX	_b4_s9
 		JSR		_rand
@@ -1833,7 +1833,7 @@ loc_20C4F:
 		STA		_msg_number_parameter_F8
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1
-		JSR		_sram_b0_s1C
+		JSR		_sram_b0_s1B_players_gold_add
 		LDA		#$B6
 ; print a message "you have vanquished all of your foes"
 		FARX	_b4_s9
@@ -1891,7 +1891,7 @@ loc_20CB6:
 		BNE		loc_20CB6
 loc_20CC6:
 		STX		byte_D2
-		JMP		_sram_b0_s33
+		JMP		_sram_b0_s33_count_non_dead_party_chars
 
 ; =============== S U B	R O U T	I N E =======================================
 _add_16_to_24:
@@ -1907,7 +1907,7 @@ _add_16_to_24:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_20CDB:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		#0
 loc_20CE0:
 		TYA
@@ -1935,7 +1935,7 @@ loc_20D03:
 		INY
 		CPY		word_4
 		BCC		loc_20CE0
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1959,7 +1959,7 @@ sub_20D11:
 		LDY		word_4
 		JMP		sub_20D0C
 loc_20D2A:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		#0
 loc_20D2F:
 		TYA
@@ -2085,7 +2085,7 @@ loc_29401C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_294028:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		LSR
 		BCS		loc_294065
 		FARX	_bD_sB

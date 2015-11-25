@@ -802,7 +802,7 @@ loc_177159:
 		CMP		#$78
 		BNE		loc_177183
 loc_17717C:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BEQ		loc_177156
 loc_177183:

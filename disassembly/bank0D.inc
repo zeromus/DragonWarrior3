@@ -67,8 +67,8 @@ _bD_s23_ptr:
 		.WORD	_bD_s23
 _bD_s24_ptr:
 		.WORD	_bD_s24
-_bD_s26_ptr:
-		.WORD	_bD_s26
+_bD_s26_get_first_live_player_with_no_NM_status_ptr:
+		.WORD	_bD_s26_get_first_live_player_with_no_NM_status
 _bD_s27_ptr:
 		.WORD	_bD_s27
 _bD_s28_frame_palette_by_status_adjust_ptr:
@@ -625,7 +625,7 @@ loc_1415EF:
 		LDA		#$2A
 		BNE		loc_141614
 loc_1415FC:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$20
 		BNE		loc_14160A
 		LDA		_world_map_steps_count
@@ -703,7 +703,7 @@ loc_141666:
 		CMP		#$78
 		BNE		loc_141682
 loc_14167B:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BEQ		locret_141665
 loc_141682:
@@ -2032,7 +2032,13 @@ sub_141EBA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s26:
+; looking for the first non-dead player with NM status flag set
+; returns it's index or first char in formation.
+; so, mostly this routine will select the first character in formation
+; except when it has NM status, but if all other players are dead,
+; the NM status player selected anyway
+;
+_bD_s26_get_first_live_player_with_no_NM_status:
 		LDX		#0
 loc_141ED0:
 		LDA		_players_status,X
@@ -2098,7 +2104,7 @@ loc_141F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s12:
-		LDA		#[_b0_d44_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d44_item_effects_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		AND		#$7F
 		STA		byte_C0
@@ -2185,7 +2191,7 @@ loc_141F94:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141FB1:
-		JSR		_sram_b0_s1B
+		JSR		_sram_b0_s1B_players_gold_read
 		SEC
 		LDA		word_4
 		SBC		byte_C0
@@ -2209,7 +2215,7 @@ sub_141FC8:
 		STA		byte_C4
 		TXA
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		PLA
 		TAY
 		LDX		word_4
@@ -2246,7 +2252,7 @@ sub_141FF1:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_b0_s1D
+		JSR		_sram_b0_s1B_players_gold_subtract
 		SYSX	_display_window,$68
 		PLA
 		STA		byte_D0
@@ -2264,11 +2270,11 @@ sub_14200A:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JMP		_sram_b0_s1C
+		JMP		_sram_b0_s1B_players_gold_add
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142019:
-		JSR		_sram_b0_s1B
+		JSR		_sram_b0_s1B_players_gold_read
 		CLC
 		LDA		byte_C0
 		ADC		word_4
@@ -2400,13 +2406,13 @@ sub_1420CC:
 		LDA		#0
 		STA		byte_CF
 loc_1420D0:
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BEQ		locret_1420CB
 		LDA		word_4+1
 		AND		#$7F
 		JSR		sub_141EEE
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		JMP		loc_1420D0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2436,18 +2442,18 @@ locret_142103:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142104:
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		STA		byte_CF
 loc_14210B:
 		DEC		byte_CF
 		BMI		locret_142103
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		CMP		byte_C5
 		BNE		loc_14210B
-		JMP		_sram_b0_s2A
+		JMP		_sram_b0_s2A_player_inventory_item_remove
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142135:
@@ -2489,12 +2495,12 @@ loc_142177:
 		BCS		loc_14215A
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		CMP		#8
 		BCC		loc_1421AA
 		SYSX	_sys08_msg_m00_arg2,$23
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		BCC		loc_1421A6
@@ -2535,7 +2541,7 @@ loc_1421D8:
 loc_1421E0:
 		SYSX	_sys08_msg_m00_arg2,$29
 loc_1421E3:
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 loc_1421E6:
 		SYSX	_sys08_msg_m00_arg2,$2A
 		FARX	_bE_s1C
@@ -2555,7 +2561,7 @@ loc_1421FF:
 		LDA		byte_60B9
 		AND		#$20
 		BEQ		loc_14221D
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_14221D
 		LDA		#$1C
 		STA		byte_CE
@@ -2606,12 +2612,12 @@ loc_142265:
 loc_14226F:
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142293
 		SYSX	_sys08_msg_m00_arg2,$32
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		BCC		loc_142290
@@ -2628,7 +2634,7 @@ loc_142293:
 		SYSX	_sys08_msg_m00_arg2,$31
 		FARX	_bE_s1C
 		BEQ		loc_1422B0
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		BCC		loc_1422DD
@@ -2649,7 +2655,7 @@ loc_1422C6:
 loc_1422CB:
 		LDA		byte_C5
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 loc_1422D2:
 		SYSX	_sys08_msg_m00_arg2,$36
 		FARX	_bE_s1C
@@ -2667,11 +2673,11 @@ sub_1422E1:
 		STA		byte_CE
 		STA		byte_CF
 		STA		byte_D2
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BNE		loc_142303
 		SYSX	_sys08_msg_m00_arg2,$38
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		BCS		sub_1422E1
@@ -2685,7 +2691,7 @@ loc_142303:
 		BCS		loc_1422DD
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -2738,7 +2744,7 @@ loc_142377:
 		STA		byte_CE
 		LDA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$80
 		BEQ		loc_1423AA
@@ -2755,7 +2761,7 @@ loc_142377:
 		SYSX	_sys08_msg_m00_arg2,$3D
 		JMP		loc_14235E
 loc_1423AA:
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		JSR		sub_14200A
 		SYSX	_display_window,$12
 		LDA		byte_C5
@@ -2764,9 +2770,9 @@ loc_1423AA:
 		LDA		byte_60B9
 		ORA		#$20
 		STA		byte_60B9
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$80
-		STA		byte_60B7
+		STA		_global_game_flags
 loc_1423C9:
 		JMP		loc_14235E
 
@@ -2816,7 +2822,7 @@ loc_142400:
 		JSR		sub_14245C
 		SYSX	_sys04_msg_m00_b3_break,$3B
 loc_142426:
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		BCC		loc_142446
 		STA		byte_C3
 		JSR		sub_141FB1
@@ -2827,7 +2833,7 @@ loc_142426:
 		STA		byte_CE
 		LDA		byte_C5
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 		SYSX	_sys04_msg_m00_b3_break,$3C
 loc_142446:
 		SYSX	_sys04_msg_m00_b3_break,$3D
@@ -2864,7 +2870,7 @@ sub_14246C:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_b0_s1D
+		JSR		_sram_b0_s1B_players_gold_subtract
 		SYSX	_display_window,$12
 		RTS
 loc_14247F:
@@ -2893,7 +2899,7 @@ loc_142496:
 		STA		byte_C2
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		LDX		#byte_C0
 		JSR		_mul16_to_8
@@ -2941,7 +2947,7 @@ loc_142500:
 sub_142504:
 		JSR		_pal_fade_out
 		SYSX	_display_window,$3E
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDX		word_4
 		LDA		#$FF
 		STA		byte_CF
@@ -3059,7 +3065,7 @@ loc_1425AA:
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3D_player_status_20_clear
+		FARX	_b0_s3D_player_detoxicate
 		JMP		loc_1425A4
 loc_142605:
 		LDA		byte_C3
@@ -3116,7 +3122,7 @@ loc_142629:
 		SYSX	_apu_load,$15
 		LDA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		JMP		loc_1425A4
 loc_142684:
 		SYSX	_sys08_msg_m00_arg2,$0C
@@ -3177,7 +3183,7 @@ loc_1426F1:
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3D_player_status_80_set
+		FARX	_b0_s3D_player_revive
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
@@ -3194,7 +3200,7 @@ loc_142722:
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
 ;sub_142728:
-;		JSR		_sram_b0_s31
+;		JSR		_sram_b0_s31_get_party_chars_list
 ;		LDA		word_4
 ;		STA		byte_CE
 ;		LDA		#0
@@ -3207,7 +3213,7 @@ loc_142722:
 ;		DEX
 ;		BMI		loc_14275C
 ;		STX		byte_CE
-;		JSR		_sram_b0_s7_player_MAX_MP_read
+;		JSR		_sram_b0_s7_player_MMP_read
 ;		LDA		word_4
 ;		ORA		word_4+1
 ;		BEQ		loc_14273A
@@ -3260,7 +3266,7 @@ sub_142780:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s11:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDX		word_4
 		LDA		#$FF
 		STA		byte_CF
@@ -3474,7 +3480,7 @@ loc_14297E:
 		JMP		loc_142951
 loc_14298E:
 		SYSX	_sys08_msg_m00_arg2,$6D
-		JSR		_sram_b0_s1D
+		JSR		_sram_b0_s1B_players_gold_subtract
 		SYSX	_display_window,$68
 		CLC
 		LDA		byte_C6
@@ -3493,7 +3499,7 @@ loc_1429B0:
 		BCS		loc_1429C7
 		STA		byte_CE
 loc_1429B9:
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BNE		loc_1429CA
 		LDA		byte_C3
@@ -3512,7 +3518,7 @@ loc_1429CA:
 		BCS		loc_1429C7
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -3540,7 +3546,7 @@ loc_142A02:
 		SYSX	_sys08_msg_m00_arg2,$71
 		JMP		loc_142A6B
 loc_142A1B:
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		BPL		loc_142A41
 		AND		#$7F
@@ -3560,7 +3566,7 @@ loc_142A41:
 		SYSX	_sys08_msg_m00_arg2,$73
 		LDA		byte_C5
 		JSR		sub_141EEE
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDA		byte_C5
 		AND		#$7F
 		CMP		#$2A
@@ -3633,7 +3639,7 @@ loc_142ACC:
 		JMP		loc_142AA5
 loc_142ADC:
 		SYSX	_sys08_msg_m00_arg2,$79
-		JSR		_sram_b0_s1C
+		JSR		_sram_b0_s1B_players_gold_add
 		SYSX	_display_window,$68
 		SEC
 		LDA		byte_608D
@@ -3694,12 +3700,12 @@ loc_142B50:
 loc_142B5A:
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142B82
 		SYSX	_sys08_msg_m00_arg2,$7E
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		BNE		loc_142B74
 		JMP		sub_142BC0
@@ -3729,7 +3735,7 @@ loc_142BA4:
 		LDX		byte_BD
 		JSR		sub_141F03
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 loc_142BAE:
 		LDA		byte_600D
 		CMP		#$7F
@@ -3916,14 +3922,14 @@ loc_142CFF:
 loc_142D02:
 		JMP		sub_142E69
 loc_142D05:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#4
 		BCC		loc_142D14
 		SYSX	_sys08_msg_m00_arg2,$5B
 		JMP		sub_142E22
 loc_142D14:
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDA		word_4
 		BNE		loc_142D21
 		SYSX	_sys08_msg_m00_arg2,$5C
@@ -3941,7 +3947,7 @@ loc_142D21:
 		JMP		sub_142E22
 loc_142D3A:
 		STA		byte_BD
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDA		byte_BD
 		CMP		word_4
 		BCC		loc_142D50
@@ -3980,7 +3986,7 @@ loc_142D50:
 		JSR		_bD_s10
 		JMP		sub_142E22
 loc_142D92:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		BCS		loc_142DA1
@@ -4002,17 +4008,17 @@ loc_142DAE:
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BNE		loc_142DD0
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#1
 		BNE		loc_142DD0
 		SYSX	_sys08_msg_m00_arg2,$64
 		JMP		sub_142E22
 loc_142DD0:
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDX		word_4
 		DEX
 		BNE		loc_142DE7
-		JSR		_bD_s26
+		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
 		CMP		byte_C3
 		BNE		loc_142DE7
@@ -4032,7 +4038,7 @@ loc_142DF9:
 		LDA		#0
 		STA		byte_D2
 loc_142DFD:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#3
 		BCC		loc_142E0C
@@ -4101,7 +4107,7 @@ loc_142E49:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E69:
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDA		word_4
 		BNE		loc_142E76
 		SYSX	_sys08_msg_m00_arg2,$99
@@ -4119,7 +4125,7 @@ loc_142E76:
 		JMP		sub_142E22
 loc_142E8F:
 		STA		byte_C3
-		JSR		_sram_b0_s32
+		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDX		byte_C3
 		LDA		word_4+1,X
 		STA		byte_C3
@@ -4404,10 +4410,11 @@ _msg_m00_param_b3_break:
 ;		BNE		_msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_break_b4:
+_msg_m00_param_b4_break:
 		JSR		_bD_sB
 		LDY		#8
-;		BNE		_msg_m00_select_param_break	; FALL THROUGH
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _msg_m00_select_param_break:
@@ -4442,7 +4449,7 @@ __msg_m00_select_param:
 		BNE		loc_14308A
 		INC		$104,X				; increase higher bits of return pointer if any
 loc_14308A:
-		LDA		$104,X				
+		LDA		$104,X
 		STA		byte_6B				; get higher byte
 		LDX		#0
 		LDA		(byte_6A,X)			; read parameter byte
@@ -4456,10 +4463,10 @@ _msg_m00_select:
 		ADC		_msg_bank_ofs_list+1,Y		; so we have table[Y]+u8
 		TAX
 		PLA
-		JSR		_far_bE_s4_msg_m00_delta3	
+		JSR		_far_bE_s4_msg_m00_delta3
 		SEC
 		RTS
-		
+
 _msg_bank_ofs_list:
 		.WORD	$000
 		.WORD	$0F7
@@ -4498,7 +4505,7 @@ _sys05_msg_m00_b4_break:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sB:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_CE
 		STA		byte_8
@@ -4529,7 +4536,7 @@ sub_1430F2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1430FA:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		RTS
@@ -4537,7 +4544,7 @@ sub_1430FA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143102:
 		STA		byte_CF
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		BCS		sub_143126
 		SYSX	_sys02_msg_m00_b3,$F1
 		CLC
@@ -4546,7 +4553,7 @@ sub_143102:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s27:
 		STA		byte_CF
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		BCS		sub_143126
 		SYSX	_sys02_msg_m00_b3,$F2
 		CLC
@@ -4555,7 +4562,7 @@ _bD_s27:
 ; =============== S U B	R O U T	I N E =======================================
 sub_14311A:
 		STA		byte_CF
-		FARX	_b0_s3C
+		FARX	_b0_s3C_get_free_inventory_slot
 		BCS		sub_143126
 		SYSX	_sys02_msg_m00_b3,$F3
 		CLC
@@ -4564,12 +4571,12 @@ sub_14311A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143126:
 		STA		byte_CE
-		JMP		_sram_b0_s29
+		JMP		_sram_b0_s29_player_inventory_item_add
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14312B:
 		STA		byte_CE
-		JMP		_sram_b0_s2B
+		JMP		_sram_b0_s2B_is_anybody_owns_item
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143130:
@@ -4577,7 +4584,7 @@ sub_143130:
 		STA		byte_CE
 		LDA		word_4+1
 		STA		byte_CF
-		JMP		_sram_b0_s2A
+		JMP		_sram_b0_s2A_player_inventory_item_remove
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14313B:
@@ -4711,7 +4718,7 @@ sub_1431F7:
 		CMP		#$78
 		BNE		loc_143212
 loc_143207:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_143212
 		JSR		_msg_m00_param_b0_break
@@ -4751,7 +4758,7 @@ loc_143244:
 		BEQ		loc_143281
 		CMP		#1
 		BNE		loc_143256
-		JSR		_msg_m00_param_break_b4
+		JSR		_msg_m00_param_b4_break
 		.BYTE	$1F
 loc_143256:
 		CMP		#2
@@ -4778,7 +4785,7 @@ loc_14326E:
 sub_14327E:
 		JSR		sub_143166
 loc_143281:
-		BIT		byte_60B7
+		BIT		_global_game_flags
 		BVC		loc_1432A7
 		LDY		#$15
 loc_143288:
@@ -5167,7 +5174,7 @@ _npc_hndl1:
 		STA		byte_D3
 		SYSX	_sys04_msg_m00_b3_break,$0A
 loc_143541:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		loc_143559
 		SYSX	_sys02_msg_m00_b3,$06
 		FARX	_bE_s1C
@@ -5230,7 +5237,7 @@ _npc_hndl3:
 		.BYTE	$13
 loc_1435B3:
 		SYSX	_sys02_msg_m00_b3,$17
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		CMP		#2
 		BCC		loc_1435E2
@@ -5267,7 +5274,7 @@ loc_1435E5:
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_CE
-		JSR		_sram_b0_sF
+		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDX		#7
 loc_143607:
 		LDA		word_4,X
@@ -5394,7 +5401,7 @@ loc_1436C3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlF:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_1436D4
 		SYSX	_sys04_msg_m00_b3_break,$40
@@ -5423,7 +5430,7 @@ _npc_hndl11:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl12:
 		SYSX	_sys02_msg_m00_b3,$47
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_CE
 loc_1436FE:
@@ -5504,13 +5511,13 @@ loc_143772:
 		JSR		sub_143130
 		LDA		#$5C
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 		SYSX	_sys04_msg_m00_b3_break,$54
 loc_14377F:
 		LDA		#$5C
 		STA		byte_CE
 		FARX	_b0_s4D
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		RTS
 
@@ -5634,7 +5641,7 @@ loc_143840:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143847:
-		JSR		_bD_s26
+		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
 		STA		byte_D2
 		RTS
@@ -5656,7 +5663,7 @@ _npc_hndl22:
 		LDA		byte_60B9
 		AND		#8
 		BEQ		loc_14386C
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_1438B6
 		SYSX	_sys04_msg_m00_b3_break,$83
 loc_14386C:
@@ -5681,7 +5688,7 @@ loc_14388F:
 		JSR		sub_143130
 		LDA		#$6E
 		STA		byte_CF
-		JSR		_sram_b0_s29
+		JSR		_sram_b0_s29_player_inventory_item_add
 		LDA		#$17
 		JSR		sub_143F9E
 		LDA		#$23
@@ -5991,7 +5998,7 @@ _npc_hndl3F:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl40:
 		SYSX	_sys02_msg_m00_b3,$D3
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_143AB6
 		RTS
@@ -6016,7 +6023,7 @@ loc_143AC9:
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143ADA
-		JSR		_bD_s26
+		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143ADA:
 		SYSX	_sys02_msg_m00_b3,$D6
@@ -6033,7 +6040,7 @@ sub_143AEA:
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143AF8
-		JSR		_bD_s26
+		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143AF8:
 		SYSX	_sys02_msg_m00_b3,$D9
@@ -6091,7 +6098,7 @@ _npc_hndl46:
 		JSR		_msg_m00_param_b2_break
 		.BYTE	$15
 loc_143B4E:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BPL		_npc_hndl47_exp_info_and_progress_save
 		JSR		_bD_sB
 		SYSX	_sys07_msg_m00_arg1,$89
@@ -6164,7 +6171,7 @@ _npc_hndl4D:
 loc_143BD8:
 		LDA		#$39
 		STA		byte_CE
-		JSR		_bD_s26
+		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		BCS		loc_143BF9
 		LDA		#$58
 		JSR		sub_14312B
@@ -6189,7 +6196,7 @@ loc_143C03:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4F:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		BMI		loc_143C0E
 		SYSX	_sys04_msg_m00_b3_break,$10
 loc_143C0E:
@@ -6375,7 +6382,7 @@ _npc_hndl64:
 _npc_hndl65:
 		SYSX	_sys02_msg_m00_b3,$A0
 		FARX	_b2_s7_screen_spell_blink
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDX		word_4
 		DEX
 		STX		byte_CE
@@ -6572,7 +6579,7 @@ sub_143E48:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143E67:
 		FARX	_b0_s47
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_64
 		LDA		#0

@@ -91,9 +91,9 @@ loc_68061:
 		STA		byte_6A6B
 		LDA		#0
 		STA		byte_6A66
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$20
-		STA		byte_60B7
+		STA		_global_game_flags
 		FARX	_bE_s5
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
@@ -115,7 +115,7 @@ loc_68080:
 loc_680A0:
 ; this is happening at game over after defeat in battle
 ; does some combination of change status to DEad, changes screen to red, clears textbox. probably all of the above. it's the main death sequence
-		FARX	_b1_sC 
+		FARX	_b1_sC
 ; so this would be some kind of last battle-exiting final cleanup before doing the longjmp to _MAIN_ENTRY
 		LDA		#0
 		STA		_spr_force_shuffle_mode
@@ -149,9 +149,9 @@ loc_680D6:
 		JSR		_map_music_select_and_load
 loc_680DC:
 		FARX	_b0_s50
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$DF
-		STA		byte_60B7
+		STA		_global_game_flags
 		JSR		sub_174C62
 		LDA		#0
 		STA		byte_8E
@@ -162,7 +162,7 @@ loc_680DC:
 _b4_s24:
 		LDA		#$80
 
-;; FALL THROUGH ;;
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_680F1:
@@ -176,7 +176,7 @@ _b4_s25:
 		LDA		#$C0
 		BNE		sub_680F1
 
-;; FALL THROUGH ;;
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_680FE:
@@ -200,9 +200,9 @@ loc_6811D:
 		LDA		#$FE
 		STA		byte_6A65
 loc_68122:
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$DF
-		STA		byte_60B7
+		STA		_global_game_flags
 		BIT		byte_6A63
 		BVS		loc_68138
 		FARX	_bD_sC
@@ -391,7 +391,7 @@ loc_68252:
 loc_6825C:
 		STX		byte_51
 		TXA
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		STA		byte_CE
 		JSR		_sram_b0_s12_player_AGI_read
 		LDX		byte_51
@@ -519,7 +519,7 @@ loc_68342:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		byte_530,X
 		BPL		loc_68351
 		JSR		sub_68453
@@ -804,8 +804,8 @@ sub_68509:
 		ASL
 		TAX
 		LDA		#$40
-		ORA		byte_531,X
-		STA		byte_531,X
+		ORA		byte_530+1,X
+		STA		byte_530+1,X
 		SEC
 		RTS
 
@@ -821,7 +821,7 @@ _b4_s2B:
 		SEC
 		RTS
 loc_6852A:
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		DEC		word_4
 		LDA		word_4
 		ASL
@@ -973,7 +973,7 @@ sub_685EE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_685F3:
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		DEC		word_4
 		BEQ		loc_6863F
 		LDA		#$F
@@ -1639,7 +1639,7 @@ loc_689F6:
 		LDA		byte_64
 		ASL
 		TAY
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		AND		#$20
 		BNE		locret_68A1D
 		DEX
@@ -1681,20 +1681,20 @@ sub_68A52:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BPL		locret_68AC5
 		JSR		_b4_sA
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$20
 		BEQ		loc_68A7D
 		JMP		sub_68B00
 loc_68A7D:
 		LDA		byte_6A63
 		BNE		loc_68A8F
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$10
 		BEQ		loc_68A92
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
@@ -1720,9 +1720,9 @@ loc_68AAB:
 		LDA		byte_558,X
 		ASL
 		TAX
-		LDA		off_6BDAA,X
+		LDA		_bs_emove_fptr_tbl,X
 		STA		word_3C
-		LDA		off_6BDAA+1,X
+		LDA		_bs_emove_fptr_tbl+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
 locret_68AC5:
@@ -1740,7 +1740,7 @@ locret_68AD0:
 loc_68AD1:
 		LDA		byte_4C
 		BEQ		locret_68AFB
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDX		#0
 loc_68ADA:
 		TXA
@@ -1786,9 +1786,9 @@ sub_68B00:
 		STA		byte_530,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B
 loc_68B24:
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$DF
-		STA		byte_531,X
+		STA		byte_530+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1836,7 +1836,7 @@ loc_68B5D:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
 loc_68B75:
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		loc_68B5D
 		JSR		sub_68BB6
@@ -1998,7 +1998,7 @@ loc_68C9A:
 		BNE		loc_68C9A
 		LDX		#0
 loc_68CA7:
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		BPL		loc_68CB2
 		INX
 		INX
@@ -2015,7 +2015,7 @@ loc_68CB2:
 		ORA		#$80
 		STA		byte_530,X
 		LDA		#$80
-		STA		byte_531,X
+		STA		byte_530+1,X
 		PLA
 		ASL
 		ASL
@@ -2052,7 +2052,7 @@ loc_68CED:
 		JSR		sub_68D7F
 		STA		byte_500,X
 		TYA
-		STA		byte_501,X
+		STA		byte_500+1,X
 		JSR		sub_6B72F
 		LDA		byte_59
 		LDX		byte_64
@@ -2061,7 +2061,7 @@ loc_68CED:
 		JSR		sub_68D7F
 		STA		byte_520,X
 		TYA
-		STA		byte_521,X
+		STA		byte_530+1,X
 		JSR		sub_6B746
 		LDX		byte_64
 		STA		byte_518,X
@@ -2362,7 +2362,7 @@ sub_68F16:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2414,7 +2414,7 @@ sub_68F73:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7E
 		LDA		#$55
 		JSR		_b4_s20
-		JMP		_sram_b0_s2A
+		JMP		_sram_b0_s2A_player_inventory_item_remove
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F7E:
@@ -2558,7 +2558,7 @@ loc_6905D:
 		STA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		BPL		locret_69078
 		JSR		sub_6B5B7
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D
@@ -2846,9 +2846,9 @@ loc_69267:
 		LDA		byte_CE
 		STA		byte_CF
 		TAX
-		LDA		_players_formation,X
+		LDA		_party_players_list_formation,X
 		ORA		#$80
-		STA		_players_formation,X
+		STA		_party_players_list_formation,X
 		TXA
 		ASL
 		TAX
@@ -2862,7 +2862,7 @@ loc_69282:
 		CLC
 		ADC		#1
 		STA		byte_D0
-		JSR		_sram_b0_s3B
+		JSR		_sram_b0_s3B_players_data_swap_in_battle
 		INC		byte_CF
 		JMP		loc_69282
 loc_69295:
@@ -2896,9 +2896,9 @@ _bs_emove_2C_chant_bounce:
 		STA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		ORA		#$F
-		STA		byte_531,X
+		STA		byte_530+1,X
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
 
@@ -2913,7 +2913,7 @@ _bs_emove_2B_zoma_freeze_beam:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$76
 		LDA		byte_500
 		PHA
-		LDA		byte_501
+		LDA		byte_500+1
 		PHA
 		LDA		byte_51
 		PHA
@@ -2934,7 +2934,7 @@ loc_69309:
 		PLA
 		STA		byte_51
 		PLA
-		STA		byte_501
+		STA		byte_500+1
 		PLA
 		STA		byte_500
 		LDA		#5
@@ -3009,7 +3009,7 @@ loc_69383:
 		STA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		BMI		loc_693EA
 		LDA		byte_530,X
 		BPL		loc_693EA
@@ -3031,9 +3031,9 @@ loc_6939C:
 		AND		#$FC
 		ORA		#$40
 		STA		byte_530,X
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		ORA		#$80
-		STA		byte_531,X
+		STA		byte_530+1,X
 		JSR		sub_6B6B8
 		LDA		byte_49
 		CMP		#$21
@@ -3230,7 +3230,7 @@ loc_694FD:
 		TXA
 		LSR
 		TAX
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		sub_69589
 		LDA		#$44
@@ -3322,9 +3322,9 @@ loc_695B4:
 		TXA
 		LSR
 		TAX
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$F7
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		LDA		byte_CE
 		STA		byte_D2
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
@@ -3429,7 +3429,7 @@ loc_69660:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$20
 		BNE		loc_6968F
 		JSR		sub_6ACBE
@@ -3458,7 +3458,7 @@ loc_696AD:
 loc_696B6:
 		SYSX	_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10
-		JSR		_sram_b0_s17
+		JSR		_sram_b0_s17_player_rATK_read
 		JSR		sub_6ADA4
 		LDX		#word_4
 		LDA		#1
@@ -3531,9 +3531,9 @@ loc_69736:
 loc_6974C:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1C
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$F7
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		LDA		#$70
 		STA		byte_54C,X
 		RTS
@@ -3627,7 +3627,7 @@ loc_697E0:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BPL		loc_69831
 		LDA		byte_6A63
 		BEQ		loc_697F9
@@ -3711,7 +3711,7 @@ loc_6986C:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BPL		loc_69886
 		TYA
 		PHA
@@ -3740,7 +3740,7 @@ loc_6989F:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BPL		locret_698B3
 		JSR		sub_6BEA4
 		JMP		sub_6A3F8
@@ -4262,7 +4262,7 @@ sub_69C0B:
 		BCS		loc_69C7E
 loc_69C2D:
 		JSR		sub_69C62
-		JSR		_sram_b0_s3_player_MAX_HP_read
+		JSR		_sram_b0_s3_player_MHP_read
 		LDA		byte_47
 		BPL		loc_69C3B
 		LSR		word_4+1
@@ -4295,9 +4295,9 @@ sub_69C62:
 		TXA
 		LSR
 		TAX
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$F7
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		INC		byte_4C
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C
 loc_69C7A:
@@ -4343,15 +4343,15 @@ sub_69CA7:
 		LDA		_players_status+1,X
 		AND		#$40
 		BNE		locret_69D1C
-		LDA		byte_6A9B,Y
+		LDA		_player_battle_order_and_flags,Y
 		AND		#8
 		BNE		locret_69D1C
 		LDA		#$60
 		JSR		sub_6A84F
 		BCS		loc_69CDD
-		LDA		byte_6A9B,Y
+		LDA		_player_battle_order_and_flags,Y
 		ORA		#8
-		STA		byte_6A9B,Y
+		STA		_player_battle_order_and_flags,Y
 		LDA		_players_status,X
 		ORA		#3
 		STA		_players_status,X
@@ -4382,9 +4382,9 @@ loc_69CF7:
 		BCC		sub_69D1D
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
 		JSR		sub_6A35A
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		ORA		#$20
-		STA		byte_531,X
+		STA		byte_530+1,X
 		LDA		byte_530,X
 		ORA		#3
 		STA		byte_530,X
@@ -4418,12 +4418,12 @@ loc_69D3D:
 		JSR		sub_6B3D2
 		JSR		sub_68F0C
 		BPL		locret_69D5F
-		LDA		byte_6A9B,Y
+		LDA		_player_battle_order_and_flags,Y
 		AND		#8
 		BEQ		loc_69D5C
-		LDA		byte_6A9B,Y
+		LDA		_player_battle_order_and_flags,Y
 		AND		#$F7
-		STA		byte_6A9B,Y
+		STA		_player_battle_order_and_flags,Y
 		LDA		#$70
 		STA		byte_54C,Y
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
@@ -4577,9 +4577,9 @@ sub_69E5B:
 		JSR		_b4_s5_do_message_speed_delay
 		FARX	_b6_s6
 		BCC		loc_69E7C
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		AND		#$DF
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#0
 		STA		_spr_force_shuffle_mode
 		LDX		#$FB
@@ -4610,12 +4610,12 @@ sub_69E98:
 		JSR		sub_6A337
 		BCC		loc_69EBE
 		JSR		sub_6A35A
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$10
 		BNE		loc_69EC1
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		ORA		#$10
-		STA		byte_531,X
+		STA		byte_530+1,X
 		LDA		#$46
 		JMP		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 loc_69EBE:
@@ -4879,10 +4879,10 @@ sub_6A079:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A083:
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		PLA
 		CMP		word_4
 		BEQ		sub_6A079
@@ -5024,7 +5024,7 @@ loc_6A174:
 		JSR		sub_6A18E
 		BMI		loc_6A182
 		STX		byte_D0
-		JSR		_sram_b0_s3B
+		JSR		_sram_b0_s3B_players_data_swap_in_battle
 loc_6A182:
 		INC		byte_42
 		LDA		byte_42
@@ -5167,7 +5167,7 @@ sub_6A263:
 		STA		byte_D3
 		TAY
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#3
 		STA		word_4
 		CPY		word_4
@@ -5180,13 +5180,13 @@ loc_6A280:
 		LDA		#$43
 loc_6A282:
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$FC
 		STA		word_4
 		TYA
 		ORA		word_4
 		ORA		#$10
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		LDA		_players_AGI,Y
 		STA		_players_rAGI,X
 		LDA		#5
@@ -5448,7 +5448,7 @@ loc_6A42E:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		BPL		locret_6A3F7
 		JSR		sub_68F16
 		BPL		locret_6A3F7
@@ -5474,7 +5474,7 @@ loc_6A467:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$40
 		BEQ		loc_6A478
 		LSR		word_4+1
@@ -5650,7 +5650,7 @@ loc_6A58C:
 		JSR		sub_6B2C4
 ; load a PC status flag and check & $20
 		LDX		byte_CE ; "targetplayer"
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#$20
 		BEQ		.checkForDamage0 ; skip parry reduction if not parrying
 ; ..make damage smaller /2 ..?parrying?
@@ -5679,7 +5679,7 @@ _bs_run_PC_Damage:
 		STA		_msg_number_parameter_F8+1
 		LDA		#0 ; make sure MSB is cleared
 		STA		_msg_number_parameter_F8+2
-; reduce HP 
+; reduce HP
 		JSR		_sram_b0_s5_player_HP_subtract
 		SYSX	_apu_load,$8A ; play sfx hit!
 		LDA		#$13
@@ -6031,7 +6031,7 @@ sub_6A82E:
 sub_6A839:
 		LDA		byte_520,X
 		STA		word_6
-		LDA		byte_521,X
+		LDA		byte_530+1,X
 		STA		word_6+1
 		RTS
 
@@ -6040,7 +6040,7 @@ sub_6A844:
 		LDA		byte_8
 		STA		byte_520,X
 		LDA		byte_9
-		STA		byte_521,X
+		STA		byte_530+1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6130,7 +6130,7 @@ loc_6A8C8:
 		LDA		byte_10
 		BNE		loc_6A8D9
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BPL		loc_6A8E7
 loc_6A8D9:
 		LDA		byte_530,X
@@ -6175,7 +6175,7 @@ _b4_s6:
 		BNE		loc_6A921
 		LDA		byte_CE
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
 		ADC		#3
@@ -6277,7 +6277,7 @@ sub_6A96F:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; prints "you have vanquished all of your foes. <hero> thereby gains 23 experience points. you obtain 10 pieces of gold"
-; 
+;
 _b4_s9:
 		LDX		#0
 		FARX	_bE_s4_msg_m00
@@ -6554,7 +6554,7 @@ loc_6AAE3:
 		AND		#7
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		byte_530,X
 		BPL		loc_6AB02
 		LDA		byte_530,X
@@ -6696,11 +6696,11 @@ loc_6ABC3:
 		LDA		word_4+1
 		STA		byte_5A
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		loc_6AC05
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#4
 		BNE		loc_6AC0D
 		LDA		byte_59
@@ -6784,7 +6784,7 @@ sub_6AC36:
 		LDA		byte_500,X
 		SBC		word_3C
 		STA		word_3C
-		LDA		byte_501,X
+		LDA		byte_500+1,X
 		SBC		word_3C+1
 		STA		word_3C+1
 		BCS		loc_6AC8F
@@ -6851,7 +6851,7 @@ sub_6ACD9:
 		LDA		byte_540,X
 		AND		#3
 		STA		byte_CE
-		JSR		_sram_b0_s17
+		JSR		_sram_b0_s17_player_rATK_read
 		LSR		byte_5A
 		ROR		byte_59
 		LDA		word_4
@@ -6973,7 +6973,7 @@ sub_6AD8F:
 		TAX
 		LDA		byte_520,X
 		STA		word_4
-		LDA		byte_521,X
+		LDA		byte_530+1,X
 		JMP		loc_6AD41
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7041,7 +7041,7 @@ sub_6ADF9:
 		ASL
 		TAX
 		LDA		#0
-		STA		byte_531,X
+		STA		byte_530+1,X
 		DEC		byte_4D
 		BEQ		loc_6AE31
 		LDA		byte_530,X
@@ -7100,11 +7100,11 @@ loc_6AE53:
 		ASL
 		TAX
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BMI		loc_6AE66
-		LDA		byte_550,Y
+		LDA		byte_54C+4,Y
 		ORA		#$70
-		STA		byte_550,Y
+		STA		byte_54C+4,Y
 loc_6AE66:
 		INY
 		CPY		#8
@@ -7178,7 +7178,7 @@ loc_6AED7:
 		BEQ		loc_6AEEC
 		TXA
 		JSR		_b4_s20
-		JSR		_sram_b0_s2A
+		JSR		_sram_b0_s2A_player_inventory_item_remove
 loc_6AEEC:
 		JMP		loc_697AA
 
@@ -7218,7 +7218,7 @@ sub_6AF0E:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$A6
 		LDA		#$4E
 		JSR		_b4_s20
-		JMP		_sram_b0_s2A
+		JMP		_sram_b0_s2A_player_inventory_item_remove
 locret_6AF33:
 		RTS
 
@@ -7474,7 +7474,7 @@ sub_6B0B9:
 _bs_pcAction_06_equip_attack:
 		LDA		#0
 		STA		byte_42
-		FARX	_b0_s63
+		FARX	_b0_s63_player_unequip_all_type_items
 		LDX		byte_51
 		LDA		byte_558,X
 		STA		byte_42
@@ -7917,11 +7917,11 @@ loc_6B3B2:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		#$F
 		BEQ		loc_6B3C5
 		LDA		byte_530,X
-		AND		byte_531,X
+		AND		byte_530+1,X
 		BMI		loc_6B372
 loc_6B3C5:
 		CLC
@@ -7991,7 +7991,7 @@ loc_6B412:
 _b4_s1D:
 		TXA
 		PHA
-		JSR		_sram_b0_s31
+		JSR		_sram_b0_s31_get_party_chars_list
 		PLA
 		TAX
 		DEC		word_4
@@ -8065,7 +8065,7 @@ loc_6B512:
 		ASL
 		TAY
 		LDA		byte_530,Y
-		AND		byte_531,Y
+		AND		byte_530+1,Y
 		BMI		loc_6B528
 		INX
 		DEC		byte_5A
@@ -8130,7 +8130,7 @@ loc_6B55D:
 		CLC
 		BCC		loc_6B580
 loc_6B579:
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		AND		byte_530,X
 		ROL
 loc_6B580:
@@ -8281,7 +8281,7 @@ sub_6B645:
 		TAX
 		LDA		byte_500,X
 		STA		byte_59
-		LDA		byte_501,X
+		LDA		byte_500+1,X
 		STA		byte_5A
 		RTS
 
@@ -8314,7 +8314,7 @@ loc_6B681:
 		LDA		byte_59
 		STA		byte_500,X
 		LDA		byte_5A
-		STA		byte_501,X
+		STA		byte_500+1,X
 		RTS
 loc_6B68C:
 		LDA		byte_5B
@@ -8499,7 +8499,7 @@ sub_6B777:
 		TAX
 		LDA		byte_520,X
 		STA		byte_59
-		LDA		byte_521,X
+		LDA		byte_530+1,X
 		STA		byte_5A
 		RTS
 
@@ -8540,7 +8540,7 @@ sub_6B786:
 ;		LDA		byte_59
 ;		STA		byte_520,X
 ;		LDA		byte_5A
-;		STA		byte_521,X
+;		STA		byte_530+1,X
 ;		RTS
 ;loc_6B7C5:
 ;		LDA		byte_59
@@ -8560,7 +8560,7 @@ sub_6B786:
 ;		LDA		byte_59
 ;		STA		byte_520,X
 ;		LDA		byte_5A
-;		STA		byte_521,X
+;		STA		byte_530+1,X
 ;		RTS
 ;loc_6B7EA:
 ;		LDA		#0
@@ -8664,7 +8664,7 @@ _b4_s17:
 		ROL
 		DEY
 		BNE		.multishift
-; now if(rand() >= A) drop no item. 
+; now if(rand() >= A) drop no item.
 ; that means, "drop_odds" of 1 turned into 6 and therefore drop no item if we roll >= 32. therefore it's 1 in 8 odds
 ; so:
 ; drop_odds = 1 -> 1/8 (>=32)
@@ -8696,7 +8696,7 @@ loc_6B879:
 		BCS		.drop_no_item ; rand() >= #$20 -> drop no item
 ; that was a 7 in 8 chance.
 ; if we make it here, we get to keep the drop
-; that means we have a (1/256)*(1/8) chance of getting the drop = 1/2048. geeze. 
+; that means we have a (1/256)*(1/8) chance of getting the drop = 1/2048. geeze.
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8708,7 +8708,7 @@ sub_6B888:
 		LDY		byte_6A73,X ; value to multiply by 17
 		JMP		loc_6B892 ; TODO - redundant jmp, remove during a non-neutral edit
 loc_6B892:
-;multiply by #$17 to get an offset into the enemies lib, and leave pointer parked in word_4A and 
+;multiply by #$17 to get an offset into the enemies lib, and leave pointer parked in word_4A and
 		LDA		#$17
 		STA		word_4A
 		LDA		#0
@@ -9014,7 +9014,7 @@ sub_6BA11:
 		TAX
 		LDA		byte_530,X
 		STA		byte_5B
-		LDA		byte_531,X
+		LDA		byte_530+1,X
 		STA		byte_5C
 		RTS
 
@@ -9078,7 +9078,7 @@ _message_speed_delays_list:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; calculates a random number between [0,255] with a SHARP BELL CURVE (more tosses, more likely to approach mean)
-; 
+;
 _b4_sE:
 		LDA		#$1F
 		STA		byte_42
@@ -9123,7 +9123,7 @@ loc_6BA84:
 ; done looping X times. pop the original X value
 		PLA
 		TAX
-; load the value we just worked on and do a multiple precision subtract #$80. 
+; load the value we just worked on and do a multiple precision subtract #$80.
 ; I think the purpose is to move the mean from ~256 to ~128
 		LDA		word_3C
 		SEC
@@ -9209,7 +9209,7 @@ sub_6BACB:
 		LDA		byte_59
 		STA		byte_500,Y
 		LDA		byte_5A
-		STA		byte_501,Y
+		STA		byte_500+1,Y
 		JSR		sub_6B72F
 		LDY		byte_43
 		LDA		byte_59
@@ -9225,9 +9225,9 @@ sub_6BACB:
 		LDA		byte_59
 		STA		byte_520,Y
 		LDA		byte_5A
-		STA		byte_521,Y
+		STA		byte_530+1,Y
 		LDA		#$80
-		STA		byte_531,Y
+		STA		byte_530+1,Y
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -9258,8 +9258,8 @@ _b4_s23:
 sub_6BB4D:
 		CMP		#2
 		BCS		loc_6BB5E
-		LDA		#<[byte_6A9B]
-		LDX		#>[byte_6A9B]
+		LDA		#<[_player_battle_order_and_flags]
+		LDX		#>[_player_battle_order_and_flags]
 		JSR		sub_6BBCB
 		LDA		#8
 		BNE		loc_6BB85
@@ -9429,7 +9429,7 @@ loc_6BC42:
 loc_6BC4E:
 		LDA		word_4
 		BEQ		loc_6BC5D
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		BPL		loc_6BC3F
 		LDA		word_4
 		CMP		#5
@@ -9439,7 +9439,7 @@ loc_6BC5D:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC60:
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		BPL		loc_6BC42
 		BMI		loc_6BC3F
 
@@ -9452,7 +9452,7 @@ loc_6BC6A:
 		LDA		byte_64
 		ASL
 		TAY
-		LDA		byte_501,Y
+		LDA		byte_500+1,Y
 		CMP		byte_5A
 		BEQ		loc_6BC7D
 		BCC		loc_6BC42
@@ -9472,14 +9472,14 @@ sub_6BC86:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC90:
-		LDA		byte_521,Y
+		LDA		byte_530+1,Y
 		CMP		#3
 		BCC		loc_6BC3F
 		BCS		loc_6BC42
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC99:
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		AND		#$F
 		BEQ		loc_6BC42
 		BNE		loc_6BC3F
@@ -9629,8 +9629,8 @@ byte_6BD82:
 
 ; =============== T A B L E =================================================
 ; a table of function pointers for each type of enemy move
+;
 _bs_emove_fptr_tbl:
-off_6BDAA:
 		.WORD	_bs_emove_00_assessing
 		.WORD	_bs_emove_01_protects_itself
 		.WORD	_bs_emove_02_regular_attack
@@ -9728,7 +9728,7 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	sub_69BE0 ; ?
 		.WORD	sub_69BE0 ; Healus
 		.WORD	sub_69BE0 ; Healusall
-		.WORD	sub_69C09 
+		.WORD	sub_69C09
 		.WORD	sub_69C81
 		.WORD	sub_69C86 ; Sleep
 		.WORD	sub_69D20

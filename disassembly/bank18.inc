@@ -135,9 +135,9 @@ sub_24C0E5:
 sub_24C0F3:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$20
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync
@@ -163,9 +163,9 @@ _b18_s1:
 		JSR		sub_24C2B1
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$20
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync
@@ -189,9 +189,9 @@ loc_24C151:
 sub_24C156:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		ORA		#$20
-		STA		byte_60B7
+		STA		_global_game_flags
 		LDA		#$F
 		LDX		#$19
 loc_24C166:

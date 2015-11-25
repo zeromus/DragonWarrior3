@@ -2874,7 +2874,7 @@ loc_3A360:
 		STX		byte_52
 loc_3A364:
 		STX		byte_51
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		loc_3A39B
 		TXA
@@ -2947,7 +2947,7 @@ loc_3A3CF:
 loc_3A3EE:
 		DEC		byte_51
 		LDX		byte_51
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		loc_3A3EE
 		TXA
@@ -2989,9 +2989,9 @@ loc_3A435:
 		JMP		loc_3A689
 loc_3A43C:
 		LDX		byte_51
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		ORA		#$20
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		JSR		loc_3A675
 		RTS
 loc_3A44A:
@@ -3022,7 +3022,7 @@ loc_3A473:
 		LDA		#1
 		STA		byte_D0
 		LDX		byte_51
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#3
 		STA		byte_CE
 		JSR		_sram_b0_s39
@@ -3199,7 +3199,7 @@ loc_3A5A5:
 loc_3A5A8:
 		LDA		byte_51
 		STA		byte_CE
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BNE		loc_3A5C9
 		LDA		#$3D
@@ -3221,13 +3221,13 @@ loc_3A5D5:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_46
-		JSR		_sram_b0_s28
+		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_CF
 		STA		byte_45
 		STA		byte_D3
-		FARX	_b0_s60
+		FARX	_b0_s60_get_item_type
 		BNE		loc_3A5F4
 		FARX	_b0_s5E_check_if_item_can_be_equipped
 		BCC		loc_3A5F4
@@ -3321,7 +3321,7 @@ loc_3A689:
 		FARX	_b4_sA
 		LDA		#$83
 		FARX	_bB_s3_apu_load
-		FARX	_bD_s26
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
 		STA		byte_D2
 		LDX		#$50
@@ -3377,7 +3377,7 @@ byte_3A6F9:
 sub_3A6FD:
 		TXA
 		PHA
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#3
 		STA		byte_CE
 		JSR		_sram_b0_s2C_player_CLASS_read
@@ -3431,7 +3431,7 @@ loc_3A752:
 		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#[_b0_d3F_idx-_sys_idx_lib]>>1
+		LDA		#[_b0_d3F_other_spell_related_data_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		TAX
 		STA		byte_47
@@ -3473,9 +3473,9 @@ loc_3A7A7:
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A7AA:
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		ORA		#$20
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		SEC
 		RTS
 
@@ -3493,9 +3493,9 @@ sub_3A7B6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A7C4:
 		LDX		byte_CE
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		ORA		#8
-		STA		byte_6A9B,X
+		STA		_player_battle_order_and_flags,X
 		TXA
 		ASL
 		TAX
@@ -3617,7 +3617,7 @@ loc_3A88F:
 		ASL
 		TAY
 		LDA		byte_530,Y
-		AND		byte_531,Y
+		AND		byte_530+1,Y
 		BMI		loc_3A8A0
 		INX
 		CPX		#8
@@ -3637,7 +3637,7 @@ loc_3A8A6:
 		TAY
 		LDA		byte_530,Y
 		BPL		loc_3A8B3
-		LDA		byte_531,Y
+		LDA		byte_530+1,Y
 		BPL		loc_3A8B8
 loc_3A8B3:
 		DEX
@@ -3667,7 +3667,7 @@ loc_3A8C5:
 		BPL		loc_3A8E4
 		CPX		byte_CE
 		BEQ		loc_3A8E4
-		LDA		byte_6A9B,X
+		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		STA		word_4
 		LDA		_players_status+1,Y
@@ -3682,7 +3682,7 @@ loc_3A8E6:
 		BNE		loc_3A8C5
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s33
+		JSR		_sram_b0_s33_count_non_dead_party_chars
 		DEC		word_4
 		PLA
 		SEC
@@ -3744,7 +3744,7 @@ sub_3A93C:
 		FARX	_b4_s16_do_half_message_speed_delay
 		SEC
 		RTS
-		
+
 byte_3A948:
 		.BYTE	$FF,$FF,$FF,$FF, $F,  0,  0,  0
 byte_3A950:
@@ -3831,7 +3831,7 @@ sub_3A9E8:
 		PHA
 		TYA
 		BNE		loc_3AA0A
-		LDA		byte_60B7
+		LDA		_global_game_flags
 		LSR
 		BCC		loc_3AA0A
 		LDA		#<[_str_lib_erdrick]
