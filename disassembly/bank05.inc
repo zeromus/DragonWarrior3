@@ -5,8 +5,8 @@ _b5_s3_ptr:
 		.WORD	_b5_s3
 _b5_s4_ptr:
 		.WORD	_b5_s4
-_b5_s5_ptr:
-		.WORD	_b5_s5
+_b5_s5_mirror_of_ra_trigger_on_ptr:
+		.WORD	_b5_s5_mirror_of_ra_trigger_on
 _b5_s7_ptr:
 		.WORD	_b5_s7
 _b5_s8_ptr:
@@ -2699,8 +2699,8 @@ loc_83ED2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b5_s5:
-		SYSX	_sys07_msg_m00_arg1,$AA
+_b5_s5_mirror_of_ra_trigger_on:
+		SYSX	_sys07_msg_m00_arg1,$AA	; "Look there is an image of lion..."
 		JSR		sub_174D4F
 		LDA		#<[_npcs_pos_list+4]
 		STA		word_6C
@@ -2715,7 +2715,7 @@ _b5_s5:
 		LDX		#0
 		FARX	_bC_sB
 		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$AB
+		SYSX	_sys07_msg_m00_arg1,$AB	; "You saw me, Cackle..."
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$10
 		FARX	_b0_s1_battle_typeA_launch

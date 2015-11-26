@@ -5951,40 +5951,47 @@ word_1767B0:
 		.WORD	$4523
 
 ; =============== S U B	R O U T	I N E =======================================
+; input parameters, X:A - 9-bit message index from the start of the given bank
+; byte_7C, actual data bank
+;
 _get_msg_ptr_by_idx:
-		TAY
+		TAY								; backup A
 		LDA		_mmc_cur_prg_bank
 		PHA
 		LDA		#$A
-		JSR		_mmc1_prg_set
-		TYA
-		JSR		_get_text_block_ptr
+		JSR		_mmc1_prg_set			; yep, blocks offsets are in external bank
+		TYA								; restore A, now we have X:A index again
+		JSR		_get_text_block_ptr		; get it
 		PHA
 		LDA		word_7C
-		JSR		_mmc1_prg_set
+		JSR		_mmc1_prg_set			; now, actual data in extra banks too
+		NOP								; from now we in different 256K data block
+		NOP								; in $1F bank, seems these NOPs are here
+		NOP								; to be sure the MMC1 switched banks for sure
+		NOP								; but this is maybe just paranoid
 		PLA
-		TAX
-		BEQ		loc_176BCF
+		TAX								; get the msg idx in X counter
+		BEQ		loc_176BCF				; if it is 0, so we don't have to search something
 		LDY		#0
 loc_176BB6:
-		LDA		(word_72),Y
+		LDA		(word_72),Y				; now we has to find the message by looking at terminate symbols
 		INC		word_72
 		BNE		loc_176BBE
-		INC		word_72+1
+		INC		word_72+1				; after reading a byte, ptr always will point to the next byte
 loc_176BBE:
 		CMP		#$FF
-		BEQ		loc_176BCA
+		BEQ		loc_176BCA				; symbols are $FF, $EF, $EE only, nothing more
 		CMP		#$EF
 		BEQ		loc_176BCA
 		CMP		#$EE
-		BNE		loc_176BB6
+		BNE		loc_176BB6				; no terminate symbols, increase pointer, continue
 loc_176BCA:
-		DEX
-		BEQ		loc_176BCF
-		BNE		loc_176BB6
+		DEX								; terminate detected, decrement counter
+		BEQ		loc_176BCF				; if equal, we at the right place
+		BNE		loc_176BB6				; no - search again
 loc_176BCF:
-		PLA
-		JMP		_mmc1_prg_set
+		PLA								; we have a direct pointer to desired message in word_72
+		JMP		_mmc1_prg_set			; restore bank and return to caller
 
 ; ==================================================
 ; ==                                              ==
@@ -6280,7 +6287,7 @@ _b0_s53_idx:			PTR_IDX	$0,_b0_s53					; $14F
 _b0_s54_idx:			PTR_IDX	$0,_b0_s54					; $155
 _b0_s55_idx:			PTR_IDX	$0,_b0_s55					; $173
 _b0_s56_idx:			PTR_IDX	$0,_b0_s56					; $17B
-_b0_s5B_idx:			PTR_IDX	$0,_b0_s5B					; $E4
+_b0_s5B_non_battle_mode_spell_cast_idx:			PTR_IDX	$0,_b0_s5B_non_battle_mode_spell_cast					; $E4
 _b0_s5C_idx:			PTR_IDX	$0,_b0_s5C					; $129
 _b0_s5D_idx:			PTR_IDX	$0,_b0_s5D					; $EC
 _b0_s5E_check_if_item_can_be_equipped_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
@@ -6358,7 +6365,7 @@ _b4_s2B_idx:			PTR_IDX	$4,_b4_s2B					; $1A1
 
 _b5_s3_idx:				PTR_IDX	$5,_b5_s3					; $99
 _b5_s4_idx:				PTR_IDX	$5,_b5_s4					; $13
-_b5_s5_idx:				PTR_IDX	$5,_b5_s5					; $156
+_b5_s5_mirror_of_ra_trigger_on_idx:				PTR_IDX	$5,_b5_s5_mirror_of_ra_trigger_on					; $156
 _b5_s7_idx:				PTR_IDX	$5,_b5_s7					; $12
 _b5_s8_idx:				PTR_IDX	$5,_b5_s8					; $179
 _b5_s9_idx:				PTR_IDX	$5,_b5_s9					; $F1
@@ -6373,7 +6380,7 @@ _b6_sE_idx:				PTR_IDX	$6,_b6_sE					; $C6
 _b6_sF_idx:				PTR_IDX	$6,_b6_sF					; $C7
 _b6_s10_idx:			PTR_IDX	$6,_b6_s10					; $DE
 _b6_s11_idx:			PTR_IDX	$6,_b6_s11					; $E3
-_b6_s12_idx:			PTR_IDX	$6,_b6_s12					; $142
+_b6_s12_sleeping_willage_trigger_idx:			PTR_IDX	$6,_b6_s12_sleeping_willage_trigger					; $142
 _b6_s13_idx:			PTR_IDX	$6,_b6_s13					; $153
 _b6_s14_name_entry_screen_idx:	PTR_IDX	$6,_b6_s14_name_entry_screen	; $161
 _b6_s15_idx:			PTR_IDX	$6,_b6_s15					; $16E

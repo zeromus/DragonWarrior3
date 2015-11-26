@@ -342,7 +342,7 @@ byte_AB:
 		.BYTE	0
 byte_AC:
 		.BYTE	0
-byte_AD:
+_repel_or_fairy_water_timer:
 		.BYTE	0,0,0
 byte_B0:
 		.BYTE	0,0,0,0
@@ -1109,11 +1109,11 @@ byte_60B6:
 ; bits ABCDEFGH, where
 ; 	H - change class to Erdrick
 ;	G - ?
-;	F - ?
+;	F - 
 ;	E - ?
 ;	D - ?
 ;	C - set if in battle mode (does not clear after death in battle!)
-;	B - ?
+;	B - set after you accept the Golden King's Crown and become a King
 ;	A - ?
 ;
 _global_game_flags:
