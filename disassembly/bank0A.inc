@@ -41,163 +41,168 @@ _bA_s17_ptr:
 		.WORD	_bA_s17
 
 ; =============== S U B	R O U T	I N E =======================================
+; input arguments: X:A - 9-bit message index
+; return A - lower 4 bits of input arg - index of message in block,
+; word_72 - pointer to the block
+;
 _get_text_block_ptr:
 		STX		word_72+1
-		STA		word_72
-		PHA
+		STA		word_72			; store in temp var
+		PHA						; backup lower 8-bit of message index
 		LSR		word_72+1
 		ROR		word_72
 		LSR		word_72+1
 		ROR		word_72
 		LSR		word_72+1
-		ROR		word_72
-		LDA		word_7C
+		ROR		word_72			; >> 3 to have block idx * 2 (with lower bit being dirty)
+		LDA		word_7C			; get the data bank number
 		SEC
-		SBC		#$10
-		ASL
+		SBC		#$10			; it's hardwired to be in $10-$15 banks
+		ASL						; so just subtract 10 to know blocks list ptr
 		TAX
-		LDA		_text_lib_ptrs,X
+		LDA		_text_lib_ptrs,X	; get ptr to the blocks list for particular bank
 		STA		word_4
 		LDA		_text_lib_ptrs+1,X
 		STA		word_4+1
-		LDA		word_72
-		AND		#$FE
+		LDA		word_72			
+		AND		#$FE			; clean finally lower bit (the same if we do >> 4, then << 1)
 		CLC
-		ADC		word_4
+		ADC		word_4			; calculate the offset of the block ptr in table
 		STA		word_4
 		LDA		word_72+1
 		ADC		word_4+1
 		STA		word_4+1
 		LDY		#0
-		LDA		(word_4),Y
+		LDA		(word_4),Y		; finally read out an actual block ptr
 		STA		word_72
 		INY
 		LDA		(word_4),Y
 		STA		word_72+1
 		PLA
-		AND		#$F
-		RTS
+		AND		#$F				; since we have exactly 16 messages in block and used bits
+		RTS						; 4-9 to calculate an actual pointer, lower 4 bits is our msg idx in block
+		
 _b10_text_lib:
-		.WORD	_b10_txt_block0
-		.WORD	_b10_txt_block1
-		.WORD	_b10_txt_block2
-		.WORD	_b10_txt_block3
-		.WORD	_b10_txt_block4
-		.WORD	_b10_txt_block5
-		.WORD	_b10_txt_block6
-		.WORD	_b10_txt_block7
-		.WORD	_b10_txt_block8
-		.WORD	_b10_txt_block9
-		.WORD	_b10_txt_blockA
-		.WORD	_b10_txt_blockB
-		.WORD	_b10_txt_blockC
-		.WORD	_b10_txt_blockD
-		.WORD	_b10_txt_blockE
-		.WORD	_b10_txt_blockF
-		.WORD	_b10_txt_block10
-		.WORD	_b10_txt_block11
-		.WORD	_b10_txt_block12
-		.WORD	_b10_txt_block13
-		.WORD	_b10_txt_block14
-		.WORD	_b10_txt_block15
-		.WORD	_b10_txt_block16
-		.WORD	_b10_txt_block17
-		.WORD	_b10_txt_block18
-		.WORD	_b10_txt_block19
+		.WORD	_txt_block0
+		.WORD	_txt_block1
+		.WORD	_txt_block2
+		.WORD	_txt_block3
+		.WORD	_txt_block4
+		.WORD	_txt_block5
+		.WORD	_txt_block6
+		.WORD	_txt_block7
+		.WORD	_txt_block8
+		.WORD	_txt_block9
+		.WORD	_txt_blockA
+		.WORD	_txt_blockB
+		.WORD	_txt_blockC
+		.WORD	_txt_blockD
+		.WORD	_txt_blockE
+		.WORD	_txt_blockF
+		.WORD	_txt_block10
+		.WORD	_txt_block11
+		.WORD	_txt_block12
+		.WORD	_txt_block13
+		.WORD	_txt_block14
+		.WORD	_txt_block15
+		.WORD	_txt_block16
+		.WORD	_txt_block17
+		.WORD	_txt_block18
+		.WORD	_txt_block19
 _b11_text_lib:
-		.WORD	_b11_txt_block0
-		.WORD	_b11_txt_block1
-		.WORD	_b11_txt_block2
-		.WORD	_b11_txt_block3
-		.WORD	_b11_txt_block4
-		.WORD	_b11_txt_block5
-		.WORD	_b11_txt_block6
-		.WORD	_b11_txt_block7
-		.WORD	_b11_txt_block8
-		.WORD	_b11_txt_block9
-		.WORD	_b11_txt_blockA
-		.WORD	_b11_txt_blockB
-		.WORD	_b11_txt_blockC
-		.WORD	_b11_txt_blockD
-		.WORD	_b11_txt_blockE
-		.WORD	_b11_txt_blockF
-		.WORD	_b11_txt_block10
-		.WORD	_b11_txt_block11
-		.WORD	_b11_txt_block12
-		.WORD	_b11_txt_block13
-		.WORD	_b11_txt_block14
-		.WORD	_b11_txt_block15
-		.WORD	_b11_txt_block16
-		.WORD	_b11_txt_block17
-		.WORD	_b11_txt_block18
-		.WORD	_b11_txt_block19
-		.WORD	_b11_txt_block1A
-		.WORD	_b11_txt_block1B
-		.WORD	_b11_txt_block1C
+		.WORD	_txt_block1A
+		.WORD	_txt_block1B
+		.WORD	_txt_block1C
+		.WORD	_txt_block1D
+		.WORD	_txt_block1E
+		.WORD	_txt_block1F
+		.WORD	_txt_block20
+		.WORD	_txt_block21
+		.WORD	_txt_block22
+		.WORD	_txt_block23
+		.WORD	_txt_block24
+		.WORD	_txt_block25
+		.WORD	_txt_block26
+		.WORD	_txt_block27
+		.WORD	_txt_block28
+		.WORD	_txt_block29
+		.WORD	_txt_block2A
+		.WORD	_txt_block2B
+		.WORD	_txt_block2C
+		.WORD	_txt_block2D
+		.WORD	_txt_block2E
+		.WORD	_txt_block2F
+		.WORD	_txt_block30
+		.WORD	_txt_block31
+		.WORD	_txt_block32
+		.WORD	_txt_block33
+		.WORD	_txt_block34
+		.WORD	_txt_block35
+		.WORD	_txt_block36
 _b12_text_lib:
-		.WORD	_b12_txt_block0
-		.WORD	_b12_txt_block1
-		.WORD	_b12_txt_block2
-		.WORD	_b12_txt_block4
-		.WORD	_b12_txt_block5
-		.WORD	_b12_txt_block6
-		.WORD	_b12_txt_block7
-		.WORD	_b12_txt_block8
-		.WORD	_b12_txt_block9
-		.WORD	_b12_txt_blockA
-		.WORD	_b12_txt_blockB
-		.WORD	_b12_txt_blockC
-		.WORD	_b12_txt_blockD
-		.WORD	_b12_txt_blockE
+		.WORD	_txt_block37
+		.WORD	_txt_block38
+		.WORD	_txt_block39
+		.WORD	_txt_block3A
+		.WORD	_txt_block3B
+		.WORD	_txt_block3C
+		.WORD	_txt_block3D
+		.WORD	_txt_block3E
+		.WORD	_txt_block3F
+		.WORD	_txt_block40
+		.WORD	_txt_block41
+		.WORD	_txt_block42
+		.WORD	_txt_block43
+		.WORD	_txt_block44
 _b13_text_lib:
-		.WORD	_b13_txt_block0
-		.WORD	_b13_txt_block1
-		.WORD	_b13_txt_block2
-		.WORD	_b13_txt_block3
-		.WORD	_b13_txt_block4
-		.WORD	_b13_txt_block5
-		.WORD	_b13_txt_block6
-		.WORD	_b13_txt_block7
-		.WORD	_b13_txt_block8
-		.WORD	_b13_txt_block9
-		.WORD	_b13_txt_blockA
-		.WORD	_b13_txt_blockB
-		.WORD	_b13_txt_blockC
-		.WORD	_b13_txt_blockD
-		.WORD	_b13_txt_blockE
-		.WORD	_b13_txt_blockF
-		.WORD	_b13_txt_block10
-		.WORD	_b13_txt_block11
-		.WORD	_b13_txt_block12
-		.WORD	_b13_txt_block13
-		.WORD	_b13_txt_block14
-		.WORD	_b13_txt_block15
+		.WORD	_txt_block45
+		.WORD	_txt_block46
+		.WORD	_txt_block47
+		.WORD	_txt_block48
+		.WORD	_txt_block49
+		.WORD	_txt_block4A
+		.WORD	_txt_block4B
+		.WORD	_txt_block4C
+		.WORD	_txt_block4D
+		.WORD	_txt_block4E
+		.WORD	_txt_block4F
+		.WORD	_txt_block50
+		.WORD	_txt_block51
+		.WORD	_txt_block52
+		.WORD	_txt_block53
+		.WORD	_txt_block54
+		.WORD	_txt_block55
+		.WORD	_txt_block56
+		.WORD	_txt_block57
+		.WORD	_txt_block58
+		.WORD	_txt_block59
+		.WORD	_txt_block5A
 _b14_text_lib:
-		.WORD	_b14_txt_block0
-		.WORD	_b14_txt_block1
-		.WORD	_b14_txt_block2
-		.WORD	_b14_txt_block3
-		.WORD	_b14_txt_block4
-		.WORD	_b14_txt_block5
-		.WORD	_b14_txt_block6
-		.WORD	_b14_txt_block7
-		.WORD	_b14_txt_block8
-		.WORD	_b14_txt_block9
-		.WORD	_b14_txt_blockA
-		.WORD	_b14_txt_blockB
-		.WORD	_b14_txt_blockC
-		.WORD	_b14_txt_blockD
+		.WORD	_txt_block5B
+		.WORD	_txt_block5C
+		.WORD	_txt_block5D
+		.WORD	_txt_block5E
+		.WORD	_txt_block5F
+		.WORD	_txt_block60
+		.WORD	_txt_block61
+		.WORD	_txt_block62
+		.WORD	_txt_block63
+		.WORD	_txt_block64
+		.WORD	_txt_block65
+		.WORD	_txt_block66
+		.WORD	_txt_block67
+		.WORD	_txt_block68
 _b15_text_lib:
-		.WORD	_b15_txt_block0
-		.WORD	_b15_txt_block1
-		.WORD	_b15_txt_block2
-		.WORD	_b15_txt_block3
-		.WORD	_b15_txt_block4
-		.WORD	_b15_txt_block5
-		.WORD	_b15_txt_block6
-		.WORD	_b15_txt_block7
-		.WORD	_b15_txt_block8
-		.WORD	_b15_txt_block9
+		.WORD	_txt_block69
+		.WORD	_txt_block6A
+		.WORD	_txt_block6B
+		.WORD	_txt_block6C
+		.WORD	_txt_block6D
+		.WORD	_txt_block6E
+		.WORD	_txt_block6F
+		.WORD	_txt_block70
+		.WORD	_txt_block71
+		.WORD	_txt_block72
 _text_lib_ptrs:
 		.WORD	_b10_text_lib
 		.WORD	_b11_text_lib

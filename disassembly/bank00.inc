@@ -81,7 +81,7 @@ _b0_s55_ptr:		.WORD	_b0_s55
 _b0_s56_ptr:		.WORD	_b0_s56
 _b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
 _b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
-_b0_s5B_ptr:		.WORD	_b0_s5B
+_b0_s5B_non_battle_mode_spell_cast_ptr:			.WORD	_b0_s5B_non_battle_mode_spell_cast
 _b0_s5C_ptr:		.WORD	_b0_s5C
 _b0_s5D_ptr:		.WORD	_b0_s5D
 _b0_s5E_check_if_item_can_be_equipped_ptr:		.WORD	_b0_s5E_check_if_item_can_be_equipped
@@ -349,22 +349,22 @@ _b0_s53:
 sub_8261:
 		LDA		byte_9A ; tilesetNumber_9A, but that must not be what it really means
 		BNE		loc_828E
-		LDA		byte_AD
+		LDA		_repel_or_fairy_water_timer
 		AND		#$7F
 		BEQ		loc_828E
-		DEC		byte_AD
-		LDA		byte_AD
+		DEC		_repel_or_fairy_water_timer
+		LDA		_repel_or_fairy_water_timer
 		AND		#$7F
 		BNE		loc_828E
 		FARX	_bE_sD
 		SYSX	_display_window,$3E
-		LDA		byte_AD
+		LDA		_repel_or_fairy_water_timer
 		AND		#$80
 		BEQ		loc_8285
-		SYSX	_sys07_msg_m00_arg1,$9B
+		SYSX	_sys07_msg_m00_arg1,$9B	; "The Effect of Repel has run out"
 		JMP		loc_8288
 loc_8285:
-		SYSX	_sys07_msg_m00_arg1,$9A
+		SYSX	_sys07_msg_m00_arg1,$9A ; "The Effect of Fairy Water has run out"
 loc_8288:
 		FARX	_bE_s33
 		JSR		_wait_for_nmi_is_over_sync
@@ -833,7 +833,7 @@ loc_85C0:
 		LDA		_location_type
 		AND		#1
 		BNE		_battle_launch_ex
-		LDA		byte_AD
+		LDA		_repel_or_fairy_water_timer
 		AND		#$7F
 		BEQ		_battle_launch_ex
 		LDA		word_5E
@@ -1502,10 +1502,11 @@ _b0_d41_item_use_list:
 		.BYTE	  1,$FF,$FF,$40,$FF,  4, $E, $F
 
 ;----------------------------------------------
-; aka item use effects (in battle) list
-; sanity checks:
+; aka item use effects (in battle) list sanity checks:
 ; ITEM_WIZARDS_WAND $E2 (casts spells, yep)
 ; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
+;
+; bit 10 means that item cannot be thrown away from inventory
 ;
 _b0_d42_item_use_effects_list:
 		.BYTE	  0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
@@ -3745,12 +3746,12 @@ byte_9E5C:
 		.BYTE	$12,$10,$1A,$11
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s5B:
+_b0_s5B_non_battle_mode_spell_cast:
 		BIT		_global_game_flags
-		BVC		sub_9E9C
+		BVC		_non_battle_mode_spell_cast
 		SYSX	_display_window,$3E
-		SYSX	_sys07_msg_m00_arg1,$64
-		JMP		sub_9E8B
+		SYSX	_sys07_msg_m00_arg1,$64	; "The king cannot use that spell"
+		JMP		_wait_for_key
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unreferenced code
@@ -3763,45 +3764,45 @@ _b0_s5B:
 ;		JSR		_wrap_bE_s4_msg_m00_arg0_safe_members_numberwise
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9E8B:
+_wait_for_key:
 		JSR		_calc_pads
 		LDA		_pads
-		BEQ		sub_9E8B
+		BEQ		_wait_for_key
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9E92:
+_wrap_bE_sB_arg0_clear_8E:
 		LDA		#0
 		FARX	_bE_sB
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9E97:
+_exit_and_clear_8E:
 		LDA		#0
 		STA		byte_8E
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9E9C:
+_non_battle_mode_spell_cast:
 		LDA		#$29
-		JSR		sub_A120
+		JSR		_wrap_bE_sC_display_window_safe
 		CMP		#$FF
-		BEQ		sub_9E92
+		BEQ		_wrap_bE_sB_arg0_clear_8E
 		STA		byte_53
 		STA		byte_CE
 		JSR		_check_if_player_is_dead_ex
 		BCS		loc_9EB3
-		LDA		#$C5
-		JMP		sub_A13A
+		LDA		#$C5	; "<name> is dead and cannot cast the spell"
+		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
 loc_9EB3:
 		JSR		_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		AND		#$40
 		BEQ		loc_9EC1
-		LDA		#$D2
-		JMP		sub_A13A
+		LDA		#$D2	; "<name> is numb and cannot cast the spell"
+		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
 loc_9EC1:
 		LDA		#$44
 		STA		byte_CF
@@ -3809,8 +3810,8 @@ loc_9EC1:
 		LDA		word_4
 		CMP		#$C4
 		BNE		loc_9ED3
-		LDA		#$C6
-		JMP		sub_A13A
+		LDA		#$C6	; "<name> is confused and cannot cast the spell"
+		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
 loc_9ED3:
 		JSR		_b0_s2C_player_CLASS_read
 		CMP		#7
@@ -3825,13 +3826,13 @@ loc_9ED3:
 		LDA		word_6+1
 		BNE		loc_9EF3
 loc_9EEE:
-		LDA		#$C4
-		JMP		sub_A13A
+		LDA		#$C4	; "<name> doesn't know any spells..."
+		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
 loc_9EF3:
 		LDA		byte_D0
 		FARX	_b1_s17
 		CMP		#$FF
-		BEQ		sub_9E8B
+		BEQ		_wait_for_key
 		STA		byte_49
 		TAX
 		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
@@ -3840,8 +3841,8 @@ loc_9EF3:
 		JSR		_b0_s67
 		JSR		_b0_sB_player_MP_consume
 		BCS		loc_9F13
-		LDA		#$20
-		JMP		sub_A13A
+		LDA		#$20	; "MP is not high enough"
+		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
 loc_9F13:
 		LDX		byte_49
 		STX		byte_D3
@@ -3850,15 +3851,15 @@ loc_9F13:
 		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
-		LDA		#$2B
-		JSR		sub_A120
+		LDA		#$2B	; "<player>'s party is wiped out"
+		JSR		_wrap_bE_sC_display_window_safe
 		JMP		loc_9F2D
 loc_9F2A:
 		FARX	_b1_s15
 loc_9F2D:
 		CMP		#$FF
 		BNE		loc_9F34
-		JMP		sub_9E8B
+		JMP		_wait_for_key
 loc_9F34:
 		STA		byte_50
 		STA		word_4
@@ -3871,9 +3872,10 @@ loc_9F34:
 		AND		#$3F
 		JSR		_b0_s67
 		JSR		_b0_s9_player_MP_subtract
-		JSR		sub_A169
-		LDA		#2
+		JSR		_wrap_display_window_3E_and_bE_s5
+		LDA		#2	; "<name> attacks"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
+; huh?
 ;		LDA		#$8E
 ;		FARX	_bB_s3_apu_load
 		SYSX	_apu_load,$8E
@@ -3885,13 +3887,13 @@ loc_9F34:
 		JSR		_sleep_X_sync
 		JSR		_b0_s55
 		BCS		loc_9F75
-		LDA		#$81
+		LDA		#$81	; "However, the spell is broken"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
-		JMP		sub_9E8B
+		JMP		_wait_for_key
 loc_9F75:
 		LDX		#0
 loc_9F77:
-		LDA		byte_A1F4,X
+		LDA		_command_spell_idx_list,X
 		CMP		byte_49
 		BEQ		loc_9F81
 		INX
@@ -3900,17 +3902,17 @@ loc_9F81:
 		TXA
 		ASL
 		TAX
-		LDA		off_A1D0,X
-		LDY		off_A1D0+1,X
+		LDA		_command_spell_lib,X
+		LDY		_command_spell_lib+1,X
 		STA		word_3C
 		STY		word_3C+1
 		LDA		byte_50
 		STA		byte_CE
 		JSR		_call_indirect_3C
 		BCS		loc_9F9F
-		LDA		#$40
+		LDA		#$40	; "But nothing happens"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
-		JMP		sub_9E8B
+		JMP		_wait_for_key
 loc_9F9F:
 		LDA		byte_49
 		CMP		#$26
@@ -3923,16 +3925,16 @@ loc_9F9F:
 		BEQ		loc_9FB8
 		CMP		#$39
 		BEQ		loc_9FB8
-		JMP		sub_9E8B
+		JMP		_wait_for_key
 loc_9FB8:
-		JMP		sub_9E97
+		JMP		_exit_and_clear_8E
 
 ; =============== S U B	R O U T	I N E =======================================
 _call_indirect_3C:
 		JMP		(word_3C)
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9FBE:
+_cmd_spell_heal:
 		LDA		byte_50
 		JSR		_check_if_player_is_dead
 		BCC		locret_9FE9
@@ -3944,7 +3946,7 @@ sub_9FBE:
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9FCD:
+_spell_heal_ex:
 		LDA		word_4
 		STA		byte_CF
 		LDA		word_4+1
@@ -3952,7 +3954,7 @@ sub_9FCD:
 		JSR		_check_if_player_is_dead
 		BCC		locret_9FE9
 		JSR		_b0_s4_player_HP_add
-		LDA		#$14
+		LDA		#$14	; "<name> has recovered"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		JSR		__pause_or_skip
@@ -4001,9 +4003,9 @@ loc_A01D:
 		JSR		_b0_s4_player_HP_add
 		LDA		byte_46
 		BNE		loc_A031
-		LDA		#5
+		LDA		#5		; "$FD,$EF"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
-		LDA		#$14
+		LDA		#$14	; "<name> has recovered"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 loc_A031:
@@ -4015,7 +4017,7 @@ loc_A031:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A039:
+_cmd_spell_revive:
 		JSR		_check_if_player_exist_or_dead
 		BCC		loc_A077
 		LDY		byte_49
@@ -4041,7 +4043,7 @@ loc_A05F:
 		LDA		word_4+1
 		STA		byte_D0
 		JSR		_b0_s4_player_HP_add
-		LDA		#$3C
+		LDA		#$3C	; "<name> comes back to life"
 loc_A06C:
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
@@ -4052,7 +4054,7 @@ loc_A077:
 		CLC
 		RTS
 loc_A079:
-		LDA		#$3D
+		LDA		#$3D	; "<name> does not comes back to life"
 		BNE		loc_A06C
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4067,14 +4069,14 @@ sub_A07D:
 		LDA		word_4+1
 		STA		byte_D3
 		JSR		_b0_s2A_player_inventory_item_remove
-		LDA		#$C3
+		LDA		#$C3	; "The curse on <name> is gone"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		SEC
 locret_A09B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A09C:
+_cmd_spell_detoxicate:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A0B9
 		LDA		_players_status+1,X
@@ -4083,7 +4085,7 @@ sub_A09C:
 		LDA		_players_status+1,X
 		AND		#$DF
 		STA		_players_status+1,X
-		LDA		#$44
+		LDA		#$44	; "The poison leaves <name>'s body"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		SEC
@@ -4103,7 +4105,7 @@ sub_A0BC:
 		LDA		_players_status+1,X
 		AND		#$BF
 		STA		_players_status+1,X
-		LDA		#$42
+		LDA		#$42	; "<name>'s numbness goes away"
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
 		JSR		sub_A172
 		SEC
@@ -4111,9 +4113,9 @@ locret_A0D9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A0DA:
+_cmd_spell_repel:
 		LDA		#$FF
-		STA		byte_AD
+		STA		_repel_or_fairy_water_timer
 		SEC
 		RTS
 
@@ -4155,20 +4157,22 @@ _warp_b6_sF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; displays the message in range $000 to $0FF with idx in A if there is only 1 player
-; in party, or with idx (A + 1) if there are more than one players in party.
+; used only in unreferenced wrapper for displaying and waiting some messages
+; specifically for number of the players in the party, never used in this game
+; maybe because coded specifically to every other's situation, or maybe because
+; there number of players never happen to change the message itself
 ;
-_wrap_bE_s4_msg_m00_arg0_safe_members_numberwise:
-		PHA
-		JSR		_b0_s31_get_party_chars_list
-		PLA
-		TAX
-		LDA		word_4
-		CMP		#1
-		BEQ		loc_A10D
-		INX
-loc_A10D:
-		TXA
+;_wrap_bE_s4_msg_m00_arg0_safe_members_numberwise:
+;		PHA
+;		JSR		_b0_s31_get_party_chars_list
+;		PLA
+;		TAX
+;		LDA		word_4
+;		CMP		#1
+;		BEQ		loc_A10D
+;		INX
+;loc_A10D:
+;		TXA
 
 ;; FALLTHROUGH ;;
 
@@ -4193,7 +4197,7 @@ _wrap_bE_s4_msg_m00_arg0_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A120:
+_wrap_bE_sC_display_window_safe:
 		STA		byte_44
 		TXA
 		PHA
@@ -4214,14 +4218,14 @@ sub_A120:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A13A:
+_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe:
 		PHA
-		JSR		sub_A169
+		JSR		_wrap_display_window_3E_and_bE_s5	; "$FD,$EF"
 		LDA		byte_53
 		STA		byte_D2
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg0_safe
-		JMP		sub_9E8B
+		JMP		_wait_for_key
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s55:
@@ -4247,7 +4251,7 @@ loc_A167:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A169:
+_wrap_display_window_3E_and_bE_s5:
 		LDA		#$3E
 		FARX	_bE_sC_display_window
 		FARX	_bE_s5
@@ -4335,18 +4339,18 @@ _store_mp_cost:
 		STA		byte_D0
 		RTS
 
-off_A1D0:
-		.WORD	sub_9FBE
-		.WORD	sub_9FBE
-		.WORD	sub_9FBE
+_command_spell_lib:
+		.WORD	_cmd_spell_heal
+		.WORD	_cmd_spell_heal
+		.WORD	_cmd_spell_heal
 		.WORD	sub_9FF4
 		.WORD	sub_9FF4
-		.WORD	sub_A039
-		.WORD	sub_A039
+		.WORD	_cmd_spell_revive
+		.WORD	_cmd_spell_revive
 		.WORD	sub_A07D
-		.WORD	sub_A09C
+		.WORD	_cmd_spell_detoxicate
 		.WORD	sub_A0BC
-		.WORD	sub_A0DA
+		.WORD	_cmd_spell_repel
 		.WORD	_warp_bC_s10
 		.WORD	_warp_bC_sF
 		.WORD	_warp_bC_s1E
@@ -4355,7 +4359,7 @@ off_A1D0:
 		.WORD	_warp_b6_sD
 		.WORD	_warp_b6_sF
 
-byte_A1F4:
+_command_spell_idx_list:
 		.BYTE	$1A,$1B,$1C,$1E,$1F,$20,$21,$36,$34,$35,$37,$38,$39,$3A,$26,$3B
 		.BYTE	$3C,$3D
 
@@ -4586,7 +4590,7 @@ sub_A3FB:
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
-		LDA		#5
+		LDA		#5	; "$FD,$EF"
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#0
 		STA		byte_56
@@ -4595,7 +4599,7 @@ loc_A410:
 		SYSX	_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
-		LDA		#$C0
+		LDA		#$C0	; "<name> goes up to the next level
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDX		byte_51
 ; player levels-up here
@@ -4717,9 +4721,9 @@ loc_A448:
 ; reload current stat number and add #$A0 to get a message index.. display a couple of messages per stat
 		LDA		byte_52
 		CLC
-		ADC		#$A0
+		ADC		#$A0	; "Strength goes up <number> point<s>."	base message also AGI, VIT, LUCK, INT
 		PHA
-		LDA		#5
+		LDA		#5	; "$FD,$EF"
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		PLA
 		JSR		_wrap_bE_s4_msg_m00_arg0
@@ -4775,7 +4779,7 @@ loc_A50D:
 loc_A522:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		LDA		#$B8
+		LDA		#$B8	; "The maximum HP goes up <number> point<s>."
 		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A52C:
 		JSR		_b0_s2C_player_CLASS_read
@@ -4823,7 +4827,7 @@ loc_A56E:
 loc_A583:
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		LDA		#$B9
+		LDA		#$B9	; "The maximum MP goes up <number> point<s>."
 		JSR		_wrap_bE_s4_msg_m00_arg0
 loc_A58D:
 		JSR		_b0_s2C_player_CLASS_read
@@ -4994,7 +4998,7 @@ loc_A6A1:
 		BCS		loc_A6E7
 		LDA		#5
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		LDA		#$BA
+		LDA		#$BA	; "<name> lerns a new spell"
 		JSR		_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_A6E7
 loc_A6C0:
@@ -5506,17 +5510,19 @@ _other_spell_related_data:
 		.BYTE	$12,$23,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AAE5:
-		LDA		#$48
-		BNE		sub_AAEB
+_display_window_3E_and_msg_m00_arg1_idx48_bE_s33:
+		LDA		#$48	; "Doesn't have an item yet"
+		BNE		_display_window_3E_and_msg_m00_arg1_bE_s33
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AAE9:
-		LDA		#$67
+_display_window_3E_and_msg_m00_arg1_idx67_bE_s33:
+		LDA		#$67	; "The king bears no items"
+
+;; FALLTHOURGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AAEB:
-		JSR		sub_ADE0
+_display_window_3E_and_msg_m00_arg1_bE_s33:
+		JSR		_display_window_3E_and_msg_m00_arg1
 		FARX	_bE_s33
 		RTS
 
@@ -5524,7 +5530,7 @@ sub_AAEB:
 _b0_s5D:
 		LDA		_global_game_flags
 		AND		#$40
-		BNE		sub_AAE9
+		BNE		_display_window_3E_and_msg_m00_arg1_idx67_bE_s33
 		SYSX	_display_window,$2C
 		LDX		#5
 		JSR		_sleep_X_sync
@@ -5539,7 +5545,7 @@ _b0_s5D:
 		STA		byte_CF
 		JSR		_b0_s28_player_inventory_item_read
 		LDA		word_4
-		BEQ		sub_AAE5
+		BEQ		_display_window_3E_and_msg_m00_arg1_idx48_bE_s33
 		SYSX	_display_window,$6B
 		CMP		#$FF
 		BEQ		loc_AB46
@@ -5697,7 +5703,7 @@ loc_AC2E:
 		LDA		_b0_d42_item_use_effects_list,X
 		AND		#$10
 		BEQ		loc_AC48
-		SYSX	_sys07_msg_m00_arg1,$2A
+		SYSX	_sys07_msg_m00_arg1,$2A	; "It must not be thrown away"
 		JMP		sub_AC9F
 loc_AC48:
 		JSR		sub_AD31
@@ -5740,7 +5746,7 @@ sub_AC7D:
 		SYSX	_display_window,$3E
 		LDA		byte_47
 		STA		byte_D2
-		SYSX	_sys07_msg_m00_arg1,$69
+		SYSX	_sys07_msg_m00_arg1,$69	; "However, <name> cannot have one thing more"
 		JMP		sub_AC9F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5755,7 +5761,7 @@ loc_AC94:
 		BEQ		sub_AC9F
 		DEX
 		BNE		loc_AC94
-		SYSX	_sys06_msg_m00_arg0,$40
+		SYSX	_sys06_msg_m00_arg0,$40	; "But nothing happens"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC9F:
@@ -5792,18 +5798,18 @@ sub_ACBE:
 		LDA		byte_45
 		CMP		byte_47
 		BEQ		loc_ACFC
-		LDY		#$2B
+		LDY		#$2B	; base idx $12B "Transfers <> to" up to $133 "Takes the <> from ghost"
 		ASL
 		TAX
 		LDA		_players_status+1,X
 		ASL
 		BMI		loc_ACD9
 		BCS		loc_ACE1
+		INY		; here will be $131
 		INY
-		INY
-		INY
+		INY		
 loc_ACD9:
-		INY
+		INY		; only jump here, then $12E
 		INY
 		INY
 		LDX		#2
@@ -5816,10 +5822,10 @@ loc_ACE1:
 		ASL
 		BMI		loc_ACEE
 		BCS		loc_ACF8
-		INY
+		INY		; $12C or $12F or $132
 loc_ACEE:
-		INY
-		CPY		#$2E
+		INY		; $12D or $130 or $133
+		CPY		#$2E	; check if above $12E
 		BCC		loc_ACF8
 		LDX		#3
 		JSR		sub_AD13
@@ -5829,14 +5835,14 @@ loc_ACF8:
 loc_ACFC:
 		ASL
 		TAX
-		LDY		#$34
+		LDY		#$34	; base idx $134 "makes as if <> to transfer something" up to $136
 		LDA		_players_status+1,X
 		ASL
 		BMI		loc_AD09
 		BCS		loc_AD0F
-		INY
+		INY				; or "Takes the <> from Tool bag"
 loc_AD09:
-		INY
+		INY				; or "Takes the <> from ghost"
 		LDX		#3
 		JSR		sub_AD13
 loc_AD0F:
@@ -5875,7 +5881,7 @@ loc_AD2C:
 sub_AD31:
 		JSR		sub_AD1E
 		STA		byte_D4
-		LDY		#$27
+		LDY		#$27	; base idx $127 "Throws away the"
 		LDA		byte_45
 		ASL
 		TAX
@@ -5883,9 +5889,9 @@ sub_AD31:
 		ASL
 		BMI		loc_AD45
 		BCS		loc_AD4B
-		INY
+		INY		; idx $129 "takes the from ghost and throw"
 loc_AD45:
-		INY
+		INY		; ids $128 "takes the from tool box and throw"
 		LDX		#2
 		JSR		sub_AD13
 loc_AD4B:
@@ -5899,10 +5905,10 @@ loc_AD4F:
 		LDA		_players_status+1,X
 		ASL
 		BCS		loc_AD62
-		SYSX	_sys07_msg_m00_arg1,$26
+		SYSX	_sys07_msg_m00_arg1,$26	; "is dead and can't use the item"
 		JMP		sub_AC9F
 loc_AD62:
-		SYSX	_sys07_msg_m00_arg1,$1B
+		SYSX	_sys07_msg_m00_arg1,$1B	; "takes the <> and check it out"
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -5910,15 +5916,15 @@ loc_AD62:
 		PHA
 		AND		#$10
 		BEQ		loc_AD7B
-		SYSX	_sys07_msg_m00_arg1,$23
-		SYSX	_sys07_msg_m00_arg1,$24
+		SYSX	_sys07_msg_m00_arg1,$23	; "This is a nice piece of work"
+		SYSX	_sys07_msg_m00_arg1,$24	; "I doubt even a shopkeeper"
 		JMP		loc_ADA1
 loc_AD7B:
 		LDA		byte_48
 		AND		#$7F
 		JSR		_b0_s60_get_item_type
 		CLC
-		ADC		#$1D
+		ADC		#$1D	; base "this look like a weapon" etc.
 		JSR		_wrap_bE_s4_msg_m00_arg1
 		LDA		byte_48
 		AND		#$7F
@@ -5931,12 +5937,12 @@ loc_AD95:
 		STA		byte_63E,X
 		DEX
 		BNE		loc_AD95
-		SYSX	_sys07_msg_m00_arg1,$21
+		SYSX	_sys07_msg_m00_arg1,$21	; "this is wort piece of gold"
 loc_ADA1:
 		PLA
 		AND		#8
 		BNE		loc_ADA9
-		SYSX	_sys07_msg_m00_arg1,$16
+		SYSX	_sys07_msg_m00_arg1,$16 ; "it doesn't look like special cursed"
 loc_ADA9:
 		JMP		sub_AC9F
 
@@ -5949,18 +5955,18 @@ sub_ADAC:
 		STA		byte_CE
 		ASL
 		TAX
-		LDY		#$26
+		LDY		#$26	; "is dead and can't use the item"
 		LDA		_players_status+1,X
 		ASL
 		BCC		loc_ADC3
 		BPL		loc_ADC6
-		DEY
+		DEY		; "is unable to move and can't use the item"
 loc_ADC3:
 		TYA
-		BNE		sub_ADE0
+		BNE		_display_window_3E_and_msg_m00_arg1
 loc_ADC6:
 		JSR		_b0_s5E_check_if_item_can_be_used
-		BCC		loc_ADEC
+		BCC		_display_name_cannot_use_the_item
 		LDA		#$44
 		STA		byte_CF
 		JSR		_b0_s45_check_if_item_equipped
@@ -5973,7 +5979,7 @@ loc_ADC6:
 		LDA		#$15
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_ADE0:
+_display_window_3E_and_msg_m00_arg1:
 		PHA
 		SYSX	_display_window,$3E
 		PLA
@@ -5987,9 +5993,9 @@ _return_false_in_C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-loc_ADEC:
+_display_name_cannot_use_the_item:
 		SYSX	_display_window,$3E
-		SYSX	_sys06_msg_m00_arg0,$BF
+		SYSX	_sys06_msg_m00_arg0,$BF	; "<name> cannot use the <item>"
 		SEC
 		RTS
 
@@ -6005,7 +6011,7 @@ sub_ADF4:
 		STX		byte_D2
 		SYSX	_apu_load,$17
 		SYSX	_display_window,$3E
-		SYSX	_sys07_msg_m00_arg1,$52
+		SYSX	_sys07_msg_m00_arg1,$52	; "the <> is stuck to the body"
 		FARX	_bD_s22
 		SEC
 		RTS
@@ -6024,38 +6030,32 @@ loc_AE1D:
 		AND		#$7F ; remove equip bit?
 		TAX
 loc_AE24:
-; reference item effects table
-		LDA		_b0_d44_item_effects_list,X
-		BPL		loc_AE2C ; if it's <$80, skip Y+=3 (one function pointer and one text message)
-;Y+=3
-		INY
+		LDA		_b0_d44_item_effects_list,X	; reference item effects table
+		BPL		loc_AE2C					; if it's <$80, skip Y+=3 (one function pointer and one text message)
+		INY									;Y+=3
 		INY
 		INY
 loc_AE2C:
-		DEX ; decrease item number by 1
-		BNE		loc_AE24 ; loop back up if we didnt hit zero
-; load a function pointer
-		LDA		off_B0C6,Y
+		DEX 								; decrease item number by 1
+		BNE		loc_AE24 					; loop back up if we didnt hit zero
+		LDA		_items_use_lib+1,Y			; special item handler fallback
 		STA		word_3C
-		LDA		off_B0C6+1,Y
+		LDA		_items_use_lib+2,Y
 		STA		word_3C+1
-		LDA		byte_B0C5,Y
-		BEQ		loc_AE4F
-		CMP		#$5C ; check for special messages..? "Holds the X by the thread.." actually in block 15...?
+		LDA		_items_use_lib,Y			; special item message index
+		BEQ		loc_AE4F					; no message
+		CMP		#$5C						; check for special messages see below
 		BEQ		loc_AE52
-		CMP		#$64  ; check for special messages..? treasure receipt related
+		CMP		#$64  						; number less than 64 here are $1xx messages
 		BCC		loc_AE4C
-; prints A=string from bank $10
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		JMP		loc_AE4F ; proceed to handle script
+		JMP		loc_AE4F 					; proceed to handle script
 loc_AE4C:
-; interacting with items on the field? treasure, caskets?
 		JSR		_wrap_bE_s4_msg_m00_arg1
 loc_AE4F:
-		JMP		(word_3C) ; dispatch to script callback
+		JMP		(word_3C)					; dispatch to script callback
 loc_AE52:
-; "PLAYER holds the fairy water by the thread.. and the sailors thigh bone begins to spin." Other things?
-		LDA		_location_type
+		LDA		_location_type				; test if fairy water is works
 		CMP		#2
 		BCC		loc_AE68
 		BEQ		loc_AE62
@@ -6064,10 +6064,10 @@ loc_AE52:
 		CMP		#7
 		BNE		loc_AE68
 loc_AE62:
-		SYSX	_sys06_msg_m00_arg0,$40
+		SYSX	_sys06_msg_m00_arg0,$40		; "But nothing happens"
 		JMP		loc_AF3B
 loc_AE68:
-		LDA		#$5C
+		LDA		#$5C						; idx $15C "Holds <item> by the thread... and Sailor..."
 		BNE		loc_AE4C
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6079,7 +6079,7 @@ sub_AE6C:
 		LDA		byte_2B
 		CMP		#$90
 		BNE		loc_AEB0
-		SYSX	_sys07_msg_m00_arg1,$3C
+		SYSX	_sys07_msg_m00_arg1,$3C	; "<> throws the <> in the crater"
 		JSR		_sleep_30
 		FARX	_bC_s24
 		RTS
@@ -6098,6 +6098,7 @@ locret_AE8B:
 ; For the mirror of ra, i think. If on a special map, at a special spot, says
 ; "Look! There is an image of a sleeping monster reflected in the mirror!"
 ; otherwise "But nothing happens!"
+;
 sub_AE92:
 		LDA		_mapNumber
 		CMP		#$62
@@ -6111,11 +6112,11 @@ sub_AE92:
 		LDA		byte_60CD ; probably some quest flags
 		AND		#$20
 		BNE		_void_event
-		FARX	_b5_s5
+		FARX	_b5_s5_mirror_of_ra_trigger_on		; lion event
 		SEC
 		RTS
 loc_AEB0:
-		SYSX	_sys07_msg_m00_arg1,$53
+		SYSX	_sys07_msg_m00_arg1,$53	; "<> uses the <>."
 
 ; =============== S U B	R O U T	I N E =======================================
 ; a null event handler
@@ -6181,14 +6182,13 @@ sub_AEE0:
 ; =============== S U B	R O U T	I N E =======================================
 ; "<user> falls asleep!" <wait> "<user> is numb and unable to move". possibly glitched by my testing
 sub_AEE4:
-		SYSX	_sys06_msg_m00_arg0,$18
+		SYSX	_sys06_msg_m00_arg0,$18	; "<name> falls asleep"
 		JSR		sub_B298
 		JMP		loc_AF3B
 
 ; =============== S U B	R O U T	I N E =======================================
-; "But nothing happens!" obviously more complex
-sub_AEED:
-		FARX	_b6_s12
+_wrap_b6_s12_sleeping_willage_trigger:
+		FARX	_b6_s12_sleeping_willage_trigger
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6437,19 +6437,21 @@ loc_B0B5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B0BA:
+_wrap_b6_s1F:
 		JSR		_sleep_30
 		FARX	_b6_s1F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B0C1:
+_wrap_bC_s26:
 		FARX	_bC_s26
 		RTS
-byte_B0C5:
+
+; item use callbacks. I guess we could compress this table now that
+; we've changed how the calls work
+;
+_items_use_lib:
 		.BYTE	  0
-off_B0C6:
-;item use callbacks? I guess we could compress this table now that we've changed how the calls work
 		.WORD	sub_AE6C
 		.BYTE	  0
 		.WORD	sub_AE82
@@ -6463,23 +6465,23 @@ off_B0C6:
 		.WORD	sub_AE82
 		.BYTE	  0
 		.WORD	_void_event
-		.BYTE	$A5
+		.BYTE	$A5				; $0A5	"<name> puts the <> on a finger and makes a wish"
 		.WORD	sub_B16B
-		.BYTE	$9B
+		.BYTE	$9B				; $09B
 		.WORD	sub_B269
-		.BYTE	$C
+		.BYTE	$C				; $10C
 		.WORD	sub_AE92
 		.BYTE	  0
 		.WORD	sub_AEB5
-		.BYTE	$56
+		.BYTE	$56				; $156
 		.WORD	sub_AEB9
-		.BYTE	$60
+		.BYTE	$60				; $160
 		.WORD	sub_AEC0
-		.BYTE	$57
+		.BYTE	$57				; $157
 		.WORD	sub_AECD
 		.BYTE	  0
 		.WORD	sub_AED4
-		.BYTE	$53
+		.BYTE	$53				; $153
 		.WORD	sub_AED8
 		.BYTE	$53
 		.WORD	sub_AEDC
@@ -6487,8 +6489,8 @@ off_B0C6:
 		.WORD	sub_AEE0
 		.BYTE	$C
 		.WORD	sub_AEE4
-		.BYTE	$62
-		.WORD	sub_AEED
+		.BYTE	$62				; $162 ; "Puts the <> in the palm of hand"
+		.WORD	_wrap_b6_s12_sleeping_willage_trigger
 		.BYTE	$58
 		.WORD	sub_AEF1
 		.BYTE	$53
@@ -6501,19 +6503,19 @@ off_B0C6:
 		.WORD	sub_B1BF
 		.BYTE	$53
 		.WORD	sub_B1B2
-		.BYTE	$A7
+		.BYTE	$A7				; $0A7
 		.WORD	sub_B1F6
 		.BYTE	$53
 		.WORD	sub_B21E
 		.BYTE	$53
 		.WORD	sub_B234
-		.BYTE	$A9
-		.WORD	sub_B240
+		.BYTE	$A9				; $0A9
+		.WORD	_cmd_spell_fairy_water
 		.BYTE	  0
 		.WORD	sub_AF5B
-		.BYTE	$AB
+		.BYTE	$AB				; $0AB
 		.WORD	sub_B246
-		.BYTE	$AC
+		.BYTE	$AC				; $0AC
 		.WORD	sub_AF7D
 		.BYTE	$53
 		.WORD	sub_AF7F
@@ -6527,12 +6529,12 @@ off_B0C6:
 		.WORD	sub_B068
 		.BYTE	$59
 		.WORD	sub_B06C
-		.BYTE	$AF
+		.BYTE	$AF				; $0AF
 		.WORD	sub_B09C
-		.BYTE	$5F
-		.WORD	sub_B0BA
-		.BYTE	$C7
-		.WORD	sub_B0C1
+		.BYTE	$5F				; $15F "<> raises the <> to the skies"
+		.WORD	_wrap_b6_s1F
+		.BYTE	$C7				; $0C7 "<> gives the <> as an offering"
+		.WORD	_wrap_bC_s26
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B143:
@@ -6681,29 +6683,28 @@ loc_B212:
 ; <wait> "<user> has recovered!" <show hp/mp info box>. For healing items I guess
 sub_B21E:
 		JSR		sub_B2B9
-		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
+		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe	; "$FD, $EF"
 		LDA		#$F
 		FARX	_b4_sF
 		ADC		#$23
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
-		JMP		sub_9FCD
+		JMP		_spell_heal_ex
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "but nothing happened..." but definitely not that simple
 sub_B234:
 		JSR		sub_B2B9
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
-		JSR		sub_A09C
+		JSR		_cmd_spell_detoxicate
 		BCC		_wrap_bE_s4_msg_m00_arg0_idx40_safe
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; <wait> maybe and do nothing
-sub_B240:
+_cmd_spell_fairy_water:
 		LDA		#$7F
-		STA		byte_AD
+		STA		_repel_or_fairy_water_timer
 		SEC
 		RTS
 
@@ -6714,7 +6715,7 @@ sub_B246:
 		LDA		#$21
 		STA		byte_49
 		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_safe
-		JSR		sub_A039
+		JSR		_cmd_spell_revive
 		BCC		_wrap_bE_s4_msg_m00_arg0_idx40_safe
 		RTS
 

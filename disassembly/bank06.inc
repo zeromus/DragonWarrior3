@@ -23,8 +23,8 @@ _b6_s10_ptr:
 		.WORD	_b6_s10
 _b6_s11_ptr:
 		.WORD	_b6_s11
-_b6_s12_ptr:
-		.WORD	_b6_s12
+_b6_s12_sleeping_willage_trigger_ptr:
+		.WORD	_b6_s12_sleeping_willage_trigger
 _b6_s13_ptr:
 		.WORD	_b6_s13
 _b6_s14_name_entry_screen_ptr:
@@ -1470,7 +1470,7 @@ word_9B60C:
 		.WORD	$5279,$5886
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s12:
+_b6_s12_sleeping_willage_trigger:
 		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_9B668
@@ -1486,7 +1486,7 @@ loc_9B668:
 		LDA		_global_game_flags
 		ORA		#4
 		STA		_global_game_flags
-		SYSX	_sys07_msg_m00_arg1,$1A
+		SYSX	_sys07_msg_m00_arg1,$1A	; "Look the willagers starting to wake up"
 		SEC
 		RTS
 

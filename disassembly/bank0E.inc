@@ -280,7 +280,7 @@ loc_1581B8:
 		FARX	_bC_s1D
 		RTS
 loc_1581D0:
-		FARX	_b0_s5B
+		FARX	_b0_s5B_non_battle_mode_spell_cast
 		RTS
 loc_1581D4:
 		JMP		sub_158377
@@ -3910,7 +3910,6 @@ sub_15A325:
 		AND		#$F
 		ORA		#$10
 		STA		byte_471
-;		INX
 		LDA		byte_15A346+1,X
 		STA		byte_470
 		RTS
@@ -5652,85 +5651,96 @@ sub_15AE80:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; this sub has information about blocks distribution in the
+; each bank, so you may not know where the message is, you just need to know its
+; linear 16-bit index (actually 12-bit (8 + 3)), the rest (how many blocks is
+; in every bank and pointers to the blocks) does this function.
+; when bank and index of message in bank is calculated, then the block number
+; can be calculated by dividing the message index by 16. remainder is an index
+; of this message in block. the programm search from the beginning of the block
+; for the message terminate symbols
+;
+; input parametes are X:A ([high 8 bit]:[low 8 bit]) of message index
+; output is 16-bit index (X:A) of message and number of bank (byte_7C) where it belong
+;
 _get_msg_ptr:
-;		NOP
-		TAY
-		CMP		#$96
+		TAY							; backup A
+		CMP		#$96				; test if less $196
 		TXA
 		SBC		#1
-		BCC		loc_15AED2
+		BCC		msg_idx_000_195
 		TYA
-		CMP		#$66
+		CMP		#$66				; test if less $366
 		TXA
 		SBC		#3
-		BCC		loc_15AED6
+		BCC		msg_idx_196_365
 		TYA
-		CMP		#$44
+		CMP		#$44				; test if less $444
 		TXA
 		SBC		#4
-		BCC		loc_15AEE3
+		BCC		msg_idx_366_443
 		TYA
-		CMP		#$A3
+		CMP		#$A3				; test if less $5A3
 		TXA
 		SBC		#5
-		BCC		loc_15AEF0
+		BCC		msg_idx_444_5A2
 		TYA
-		CMP		#$7E
+		CMP		#$7E				; test if less $67E
 		TXA
 		SBC		#6
-		BCC		loc_15AEC5
+		BCC		msg_idx_5A3_67D
 		TYA
 		SEC
-		SBC		#$7E
+		SBC		#$7E				; subtract $67E
 		TAY
 		TXA
 		SBC		#6
 		TAX
-		LDA		#$15
-		BNE		loc_15AEFB
-loc_15AEC5:
+		LDA		#$15				; bank $15
+		BNE		msg_lookup
+msg_idx_5A3_67D:
 		TYA
 		SEC
-		SBC		#$A3
+		SBC		#$A3				; subtract $5A3
 		TAY
 		TXA
 		SBC		#5
 		TAX
-		LDA		#$14
-		BNE		loc_15AEFB
-loc_15AED2:
-		LDA		#$10
-		BNE		loc_15AEFB
-loc_15AED6:
+		LDA		#$14				; bank $14
+		BNE		msg_lookup
+msg_idx_000_195:
+		LDA		#$10				; bank $10, no subtract needed
+		BNE		msg_lookup
+msg_idx_196_365:
 		TYA
 		SEC
 		SBC		#$96
 		TAY
 		TXA
-		SBC		#1
+		SBC		#1					; subtract $196
 		TAX
 		LDA		#$11
-		BNE		loc_15AEFB
-loc_15AEE3:
+		BNE		msg_lookup			; bank $11
+msg_idx_366_443:
 		TYA
 		SEC
 		SBC		#$66
 		TAY
 		TXA
-		SBC		#3
+		SBC		#3					; subtract $366
 		TAX
-		LDA		#$12
-		BNE		loc_15AEFB
-loc_15AEF0:
+		LDA		#$12				; bank $12
+		BNE		msg_lookup
+msg_idx_444_5A2:
 		TYA
 		SEC
 		SBC		#$44
 		TAY
 		TXA
-		SBC		#4
+		SBC		#4					; $subtract $444
 		TAX
-		LDA		#$13
-loc_15AEFB:
+		LDA		#$13				; bank $13
+msg_lookup:
 		STA		word_7C
 		TYA
 		JMP		_get_msg_ptr_by_idx
