@@ -4,6 +4,9 @@ SYSTEM_DPCM_ORG     =   $F000
 SYSCALL_PTR_ORG     =   $8000
 SAFE_STUB_ORG		=   $BFD8
 
+DAYNIGHT_CYCLE_BEGIN_NIGHT = $78
+DAYNIGHT_CYCLE_TOTAL = $CC ; never exceeds CB
+
 ; == FONTS ==
 
 _nulltile = $00

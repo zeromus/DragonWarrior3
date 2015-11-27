@@ -373,6 +373,7 @@ loc_828E:
 		STA		word_5E
 loc_8292:
 ; begin setting up for a normal battle?
+; no, this runs each step, to test whether to do a random battle i think
 		LDA		#0
 		STA		byte_4C
 		STA		_battle_type_fight
@@ -382,7 +383,15 @@ loc_8292:
 		LDA		_location_type
 		AND		#2
 		BEQ		loc_82C3
-		LDA		byte_2A
+
+; location_type = not overworld or location, but...? alefgard? ocean?
+
+; load overworld tile coordinate X, subtract #F.. that's odd. mask it then by #$7F and shift it down. result is.. (coord-7)>>4)&7 as far as I can tell
+; FYI, alefgard seems to be 158x135. therefore after subtraction it's 143x130. so I dont see what use any of that was. 
+; but everything beyond a 120x120 area is ocean. i dunno. maybe it's fill tiles and the map is really 120x120. at least, it does truly fit in the #$7F mask
+; well, you cant ever get into the water to the left and upwards of #$F and #$5 so maybe the idea here is just adjusting a the grid (8x8 blocks in this case?) to fit neatly in the world
+; Uhhh _can_ you get into the water? this map im looking at has a ship screencapped in it http://www.nesmaps.com/maps/DragonWarrior3/DragonWarrior3Overworld2LMap.html
+		LDA		byte_2A 
 		SEC
 		SBC		#$F
 		AND		#$7F
@@ -391,17 +400,24 @@ loc_8292:
 		LSR
 		LSR
 		STA		word_4A
+; similar weird logic for overworld tile coordinate Y.. ((coord-5)>>1)&#$38 (next 3 higher bits than the Y coord).
 		LDA		byte_2B
 		SEC
 		SBC		#5
 		AND		#$70
 		LSR
 		ORA		word_4A
+; so we have packed an index based on X and Y into 4A with 6 bits total. should be a size 64 table.. yep
+; was this an attempt to compress the table? maybe we can't get near the edge of this map. 
 		TAX
 		LDA		byte_8A46,X
 		LDY		#$40
-		BNE		loc_82D7
+		BNE		loc_82D7 ; unconditional jump
+
 loc_82C3:
+; location_type = overworld
+; use overworld tile coordinate to create an index: (overworld_x>>4)|(overworld_y&0xF0) and reference a table
+; leave that stashed in u8[4a]
 		LDA		byte_2A
 		LSR
 		LSR
@@ -414,43 +430,55 @@ loc_82C3:
 		TAX
 		LDA		byte_8946,X
 		LDY		#0
+
+; if the result was a special value #$FF (no random encounters here) then dont have a battle? this codepath is unused since that data doesnt exist
 loc_82D7:
 		CMP		#$FF
 		BNE		loc_82DC
 		RTS
+
 loc_82DC:
-		STA		word_4A
-		LDA		byte_2C
+		STA		word_4A ; stash the random encounter info byte into u8[4a], in case it wasnt already there
+		LDA		byte_2C ; vehicle type
 		CMP		#1
-		BEQ		loc_82E7
-		BCC		loc_82FA
-		RTS
-loc_82E7:
+		BEQ		.check_encounter_ship ; branch for ship
+		BCC		.check_encounter_foot ; branch for on foot
+		RTS ; return for ramia, no random encounters
+
+.check_encounter_ship:
+; pick apart the selected random encounter definition byte: put top two bits into 4A
 		LDA		#0
-		STA		byte_4F
+		STA		byte_4F ; meaning unsure
 		ROL		word_4A
 		ROL
 		ROL		word_4A
 		ROL
 		STA		word_4A
-		TYA
+		TYA ; maybe #$40 or maybe #$00? must be picking one of two blocks of the table, selecting the oceanic entries?
 		CLC
 		ADC		word_4A
 		JMP		loc_835A
-loc_82FA:
+
+.check_encounter_foot:
+; no random encounters in non-terrain tiles (after 8, theyre non-terrain tiles (castles and such)
 		LDA		byte_92
-		CMP		#8
+		CMP		#8 
 		BCC		loc_8307
-		CMP		#$1E
+		CMP		#$1E ; glacier terrain type was patched in here. it counts as terrain
 		BEQ		loc_8305
 		RTS
+
 loc_8305:
-		LDA		#1
+		LDA		#1 ; use 1 for value of 4F, instead of actual overworld terrain tile
 loc_8307:
 		STA		byte_4F
-		LDA		word_4A
+; reload random encounter definition byte and branch down to shared code
+		LDA		word_4A 
 		AND		#$3F
 		JMP		loc_835A
+; -- end of overworld specific random encounter checking --
+
+; location_type = location, more or less
 loc_8310:
 		LDA		#8
 		STA		byte_4F
@@ -487,34 +515,46 @@ loc_8348:
 		ADC		byte_8377,X
 		STA		word_4A
 		INX
-		CPX		#$16
+		CPX		#$16 ; loop 16 times
 		BCC		loc_832B
 		RTS
 loc_8356:
 		TAX
 		LDA		byte_8A86,X
+
+;; FALLTHROUGH ;;
+
 loc_835A:
+; check again, possibly redundantly, for a random encounter definition byte of FF (which means no random encounters)
 		STA		word_4A+1
 		CMP		#$FF
 		BEQ		locret_8376
+;create a pointer u16[4b] * 15 into _random_encounter_overworld_tbl and read a byte from it
 		LDA		#$F
 		LDX		#word_4A+1
 		JSR		_mul16_to_8
-		LDA		#<[byte_8ADB]
-		LDY		#>[byte_8ADB]
+		LDA		#<[_random_encounter_overworld_tbl]
+		LDY		#>[_random_encounter_overworld_tbl]
 		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_4A+1),Y
-		BNE		loc_838D
+		BNE		loc_838D ; now we have a pointer to detailed information about the random encounters in this tile. branch down to do more
+; fall through and return if the entry is 0
 locret_8376:
 		RTS
+
+; =============== T A B L E =================================================
+; location/maps where battles can happen?
 byte_8377:
-		.BYTE	  3,  4,  8,  9,$2D,$41,$58,$5B,$9C,$AB,$B2,$B3,$BB,$C0,$C3,$CD
-		.BYTE	$CF,$D9,$DB,$DF,$E4,$F3
+		.BYTE	  $03,$04,$08,$09,$2D,$41,$58,$5B,$9C,$AB,$B2,$B3,$BB,$C0,$C3,$CD,$CF,$D9,$DB,$DF,$E4,$F3
+
 loc_838D:
-		STA		word_4A
-		LDA		word_5E
+; at this point, u16[4b] contains a pointer to a random encounter info database (15 bytes long)
+		STA		word_4A ; stash first random encounter info byte
+		LDA		word_5E ; some kind of difference between enemy and player levels, but not sure about that yet, maybe something entirely different at this point
 		BNE		loc_83F3
+
+; reload _random_encounter_overworld_tbl[0] and isolate top 3 bits. use to reference a table
 		LDA		word_4A
 		LSR
 		LSR
@@ -523,56 +563,72 @@ loc_838D:
 		LSR
 		TAX
 		LDA		byte_8628,X
+; alternate randomization for special values 1 and 2?
 		CPX		#3
-		BCS		loc_83AE
+		BCS		loc_83AE ; BCS->JAE branch down if not special value
 		STA		byte_4D
 		JSR		_rand
 		CMP		byte_4D
-		BCC		loc_83AC
-		RTS
+		BCC		loc_83AC ; BCC->JB branch down (battle) if we rolled a value under that probability (1 in 255 or 1 in 127 i guess)
+		RTS			; no battle
 loc_83AC:
-		LDA		#1
+		LDA		#1 ; use probability as 1 i guess? 
 loc_83AE:
 		STA		byte_4D
 		LDA		#0
-		STA		byte_4E
-		LDX		byte_4F
+		STA		byte_4E ; some multiple precision clears
+		LDX		byte_4F ; some multiple precision clears
+
+; if we're not in a location, check daytime or nighttime. 
 		LDA		_location_type
 		BNE		loc_83C1
 		LDA		_world_map_steps_count
-		CMP		#$78
-		BCS		loc_83C6
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
+		BCS		loc_83C6 ; BCS->JAE branch down if nighttime
 loc_83C1:
-		LDA		byte_8934,X
-		BNE		loc_83C9
+		LDA		_random_encounter_overworld_probability_daytime_tbl,X
+		BNE		loc_83C9 ; unconditional, since this value should never be 0
 loc_83C6:
-		LDA		byte_893D,X
+		LDA		_random_encounter_overworld_probability_nighttime_tbl,X
 loc_83C9:
+; u16[4d] *= the value we just loaded
 		LDX		#byte_4D
 		JSR		_mul16_to_8
-		LDA		#$4A
+
+; for 4d, use special case of #$64 when player has golden claw 
+		LDA		#ITEM_GOLDEN_CLAW
 		STA		byte_CE
 		JSR		_b0_s2B_is_anybody_owns_item
 		BCC		loc_83DD
 		LDA		#$64
 		STA		byte_4D
-		BNE		loc_83EB
+		BNE		loc_83EB ; unconditinal
+
+; player doesnt have golden claw
 loc_83DD:
-		LDA		byte_4E
-		BNE		loc_83E7
+		LDA		byte_4E ; well, this should be zero?
+		BNE		loc_83E7 ; branch if 
 		LDA		byte_4D
+
+; clamp u8[$4D] at #$64
 		CMP		#$64
 		BCC		loc_83EB
 loc_83E7:
 		LDA		#$64
 		STA		byte_4D
+
 loc_83EB:
+; so the maximum odds of getting a battle are $63=99 -> 98 in 255
 		JSR		_rand
 		CMP		byte_4D
-		BCC		loc_83F3
-		RTS
+		BCC		loc_83F3 ; BCC->JB branch to battle if we're less than the target value
+		RTS		; no battle
+
+; passed random encounter roll. start setting up the battle
 loc_83F3:
 		JSR		_reset_enemy_data_buffers
+
+; reload 4A which contained _random_encounter_overworld_tbl[0] and pick apart the fields
 		LDA		word_4A
 		AND		#3
 		STA		byte_49
@@ -581,54 +637,67 @@ loc_83F3:
 		LSR
 		LSR
 		STA		byte_4D
+
+;u16[4D] *= #$11 to get an index into a table
 		LDA		#0
 		STA		byte_4E
-		LDA		#$11
+		LDA		#17
 		LDX		#byte_4D
 		JSR		_mul16_to_8
 		LDA		#<[byte_90F3]
 		LDY		#>[byte_90F3]
 		JSR		_add16_to_16
+; move to next byte in _random_encounter_overworld_tbl entry (pointer was in 4A)
 		LDA		#1
 		LDX		#word_4A+1
 		JSR		_add8_to_16
-		LDA		#$64
+		LDA		#100
 		STA		byte_55
+
+; top of ~100 times loop
 loc_8424:
 		DEC		byte_55
 		BNE		loc_8429
-		RTS
+		RTS ; abort if we didnt satisfy whatever is going on
+
 loc_8429:
 		JSR		_rand
 		LDY		#0
+; try up to #$D times walking through the table at u16[4D]
 loc_842E:
 		CMP		(byte_4D),Y
-		BCC		loc_8437
+		BCC		loc_8437 ; BCC->JB - branch down if we rolled a value under the current entry at Y
 		INY
 		CPY		#$D
-		BCC		loc_842E
+		BCC		loc_842E ; BCC->JB - branch back up and try again if Y hasnt run out (#$C is the last offste referenced)
+
+; Y is at an entry we found. load corresponding entry from _random_encounter_overworld_tbl
 loc_8437:
 		JSR		sub_8595
-		BEQ		loc_8424
+		BEQ		loc_8424 ; try again? what did we accomplish? we validated Y values in the JSR above.. other than that, nothing
 		LDA		(word_4A+1),Y
 		CMP		#$FF
-		BEQ		loc_8424
+		BEQ		loc_8424 ; try again if we're FF
 		CPY		#5
-		BCC		loc_84B3
-		BEQ		loc_84C3
-		CPY		#$B
-		BCC		loc_84B0
-		BEQ		loc_84B6
-		LDA		(word_4A+1),Y
+		BCC		loc_84B3 ; BCC->JB - branch far away if we're <5
+		BEQ		loc_84C3 ; branch far away if we're ==5
+		CPY		#11
+		BCC		loc_84B0 ; branch far away if we're 6,7,8,9,10
+		BEQ		loc_84B6 ; branch far away if we're 11
+		LDA		(word_4A+1),Y ; just reload the value again otherwise (why?) seems redundant
+
+; store this value in u16[4F] and multiply it by 6; use it as an offset to byte_907B
 		STA		byte_4F
 		LDA		#0
 		STA		byte_50
 		LDA		#6
-		LDX		#byte_4F
+		LDX		#byte_4F ; u16[4F] *= 6
 		JSR		_mul16_to_8
 		LDA		#<[byte_907B]
 		LDY		#>[byte_907B]
 		JSR		_add16_to_16
+
+; clear u16[52]
 		LDX		#0
 		STX		byte_53
 		STX		byte_52
@@ -680,7 +749,7 @@ loc_84B6:
 loc_84BB:
 		LDA		(word_4A+1),Y
 		STA		_enemy_roster_index_list
-		JMP		sub_85B3
+		JMP		sub_85B3 ; overworld battle launch from here
 loc_84C3:
 		LDA		#$14
 		STA		byte_56
@@ -723,15 +792,22 @@ loc_84FD:
 		ROR		byte_4F
 		JMP		loc_84FD
 loc_8507:
+; inspect bottom 3 bits of overworld terrain type. 
+; OR: has this been changed yet? I think so
+; load X = a value from an overworld battle severity/probability table
 		LDA		#3
 		AND		byte_4F
 		TAX
-		LDA		byte_8630,X
-		JSR		sub_1743F1
+		LDA		byte_8630,X ; (1,  2,  2,  5)
+		JSR		sub_1743F1 ; registers are preserved
+
+; incorporate value from another table
+; have we just added a +/- factor (above) to the base value (below)? seems unlikely, values below are quite large
 		CLC
-		ADC		byte_8634,X
+		ADC		byte_8634,X ; (8,  4,  2,  3)
 		STA		_enemy_group_count
-		JMP		loc_84BB
+		JMP		loc_84BB ; for overworld battle, branch back up to launch battle
+
 loc_851C:
 		LDA		#0
 		LDX		#9
@@ -799,14 +875,16 @@ loc_857E:
 		JMP		loc_857E
 
 ; =============== S U B	R O U T	I N E =======================================
+; Y: some value
 sub_8595:
+; return doing nothing if we're in the overworld map
 		LDA		_location_type
 		BEQ		loc_859A
 		RTS
 loc_859A:
 		LDA		_world_map_steps_count
-		CMP		#$78
-		BCS		loc_85AC
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
+		BCS		loc_85AC ; BCS->JAE branch down if it's nighttime
 		CPY		#4
 		BEQ		locret_85AB
 		CPY		#$A
@@ -822,6 +900,7 @@ loc_85AC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_85B3:
+; evaluate player level vs enemies and word_5E somehow.. leave difference in A for storing in 6A6A?
 		JSR		_enemy_roster_get_levels
 		LDA		_players_level
 		SEC
@@ -830,12 +909,15 @@ sub_85B3:
 		LDA		#0
 loc_85C0:
 		STA		byte_6A6A
-		LDA		_location_type
+		LDA		_location_type ; 0 in main worldmap...
 		AND		#1
 		BNE		_battle_launch_ex
-		LDA		_repel_or_fairy_water_timer
+
+; run the battle unless we have time remaining on repel/fairy water. a flag is in MSBit so only test bottom 7
+		LDA		_repel_or_fairy_water_timer 	
 		AND		#$7F
 		BEQ		_battle_launch_ex
+
 		LDA		word_5E
 		BNE		_battle_launch_ex
 		LDA		byte_6A6A
@@ -901,10 +983,18 @@ _battle_launch_ex:
 		BNE		_battle_sequence_handler
 		RTS
 
+; =============== T A B L E =================================================
+; random encounter probability table. high values are less likely, low values are more likely
+; rolling a value less than this results in a battle. therefore $01 is very rare and $80 is very common
 byte_8628:
-		.BYTE	$10,$40,$80,  1,  2,  4,  8,$10
+		.BYTE	$10,$40,$80,$01,$02,$04,$08,$10
+
+; =============== T A B L E =================================================
+; related to the severity/probability of random battles in an overworld terrain type
 byte_8630:
 		.BYTE	  1,  2,  2,  5
+
+
 byte_8634:
 		.BYTE	  8,  4,  2,  3
 byte_8638:
@@ -1271,7 +1361,6 @@ sub_8897:
 		JMP		sub_8831
 
 ; =============== T A B L E =================================================
-
 ; a slim table that defines "FIGHT!" which appears during the wipe before some battles
 ; it takes the form of the bitmask that appears at $580
 ; however, this is put at $5B0 (since the table is slim, it is patched in at just the right location)
@@ -1324,27 +1413,34 @@ byte_8909:
 		.BYTE	  1,  1,  0,  1,  0,  1,  1,  1,  1,  0,  1,  2,  0,  5,  0,  1
 		.BYTE	  0,  2,  0,  1,  0,  1,  0,  1,  0,  2,  0,  8,  0,  1,  0,  1
 		.BYTE	  0,  2,  0,  2,  0,  1,  0,  1,  0,  1,  0
-byte_8934:
+
+; =============== T A B L E S =================================================
+; random encounter probability lookups. high value means high probability, so you can see theyre higher at nght
+_random_encounter_overworld_probability_daytime_tbl:
 		.BYTE	  4, $F, $A, $F,$12,$19,$54,$12, $A
-byte_893D:
-		.BYTE	  5,$13, $D,$13,$16,$1F,$54,$16, $A
+_random_encounter_overworld_probability_nighttime_tbl:
+		.BYTE	  5,$13, $D,$13,$16,$1F,$54,$16, $A ; only used for overworld
+
+; =============== T A B L E =================================================
+; random encounter information for 16x16 blocks of overworld. traditionally dragon warriory!
 byte_8946:
-		.BYTE	$1F, $A, $A, $A, $A, $A, $A, $A, $A,$25,$25,$25,$25,$25,$25,$25
-		.BYTE	$1F, $A, $A, $A, $A, $A,$CA,$EC,$2C,$2C,$25,$25,$25,$25,$25,$25
-		.BYTE	$1F,$1F,  9,$49,$89,$8A,$2E,$2D,$EC,$2C,$24,$24,$24,$24,$24,$24
-		.BYTE	$1F,  9,  9,$48,$89,$AE,$AE,$2C,$EC,$EC,$E3,$24,$23,$23,$23,$23
-		.BYTE	$1F,  9,$48,  8,$88,$8C,$AD,$2C,$2C,$D8,$E4,$24,$64,$61,$20,$20
-		.BYTE	 $F, $F, $F,  8, $C,$8C,$10,$2D,$6D,$18,$18,$24,$64,$61,$61,$20
-		.BYTE	 $F, $F, $E, $F, $C, $C,$10,$55,$56,$57,$18,$18,$24,$61,$21,$20
-		.BYTE	$1A, $E, $D, $D,$4C,$CC,$11,$55,$56,$17,$17,$20,$20,$20,$20,$20
+		.BYTE	$1F,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$25,$25,$25,$25,$25,$25,$25
+		.BYTE	$1F,$0A,$0A,$0A,$0A,$0A,$CA,$EC,$2C,$2C,$25,$25,$25,$25,$25,$25
+		.BYTE	$1F,$1F,$09,$49,$89,$8A,$2E,$2D,$EC,$2C,$24,$24,$24,$24,$24,$24
+		.BYTE	$1F,$09,$09,$48,$89,$AE,$AE,$2C,$EC,$EC,$E3,$24,$23,$23,$23,$23
+		.BYTE	$1F,$09,$48,$08,$88,$8C,$AD,$2C,$2C,$D8,$E4,$24,$64,$61,$20,$20
+		.BYTE	$0F,$0F,$0F,$08,$0C,$8C,$10,$2D,$6D,$18,$18,$24,$64,$61,$61,$20
+		.BYTE	$0F,$0F,$0E,$0F,$0C,$0C,$10,$55,$56,$57,$18,$18,$24,$61,$21,$20
+		.BYTE	$1A,$0E,$0D,$0D,$4C,$CC,$11,$55,$56,$17,$17,$20,$20,$20,$20,$20
 		.BYTE	$1A,$4E,$4E,$4D,$8D,$91,$11,$54,$54,$16,$17,$27,$27,$27,$2A,$2A
 		.BYTE	$1A,$1A,$5A,$4D,$30,$12,$12,$13,$13,$1C,$1C,$1C,$29,$2B,$2A,$27
 		.BYTE	$1A,$1A,$5A,$71,$30,$12,$13,$13,$13,$13,$27,$27,$27,$2B,$27,$27
-		.BYTE	$1B,$1B,$5B,$30,$30,  6,  6,  6,  6,  6,  6,  7,  7,$29,$27,$27
-		.BYTE	$1B,$1B,$1B,$1B,$1B,$1D,$1D,$1D,  5,  5,$46,  7,  7,$27,$27,$27
-		.BYTE	$1D,$1D,$1D,$1D,$1D,$1D,$2F,$1D,  5,  5,  4,  7,  7,$29,$27,$27
-		.BYTE	$1E,$DE,$DE,$DE,$DE,$DD,$1D,$1D,  5,  5,  4,  7,$E9,$E9,$29,$29
+		.BYTE	$1B,$1B,$5B,$30,$30,$06,$06,$06,$06,$06,$06,$07,$07,$29,$27,$27
+		.BYTE	$1B,$1B,$1B,$1B,$1B,$1D,$1D,$1D,$05,$05,$46,$07,$07,$27,$27,$27
+		.BYTE	$1D,$1D,$1D,$1D,$1D,$1D,$2F,$1D,$05,$05,$04,$07,$07,$29,$27,$27 ; $04 here is just left of aliahan castle
+		.BYTE	$1E,$DE,$DE,$DE,$DE,$DD,$1D,$1D,$05,$05,$04,$07,$E9,$E9,$29,$29
 		.BYTE	$1E,$DE,$DE,$DE,$DE,$DE,$1E,$1E,$1E,$1E,$1E,$1E,$E9,$E9,$29,$29
+
 byte_8A46:
 		.BYTE	$33,$33,$33,$34,$3D,$3D,$3D,$3D,$33,$33,$33,$34,$34,$3D,$3D,$3D
 		.BYTE	$33,$32,$32,$34,$34,$34,$3D,$3D,$33,$32,$32,$34,$34,$3C,$3C,$3C
@@ -1357,111 +1453,145 @@ byte_8A86:
 		.BYTE	$3E,$FF,$FF,$26,$22,$19,$19,$FF,$50,$50,$4C,$4D,$4D,$4D,$4D,$43
 		.BYTE	$44,$FF,$55,$55,$56,$56,$5A,$5B,$5B,$5C,$47,$48,$FF,$48,$FF,$FF
 		.BYTE	$FF,$28,$38,$35,$35
-byte_8ADB:
-		.BYTE	$64,$FF,$3F,$40,$41,$42,$FF,$40,$3F,$41,$45,$42,$42,$FF,$FF,$64
-		.BYTE	$FF,$43,$40,$41,$49,$28,$41,$43,$43,$40,$49,$FF,$FF,$FF,$84,$55
-		.BYTE	$41,$43,$49,$55,$FF,$45,$43,$55,$44,$55,$55,$FF,$FF,$84,$3F,$42
-		.BYTE	$43,$44,$60,$FF,$44,$42,$45,$43,$60,$60,$FF,$FF,$60,$FF,  0,$FF
-		.BYTE	  1,$FF,$FF,  1,  0,  0,  1,  1,  0,$FF,$FF,$60,$FF,  1,$FF,  0
-		.BYTE	  2,  0,  0,  1,  0,  1,  2,$FF,$FF,$FF,$64,  1,  0,  2,  3,  1
-		.BYTE	$FF,  2,  0,  1,  3,  2,$FF,$FF,$FF,$6C,  4,  5,  6,  8, $B,$FF
-		.BYTE	  6,  8,  5,  7, $B,  9,$FF,$FF,$64, $D, $C,  7, $B, $D,$FF, $C
-		.BYTE	  7, $D, $F, $E,$1B,$FF,$FF,$64, $F, $D,$11,$10, $F,  4,$10, $D
-		.BYTE	$10,$11, $E,$1B,$FF,$FF,$64,$12,$14,$15, $F,$16,$1B,$14,$11,$15
-		.BYTE	$12,$16,$18,$FF,$FF,$48,$66,$63,$64,$2E,$66,$6C,$66,$2E,$6E,$5B
-		.BYTE	$66,$5B,$FF,$FF,$68,$FF,$1E,$1C,$16,$19,$FF,$12,$1C,$1E,$1E,$1B
-		.BYTE	$14,$FF,  1,$60,$21,$21,$1C,$23,$20,$13,$21,$1C,$1A,$23,$20,$FF
-		.BYTE	$FF,$FF,$64,$1A,$23,$1C,$21,$20,$FF,$23,$23,$21,$1C,$20,$FF,$FF
-		.BYTE	$FF,$88,$15,$22,$16,$1B,$19,$22,$17,$22,$FF,$22,$19,$FF,  1,  1
-		.BYTE	$60,$27,$29,$21,$1C,$27,$FF,$29,$29,$27,$26,$25,$FF,$FF,  2,$60
-		.BYTE	$26,$27,$29,$26,$25,  9,$26,$27,$29,$26,$25,$FF,$FF,$FF,$68,$26
-		.BYTE	$2A,$27,$25,$2A,$FF,$2A,$26,$2A,$26,$47,$FF,$FF,$FF,$64,$25,$2A
-		.BYTE	$27,$26,$25,$28,$27,$26,$2A,$FF,$47,$FF,$FF,$FF,$68,$28,$2C,$2F
-		.BYTE	$2A,$28,$FF,$FF,$2F,$28,$2C,$33,$46,$FF,$FF,$68,$2C,$2F,$28,$31
-		.BYTE	$2C,$FF,$2D,$2C,$2F,$28,$33,$46,$FF,$FF,$68,$49,$34,$30,$39,$49
-		.BYTE	$3A,$49,$34,$39,$30,$47,$3A,$FF,$FF,$6C,$3D,$39,$34,$3D,$3B,$FF
-		.BYTE	$39,$39,$34,$3D,$3B,$FF,$FF,$FF,$6C,$34,$FF,$3D,$39,$3B,$FF,$39
-		.BYTE	$34,$31,$3D,$3B,$FF,$FF,$FF,$64,$80,$7F,$7E,$7D,$80,$77,$80,$7F
-		.BYTE	$7E,$67,$80,$67, $D, $D,$68,$3C,$3E,$32,$49,$3C,$FF,$3E,$32,$3D
-		.BYTE	$3C,$3E,$FF,  2,  7,$68,$4F,$3C,$3E,$32,$4F,$FF,$4F,$3E,$32,$3C
-		.BYTE	$4F,$FF,  8,  8,$88,$FF,$FF,$46,$1D,$FF,$FF,$FF,$1D,$46,$FF,$FF
-		.BYTE	$FF,$FF,$FF,$68,$FF,$32,$4F,$18,$FF,$49,$FF,$18,$32,$4F,$FF,$FF
-		.BYTE	$FF,$FF,$48,$FF,$46,$45,$FF,$52,$FF,$FF,$46,$45,$FF,$52,$5B,$FF
-		.BYTE	$FF,$64,$3E,$3C,$3E,$3B,$3E,$2B,$3E,$3B,$3E,$3C,$3E,$FF,$FF,$FF
-		.BYTE	$60,$49,$4B,$45,$4F,$48,$FF,$48,$4B,$45,$4B,$FF,$FF,$FF,$FF,$68
-		.BYTE	$4B,$4A,$4F,$45,$4B,$FF,$4A,$44,$4B,$48,$4A,$FF,$10,$10,$48,$7F
-		.BYTE	$7D,$7E,$7E,$7F,$77,$7F,$7E,$7D,$7E,$7F,$67,  6,  6,$64,$4A,$4F
-		.BYTE	$48,$4B,$4A,$49,$4B,$31,$4A,$45,$4B,$FF,$FF,$FF,$68,$48,$4F,$4A
-		.BYTE	$4B,$48,$35,$4A,$48,$4B,$FF,$31,$6C,$FF,$FF,$68,$52,$48,$52,$FF
-		.BYTE	$52,$FF,$52,$48,$52,$FF,$52,$5B,$FF,$FF,$64,$7D,$7C,$7F,$FF,$7D
-		.BYTE	$7B,$7D,$7F,$7C,$77,$7D,$FF,  5,  5,$60,$3E,$4F,$54,$4B,$54,$FF
-		.BYTE	$FF,$54,$FF,$54,$FF,$FF,$FF,$FF,$64,$78,$76,$74,$6C,$78,$FF,$78
-		.BYTE	$76,$74,$78,$78,$67, $C, $C,$68,$FF,$43,$3F,$31,$54,$FF,$3E,$43
-		.BYTE	$45,$54,$4B,$FF,$FF,$FF,$68,$55,$58,$50,$59,$55,$50,$55,$59,$54
-		.BYTE	$50,$55,$55,  4,  4,$68,$50,$4C,$54,$4C,$50,$FF,$FF,$50,$54,$4C
-		.BYTE	$FF,$54,  9,  9,$68,$50,$58,$3B,$4C,$50,$57,$50,$58,$31,$4C,$50
-		.BYTE	$58,$FF,$FF,$68,$58,$50,$4C,$5F,$58,$56,$58,$50,$FF,$3A,$58,$FF
-		.BYTE	  3,  3,$68,$4D,$50,$57,$58,$4D,$56,$4D,$57,$50,$58,$4D,$FF,$FF
-		.BYTE	$FF,$64, $D, $B,$1B,$16,$19,$17,$21,$16,$19,$1E,$24,$1B,$FF,$FF
-		.BYTE	$68,$5C,$5D,$5F,$FF,$5C,$2B,$FF,$5F,$5D,$5C,$5C,$FF,$13,$13,$68
-		.BYTE	$5A,$FF,$52,$56,$5A,$5B,$5A,$5D,$52,$5D,$5A,$5B, $A, $A,$68,$68
-		.BYTE	$69,  0,$FF,$68,$63,$69,  0,$68,$FF,$FF,$67,$12,$12,$68,$69,$68
-		.BYTE	$6D,$FF,$69,$FF,$69,$6D,$68,$FF,$69,$67,$FF,$FF,$68,$66,$6F,$69
-		.BYTE	$6F,$66,$67,$66,$6F,$69,$6F,$66,$77,$FF,$FF,$46,$6A,$78,$5A,$76
-		.BYTE	$6A,$69,$6A,$FF,$78,$76,$6A,$76,$FF,$FF,$68,$53,$6A,$6F,$68,$53
-		.BYTE	$FF,$53,$6A,$53,$66,$53,$FF,$FF,$FF,$64,$69,$53,$71,$6F,$6D,$6B
-		.BYTE	$6B,$6F,$53,$71,$6B,$FF,$FF,$FF,$64,$76,$78,$6C,$79,$76,$FF,$76
-		.BYTE	$79,$79,$6B,$76,$76,$FF,$FF,$68,$53,$78,$74,$68,  0,$FF,$69,$78
-		.BYTE	$74,$53,$69,$6C,$FF,$FF,$68,$53,$70,$6A,$6D,$53,$70,$6D,$74,$70
-		.BYTE	$63,$74,$70, $E, $E,$68,$64,$5A,$74,$63,$64,$5E,$74,$63,$5A,$69
-		.BYTE	$74,$FF,$FF,$FF,$68,$74,$53,$69,$FF,$74,$6C,$74,$71,$74,$6C,$74
-		.BYTE	$FF,$FF,$FF,$68,$6D,$71,$FF,$69,$6D,$79,$6D,$71,$69,$79,$6D,$71
-		.BYTE	$FF,$FF,$64,$7B,$7A,$79,$FF,$7B,$67,$7B,$79,$7A,$FF,$7B,$77,$FF
-		.BYTE	$FF,$68,$7C,$7B,$7A,$FF,$7C,$6B,$7B,$7A,$FF,$7C,$7C,$FF, $B, $B
-		.BYTE	$64,$72,$73,$3F,$40,$72,$64,$73,$60,$72,$5D,$73,$FF,$FF,$FF,$60
-		.BYTE	$FF,  2,  0,  1,$FF,$FF,  2,  0,  1,  3,  2,$FF,$FF,$FF,$60,  0
-		.BYTE	  3,  5,  2,  0,$FF,  5,  3,  2,  4,  5,$FF,$FF,$FF,$44,  3,  1
-		.BYTE	$FF,  5,  3,$FF,  4,  1,  3,  6,  4,$FF,  0,  0,$64,  5,  3,  4
-		.BYTE	  6,  5,$FF,  6,  1,  4,  8,  6,  7,$FF,$FF,$84,$FF, $A, $B,  6
-		.BYTE	$FF,$FF, $A,  6, $B,  7, $A, $D,$FF,$FF,$44, $B, $A,  4,  8, $B
-		.BYTE	$FF, $B, $A, $A, $B,  7, $D,$FF,$FF,$64,$10,$12,$11, $E,$10,$FF
-		.BYTE	 $E,$10,$11,$12, $E,$1B,$FF,$FF,$64,$13,$12, $E,$14,$13,$FF,$14
-		.BYTE	 $E,$12,$13,$14,$1B,$FF,$FF,$64,$11,$1B,$14,$13,$12, $E,$FF,$13
-		.BYTE	$14,$1B,$FF,$1B,$FF,$FF,$40,$16,$17,$FF,$19,$16,$FF,$16,$FF,$17
-		.BYTE	$19,$16,$19,$FF,$FF,$64,$1A,$19,$17,$16,$1A,$FF,$1A,$16,$17,$19
-		.BYTE	$1A,$19,$FF,$FF,$68,$20,$1D,$23,$FF,$20,$1F,$23,$1D,$20,$FF,$FF
-		.BYTE	$1F,$FF,$FF,$64,$24,$FF,$20,$1D,$24,$1F,$24,$FF,$1D,$24,$FF,$FF
-		.BYTE	$FF,$FF,$68,$44,$43,$61,$40,$44,$60,$47,$44,$43,$60,$47,$FF,$FF
-		.BYTE	$FF,$64,$63,$6E,$5D,$5A,$63,$FF,$5D,$63,$6E,$5A,$5D,$5E,$FF,$FF
-		.BYTE	$48,$18,$24,$FF,$20,$18,$FF,$18,$20,$1D,$24,$18,$FF,$FF,$FF,$68
-		.BYTE	$6E,$5F,$63,$5D,$6E,$5E,$6E,$5F,$64,$5F,$6E,$6C,$FF,$FF,$60,$5F
-		.BYTE	$63,$5C,$64,$5F,$FF,$5F,$5C,$63,$64,$5F,$6C,$FF,$FF,$64,$2D,$33
-		.BYTE	$18,$28,$2D,$1F,$2D,$33,$18,$28,$2D,$FF, $F, $F,$68,$38,$2F,$2C
-		.BYTE	$18,$38,$28,$38,$2C,$38,$26,$26,$FF,$FF,$FF,$60,$FF,$49,$38,  9
-		.BYTE	$FF,$3A,$FF,$38,$49,$FF,$FF,$3A,$FF,$FF,$60,$FF,$30,$49,$31,$FF
-		.BYTE	$3A,$30,$49,$31,$38,$30,$3A,$FF,$FF,$44,$2C,$2F,$3C,$25,$1C,$35
-		.BYTE	$3E,$24,$23,$3C,$3E,$3A,$FF,$FF,$68,$35,$46,$4E,$1D,$35,$FF,$35
-		.BYTE	$46,$4E,$4E,$35,$4E,$FF,  4,$64,$4E,$35,$46,$47,$4E,$FF,$4E,$46
-		.BYTE	$35,$47,$4E,$4E,$FF,$FF,$68,$4C,$4A,$37,$4B,$4C,$FF,$4C,$37,$37
-		.BYTE	$48,$4C,$FF,$FF,$FF,$68,$3B,$49,$37,$4C,$3B,$18,$37,$4C,$3B,$4C
-		.BYTE	$37,$FF,$FF,$FF,$68,$4C,$37,$4B,$37,$3B,$45,$37,$4C,$4C,$3A,$3B
-		.BYTE	$3A,$FF,$FF,$68,$59,$55,$61,$51,$59,$51,$59,$55,$61,$51,$59,$55
-		.BYTE	$11,$11,$68,$61,$59,$51,$55,$61,$FF,$61,$59,$51,$55,$61,$FF,$FF
-		.BYTE	$FF,$44,$26,$34,$1B,$2A,$2F,$31,$1B,$26,$33,$24,$21,$FF,$FF,$FF
+
+; =============== T A B L E S =================================================
+; random encounter info structs. each entry is 15 bytes long
+; [0] - PPPAAABB
+;     P: probability of encounter index
+;     A: related to which byte_90F3 table entry is chosen. oddly, the table doesnt have 8 entries despite having 3 bits reserved here. so we should see no $10 bit set in [0] (that's true)
+;     B: ?
+; [1]-[D] - Contains something (enemy or group?) related to each entry in one of the byte_90F3 records
+;           these are then used at least to reference byte_907B, so I dont expect them to exceed 20, but they do...
+_random_encounter_overworld_tbl:
+		.BYTE	$64,$FF,$3F,$40,$41,$42,$FF,$40,$3F,$41,$45,$42,$42,$FF,$FF
+		.BYTE	$64,$FF,$43,$40,$41,$49,$28,$41,$43,$43,$40,$49,$FF,$FF,$FF
+		.BYTE	$84,$55,$41,$43,$49,$55,$FF,$45,$43,$55,$44,$55,$55,$FF,$FF
+		.BYTE	$84,$3F,$42,$43,$44,$60,$FF,$44,$42,$45,$43,$60,$60,$FF,$FF
+		.BYTE	$60,$FF,$00,$FF,$01,$FF,$FF,$01,$00,$00,$01,$01,$00,$FF,$FF
+		.BYTE	$60,$FF,$01,$FF,$00,$02,$00,$00,$01,$00,$01,$02,$FF,$FF,$FF
+		.BYTE	$64,$01,$00,$02,$03,$01,$FF,$02,$00,$01,$03,$02,$FF,$FF,$FF
+		.BYTE	$6C,$04,$05,$06,$08,$0B,$FF,$06,$08,$05,$07,$0B,$09,$FF,$FF
+		.BYTE	$64,$0D,$0C,$07,$0B,$0D,$FF,$0C,$07,$0D,$0F,$0E,$1B,$FF,$FF
+		.BYTE	$64,$0F,$0D,$11,$10,$0F,$04,$10,$0D,$10,$11, $E,$1B,$FF,$FF
+		.BYTE	$64,$12,$14,$15,$0F,$16,$1B,$14,$11,$15,$12,$16,$18,$FF,$FF
+		.BYTE	$48,$66,$63,$64,$2E,$66,$6C,$66,$2E,$6E,$5B,$66,$5B,$FF,$FF
+		.BYTE	$68,$FF,$1E,$1C,$16,$19,$FF,$12,$1C,$1E,$1E,$1B,$14,$FF,$01
+		.BYTE	$60,$21,$21,$1C,$23,$20,$13,$21,$1C,$1A,$23,$20,$FF,$FF,$FF
+		.BYTE	$64,$1A,$23,$1C,$21,$20,$FF,$23,$23,$21,$1C,$20,$FF,$FF,$FF
+		.BYTE	$88,$15,$22,$16,$1B,$19,$22,$17,$22,$FF,$22,$19,$FF,$01,$01
+		.BYTE	$60,$27,$29,$21,$1C,$27,$FF,$29,$29,$27,$26,$25,$FF,$FF,$02
+		.BYTE	$60,$26,$27,$29,$26,$25,$09,$26,$27,$29,$26,$25,$FF,$FF,$FF
+		.BYTE	$68,$26,$2A,$27,$25,$2A,$FF,$2A,$26,$2A,$26,$47,$FF,$FF,$FF
+		.BYTE	$64,$25,$2A,$27,$26,$25,$28,$27,$26,$2A,$FF,$47,$FF,$FF,$FF
+		.BYTE	$68,$28,$2C,$2F,$2A,$28,$FF,$FF,$2F,$28,$2C,$33,$46,$FF,$FF
+		.BYTE	$68,$2C,$2F,$28,$31,$2C,$FF,$2D,$2C,$2F,$28,$33,$46,$FF,$FF
+		.BYTE	$68,$49,$34,$30,$39,$49,$3A,$49,$34,$39,$30,$47,$3A,$FF,$FF
+		.BYTE	$6C,$3D,$39,$34,$3D,$3B,$FF,$39,$39,$34,$3D,$3B,$FF,$FF,$FF
+		.BYTE	$6C,$34,$FF,$3D,$39,$3B,$FF,$39,$34,$31,$3D,$3B,$FF,$FF,$FF
+		.BYTE	$64,$80,$7F,$7E,$7D,$80,$77,$80,$7F,$7E,$67,$80,$67,$0D,$0D
+		.BYTE	$68,$3C,$3E,$32,$49,$3C,$FF,$3E,$32,$3D,$3C,$3E,$FF,$02,$07
+		.BYTE	$68,$4F,$3C,$3E,$32,$4F,$FF,$4F,$3E,$32,$3C,$4F,$FF,$08,$08
+		.BYTE	$88,$FF,$FF,$46,$1D,$FF,$FF,$FF,$1D,$46,$FF,$FF,$FF,$FF,$FF
+		.BYTE	$68,$FF,$32,$4F,$18,$FF,$49,$FF,$18,$32,$4F,$FF,$FF,$FF,$FF
+		.BYTE	$48,$FF,$46,$45,$FF,$52,$FF,$FF,$46,$45,$FF,$52,$5B,$FF,$FF
+		.BYTE	$64,$3E,$3C,$3E,$3B,$3E,$2B,$3E,$3B,$3E,$3C,$3E,$FF,$FF,$FF
+		.BYTE	$60,$49,$4B,$45,$4F,$48,$FF,$48,$4B,$45,$4B,$FF,$FF,$FF,$FF
+		.BYTE	$68,$4B,$4A,$4F,$45,$4B,$FF,$4A,$44,$4B,$48,$4A,$FF,$10,$10
+		.BYTE	$48,$7F,$7D,$7E,$7E,$7F,$77,$7F,$7E,$7D,$7E,$7F,$67,$06,$06
+		.BYTE	$64,$4A,$4F,$48,$4B,$4A,$49,$4B,$31,$4A,$45,$4B,$FF,$FF,$FF
+		.BYTE	$68,$48,$4F,$4A,$4B,$48,$35,$4A,$48,$4B,$FF,$31,$6C,$FF,$FF
+		.BYTE	$68,$52,$48,$52,$FF,$52,$FF,$52,$48,$52,$FF,$52,$5B,$FF,$FF
+		.BYTE	$64,$7D,$7C,$7F,$FF,$7D,$7B,$7D,$7F,$7C,$77,$7D,$FF,$05,$05
+		.BYTE	$60,$3E,$4F,$54,$4B,$54,$FF,$FF,$54,$FF,$54,$FF,$FF,$FF,$FF
+		.BYTE	$64,$78,$76,$74,$6C,$78,$FF,$78,$76,$74,$78,$78,$67,$0C,$0C
+		.BYTE	$68,$FF,$43,$3F,$31,$54,$FF,$3E,$43,$45,$54,$4B,$FF,$FF,$FF
+		.BYTE	$68,$55,$58,$50,$59,$55,$50,$55,$59,$54,$50,$55,$55,$04,$04
+		.BYTE	$68,$50,$4C,$54,$4C,$50,$FF,$FF,$50,$54,$4C,$FF,$54,$09,$09
+		.BYTE	$68,$50,$58,$3B,$4C,$50,$57,$50,$58,$31,$4C,$50,$58,$FF,$FF
+		.BYTE	$68,$58,$50,$4C,$5F,$58,$56,$58,$50,$FF,$3A,$58,$FF,$03,$03
+		.BYTE	$68,$4D,$50,$57,$58,$4D,$56,$4D,$57,$50,$58,$4D,$FF,$FF,$FF
+		.BYTE	$64,$0D,$0B,$1B,$16,$19,$17,$21,$16,$19,$1E,$24,$1B,$FF,$FF
+		.BYTE	$68,$5C,$5D,$5F,$FF,$5C,$2B,$FF,$5F,$5D,$5C,$5C,$FF,$13,$13
+		.BYTE	$68,$5A,$FF,$52,$56,$5A,$5B,$5A,$5D,$52,$5D,$5A,$5B,$0A,$0A
+		.BYTE	$68,$68,$69,$00,$FF,$68,$63,$69,$00,$68,$FF,$FF,$67,$12,$12
+		.BYTE	$68,$69,$68,$6D,$FF,$69,$FF,$69,$6D,$68,$FF,$69,$67,$FF,$FF
+		.BYTE	$68,$66,$6F,$69,$6F,$66,$67,$66,$6F,$69,$6F,$66,$77,$FF,$FF
+		.BYTE	$46,$6A,$78,$5A,$76,$6A,$69,$6A,$FF,$78,$76,$6A,$76,$FF,$FF
+		.BYTE	$68,$53,$6A,$6F,$68,$53,$FF,$53,$6A,$53,$66,$53,$FF,$FF,$FF
+		.BYTE	$64,$69,$53,$71,$6F,$6D,$6B,$6B,$6F,$53,$71,$6B,$FF,$FF,$FF
+		.BYTE	$64,$76,$78,$6C,$79,$76,$FF,$76,$79,$79,$6B,$76,$76,$FF,$FF
+		.BYTE	$68,$53,$78,$74,$68,$00,$FF,$69,$78,$74,$53,$69,$6C,$FF,$FF
+		.BYTE	$68,$53,$70,$6A,$6D,$53,$70,$6D,$74,$70,$63,$74,$70,$0E,$0E
+		.BYTE	$68,$64,$5A,$74,$63,$64,$5E,$74,$63,$5A,$69,$74,$FF,$FF,$FF
+		.BYTE	$68,$74,$53,$69,$FF,$74,$6C,$74,$71,$74,$6C,$74,$FF,$FF,$FF
+		.BYTE	$68,$6D,$71,$FF,$69,$6D,$79,$6D,$71,$69,$79,$6D,$71,$FF,$FF
+		.BYTE	$64,$7B,$7A,$79,$FF,$7B,$67,$7B,$79,$7A,$FF,$7B,$77,$FF,$FF
+		.BYTE	$68,$7C,$7B,$7A,$FF,$7C,$6B,$7B,$7A,$FF,$7C,$7C,$FF,$0B,$0B
+		.BYTE	$64,$72,$73,$3F,$40,$72,$64,$73,$60,$72,$5D,$73,$FF,$FF,$FF
+		.BYTE	$60,$FF,$02,$00,$01,$FF,$FF,$02,$00,$01,$03,$02,$FF,$FF,$FF
+		.BYTE	$60,$00,$03,$05,$02,$00,$FF,$05,$03,$02,$04,$05,$FF,$FF,$FF
+		.BYTE	$44,$03,$01,$FF,$05,$03,$FF,$04,$01,$03,$06,$04,$FF,$00,$00
+		.BYTE	$64,$05,$03,$04,$06,$05,$FF,$06,$01,$04,$08,$06,$07,$FF,$FF
+		.BYTE	$84,$FF,$0A,$0B,$06,$FF,$FF,$0A,$06,$0B,$07,$0A,$0D,$FF,$FF
+		.BYTE	$44,$0B,$0A,$04,$08,$0B,$FF,$0B,$0A,$0A,$0B,$07,$0D,$FF,$FF
+		.BYTE	$64,$10,$12,$11,$0E,$10,$FF,$0E,$10,$11,$12,$0E,$1B,$FF,$FF
+		.BYTE	$64,$13,$12,$0E,$14,$13,$FF,$14,$0E,$12,$13,$14,$1B,$FF,$FF
+		.BYTE	$64,$11,$1B,$14,$13,$12,$0E,$FF,$13,$14,$1B,$FF,$1B,$FF,$FF
+		.BYTE	$40,$16,$17,$FF,$19,$16,$FF,$16,$FF,$17,$19,$16,$19,$FF,$FF
+		.BYTE	$64,$1A,$19,$17,$16,$1A,$FF,$1A,$16,$17,$19,$1A,$19,$FF,$FF
+		.BYTE	$68,$20,$1D,$23,$FF,$20,$1F,$23,$1D,$20,$FF,$FF,$1F,$FF,$FF
+		.BYTE	$64,$24,$FF,$20,$1D,$24,$1F,$24,$FF,$1D,$24,$FF,$FF,$FF,$FF
+		.BYTE	$68,$44,$43,$61,$40,$44,$60,$47,$44,$43,$60,$47,$FF,$FF,$FF
+		.BYTE	$64,$63,$6E,$5D,$5A,$63,$FF,$5D,$63,$6E,$5A,$5D,$5E,$FF,$FF
+		.BYTE	$48,$18,$24,$FF,$20,$18,$FF,$18,$20,$1D,$24,$18,$FF,$FF,$FF
+		.BYTE	$68,$6E,$5F,$63,$5D,$6E,$5E,$6E,$5F,$64,$5F,$6E,$6C,$FF,$FF
+		.BYTE	$60,$5F,$63,$5C,$64,$5F,$FF,$5F,$5C,$63,$64,$5F,$6C,$FF,$FF
+		.BYTE	$64,$2D,$33,$18,$28,$2D,$1F,$2D,$33,$18,$28,$2D,$FF,$0F,$0F
+		.BYTE	$68,$38,$2F,$2C,$18,$38,$28,$38,$2C,$38,$26,$26,$FF,$FF,$FF
+		.BYTE	$60,$FF,$49,$38,$09,$FF,$3A,$FF,$38,$49,$FF,$FF,$3A,$FF,$FF
+		.BYTE	$60,$FF,$30,$49,$31,$FF,$3A,$30,$49,$31,$38,$30,$3A,$FF,$FF
+		.BYTE	$44,$2C,$2F,$3C,$25,$1C,$35,$3E,$24,$23,$3C,$3E,$3A,$FF,$FF
+		.BYTE	$68,$35,$46,$4E,$1D,$35,$FF,$35,$46,$4E,$4E,$35,$4E,$FF,$04
+		.BYTE	$64,$4E,$35,$46,$47,$4E,$FF,$4E,$46,$35,$47,$4E,$4E,$FF,$FF
+		.BYTE	$68,$4C,$4A,$37,$4B,$4C,$FF,$4C,$37,$37,$48,$4C,$FF,$FF,$FF
+		.BYTE	$68,$3B,$49,$37,$4C,$3B,$18,$37,$4C,$3B,$4C,$37,$FF,$FF,$FF
+		.BYTE	$68,$4C,$37,$4B,$37,$3B,$45,$37,$4C,$4C,$3A,$3B,$3A,$FF,$FF
+		.BYTE	$68,$59,$55,$61,$51,$59,$51,$59,$55,$61,$51,$59,$55,$11,$11
+		.BYTE	$68,$61,$59,$51,$55,$61,$FF,$61,$59,$51,$55,$61,$FF,$FF,$FF
+		.BYTE	$44,$26,$34,$1B,$2A,$2F,$31,$1B,$26,$33,$24,$21,$FF,$FF,$FF
+
+; =============== T A B L E =================================================
+; 20 entries
 byte_907B:
-		.BYTE	$13,  0,  2,  4,$FF,$FF, $D,  0,$1B,  9,$FF,$FF,$36,  0,  9,$31
-		.BYTE	$FF,$FF, $C,  0,$57,$31,$FF,$FF,  0,  0,$31,$FF,$FF,$FF,$2D,  0
-		.BYTE	$77,$6C,$FF,$FF, $C,  0,$75,$69,$FF,$FF, $D,  0,$3E,  9,$FF,$FF
-		.BYTE	 $D,  0,$4F,$47,$FF,$FF, $D,  0,$59,$47,$FF,$FF, $C,  0,$5A,$2B
-		.BYTE	$FF,$FF,$24,  0,$70,$6C,$FF,$FF,$26,  0,$7C,$56,$FF,$FF,$34,  0
-		.BYTE	$75,$77,$FF,$FF,$2C,  0,$70,$57,$FF,$FF,$2E,  0,$26,$1C,$FF,$FF
-		.BYTE	$35,  0,$35,$48,$FF,$FF, $D,  0,$4C,$2B,$FF,$FF,$2E,$25,  0,  9
-		.BYTE	$39,$6C,$25,  4,$5C,$50,$2B,$FF
+		.BYTE	$13,$00,$02,$04,$FF,$FF
+		.BYTE	$0D,$00,$1B,$09,$FF,$FF
+		.BYTE	$36,$00,$09,$31,$FF,$FF
+		.BYTE	$0C,$00,$57,$31,$FF,$FF
+		.BYTE	$00,$00,$31,$FF,$FF,$FF
+		.BYTE	$2D,$00,$77,$6C,$FF,$FF
+		.BYTE	$0C,$00,$75,$69,$FF,$FF
+		.BYTE	$0D,$00,$3E,$09,$FF,$FF
+		.BYTE	$0D,$00,$4F,$47,$FF,$FF
+		.BYTE	$0D,$00,$59,$47,$FF,$FF
+		.BYTE	$0C,$00,$5A,$2B,$FF,$FF
+		.BYTE	$24,$00,$70,$6C,$FF,$FF
+		.BYTE	$26,$00,$7C,$56,$FF,$FF
+		.BYTE	$34,$00,$75,$77,$FF,$FF
+		.BYTE	$2C,$00,$70,$57,$FF,$FF
+		.BYTE	$2E,$00,$26,$1C,$FF,$FF
+		.BYTE	$35,$00,$35,$48,$FF,$FF
+		.BYTE	$0D,$00,$4C,$2B,$FF,$FF
+		.BYTE	$2E,$25,$00,$09,$39,$6C
+		.BYTE	$25,$04,$5C,$50,$2B,$FF
+
+;----------------------------------------------
+; each record is 17 bytes long
+; [0]-[12] - some kind of array of choices
 byte_90F3:
-		.BYTE	$1C,$38,$46,$54,$70,$84,$92,$A0,$AE,$BC,$D8,$E3,$F1,  0,  0,$B6,  2
-		.BYTE	$14,$28,$37,$46,$64,$78,$8C,$96,$A5,$AF,$D7,$E2,$F1,$40,$80,$B1,  1
-		.BYTE	$12,$32,$3F,$44,$67,$71,$84,$9D,$B0,$BF,$DD,$E2,$F1,$40,$10,$B4,  2
-		.BYTE	 $A,$14,$26,$30,$76,$76,$80,$8A,$9C,$A6,$EC,$F6,$FF,$40,  0,$93,  1
+		.BYTE	$1C,$38,$46,$54,$70,$84,$92,$A0,$AE,$BC,$D8,$E3,$F1,$00,$00,$B6,$02
+		.BYTE	$14,$28,$37,$46,$64,$78,$8C,$96,$A5,$AF,$D7,$E2,$F1,$40,$80,$B1,$01
+		.BYTE	$12,$32,$3F,$44,$67,$71,$84,$9D,$B0,$BF,$DD,$E2,$F1,$40,$10,$B4,$02
+		.BYTE	$0A,$14,$26,$30,$76,$76,$80,$8A,$9C,$A6,$EC,$F6,$FF,$40,$00,$93,$01
 
 ;----------------------------------------------
 ; hgfedcba - bits for every character class,
@@ -1473,12 +1603,12 @@ byte_90F3:
 ; d -
 ; e -
 ; f -
-; g - soldier class
+; g - fighter class
 ; h -
 ;
 ; ex. everyone can equip cypress stick (0th entry)
 ; ex. wizard (1<<1 = $02) can equip poison needle (8th entry)
-; ex. soldier (1<<6 = $40) can equip iron claw (9th entry)
+; ex. fighter (1<<6 = $40) can equip iron claw (9th entry)
 ;
 _b0_d40_class_equip_permission_mask_list:
 		.BYTE	$FF,$FD,$FD,$FF,$FD,$F1,$79, $A,  2,$40,$B9,$10,$FD,$11,$11,$10

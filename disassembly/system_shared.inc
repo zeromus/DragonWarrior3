@@ -765,7 +765,10 @@ loc_1743ED:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; returns A = some kind of random roll
+; involved in launching an overworld battle. but only during the day? only if theres more than one enemy?
 sub_1743F1:
+; multiple precision leftshift by 9 the value of A into u8[22]
 		STA		_tmp21+1
 		CMP		#0
 		BEQ		locret_174420
@@ -787,11 +790,13 @@ loc_174409:
 		ROL		_tmp21+2
 		DEY
 		BNE		loc_174409
+
+;try running a rand repeatedly..
 loc_17440F:
 		JSR		_rand
 		AND		_tmp21+2
 		CMP		_tmp21+1
-		BCS		loc_17440F
+		BCS		loc_17440F ; branch back up and try again if we exceed the given threshold
 		STA		_tmp21+1
 		PLA
 		TAY
