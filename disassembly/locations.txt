@@ -1,0 +1,76 @@
+$00 - Aliahan
+$01 - Romaly
+$02 - Eginbear
+$03 - Castle of Baramos
+$04 - Final Key Shrine
+$05 - ##DUMMY##
+$06 - Samanao
+$07 - Brecconaly	
+$08 - Castle of Zoma
+$09 - Reeve
+$0A - Portoga
+$0B - Noaniels
+$0C - Assaram
+$0D - ##DUMMY##
+$0E - Baharata
+$0F - Lancel
+$10 - Cantlin
+$11 - Rimuldar
+$12 - Haukness
+$13 - Luzami
+$14 - Kanave
+$15 - Tedanki
+$16 - Muor
+$17 - Jipang
+$18 - House of Pirates
+$19 - Soo
+$1A - Kol
+$1B - Reeve interior room (man wants a magic ball)
+$1C - Warp shrine with clue about sailing south to tedanki, baharata, and jipang and collecting orbs
+$1D - Shrine with dead guys and Sword of Gaia
+$1E - .. A shrine in the swamp with clues about isis and the magic key
+$1F - .. A small warp shrine
+$20 - Silver Orb shrine (near Necrogond)
+$21 - Shrine at the Promontory of Olivia
+$22 - Throne room with cats and Ortega's companion fighter
+$23 - Castle of the Dragon Queen
+$24 - Warp shrine with clue about Orochi, and an inn
+$25 - Ramia's egg resting place
+$26 - 2-way warp shrine with clues about simon and the King of Samanao
+$27 - 3-way warp shrine (where?)
+$28 - Hut with silver harp, Garinham?
+$29 - Isis Castle throne room
+$2A - Shrine of Honor (isnt that in alefgard, southeast?)
+$2B - Romaly Shrine (east side)
+$2C - Romaly Shrine (west side)
+$2D - Cave on Promontory
+$2E - Cave West of Noaniels (my system cant decode this one correctly)
+$2F - Cave by Assaram (west side)
+$30 - Cave by Assaram (east side)
+$31 - Cave of Necrogond (B1)
+$32 - Cave of Necrogond (B5)
+$33 - Shrine of Dhama
+$34 - Cave Northeast of Baharata
+$35 - Cave of Jipang
+$36 - Navel of the Earth
+$37 - Cave Southeast of Samanao
+$38 - Cave Northwest of Tantegel
+$39 - Cave Southwest of Tantegel
+$3A - Tunnel to Rimuldar..
+$3B - Pyramid
+$3C - Tower of Najima
+$3D - Tower of Garuna
+$3E - Tower of Arp
+$3F - Tower of Shanpane
+$40 - Tower West of Kol
+
+some inaccessible locations:
+cave of enticement
+phantom ship
+hidden village of elves?
+new town?
+isis? most unlikely
+tantegal - from brecconaly?
+portoga castle - from portoga?
+isis castle - from isis?
+aliahan castle - from aliahan?
