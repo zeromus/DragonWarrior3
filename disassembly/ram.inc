@@ -76,7 +76,8 @@ byte_28:
 byte_29:
 		.BYTE	0
 ;----------------------------------------------
-; overworld tile coordinate X and Y
+; overworld tile coordinate X and Y . . ? how different from _playerMapX?
+; name _playerWorldMapX, perhaps?
 byte_2A:
 		.BYTE	0
 byte_2B:
@@ -90,6 +91,7 @@ byte_2B:
 byte_2C:
 		.BYTE	0
 ;----------------------------------------------
+; location of the ship. it changes along with byte_2a and byte_2b as long as you're in the ship
 byte_2D:
 		.BYTE	0
 byte_2E:
@@ -100,10 +102,12 @@ byte_2E:
 _location_type:
 		.BYTE	0
 ;----------------------------------------------
+; (location?)
 _playerMapX:
 		.BYTE	0
 _playerMapY:
 		.BYTE	0
+;----------------------------------------------
 _spr_force_shuffle_mode:
 		.BYTE	0
 _ppu_spr_dma_sent:
@@ -1167,6 +1171,7 @@ byte_60B9:
 		.BYTE	0
 ;----------------------------------------------
 ; if byte_60BA.0 is set, then we're in the "shrine where you may try your courage". After dying you respawn there
+; this is also related to special location entry position logic for lancel
 byte_60BA:
 		.BYTE	0
 ;----------------------------------------------

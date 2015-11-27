@@ -1051,7 +1051,19 @@ _map9E:
 		.BYTE	$C2,$66,$27,$30,$A1,$A4,$89,$1E,$17,$4B,$E0,$E2,$D4,  7,$10,$28
 		.BYTE	$3C,$19,$85,$3E,$2A,$C9,$A6,$77,$10,$D8,$87,$3B,$49,$66,$AE,$94
 		.BYTE	$34,$BB,$A6,$1D,$D1,$F4,$E3,$9D,$3D,$C4,$ED,$D0,$10
-_b6_d4:
+
+; =============== T A B L E =================================================
+; worldmap trigger location table.
+; possibly also stores triggers for sub-maps within locations
+; struct {
+;   u8 locx, locy;	
+;   u8 location_number;
+;   u8 entry_tx, entry_ty;
+;   u8 facing_and_flag; // bottom 2 bits are facing. 4th bit is some other flag
+; };
+; to test this, breakpoint on sub_1759B8 and then edit x/y in $74,$75
+; it isnt clear how large triggers (castles) are implemented. maybe special logic that propagates the test position down and left when standing on certain tiles
+_worldmap_trigger_tbl:
 		.BYTE $AC,$DA,	0,$1E,	1
 		.BYTE $34,$58,$10,$2F,	0
 		.BYTE $12,$2B, $D,$2A,	0
@@ -1068,7 +1080,7 @@ _b6_d4:
 		.BYTE	0,  0,	0,  0,	0
 		.BYTE $71,$99,	0, $C,	1
 		.BYTE $6C,$D6,$18,$30,	0
-		.BYTE $5C,$6F,$10,  0,	2
+		.BYTE $5C,$6F,$10,  0,	2 ;$10
 		.BYTE $79,$51,$2E,$11,	3
 		.BYTE $2C,$62,	0, $B,	1
 		.BYTE $D1,$F3, $C,$27,	0
@@ -1084,7 +1096,7 @@ _b6_d4:
 		.BYTE $4E,$47, $B,  2,	7
 		.BYTE $38,$93,	3,  0,	2
 		.BYTE $1C,$9F, $B,$10,	0
-		.BYTE $39,$AB,	6,$10,	0
+		.BYTE $39,$AB,	6,$10,	0 ;$20
 		.BYTE $58,$4B, $B,$17,	4
 		.BYTE $7A,$31,	7,  8,	7
 		.BYTE $67,$31, $E,$2A,	0
@@ -1092,7 +1104,7 @@ _b6_d4:
 		.BYTE $35,$F5,	7,$12,	0
 		.BYTE $F4,$98,	7, $C,	0
 		.BYTE $D3,$2C, $A, $D,	0
-		.BYTE $18, $D,	5,$10,	0
+		.BYTE $18,$0D,	5,$10,	0
 		.BYTE $63,$7A,	9,$11,	7
 		.BYTE $7D,$76, $F,  8,	7
 		.BYTE $26,$49,$18, $D,	3
@@ -1100,7 +1112,7 @@ _b6_d4:
 		.BYTE $9F,$DF,	7,  2,	7
 		.BYTE $20,$1C,	9,  2,	7
 		.BYTE $5D,$68,	3,  8,	7
-		.BYTE $62,$68,$5D, $A,	7
+		.BYTE $62,$68,$5D, $A,	7 ;$30
 		.BYTE $34,$B0,$3F,  3,	7
 		.BYTE $34,$B4,$1D,  8,	7
 		.BYTE $7A,$81, $D,$27,	0
@@ -1116,7 +1128,7 @@ _b6_d4:
 		.BYTE $80,$70,$33,$11,	3
 		.BYTE $CB,$65, $D,$2B,	0
 		.BYTE $1E,$3C,$21,$12,	3
-		.BYTE $64, $A,$12,$2C,	0
+		.BYTE $64,$0A,$12,$2C,	0 ;$40
 _b6_d5:
 		.BYTE	$ED,$4B,$12,  6,  3,$72,$24,$8A,  8, $E,  0,$96,$26,$8A,$11, $E
 		.BYTE	  0,$96,$26,$88,$13,  0,  2,$96,$24,$87,  3,  0,  2,$96,$23,$88

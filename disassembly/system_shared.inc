@@ -3799,14 +3799,20 @@ word_1759B0:
 		.WORD	 $612, $914, $D1F, $F2A
 
 ; =============== S U B	R O U T	I N E =======================================
+; byte_74 and byte_75 contain a world map tile coordinate
+; this subroutine searches the worldmap trigger list
+; installs values in their required locations, and returns a bit#2 status flag from _worldmap_trigger_tbl
+; 
 sub_1759B8:
-		LDA		#<[_b6_d4]
+		LDA		#<[_worldmap_trigger_tbl]
 		STA		word_6C
-		LDA		#>[_b6_d4]
+		LDA		#>[_worldmap_trigger_tbl]
 		STA		word_6C+1
 		LDA		#6
 		JSR		_mmc1_prg_set
 		LDX		#0
+
+; loop through _worldmap_trigger_tbl advancing the word_6c pointer until we find an entry with matching X coordinates
 loc_1759CD:
 		LDY		#0
 		LDA		(word_6C),Y
@@ -3814,35 +3820,43 @@ loc_1759CD:
 		BEQ		loc_1759E4
 loc_1759D5:
 		INX
-		LDA		#5
+		LDA		#5 ; advance to next entry
 		CLC
 		ADC		word_6C
 		STA		word_6C
 		BCC		loc_1759CD
 		INC		word_6C+1
 		JMP		loc_1759CD
+
+; test the Y coordinate
 loc_1759E4:
 		INY
 		LDA		(word_6C),Y
 		CMP		byte_75
 		BEQ		loc_1759ED
 		BNE		loc_1759D5
+
+; found it! save the map number
 loc_1759ED:
 		STX		_mapNumber
 		INY
+
+; load player spawning positions
 		LDA		(word_6C),Y
 		STA		_playerMapX
 		INY
 		LDA		(word_6C),Y
 		STA		_playerMapY
 		INY
+
 loc_1759FA:
 		LDA		_mapNumber
-		CMP		#$F
-		BNE		loc_175A14
+		CMP		#$F ; special logic for lancel somehow
+		BNE		.not_lancel_special
 		LDA		byte_60BA
 		AND		#1
-		BEQ		loc_175A14
+		BEQ		.not_lancel_special
+; store 1 = facing direction and 0,3 as spawning position
 		STA		byte_6BC
 		LDA		#3
 		STA		_playerMapY
@@ -3850,7 +3864,9 @@ loc_1759FA:
 		STA		_playerMapX
 		SEC
 		RTS
-loc_175A14:
+
+.not_lancel_special:
+; if we're on the ship, save the ship's location, I think
 		LDA		byte_2C
 		CMP		#1
 		BNE		loc_175A22
@@ -3858,7 +3874,9 @@ loc_175A14:
 		STA		byte_2D
 		LDA		_playerMapY
 		STA		byte_2E
+
 loc_175A22:
+; read facing direction from bottom 2 bits of _worldmap_trigger_tbl
 		LDA		(word_6C),Y
 		PHA
 		AND		#3
