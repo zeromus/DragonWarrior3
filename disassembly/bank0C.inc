@@ -212,17 +212,17 @@ loc_128119:
 		LDA		_npc_anim_script_idx
 		CMP		#$1F
 		BNE		loc_128154
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$71
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$171
 		FARX	_bE_s1C
 		BEQ		loc_128139
-		SYSX	_sys07_msg_m00_arg1,$72
+		MSGX	_msg_m00,$172
 		JSR		sub_174D4F
 		LDA		#$20
 		JSR		_bC_s0_npc_anim_script_init
 		JMP		loc_12814E
 loc_128139:
-		SYSX	_sys07_msg_m00_arg1,$73
+		MSGX	_msg_m00,$173
 		JSR		sub_174D4F
 		LDA		#$21
 		JSR		_bC_s0_npc_anim_script_init
@@ -253,8 +253,8 @@ loc_128175:
 		LDA		_npc_anim_script_idx
 		CMP		#$23
 		BNE		loc_128185
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$75
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$175
 		JSR		sub_174D4F
 loc_128185:
 		LDA		_npc_anim_script_idx
@@ -262,18 +262,18 @@ loc_128185:
 		BNE		loc_12819A
 		LDA		#$C0
 		STA		byte_60C6
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$86
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$186
 		JSR		sub_174D4F
 loc_12819A:
 		LDA		_npc_anim_script_idx
 		CMP		#$31
 		BNE		loc_1281C4
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_sB
 		LDA		byte_D2
 		STA		byte_D3
-		SYSX	_sys07_msg_m00_arg1,$81
+		MSGX	_msg_m00,$181
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$F
 		FARX	_b0_s1_battle_typeA_launch
@@ -316,8 +316,8 @@ loc_1281F4:
 loc_1281FA:
 		CMP		#$D
 		BNE		loc_12820F
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$6C
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$16C
 		JSR		sub_174D4F
 		LDA		#$D
 		JSR		_bC_s0_npc_anim_script_init
@@ -327,7 +327,7 @@ loc_12820F:
 		BNE		loc_12821D
 loc_128213:
 		PHA
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s21
 		PLA
 		BNE		loc_12825F
@@ -336,23 +336,23 @@ loc_12821D:
 		BEQ		loc_128213
 		CMP		#$25
 		BNE		loc_128233
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$76
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$176
 		JSR		_bC_s12_sleep_X_sync_50
 		JSR		_bC_s20
 		LDA		#$25
 loc_128233:
 		CMP		#$26
 		BNE		loc_128242
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$77
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$177
 		JSR		sub_174D4F
 		LDA		#$26
 loc_128242:
 		CMP		#$27
 		BNE		loc_128251
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$78
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$178
 		JSR		sub_174D4F
 		LDA		#$27
 loc_128251:
@@ -382,15 +382,15 @@ loc_12827B:
 		PHA
 		LDA		#8
 		STA		byte_74C0
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$6E
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$16E
 		JMP		loc_128296
 loc_12828A:
 		PHA
 		LDA		#0
 		STA		byte_74C0
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$6F
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$16F
 loc_128296:
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$95
@@ -402,8 +402,8 @@ loc_128296:
 		BNE		loc_1282B5
 loc_1282A7:
 		PHA
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$6D
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$16D
 		JSR		sub_174D4F
 		PLA
 loc_1282B2:
@@ -624,8 +624,8 @@ loc_1283CA:
 		JSR		_ppu_set_dequeue_flag
 		LDX		#$F
 		JSR		_sleep_X_sync
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$A5
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$1A5
 		JSR		sub_174D4F
 		LDA		byte_60B6
 		ORA		#$20
@@ -2179,7 +2179,7 @@ _bC_s34:
 		STA		byte_644
 		JSR		loc_1752EB
 		JSR		_bC_s1A
-		JSR		sub_175B0E
+		JSR		_ppu_on_and_fade_in
 		LDA		#$80
 		STA		byte_60C5
 		LDA		#$A
@@ -2439,21 +2439,21 @@ sub_12908F:
 		BCC		locret_1290E0
 		CMP		#$11
 		BCS		locret_1290E0
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$93
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$193
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#2
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$94
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$194
 loc_1290C1:
 		FARX	_bE_s1C
 		BEQ		loc_1290CC
-		SYSX	_sys07_msg_m00_arg1,$91
+		MSGX	_msg_m00,$191
 		JMP		loc_1290C1
 loc_1290CC:
-		SYSX	_sys07_msg_m00_arg1,$92
+		MSGX	_msg_m00,$192
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$80
 		STA		byte_60C8
@@ -2475,8 +2475,8 @@ sub_1290E1:
 		BNE		locret_1290E0
 		LDA		#1
 		STA		byte_60C8
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$8E
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$18E
 		LDA		#$2D
 		BNE		loc_129117
 loc_1290FF:
@@ -2486,8 +2486,8 @@ loc_1290FF:
 		BNE		locret_1290E0
 		LDA		#3
 		STA		byte_60C8
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$8F
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$18F
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$2E
 loc_129117:
@@ -2511,8 +2511,8 @@ sub_129120:
 		BNE		locret_12911F
 		LDA		#7
 		STA		byte_60C8
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$90
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$190
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		sub_12911A
 		LDA		#$1E
@@ -2588,8 +2588,8 @@ loc_129199:
 		LDA		#$78
 		STA		_world_map_steps_count
 		JSR		loc_1752EB
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$98
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$198
 		FARX	_bE_s33
 		RTS
 
@@ -2628,7 +2628,7 @@ _bC_s11:
 		BCS		loc_129232
 		LDA		#$97
 		STA		_world_map_steps_count
-		SYSX	_sys07_msg_m00_arg1,$04
+		MSGX	_msg_m00,$104
 		JSR		_sleep_30
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_bC_s20
@@ -2636,7 +2636,7 @@ _bC_s11:
 		SEC
 		RTS
 loc_129232:
-		SYSX	_sys07_msg_m00_arg1,$02
+		MSGX	_msg_m00,$102
 		FARX	_bE_s33
 		SEC
 		RTS
@@ -3015,7 +3015,7 @@ loc_12949A:
 		CLC
 		RTS
 loc_1294A0:
-		SYSX	_sys07_msg_m00_arg1,$00
+		MSGX	_msg_m00,$100
 		FARX	_bE_s33
 		SEC
 		RTS
@@ -3256,12 +3256,12 @@ sub_129600:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129610:
-		SYSX	_sys07_msg_m00_arg1,$68
+		MSGX	_msg_m00,$168
 		JMP		loc_129745
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129616:
-		SYSX	_sys07_msg_m00_arg1,$1C
+		MSGX	_msg_m00,$11C
 		JMP		loc_129742
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3287,7 +3287,7 @@ loc_12963D:
 		BEQ		loc_129647
 		JMP		loc_12970F
 loc_129647:
-		SYSX	_sys07_msg_m00_arg1,$47
+		MSGX	_msg_m00,$147
 		JSR		sub_1299B6
 		JSR		_bC_s1F
 		PHP
@@ -3308,7 +3308,7 @@ loc_129647:
 		FARX	_bB_s3_apu_load
 		LDA		#$1F
 		JSR		sub_1295EB
-		SYSX	_sys06_msg_m00_arg0,$64
+		MSGX	_msg_m00,$064
 		LDA		_mapNumber
 		CMP		#$D3
 		BNE		loc_12967D
@@ -3347,22 +3347,22 @@ loc_129698:
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1
 		JSR		_sram_b0_s1B_players_gold_add
-		SYSX	_sys06_msg_m00_arg0,$26
+		MSGX	_msg_m00,$026
 		JMP		loc_129745
 loc_1296BD:
-		SYSX	_sys07_msg_m00_arg1,$49
+		MSGX	_msg_m00,$149
 		JMP		loc_129745
 loc_1296C3:
 		LDA		byte_60C5
 		BMI		loc_1296BD
-		SYSX	_sys07_msg_m00_arg1,$AC
+		MSGX	_msg_m00,$1AC
 		JSR		_sleep_30
 		LDA		#$C
 		BNE		loc_1296DF
 loc_1296D2:
 		LDA		byte_60C5
 		BMI		loc_1296BD
-		SYSX	_sys07_msg_m00_arg1,$AD
+		MSGX	_msg_m00,$1AD
 		JSR		_sleep_30
 		LDA		#$12
 loc_1296DF:
@@ -3378,12 +3378,12 @@ loc_1296E8:
 loc_1296F5:
 		LDA		_tmp_ptrB4
 		PHA
-		SYSX	_sys07_msg_m00_arg1,$3E
+		MSGX	_msg_m00,$13E
 		JSR		_sleep_30
 		LDA		#$B
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		PLA
 		STA		_tmp_ptrB4
 		STA		byte_CE
@@ -3418,16 +3418,16 @@ loc_12973A:
 		INX
 		CPX		#$68
 		BNE		loc_129711
-		SYSX	_sys07_msg_m00_arg1,$47
+		MSGX	_msg_m00,$147
 loc_129742:
-		SYSX	_sys07_msg_m00_arg1,$46
+		MSGX	_msg_m00,$146
 loc_129745:
 		FARX	_bE_s33
 		RTS
 loc_129749:
 		LDA		byte_129B25,X ; spots where secrets are?
 		PHA
-		SYSX	_sys07_msg_m00_arg1,$47 ; "examines the ground at his feet"?
+		MSGX	_msg_m00,$147  ; "<name> examines the ground at <B0> feet"
 		PLA
 		STA		word_6+1
 		JSR		sub_129600
@@ -3465,7 +3465,7 @@ loc_12978A:
 		LDA		_npcs_pos_list
 		CMP		#5
 		BEQ		loc_129801
-		SYSX	_sys07_msg_m00_arg1,$B2
+		MSGX	_msg_m00,$1B2
 		JSR		_sleep_30
 		LDA		#$92
 		STA		_npcs_pos_list+3
@@ -3482,7 +3482,7 @@ loc_12978A:
 loc_1297B7:
 		LDA		byte_644
 		BNE		loc_129801
-		SYSX	_sys07_msg_m00_arg1,$3B
+		MSGX	_msg_m00,$13B
 		LDA		#$3D
 loc_1297C1:
 		JSR		_wrap_bE_s4_msg_m00_arg1
@@ -3494,14 +3494,14 @@ loc_1297C7:
 		LDA		#$42
 		BNE		loc_1297C1
 loc_1297D2:
-		SYSX	_sys07_msg_m00_arg1,$44
+		MSGX	_msg_m00,$144
 		LDA		#$A9
 		BNE		loc_1297C1
 loc_1297D9:
 		LDA		byte_60CA
 		AND		#2
 		BNE		loc_129801
-		SYSX	_sys07_msg_m00_arg1,$44
+		MSGX	_msg_m00,$144
 		LDA		#$4A
 		STA		_tmp_ptrB4
 		JMP		loc_12986B
@@ -3521,7 +3521,7 @@ loc_1297FB:
 		CPX		#$6B
 		BCC		loc_1297EC
 loc_129801:
-		SYSX	_sys07_msg_m00_arg1,$47
+		MSGX	_msg_m00,$147
 loc_129804:
 		JMP		loc_129742
 loc_129807:
@@ -3553,7 +3553,7 @@ loc_12982B:
 		ADC		#$B6
 		STA		byte_60A8
 		PHA
-		SYSX	_sys07_msg_m00_arg1,$47
+		MSGX	_msg_m00,$147
 		PLA
 		STA		word_4
 		PLA
@@ -3587,7 +3587,7 @@ loc_12986B:
 		BMI		loc_129804
 loc_12986F:
 		STA		byte_D3
-		SYSX	_sys06_msg_m00_arg0,$65
+		MSGX	_msg_m00,$065
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129874:
@@ -3608,20 +3608,20 @@ loc_129888:
 loc_12988F:
 		TYA
 		JSR		_wrap_bE_s4_msg_m00_arg0
-		SYSX	_sys07_msg_m00_arg1,$45
+		MSGX	_msg_m00,$145
 		FARX	_bE_s1C
 		BNE		loc_1298D1
 		LDA		_tmp_ptrB4+1
 		BEQ		loc_1298A9
 loc_12989F:
-		SYSX	_sys06_msg_m00_arg0,$6A
+		MSGX	_msg_m00,$06A
 		SYSX	_display_window,$1C
 		CMP		#$FF
 		BEQ		loc_1298D1
 loc_1298A9:
 		STA		_tmp_varB6
 		STA		byte_CE
-		SYSX	_sys06_msg_m00_arg0,$68
+		MSGX	_msg_m00,$068
 		SYSX	_display_window,$2D
 		CMP		#$FF
 		BEQ		loc_1298CD
@@ -3634,7 +3634,7 @@ loc_1298A9:
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
-		SYSX	_sys07_msg_m00_arg1,$2A
+		MSGX	_msg_m00,$12A
 loc_1298CD:
 		LDA		_tmp_ptrB4+1
 		BNE		loc_12989F
@@ -3645,7 +3645,7 @@ loc_1298D1:
 		STA		byte_D2
 		LDA		_tmp_ptrB4
 		STA		byte_D3
-		SYSX	_sys06_msg_m00_arg0,$69
+		MSGX	_msg_m00,$069
 		JMP		loc_129943
 loc_1298E5:
 		LDA		_tmp_varB6
@@ -3669,7 +3669,7 @@ loc_1298E5:
 		STA		byte_D2
 		LDA		_tmp_ptrB4
 		STA		byte_D4
-		SYSX	_sys07_msg_m00_arg1,$4A
+		MSGX	_msg_m00,$14A
 		JMP		loc_129935
 loc_129913:
 		INY
@@ -3711,7 +3711,7 @@ loc_129943:
 		BNE		loc_129950
 		LDA		_tmp_varB6
 		STA		byte_D2
-		SYSX	_sys07_msg_m00_arg1,$4B
+		MSGX	_msg_m00,$14B
 loc_129950:
 		JMP		loc_129745
 loc_129953:
@@ -3793,7 +3793,7 @@ loc_1299C0:
 		AND		#$F
 		CMP		#3
 		BNE		loc_1299DD
-		FARX	_bE_s20
+		FARX	_bE_s20_decode_map_ptr_to_XY
 		CPY		_playerMapY
 		BNE		loc_1299DB
 		CPX		_playerMapX
@@ -4182,7 +4182,7 @@ _bC_s22:
 		BEQ		loc_129C16
 loc_129C0E:
 		JSR		_sleep_30
-		SYSX	_sys07_msg_m00_arg1,$01
+		MSGX	_msg_m00,$101
 		CLC
 		RTS
 loc_129C16:
@@ -4684,11 +4684,11 @@ _bC_s13:
 		CMP		#9
 		BEQ		loc_129FA2
 loc_129F9D:
-		SYSX	_sys07_msg_m00_arg1,$18
+		MSGX	_msg_m00,$118
 		CLC
 		RTS
 loc_129FA2:
-		SYSX	_sys07_msg_m00_arg1,$17
+		MSGX	_msg_m00,$117
 		JSR		_sleep_30
 		LDA		#0
 		FARX	_bE_sB
@@ -5078,7 +5078,7 @@ loc_12A221:
 loc_12A239:
 		SYSX	_apu_load,$1E
 		FARX	_bD_s22
-		SYSX	_sys07_msg_m00_arg1,$0D
+		MSGX	_msg_m00,$10D
 		JSR		__pause_or_skip
 		SEC
 		RTS
@@ -5171,14 +5171,14 @@ _bC_s2B:
 		FARX	_bE_sB
 		JSR		_bC_s3A
 		FARX	_bD_s22
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		SYSX	_sys07_msg_m00_arg1,$B0
+		MSGX	_msg_m00,$1B0
 		LDA		#$47
 		FARX	_bD_s27
 		BCC		loc_12A2FE
-		SYSX	_sys07_msg_m00_arg1,$B1
+		MSGX	_msg_m00,$1B1
 		LDA		#0
 		BEQ		loc_12A308
 loc_12A2FE:
@@ -5506,7 +5506,7 @@ loc_12A4DC:
 		LDA		#$97
 loc_12A4EA:
 		PHA
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		PLA
 		LDX		#1
 		FARX	_bE_s4_msg_m00
@@ -5726,7 +5726,7 @@ _bC_s19:
 		STA		word_6C
 		FARX	_bD_s19
 		SYSX	_apu_load,$03
-		JMP		sub_175B0E
+		JMP		_ppu_on_and_fade_in
 loc_12A686:
 		JSR		_pal_fade_out
 		FARX	_b0_s4F
@@ -7132,8 +7132,8 @@ sub_12B01C:
 		BNE		locret_12B040
 		JSR		_wait_for_nmi_is_over_sync
 		FARX	_bE_s10
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$AF
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$1AF
 		FARX	_bE_s33
 locret_12B040:
 		RTS
@@ -7290,8 +7290,8 @@ _bC_s29:
 		LDA		byte_2C
 		CMP		#1
 		BNE		locret_12B163
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$0A
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$10A
 		SYSX	_apu_load,$00
 		SYSX	_apu_load,$0C
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -7318,8 +7318,8 @@ _bC_s2A:
 		LDA		_npcs_pos_list
 		CMP		#$31
 		BNE		locret_12B163
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$A4
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$1A4
 		JSR		sub_174D4F
 		LDA		#7
 		STA		_npc_anim_script_idx
@@ -7331,8 +7331,8 @@ sub_12B189:
 		LDA		_playerMapY
 		CMP		#$1A
 		BNE		locret_12B1A1
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$41
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$141
 		FARX	_bE_s1C
 		BEQ		sub_12B1A2
 
@@ -7358,7 +7358,7 @@ loc_12B1AC:
 loc_12B1B2:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		SYSX	_sys07_msg_m00_arg1,$AE
+		MSGX	_msg_m00,$1AE
 		LDA		_global_game_flags
 		AND		#8
 		BNE		loc_12B1F9
@@ -7380,7 +7380,7 @@ loc_12B1CB:
 		SYSX	_apu_load,$A3
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		SYSX	_sys07_msg_m00_arg1,$80
+		MSGX	_msg_m00,$180
 		LDA		#$13
 		STA		byte_753A
 		STA		byte_753B
@@ -7388,7 +7388,7 @@ loc_12B1CB:
 		STA		byte_7559
 		BNE		loc_12B1FC
 loc_12B1F9:
-		SYSX	_sys06_msg_m00_arg0,$40
+		MSGX	_msg_m00,$040
 loc_12B1FC:
 		FARX	_bE_s33
 		RTS
@@ -7410,19 +7410,19 @@ sub_12B200:
 locret_12B21A:
 		RTS
 loc_12B21B:
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		LDA		byte_60B9
 		AND		#1
 		BEQ		loc_12B22B
-		SYSX	_sys07_msg_m00_arg1,$70
+		MSGX	_msg_m00,$170
 		JMP		loc_12B236
 loc_12B22B:
 		LDA		byte_60B9
 		ORA		#1
 		STA		byte_60B9
-		SYSX	_sys07_msg_m00_arg1,$6A
+		MSGX	_msg_m00,$16A
 loc_12B236:
-		SYSX	_sys07_msg_m00_arg1,$6B
+		MSGX	_msg_m00,$16B
 		LDA		#$C
 		JSR		_bC_s0_npc_anim_script_init
 		JMP		sub_174D4F
@@ -7538,8 +7538,8 @@ sub_12B2EB:
 		BNE		loc_12B30D
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		JSR		sub_174CCF
-		SYSX	_sys13_msg_m00_arg6,$26
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$626
 		FARX	_bE_s33
 locret_12B30C:
 		RTS
@@ -7553,7 +7553,7 @@ loc_12B30D:
 		STA		byte_60BA
 		LDA		#0
 		JSR		sub_12B353
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#1
@@ -7565,14 +7565,14 @@ loc_12B30D:
 		STA		byte_D2
 		LDA		word_4
 		BNE		loc_12B346
-		SYSX	_sys13_msg_m00_arg6,$29
+		MSGX	_msg_m00,$629
 		JMP		loc_12B349
 loc_12B346:
-		SYSX	_sys13_msg_m00_arg6,$2A
+		MSGX	_msg_m00,$62A
 loc_12B349:
-		SYSX	_sys13_msg_m00_arg6,$2B
+		MSGX	_msg_m00,$62B
 loc_12B34C:
-		SYSX	_sys13_msg_m00_arg6,$2C
+		MSGX	_msg_m00,$62C
 		FARX	_bE_s33
 		RTS
 
@@ -7689,10 +7689,10 @@ sub_12B3D1:
 		JSR		loc_12B448
 loc_12B41C:
 		SYSX	_display_window,$3E
-		SYSX	_sys13_msg_m00_arg6,$99
+		MSGX	_msg_m00,$699
 		FARX	_bE_s1C
 		BEQ		loc_12B42E
-		SYSX	_sys13_msg_m00_arg6,$9A
+		MSGX	_msg_m00,$69A
 		FARX	_bE_s33
 locret_12B42D:
 		RTS
@@ -7724,7 +7724,7 @@ loc_12B453:
 		FARX	_b0_s4F
 		LDA		#1
 		JSR		sub_12B353
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		LDA		#1
 		STA		byte_CE
 		JSR		_sram_b0_s2F_player_gender_read
@@ -7733,10 +7733,10 @@ loc_12B453:
 		STA		byte_D4
 		LDA		word_4
 		BEQ		loc_12B484
-		SYSX	_sys13_msg_m00_arg6,$AA
+		MSGX	_msg_m00,$6AA
 		JMP		loc_12B487
 loc_12B484:
-		SYSX	_sys13_msg_m00_arg6,$A5
+		MSGX	_msg_m00,$6A5
 loc_12B487:
 		JSR		sub_174D4F
 		LDA		_global_game_flags
@@ -7758,21 +7758,21 @@ sub_12B493:
 		LDA		byte_60BA
 		ORA		#$10
 		STA		byte_60BA
-		JSR		sub_174CCF
-		SYSX	_sys13_msg_m00_arg6,$9D
-		SYSX	_sys13_msg_m00_arg6,$9E
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$69D
+		MSGX	_msg_m00,$69E
 		FARX	_bE_s1C
 		BEQ		loc_12B4BE
-		SYSX	_sys13_msg_m00_arg6,$9F
+		MSGX	_msg_m00,$69F
 loc_12B4BE:
-		SYSX	_sys13_msg_m00_arg6,$A0
+		MSGX	_msg_m00,$6A0
 		JSR		_bC_s12_sleep_X_sync_50
 		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
 		JSR		_bC_s1A
 		SYSX	_display_window,$3E
 		JSR		_pal_fade_in
-		SYSX	_sys13_msg_m00_arg6,$A1
+		MSGX	_msg_m00,$6A1
 		JSR		_pal_fade_out
 		LDA		#8
 		STA		_playerMapX
@@ -7792,9 +7792,9 @@ loc_12B4BE:
 		LDA		#<[_players_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
-		JSR		sub_175B0E
-		JSR		sub_174CCF
-		SYSX	_sys13_msg_m00_arg6,$A2
+		JSR		_ppu_on_and_fade_in
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$6A2
 		JSR		sub_174D4F
 		LDA		#$1D
 		JMP		_bC_s0_npc_anim_script_init
@@ -7813,8 +7813,8 @@ sub_12B518:
 		AND		#$FE
 		CMP		#$1C
 		BNE		locret_12B517
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$8A
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$18A
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		_cur_message_speed
 		PHA
@@ -7831,13 +7831,13 @@ sub_12B518:
 		INY
 		STY		_npcs_pos_list+9
 		JSR		sub_174CBD
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		LDA		byte_6A65
 		BNE		loc_12B564
-		SYSX	_sys07_msg_m00_arg1,$8B
+		MSGX	_msg_m00,$18B
 loc_12B564:
 		FARX	_bD_sB
-		SYSX	_sys07_msg_m00_arg1,$8C
+		MSGX	_msg_m00,$18C
 		LDA		#$80
 		STA		_npcs_pos_list+8
 		LDA		#>[_npcs_pos_list+8]
@@ -7912,8 +7912,8 @@ loc_12B5F3:
 		AND		#$1F
 		CMP		#$1B
 		BNE		loc_12B615
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$7F
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$17F
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JMP		loc_12B61D
 byte_12B612:
@@ -8034,8 +8034,8 @@ loc_12B6C9:
 		BCC		locret_12B6AE
 		CMP		#$F
 		BCS		locret_12B6AE
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$7A
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$17A
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#3
 		FARX	_b0_s1_battle_typeA_launch
@@ -8046,13 +8046,13 @@ loc_12B6C9:
 		STA		byte_60BA
 		JSR		sub_12B7AD
 		JSR		sub_174CBD
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$7B
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$17B
 loc_12B70E:
-		SYSX	_sys07_msg_m00_arg1,$7C
+		MSGX	_msg_m00,$17C
 		FARX	_bE_s1C
 		BEQ		loc_12B74D
-		SYSX	_sys07_msg_m00_arg1,$7D
+		MSGX	_msg_m00,$17D
 		JMP		loc_12B70E
 loc_12B71C:
 		LDA		byte_644
@@ -8064,8 +8064,8 @@ loc_12B71C:
 		LDA		_npcs_pos_list+$14
 		CMP		#$10
 		BNE		locret_12B739
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$74
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$174
 		JSR		sub_174D4F
 locret_12B739:
 		RTS
@@ -8074,11 +8074,11 @@ loc_12B73A:
 		BMI		locret_12B739
 		ORA		#$80
 		STA		_global_game_flags
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$79
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$179
 		JMP		sub_174D4F
 loc_12B74D:
-		SYSX	_sys07_msg_m00_arg1,$7E
+		MSGX	_msg_m00,$17E
 		JSR		sub_174D4F
 		LDA		#$28
 		BNE		loc_12B764
@@ -8100,8 +8100,8 @@ loc_12B767:
 		LDA		_npcs_pos_list+$14
 		CMP		#$10
 		BNE		locret_12B739
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$41
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$141
 		FARX	_bE_s1C
 		BEQ		loc_12B786
 		JMP		_bC_s20
@@ -8213,17 +8213,17 @@ sub_12B820:
 		SBC		#4
 		CMP		#4
 		BCS		locret_12B81C
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_sB
-		SYSX	_sys07_msg_m00_arg1,$82
+		MSGX	_msg_m00,$182
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#8
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_12B91A
 		JSR		sub_174CBD
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_sB
-		SYSX	_sys07_msg_m00_arg1,$A7
+		MSGX	_msg_m00,$1A7
 		LDA		#[_bC_s18_idx-_sys_idx_lib]>>1
 		STA		word_3C
 		LDA		#[_bC_s1C_idx-_sys_idx_lib]>>1
@@ -8242,7 +8242,7 @@ sub_12B820:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B877:
-		FARX	_bE_s1D
+		FARX	_bE_s1D_get_map_buf_end_ptr
 		JSR		sub_12B8F4
 		FARX	_bE_sD
 		JSR		sub_12B92A

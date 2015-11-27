@@ -1231,8 +1231,8 @@ loc_B2711:
 		FARX	_b2_s6_screen_damage_shake
 		DEC		word_3C
 		BNE		loc_B2711
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$A8
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$1A8
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		SYSX	_apu_load,$18
@@ -1283,10 +1283,10 @@ loc_B275E:
 		STA		byte_80
 		LDA		word_40+1
 		BNE		loc_B2785
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		INC		word_40+1
 loc_B2785:
-		SYSX	_sys07_msg_m00_arg1,$A6
+		MSGX	_msg_m00,$1A6
 		PLA
 		TAX
 loc_B278A:
@@ -1318,12 +1318,12 @@ _b7_s1A:
 		LDA		_playerMapY
 		CMP		#5
 		BNE		locret_B27A9
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bB_s4
 		FARX	_bD_sB
-		SYSX	_sys07_msg_m00_arg1,$9E
-		SYSX	_sys07_msg_m00_arg1,$9F
-		SYSX	_sys07_msg_m00_arg1,$A0
+		MSGX	_msg_m00,$19E
+		MSGX	_msg_m00,$19F
+		MSGX	_msg_m00,$1A0
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#8
 		LDX		#$18
@@ -2086,7 +2086,7 @@ loc_B2C93:
 		LDA		#$17
 		FARX	_bB_s3_apu_load
 		SYSX	_display_window_ex,$3E
-		SYSX	_sys06_msg_m00_arg0,$61
+		MSGX	_msg_m00,$061
 		JSR		__pause_or_skip
 		PLA
 		PHA

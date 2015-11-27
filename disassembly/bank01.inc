@@ -237,8 +237,8 @@ loc_201B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_201B3:
-		LDX		#<[_sram_b0_s36_read_spell_related_data_byte]
-		LDY		#>[_sram_b0_s36_read_spell_related_data_byte]
+		LDX		#<[_sram_b0_s34_read_spell_related_data_byte]
+		LDY		#>[_sram_b0_s34_read_spell_related_data_byte]
 		BNE		sub_201CB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -602,8 +602,6 @@ loc_20410:
 loc_20427:
 		LDX		#$73
 		JSR		sub_20441
-;		LDA		#$85
-;		FARX	_bB_s3_apu_load
 		SYSX	_apu_load,$85
 		LDA		byte_78
 		RTS
@@ -1204,8 +1202,7 @@ _b1_sA:
 		STA		byte_566
 		AND		#$C0
 		BNE		locret_207B5
-		LDA		#$55
-		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55
 locret_207B5:
 		RTS
 
@@ -1564,21 +1561,21 @@ _b1_sD:
 		JSR		sub_20CAA
 		LDX		#$E
 		FARX	_b4_s1C
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		FARX	_b4_s5_do_message_speed_delay
 		JMP		loc_20A68
 loc_20A4C:
 		JSR		sub_20CAA
 		LDX		#$50
 		FARX	_b4_s1C
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_20A76
 loc_20A5A:
 		SYSX	_apu_load,$16
 		JSR		sub_20CAA
 		LDX		#$5D
 		FARX	_b4_s1C
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_20A68:
 		FARX	_bB_s7
 		LDA		byte_6A6F
@@ -1630,7 +1627,7 @@ loc_20ABB:
 		LDA		word_4
 		BEQ		loc_20AED
 		TYA
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDA		byte_5D
 		STA		byte_CF
 		LDA		word_5E
@@ -1673,12 +1670,12 @@ loc_20B04:
 		STA		byte_D2
 		LDX		#$62
 		FARX	_b4_s1C
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JSR		sub_20D11
 		STA		byte_D2
 		SYSX	_apu_load,$8F
 		LDA		#$64
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		PLA
 		STA		byte_D3
 		STA		byte_48
@@ -1693,14 +1690,14 @@ loc_20B40:
 		STA		byte_60C7
 loc_20B48:
 		LDA		#$65
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JSR		sub_20CDB
 		STA		byte_D4
 		STA		byte_47
 		BCS		loc_20BD1
 		LDX		#$66
 		FARX	_b4_s1D
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_20B5E:
 		LDA		#$45
 		LDX		#1
@@ -1715,16 +1712,16 @@ loc_20B6F:
 		BCC		loc_20B7D
 loc_20B75:
 		LDA		#$60
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_20B5E
 loc_20B7D:
 		STA		byte_D3
 		LDA		#$69
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_20BE7
 loc_20B87:
 		LDA		#$6A
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDA		#$1C
 		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
@@ -1732,7 +1729,7 @@ loc_20B87:
 		STA		byte_CE
 		STA		byte_47
 		LDA		#$68
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDA		#$2D
 		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
@@ -1754,7 +1751,7 @@ loc_20B87:
 		LDA		byte_48
 		STA		byte_D4
 		LDA		#$6B
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_20BDC
 loc_20BD1:
 		CMP		byte_D2
@@ -1801,7 +1798,7 @@ loc_20C0C:
 		STA		byte_D0
 		JSR		_sram_b0_s1B_players_gold_add
 		LDA		#$26
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JSR		_rand
 		AND		#3
 		BNE		loc_20C6F
@@ -1836,7 +1833,7 @@ loc_20C4F:
 		JSR		_sram_b0_s1B_players_gold_add
 		LDA		#$B6
 ; print a message "you have vanquished all of your foes"
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_20C6F:
 ; calls a level-up related 3-times setup loop.
 ; is this the main post-battle leveling up process?
@@ -1856,16 +1853,16 @@ loc_20C8B:
 		LDA		byte_60CA
 		BPL		loc_20C83
 		LDA		#$B
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_20C95:
 		LDA		#$29
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDA		#$3C
 		STA		_world_map_steps_count
 		JMP		loc_20C83
 loc_20CA2:
 		LDA		#$2A
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_20C95
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2085,7 +2082,7 @@ loc_29401C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_294028:
-		LDA		_global_game_flags
+		LDA		_global_game_flags			; check for Erdrick flag
 		LSR
 		BCS		loc_294065
 		FARX	_bD_sB
@@ -2121,6 +2118,7 @@ loc_294065:
 loc_294068:
 		FARX	_b4_sF
 		RTS
+		
 byte_29406C:
 		.BYTE	$A
 byte_29406D:

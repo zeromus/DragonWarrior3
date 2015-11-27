@@ -1701,8 +1701,6 @@ _sram_b0_s34_read_spell_related_data_byte:
 		.BYTE	0,0,0,0,0
 _sram_b0_s35:
 		.BYTE	0,0,0,0,0
-_sram_b0_s36_read_spell_related_data_byte:
-		.BYTE	0,0,0,0,0
 _sram_b0_s37:
 		.BYTE	0,0,0,0,0
 _sram_b0_s38:
@@ -1718,6 +1716,8 @@ _sram_b0_s3B_players_data_swap_in_battle:
 ;_sram_b0_s27_player_equip_item_ex:
 		.BYTE	0,0,0,0,0
 ;_sram_b0_s2D
+		.BYTE	0,0,0,0,0
+;_sram_b0_s36_read_spell_related_data_byte:
 		.BYTE	0,0,0,0,0
 ;_sram_bank0_select_ex:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

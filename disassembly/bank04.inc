@@ -17,8 +17,8 @@ _b4_s7_window_display_safe_ptr:
 		.WORD	_b4_s7_window_display_safe
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:
 		.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-_b4_s9_ptr:
-		.WORD	_b4_s9
+_b4_s9_wrap_bE_s4_msg_m00_arg0_ptr:
+		.WORD	_b4_s9_wrap_bE_s4_msg_m00_arg0
 _b4_sA_ptr:
 		.WORD	_b4_sA
 _b4_sC_ptr:
@@ -1546,7 +1546,7 @@ loc_6894A:
 		LDA		byte_6A77,X
 		BPL		loc_68974
 		LDA		#$CB
-		JSR		_b4_s9
+		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
 		SYSX	_apu_load,$86
 		SYSX	_display_window_ex,$45
 		PHA
@@ -1554,7 +1554,7 @@ loc_6894A:
 		PLA
 		BNE		loc_6897C
 		LDA		#$CC
-		JSR		_b4_s9
+		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_6896F:
 		PLA
 		PLA
@@ -1562,7 +1562,7 @@ loc_6896F:
 		RTS
 loc_68974:
 		LDA		#$CD
-		JSR		_b4_s9
+		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
 		JMP		loc_6896F
 loc_6897C:
 		FARX	_bE_s5
@@ -1955,7 +1955,7 @@ _bs_emove_07_try_flee:
 		STA		byte_64
 		SYSX	_apu_load,$83
 		LDA		#$50
-		JSR		sub_6A96F
+		JSR		_wrap_bE_s6_msg_mFF_arg0_safe
 		JSR		sub_6ADBF
 		LDA		byte_64
 		ASL
@@ -5500,7 +5500,7 @@ loc_6A478:
 		SYSX	_apu_load,$87
 		LDA		#$C
 ; printing damage for counterattack
-		JSR		sub_6A96F
+		JSR		_wrap_bE_s6_msg_mFF_arg0_safe
 ; blinking enemy effect?
 		JSR		sub_6AA3C
 		JSR		_b4_s21_message_half_delay_or_wait_for_keypress
@@ -5670,20 +5670,18 @@ loc_6A58C:
 ; =============== S U B	R O U T	I N E =======================================
 ; applies damage to PC. plays a SFX. branches far away to do other related processing
 _bs_run_PC_Damage:
-; copy word_4 to u16[CF] and u24[63F]
-		LDA		word_4
+		LDA		word_4							; copy word_4 to u16[CF] and u24[63F]
 		STA		byte_CF
 		STA		_msg_number_parameter_F8
 		LDA		word_4+1
 		STA		byte_D0
 		STA		_msg_number_parameter_F8+1
-		LDA		#0 ; make sure MSB is cleared
+		LDA		#0								; make sure MSB is cleared
 		STA		_msg_number_parameter_F8+2
-; reduce HP
-		JSR		_sram_b0_s5_player_HP_subtract
-		SYSX	_apu_load,$8A ; play sfx hit!
+		JSR		_sram_b0_s5_player_HP_subtract	; reduce HP
+		SYSX	_apu_load,$8A 					; play sfx hit!
 		LDA		#$13
-		JMP		sub_6A96F
+		JMP		_wrap_bE_s6_msg_mFF_arg0_safe
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A5D6:
@@ -6198,13 +6196,16 @@ sub_6A927:
 		JMP		_b4_s6
 
 ; =============== S U B	R O U T	I N E =======================================
+; just message output wrapper with paranoid set of saved variables, maybe
+; it worth it
+;
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
-		STA		_tmp12+1
+		STA		_tmp12+1	; store result to temp var
 		TXA
-		PHA
+		PHA					; start for paranoid saves, X, Y regs
 		TYA
 		PHA
-		LDA		word_4
+		LDA		word_4		; byte_4/5/6/64/CE
 		PHA
 		LDA		word_4+1
 		PHA
@@ -6214,13 +6215,12 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		PHA
 		LDA		byte_CE
 		PHA
-		LDX		#0
-		LDA		_tmp12+1
-		FARX	_bE_s6_msg_mFF
+		LDX		#0			; base idx $000
+		LDA		_tmp12+1	; restore arg
+		FARX	_bE_s6_msg_mFF	; do battle message
 		JSR		_message_delay_or_wait_for_keypress
-; "begin unpacking results of AI from stack...?"
 		PLA
-		STA		byte_CE
+		STA		byte_CE		; restore all vars and regs back
 		PLA
 		STA		byte_64
 		PLA
@@ -6228,15 +6228,18 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		PLA
 		STA		word_4+1
 		PLA
-; "writes a damage value?"
 		STA		word_4
 		PLA
 		TAY
 		PLA
-		TAX
+		TAX					; nothing is changed here to be sure the battle programm will be safe
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; similar to previous, but used in system BRK call and nothing is saved
+; additionally returns back to the previous caller, so this is the last
+; routine in code flow
+;
 _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break:
 		TYA
 		LDY		_irq_y_saved
@@ -6246,13 +6249,15 @@ _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; the same as previous, but with normal return
+;
 _sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		TYA
 		LDY		_irq_y_saved
 		JMP		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A96F:
+_wrap_bE_s6_msg_mFF_arg0_safe:
 		STA		_tmp12+1
 		LDA		word_4
 		PHA
@@ -6278,7 +6283,7 @@ sub_6A96F:
 ; =============== S U B	R O U T	I N E =======================================
 ; prints "you have vanquished all of your foes. <hero> thereby gains 23 experience points. you obtain 10 pieces of gold"
 ;
-_b4_s9:
+_b4_s9_wrap_bE_s4_msg_m00_arg0:
 		LDX		#0
 		FARX	_bE_s4_msg_m00
 		RTS
@@ -6430,8 +6435,7 @@ sub_6AA3E:
 		PHA
 		JSR		sub_6B595
 		LDY		byte_42
-; "definitely makes bad guy blink"
-		JSR		_sys0_safe
+		JSR		_sys0_safe	; "definitely makes bad guy blink"
 		PLA
 		TAY
 		PLA

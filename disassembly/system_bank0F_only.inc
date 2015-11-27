@@ -2008,7 +2008,7 @@ loc_177930:
 		JSR		sub_177960
 		JSR		sub_177981
 		JSR		sub_177CFC
-		FARX	_bE_s2E
+		FARX	_bE_s2E_special_map_actions
 		FARX	_bE_s2F
 		FARX	_bE_s30
 		FARX	_bE_s16
