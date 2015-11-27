@@ -75,18 +75,31 @@ byte_28:
 		.BYTE	0
 byte_29:
 		.BYTE	0
+;----------------------------------------------
+; overworld tile coordinate X and Y
 byte_2A:
 		.BYTE	0
 byte_2B:
 		.BYTE	0
+;----------------------------------------------
+; current vehicle type. roughly these values, but not 100% confirmed
+; by changing to 2, youll suddenly be on that vehicle type but without other tracking intact, things will get confusd
+; 0 - on foot
+; 1 - ship
+; 2 - ramia
 byte_2C:
 		.BYTE	0
+;----------------------------------------------
 byte_2D:
 		.BYTE	0
 byte_2E:
 		.BYTE	0
+;----------------------------------------------
+; 0 - Overworld
+; 1 - Location
 _location_type:
 		.BYTE	0
+;----------------------------------------------
 _playerMapX:
 		.BYTE	0
 _playerMapY:
@@ -145,8 +158,16 @@ byte_4D:
 		.BYTE	0
 byte_4E:
 		.BYTE	0
+;----------------------------------------------
+; (overworld only?) tile or terrain type the player is standing in (more like terrain type)
+; $01 - sand
+; $02 - grass, bridge (or no change when standing on bridge?). also glacier... maybe?
+; $03 - shrubs
+; $04 - trees
+; $05 - hills
 byte_4F:
 		.BYTE	0
+;----------------------------------------------
 byte_50:
 		.BYTE	0
 ;----------------------------------------------
@@ -300,8 +321,29 @@ byte_90: ; "EntityUpdateCycle_90" - used to only allow player DPad once per 16 f
 		.BYTE	0
 byte_91:
 		.BYTE	0
+;----------------------------------------------
+; the actual overworld tile youre standing in. these may be different for different locations, not sure (probably). The first tile is at tile ppu tile#8D and they kind of lay out frmo there in an odd order
+; 00 - wood flooring (in location)
+; 01 - sand (or chair in location)
+; 02 - plains
+; 03 - shrubs
+; 04 - trees
+; 05 - hills
+; 08 - topleft of castle (or cobblestones in location)
+; 09 - topright of castle (or stairs down in location)
+; 0A - left of town
+; 0B - right of town
+; 0C - bottomleft of castle
+; 0D - bottomright of castle
+; 0F - stairs up (in location)
+; 13 - dungeon floor tile
+; 16 - flowers (in location)
+; 1A - hills (in location)
+; 1B - bridge
+; 20 - interior flag
 byte_92:
 		.BYTE	0
+;----------------------------------------------
 byte_93:
 		.BYTE	0
 byte_94:
