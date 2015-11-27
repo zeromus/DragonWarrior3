@@ -3152,7 +3152,7 @@ loc_3A536:
 		LDA		#$3D
 		FARX	_b4_s7_window_display_safe
 		LDA		#$20
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		FARX	_b4_s5_do_message_speed_delay
 		FARX	_b4_s5_do_message_speed_delay
 		FARX	_b4_s5_do_message_speed_delay
@@ -3207,7 +3207,7 @@ loc_3A5A8:
 		LDA		byte_CE
 		STA		byte_D2
 		LDA		#$D1
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDX		#$1E
 		JSR		_sleep_X_sync
 		JMP		loc_3A3CF
@@ -3247,7 +3247,7 @@ loc_3A5FD:
 		LDA		byte_51
 		STA		byte_D2
 		LDA		#$BF
-		FARX	_b4_s9
+		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 		LDX		#$3C
 		JSR		_sleep_X_sync
 		JMP		loc_3A5A8

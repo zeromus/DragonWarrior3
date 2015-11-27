@@ -103,6 +103,11 @@ _col = $75
 ; dot dot
 _ddt = $76
 
+; == SPECIAL CODES ==
+
+_item = $F4
+_hero = $F9
+
 ; == OPCODES ==
 
 	MAC	SAFE_STUB
@@ -152,9 +157,15 @@ _ddt = $76
 	MAC SYSX
 		BRK
 		.BYTE	{2}
-		.BYTE	[[{1}_idx-_syscall_lib] & $3F]
+		.BYTE	[[{1}_idx - _syscall_lib] & $3E]
 	ENDM
 
+	MAC	MSGX
+		BRK
+		.BYTE	[{2} & $FF]
+		.BYTE	[[[{1}_idx - _syscall_lib] + [{2} >> 7]] & $3E]
+	ENDM
+	
 	INCLUDE "item_ids.inc"
 	INCLUDE "class_ids.inc"
 	INCLUDE "enemy_ids.inc"

@@ -1,16 +1,22 @@
+Placeholders
+
 $B0 - His/Her of actor
 $B1 - Himself/Herself of actor?
 $B2 - He/She of actor?
 $B3 - Him/Her?
-$C0 - ""/S if plural suffix
-$EB - New paragraph
-$EE - Terminate string 1
-$EF - Terminate string 2
+$C0 - /s plural suffix
 $F2 - Enemy actor letter
 $F3 - Name of spell target
 $F4 - Item name
 $F5 - Actor/User (PC or enemy) name
 $F8 - A number (u24)
 $F9 - Hero's name?
+
+Control codes
+
+$EB - New paragraph
+$EE - Terminate string 1
+$EF - Terminate string 2
 $FD - Some control code probably
+$FE - 
 $FF - Terminate string 3

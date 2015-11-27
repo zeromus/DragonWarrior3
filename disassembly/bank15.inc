@@ -61,10 +61,10 @@ _msg69F:		.BYTE	_apu,_D,_o,_n,_apo,_t,_,_s,_a,_y,_,_t,_h,_a,_t,_smc,$EF
 _msg6A0:		.BYTE	_apu,_I,_apo,_m,_,_t,_u,_r,_n,_i,_n,_g,_,_t,_h,_e,_m,_,_o,_f,_f,_,_n,_o,_w,_str,_str,_apd,$EF
 _msg6A1:		.BYTE	_apu,_L,_o,_o,_k,_,_i,_n,_t,_o,_,_t,_h,_e,_,_c,_r,_y,_s,_t,_a,_l,_sem,_,_l,_o,_o,_k,_,_d,_e,_e,_p,_l,_y,_ddt,_smc,$FD,$EB
 				.BYTE	_,_,_,$EB
-				.BYTE	$F9,_,_col,$EB
+				.BYTE	_hero,_,_col,$EB
 				.BYTE	_apu,_Y,_e,_s,_sem,_,_e,_v,_e,_r,_y,_t,_h,_i,_n,_g,_,_i,_s,_,_g,_e,_t,_t,_i,_n,_g,_,_c,_l,_e,_a,_r,_e,_r,_sem,_,_c,_l,_e,_a,_r,_e,_r,_sem,_,_c,_l,_e,_a,_r,_e,_r,_ddt,_smc,$FD,$EB
 				.BYTE	_,_,_,$EB
-				.BYTE	$F9,_,_col,$EB
+				.BYTE	_hero,_,_col,$EB
 				.BYTE	_apu,_W,_o,_w,_sem,_,_I,_sem,_,_I,_,_c,_a,_n,_apo,_t,_,_b,_e,_l,_i,_e,_v,_e,_ddt,_dot,$FD,$EB
 				.BYTE	_,_,_,$EB
 				.BYTE	_N,_i,_c,_e,_,_c,_r,_y,_s,_t,_a,_l,_,_b,_a,_l,_l,_sem,_,_e,_h,_que,_,_I,_,_o,_p,_e,_r,_a,_t,_e,_,_t,_h,_e,_,_s,_l,_i,_d,_e,_,_s,_h,_o,_w,_,_u,_n,_d,_e,_r,_n,_e,_a,_t,_h,_smc,$FD,$EF

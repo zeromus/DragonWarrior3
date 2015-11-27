@@ -1395,7 +1395,7 @@ loc_9B557:
 		FARX	_b5_s9
 		FARX	_bC_s3
 		JSR		_map_music_select_and_load
-		JSR		sub_175B0E
+		JSR		_ppu_on_and_fade_in
 		LDA		#0
 		STA		byte_6B9
 		SEC
@@ -1498,7 +1498,7 @@ loc_9B668:
 		LDA		_global_game_flags
 		ORA		#4
 		STA		_global_game_flags
-		SYSX	_sys07_msg_m00_arg1,$1A	; "Look the willagers starting to wake up"
+		MSGX	_msg_m00,$11A	; "Look the willagers starting to wake up"
 		SEC
 		RTS
 
@@ -2059,7 +2059,7 @@ locret_9BA5A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s16:
-		SYSX	_sys08_msg_m00_arg2,$4C
+		MSGX	_msg_m00,$24C
 		FARX	_bE_s1C
 		BEQ		sub_9BA66
 
@@ -2069,7 +2069,7 @@ sub_9BA63:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA66:
-		SYSX	_sys08_msg_m00_arg2,$96
+		MSGX	_msg_m00,$296
 		FARX	_bE_s1C
 		BNE		sub_9BA63
 		FARX	_b7_sD
@@ -2086,14 +2086,14 @@ sub_9BA66:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA85:
-		SYSX	_sys08_msg_m00_arg2,$4D
+		MSGX	_msg_m00,$24D
 		FARX	_bE_s1C
 		BEQ		sub_9BA90
 		JMP		sub_9BB1F
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA90:
-		SYSX	_sys08_msg_m00_arg2,$4F
+		MSGX	_msg_m00,$24F
 		LDA		#7
 		STA		byte_C6
 		SYSX	_display_window,$34
@@ -2108,7 +2108,7 @@ sub_9BA90:
 		LDX		byte_BD
 		LDA		word_4+1,X
 		BNE		sub_9BAB9
-		SYSX	_sys08_msg_m00_arg2,$97
+		MSGX	_msg_m00,$297
 		JMP		sub_9BB22
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2121,18 +2121,18 @@ sub_9BAB9:
 		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BEQ		sub_9BADD
-		SYSX	_sys08_msg_m00_arg2,$7F
+		MSGX	_msg_m00,$27F
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
-		SYSX	_sys11_msg_m00_arg7,$18
+		MSGX	_msg_m00,$718
 		JMP		sub_9BB22
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BADD:
 		LDA		#0
 		STA		byte_D2
-		SYSX	_sys08_msg_m00_arg2,$50
+		MSGX	_msg_m00,$250
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
@@ -2141,7 +2141,7 @@ sub_9BADD:
 		LDA		byte_C6
 		STA		byte_630F
 		FARX	_b7_s14
-		SYSX	_sys08_msg_m00_arg2,$51
+		MSGX	_msg_m00,$251
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
@@ -2151,7 +2151,7 @@ sub_9BADD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB0B:
-		SYSX	_sys08_msg_m00_arg2,$52
+		MSGX	_msg_m00,$252
 		SYSX	_display_window,$41
 		JSR		_b6_s14_name_entry_screen
 		JMP		sub_9BB26
@@ -2164,11 +2164,11 @@ sub_9BB17:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB1F:
-		SYSX	_sys08_msg_m00_arg2,$4E
+		MSGX	_msg_m00,$24E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB22:
-		SYSX	_sys08_msg_m00_arg2,$58
+		MSGX	_msg_m00,$258
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2176,7 +2176,7 @@ sub_9BB26:
 		JSR		_b6_s20_player_name_veryfy
 		BNE		loc_9BB34
 		JSR		sub_9BBED
-		SYSX	_sys08_msg_m00_arg2,$54
+		MSGX	_msg_m00,$254
 		JMP		loc_9BBDF
 loc_9BB34:
 		LDX		#7
@@ -2213,7 +2213,7 @@ loc_9BB5B:
 		BNE		loc_9BB5B
 		PLA
 		JSR		sub_9BBED
-		SYSX	_sys08_msg_m00_arg2,$53
+		MSGX	_msg_m00,$253
 		JMP		loc_9BBDF
 loc_9BB73:
 		PLA
@@ -2262,12 +2262,12 @@ loc_9BB92:
 		FARX	_b7_s13
 loc_9BBD3:
 		JSR		sub_9BBED
-		SYSX	_sys08_msg_m00_arg2,$55
+		MSGX	_msg_m00,$255
 		JMP		loc_9BBDF
 loc_9BBDC:
 		JSR		sub_9BBED
 loc_9BBDF:
-		SYSX	_sys08_msg_m00_arg2,$57
+		MSGX	_msg_m00,$257
 		FARX	_bE_s1C
 		BNE		loc_9BBEA
 		JMP		sub_9BA66
@@ -2626,7 +2626,7 @@ loc_9BE5A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BE62:
 		SYSX	_display_window,$3E
-		SYSX	_sys07_msg_m00_arg1,$43
+		MSGX	_msg_m00,$143
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2794,7 +2794,7 @@ _b6_s1F:
 		SEC
 		RTS
 loc_9BF6D:
-		SYSX	_sys07_msg_m00_arg1,$01
+		MSGX	_msg_m00,$101
 		CLC
 		RTS
 

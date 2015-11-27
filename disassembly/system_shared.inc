@@ -39,7 +39,7 @@ locret_174028:
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]-=Y:A
 ;
-_add16_to_neg16:
+_sub16_to_16:
 		JSR		_add8_to_neg16
 		TYA
 		EOR		#$FF
@@ -1874,7 +1874,7 @@ loc_174BFC:
 		STA		byte_60BA
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s20_npc_hndl31
 		JMP		loc_174C5C
 loc_174C2F:
@@ -1888,13 +1888,13 @@ loc_174C2F:
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s24
 		JMP		loc_174C5C
 loc_174C51:
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		sub_174CCF
+		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s23
 loc_174C5C:
 		JSR		sub_174D56
@@ -1950,13 +1950,13 @@ sub_174CBD:
 		PHA
 		FARX	_b5_s9
 		FARX	_bC_s35
-		JSR		sub_175B0E
+		JSR		_ppu_on_and_fade_in
 loc_174CCA:
 		PLA
 		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_174CCF:
+_wrap_bE_sD_display_window_3E:
 		FARX	_bE_sD
 		SYSX	_display_window,$3E
 		RTS
@@ -1982,7 +1982,7 @@ sub_174CE2:
 		JSR		sub_17578E
 		LDA		#7
 		JSR		_mmc1_prg_set
-		JMP		sub_175B0E
+		JMP		_ppu_on_and_fade_in
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174CFF:
@@ -2516,7 +2516,7 @@ locret_1750CF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1750D0:
 		LDA		_mapNumber
-		FARX	_bE_s1D
+		FARX	_bE_s1D_get_map_buf_end_ptr
 loc_1750D5:
 		FARX	_bE_s19
 		BCC		loc_1750DC
@@ -2661,7 +2661,7 @@ loc_1751E5:
 loc_1751F4:
 		JSR		_map_music_select_and_load
 loc_1751F7:
-		JSR		sub_175B0E
+		JSR		_ppu_on_and_fade_in
 		LDA		#6
 		JSR		_mmc1_prg_set
 		FARX	_b0_s66
@@ -2818,7 +2818,7 @@ loc_1752F5:
 		LDA		byte_6AE6
 		AND		#$FE
 		STA		byte_6AE6
-		JMP		sub_175B0E
+		JMP		_ppu_on_and_fade_in
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17530A:
@@ -3006,7 +3006,7 @@ loc_17543E:
 		JSR		sub_175222
 		JMP		loc_17543E
 loc_175449:
-		FARX	_bE_s20
+		FARX	_bE_s20_decode_map_ptr_to_XY
 		CPX		_playerMapX
 		BNE		loc_175454
 		CPY		_playerMapY
@@ -3094,7 +3094,7 @@ loc_1754D5:
 loc_1754E0:
 		STX		byte_644
 		STX		byte_6BC
-		FARX	_bE_s20
+		FARX	_bE_s20_decode_map_ptr_to_XY
 		STX		_playerMapX
 		STY		_playerMapY
 		RTS
@@ -3593,8 +3593,8 @@ sub_175853:
 		LDA		_playerMapY
 		CMP		#$18
 		BNE		loc_175877
-		JSR		sub_174CCF
-		SYSX	_sys07_msg_m00_arg1,$87
+		JSR		_wrap_bE_sD_display_window_3E
+		MSGX	_msg_m00,$187
 		DEC		_players_pos_list+1
 		DEC		_playerMapY
 		FARX	_bE_s33
@@ -4012,7 +4012,7 @@ sub_175B03:
 		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_175B0E:
+_ppu_on_and_fade_in:
 		JSR		_nmi_allow_ppu_dequeue
 		JSR		_ppu_enable
 		JMP		_pal_fade_in
@@ -6144,42 +6144,44 @@ _syscall_lib:
 		.WORD	_sys0_safe
 		.WORD	_sys1_safe
 
+		; more common syscall wrappers for message output, as well, takes the
+		; lower bits of message index from argument, and a higher representing
+		; the syscall index itself
+		;
+		; note to myself: not to use these functions as direct calls from
+		; banks, they need argument in Y! redesign the code, to have two
+		; different set of functions with Y and A arguments (it's easy)
+		;
+_msg_m00_idx:
+_sys_msg_m00_arg0_idx:			.WORD	_sys_msg_m00_arg0
+_sys_msg_m00_arg1_idx:			.WORD	_sys_msg_m00_arg1
+_sys_msg_m00_arg2_idx:			.WORD	_sys_msg_m00_arg2
+_sys_msg_m00_arg3_idx:			.WORD	_sys_msg_m00_arg3
+_sys_msg_m00_arg4_idx:			.WORD	_sys_msg_m00_arg4
+_sys_msg_m00_arg5_idx:			.WORD	_sys_msg_m00_arg5
+_sys_msg_m00_arg6_idx:			.WORD	_sys_msg_m00_arg6
+_sys_msg_m00_arg7_idx:			.WORD	_sys_msg_m00_arg7
+
+_msg_m00_break_idx:
+_sys_msg_m00_arg0_break_idx:		.WORD	_sys_msg_m00_arg0_break
+_sys_msg_m00_arg1_break_idx:		.WORD	_sys_msg_m00_arg1_break
+_sys_msg_m00_arg2_break_idx:		.WORD	_sys_msg_m00_arg2_break
+_sys_msg_m00_arg3_break_idx:		.WORD	_sys_msg_m00_arg3_break
+_sys_msg_m00_arg4_break_idx:		.WORD	_sys_msg_m00_arg4_break
+_sys_msg_m00_arg5_break_idx:		.WORD	_sys_msg_m00_arg5_break
+_sys_msg_m00_arg6_break_idx:		.WORD	_sys_msg_m00_arg6_break
+_sys_msg_m00_arg7_break_idx:		.WORD	_sys_msg_m00_arg7_break
+
 		; four syscalls used only from bank D and pointed directly to this bank
 		; these functions assuming the higher bit of msg index $300+array[N],
 		; where N is in _bN_, and arr is from $000 to $3xx
 		; these four message cover indexes from $5Fx to $6xx
 		; the rest of messages from $300 to $5Fx are in bank D and used locally
 		;
-_sys02_msg_m00_b3_idx:				.WORD	_sys02_msg_m00_b3
-_sys03_msg_m00_b4_idx:				.WORD	_sys03_msg_m00_b4
-_sys04_msg_m00_b3_break_idx:		.WORD	_sys04_msg_m00_b3_break
-_sys05_msg_m00_b4_break_idx:		.WORD	_sys05_msg_m00_b4_break
-
-		; more common syscall wrappers for message output, as well, takes the
-		; lower bits of message index from argument, and a higher representing
-		; the syscall index itself
-		; the routine index is immediate higher message index, these function cover
-		; the messages from $000 to $2FF
-		;
-_sys06_msg_m00_arg0_idx:			.WORD	_sys06_msg_m00_arg0
-_sys07_msg_m00_arg1_idx:			.WORD	_sys07_msg_m00_arg1
-_sys08_msg_m00_arg2_idx:			.WORD	_sys08_msg_m00_arg2
-;_sys0x_msg_m00_arg3_idx:			.WORD	_sys08_msg_m00_arg3			; for future use
-;_sys0x_msg_m00_arg4_idx:			.WORD	_sys08_msg_m00_arg4
-;_sys0x_msg_m00_arg5_idx:			.WORD	_sys08_msg_m00_arg5
-_sys13_msg_m00_arg6_idx:			.WORD	_sys13_msg_m00_arg6
-_sys11_msg_m00_arg7_idx:			.WORD	_sys11_msg_m00_arg7
-_sys0C_msg_m00_arg8_idx:			.WORD	_sys0C_msg_m00_arg8			; this subroutine is unused
-
-_sys09_msg_m00_arg0_break_idx:		.WORD	_sys09_msg_m00_arg0_break	; this subroutine is unused
-_sys0A_msg_m00_arg1_break_idx:		.WORD	_sys0A_msg_m00_arg1_break	; this subroutine is unused
-_sys0B_msg_m00_arg2_break_idx:		.WORD	_sys0B_msg_m00_arg2_break	; this subroutine is unused
-;_sys0x_msg_m00_arg3_break_idx:		.WORD	_sys0x_msg_m00_arg3_break	; for future use
-;_sys0x_msg_m00_arg4_break_idx:		.WORD	_sys0x_msg_m00_arg4_break
-;_sys0x_msg_m00_arg5_break_idx:		.WORD	_sys0x_msg_m00_arg5_break
-;_sys0x_msg_m00_arg6_break_idx:		.WORD	_sys0x_msg_m00_arg6_break
-;_sys0x_msg_m00_arg7_break_idx:		.WORD	_sys0x_msg_m00_arg7_break
-;_sys0x_msg_m00_arg8_break_idx:		.WORD	_sys0x_msg_m00_arg8_break
+_sys02_msg_m00_b5B5_idx:			.WORD	_sys02_msg_m00_b5B5
+_sys03_msg_m00_b6B5_idx:			.WORD	_sys03_msg_m00_b6B5
+_sys04_msg_m00_b5B5_break_idx:		.WORD	_sys04_msg_m00_b5B5_break
+_sys05_msg_m00_b6B5_break_idx:		.WORD	_sys05_msg_m00_b6B5_break
 
 		; two more external direct offsets, whould called from bank 4 only
 		; and pointing directly to this bank
@@ -6231,6 +6233,11 @@ _bC_s38_idx:			PTR_IDX	$C,_bC_s38					; $FA
 _bD_s19_idx:			PTR_IDX	$D,_bD_s19					; $FD, copy of $133, used in _bC_s17_sys0_spr_effects_call, don't know why they need a second bank routine
 ;
 ; then SRAM shourtcuts
+; WARNING! shrtcuts are copied to SRAM and used in the same order
+; as them goes in this list, so when you change files order here
+; make sure you change it in SRAM too, unless you do some automatic
+; rearrangement script or remove this damn shortcuts and replace
+; them with nice sexy direct links in system bank
 ;
 _b0_s2_player_HP_read_idx:		PTR_IDX	$0,_b0_s2_player_HP_read		; $23
 _b0_s3_player_MHP_read_idx:	PTR_IDX	$0,_b0_s3_player_MHP_read	; $24
@@ -6281,7 +6288,6 @@ _b0_s32_get_tavern_chars_list_idx:			PTR_IDX	$0,_b0_s32_get_tavern_chars_list			
 _b0_s33_count_non_dead_party_chars_idx:			PTR_IDX	$0,_b0_s33_count_non_dead_party_chars					; $54
 _b0_s34_read_spell_related_data_byte_idx:			PTR_IDX	$0,_b0_s34_read_spell_related_data_byte					; $55
 _b0_s35_idx:			PTR_IDX	$0,_b0_s35					; $56
-_b0_s36_read_spell_related_data_byte_idx:			PTR_IDX	$0,_b0_s36_read_spell_related_data_byte					; $57
 _b0_s37_idx:			PTR_IDX	$0,_b0_s37					; $58
 _b0_s38_idx:			PTR_IDX	$0,_b0_s38					; $59
 _b0_s39_idx:			PTR_IDX	$0,_b0_s39					; $5A
@@ -6355,7 +6361,7 @@ _b4_s5_do_message_speed_delay_idx:	PTR_IDX	$4,_b4_s5_do_message_speed_delay	; $7
 _b4_s6_idx:				PTR_IDX	$4,_b4_s6					; $71
 _b4_s7_window_display_safe_idx:		PTR_IDX	$4,_b4_s7_window_display_safe	; $72
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
-_b4_s9_idx:				PTR_IDX	$4,_b4_s9					; $74
+_b4_s9_wrap_bE_s4_msg_m00_arg0_idx:				PTR_IDX	$4,_b4_s9_wrap_bE_s4_msg_m00_arg0					; $74
 _b4_sA_idx:				PTR_IDX	$4,_b4_sA					; $75
 _b4_sC_idx:				PTR_IDX	$4,_b4_sC					; $77
 _b4_sE_idx:				PTR_IDX	$4,_b4_sE					; $A7
@@ -6570,15 +6576,15 @@ _bE_s19_idx:			PTR_IDX	$E,_bE_s19					; $AC
 _bE_s1A_idx:			PTR_IDX	$E,_bE_s1A					; $AD
 _bE_s1B_idx:			PTR_IDX	$E,_bE_s1B					; $F9
 _bE_s1C_idx:			PTR_IDX	$E,_bE_s1C					; $120
-_bE_s1D_idx:			PTR_IDX	$E,_bE_s1D					; $AB
-_bE_s20_idx:			PTR_IDX	$E,_bE_s20					; $AE
+_bE_s1D_get_map_buf_end_ptr_idx:			PTR_IDX	$E,_bE_s1D_get_map_buf_end_ptr					; $AB
+_bE_s20_decode_map_ptr_to_XY_idx:			PTR_IDX	$E,_bE_s20_decode_map_ptr_to_XY					; $AE
 _bE_s21_idx:			PTR_IDX	$E,_bE_s21					; $AF
 _bE_s22_idx:			PTR_IDX	$E,_bE_s22					; $BF
 _bE_s23_idx:			PTR_IDX	$E,_bE_s23					; $C0
 _bE_s24_idx:			PTR_IDX	$E,_bE_s24					; $C1
 _bE_s25_idx:			PTR_IDX	$E,_bE_s25					; $C2
 _bE_s26_idx:			PTR_IDX	$E,_bE_s26					; $C3
-_bE_s2E_idx:			PTR_IDX	$E,_bE_s2E					; $E6
+_bE_s2E_special_map_actions_idx:			PTR_IDX	$E,_bE_s2E_special_map_actions					; $E6
 _bE_s2F_idx:			PTR_IDX	$E,_bE_s2F					; $E7
 _bE_s30_idx:			PTR_IDX	$E,_bE_s30					; $E8
 _bE_s31_get_map_music_idx_idx:			PTR_IDX	$E,_bE_s31_get_map_music_idx					; $E9
@@ -6601,9 +6607,10 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 
 ; == removed unused, unneeded or empty filesystem entries
 ;
-;_b0_sA_player_MP_set_sero_idx:	PTR_IDX	$0,_b0_sA_player_MP_set_sero; $2B, never used with SRAM or BRK
-;		.BYTE	$0,$27						; $48, _player_equip_item, used only directly, no SRAM or BRK
-;_b0_s2D_idx:					PTR_IDX	$0,_b0_s2D					; $4E, copy of $4D, unused anymore
+;		.BYTE	$0,$0A						; $2B _b0_sA_player_MP_set_sero, never used with SRAM or BRK
+;		.BYTE	$0,$27						; $48 _player_equip_item, used only directly, no SRAM or BRK
+;		.BYTE	$0,$2D						; $4E _b0_s2D, copy of $4D, unused anymore
+;		.BYTE	$0,$26						; $57 _b0_s36_read_spell_related_data_byte, exact copy of _b0_s34
 ;		.BYTE	$0,$40						; $8E _b0_d40_weapon_power_list, no use here
 ;		.BYTE	$0,$41						; $8F _b0_d41_equip_list, no use here
 ;		.BYTE	$0,$43						; $6A _b0_d43_enemies_lib, not used anymore
@@ -6805,34 +6812,43 @@ _sys0_byte_read_x:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys06_msg_m00_arg0:
+_sys_msg_m00_arg0:
 		LDX		#0
 		BEQ		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys07_msg_m00_arg1:
+_sys_msg_m00_arg1:
 		LDX		#1
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys08_msg_m00_arg2:
+_sys_msg_m00_arg2:
 		LDX		#2
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys13_msg_m00_arg6:
+_sys_msg_m00_arg3:
+		LDX		#3
+		BNE		_far_bE_s4_msg_m00
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg4:
+		LDX		#4
+		BNE		_far_bE_s4_msg_m00
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg5:
+		LDX		#5
+		BNE		_far_bE_s4_msg_m00
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg6:
 		LDX		#6
 		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys11_msg_m00_arg7:
+_sys_msg_m00_arg7:
 		LDX		#7
-		BNE		_far_bE_s4_msg_m00
-
-; =============== S U B	R O U T	I N E =======================================
-_sys0C_msg_m00_arg8:
-		LDX		#8
-;		BNE		_far_bE_s4_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _far_bE_s4_msg_m00:
@@ -6841,22 +6857,47 @@ _far_bE_s4_msg_m00:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys09_msg_m00_arg0_break:
+_sys_msg_m00_arg0_break:
 		LDX		#0
 		BEQ		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0A_msg_m00_arg1_break:
+_sys_msg_m00_arg1_break:
 		LDX		#1
 		BNE		_far_bE_s4_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
-_sys0B_msg_m00_arg2_break:
+_sys_msg_m00_arg2_break:
 		LDX		#2
-;		BNE		_far_bE_s4_msg_m00_break
+		BNE		_far_bE_s4_msg_m00_break
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg3_break:
+		LDX		#3
+		BNE		_far_bE_s4_msg_m00_break
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg4_break:
+		LDX		#4
+		BNE		_far_bE_s4_msg_m00_break
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg5_break:
+		LDX		#5
+		BNE		_far_bE_s4_msg_m00_break
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg6_break:
+		LDX		#6
+		BNE		_far_bE_s4_msg_m00_break
+
+; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg7_break:
+		LDX		#7
 
 ; =============== S U B	R O U T	I N E =======================================
 _far_bE_s4_msg_m00_break:
+		TYA
 		JSR		_far_bE_s4_msg_m00
 		PLA
 		PLA
