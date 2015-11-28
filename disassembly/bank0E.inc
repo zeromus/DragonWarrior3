@@ -5333,18 +5333,18 @@ loc_15AC77:
 		PLA
 		ASL
 		TAX
-		LDA		off_15AD9D,X
+		LDA		_txt_male_pronoun_lib,X
 		STA		word_6
-		LDA		off_15AD9D+1,X
+		LDA		_txt_male_pronoun_lib+1,X
 		STA		word_6+1
 		JMP		loc_15AC94
 loc_15AC87:
 		PLA
 		ASL
 		TAX
-		LDA		off_15ADAB,X
+		LDA		_txt_female_pronoun_lib,X
 		STA		word_6
-		LDA		off_15ADAB+1,X
+		LDA		_txt_female_pronoun_lib+1,X
 		STA		word_6+1
 loc_15AC94:
 		LDY		#0
@@ -5412,15 +5412,15 @@ sub_15ACE2:
 		JSR		sub_15AD31
 		BCC		loc_15AD0A
 loc_15ACFD:
-		LDA		off_15ADB9,X
+		LDA		_txt_other_suffix_lib,X
 		STA		word_6
-		LDA		off_15ADB9+1,X
+		LDA		_txt_other_suffix_lib+1,X
 		STA		word_6+1
 		JMP		loc_15AD14
 loc_15AD0A:
-		LDA		off_15ADC9,X
+		LDA		_txt_plural_suffix_lib,X
 		STA		word_6
-		LDA		off_15ADC9+1,X
+		LDA		_txt_plural_suffix_lib+1,X
 		STA		word_6+1
 loc_15AD14:
 		LDX		byte_83
@@ -5501,9 +5501,9 @@ sub_15AD6E:
 		LDA		_msg_number_parameter_F8
 		ASL
 		TAX
-		LDA		off_15ADD9,X
+		LDA		_txt_numbers_lib,X
 		STA		word_4
-		LDA		off_15ADD9+1,X
+		LDA		_txt_numbers_lib+1,X
 		STA		word_4+1
 		LDY		#0
 		LDX		#0
@@ -5521,126 +5521,126 @@ loc_15AD94:
 		PLA
 		STA		word_4
 		JMP		loc_15A8CD
-off_15AD9D:
-		.WORD	byte_15ADEB
-		.WORD	byte_15ADEF
-		.WORD	byte_15ADF7
-		.WORD	byte_15ADFA
-		.WORD	byte_15ADFE
-		.WORD	byte_15AE02
-		.WORD	byte_15AE07
-off_15ADAB:
-		.WORD	byte_15AE0B
-		.WORD	byte_15AE0F
-		.WORD	byte_15AE17
-		.WORD	byte_15AE1B
-		.WORD	byte_15AE1F
-		.WORD	byte_15AE24
-		.WORD	byte_15AE2A
-off_15ADB9:
-		.WORD	byte_15AE33
-		.WORD	byte_15AE35
-		.WORD	byte_15AE38
-		.WORD	byte_15AE3B
-		.WORD	byte_15AE3D
-		.WORD	byte_15AE3E
-		.WORD	byte_15AE3F
-		.WORD	byte_15AE41
-off_15ADC9:
-		.WORD	byte_15AE42
-		.WORD	byte_15AE46
-		.WORD	byte_15AE49
-		.WORD	byte_15AE4D
-		.WORD	byte_15AE50
-		.WORD	byte_15AE53
-		.WORD	byte_15AE55
-		.WORD	byte_15AE57
-off_15ADD9:
-		.WORD	byte_15AE58
-		.WORD	byte_15AE58
-		.WORD	byte_15AE5C
-		.WORD	byte_15AE60
-		.WORD	byte_15AE66
-		.WORD	byte_15AE6B
-		.WORD	byte_15AE70
-		.WORD	byte_15AE74
-		.WORD	byte_15AE7A
-byte_15ADEB:
-		.BYTE	$12,$13,$1D,$FE
-byte_15ADEF:
-		.BYTE	$12,$13,$17,$1D, $F,$16,$10,$FE
-byte_15ADF7:
-		.BYTE	$12, $F,$FE
-byte_15ADFA:
-		.BYTE	$12,$13,$17,$FE
-byte_15ADFE:
-		.BYTE	$17, $B,$18,$FE
-byte_15AE02:
-		.BYTE	$2C, $F,$68,$1D,$FE
-byte_15AE07:
-		.BYTE	$1D,$19,$18,$FE
-byte_15AE0B:
-		.BYTE	$12, $F,$1C,$FE
-byte_15AE0F:
-		.BYTE	$12, $F,$1C,$1D, $F,$16,$10,$FE
-byte_15AE17:
-		.BYTE	$1D,$12, $F,$FE
-byte_15AE1B:
-		.BYTE	$12, $F,$1C,$FE
-byte_15AE1F:
-		.BYTE	$16, $B, $E,$23,$FE
-byte_15AE24:
-		.BYTE	$37,$12, $F,$68,$1D,$FE
-byte_15AE2A:
-		.BYTE	 $E, $B,$1F,$11,$12,$1E, $F,$1C,$FE
-byte_15AE33:
-		.BYTE	$23,$FE
-byte_15AE35:
-		.BYTE	 $B,$18,$FE
-byte_15AE38:
-		.BYTE	$19,$16,$FE
-byte_15AE3B:
-		.BYTE	$13,$FE
-byte_15AE3D:
+		
+_txt_male_pronoun_lib:
+		.WORD	_txt_his
+		.WORD	_txt_himself
+		.WORD	_txt_he
+		.WORD	_txt_him
+		.WORD	_txt_man
+		.WORD	_txt_He_s
+		.WORD	_txt_son
+		
+_txt_female_pronoun_lib:
+		.WORD	_txt_her
+		.WORD	_txt_herself
+		.WORD	_txt_she
+		.WORD	_txt_her
+		.WORD	_txt_lady
+		.WORD	_txt_she_s
+		.WORD	_txt_daughter
+		
+_txt_other_suffix_lib:
+		.WORD	_txt_y
+		.WORD	_txt_an
+		.WORD	_txt_ol
+		.WORD	_txt_i
+		.WORD	_txt_dummy
+		.WORD	_txt_dummy
+		.WORD	_txt_a
+		.WORD	_txt_dummy
+		
+_txt_plural_suffix_lib:
+		.WORD	_txt_ies
+		.WORD	_txt_en
+		.WORD	_txt_lls
+		.WORD	_txt_ls
+		.WORD	_txt_es
+		.WORD	_txt_s
+		.WORD	_txt_e
+		.WORD	_txt_dummy
+		
+_txt_numbers_lib:
+		.WORD	_txt_One
+		.WORD	_txt_One
+		.WORD	_txt_Two
+		.WORD	_txt_Three
+		.WORD	_txt_Four
+		.WORD	_txt_Five
+		.WORD	_txt_Six
+		.WORD	_txt_Seven
+		.WORD	_txt_Eight
+		
+_txt_his:
+		.BYTE	_h,_i,_s,$FE
+_txt_himself:
+		.BYTE	_h,_i,_m,_s,_e,_l,_f,$FE
+_txt_he:
+		.BYTE	_h,_e,$FE
+_txt_him:
+		.BYTE	_h,_i,_m,$FE
+_txt_man:
+		.BYTE	_m,_a,_n,$FE
+_txt_He_s:
+		.BYTE	_H,_e,_apo,_s,$FE
+_txt_son:
+		.BYTE	_s,_o,_n,$FE
+_txt_her:
+		.BYTE	_h,_e,_r,$FE
+_txt_herself:
+		.BYTE	_h,_e,_r,_s,_e,_l,_f,$FE
+_txt_she:
+		.BYTE	_s,_h,_e,$FE
+_txt_her:
+		.BYTE	_h,_e,_r,$FE
+_txt_lady:
+		.BYTE	_l,_a,_d,_y,$FE
+_txt_she_s:
+		.BYTE	_S,_h,_e,_apo,_s,$FE
+_txt_daughter:
+		.BYTE	_d,_a,_u,_g,_h,_t,_e,_r,$FE
+_txt_y:
+		.BYTE	_y,$FE
+_txt_an:
+		.BYTE	_a,_n,$FE
+_txt_ol:
+		.BYTE	_o,_l,$FE
+_txt_i:
+		.BYTE	_i,$FE
+_txt_dummy:
 		.BYTE	$FE
-byte_15AE3E:
-		.BYTE	$FE
-byte_15AE3F:
-		.BYTE	 $B,$FE
-byte_15AE41:
-		.BYTE	$FE
-byte_15AE42:
-		.BYTE	$13, $F,$1D,$FE
-byte_15AE46:
-		.BYTE	 $F,$18,$FE
-byte_15AE49:
-		.BYTE	$16,$16,$1D,$FE
-byte_15AE4D:
-		.BYTE	$16,$1D,$FE
-byte_15AE50:
-		.BYTE	 $F,$1D,$FE
-byte_15AE53:
-		.BYTE	$1D,$FE
-byte_15AE55:
-		.BYTE	 $F,$FE
-byte_15AE57:
-		.BYTE	$FE
-byte_15AE58:
-		.BYTE	$33,$18, $F,$FE
-byte_15AE5C:
-		.BYTE	$38,$21,$19,$FE
-byte_15AE60:
-		.BYTE	$38,$12,$1C, $F, $F,$FE
-byte_15AE66:
-		.BYTE	$2A,$19,$1F,$1C,$FE
-byte_15AE6B:
-		.BYTE	$2A,$13,$20, $F,$FE
-byte_15AE70:
-		.BYTE	$37,$13,$22,$FE
-byte_15AE74:
-		.BYTE	$37, $F,$20, $F,$18,$FE
-byte_15AE7A:
-		.BYTE	$29,$13,$11,$12,$1E,$FE
+_txt_a:
+		.BYTE	_a,$FE
+_txt_ies:
+		.BYTE	_i,_e,_s,$FE
+_txt_en:
+		.BYTE	_e,_n,$FE
+_txt_lls:
+		.BYTE	_l,_l,_s,$FE
+_txt_ls:
+		.BYTE	_l,_s,$FE
+_txt_es:
+		.BYTE	_e,_s,$FE
+_txt_s:
+		.BYTE	_s,$FE
+_txt_e:
+		.BYTE	_e,$FE
+_txt_One:
+		.BYTE	_O,_n,_e,$FE
+_txt_Two:
+		.BYTE	_T,_w,_o,$FE
+_txt_Three:
+		.BYTE	_T,_h,_r,_e,_e,$FE
+_txt_Four:
+		.BYTE	_F,_o,_u,_r,$FE
+_txt_Five:
+		.BYTE	_F,_i,_v,_e,$FE
+_txt_Six:
+		.BYTE	_S,_i,_x,$FE
+_txt_Seven:
+		.BYTE	_S,_e,_v,_e,_n,$FE
+_txt_Eight:
+		.BYTE	_E,_i,_g,_h,_t,$FE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15AE80:
