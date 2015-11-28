@@ -39,13 +39,13 @@
 |________________________//
 
 I...............Recent Updates
-II..............Copyright &amp; Plagiarism
+II..............Copyright & Plagiarism
 III.............The Story
 IV..............Controls
 V...............The Menus
-VI..............Stats &amp; Status Ailments
+VI..............Stats & Status Ailments
 VII.............Character Class Descriptions
-VIII............Quick Tips &amp; Advice
+VIII............Quick Tips & Advice
 IX..............WALKTHROUGH
 		1. THE JOURNEY BEGINS...
 		    1A. Aliahan
@@ -53,7 +53,7 @@ IX..............WALKTHROUGH
 		    1C. Tower of Najima
 		    1D. Reeve
 		    1E. Cave of Enticement
-		2. THE DREAM RUBY &amp; THE QUEST FOR THE GOLDEN CROWN
+		2. THE DREAM RUBY & THE QUEST FOR THE GOLDEN CROWN
 		    2A. Romaly
 		    2B. Kanave
 		    2C. Noaniels
@@ -67,17 +67,17 @@ IX..............WALKTHROUGH
 		    3B. Isis
 		    3C. The Pyramid
                     3D. Treasure Raid
-		4. THE BLACK PEPPER &amp; SHIP EXCHANGE
+		4. THE BLACK PEPPER & SHIP EXCHANGE
 		    4A. Portoga
 		    4B. Norud the Dwarf
 		    4C. Baharata
 		    4D. Cave East of Baharata
                     4E. Take To The Seas
-		5. THE SHRINE OF DHAMA &amp; NEW CLASSES
+		5. THE SHRINE OF DHAMA & NEW CLASSES
 		    5A. Shrine of Dhama
 		    5B. Tower of Garuna
 		    5C. Muor
-		6. THE FINAL KEY &amp; THE SEARCH FOR THE SIX ORBS
+		6. THE FINAL KEY & THE SEARCH FOR THE SIX ORBS
 		    6A. Tedanki
 		    6B. Lancel
 		    6C. Eginbear
@@ -90,7 +90,7 @@ IX..............WALKTHROUGH
 		    6J. Luzami
                     6K. Soo
                     6L. Newville
-		7. MIRROR OF RA &amp; THE STAFF OF CHANGE
+		7. MIRROR OF RA & THE STAFF OF CHANGE
 		    7A. Samanao
 		    7B. Cave Southeast of Samanao
                     7C. The King's Reflection
@@ -99,7 +99,7 @@ IX..............WALKTHROUGH
 		    8A. Phantom Ship
 		    8B. The Promontory of Olivia
 		    8C. Shrine Jail
-		9. THE SILVER ORB &amp; THE ARCHFIEND
+		9. THE SILVER ORB & THE ARCHFIEND
 		    9A. The Crater
 		    9B. Cave of Necrogond
 		    9C. Shrine of Necrogond
@@ -110,7 +110,7 @@ IX..............WALKTHROUGH
 		    9H. Great Pit of Giaga
 	       10. A WORLD OF DARKNESS
 		    10A. Ship Port
-		    10B. Brecconaly &amp; Tantegel Castle
+		    10B. Brecconaly & Tantegel Castle
 	   	    10C. Cave Southwest of Tantegel
 		    10D. Garin's House
 		    10E. Kol
@@ -125,14 +125,14 @@ IX..............WALKTHROUGH
 		    11A. Creating the Bridge
 		    11B. Castle Zoma
 		    11C. The Final Battles
-X................Item &amp; Equipment Lists
+X................Item & Equipment Lists
 		    X-1. Item List
 		    X-2. Weapon List
                     X-3. Armor List
                     X-4. Shield List
                     X-5. Helmet List
 XI...............Monster List
-XII..............Credits &amp; Acknowledgments
+XII..............Credits & Acknowledgments
 		    
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -193,7 +193,7 @@ ________/     lists.  I'm sure a few more updates will follow; calling this
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
    __________________________________________________
   /                                                  \
- |  II.  C O P Y R I G H T   &amp;   P L A G I A R I S M  |
+ |  II.  C O P Y R I G H T   &   P L A G I A R I S M  |
  |                                                    |
   \__________________________________________________/
 
@@ -220,7 +220,7 @@ The following website(s) have my permission to host this document:
 
                                     ~*~*~*~
 
-	&quot;On your 16th birthday, you wake to the sound of your mother's voice.  
+	"On your 16th birthday, you wake to the sound of your mother's voice.  
 'This is the day you are to see the King of Aliahan.'
 	
 	Your mother has raised you to be a brave lad and you must now carry on 
@@ -233,7 +233,7 @@ world', the King says.
 	Your challenge, your destiny--The Destruction of Baramos.
 
 	With three allies of your choosing, you are set to embark on your quest 
-to save the world from Baramos... your final enemy?&quot;
+to save the world from Baramos... your final enemy?"
 
 			            ~*~*~*~
 
@@ -276,8 +276,8 @@ on the world map and you press the A Button, 2 menus will appear:  one in the
 upper left-hand corner and one at the bottom.
  ____       ______
 |----COMMAND------|
-| &gt;TALK    SPELL  |
-|  STATUS  ITEM   | &lt;-------- Command Menu
+| >TALK    SPELL  |
+|  STATUS  ITEM   | <-------- Command Menu
 |  SEARCH  EQUIP  |
 |_________________|
 
@@ -289,7 +289,7 @@ upper left-hand corner and one at the bottom.
    _    ___    ___    ___    __
   |-Hero---Sold---Pilg---Wiza--|
   | H XXX  H XXX  H XXX  H XXX |
-  | M XXX  M XXX  M XXX  M XXX | &lt;-------- Status Menu
+  | M XXX  M XXX  M XXX  M XXX | <-------- Status Menu
   | HrXX   SrXX   PrXX   WzXX  |
   |____________________________|
 
@@ -305,7 +305,7 @@ STATUS:  This selection will lead to a new menu that looks like this:
 -------	 
 	__      ______
        |--STATUS------|
-       | &gt;INFO        |
+       | >INFO        |
        |  CONDITION   |
        |  FORMATION   |
        |______________|
@@ -343,7 +343,7 @@ ITEM:  Brings up each characters' inventory.  This allows you to use items, like
        that looks like this:
       ______________
      |              |
-     | &gt;USE         |
+     | >USE         |
      |  TRANSFER    |
      |  DISCARD     |
      |______________|
@@ -407,7 +407,7 @@ the center of the screen.  Your screen will look very similar to this:
 
        __    ___  ____________________
       |==Hero===||  Enemy A (X)       |
-      | &gt;FIGHT  ||  Enemy B (X)       |
+      | >FIGHT  ||  Enemy B (X)       |
       |  SPELL  ||  Enemy C (X)       |
       |  RUN    ||____________________|
       |  ITEM   |
@@ -472,7 +472,7 @@ come across others during your quest but nothing that isn't self-explanitory.
 
    ____________________________________________________
   /                                                    \
- |  VI.  S T A T S   &amp;   S T A T U S   A I L M E N T S  |
+ |  VI.  S T A T S   &   S T A T U S   A I L M E N T S  |
  |                                                      |
   \____________________________________________________/
 
@@ -522,7 +522,7 @@ LUCK:  Luck has always been a mysterious stat growth in the Dragon Warrior
        spells like Beat/Defeat more often.  The only character class that shows 
        decent growth in Luck is the Goof-Off.
 
-MAXIMUM H.P.:  Pretty self-explanitory; the total Hitpoints or &quot;life&quot; each 
+MAXIMUM H.P.:  Pretty self-explanitory; the total Hitpoints or "life" each 
 -------------  character possesses.  This stat generally sky-rockets with 
 	       Soldiers and Fighters.  When a character's Maximum H.P. is 
 	       depleted in battle, the character is knocked out and is no 
@@ -954,7 +954,7 @@ much broader selection with equipment compared to the Wizard or Pilgrim.
 
    ______________________________________________
   /                                              \
- |  VIII.  Q U I C K   T I P S   &amp;   A D V I C E  |
+ |  VIII.  Q U I C K   T I P S   &   A D V I C E  |
  |                                                |
   \______________________________________________/
 
@@ -1344,7 +1344,7 @@ kingdom of Romaly will be in sight.  Enter.
 
  _______________________________________________________________________
 |                                                                 ____//
-|   2.  THE DREAM RUBY &amp; THE QUEST FOR THE GOLDEN CROWN      ____//
+|   2.  THE DREAM RUBY & THE QUEST FOR THE GOLDEN CROWN      ____//
 |___________________________________________________________//
 
  _______________
@@ -1402,7 +1402,7 @@ the highest number, your payoff will be MUCH higher than if you were to bet on
 the monster who's most probable to win.  For instance, say you purchase your 
 ticket for 80G coins and you have a line-up like this:
  _________________________
-| &gt;Magician       * 18.8  |
+| >Magician       * 18.8  |
 |  Humanabat      *  2.9  |
 |  Killer Bee     *  3.0  |
 |_________________________|
@@ -1723,7 +1723,7 @@ these up to the third floor.
 a treasure chest in the northern corner.  Open it up for 384G coins and then 
 return to the stairs that you came from.  Pass the stairs moving west all the 
 way to the edge of the tower (don't fall!) and turn north.  Walk all the way 
-up to the northern edge of the tower and head right into a &quot;hidden&quot; room with 
+up to the northern edge of the tower and head right into a "hidden" room with 
 a set of stairs leading to the floor above.  Take them.
 
 	Now we're on the fourth floor.  Just walk clockwise against the wall 
@@ -1731,7 +1731,7 @@ below you and you'll come to a large door on the bottom.  Using your Thief's
 Key, open the door and walk north to the stairs at the end of the room.
 
 	On this floor you'll find two guys sitting around at a table.  Take a 
-few steps towards them and they'll back off and go tell the &quot;boss&quot;.  Before you 
+few steps towards them and they'll back off and go tell the "boss".  Before you 
 follow them up the stairs, make sure you HEAL YOUR PARTY to the max.
 
 	When you follow the henchmen up the stairs to the very top floor, walk 
@@ -1743,7 +1743,7 @@ down to the fourth floor where you'll see Kandar and his Henchmen.  Make sure
 everyone is replenished, then approach Kandar for a battle.
 
 +-----------------+------------------------------------------------------------+
-| ! BOSS BATTLE ! |		Kandar &amp; Kandar Henchmen (x3)                  |
+| ! BOSS BATTLE ! |		Kandar & Kandar Henchmen (x3)                  |
 +-----------------+------------------------------------------------------------+
 | Kandar HP:  150 |                                                            |
 | Henchmen HP: 60 |  It's best to concentrate on taking Kandar out first since |
@@ -1909,7 +1909,7 @@ corner until you obtain the Magic Key.
 
 	There's one more thing you can do at night.  If you walk to the center 
 of town you'll see a belly dancer standing near the water.  When you talk to 
-her, she'll ask if you want your &quot;fortune&quot; told.  If you select YES, she'll ask 
+her, she'll ask if you want your "fortune" told.  If you select YES, she'll ask 
 you to follow her to her house but she'll only allow the Hero inside (or who 
 ever is in the lead of the party at the time).  Follow her upstairs and speak 
 with her on the bed.  A series of interesting dialogue takes place; we'll leave
@@ -1984,7 +1984,7 @@ As soon as you take it, though, a ghost will appear.  Speak with it and it will
 ask if you disturbed his slumber and took his treasure.  Reply YES to both 
 questions and he will let you keep the Meteorite Armband because you were 
 honest.  This item can be equiped by selecting USE when you have it selected in 
-a character's inventory.  Whoever is &quot;equiped&quot; with this item will have their 
+a character's inventory.  Whoever is "equiped" with this item will have their 
 Agility stat doubled!  Very handy for a healer like a Pilgrim or even your 
 Hero.
 
@@ -2229,7 +2229,7 @@ shrine, just head south and follow the coast on your right down to Portoga.
 
  ______________________________________________________
 |                                                ____//
-|   4.  THE BLACK PEPPER &amp; SHIP EXCHANGE    ____//
+|   4.  THE BLACK PEPPER & SHIP EXCHANGE    ____//
 |__________________________________________//
 
  ________________
@@ -2438,7 +2438,7 @@ the kidnapper caught them just as they were about to escape.  It's Kandar!
 He recognizes you as you approach the scene and attacks.
 
 +-----------------+------------------------------------------------------------+
-| ! BOSS BATTLE ! |                Kandar &amp; Kandar Henchmen (x2)               |
+| ! BOSS BATTLE ! |                Kandar & Kandar Henchmen (x2)               |
 +-----------------+------------------------------------------------------------+
 | Kandar HP:  400 |                                                            |
 | Henchmen HP: 60 |  It's best just to use the same tactics as the fight with  |
@@ -2497,7 +2497,7 @@ north around the lake to find Dhama Shrine.
 
  _________________________________________________________
 |                                                   ____//
-|   5.  THE SHRINE OF DHAMA &amp; NEW CLASSES      ____//
+|   5.  THE SHRINE OF DHAMA & NEW CLASSES      ____//
 |_____________________________________________//
 
  ________________________
@@ -2709,7 +2709,7 @@ to the south and you'll see the town of Tedanki.
 
  __________________________________________________________________
 |                                                            ____//
-|   6.  THE FINAL KEY &amp; THE SEARCH FOR THE SIX ORBS     ____//
+|   6.  THE FINAL KEY & THE SEARCH FOR THE SIX ORBS     ____//
 |______________________________________________________//
 
  ________________
@@ -2858,7 +2858,7 @@ N/A                             | Hades' Condor          |
 
 
 	Walk north into the castle and try to get pass the guard.  Seems like 
-he won't let you through because the King doesn't want anymore &quot;Yokels&quot;... 
+he won't let you through because the King doesn't want anymore "Yokels"... 
 alrighty then.  Now's the time to use your Invisibility Herb.  Sprinkle the 
 Herb on your party and you'll become invisible momentarily.  Now's your chance 
 to walk pass the guard and into the castle.  If you'd like, you can mess around 
@@ -3518,7 +3518,7 @@ forests and you'll soon find Samanao Castle.
 
  ________________________________________________________
 |                                                  ____//
-|   7.  MIRROR OF RA &amp; THE STAFF OF CHANGE    ____//
+|   7.  MIRROR OF RA & THE STAFF OF CHANGE    ____//
 |____________________________________________//
 
  ________________
@@ -3887,7 +3887,7 @@ battle, so don't even bother.
 
  _____________________________________________________
 |                                               ____//
-|   9.  THE SILVER ORB &amp; THE ARCHFIEND     ____//
+|   9.  THE SILVER ORB & THE ARCHFIEND     ____//
 |_________________________________________//
 
  ___________________
@@ -4294,7 +4294,7 @@ overworld music may sound familiar. ;)  Soon you'll notice a town east of the
 port.  This is the castle town of Brecconaly/Tantegel.
 
  _____________________________________
-| 10B.  BRECCONALY &amp; TANTEGEL CASTLE  \
+| 10B.  BRECCONALY & TANTEGEL CASTLE  \
 |_____________________________________/
 Recommended LVL: 33-35
                                  ________________________
@@ -4785,7 +4785,7 @@ and use your Final Key (or the Open spell) to open the large door in front of
 you.  Enter the room and stand in front of the gray statue.  Use your Fairy 
 Flute that you found in Kol and the statue of Rubiss will come to life.  She 
 will hand over the SACRED AMULET and then disappear.  This item can actually
-be equipped by &quot;using&quot; the Sacred Amulet in your character's inventory.  It
+be equipped by "using" the Sacred Amulet in your character's inventory.  It
 will reduce the effectiveness of the Defeat spell when enemies use it on
 your party.
 
@@ -5126,7 +5126,7 @@ head up to the throne room to enjoy the ending.
 
    ____________________________________________________
   /                                                    \
- |  X.  I T E M   &amp;   E Q U I P M E N T   L I S T S     |
+ |  X.  I T E M   &   E Q U I P M E N T   L I S T S     |
  |                                                      |
   \____________________________________________________/
 
@@ -5136,7 +5136,7 @@ head up to the throne room to enjoy the ending.
 |_______________________//
 
 	The chart below includes all of the common and key items in the game; 
-and by &quot;key&quot; items, I mean items that are either important to the storyline 
+and by "key" items, I mean items that are either important to the storyline 
 some how or cannot be bought or sold.  I have them listed in alphabetical order.
 
 * = Key Item
@@ -5387,7 +5387,7 @@ Sg = Sage
 |            |       |        | Muor        |         |                       |
 |____________|_______|________|_____________|_________|_______________________|
 | Snowblast  |   N/A | 11250G | Swordoid    |   +80   | Hr, Sr                |
-| Sword      |       |        | &amp; Marauder  |         |                       |
+| Sword      |       |        | & Marauder  |         |                       |
 |            |       |        | drop        |         |                       |
 |____________|_______|________|_____________|_________|_______________________|
 | Staff of   | 2500G |  1875G | Assaram,    |   +55   | Wz, Pr, Sg            |
@@ -6043,7 +6043,7 @@ with my experiences).  This is why Shadow's stats vary with each battle.
 
    _________________________________________________________
   /                                                         \
- |  XII.  C R E D I T S   &amp;   A C K N O W L E D G M E N T S  |
+ |  XII.  C R E D I T S   &   A C K N O W L E D G M E N T S  |
  |                                                           |
   \_________________________________________________________/
 
