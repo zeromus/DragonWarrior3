@@ -3868,17 +3868,8 @@ _b0_s5B_non_battle_mode_spell_cast:
 		BVC		_non_battle_mode_spell_cast
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$164	; "The king cannot use that spell"
-		JMP		_wait_for_key
 
-; =============== S U B	R O U T	I N E =======================================
-; unreferenced code
-;sub_9E7E:
-;		LDA		#$3E
-;		JSR		sub_A120
-;		BRK
-;		.BYTE	  5, 7		; _bE_s5
-;		LDA		byte_42
-;		JSR		_wrap_bE_s4_msg_m00_arg0_safe_members_numberwise
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _wait_for_key:
@@ -3912,14 +3903,14 @@ _non_battle_mode_spell_cast:
 		JSR		_check_if_player_is_dead_ex
 		BCS		loc_9EB3
 		LDA		#$C5	; "<name> is dead and cannot cast the spell"
-		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
+		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
 loc_9EB3:
 		JSR		_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		AND		#$40
 		BEQ		loc_9EC1
 		LDA		#$D2	; "<name> is numb and cannot cast the spell"
-		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
+		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
 loc_9EC1:
 		LDA		#$44
 		STA		byte_CF
@@ -3928,7 +3919,7 @@ loc_9EC1:
 		CMP		#$C4
 		BNE		loc_9ED3
 		LDA		#$C6	; "<name> is confused and cannot cast the spell"
-		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
+		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
 loc_9ED3:
 		JSR		_b0_s2C_player_CLASS_read
 		CMP		#7
@@ -3944,7 +3935,7 @@ loc_9ED3:
 		BNE		loc_9EF3
 loc_9EEE:
 		LDA		#$C4	; "<name> doesn't know any spells..."
-		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
+		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
 loc_9EF3:
 		LDA		byte_D0
 		FARX	_b1_s17
@@ -3959,7 +3950,7 @@ loc_9EF3:
 		JSR		_b0_sB_player_MP_consume
 		BCS		loc_9F13
 		LDA		#$20	; "MP is not high enough"
-		JMP		_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe
+		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
 loc_9F13:
 		LDX		byte_49
 		STX		byte_D3
@@ -3968,7 +3959,7 @@ loc_9F13:
 		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
-		LDA		#$2B	; "<player>'s party is wiped out"
+		LDA		#$2B
 		JSR		_wrap_bE_sC_display_window_safe
 		JMP		loc_9F2D
 loc_9F2A:
@@ -3989,7 +3980,7 @@ loc_9F34:
 		AND		#$3F
 		JSR		_b0_s67
 		JSR		_b0_s9_player_MP_subtract
-		JSR		_wrap_display_window_3E_and_bE_s5
+		JSR		_wrap_wnd3E_bE_s5
 		MSGX	_msg_m00,$002	; "<name> attacks"
 		SYSX	_apu_load,$8E
 		FARX	_b2_s7_screen_spell_blink
@@ -4113,8 +4104,8 @@ loc_A01D:
 		JSR		_b0_s4_player_HP_add
 		LDA		byte_46
 		BNE		loc_A031
-		MSGX	_msg_m00,$005	; "$FD,$EF"
-		MSGX	_msg_m00,$014	; "<name> has recovered"
+		LDA		#$14	; "<name> has recovered"
+		JSR		_wrap_msg005_msg_m00_arg0
 		JSR		sub_A172
 loc_A031:
 		PLA
@@ -4153,7 +4144,7 @@ loc_A05F:
 		JSR		_b0_s4_player_HP_add
 		LDA		#$3C	; "<name> comes back to life"
 loc_A06C:
-		JSR		_wrap_bE_s4_msg_m00_arg0_safe
+		JSR		_wrap_msg_m00_arg0
 		JSR		sub_A172
 		FARX	_bE_s10
 		SEC
@@ -4262,46 +4253,6 @@ _warp_b6_sF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; used only in unreferenced wrapper for displaying and waiting some messages
-; specifically for number of the players in the party, never used in this game
-; maybe because coded specifically to every other's situation, or maybe because
-; there number of players never happen to change the message itself
-;
-;_wrap_bE_s4_msg_m00_arg0_safe_members_numberwise:
-;		PHA
-;		JSR		_b0_s31_get_party_chars_list
-;		PLA
-;		TAX
-;		LDA		word_4
-;		CMP		#1
-;		BEQ		loc_A10D
-;		INX
-;loc_A10D:
-;		TXA
-
-;; FALLTHROUGH ;;
-
-; =============== S U B	R O U T	I N E =======================================
-; displays the message in range $000 to $0FF with idx in A,
-; with byte_CE backup as well as keep the argument, however i don't know why
-; this should be done here, since this byte is backupping by _bE_s4_msg_m00 too
-; so this seems redundant by the firt glance, maybe replace it with regular
-; SYSX mgs_m00_b0 routine.
-;
-_wrap_bE_s4_msg_m00_arg0_safe:
-;		PHA						; push argument
-;		LDA		byte_CE
-;		PHA						; backup variable
-;		TSX
-;		LDA		$102,X			; get argument from stack directly
-		LDX		#0				; higher index 0
-		FARX	_bE_s4_msg_m00
-;		PLA
-;		STA		byte_CE
-;		PLA
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 _wrap_bE_sC_display_window_safe:
 		STA		byte_44
 		TXA
@@ -4323,13 +4274,13 @@ _wrap_bE_sC_display_window_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_display_window_3E_bE_s5_and_msg_m00_arg0_safe:
+_wrap_wnd3E_bE_s5_msg_m00_arg0:
 		PHA
-		JSR		_wrap_display_window_3E_and_bE_s5
+		JSR		_wrap_wnd3E_bE_s5
 		LDA		byte_53
 		STA		byte_D2
 		PLA
-		JSR		_wrap_bE_s4_msg_m00_arg0_safe
+		JSR		_wrap_msg_m00_arg0
 		JMP		_wait_for_key
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4356,9 +4307,8 @@ loc_A167:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_display_window_3E_and_bE_s5:
-		LDA		#$3E
-		FARX	_bE_sC_display_window
+_wrap_wnd3E_bE_s5:
+		SYSX	_display_window,$3E
 		FARX	_bE_s5
 		RTS
 
@@ -4695,17 +4645,15 @@ sub_A3FB:
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
-		LDA		#5	; "$FD,$EF"
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$005	; "$FD,$EF"
 		LDA		#0
 		STA		byte_56
 		STA		byte_58
-		FARX	_bB_s3_apu_load				; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
+		FARX	_bB_s3_apu_load	; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
 		SYSX	_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
-		LDA		#$C0	; "<name> goes up to the next level
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0C0	; "<name> goes up to the next level
 		LDX		byte_51
 ; player levels-up here
 		INC		_players_level,X
@@ -4827,11 +4775,7 @@ loc_A448:
 		LDA		byte_52
 		CLC
 		ADC		#$A0	; "Strength goes up <number> point<s>."	base message also AGI, VIT, LUCK, INT
-		PHA
-		LDA		#5	; "$FD,$EF"
-		JSR		_wrap_bE_s4_msg_m00_arg0
-		PLA
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg005_msg_m00_arg0
 
 .no_stat_gain:
 ; go to next target stat. loop back
@@ -4882,10 +4826,8 @@ loc_A50D:
 		BCC		loc_A522
 		INC		_players_MHP+1,X
 loc_A522:
-		LDA		#5
-		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B8	; "The maximum HP goes up <number> point<s>."
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg005_msg_m00_arg0
 loc_A52C:
 		JSR		_b0_s2C_player_CLASS_read
 		CMP		#4
@@ -4930,10 +4872,8 @@ loc_A56E:
 		BCC		loc_A583
 		INC		_players_MMP+1,X
 loc_A583:
-		LDA		#5
-		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$B9	; "The maximum MP goes up <number> point<s>."
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg005_msg_m00_arg0
 loc_A58D:
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
@@ -5101,10 +5041,8 @@ loc_A6A1:
 		LDA		byte_55
 		CMP		#4
 		BCS		loc_A6E7
-		LDA		#5
-		JSR		_wrap_bE_s4_msg_m00_arg0
 		LDA		#$BA	; "<name> lerns a new spell"
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg005_msg_m00_arg0
 		JMP		loc_A6E7
 loc_A6C0:
 		TYA
@@ -5615,19 +5553,19 @@ _other_spell_related_data:
 		.BYTE	$12,$23,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-_display_window_3E_and_msg_m00_arg1_idx48_bE_s33:
+_wrap_wnd3E_msg148_bE_s33:
 		LDA		#$48	; "Doesn't have an item yet"
-		BNE		_display_window_3E_and_msg_m00_arg1_bE_s33
+		BNE		_wrap_wnd3E_msg_m00_arg1_bE_s33
 
 ; =============== S U B	R O U T	I N E =======================================
-_display_window_3E_and_msg_m00_arg1_idx67_bE_s33:
+_wrap_wnd3E_msg167_bE_s33:
 		LDA		#$67	; "The king bears no items"
 
 ;; FALLTHOURGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-_display_window_3E_and_msg_m00_arg1_bE_s33:
-		JSR		_display_window_3E_and_msg_m00_arg1
+_wrap_wnd3E_msg_m00_arg1_bE_s33:
+		JSR		_wrap_wnd3E_msg_m00_arg1
 		FARX	_bE_s33
 		RTS
 
@@ -5635,7 +5573,7 @@ _display_window_3E_and_msg_m00_arg1_bE_s33:
 _b0_s5D:
 		LDA		_global_game_flags
 		AND		#$40
-		BNE		_display_window_3E_and_msg_m00_arg1_idx67_bE_s33
+		BNE		_wrap_wnd3E_msg167_bE_s33
 		SYSX	_display_window,$2C
 		LDX		#5
 		JSR		_sleep_X_sync
@@ -5650,7 +5588,7 @@ _b0_s5D:
 		STA		byte_CF
 		JSR		_b0_s28_player_inventory_item_read
 		LDA		word_4
-		BEQ		_display_window_3E_and_msg_m00_arg1_idx48_bE_s33
+		BEQ		_wrap_wnd3E_msg148_bE_s33
 		SYSX	_display_window,$6B
 		CMP		#$FF
 		BEQ		loc_AB46
@@ -5704,7 +5642,7 @@ loc_AB65:
 		BEQ		loc_AB8B
 		CPX		#$70
 		BEQ		loc_AB8B
-		JSR		sub_ACB4
+		JSR		_wrap_wnd2E_ex
 		TAX
 		BPL		loc_AB8B
 loc_AB88:
@@ -5769,7 +5707,7 @@ loc_ABE7:
 		DEC		word_4
 		LDA		word_4
 		BEQ		loc_ABF8
-		JSR		sub_ACB4
+		JSR		_wrap_wnd2E_ex
 loc_ABF8:
 		STA		byte_47
 		STA		byte_CE
@@ -5889,7 +5827,7 @@ byte_ACB1:
 		.BYTE	$52,$57,$76
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_ACB4:
+_wrap_wnd2E_ex:
 		SYSX	_display_window,$2E
 		STA		byte_47
 		STA		byte_D4
@@ -5936,7 +5874,7 @@ loc_ACEE:
 		JSR		sub_AD13
 loc_ACF8:
 		TYA
-		JMP		_wrap_bE_s4_msg_m00_arg1
+		JMP		_wrap_msg_m00_arg1
 loc_ACFC:
 		ASL
 		TAX
@@ -5952,7 +5890,7 @@ loc_AD09:
 		JSR		sub_AD13
 loc_AD0F:
 		TYA
-		JMP		_wrap_bE_s4_msg_m00_arg1
+		JMP		_wrap_msg_m00_arg1
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AD13:
@@ -6001,7 +5939,7 @@ loc_AD45:
 		JSR		sub_AD13
 loc_AD4B:
 		TYA
-		JMP		_wrap_bE_s4_msg_m00_arg1
+		JMP		_wrap_msg_m00_arg1
 loc_AD4F:
 		SYSX	_display_window,$3E
 		LDA		byte_45
@@ -6030,7 +5968,7 @@ loc_AD7B:
 		JSR		_b0_s60_get_item_type
 		CLC
 		ADC		#$1D	; base "this look like a weapon" etc.
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		LDA		byte_48
 		AND		#$7F
 		TAX
@@ -6068,7 +6006,7 @@ sub_ADAC:
 		DEY		; "is unable to move and can't use the item"
 loc_ADC3:
 		TYA
-		BNE		_display_window_3E_and_msg_m00_arg1
+		BNE		_wrap_wnd3E_msg_m00_arg1
 loc_ADC6:
 		JSR		_b0_s5E_check_if_item_can_be_used
 		BCC		_display_name_cannot_use_the_item
@@ -6084,11 +6022,11 @@ loc_ADC6:
 		LDA		#$15
 
 ; =============== S U B	R O U T	I N E =======================================
-_display_window_3E_and_msg_m00_arg1:
+_wrap_wnd3E_msg_m00_arg1:
 		PHA
 		SYSX	_display_window,$3E
 		PLA
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		SEC
 		RTS
 
@@ -6153,10 +6091,10 @@ loc_AE2C:
 		BEQ		loc_AE52
 		CMP		#$64  						; number less than 64 here are $1xx messages
 		BCC		loc_AE4C
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg_m00_arg0
 		JMP		loc_AE4F 					; proceed to handle script
 loc_AE4C:
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 loc_AE4F:
 		JMP		(word_3C)					; dispatch to script callback
 loc_AE52:
@@ -6443,7 +6381,7 @@ loc_AFD8:
 loc_AFF6:
 		LDA		#$6F
 loc_AFF8:
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg_m00_arg0
 		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s20
 		FARX	_b6_s10
@@ -6472,7 +6410,7 @@ loc_B03C:
 		STX		_msg_number_parameter_F8
 		LDA		#$10
 loc_B045:
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		LDA		byte_9B
 		SEC
 		SBC		byte_2A
@@ -6487,7 +6425,7 @@ loc_B056:
 		STX		_msg_number_parameter_F8
 		LDA		#$13
 loc_B05F:
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		MSGX	_msg_m00,$114
 		JMP		loc_AF3B
 
@@ -6685,7 +6623,7 @@ sub_B16B:
 		FARX	_b4_s20
 		JSR		_b0_s2A_player_inventory_item_remove
 		LDA		#$A6
-		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
+		JSR		_wrap_msg005_msg_m00_arg0
 loc_B196:
 		SEC
 		RTS
@@ -6754,7 +6692,7 @@ sub_B1D9:
 		LDA		byte_48
 		CLC
 		ADC		#$41
-		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
+		JSR		_wrap_msg005_msg_m00_arg0
 		PLA ; pop sum
 		LDX		byte_45
 		RTS
@@ -6780,7 +6718,7 @@ loc_B212:
 		LDA		word_4
 		JSR		sub_B2AD
 		LDA		#$A8
-		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
+		JSR		_wrap_msg005_msg_m00_arg0
 		SEC
 		RTS
 
@@ -6878,7 +6816,7 @@ sub_B298:
 		ORA		#$40
 		STA		_players_status+1,X
 		LDA		#$A
-		JSR		_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe
+		JSR		_wrap_msg005_msg_m00_arg0
 		SEC
 		RTS
 
@@ -6902,11 +6840,11 @@ sub_B2B9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s4_msg_m00_arg0_idx05_then_A_safe:
+_wrap_msg005_msg_m00_arg0:
 		PHA
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		PLA
-		JMP		_wrap_bE_s4_msg_m00_arg0_safe
+		JMP		_wrap_msg_m00_arg0
 
 ; struct EnemyInfo
 ;	{

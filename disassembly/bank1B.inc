@@ -3,7 +3,7 @@
 
 		ECHO "bank 1B free space", [SAFE_STUB_ORG-.]
 
-		.BYTE	$FF
+		.BYTE $FF
 
 		ORG SAFE_STUB_ORG
 		SAFE_STUB
