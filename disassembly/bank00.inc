@@ -81,7 +81,7 @@ _b0_s56_ptr:		.WORD	_b0_s56
 _b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
 _b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
 _b0_s5B_non_battle_mode_spell_cast_ptr:			.WORD	_b0_s5B_non_battle_mode_spell_cast
-_b0_s5C_ptr:		.WORD	_b0_s5C
+_b0_s5C_player_inventory_search_for_cursed_item_ptr:		.WORD	_b0_s5C_player_inventory_search_for_cursed_item
 _b0_s5D_ptr:		.WORD	_b0_s5D
 _b0_s5E_check_if_item_can_be_equipped_ptr:		.WORD	_b0_s5E_check_if_item_can_be_equipped
 _b0_s5E_check_if_item_can_be_used_ptr:			.WORD	_b0_s5E_check_if_item_can_be_used
@@ -1636,9 +1636,10 @@ _b0_d41_item_use_list:
 ; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
 ;
 ; bit 10 means that item cannot be thrown away from inventory
+; bit  8 means that item is cursed
 ;
 _b0_d42_item_use_effects_list:
-		.BYTE	  0,   1,  2,   2,  1,   2,  2,$E2,  1,   1,  1,   2,  1,$E3,$E3,   2
+		.BYTE	  0,  1,  2,  2,  1,  2,  2,$E2,  1,  1,  1,  2,  1,$E3,$E3,  2
 		.BYTE	$F3,$14,$83, $B, $B,  2,$F0,  2,  3,  2,$A2,$E2,$F3,$E3,  3,$E2
 		.BYTE	  1,  1,  1,  2,  2,  2,  2,  2,$10,  2,  1,  2,  2, $B,  2,  1
 		.BYTE	  1,  3,$10,  2,$10,  2,$10,  3,  1,  2,$83,$10,  9,  1,  2,$10
@@ -1894,8 +1895,8 @@ locret_93CF:
 _b0_sC_player_LV_read:
 		JSR		_b0_sE_player_STATUS_read
 		BIT		word_4+1
-		BPL		_de_status_ret	; bit 80 of the second byte is 0, so player is dead
-		BVS		_nm_status_ret	; bit 40 of the second byte is 1, so player is "NM"
+		BPL		_de_status_ret						; bit 80 of the second byte is 0, so player is dead
+		BVS		_nm_status_ret						; bit 40 of the second byte is 1, so player is "NM"
 		LDA		_global_game_flags
 		AND		#$20
 		BEQ		_non_battle_flags					; battle flags has priority
@@ -2836,7 +2837,10 @@ loc_98A0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s5C:
+; look for equipped items in particular player's inventory and check if it
+; is cursed, return cursed item index, or CF=0 if there are no cursed items
+;
+_b0_s5C_player_inventory_search_for_cursed_item:
 		LDA		byte_CE
 		ASL
 		ASL
@@ -4057,7 +4061,7 @@ _spell_heal_ex:
 		BCC		locret_9FE9
 		JSR		_b0_s4_player_HP_add
 		MSGX	_msg_m00,$014	; "<name> has recovered"
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 		JSR		__pause_or_skip
 		SEC
 locret_9FE9:
@@ -4072,7 +4076,7 @@ _b0_s54:
 		BNE		sub_9FF8
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9FF4:
+_cmd_spell_heal_more:
 		LDA		#0
 		STA		byte_46
 
@@ -4106,7 +4110,7 @@ loc_A01D:
 		BNE		loc_A031
 		LDA		#$14	; "<name> has recovered"
 		JSR		_wrap_msg005_msg_m00_arg0
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 loc_A031:
 		PLA
 		TAX
@@ -4145,7 +4149,7 @@ loc_A05F:
 		LDA		#$3C	; "<name> comes back to life"
 loc_A06C:
 		JSR		_wrap_msg_m00_arg0
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 		FARX	_bE_s10
 		SEC
 		RTS
@@ -4157,10 +4161,10 @@ loc_A079:
 		BNE		loc_A06C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A07D:
+_cmd_spell_remove_curse:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A09B
-		JSR		_b0_s5C
+		JSR		_b0_s5C_player_inventory_search_for_cursed_item
 		BCC		locret_A09B
 		LDA		word_4
 		STA		byte_CF
@@ -4184,7 +4188,7 @@ _cmd_spell_detoxicate:
 		AND		#$DF
 		STA		_players_status+1,X
 		MSGX	_msg_m00,$044	; "The poison leaves <name>'s body"
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 		SEC
 locret_A0B9:
 		RTS
@@ -4193,17 +4197,17 @@ loc_A0BA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A0BC:
+_cmd_spell_remove_numbness:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A0D9
 		LDA		_players_status+1,X
 		AND		#$40
-		BEQ		loc_A0BA
+		BEQ		loc_A0BA		; player not in "NM" state
 		LDA		_players_status+1,X
-		AND		#$BF
+		AND		#$BF			; clear "NM state
 		STA		_players_status+1,X
 		MSGX	_msg_m00,$042	; "<name>'s numbness goes away"
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 		SEC
 locret_A0D9:
 		RTS
@@ -4218,11 +4222,6 @@ _cmd_spell_repel:
 ; =============== S U B	R O U T	I N E =======================================
 _warp_bC_s10:
 		FARX	_bC_s10
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_warp_bC_sF:
-		FARX	_bC_sF
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4313,10 +4312,10 @@ _wrap_wnd3E_bE_s5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A172:
+_wnd_ATK_DEF_POW_display:
 		LDA		byte_CE
 		PHA
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		JSR		_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
@@ -4398,16 +4397,16 @@ _command_spell_lib:
 		.WORD	_cmd_spell_heal
 		.WORD	_cmd_spell_heal
 		.WORD	_cmd_spell_heal
-		.WORD	sub_9FF4
-		.WORD	sub_9FF4
+		.WORD	_cmd_spell_heal_more
+		.WORD	_cmd_spell_heal_more
 		.WORD	_cmd_spell_revive
 		.WORD	_cmd_spell_revive
-		.WORD	sub_A07D
+		.WORD	_cmd_spell_remove_curse
 		.WORD	_cmd_spell_detoxicate
-		.WORD	sub_A0BC
+		.WORD	_cmd_spell_remove_numbness
 		.WORD	_cmd_spell_repel
 		.WORD	_warp_bC_s10
-		.WORD	_warp_bC_sF
+		.WORD	_warp_bC_sF_item_key_type3_use
 		.WORD	_warp_bC_s1E
 		.WORD	sub_A0EC
 		.WORD	_warp_b6_sC
@@ -5985,7 +5984,7 @@ loc_ADA1:
 		PLA
 		AND		#8
 		BNE		loc_ADA9
-		MSGX	_msg_m00,$116 ; "it doesn't look like special cursed"
+		MSGX	_msg_m00,$116	; "it doesn't look like special cursed"
 loc_ADA9:
 		JMP		sub_AC9F
 
@@ -6003,7 +6002,7 @@ sub_ADAC:
 		ASL
 		BCC		loc_ADC3
 		BPL		loc_ADC6
-		DEY		; "is unable to move and can't use the item"
+		DEY				; "is unable to move and can't use the item"
 loc_ADC3:
 		TYA
 		BNE		_wrap_wnd3E_msg_m00_arg1
@@ -6108,20 +6107,19 @@ loc_AE52:
 		BNE		loc_AE68
 loc_AE62:
 		MSGX	_msg_m00,$040	; "But nothing happens"
-		JMP		loc_AF3B
+		JSR		__pause_or_skip
 loc_AE68:
 		LDA		#$5C						; idx $15C "Holds <item> by the thread... and Sailor..."
 		BNE		loc_AE4C
 
 ; =============== S U B	R O U T	I N E =======================================
-; "<user> uses the <item>. But nothing happens!
-sub_AE6C:
+_item00_use:
 		LDA		byte_2A
 		CMP		#$4A
-		BNE		loc_AEB0
+		BNE		_wrap_msg153_exit
 		LDA		byte_2B
 		CMP		#$90
-		BNE		loc_AEB0
+		BNE		_wrap_msg153_exit
 		MSGX	_msg_m00,$13C	; "<> throws the <> in the crater"
 		JSR		_sleep_30
 		FARX	_bC_s24
@@ -6129,7 +6127,7 @@ sub_AE6C:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "<user> puts the <item> on
-sub_AE82:
+_item01_use:
 		JSR		sub_B143
 		BCC		locret_AE8B
 		FARX	_bE_s33
@@ -6142,7 +6140,7 @@ locret_AE8B:
 ; "Look! There is an image of a sleeping monster reflected in the mirror!"
 ; otherwise "But nothing happens!"
 ;
-sub_AE92:
+_item09_use:
 		LDA		_mapNumber
 		CMP		#$62
 		BNE		_void_event
@@ -6158,7 +6156,9 @@ sub_AE92:
 		FARX	_b5_s5_mirror_of_ra_trigger_on		; lion event
 		SEC
 		RTS
-loc_AEB0:
+
+; =============== S U B	R O U T	I N E =======================================
+_wrap_msg153_exit:
 		MSGX	_msg_m00,$153	; "<> uses the <>."
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6168,21 +6168,20 @@ _void_event:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "<actor> sets the <item> on the ground. But nothing is happening here."
-sub_AEB5:
+_wrap_bC_s22_item_float_use:
 		FARX	_bC_s22
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; delay and "A darkness oozes out from the lamp and covers ..."
-sub_AEB9:
+_item0B_use:
 		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; become a princess. cool!
-sub_AEC0:
+_item0C_use:
 		FARX	_b6_s15
 		BCC		locret_AECC
 		JSR		_sleep_30
@@ -6193,59 +6192,51 @@ locret_AECC:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; become invisible, for a while (Invisibility Herb)
-sub_AECD:
+_item0D_use:
 		JSR		_sleep_30
 		FARX	_b6_sE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "The magic ball can't be used here"
-sub_AED4:
-		FARX	_bC_s13
+_warp_bC_s13_item_magic_ball_use:
+		FARX	_bC_s13_use_magic_ball
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "But nothing happens!" obviously more complex
-sub_AED8:
-		FARX	_bC_sD
+_warp_bC_sD_item_key_type0_use:
+		FARX	_bC_sD_item_key_type0_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "But nothing happens!" obviously more complex
-sub_AEDC:
-		FARX	_bC_sE
+_warp_bC_sE_item_key_type1_use:
+		FARX	_bC_sE_item_key_type1_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "But nothing happens!" obviously more complex
-sub_AEE0:
-		FARX	_bC_sF
+_warp_bC_sF_item_key_type3_use:
+		FARX	_bC_sF_item_key_type3_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "<user> falls asleep!" <wait> "<user> is numb and unable to move". possibly glitched by my testing
-sub_AEE4:
+_item12_use:
 		MSGX	_msg_m00,$018	; "<name> falls asleep"
-		JSR		sub_B298
-		JMP		loc_AF3B
+		JSR		_player_set_numb_status
+		JSR		__pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_b6_s12_sleeping_willage_trigger:
+_wrap_b6_s12_item_wakeup_powder_use:
 		FARX	_b6_s12_sleeping_willage_trigger
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "However, Norud is not here". Must be for Royal Scroll
-; "Ahem! So thou wouldst go east?" (yes/no) -> "Ahem! It is the request of the king of Portoga! Come along with me then" (and cutscene happens im sure) ; "Well then, there is nothing I can do for you"
-sub_AEF1:
-; reference a quest flag to see whether this quest has already been done
-		LDA		byte_60B6
+_item_royal_scroll_use:
+		LDA		byte_60B6				; reference a quest flag to see whether this quest has already been done
 		AND		#$20
 		BNE		_void_event
 		LDA		_mapNumber
-		CMP		#$2F ; whichever map norud's on
-; search a range of positions for where norud might be
-		BNE		loc_AF38
+		CMP		#$2F					; whichever map norud's on
+		BNE		loc_AF38				; search a range of positions for where norud might be
 		LDA		_playerMapX
 		CMP		#$26
 		BCC		loc_AF38
@@ -6256,27 +6247,25 @@ sub_AEF1:
 		BCC		loc_AF38
 		CMP		#7
 		BCS		loc_AF38
-; something else tricky...
-		LDA		_npcs_pos_list
+		LDA		_npcs_pos_list			; check for npc with index 0 is at the right place
 		CMP		#$27
 		BNE		loc_AF38
-		MSGX	_msg_m00,$1A1
+		MSGX	_msg_m00,$1A1			; "Ahem! So thou wouldst go east"
 		SYSX	_apu_load,$86
 		SYSX	_display_window,$1D
 		TAX
 		BNE		loc_AF32
-		MSGX	_msg_m00,$1A2
+		MSGX	_msg_m00,$1A2			; "Ahem! It is a request of the king"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#4
 		FARX	_bC_s0_npc_anim_script_init
 		SEC
 		RTS
 loc_AF32:
-		MSGX	_msg_m00,$1A3
-		JMP		loc_AF3B
+		MSGX	_msg_m00,$1A3	; "Well, then there is nothing I can do four you"
+		JSR		__pause_or_skip
 loc_AF38:
-		MSGX	_msg_m00,$106
-loc_AF3B:
+		MSGX	_msg_m00,$106	; "However, Norud is not here"
 		JSR		__pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6285,44 +6274,39 @@ sub_AF3E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AF5B:
+_item1E_use:
 		FARX	_b1_s15
 		CMP		#$FF
 		BEQ		loc_AF78
 		STA		byte_50
 		SYSX	_display_window,$3E
-		MSGX	_msg_m00,$0AA
+		MSGX	_msg_m00,$0AA	; "<name> flings the <item> into the air."
 		JSR		_sleep_30
 		FARX	_b6_s6
 		BCS		sub_AF3E
-		MSGX	_msg_m00,$040
+		MSGX	_msg_m00,$040	; "But nothing happens."
 		JSR		__pause_or_skip
 loc_AF78:
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AF7D:
-		CLC
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF7F:
-		MSGX	_msg_m00,$108
+_item21_use:
+		MSGX	_msg_m00,$108	; "The spirit of Errol and Olivia devotions
 		JSR		_sleep_30
 		FARX	_b6_s11
 		BCC		loc_AF92
-		MSGX	_msg_m00,$10B
-		MSGX	_msg_m00,$109
+		MSGX	_msg_m00,$10B	; "Oh, Errol, my belowed. I've been waiting for you"
+		MSGX	_msg_m00,$109	; "The curse on Olivia is broken"
 		SEC
 		RTS
 loc_AF92:
-		MSGX	_msg_m00,$102
+		MSGX	_msg_m00,$102	; "But nothing happening now"
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AF9A:
+_item23_use:
 		LDA		_playerMapX
 		STA		word_4+1
 		LDA		_playerMapY
@@ -6348,7 +6332,7 @@ loc_AFBE:
 loc_AFC0:
 		LDA		_npcs_pos_list+1,X
 		CMP		#$FF
-		BEQ		sub_AF7D
+		BEQ		loc_AF78
 		CMP		word_6
 		BNE		loc_AFD2
 		LDA		_npcs_pos_list,X
@@ -6375,7 +6359,7 @@ loc_AFD8:
 		DEY
 		BEQ		loc_AFF8
 		DEY
-		BNE		sub_AF7D
+		BNE		loc_AF78
 		LDA		#$B4
 		BNE		loc_AFF8
 loc_AFF6:
@@ -6392,7 +6376,7 @@ byte_B006:
 		.BYTE	  2,  2,  3,  3,  0,  2,  2,  2,  3,  1,  0,  3,  3,  3,  0,  2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B026:
+_item24_use:
 		LDA		#0
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
@@ -6427,15 +6411,15 @@ loc_B056:
 loc_B05F:
 		JSR		_wrap_msg_m00_arg1
 		MSGX	_msg_m00,$114
-		JMP		loc_AF3B
+		JSR		__pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B068:
+_wrap_bC_sC_item25_use:
 		FARX	_bC_sC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B06C:
+_item26_use:
 		SYSX	_apu_load,$1C
 		JSR		_sleep_30
 		LDA		_mapNumber
@@ -6462,7 +6446,7 @@ loc_B097:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B09C:
+_item27_use:
 		SYSX	_apu_load,$1B
 		FARX	_bB_s7
 		LDA		byte_60C5
@@ -6480,13 +6464,13 @@ loc_B0B5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_b6_s1F:
+_wrap_b6_s1F_item28_use:
 		JSR		_sleep_30
 		FARX	_b6_s1F
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bC_s26:
+_wrap_bC_s26_item29_use:
 		FARX	_bC_s26
 		RTS
 
@@ -6495,89 +6479,89 @@ _wrap_bC_s26:
 ;
 _items_use_lib:
 		.BYTE	  0
-		.WORD	sub_AE6C
+		.WORD	_item00_use
 		.BYTE	  0
-		.WORD	sub_AE82
+		.WORD	_item01_use
 		.BYTE	  0
-		.WORD	sub_AE82
+		.WORD	_item01_use
 		.BYTE	  0
-		.WORD	sub_AE82
+		.WORD	_item01_use
 		.BYTE	  0
-		.WORD	sub_AE82
+		.WORD	_item01_use
 		.BYTE	  0
-		.WORD	sub_AE82
+		.WORD	_item01_use
 		.BYTE	  0
 		.WORD	_void_event
 		.BYTE	$A5				; $0A5	"<name> puts the <> on a finger and makes a wish"
-		.WORD	sub_B16B
+		.WORD	_item_ring_of_magic_use
 		.BYTE	$9B				; $09B
-		.WORD	sub_B269
+		.WORD	_item08_use
 		.BYTE	$C				; $10C
-		.WORD	sub_AE92
+		.WORD	_item09_use
 		.BYTE	  0
-		.WORD	sub_AEB5
+		.WORD	_wrap_bC_s22_item_float_use
 		.BYTE	$56				; $156
-		.WORD	sub_AEB9
+		.WORD	_item0B_use
 		.BYTE	$60				; $160
-		.WORD	sub_AEC0
+		.WORD	_item0C_use
 		.BYTE	$57				; $157
-		.WORD	sub_AECD
+		.WORD	_item0D_use
 		.BYTE	  0
-		.WORD	sub_AED4
+		.WORD	_warp_bC_s13_item_magic_ball_use
 		.BYTE	$53				; $153
-		.WORD	sub_AED8
+		.WORD	_warp_bC_sD_item_key_type0_use
 		.BYTE	$53
-		.WORD	sub_AEDC
+		.WORD	_warp_bC_sE_item_key_type1_use
 		.BYTE	$53
-		.WORD	sub_AEE0
+		.WORD	_warp_bC_sF_item_key_type3_use
 		.BYTE	$C
-		.WORD	sub_AEE4
-		.BYTE	$62				; $162 ; "Puts the <> in the palm of hand"
-		.WORD	_wrap_b6_s12_sleeping_willage_trigger
+		.WORD	_item12_use
+		.BYTE	$62				; $162 "Puts the <> in the palm of hand"
+		.WORD	_wrap_b6_s12_item_wakeup_powder_use
 		.BYTE	$58
-		.WORD	sub_AEF1
+		.WORD	_item_royal_scroll_use
 		.BYTE	$53
-		.WORD	sub_B198
+		.WORD	_item_strength_seed_use
 		.BYTE	$53
-		.WORD	sub_B1A5
+		.WORD	_item_seed_of_agility_use
 		.BYTE	$53
-		.WORD	sub_B1CC
+		.WORD	_item_seed_of_vitality_use
 		.BYTE	$53
-		.WORD	sub_B1BF
+		.WORD	_item_seed_of_luck_use
 		.BYTE	$53
-		.WORD	sub_B1B2
+		.WORD	_item_seed_of_intelligence_use
 		.BYTE	$A7				; $0A7
-		.WORD	sub_B1F6
+		.WORD	_item1A_use
 		.BYTE	$53
-		.WORD	sub_B21E
+		.WORD	_item1B_use
 		.BYTE	$53
-		.WORD	sub_B234
+		.WORD	_item1C_use
 		.BYTE	$A9				; $0A9
-		.WORD	_cmd_spell_fairy_water
+		.WORD	_item_fairy_water_use
 		.BYTE	  0
-		.WORD	sub_AF5B
+		.WORD	_item1E_use
 		.BYTE	$AB				; $0AB
-		.WORD	sub_B246
+		.WORD	_item1F_use
 		.BYTE	$AC				; $0AC
-		.WORD	sub_AF7D
+		.WORD	_void_event
 		.BYTE	$53
-		.WORD	sub_AF7F
+		.WORD	_item21_use
 		.BYTE	$53
-		.WORD	sub_B256
+		.WORD	_item22_use
 		.BYTE	$5B
-		.WORD	sub_AF9A
+		.WORD	_item23_use
 		.BYTE	$5C
-		.WORD	sub_B026
+		.WORD	_item24_use
 		.BYTE	$59
-		.WORD	sub_B068
+		.WORD	_wrap_bC_sC_item25_use
 		.BYTE	$59
-		.WORD	sub_B06C
+		.WORD	_item26_use
 		.BYTE	$AF				; $0AF
-		.WORD	sub_B09C
+		.WORD	_item27_use
 		.BYTE	$5F				; $15F "<> raises the <> to the skies"
-		.WORD	_wrap_b6_s1F
+		.WORD	_wrap_b6_s1F_item28_use
 		.BYTE	$C7				; $0C7 "<> gives the <> as an offering"
-		.WORD	_wrap_bC_s26
+		.WORD	_wrap_bC_s26_item29_use
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B143:
@@ -6604,8 +6588,7 @@ loc_B166:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; displays HP/MP summary box
-sub_B16B:
+_item_ring_of_magic_use:
 		LDA		byte_45
 		STA		byte_CE
 		LDA		#$19
@@ -6615,91 +6598,87 @@ sub_B16B:
 		LDA		#0
 		STA		byte_D0
 		JSR		_b0_s8_player_MP_add
-		JSR		sub_A172
+		JSR		_wnd_ATK_DEF_POW_display
 		JSR		_rand
 		CMP		#$19
 		BCS		loc_B196
 		LDA		#$4E
 		FARX	_b4_s20
 		JSR		_b0_s2A_player_inventory_item_remove
-		LDA		#$A6
+		LDA		#$A6	; "The Ring silently crumbles into pieces"
 		JSR		_wrap_msg005_msg_m00_arg0
 loc_B196:
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; <wait> "The Maximum HP goes up 2 points!". But with @704, this should be the strength?
-sub_B198:
-		LDX		byte_45 ; i called this "itemSelectedInBattle" but clearly not
+_item_strength_seed_use:
+		LDX		byte_45				; player's index temp storage
 		LDA		_players_STR,X
-		JSR		sub_B1D9
+		JSR		_item_seeds_use_common
 		STA		_players_STR,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; <wait> "The Maximum HP goes up 2 points!".  But with @708, this should be the strength?
-sub_B1A5:
+_item_seed_of_agility_use:
 		LDX		byte_45
 		LDA		_players_AGI,X
-		JSR		sub_B1D9
+		JSR		_item_seeds_use_common
 		STA		_players_AGI,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B1B2:
+_item_seed_of_intelligence_use:
 		LDX		byte_45
 		LDA		_players_INT,X
-		JSR		sub_B1D9
+		JSR		_item_seeds_use_common
 		STA		_players_INT,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B1BF:
+_item_seed_of_luck_use:
 		LDX		byte_45
 		LDA		_players_LUCK,X
-		JSR		sub_B1D9
+		JSR		_item_seeds_use_common
 		STA		_players_LUCK,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B1CC:
+_item_seed_of_vitality_use:
 		LDX		byte_45
 		LDA		_players_VIT,X
-		JSR		sub_B1D9
+		JSR		_item_seeds_use_common
 		STA		_players_VIT,X
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Seems always to print HP, not sure why
-sub_B1D9:
-		PHA ; stash the stat we came in here with
+_item_seeds_use_common:
+		PHA									; stash the stat we came in here with
 		JSR		_rand
-; makes the random number tiny, 1 or 2?
-		AND		#1
+		AND		#1							; makes the random number tiny, 1 or 2
 		ADC		#1
-; prepare it for printing
-		JSR		sub_B2AD
-		PLA ; unstash the stat we came in here with
+		JSR		_write_u8_to_u24_msg_number_parameter_F8	; prepare it for printing
+		PLA									; unstash the stat we came in here with
 		CLC
-		ADC		_msg_number_parameter_F8 ; add bonus to stat (sneakily we pull it out of the spot we just saved it for printing)
-		PHA ; push sum
+		ADC		_msg_number_parameter_F8	; add bonus to stat (sneakily we pull it out of the spot we just saved it for printing)
+		PHA									; push sum
 		LDA		byte_48
 		CLC
-		ADC		#$41
+		ADC		#$41						; "parameter goes up messages based on item type"
 		JSR		_wrap_msg005_msg_m00_arg0
-		PLA ; pop sum
-		LDX		byte_45
+		PLA									; pop sum
+		LDX		byte_45						; restore player's index
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; opens the Spell menu ready to pick a caster
-sub_B1F6:
+_item1A_use:
 		JSR		_rand
 		AND		#3
 		CLC
@@ -6716,7 +6695,7 @@ sub_B1F6:
 		INC		_players_MHP+1,X
 loc_B212:
 		LDA		word_4
-		JSR		sub_B2AD
+		JSR		_write_u8_to_u24_msg_number_parameter_F8
 		LDA		#$A8
 		JSR		_wrap_msg005_msg_m00_arg0
 		SEC
@@ -6724,7 +6703,7 @@ loc_B212:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; <wait> "<user> has recovered!" <show hp/mp info box>. For healing items I guess
-sub_B21E:
+_item1B_use:
 		JSR		sub_B2B9
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		LDA		#$F
@@ -6737,7 +6716,7 @@ sub_B21E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "but nothing happened..." but definitely not that simple
-sub_B234:
+_item1C_use:
 		JSR		sub_B2B9
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		JSR		_cmd_spell_detoxicate
@@ -6745,7 +6724,7 @@ sub_B234:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_fairy_water:
+_item_fairy_water_use:
 		LDA		#$7F
 		STA		_repel_or_fairy_water_timer
 		SEC
@@ -6753,7 +6732,7 @@ _cmd_spell_fairy_water:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "but nothing happens!" but definitely not that simple
-sub_B246:
+_item1F_use:
 		JSR		sub_B2B9
 		LDA		#$21
 		STA		byte_49
@@ -6763,10 +6742,10 @@ sub_B246:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B256:
+_item22_use:
 		JSR		sub_B2B9
 		MSGX	_msg_m00,$005	; "$FD, $EF"
-		JSR		sub_A0BC
+		JSR		_cmd_spell_remove_numbness
 		BCC		_message_nothing_happens
 		RTS
 
@@ -6778,7 +6757,7 @@ _message_nothing_happens:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; "<actor> sneezes!" -- but it can't be this simple. is this goof-off tricks? is it only working during battles?
-sub_B269:
+_item08_use:
 		JSR		_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		STA		byte_55
@@ -6807,22 +6786,22 @@ loc_B28C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B298:
+_player_set_numb_status:
 		LDA		byte_45
 		STA		byte_D2
 		ASL
 		TAX
-		LDA		_players_status+1,X
+		LDA		_players_status+1,X			; set NM flag
 		ORA		#$40
 		STA		_players_status+1,X
 		LDA		#$A
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_wrap_msg005_msg_m00_arg0	; "<name> is numb and unable to move"
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; sets the text parameter u24AttackDisplayDamage=A
-sub_B2AD:
+_write_u8_to_u24_msg_number_parameter_F8:
 		STA		_msg_number_parameter_F8
 		LDA		#0
 		STA		_msg_number_parameter_F8+1

@@ -45,8 +45,8 @@ _b4_s18_ptr:
 		.WORD	_b4_s18
 _b4_s19_ptr:
 		.WORD	_b4_s19
-_b4_s1A_ptr:
-		.WORD	_b4_s1A
+_b4_s1A_status_pal_adjust_and_update_ptr:
+		.WORD	_b4_s1A_status_pal_adjust_and_update
 _b4_s1B_ptr:
 		.WORD	_b4_s1B
 _b4_s1C_ptr:
@@ -85,7 +85,7 @@ _b4_s2B_ptr:
 _b4_s0:
 		LDA		#0
 		STA		byte_6A63
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 loc_68061:
 		LDA		_battle_type_fight
 		STA		byte_6A6B
@@ -2532,7 +2532,7 @@ loc_69032:
 		LDA		#0
 		STA		_players_status+1,X
 		JSR		sub_68F8C
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 		DEC		byte_4C
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
 		JMP		sub_69053
@@ -3886,7 +3886,7 @@ sub_69973:
 		TAX
 		LDA		#0
 		STA		_players_status+1,X
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 		JSR		_b4_s6
 		DEC		byte_4C
 		RTS
@@ -4273,7 +4273,7 @@ loc_69C3B:
 		LDA		word_4+1
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 		JMP		_b4_s6
 loc_69C4C:
 		JSR		sub_6A900
@@ -5547,7 +5547,7 @@ sub_6A4E4:
 		JSR		_sram_b0_s2_player_HP_read
 		ORA		word_4
 		BEQ		loc_6A4EE
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 loc_6A4EE:
 		JSR		_b4_s6
 		JSR		_sram_b0_s2_player_HP_read
@@ -5601,7 +5601,7 @@ sub_6A544:
 		LDA		#$1F
 		AND		_players_status+1,X
 		STA		_players_status+1,X
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 		JSR		_b4_s6
 		DEC		byte_4C
 		JSR		sub_6A569
@@ -5719,7 +5719,7 @@ loc_6A604:
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14
-		JSR		_b4_s1A
+		JSR		_b4_s1A_status_pal_adjust_and_update
 		JMP		_b4_s6
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7707,7 +7707,7 @@ byte_6B270:
 		.BYTE	$42,$35,$22,$43,$44,$27,$18,$36
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s1A:
+_b4_s1A_status_pal_adjust_and_update:
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDX		#0
 		JSR		_pal_set_no_fade

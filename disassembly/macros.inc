@@ -105,6 +105,10 @@ _ddt = $76
 
 ; == SPECIAL CODES ==
 
+_herhis = $B0
+_herhimself = $B1
+_heshe = $B2
+_himher = $B3
 _item = $F4
 _hero = $F9
 
@@ -162,8 +166,8 @@ _hero = $F9
 
 	MAC	MSGX
 		BRK
-		.BYTE	[{2} & $FF]
-		.BYTE	[[[{1}_idx - _syscall_lib] + [{2} >> 7]] & $3E]
+		.BYTE	[[{2}] & $FF]
+		.BYTE	[[[{1}_idx - _syscall_lib] + [[{2}] >> 7]] & $3E]
 	ENDM
 	
 	INCLUDE "item_ids.inc"

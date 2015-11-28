@@ -196,7 +196,7 @@ _msg223:		.BYTE	_apu,_B,_e,_g,_,_y,_o,_u,_r,_,_p,_a,_r,_d,_o,_n,_que,_,_I,_t,_,_
 _msg224:		.BYTE	_apu,_P,_e,_r,_h,_a,_p,_s,_,_s,_o,_m,_e,_o,_n,_e,_,_e,_l,_s,_e,_que,_apd,$EF
 _msg225:		.BYTE	_apu,_P,_l,_e,_a,_s,_e,_,_c,_o,_m,_e,_,_a,_g,_a,_i,_n,_,_a,_f,_t,_e,_r,_,_y,_o,_u,_,_s,_e,_l,_l,_,_o,_r,_,_t,_h,_r,_o,_w,_,_s,_o,_m,_e,_t,_h,_i,_n,_g,_,_a,_w,_a,_y,_smc,$EF
 _txt_block23:
-_msg226:		.BYTE	_apu,$F5,_,_c,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,$B1,_,_w,_i,_t,_h,_,_t,_h,_a,_t,_dot,$EB
+_msg226:		.BYTE	_apu,$F5,_,_c,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,_herhimself,_,_w,_i,_t,_h,_,_t,_h,_a,_t,_dot,$EB
 				.BYTE	_D,_o,_,_y,_o,_u,_,_s,_t,_i,_l,_l,_,_w,_a,_n,_t,_,_i,_t,_que,_apd,$EF
 _msg227:		.BYTE	_apu,_A,_l,_l,_,_r,_i,_g,_h,_t,_,_t,_h,_e,_n,_sem,_,_I,_apo,_l,_l,_,_g,_i,_v,_e,_,_i,_t,_,_t,_o,_,_t,_h,_i,_s,_,_g,_h,_o,_s,_t,_smc,$EF
 _msg228:		.BYTE	_apu,_A,_l,_l,_,_r,_i,_g,_h,_t,_,_t,_h,_e,_n,_sem,_,_I,_apo,_l,_l,_,_p,_u,_t,_,_i,_t,_,_i,_n,_,_t,_h,_i,_s,_,_T,_o,_o,_l,_,_B,_a,_g,_smc,$EF

@@ -5210,7 +5210,7 @@ sub_176285:
 		STX		_spr_ram
 		LDX		#5
 		JSR		sub_176265
-		JMP		loc_17646A
+		JMP		_wrap_mmc1_restore
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176299:
@@ -5270,7 +5270,7 @@ sub_1762C9:
 loc_1762F4:
 		LDA		word_4A
 		JSR		sub_176488
-		JMP		loc_17646A
+		JMP		_wrap_mmc1_restore
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1762FC:
@@ -5388,7 +5388,7 @@ loc_1763A6:
 		LDA		#>[_chr_terrain_bg_data1]
 		STA		byte_24
 		JSR		sub_1741E4
-		JMP		loc_17646A
+		JMP		_wrap_mmc1_restore
 loc_1763C9:
 		LDA		_mapNumber
 		LDX		#0
@@ -5454,7 +5454,7 @@ loc_176423:
 		INX
 		CPX		#$44
 		BCC		loc_176423
-		BCS		loc_17646A
+		BCS		_wrap_mmc1_restore
 loc_176432:
 		LDA		byte_82D30+1,X
 		STA		word_4A
@@ -5485,7 +5485,7 @@ loc_17645E:
 		INY
 		DEC		byte_4D
 		BNE		loc_17645E
-loc_17646A:
+_wrap_mmc1_restore:
 		PLA
 		JMP		_mmc1_prg_set
 
@@ -6158,17 +6158,6 @@ _sys_msg_m00_arg5_break_idx:	.WORD	_sys_msg_m00_arg5_break
 _sys_msg_m00_arg6_break_idx:	.WORD	_sys_msg_m00_arg6_break
 _sys_msg_m00_arg7_break_idx:	.WORD	_sys_msg_m00_arg7_break
 
-		; four syscalls used only from bank D and pointed directly to this bank
-		; these functions assuming the higher bit of msg index $300+array[N],
-		; where N is in _bN_, and arr is from $000 to $3xx
-		; these four message cover indexes from $5Fx to $6xx
-		; the rest of messages from $300 to $5Fx are in bank D and used locally
-		;
-_sys_msg_m00_b5B5_idx:			.WORD	_sys_msg_m00_b5B5
-_sys_msg_m00_b6B5_idx:			.WORD	_sys_msg_m00_b6B5
-_sys_msg_m00_b5B5_break_idx:	.WORD	_sys_msg_m00_b5B5_break
-_sys_msg_m00_b6B5_break_idx:	.WORD	_sys_msg_m00_b6B5_break
-
 		; two more external direct offsets, whould called from bank 4 only
 		; and pointing directly to this bank
 		;
@@ -6303,7 +6292,7 @@ _b0_s54_idx:			PTR_IDX	$0,_b0_s54					; $155
 _b0_s55_idx:			PTR_IDX	$0,_b0_s55					; $173
 _b0_s56_idx:			PTR_IDX	$0,_b0_s56					; $17B
 _b0_s5B_non_battle_mode_spell_cast_idx:			PTR_IDX	$0,_b0_s5B_non_battle_mode_spell_cast					; $E4
-_b0_s5C_idx:			PTR_IDX	$0,_b0_s5C					; $129
+_b0_s5C_player_inventory_search_for_cursed_item_idx:			PTR_IDX	$0,_b0_s5C_player_inventory_search_for_cursed_item					; $129
 _b0_s5D_idx:			PTR_IDX	$0,_b0_s5D					; $EC
 _b0_s5E_check_if_item_can_be_equipped_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
 _b0_s5E_check_if_item_can_be_used_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_used					; $109
@@ -6360,7 +6349,7 @@ _b4_s16_do_half_message_speed_delay_idx:PTR_IDX	$4,_b4_s16_do_half_message_speed
 _b4_s17_idx:			PTR_IDX	$4,_b4_s17					; $D1
 _b4_s18_idx:			PTR_IDX	$4,_b4_s18					; $D2
 _b4_s19_idx:			PTR_IDX	$4,_b4_s19					; $D3
-_b4_s1A_idx:			PTR_IDX	$4,_b4_s1A					; $D4
+_b4_s1A_status_pal_adjust_and_update_idx:			PTR_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
 _b4_s1B_idx:			PTR_IDX	$4,_b4_s1B					; $D5
 _b4_s1C_idx:			PTR_IDX	$4,_b4_s1C					; $D6
 _b4_s1D_idx:			PTR_IDX	$4,_b4_s1D					; $D7
@@ -6462,13 +6451,13 @@ _bC_s9_idx:				PTR_IDX	$C,_bC_s9					; $9B
 _bC_sA_idx:				PTR_IDX	$C,_bC_sA					; $9D
 _bC_sB_idx:				PTR_IDX	$C,_bC_sB					; $172
 _bC_sC_idx:				PTR_IDX	$C,_bC_sC					; $16D
-_bC_sD_idx:				PTR_IDX	$C,_bC_sD					; $B8
-_bC_sE_idx:				PTR_IDX	$C,_bC_sE					; $B9
-_bC_sF_idx:				PTR_IDX	$C,_bC_sF					; $BA
+_bC_sD_item_key_type0_use_idx:				PTR_IDX	$C,_bC_sD_item_key_type0_use					; $B8
+_bC_sE_item_key_type1_use_idx:				PTR_IDX	$C,_bC_sE_item_key_type1_use					; $B9
+_bC_sF_item_key_type3_use_idx:				PTR_IDX	$C,_bC_sF_item_key_type3_use					; $BA
 _bC_s10_idx:			PTR_IDX	$C,_bC_s10					; $BB
 _bC_s11_idx:			PTR_IDX	$C,_bC_s11					; $BC
 _bC_s12_sleep_X_sync_50_idx:PTR_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
-_bC_s13_idx:			PTR_IDX	$C,_bC_s13					; $BE
+_bC_s13_use_magic_ball_idx:			PTR_IDX	$C,_bC_s13_use_magic_ball					; $BE
 _bC_s14_idx:			PTR_IDX	$C,_bC_s14					; $C8
 _bC_s17_sys0_spr_effects_call_idx:	PTR_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
 _bC_s19_idx:			PTR_IDX	$C,_bC_s19					; $143
@@ -6509,7 +6498,7 @@ _bD_s6_idx:				PTR_IDX	$D,_bD_s6					; $0E
 _bD_s7_idx:				PTR_IDX	$D,_bD_s7					; $0F
 _bD_s9_idx:				PTR_IDX	$D,_bD_s9					; $11
 _bD_sA_idx:				PTR_IDX	$D,_bD_sA					; $158
-_bD_sB_idx:				PTR_IDX	$D,_bD_sB					; $17D
+_bD_sB_get_hero_and_its_gender_and_status_idx:				PTR_IDX	$D,_bD_sB_get_hero_and_its_gender_and_status					; $17D
 _bD_sC_idx:				PTR_IDX	$D,_bD_sC					; $183
 _bD_sD_idx:				PTR_IDX	$D,_bD_sD					; $DD
 _bD_sE_idx:				PTR_IDX	$D,_bD_sE					; $106

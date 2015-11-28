@@ -2636,12 +2636,16 @@ _wnd0B:
 		.BYTE	$18, $D,$12,$87,$4E,$A1,$22,$23,$40,  0,  0
 		.BYTE	$DA,$90,$9E,$FA,$90,$FF
 _wnd0C:
-		.BYTE	 $C,  9,$18,$82,$40,$A1,$22,$23,$40,  0,  0,$9A,$91,$FF
+		.BYTE	 $C,  9,$18,$82,$40,$A1,$22,$23,$40,  0,  0
+		.BYTE	$9A,$91,$FF
 _wnd0D:
-		.BYTE	 $A,  4,$31,  0,$20,$61,$22,$23,$40,  0,  0,$25,$38,$38,$25,$27
-		.BYTE	$2F,$FF,  0,$34,$33,$3B,$29,$36,$FF,$FE,$89,  3,$FF,$28,$29,$2A
-		.BYTE	$29,$32,$27,$29,$FF,  0,$34,$33,$3B,$29,$36,$FF,$FE,$8A,  3,$FF
-		.BYTE	$FF
+		.BYTE	 $A,  4,$31,  0,$20,$61,$22,$23,$40,  0,  0
+		.BYTE	 _A,_T,_T,_A,_C,_K,$FF
+		.BYTE	  0,_P,_O,_W,_E,_R,$FF,$FE
+		.BYTE	$89,  3,$FF
+		.BYTE	 _D,_E,_F,_E,_N,_C,_E,$FF
+		.BYTE	  0,_P,_O,_W,_E,_R,$FF,$FE
+		.BYTE	$8A,  3,$FF,$FF
 _wnd0E:
 		.BYTE	  8,  6,$47,  0,$60,$61,$22,$23,  0,  0,  0,$FF,$90,$40,$FF,$FF
 		.BYTE	$2C,$80,  3,$FF,  0,$58,$58,$58,$FF,  0,$82,  3,$FF,$FF,$31,$81
@@ -5306,7 +5310,7 @@ sub_15AC41:
 		CMP		#6
 		BNE		loc_15AC63
 		PHA
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		PLA
 		LDA		word_6+1
 		BEQ		loc_15AC77
@@ -6294,7 +6298,7 @@ sub_15B288:
 		STA		byte_CF
 		JSR		_sram_b0_s5_player_HP_subtract
 		PHA
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		PLA
 		BNE		locret_15B275
 		LDA		byte_CE
@@ -6304,7 +6308,7 @@ sub_15B288:
 		LDA		#0
 		STA		_players_status+1,X
 		DEC		byte_48
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		JSR		_bE_sD
 		JSR		_bE_s10
 		JSR		_bE_s34

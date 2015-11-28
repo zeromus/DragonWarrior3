@@ -502,7 +502,7 @@ _bA_s8:
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		JSR		sub_F834B
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		SYSX	_apu_load,$91
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
@@ -1937,7 +1937,7 @@ loc_F918B:
 		TAX
 		DEX
 		BPL		loc_F9170
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_b4_s6
 		RTS
 _bA_d14:
@@ -2061,7 +2061,7 @@ loc_F936A:
 		PHA
 		TXA
 		PHA
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_CE
 		JSR		_sram_b0_sF_unassigned_formation_char_name_read

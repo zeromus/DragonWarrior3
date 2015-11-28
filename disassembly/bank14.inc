@@ -402,7 +402,7 @@ _msg66F:		.BYTE	_apu,_Y,_o,_u,_,_a,_r,_e,_,_i,_n,_d,_e,_e,_d,_,_a,_,_t,_r,_u,_e,
 _msg670:		.BYTE	_apu,_W,_e,_l,_c,_o,_m,_e,_,_b,_a,_c,_k,_,$F5,_,_d,_e,_a,_r,_exc,_,_Y,_o,_u,_r,_,_m,_o,_t,_h,_e,_r,_,_i,_s,_,_s,_o,_,_h,_a,_p,_p,_y,_exc,_apd,$FD,$EB
 				.BYTE	_apu,_I,_,_w,_i,_s,_h,_,_y,_o,_u,_r,_,_f,_a,_t,_h,_e,_r,_,_c,_o,_u,_l,_d,_,_s,_e,_e,_,_y,_o,_u,_,_n,_o,_w,_exc,$EB
 				.BYTE	_O,_h,_sem,_,$F5,_exc,_apd,$EF
-_msg671:		.BYTE	_apu,_T,_h,_e,_r,_e,_,_i,_s,_,_n,_o,_n,_e,_,_s,_o,_,_b,_r,_a,_v,_e,_,_a,_s,_,$F5,_exc,_,_A,_n,_d,_,$B2,_,_i,_s,_,_m,_y,_,_g,_r,_a,_n,_d,_c,_h,_i,_l,_d,_exc,_apd,$EF
+_msg671:		.BYTE	_apu,_T,_h,_e,_r,_e,_,_i,_s,_,_n,_o,_n,_e,_,_s,_o,_,_b,_r,_a,_v,_e,_,_a,_s,_,$F5,_exc,_,_A,_n,_d,_,_heshe,_,_i,_s,_,_m,_y,_,_g,_r,_a,_n,_d,_c,_h,_i,_l,_d,_exc,_apd,$EF
 _msg672:		.BYTE	_apu,_W,_e,_l,_l,_,_t,_h,_e,_n,_sem,_,_h,_u,_r,_r,_y,_exc,_,_T,_o,_,_t,_h,_e,_,_k,_i,_n,_g,_exc,$EB
 				.BYTE	_H,_e,_,_a,_n,_x,_i,_o,_u,_s,_l,_y,_,_a,_w,_a,_i,_t,_s,_,_y,_o,_u,_exc,_apd,$EF
 _txt_block68:

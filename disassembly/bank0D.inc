@@ -17,8 +17,8 @@ _bD_s9_ptr:
 		.WORD	_bD_s9
 _bD_sA_ptr:
 		.WORD	_bD_sA
-_bD_sB_ptr:
-		.WORD	_bD_sB
+_bD_sB_get_hero_and_its_gender_and_status_ptr:
+		.WORD	_bD_sB_get_hero_and_its_gender_and_status
 _bD_sC_ptr:
 		.WORD	_bD_sC
 _bD_sD_ptr:
@@ -2820,8 +2820,10 @@ loc_142400:
 		JSR		sub_14245C
 		MSGX	_msg_m00,$5B5+$3A
 		JSR		sub_14245C
-		SYSX	_sys_msg_m00_b5B5_break,$3B
-loc_142426:
+		MSGX	_msg_m00_break,$5B5+$3B
+
+; =============== S U B	R O U T	I N E =======================================
+sub_142426:
 		FARX	_b0_s3C_get_free_inventory_slot
 		BCC		loc_142446
 		STA		byte_C3
@@ -2834,11 +2836,11 @@ loc_142426:
 		LDA		byte_C5
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		SYSX	_sys_msg_m00_b5B5_break,$3C
+		MSGX	_msg_m00_break,$5B5+$3C
 loc_142446:
-		SYSX	_sys_msg_m00_b5B5_break,$3D
+		MSGX	_msg_m00_break,$5B5+$3D
 loc_142449:
-		SYSX	_sys_msg_m00_b5B5_break,$3E
+		MSGX	_msg_m00_break,$5B5+$3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14244C:
@@ -2860,7 +2862,7 @@ loc_14245F:
 loc_142467:
 		PLA
 		PLA
-		JMP		loc_142426
+		JMP		sub_142426
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14246C:
@@ -3096,7 +3098,7 @@ loc_142629:
 		BCS		loc_142618
 		STA		byte_CE
 		STA		byte_D2
-		FARX	_b0_s5C
+		FARX	_b0_s5C_player_inventory_search_for_cursed_item
 		BCC		loc_142684
 		LDA		word_4
 		STA		byte_BD
@@ -3195,7 +3197,7 @@ loc_1426F1:
 		JSR		_sram_b0_s8_player_MP_add
 		JSR		_bD_s22
 		JSR		sub_142780
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		JMP		loc_142618
 loc_142722:
 		MSGX	_msg_m00,$20F
@@ -3985,7 +3987,7 @@ loc_142D50:
 		LDA		byte_AC
 		AND		#$E0
 		STA		byte_AC
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		LDX		#$10
 		JSR		_bD_s10
 		JMP		sub_142E22
@@ -4060,7 +4062,7 @@ loc_142E0F:
 		TAX
 		STX		word_6C
 		JSR		sub_142E3C
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E22:
@@ -4360,63 +4362,23 @@ byte_143036:
 ; one will return after displaying the message, another one will break back
 ; to the caller routine.
 ;
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b300:
-		LDY		#0
-		BEQ		_msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b300_break:
-		LDY		#0
-		BEQ		_msg_m00_select_param_break
-
-; =============== S U B	R O U T	I N E =======================================
-; never happen to be used
-;_msg_m00_param_b3F7:
-;		LDY		#2
-;		BNE		_msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b3F7_break:
-		LDY		#2
-		BNE		_msg_m00_select_param_break
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b4F7:
-		LDY		#4
-		BNE		_msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b4F7_break:
-		LDY		#4
-		BNE		_msg_m00_select_param_break
-
-; the messages from blocks 6 and 8 has additional calculation routine at the
-; beginning, investigate.
+; the messages from blocks 6 has additional check for gender and status
+; of the hero. it seems that message system checks this by its own, but it
+; is used in many other places too, investigate. most probably this is leftover
+; from japanese version, the english version has only ONE single gender dependent
+; message in bank 5 and nothing more in banks 4, 5, 6. so this function seems
+; unnecessary or need for further local code calling this message.
 ;
 ; =============== S U B	R O U T	I N E =======================================
 _msg_m00_param_b5B5:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDY		#6
 		BNE		_msg_m00_select_param
 
 ; =============== S U B	R O U T	I N E =======================================
 _msg_m00_param_b5B5_break:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDY		#6
-		BNE		_msg_m00_select_param_break
-
-; =============== S U B	R O U T	I N E =======================================
-; never happen to be used
-;_msg_m00_param_b6B5:
-;		JSR		_bD_sB
-;		LDY		#8
-;		BNE		_msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b6B5_break:
-		JSR		_bD_sB
-		LDY		#8
 
 ;; FALLTHROUGH ;;
 
@@ -4478,37 +4440,11 @@ _msg_bank_ofs_list:
 		.WORD	$2B5	; "$5B5"
 		.WORD	$3B5	; "$6B5"
 
-;----------------------------------------------------------------------------
-; only four subroutines here used as SYSX opcodes
-;
 ; =============== S U B	R O U T	I N E =======================================
-_sys_msg_m00_b5B5:
-		TYA
-		LDY		#6
-		BNE		_msg_m00_select
-
-; =============== S U B	R O U T	I N E =======================================
-_sys_msg_m00_b5B5_break:
-		TYA
-		LDY		#6
-		JSR		_msg_m00_select
-		BCS		_break
-
-; =============== S U B	R O U T	I N E =======================================
-_sys_msg_m00_b6B5:
-		TYA
-		LDY		#8
-		BNE		_msg_m00_select
-
-; =============== S U B	R O U T	I N E =======================================
-_sys_msg_m00_b6B5_break:
-		TYA
-		LDY		#8
-		JSR		_msg_m00_select
-		BCS		_break
-
-; =============== S U B	R O U T	I N E =======================================
-_bD_sB:
+; returns status in byte_4/byte_5, gender in byte_7 and index of the hero class
+; player in the formation in byte_D2
+; 
+_bD_sB_get_hero_and_its_gender_and_status:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_CE
@@ -4645,7 +4581,7 @@ sub_143179:
 		LDA		word_4
 		ORA		word_4+1
 		BNE		loc_143182
-		SYSX	_sys_msg_m00_b5B5_break,$F4
+		MSGX	_msg_m00_break,$5B5+$F4
 loc_143182:
 		LDA		word_4+1
 		BNE		loc_143195
@@ -4662,7 +4598,7 @@ loc_143195:
 		LDA		word_6
 		AND		#$20
 		BEQ		loc_1431C2
-		SYSX	_sys_msg_m00_b5B5_break,$B3	; ""
+		MSGX	_msg_m00_break,$5B5+$B3	; ""
 loc_1431A3:
 		LDA		byte_60CB
 		BPL		sub_1431F7
@@ -4671,8 +4607,7 @@ loc_1431A3:
 		BNE		loc_1431B6
 		LDA		word_4+1
 		BNE		loc_1431B6
-		JSR		_msg_m00_param_b300_break
-		.BYTE	$4E	; $34E "Thanks to you defeating Baramos"
+		MSGX	_msg_m00_break,$300+$4E	; $34E "Thanks to you defeating Baramos"
 loc_1431B6:
 		LDA		_mapNumber
 		BEQ		loc_1431C2
@@ -4698,7 +4633,7 @@ loc_1431D2:
 loc_1431D9:
 		LDA		byte_14333D+2,Y
 		PHA
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_D4
@@ -4725,8 +4660,7 @@ loc_143207:
 		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_143212
-		JSR		_msg_m00_param_b300_break
-		.BYTE	  2	; $302 "Zzzz Zzzz"
+		MSGX	_msg_m00_break,$300+  2	; $302 "Zzzz Zzzz"
 loc_143212:
 		LDY		#0
 		LDA		byte_AC
@@ -4738,7 +4672,7 @@ loc_143212:
 		BPL		loc_143281
 		LDA		word_6
 		PHA
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		PLA
 		STA		word_6
 		LDY		#$40
@@ -4762,19 +4696,19 @@ loc_143244:
 		BEQ		loc_143281
 		CMP		#1
 		BNE		loc_143256
-		JSR		_msg_m00_param_b6B5_break
-		.BYTE	$1F
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
+		MSGX	_msg_m00_break,$6B5+$1F
 loc_143256:
 		CMP		#2
 		BNE		loc_143262
 		JSR		sub_14315A
-		SYSX	_sys_msg_m00_b6B5,$20
+		MSGX	_msg_m00,$6B5+$20
 		BCS		sub_14327E
 loc_143262:
 		CMP		#3
 		BNE		loc_14326E
 		JSR		sub_14315A
-		SYSX	_sys_msg_m00_b6B5,$21
+		MSGX	_msg_m00,$6B5+$21
 		BCS		sub_14327E
 loc_14326E:
 		STA		byte_5C
@@ -4818,8 +4752,7 @@ loc_1432A7:
 		BNE		loc_1432BC
 		LDA		byte_60BA
 		BMI		loc_1432BC
-		JSR		_msg_m00_param_b3F7_break
-		.BYTE	$62
+		MSGX	_msg_m00_break,$3F7+$62
 loc_1432BC:
 		LDY		#$22
 loc_1432BE:
@@ -4830,7 +4763,7 @@ loc_1432BE:
 		DEY
 		DEY
 		BPL		loc_1432BE
-		SYSX	_sys_msg_m00_b5B5_break,$F4
+		MSGX	_msg_m00_break,$5B5+$F4
 loc_1432D0:
 		LDA		off_1433DF,Y
 		STA		word_5E
@@ -5178,23 +5111,23 @@ _wrap_far_bE_s4_msg_m00_delta3_arg5C_bE_s1C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl0:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
 		BPL		loc_14352E
-		SYSX	_sys_msg_m00_b5B5_break,$00
+		MSGX	_msg_m00_break,$5B5+$00
 loc_14352E:
-		SYSX	_sys_msg_m00_b5B5_break,$01
+		MSGX	_msg_m00_break,$5B5+$01
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143541
 		LDA		byte_D2
 		STA		byte_D3
-		SYSX	_sys_msg_m00_b5B5_break,$0A
+		MSGX	_msg_m00_break,$5B5+$0A
 loc_143541:
 		LDA		_global_game_flags
 		BPL		loc_143559
@@ -5206,7 +5139,7 @@ loc_143541:
 loc_143553:
 		MSGX	_msg_m00,$5B5+$09
 loc_143556:
-		SYSX	_sys_msg_m00_b5B5_break,$08
+		MSGX	_msg_m00_break,$5B5+$08
 loc_143559:
 		JSR		sub_1430F2
 		BCS		loc_143563
@@ -5248,15 +5181,14 @@ _npc_hndl2:
 locret_1435A5:
 		RTS
 loc_1435A6:
-		SYSX	_sys_msg_m00_b5B5_break,$15
+		MSGX	_msg_m00_break,$5B5+$15
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3:
 		LDA		byte_60CD
 		LSR
 		BCC		loc_1435B3
-		JSR		_msg_m00_param_b300_break
-		.BYTE	$13
+		MSGX	_msg_m00_break,$300+$13
 loc_1435B3:
 		MSGX	_msg_m00,$5B5+$17
 		JSR		_sram_b0_s33_count_non_dead_party_chars
@@ -5282,7 +5214,7 @@ loc_1435DA:
 		CMP		#4
 		BNE		loc_1435C8
 loc_1435E2:
-		SYSX	_sys_msg_m00_b5B5_break,$18
+		MSGX	_msg_m00_break,$5B5+$18
 loc_1435E5:
 		LDA		byte_CE
 		STA		byte_D2
@@ -5316,7 +5248,7 @@ loc_143611:
 		FARX	_b6_s17
 		RTS
 loc_143628:
-		SYSX	_sys_msg_m00_b5B5_break,$1A
+		MSGX	_msg_m00_break,$5B5+$1A
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4:
@@ -5332,22 +5264,22 @@ _npc_hndl5:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$22
+		MSGX	_msg_m00_break,$5B5+$22
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl7:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$29
+		MSGX	_msg_m00_break,$5B5+$29
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl8:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$2A
+		MSGX	_msg_m00_break,$5B5+$2A
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl9:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$2B
+		MSGX	_msg_m00_break,$5B5+$2B
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlA:
@@ -5359,18 +5291,18 @@ _npc_hndlA:
 		BNE		loc_14365F
 		MSGX	_msg_m00,$5B5+$2D
 loc_14365F:
-		SYSX	_sys_msg_m00_b5B5_break,$2E
+		MSGX	_msg_m00_break,$5B5+$2E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlB:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$2F
+		MSGX	_msg_m00_break,$5B5+$2F
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlC:
 		JSR		sub_143F7B
 		MSGX	_msg_m00,$5B5+$32
-		SYSX	_sys_msg_m00_b5B5_break,$E0
+		MSGX	_msg_m00_break,$5B5+$E0
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlD:
@@ -5405,17 +5337,17 @@ loc_14369F:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_1436AE
-		SYSX	_sys_msg_m00_b5B5_break,$F6
+		MSGX	_msg_m00_break,$5B5+$F6
 loc_1436AE:
 		LDA		_npcs_pos_list+$34
 		CMP		#7
 		BNE		loc_1436B8
-		SYSX	_sys_msg_m00_b5B5_break,$E5
+		MSGX	_msg_m00_break,$5B5+$E5
 loc_1436B8:
 		MSGX	_msg_m00,$5B5+$E1
 		FARX	_bE_s1C
 		BEQ		loc_1436C3
-		SYSX	_sys_msg_m00_b5B5_break,$E2
+		MSGX	_msg_m00_break,$5B5+$E2
 loc_1436C3:
 		MSGX	_msg_m00,$5B5+$E3
 		FARX	_bC_s30
@@ -5426,9 +5358,9 @@ _npc_hndlF:
 		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_1436D4
-		SYSX	_sys_msg_m00_b5B5_break,$40
+		MSGX	_msg_m00_break,$5B5+$40
 loc_1436D4:
-		SYSX	_sys_msg_m00_b5B5_break,$41
+		MSGX	_msg_m00_break,$5B5+$41
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl10:
@@ -5436,12 +5368,12 @@ _npc_hndl10:
 		FARX	_bE_s1C
 		BNE		loc_1436E2
 loc_1436DF:
-		SYSX	_sys_msg_m00_b5B5_break,$43
+		MSGX	_msg_m00_break,$5B5+$43
 loc_1436E2:
 		MSGX	_msg_m00,$5B5+$44
 		FARX	_bE_s1C
 		BEQ		loc_1436DF
-		SYSX	_sys_msg_m00_b5B5_break,$45
+		MSGX	_msg_m00_break,$5B5+$45
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl11:
@@ -5467,7 +5399,7 @@ loc_1436FE:
 locret_143710:
 		RTS
 loc_143711:
-		SYSX	_sys_msg_m00_b5B5_break,$48
+		MSGX	_msg_m00_break,$5B5+$48
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl13:
@@ -5476,7 +5408,7 @@ _npc_hndl13:
 		LDA		#$15
 		JMP		sub_1434D3
 loc_14371E:
-		SYSX	_sys_msg_m00_b5B5_break,$4D
+		MSGX	_msg_m00_break,$5B5+$4D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143721:
@@ -5492,16 +5424,16 @@ loc_14372B:
 _npc_hndl14:
 		JSR		sub_143721
 		BEQ		loc_143736
-		SYSX	_sys_msg_m00_b5B5_break,$4E
+		MSGX	_msg_m00_break,$5B5+$4E
 loc_143736:
-		SYSX	_sys_msg_m00_b5B5_break,$4F
+		MSGX	_msg_m00_break,$5B5+$4F
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl15:
 		MSGX	_msg_m00,$5B5+$50
 		JSR		sub_143721
 		BEQ		locret_143744
-		SYSX	_sys_msg_m00_b5B5_break,$51
+		MSGX	_msg_m00_break,$5B5+$51
 locret_143744:
 		RTS
 
@@ -5511,7 +5443,7 @@ _npc_hndl16:
 		BCS		loc_14374C
 		BEQ		loc_14374F
 loc_14374C:
-		SYSX	_sys_msg_m00_b5B5_break,$55
+		MSGX	_msg_m00_break,$5B5+$55
 loc_14374F:
 		LDA		#$5B
 		JSR		sub_14312B
@@ -5534,7 +5466,7 @@ loc_143772:
 		LDA		#$5C
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		SYSX	_sys_msg_m00_b5B5_break,$54
+		MSGX	_msg_m00_break,$5B5+$54
 loc_14377F:
 		LDA		#$5C
 		STA		byte_CE
@@ -5549,9 +5481,9 @@ _npc_hndl17:
 		BCS		loc_143793
 		BEQ		loc_143796
 loc_143793:
-		SYSX	_sys_msg_m00_b5B5_break,$57
+		MSGX	_msg_m00_break,$5B5+$57
 loc_143796:
-		SYSX	_sys_msg_m00_b5B5_break,$56
+		MSGX	_msg_m00_break,$5B5+$56
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl18:
@@ -5561,12 +5493,12 @@ _npc_hndl18:
 		LDA		#$22
 		JSR		sub_143F9E
 		MSGX	_msg_m00,$5B5+$5D
-		SYSX	_sys_msg_m00_b6B5,$1A
+		MSGX	_msg_m00,$6B5+$1A
 		LDA		#1
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
 loc_1437B1:
-		SYSX	_sys_msg_m00_b5B5_break,$5E
+		MSGX	_msg_m00_break,$5B5+$5E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl19:
@@ -5584,7 +5516,7 @@ _npc_hndl19:
 locret_1437D0:
 		RTS
 loc_1437D1:
-		SYSX	_sys_msg_m00_b5B5_break,$61
+		MSGX	_msg_m00_break,$5B5+$61
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1A:
@@ -5592,7 +5524,7 @@ _npc_hndl1A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1437D7:
-		SYSX	_sys_msg_m00_b5B5_break,$63
+		MSGX	_msg_m00_break,$5B5+$63
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1B:
@@ -5613,7 +5545,7 @@ loc_1437EA:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1D:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_6+1
 		BNE		loc_1437FD
 		LDA		#$14
@@ -5624,14 +5556,14 @@ loc_1437FF:
 		STA		byte_6AD1
 		LDA		#$FF
 		STA		byte_6AD2
-		SYSX	_sys_msg_m00_b5B5_break,$69
+		MSGX	_msg_m00_break,$5B5+$69
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1E:
 		LDA		byte_60CE
 		AND		#$20
 		BEQ		loc_143814
-		SYSX	_sys_msg_m00_b6B5_break,$1C
+		MSGX	_msg_m00_break,$6B5+$1C
 loc_143814:
 		MSGX	_msg_m00,$5B5+$6B
 		LDA		#$7C
@@ -5655,7 +5587,7 @@ loc_143832:
 		MSGX	_msg_m00,$5B5+$6C
 		FARX	_bE_s1C
 		BEQ		loc_143840
-		SYSX	_sys_msg_m00_b5B5_break,$6D
+		MSGX	_msg_m00_break,$5B5+$6D
 loc_143840:
 		MSGX	_msg_m00,$5B5+$6E
 		FARX	_bC_s28
@@ -5675,10 +5607,10 @@ _npc_hndl20:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl21:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
-		SYSX	_sys_msg_m00_b5B5_break,$7A
+		MSGX	_msg_m00_break,$5B5+$7A
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl22:
@@ -5687,7 +5619,7 @@ _npc_hndl22:
 		BEQ		loc_14386C
 		LDA		_global_game_flags
 		BMI		loc_1438B6
-		SYSX	_sys_msg_m00_b5B5_break,$83
+		MSGX	_msg_m00_break,$5B5+$83
 loc_14386C:
 		LDA		#$54
 		JSR		sub_14312B
@@ -5695,15 +5627,15 @@ loc_14386C:
 		MSGX	_msg_m00,$5B5+$7C
 		FARX	_bE_s1C
 		BNE		loc_14387E
-		SYSX	_sys_msg_m00_b5B5_break,$7D
+		MSGX	_msg_m00_break,$5B5+$7D
 loc_14387E:
-		SYSX	_sys_msg_m00_b5B5_break,$7E
+		MSGX	_msg_m00_break,$5B5+$7E
 loc_143881:
 		JSR		sub_14315A
 		MSGX	_msg_m00,$5B5+$7F
 		FARX	_bE_s1C
 		BEQ		loc_14388F
-		SYSX	_sys_msg_m00_b5B5_break,$82
+		MSGX	_msg_m00_break,$5B5+$82
 loc_14388F:
 		MSGX	_msg_m00,$5B5+$80
 		JSR		sub_143166
@@ -5722,16 +5654,15 @@ loc_14388F:
 		LDA		#$B6
 		JSR		sub_143F9E
 loc_1438B6:
-		SYSX	_sys_msg_m00_b5B5_break,$81
+		MSGX	_msg_m00_break,$5B5+$81
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl23:
 		LDA		byte_8
 		BNE		loc_1438C1
-		JSR		_msg_m00_param_b300_break
-		.BYTE	$63
+		MSGX	_msg_m00_break,$300+$63
 loc_1438C1:
-		SYSX	_sys_msg_m00_b5B5_break,$87
+		MSGX	_msg_m00_break,$5B5+$87
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl24:
@@ -5758,7 +5689,7 @@ _npc_hndl25:
 		LDA		byte_60CE
 		LSR
 		BCC		loc_1438ED
-		SYSX	_sys_msg_m00_b5B5_break,$8C
+		MSGX	_msg_m00_break,$5B5+$8C
 loc_1438ED:
 		MSGX	_msg_m00,$5B5+$8B
 		MSGX	_msg_m00,$5B5+$8C
@@ -5777,10 +5708,9 @@ _npc_hndl26:
 		MSGX	_msg_m00,$5B5+$8F
 		FARX	_bE_s1C
 		BNE		loc_143911
-		SYSX	_sys_msg_m00_b5B5_break,$90
+		MSGX	_msg_m00_break,$5B5+$90
 loc_143911:
-		JSR		_msg_m00_param_b300_break
-		.BYTE	  5
+		MSGX	_msg_m00_break,$300+  5
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl27:
@@ -5799,15 +5729,13 @@ locret_14392A:
 _npc_hndl28:
 		BIT		byte_60B9
 		BVC		loc_143934
-		JSR		_msg_m00_param_b300_break
-		.BYTE	$D4
+		MSGX	_msg_m00_break,$300+$D4
 loc_143934:
 		LDA		byte_60CF
 		AND		#$3F
 		CMP		#$3F
 		BNE		loc_14394D
-		JSR		_msg_m00_param_b300
-		.BYTE	$D3
+		MSGX	_msg_m00,$300+$D3
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		FARX	_bC_s33
@@ -5843,7 +5771,7 @@ loc_143978:
 		INC		word_5E
 		BNE		loc_143969
 loc_143980:
-		SYSX	_sys_msg_m00_b5B5_break,$9C
+		MSGX	_msg_m00_break,$5B5+$9C
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl29:
@@ -5900,7 +5828,7 @@ _npc_hndl2C:
 		LDA		byte_60CB
 		AND		#$10
 		BNE		loc_143A01
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
 		MSGX	_msg_m00,$5B5+$C2
@@ -5912,17 +5840,17 @@ _npc_hndl2C:
 		JSR		sub_143F9E
 		RTS
 loc_143A01:
-		SYSX	_sys_msg_m00_b5B5_break,$C4
+		MSGX	_msg_m00_break,$5B5+$C4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2D:
 		LDA		byte_60BF
 		AND		#$10
 		BEQ		loc_143A0E
-		SYSX	_sys_msg_m00_b6B5_break,$58
+		MSGX	_msg_m00_break,$6B5+$58
 loc_143A0E:
 		MSGX	_msg_m00,$5B5+$89
-		SYSX	_sys_msg_m00_b6B5,$58
+		MSGX	_msg_m00,$6B5+$58
 		LDA		#$16
 		JSR		_bD_s27
 		BCC		locret_143A20
@@ -5933,12 +5861,12 @@ locret_143A20:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2E:
-		SYSX	_sys_msg_m00_b6B5,$59
+		MSGX	_msg_m00,$6B5+$59
 		FARX	_bE_s1C
 		BNE		loc_143A2C
-		SYSX	_sys_msg_m00_b6B5_break,$5A
+		MSGX	_msg_m00_break,$6B5+$5A
 loc_143A2C:
-		SYSX	_sys_msg_m00_b6B5,$5B
+		MSGX	_msg_m00,$6B5+$5B
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
@@ -5954,13 +5882,11 @@ loc_143A2C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2F:
-		MSGX	_msg_m00,$187
-		RTS
+		MSGX	_msg_m00_break,$187
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl30:
-		JSR		_msg_m00_param_b4F7_break
-		.BYTE	$16
+		MSGX	_msg_m00_break,$4F7+$16
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s20_npc_hndl31:
@@ -5981,10 +5907,9 @@ _bD_s20_npc_hndl32:
 		LDA		byte_60B6
 		AND		#$20
 		BNE		loc_143A75
-		SYSX	_sys_msg_m00_b6B5_break,$5C
+		MSGX	_msg_m00_break,$6B5+$5C
 loc_143A75:
-		MSGX	_msg_m00,$1A5
-		RTS
+		MSGX	_msg_m00_break,$1A5
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s20_npc_hndl33:
@@ -6003,9 +5928,9 @@ _bD_s20_npc_hndl33:
 		STA		byte_64
 		FARX	_b4_s12
 		STA		byte_D2
-		SYSX	_sys_msg_m00_b5B5_break,$CF
+		MSGX	_msg_m00_break,$5B5+$CF
 loc_143AA0:
-		SYSX	_sys_msg_m00_b5B5_break,$D0
+		MSGX	_msg_m00_break,$5B5+$D0
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3E:
@@ -6025,7 +5950,7 @@ _npc_hndl40:
 		BNE		loc_143AB6
 		RTS
 loc_143AB6:
-		SYSX	_sys_msg_m00_b5B5_break,$D4
+		MSGX	_msg_m00_break,$5B5+$D4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl41:
@@ -6041,7 +5966,7 @@ _npc_hndl42:
 		JMP		_npc_hndl47_exp_info_and_progress_save
 loc_143AC9:
 		JSR		sub_143130
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143ADA
@@ -6058,7 +5983,7 @@ loc_143ADD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143AEA:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143AF8
@@ -6080,7 +6005,7 @@ _npc_hndl43:
 		FARX	_bE_s1C
 		BNE		loc_143B14
 loc_143B11:
-		SYSX	_sys_msg_m00_b5B5_break,$DB
+		MSGX	_msg_m00_break,$5B5+$DB
 loc_143B14:
 		MSGX	_msg_m00,$5B5+$DC
 		FARX	_bE_s1C
@@ -6099,17 +6024,16 @@ loc_143B21:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl44:
 		MSGX	_msg_m00,$5B5+$CD
-		JSR		_msg_m00_param_b4F7_break
-		.BYTE	$8E
+		MSGX	_msg_m00_break,$4F7+$8E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl45:
 		LDA		byte_60CA
 		LSR
 		BCS		loc_143B3E
-		SYSX	_sys_msg_m00_b6B5_break,$18
+		MSGX	_msg_m00_break,$6B5+$18
 loc_143B3E:
-		SYSX	_sys_msg_m00_b6B5_break,$19
+		MSGX	_msg_m00_break,$6B5+$19
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl46:
@@ -6117,12 +6041,11 @@ _npc_hndl46:
 		BPL		loc_143B4E
 		AND		#$10
 		BNE		_npc_hndl47_exp_info_and_progress_save
-		JSR		_msg_m00_param_b4F7_break
-		.BYTE	$15
+		MSGX	_msg_m00_break,$4F7+$15
 loc_143B4E:
 		LDA		_global_game_flags
 		BPL		_npc_hndl47_exp_info_and_progress_save
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$189
 		RTS
 
@@ -6151,8 +6074,7 @@ loc_143B80:
 		AND		#7
 		CMP		#3
 		BEQ		loc_143B93
-		JSR		_msg_m00_param_b4F7
-		.BYTE	$F
+		MSGX	_msg_m00,$4F7+$F
 		JMP		loc_143B96
 loc_143B93:
 		MSGX	_msg_m00,$5B5+$EE
@@ -6171,15 +6093,14 @@ loc_143B96:
 		JSR		_pal_fade_in
 		LDA		#0
 		STA		byte_6A3E
-		JSR		_msg_m00_param_b4F7
-		.BYTE	$17
-loc_143BC0:
+		MSGX	_msg_m00,$4F7+$17
 		LDA		_cur_chr0_bank_prg_hi
 		AND		#$EF
 		STA		_cur_chr0_bank_prg_hi
 		LDA		_mmc_cur_prg_bank				; disables the SRAM and go to the infinite loop.
 		ORA		#$10							; in the jap version perfornig only once.
-		JSR		_mmc1_prg				; here is for some reason it constantly disables SRAM
+		JSR		_mmc1_prg						; here is for some reason it constantly disables SRAM
+loc_143BC0:
 		JMP		loc_143BC0
 loc_143BCB:
 		LDA		#4
@@ -6189,7 +6110,7 @@ loc_143BCB:
 _npc_hndl4D:
 		JSR		sub_1430FA
 		BCS		loc_143BD8
-		SYSX	_sys_msg_m00_b5B5_break,$0B
+		MSGX	_msg_m00_break,$5B5+$0B
 loc_143BD8:
 		LDA		#$39
 		STA		byte_CE
@@ -6204,34 +6125,34 @@ loc_143BD8:
 		LDA		#$5A
 		JSR		sub_14312B
 		BCS		loc_143BF9
-		SYSX	_sys_msg_m00_b5B5_break,$0C
+		MSGX	_msg_m00_break,$5B5+$0C
 loc_143BF9:
-		SYSX	_sys_msg_m00_b5B5_break,$0D
+		MSGX	_msg_m00_break,$5B5+$0D
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4E:
 		LDA		byte_8
 		BEQ		loc_143C03
-		SYSX	_sys_msg_m00_b5B5_break,$0E
+		MSGX	_msg_m00_break,$5B5+$0E
 loc_143C03:
-		SYSX	_sys_msg_m00_b5B5_break,$0F
+		MSGX	_msg_m00_break,$5B5+$0F
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4F:
 		LDA		_global_game_flags
 		BMI		loc_143C0E
-		SYSX	_sys_msg_m00_b5B5_break,$10
+		MSGX	_msg_m00_break,$5B5+$10
 loc_143C0E:
-		SYSX	_sys_msg_m00_b5B5_break,$11
+		MSGX	_msg_m00_break,$5B5+$11
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl50:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_6+1
 		BEQ		loc_143C1B
-		SYSX	_sys_msg_m00_b5B5_break,$12
+		MSGX	_msg_m00_break,$5B5+$12
 loc_143C1B:
-		SYSX	_sys_msg_m00_b5B5_break,$13
+		MSGX	_msg_m00_break,$5B5+$13
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl51:
@@ -6240,7 +6161,7 @@ _npc_hndl51:
 		LDA		#$19
 		JMP		sub_1434D3
 loc_143C27:
-		SYSX	_sys_msg_m00_b5B5_break,$16
+		MSGX	_msg_m00_break,$5B5+$16
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl52:
@@ -6264,32 +6185,32 @@ _npc_hndl54:
 		JSR		sub_143F7B
 		MSGX	_msg_m00,$5B5+$23
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$DF
+		MSGX	_msg_m00_break,$5B5+$DF
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl55:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$24
+		MSGX	_msg_m00_break,$5B5+$24
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl56:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$25
+		MSGX	_msg_m00_break,$5B5+$25
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl57:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$26
+		MSGX	_msg_m00_break,$5B5+$26
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl58:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$30
+		MSGX	_msg_m00_break,$5B5+$30
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl59:
 		JSR		sub_143F7B
-		SYSX	_sys_msg_m00_b5B5_break,$31
+		MSGX	_msg_m00_break,$5B5+$31
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5A:
@@ -6305,7 +6226,7 @@ _npc_hndl5B:
 _npc_hndl5C:
 		LDA		byte_60B8
 		BPL		loc_143C7D
-		SYSX	_sys_msg_m00_b5B5_break,$5C
+		MSGX	_msg_m00_break,$5B5+$5C
 loc_143C7D:
 		LDA		#$4F
 		JSR		sub_14312B
@@ -6324,7 +6245,7 @@ loc_143C9B:
 		LDA		byte_60BF
 		AND		#$40
 		BEQ		loc_143CA5
-		SYSX	_sys_msg_m00_b5B5_break,$5A
+		MSGX	_msg_m00_break,$5B5+$5A
 loc_143CA5:
 		MSGX	_msg_m00,$5B5+$58
 		LDA		#$5D
@@ -6339,27 +6260,26 @@ loc_143CB0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5D:
-		MSGX	_msg_m00,$5B5+$62
+		MSGX	_msg_m00,$5B5+$62	; $617 "Hey, Papagatero is that you?"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143CBC:
-		SYSX	_sys_msg_m00_b5B5_break,$63
+		MSGX	_msg_m00_break,$5B5+$63	; $618 "What? You're not him? Well, you sure look like him."
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5E:
-		MSGX	_msg_m00,$5B5+$64
+		MSGX	_msg_m00,$5B5+$64	; $619 "It's Papagatero, welcome!"
 		BCS		sub_143CBC
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5F:
-		JSR		_msg_m00_param_b300
-		.BYTE	$62
+		MSGX	_msg_m00,$300+$62
 		LDA		byte_60CE
 		AND		#$20
 		BNE		loc_143CD2
-		SYSX	_sys_msg_m00_b5B5_break,$6A
+		MSGX	_msg_m00_break,$5B5+$6A
 loc_143CD2:
-		SYSX	_sys_msg_m00_b6B5_break,$1D
+		MSGX	_msg_m00_break,$6B5+$1D
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl60:
@@ -6375,13 +6295,13 @@ _npc_hndl61:
 _npc_hndl62:
 		MSGX	_msg_m00,$5B5+$84
 		FARX	_bE_s1C
-		SYSX	_sys_msg_m00_b5B5_break,$85
+		MSGX	_msg_m00_break,$5B5+$85
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl63:
 		LDA		byte_8
 		BNE		loc_143CED
-		SYSX	_sys_msg_m00_b5B5_break,$86
+		MSGX	_msg_m00_break,$5B5+$86
 loc_143CED:
 		LDA		#$D
 		JMP		sub_1434C4
@@ -6424,11 +6344,11 @@ loc_143D2B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl66:
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_D4
-		SYSX	_sys_msg_m00_b5B5_break,$A1
+		MSGX	_msg_m00_break,$5B5+$A1
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl67:
@@ -6436,12 +6356,12 @@ _npc_hndl67:
 		LDA		byte_60BF
 		AND		#8
 		BEQ		loc_143D49
-		SYSX	_sys_msg_m00_b6B5_break,$1B
+		MSGX	_msg_m00_break,$6B5+$1B
 loc_143D49:
 		LDA		#$47
 		JSR		sub_14312B
 		BCS		loc_143D53
-		SYSX	_sys_msg_m00_b5B5_break,$A5
+		MSGX	_msg_m00_break,$5B5+$A5
 loc_143D53:
 		LDA		#$10
 		JSR		sub_14312B
@@ -6462,14 +6382,14 @@ loc_143D53:
 locret_143D7B:
 		RTS
 loc_143D7C:
-		SYSX	_sys_msg_m00_b5B5_break,$A4
+		MSGX	_msg_m00_break,$5B5+$A4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl68:
 		LDA		byte_60BF
 		AND		#4
 		BEQ		loc_143D89
-		SYSX	_sys_msg_m00_b6B5_break,$1E
+		MSGX	_msg_m00_break,$6B5+$1E
 loc_143D89:
 		MSGX	_msg_m00,$5B5+$A6
 		LDA		#$10
@@ -6485,9 +6405,9 @@ _npc_hndl69:
 		LDA		#$59
 		JSR		sub_14312B
 		BCC		loc_143DA3
-		SYSX	_sys_msg_m00_b5B5_break,$A7
+		MSGX	_msg_m00_break,$5B5+$A7
 loc_143DA3:
-		SYSX	_sys_msg_m00_b5B5_break,$A8
+		MSGX	_msg_m00_break,$5B5+$A8
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6A:
@@ -6497,16 +6417,16 @@ _npc_hndl6A:
 		BCC		loc_143DB1
 		RTS
 loc_143DB1:
-		SYSX	_sys_msg_m00_b5B5_break,$AA
+		MSGX	_msg_m00_break,$5B5+$AA
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6B:
 		LDA		byte_60B6
 		AND		#2
 		BNE		loc_143DBE
-		SYSX	_sys_msg_m00_b5B5_break,$AB
+		MSGX	_msg_m00_break,$5B5+$AB
 loc_143DBE:
-		SYSX	_sys_msg_m00_b5B5_break,$AC
+		MSGX	_msg_m00_break,$5B5+$AC
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6C:
@@ -6517,9 +6437,9 @@ _npc_hndl6C:
 		.BYTE	$B0
 		FARX	_bE_s1C
 		BNE		loc_143DD4
-		SYSX	_sys_msg_m00_b5B5_break,$B1
+		MSGX	_msg_m00_break,$5B5+$B1
 loc_143DD4:
-		SYSX	_sys_msg_m00_b5B5_break,$B2
+		MSGX	_msg_m00_break,$5B5+$B2
 loc_143DD7:
 		JSR		_msg_m00_param_b5B5
 		.BYTE	$AD
@@ -6533,7 +6453,7 @@ loc_143DD7:
 		JSR		_msg_m00_param_b5B5_break
 		.BYTE	$AE
 loc_143DF0:
-		SYSX	_sys_msg_m00_b5B5_break,$AF
+		MSGX	_msg_m00_break,$5B5+$AF
 locret_143DF3:
 		RTS
 
@@ -6541,7 +6461,7 @@ locret_143DF3:
 _npc_hndl6D:
 		MSGX	_msg_m00,$5B5+$88
 		FARX	_bE_s1C
-		SYSX	_sys_msg_m00_b5B5_break,$85
+		MSGX	_msg_m00_break,$5B5+$85
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6642,7 +6562,7 @@ loc_143EAF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_143EB8:
 		PHA
-		JSR		_bD_sB
+		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		PLA
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6653,7 +6573,7 @@ sub_143EBD:
 		LDA		byte_60CB
 		AND		#$10
 		BEQ		loc_143ECC
-		SYSX	_sys_msg_m00_b5B5_break,$C0
+		MSGX	_msg_m00_break,$5B5+$C0
 loc_143ECC:
 		CMP		#$A
 		BNE		loc_143EDF
@@ -6674,7 +6594,7 @@ loc_143EDF:
 		LDA		#$B
 		BNE		loc_143F13
 loc_143EEE:
-		SYSX	_sys_msg_m00_b6B5,$04
+		MSGX	_msg_m00,$6B5+$04
 		FARX	_bE_s1C
 		BNE		loc_143EF9
 		JMP		sub_143AEA

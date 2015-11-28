@@ -1298,7 +1298,7 @@ loc_B278A:
 		BNE		loc_B275E
 		FARX	_b0_s54
 		FARX	_bD_s11
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		LDA		#$40
@@ -1320,7 +1320,7 @@ _b7_s1A:
 		BNE		locret_B27A9
 		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bB_s4
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$19E
 		MSGX	_msg_m00,$19F
 		MSGX	_msg_m00,$1A0
