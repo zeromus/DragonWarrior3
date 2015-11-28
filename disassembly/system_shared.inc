@@ -6050,20 +6050,6 @@ loc_176C5B:
 		JMP		sub_17530A
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s4_msg_m00_arg0:
-		LDX		#0
-		BEQ		_wrap_bE_s4_msg_m00
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s4_msg_m00_arg1:
-		LDX		#1
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_s4_msg_m00:
-		FARX	_bE_s4_msg_m00
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 sub_176C76:
 		LDX		#$C0
 		BNE		sub_176C80
@@ -6163,14 +6149,14 @@ _sys_msg_m00_arg6_idx:			.WORD	_sys_msg_m00_arg6
 _sys_msg_m00_arg7_idx:			.WORD	_sys_msg_m00_arg7
 
 _msg_m00_break_idx:
-_sys_msg_m00_arg0_break_idx:		.WORD	_sys_msg_m00_arg0_break
-_sys_msg_m00_arg1_break_idx:		.WORD	_sys_msg_m00_arg1_break
-_sys_msg_m00_arg2_break_idx:		.WORD	_sys_msg_m00_arg2_break
-_sys_msg_m00_arg3_break_idx:		.WORD	_sys_msg_m00_arg3_break
-_sys_msg_m00_arg4_break_idx:		.WORD	_sys_msg_m00_arg4_break
-_sys_msg_m00_arg5_break_idx:		.WORD	_sys_msg_m00_arg5_break
-_sys_msg_m00_arg6_break_idx:		.WORD	_sys_msg_m00_arg6_break
-_sys_msg_m00_arg7_break_idx:		.WORD	_sys_msg_m00_arg7_break
+_sys_msg_m00_arg0_break_idx:	.WORD	_sys_msg_m00_arg0_break
+_sys_msg_m00_arg1_break_idx:	.WORD	_sys_msg_m00_arg1_break
+_sys_msg_m00_arg2_break_idx:	.WORD	_sys_msg_m00_arg2_break
+_sys_msg_m00_arg3_break_idx:	.WORD	_sys_msg_m00_arg3_break
+_sys_msg_m00_arg4_break_idx:	.WORD	_sys_msg_m00_arg4_break
+_sys_msg_m00_arg5_break_idx:	.WORD	_sys_msg_m00_arg5_break
+_sys_msg_m00_arg6_break_idx:	.WORD	_sys_msg_m00_arg6_break
+_sys_msg_m00_arg7_break_idx:	.WORD	_sys_msg_m00_arg7_break
 
 		; four syscalls used only from bank D and pointed directly to this bank
 		; these functions assuming the higher bit of msg index $300+array[N],
@@ -6178,10 +6164,10 @@ _sys_msg_m00_arg7_break_idx:		.WORD	_sys_msg_m00_arg7_break
 		; these four message cover indexes from $5Fx to $6xx
 		; the rest of messages from $300 to $5Fx are in bank D and used locally
 		;
-_sys02_msg_m00_b5B5_idx:			.WORD	_sys02_msg_m00_b5B5
-_sys03_msg_m00_b6B5_idx:			.WORD	_sys03_msg_m00_b6B5
-_sys04_msg_m00_b5B5_break_idx:		.WORD	_sys04_msg_m00_b5B5_break
-_sys05_msg_m00_b6B5_break_idx:		.WORD	_sys05_msg_m00_b6B5_break
+_sys_msg_m00_b5B5_idx:			.WORD	_sys_msg_m00_b5B5
+_sys_msg_m00_b6B5_idx:			.WORD	_sys_msg_m00_b6B5
+_sys_msg_m00_b5B5_break_idx:	.WORD	_sys_msg_m00_b5B5_break
+_sys_msg_m00_b6B5_break_idx:	.WORD	_sys_msg_m00_b6B5_break
 
 		; two more external direct offsets, whould called from bank 4 only
 		; and pointing directly to this bank
@@ -6193,9 +6179,9 @@ _sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break_idx:
 
 		; other common routines
 		;
-_display_window_idx:				.WORD	_display_window
-_display_window_ex_idx:				.WORD	_display_window_ex
-_apu_load_idx:						.WORD	_apu_load
+_display_window_idx:			.WORD	_display_window
+_display_window_ex_idx:			.WORD	_display_window_ex
+_apu_load_idx:					.WORD	_apu_load
 
 ; == FILESYSTEM DATA ==
 
@@ -6813,92 +6799,122 @@ _sys0_byte_read_x:
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg0:
+		TYA
+_wrap_msg_m00_arg0:
 		LDX		#0
-		BEQ		_far_bE_s4_msg_m00
+		BEQ		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg1:
+		TYA
+_wrap_msg_m00_arg1:
 		LDX		#1
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg2:
+		TYA
+_wrap_msg_m00_arg2:
 		LDX		#2
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg3:
+		TYA
+_wrap_msg_m00_arg3:
 		LDX		#3
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg4:
+		TYA
+_wrap_msg_m00_arg4:
 		LDX		#4
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg5:
+		TYA
+_wrap_msg_m00_arg5:
 		LDX		#5
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg6:
+		TYA
+_wrap_msg_m00_arg6:
 		LDX		#6
-		BNE		_far_bE_s4_msg_m00
+		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg7:
+		TYA
+_wrap_msg_m00_arg7:
 		LDX		#7
 
 ; =============== S U B	R O U T	I N E =======================================
-_far_bE_s4_msg_m00:
-		TYA
+_wrap_msg_m00:
 		FARX	_bE_s4_msg_m00
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg0_break:
+		TYA
+_wrap_msg_m00_arg0_break:
 		LDX		#0
-		BEQ		_far_bE_s4_msg_m00_break
+		BEQ		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg1_break:
+		TYA
+_wrap_msg_m00_arg1_break:
 		LDX		#1
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg2_break:
+		TYA
+_wrap_msg_m00_arg2_break:
 		LDX		#2
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg3_break:
+		TYA
+_wrap_msg_m00_arg3_break:
 		LDX		#3
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg4_break:
+		TYA
+_wrap_msg_m00_arg4_break:
 		LDX		#4
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg5_break:
+		TYA
+_wrap_msg_m00_arg5_break:
 		LDX		#5
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg6_break:
+		TYA
+_wrap_msg_m00_arg6_break:
 		LDX		#6
-		BNE		_far_bE_s4_msg_m00_break
+		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
 _sys_msg_m00_arg7_break:
+		TYA
+_wrap_msg_m00_arg7_break:
 		LDX		#7
 
 ; =============== S U B	R O U T	I N E =======================================
-_far_bE_s4_msg_m00_break:
-		TYA
-		JSR		_far_bE_s4_msg_m00
+_wrap_msg_m00_break:
+		FARX	_bE_s4_msg_m00
 		PLA
 		PLA
 		RTS

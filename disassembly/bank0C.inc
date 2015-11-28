@@ -3485,7 +3485,7 @@ loc_1297B7:
 		MSGX	_msg_m00,$13B
 		LDA		#$3D
 loc_1297C1:
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		JMP		loc_129745
 loc_1297C7:
 		LDA		byte_644
@@ -3607,7 +3607,7 @@ loc_129888:
 		DEY
 loc_12988F:
 		TYA
-		JSR		_wrap_bE_s4_msg_m00_arg0
+		JSR		_wrap_msg_m00_arg0
 		MSGX	_msg_m00,$145
 		FARX	_bE_s1C
 		BNE		loc_1298D1
@@ -3696,7 +3696,7 @@ loc_12992D:
 		LSR
 		STA		byte_D2
 		TYA
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 loc_129935:
 		LDA		_tmp_varB6
 		STA		byte_CE
@@ -4072,7 +4072,7 @@ loc_129B1C:
 		DEY
 loc_129B1D:
 		TYA
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		SEC
 		RTS
 loc_129B23:
@@ -4163,7 +4163,7 @@ _bC_s22:
 		EOR		#1
 		CLC
 		ADC		#$5D
-		JSR		_wrap_bE_s4_msg_m00_arg1
+		JSR		_wrap_msg_m00_arg1
 		LDA		_location_type
 		LSR
 		BCS		loc_129C0E
