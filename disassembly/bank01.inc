@@ -2085,7 +2085,7 @@ sub_294028:
 		LDA		_global_game_flags			; check for Erdrick flag
 		LSR
 		BCS		loc_294065
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		CMP		#4
 		BCC		loc_294039

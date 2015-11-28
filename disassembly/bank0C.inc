@@ -23,20 +23,20 @@ _bC_sB_ptr:
 		.WORD	_bC_sB
 _bC_sC_ptr:
 		.WORD	_bC_sC
-_bC_sD_ptr:
-		.WORD	_bC_sD
-_bC_sE_ptr:
-		.WORD	_bC_sE
-_bC_sF_ptr:
-		.WORD	_bC_sF
+_bC_sD_item_key_type0_use_ptr:
+		.WORD	_bC_sD_item_key_type0_use
+_bC_sE_item_key_type1_use_ptr:
+		.WORD	_bC_sE_item_key_type1_use
+_bC_sF_item_key_type3_use_ptr:
+		.WORD	_bC_sF_item_key_type3_use
 _bC_s10_ptr:
 		.WORD	_bC_s10
 _bC_s11_ptr:
 		.WORD	_bC_s11
 _bC_s12_sleep_X_sync_50_ptr:
 		.WORD	_bC_s12_sleep_X_sync_50
-_bC_s13_ptr:
-		.WORD	_bC_s13
+_bC_s13_use_magic_ball_ptr:
+		.WORD	_bC_s13_use_magic_ball
 _bC_s14_ptr:
 		.WORD	_bC_s14
 _bC_s15_ptr:
@@ -270,7 +270,7 @@ loc_12819A:
 		CMP		#$31
 		BNE		loc_1281C4
 		JSR		_wrap_bE_sD_display_window_3E
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
 		MSGX	_msg_m00,$181
@@ -2596,14 +2596,14 @@ loc_129199:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s10:
 		JSR		sub_1293DA
-		BCS		loc_12923A
+		BCS		.loc_return_false
 		LDA		_global_game_flags
 		BPL		loc_1291F6
 		LDA		_mapNumber
 		CMP		#$C
-		BEQ		loc_12923A
+		BEQ		.loc_return_false
 		CMP		#$7A
-		BEQ		loc_12923A
+		BEQ		.loc_return_false
 loc_1291F6:
 		JSR		_bC_s20
 		LDA		_world_map_steps_count
@@ -2621,14 +2621,14 @@ loc_129206:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s11:
 		JSR		sub_1293DA
-		BCS		loc_12923A
+		BCS		.loc_return_false
 		LDA		_world_map_steps_count
 		STA		byte_C5
 		CMP		#$78
 		BCS		loc_129232
 		LDA		#$97
 		STA		_world_map_steps_count
-		MSGX	_msg_m00,$104
+		MSGX	_msg_m00,$104	; "A darkness oozed out from..."
 		JSR		_sleep_30
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_bC_s20
@@ -2636,11 +2636,11 @@ _bC_s11:
 		SEC
 		RTS
 loc_129232:
-		MSGX	_msg_m00,$102
+		MSGX	_msg_m00,$102	; "But nothing happens now"
 		FARX	_bE_s33
 		SEC
 		RTS
-loc_12923A:
+.loc_return_false:
 		CLC
 		RTS
 
@@ -2894,7 +2894,7 @@ loc_1293D2:
 sub_1293DA:
 		LDA		_location_type
 		AND		#2
-		BNE		loc_129436
+		BNE		.loc_return_true0
 		LDA		byte_2C
 		CMP		#1
 		BNE		loc_1293ED
@@ -2905,67 +2905,68 @@ sub_1293DA:
 loc_1293ED:
 		LDA		_mapNumber
 		CMP		#$9C
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$9D
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$60
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$72
 		BNE		sub_129404
 		LDA		_global_game_flags
-		BMI		loc_129436
+		BMI		.loc_return_true0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129404:
 		LDA		byte_9A
-		BEQ		loc_129438
+		BEQ		.loc_return_false0
 		LDA		_mapNumber
 		CMP		#8
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$2D
-		BCC		loc_129438
+		BCC		.loc_return_false0
 		CMP		#$3C
-		BCC		loc_129436
+		BCC		.loc_return_true0
 		CMP		#$58
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$5B
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$85
-		BEQ		loc_129436
+		BEQ		.loc_return_true0
 		CMP		#$9F
-		BCC		loc_129438
+		BCC		.loc_return_false0
 		CMP		#$A6
-		BEQ		loc_129438
+		BEQ		.loc_return_false0
 		CMP		#$C6
-		BCC		loc_129436
+		BCC		.loc_return_true0
 		CMP		#$CF
-		BCC		loc_129438
+		BCC		.loc_return_false0
 		CMP		#$D6
-		BCS		loc_129438
-loc_129436:
+		BCS		.loc_return_false0
+.loc_return_true0:
 		SEC
 		RTS
-loc_129438:
+.loc_return_false0:
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sF:
+_bC_sF_item_key_type3_use:
 		LDA		#3
-		BNE		sub_129446
+		BNE		_item_key_use
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sE:
+_bC_sE_item_key_type1_use:
 		LDA		#1
-		BNE		sub_129446
+		BNE		_item_key_use
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sD:
+_bC_sD_item_key_type0_use:
 		LDA		#0
-		BEQ		sub_129446
+
+;; FALLTHROUGH;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129446:
+_item_key_use:
 		STA		_tmp_varB6
 		LDA		#$10
 		STA		byte_BA
@@ -3015,7 +3016,7 @@ loc_12949A:
 		CLC
 		RTS
 loc_1294A0:
-		MSGX	_msg_m00,$100
+		MSGX	_msg_m00,$100	; "The key doesn't fit"
 		FARX	_bE_s33
 		SEC
 		RTS
@@ -4162,7 +4163,7 @@ _bC_s22:
 		LDA		byte_2C
 		EOR		#1
 		CLC
-		ADC		#$5D
+		ADC		#$5D	; "<name> sets the <item> afloat on the ocean" or "sets the <item> on the ground"
 		JSR		_wrap_msg_m00_arg1
 		LDA		_location_type
 		LSR
@@ -4182,7 +4183,7 @@ _bC_s22:
 		BEQ		loc_129C16
 loc_129C0E:
 		JSR		_sleep_30
-		MSGX	_msg_m00,$101
+		MSGX	_msg_m00,$101	; "But nothing happens here"
 		CLC
 		RTS
 loc_129C16:
@@ -4668,7 +4669,7 @@ _bC_s25:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; hardcode logic looking for a specific spot on a map (Magic Ball)
-_bC_s13:
+_bC_s13_use_magic_ball:
 		LDA		_location_type
 		LSR
 		BCC		loc_129F9D
@@ -4684,11 +4685,11 @@ _bC_s13:
 		CMP		#9
 		BEQ		loc_129FA2
 loc_129F9D:
-		MSGX	_msg_m00,$118
+		MSGX	_msg_m00,$118	; "The magic ball can't be used here"
 		CLC
 		RTS
 loc_129FA2:
-		MSGX	_msg_m00,$117
+		MSGX	_msg_m00,$117	; "<name> sets up the <item> on the wall"
 		JSR		_sleep_30
 		LDA		#0
 		FARX	_bE_sB
@@ -7836,7 +7837,7 @@ sub_12B518:
 		BNE		loc_12B564
 		MSGX	_msg_m00,$18B
 loc_12B564:
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$18C
 		LDA		#$80
 		STA		_npcs_pos_list+8
@@ -8152,7 +8153,7 @@ sub_12B7C8:
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b0_s54
 		FARX	_bD_s11
-		FARX	_b4_s1A
+		FARX	_b4_s1A_status_pal_adjust_and_update
 locret_12B7E0:
 		RTS
 
@@ -8214,7 +8215,7 @@ sub_12B820:
 		CMP		#4
 		BCS		locret_12B81C
 		JSR		_wrap_bE_sD_display_window_3E
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$182
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#8
@@ -8222,7 +8223,7 @@ sub_12B820:
 		JSR		sub_12B91A
 		JSR		sub_174CBD
 		JSR		_wrap_bE_sD_display_window_3E
-		FARX	_bD_sB
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$1A7
 		LDA		#[_bC_s18_idx-_sys_idx_lib]>>1
 		STA		word_3C

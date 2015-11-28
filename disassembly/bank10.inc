@@ -56,7 +56,7 @@ _msg020:		.BYTE	_M,_P,_,_i,_s,_,_n,_o,_t,_,_h,_i,_g,_h,_,_e,_n,_o,_u,_g,_h,_exc,
 _msg021:		.BYTE	$F5,_,_t,_h,_e,_r,_e,_b,_y,_,_g,_a,_i,_n,_s,_,$F8,_,_e,_x,_p,_e,_r,_i,_e,_n,_c,_e,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
 _msg022:		.BYTE	_M,_i,_s,_s,_e,_d,_exc,$EB
 				.BYTE	_N,_o,_,_d,_a,_m,_a,_g,_e,_,_t,_o,_,$F5,$F2,_exc,$EE
-_msg023:		.BYTE	$F5,_,_a,_t,_t,_a,_c,_k,_s,_,$B0,_,_p,_a,_r,_t,_y,_dot,$EE
+_msg023:		.BYTE	$F5,_,_a,_t,_t,_a,_c,_k,_s,_,_herhis,_,_p,_a,_r,_t,_y,_dot,$EE
 _msg024:		.BYTE	_B,_u,_t,_,$F5,$F2,_,_i,_s,_,_a,_w,_a,_k,_e,_exc,$EE
 _msg025:		.BYTE	_B,_u,_t,_,$F5,$F2,_,_i,_s,_,_n,_o,_t,_,_a,_w,_a,_k,_e,_dot,$EE
 _msg026:		.BYTE	_Y,_o,_u,_,_o,_b,_t,_a,_i,_n,_,$F8,_,_p,_i,_e,_c,_e,$C0,_,_o,_f,_,_g,_o,_l,_d,_dot,$EE
@@ -157,7 +157,7 @@ _msg073:		.BYTE	$F5,$F2,_,_i,_s,_,_c,_o,_n,_f,_u,_s,_e,_d,_dot,$EE
 _msg074:		.BYTE	$F5,$F2,_,_h,_a,_s,_,_c,_o,_m,_e,_,_t,_o,_,_i,_t,_s,_,_s,_e,_n,_s,_e,_s,_dot,$EE
 _msg075:		.BYTE	$F8,_,_M,_P,_,_p,_o,_i,_n,_t,$C0,_,_a,_r,_e,_,_s,_n,_a,_t,_c,_h,_e,_d,_,_f,_r,_o,_m,_,$F5,$F2,_dot,$EE
 _msg076:		.BYTE	_Z,_o,_m,_a,_,_n,_u,_l,_l,_i,_f,_i,_e,_s,_,_t,_h,_e,_,_p,_o,_w,_e,_r,_,_o,_f,_,_a,_l,_l,_,_t,_h,_e,_,_s,_p,_e,_l,_l,_s,_,_o,_f,_,_hero,_apo,_s,_,_p,_a,_r,_t,_y,_dot,$EE
-_msg077:		.BYTE	$F5,_,_a,_s,_s,_u,_m,_e,_s,_,$B0,_,_o,_r,_i,_g,_i,_n,_a,_l,_,_s,_h,_a,_p,_e,_dot,$EE
+_msg077:		.BYTE	$F5,_,_a,_s,_s,_u,_m,_e,_s,_,_herhis,_,_o,_r,_i,_g,_i,_n,_a,_l,_,_s,_h,_a,_p,_e,_dot,$EE
 _msg078:		.BYTE	_T,_h,_e,_,_e,_f,_f,_e,_c,_t,_,_o,_f,_,_t,_h,_e,_,$F3,_,_i,_s,_,_g,_o,_n,_e,_dot,$EE
 _msg079:		.BYTE	$F5,$F2,_,_i,_s,_,_u,_n,_h,_u,_r,_t,_dot,$EE
 _msg07A:		.BYTE	_M,_i,_s,_s,_e,_d,_exc,$EB
@@ -175,7 +175,7 @@ _msg083:		.BYTE	$F5,$F2,_,_d,_i,_d,_,_n,_o,_t,_,_d,_i,_e,_dot,$EE
 _msg084:		.BYTE	$F8,_,_M,_P,_,_p,_o,_i,_n,_t,$C0,_,_a,_r,_e,_,_s,_n,_a,_t,_c,_h,_e,_d,_,_f,_r,_o,_m,_,$F5,$F2,_dot,$EE
 _msg085:		.BYTE	$F5,$F2,_,_b,_e,_c,_o,_m,_e,_s,_,_e,_v,_e,_n,_,_m,_o,_r,_e,_,_c,_o,_n,_f,_u,_s,_e,_d,_dot,$EE
 _msg086:		.BYTE	_B,_u,_t,_sem,_,_a,_l,_a,_s,_sem,_,_i,_t,_,_i,_s,_,_t,_h,_e,_,_s,_a,_m,_e,_,_a,_s,_,_b,_e,_f,_o,_r,_e,_dot,$EE
-_msg087:		.BYTE	$F5,_,_a,_s,_s,_u,_m,_e,_s,_,$B0,_,_o,_r,_i,_g,_i,_n,_a,_l,_,_s,_h,_a,_p,_e,_dot,$EE
+_msg087:		.BYTE	$F5,_,_a,_s,_s,_u,_m,_e,_s,_,_herhis,_,_o,_r,_i,_g,_i,_n,_a,_l,_,_s,_h,_a,_p,_e,_dot,$EE
 _msg088:		.BYTE	$F5,$F2,_,_d,_i,_s,_a,_p,_p,_e,_a,_r,_s,_,_i,_n,_t,_o,_,_t,_h,_e,_,_l,_i,_g,_h,_t,_dot,$EE
 _msg089:		.BYTE	$F5,_,_f,_a,_i,_n,_t,_s,_dot,$EE
 _msg08A:		.BYTE	$F5,_apo,_s,_,_s,_t,_r,_e,_n,_g,_t,_h,_,_i,_s,_,_s,_a,_p,_p,_e,_d,_,_b,_y,_,_p,_o,_i,_s,_o,_n,_dot,$EE
@@ -208,9 +208,9 @@ _msg0A1:		.BYTE	_A,_g,_i,_l,_i,_t,_y,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_
 _msg0A2:		.BYTE	_V,_i,_t,_a,_l,_i,_t,_y,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
 _msg0A3:		.BYTE	_L,_u,_c,_k,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
 _msg0A4:		.BYTE	_I,_n,_t,_e,_l,_l,_i,_g,_e,_n,_c,_e,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
-_msg0A5:		.BYTE	$F5,_,_p,_u,_t,_s,_,_t,_h,_e,_,_item,_,_o,_n,_,$B0,_,_f,_i,_n,_g,_e,_r,_,_a,_n,_d,_,_m,_a,_k,_e,_s,_,_a,_,_w,_i,_s,_h,_dot,$EF
+_msg0A5:		.BYTE	$F5,_,_p,_u,_t,_s,_,_t,_h,_e,_,_item,_,_o,_n,_,_herhis,_,_f,_i,_n,_g,_e,_r,_,_a,_n,_d,_,_m,_a,_k,_e,_s,_,_a,_,_w,_i,_s,_h,_dot,$EF
 _msg0A6:		.BYTE	_T,_h,_e,_,_r,_i,_n,_g,_,_s,_i,_l,_e,_n,_t,_l,_y,_,_c,_r,_u,_m,_b,_l,_e,_s,_,_i,_n,_t,_o,_,_p,_i,_e,_c,_e,_s,_dot,$EF
-_msg0A7:		.BYTE	$F5,_,_p,_e,_e,_l,_s,_,_t,_h,_e,_,_item,_,_a,_n,_d,_,_p,_u,_t,_s,_,_i,_t,_,_i,_n,_,$B0,_,_m,_o,_u,_t,_h,_dot,$EF
+_msg0A7:		.BYTE	$F5,_,_p,_e,_e,_l,_s,_,_t,_h,_e,_,_item,_,_a,_n,_d,_,_p,_u,_t,_s,_,_i,_t,_,_i,_n,_,_herhis,_,_m,_o,_u,_t,_h,_dot,$EF
 _msg0A8:		.BYTE	_T,_h,_e,_,_M,_a,_x,_i,_m,_u,_m,_,_H,_P,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_exc,$EE
 _msg0A9:		.BYTE	$F5,_,_s,_c,_a,_t,_t,_e,_r,_s,_,_t,_h,_e,_,_item,_dot,$EF
 _msg0AA:		.BYTE	$F5,_,_f,_l,_i,_n,_g,_s,_,_t,_h,_e,_,_item,_,_i,_n,_t,_o,_,_t,_h,_e,_,_a,_i,_r,_dot,$EF
@@ -234,7 +234,7 @@ _msg0B8:		.BYTE	_T,_h,_e,_,_M,_a,_x,_i,_m,_u,_m,_,_H,_P,_,_g,_o,_e,_s,_,_u,_p,_,
 _msg0B9:		.BYTE	_T,_h,_e,_,_M,_a,_x,_i,_m,_u,_m,_,_M,_P,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
 _msg0BA:		.BYTE	$F5,_,_l,_e,_a,_r,_n,_s,_,_a,_,_n,_e,_w,_,_s,_p,_e,_l,_l,_dot,$EE
 _msg0BB:		.BYTE	$F5,_,_o,_b,_t,_a,_i,_n,_s,_,_t,_h,_e,_,_item,_dot,$EE
-_msg0BC:		.BYTE	$F5,_,_c,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,$B1,_,_w,_i,_t,_h,_,_t,_h,_e,_,_item,_dot,$EE
+_msg0BC:		.BYTE	$F5,_,_c,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,_herhimself,_,_w,_i,_t,_h,_,_t,_h,_e,_,_item,_dot,$EE
 _msg0BD:		.BYTE	_T,_h,_e,_,_M,_a,_x,_i,_m,_u,_m,_,_M,_P,_,_g,_o,_e,_s,_,_u,_p,_,$F8,_,_p,_o,_i,_n,_t,$C0,_dot,$EE
 _msg0BE:		.BYTE	_Y,_o,_u,_,_c,_a,_n,_apo,_t,_,_g,_e,_t,_,_o,_f,_f,_,_h,_e,_r,_e,_exc,$EE
 _msg0BF:		.BYTE	$F5,_,_c,_a,_n,_n,_o,_t,_,_u,_s,_e,_,_t,_h,_e,_,_item,_dot,$EE
@@ -280,21 +280,21 @@ _msg0DD:		.BYTE	$F5,_,_i,_s,_,_h,_o,_n,_i,_n,_g,_,_h,_i,_s,_,_b,_o,_d,_y,_,_t,_o
 _msg0DE:		.BYTE	$F5,_,_s,_t,_a,_r,_t,_s,_,_d,_o,_i,_n,_g,_,_J,_a,_z,_z,_e,_r,_c,_i,_s,_e,_exc,$EE
 _msg0DF:		.BYTE	$F5,_,_s,_u,_d,_d,_e,_n,_l,_y,_,_b,_e,_c,_o,_m,_e,_s,_,_e,_n,_l,_i,_g,_h,_t,_e,_n,_e,_d,_dot,$EE
 _txt_blockE:
-_msg0E0:		.BYTE	$F5,_,_p,_o,_i,_n,_t,_s,_,$B0,_,_f,_i,_n,_g,_e,_r,_,_a,_t,_,$F5,$F2,_,_a,_n,_d,_,_g,_u,_f,_f,_a,_w,_s,_dot,$EE
+_msg0E0:		.BYTE	$F5,_,_p,_o,_i,_n,_t,_s,_,_herhis,_,_f,_i,_n,_g,_e,_r,_,_a,_t,_,$F5,$F2,_,_a,_n,_d,_,_g,_u,_f,_f,_a,_w,_s,_dot,$EE
 _msg0E1:		.BYTE	$F5,_,_g,_e,_t,_s,_,_t,_a,_n,_g,_l,_e,_d,_,_u,_p,_,_i,_n,_,_h,_i,_s,_,_o,_w,_n,_,_l,_e,_g,_s,_,_a,_n,_d,_,_f,_a,_l,_l,_s,_,_d,_o,_w,_n,_dot,$EE
 _msg0E2:		.BYTE	$F5,_,_p,_o,_k,_e,_s,_,_a,_t,_,_t,_h,_e,_,_d,_e,_a,_d,_,_m,_o,_n,_s,_t,_e,_r,_dot,$EE
 _msg0E3:		.BYTE	$F5,_,_r,_e,_m,_a,_r,_k,_s,_,_s,_m,_u,_g,_l,_y,_col,$EB
 				.BYTE	_apa,_I,_,_w,_o,_u,_l,_d,_n,_apo,_t,_,_f,_i,_g,_h,_t,_,_i,_f,_,_I,_,_w,_e,_r,_e,_,_y,_o,_u,_dot,_,_E,_v,_e,_n,_,_a,_,_v,_i,_c,_t,_o,_r,_y,_,_w,_o,_u,_l,_d,_,_b,_e,_,_h,_o,_l,_l,_o,_w,_smc,$EE
 _msg0E4:		.BYTE	$F5,_,_i,_s,_,_c,_o,_n,_f,_u,_s,_e,_d,_,_f,_o,_r,_,_s,_o,_m,_e,_,_r,_e,_a,_s,_o,_n,_dot,$EE
 _msg0E5:		.BYTE	$F5,_,_l,_i,_e,_s,_,_d,_o,_w,_n,_,_f,_o,_r,_,_a,_,_n,_a,_p,_dot,$EE
-_msg0E6:		.BYTE	$F5,_,_s,_p,_r,_u,_c,_e,_s,_,$B1,_,_u,_p,_dot,$EE
+_msg0E6:		.BYTE	$F5,_,_s,_p,_r,_u,_c,_e,_s,_,_herhimself,_,_u,_p,_dot,$EE
 _msg0E7:		.BYTE	$F5,_,_i,_s,_,_l,_o,_s,_t,_,_i,_n,_,_t,_h,_o,_u,_g,_h,_t,_dot,$EE
 _msg0E8:		.BYTE	$F5,_,_i,_s,_,_t,_a,_k,_i,_n,_g,_,_a,_,_b,_r,_e,_a,_k,_dot,$EE
 _msg0E9:		.BYTE	$F5,_,_r,_e,_c,_o,_i,_l,_s,_exc,$EE
-_msg0EA:		.BYTE	$F5,_,_c,_h,_e,_e,_r,_s,_,_o,_n,_,$B0,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_dot,$EE
-_msg0EB:		.BYTE	_B,_u,_t,_,$B0,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_,_a,_r,_e,_,_n,_o,_t,_,_t,_h,_e,_r,_e,_dot,$EE
+_msg0EA:		.BYTE	$F5,_,_c,_h,_e,_e,_r,_s,_,_o,_n,_,_herhis,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_dot,$EE
+_msg0EB:		.BYTE	_B,_u,_t,_,_herhis,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_,_a,_r,_e,_,_n,_o,_t,_,_t,_h,_e,_r,_e,_dot,$EE
 _msg0EC:		.BYTE	_B,_u,_t,_,_n,_o,_,_o,_n,_e,_,_i,_s,_,_l,_i,_s,_t,_e,_n,_i,_n,_g,_dot,$EE
-_msg0ED:		.BYTE	$F5,_,_s,_u,_d,_d,_e,_n,_l,_y,_,_f,_o,_u,_n,_d,_,$B2,_,_c,_o,_u,_l,_d,_n,_apo,_t,_,_m,_o,_v,_e,_,_a,_,_s,_i,_n,_g,_l,_e,_,_m,_u,_s,_c,_l,_e,_dot,$EE
+_msg0ED:		.BYTE	$F5,_,_s,_u,_d,_d,_e,_n,_l,_y,_,_f,_o,_u,_n,_d,_,_heshe,_,_c,_o,_u,_l,_d,_n,_apo,_t,_,_m,_o,_v,_e,_,_a,_,_s,_i,_n,_g,_l,_e,_,_m,_u,_s,_c,_l,_e,_dot,$EE
 _msg0EE:		.BYTE	$F5,_,_b,_e,_c,_k,_o,_n,_s,_,_t,_h,_e,_,_h,_e,_a,_v,_e,_n,_s,_dot,$EE
 _msg0EF:		.BYTE	$F5,_,_b,_r,_e,_a,_k,_s,_,_o,_u,_t,_,_i,_n,_,_a,_,_s,_m,_i,_l,_e,_dot,$EE
 _txt_blockF:
@@ -427,7 +427,7 @@ _msg144:		.BYTE	$F5,_,_e,_x,_a,_m,_i,_n,_e,_s,_,_t,_h,_e,_,_c,_a,_s,_k,_e,_t,_do
 				.BYTE	_,_,_,$EB,$EE
 _msg145:		.BYTE	_D,_o,_,_y,_o,_u,_,_w,_a,_n,_t,_,_t,_o,_,_d,_i,_s,_c,_a,_r,_d,_,_s,_o,_m,_e,_t,_h,_i,_n,_g,_que,$EE
 _msg146:		.BYTE	_B,_u,_t,_,_n,_o,_t,_h,_i,_n,_g,_,_c,_a,_n,_,_b,_e,_,_f,_o,_u,_n,_d,_exc,$EE
-_msg147:		.BYTE	$F5,_,_e,_x,_a,_m,_i,_n,_e,_s,_,_t,_h,_e,_,_g,_r,_o,_u,_n,_d,_,_a,_t,_,$B0,_,_f,_e,_e,_t,_dot,$FD,$EB
+_msg147:		.BYTE	$F5,_,_e,_x,_a,_m,_i,_n,_e,_s,_,_t,_h,_e,_,_g,_r,_o,_u,_n,_d,_,_a,_t,_,_herhis,_,_f,_e,_e,_t,_dot,$FD,$EB
 				.BYTE	_,_,_,$EB,$EE
 _msg148:		.BYTE	$F5,_,_d,_o,_e,_s,_n,_apo,_t,_,_h,_a,_v,_e,_,_a,_n,_,_i,_t,_e,_m,_,_y,_e,_t,_dot,$EE
 _msg149:		.BYTE	_H,_o,_w,_e,_v,_e,_r,_,_t,_h,_e,_,_t,_r,_e,_a,_s,_u,_r,_e,_,_c,_h,_e,_s,_t,_,_i,_s,_,_e,_m,_p,_t,_y,_exc,$EE
@@ -442,7 +442,7 @@ _msg14D:		.BYTE	$F5,_,_g,_i,_v,_e,_s,_,_u,_p,_,_t,_h,_e,_,_item,_dot,$EE
 _msg14E:		.BYTE	_W,_h,_a,_t,_,_d,_o,_,_y,_o,_u,_,_w,_a,_n,_t,_,_t,_o,_,_d,_i,_s,_c,_a,_r,_d,_que,$EE
 _msg14F:		.BYTE	_W,_h,_o,_,_a,_m,_o,_n,_g,_,_y,_o,_u,_,_w,_i,_l,_l,_,_d,_i,_s,_c,_a,_r,_d,_,_i,_t,_que,$EE
 _txt_block15:
-_msg150:		.BYTE	$F5,_,_i,_s,_,_d,_e,_a, $E,_, $B,_n, $E,_, $D,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,$B1,_,_w,_i,_t,_h,_,_a,_n,_y,_t,_h,_i,_n,_g,_dot,$EE
+_msg150:		.BYTE	$F5,_,_i,_s,_,_d,_e,_a, $E,_, $B,_n, $E,_, $D,_a,_n,_n,_o,_t,_,_e,_q,_u,_i,_p,_,_herhimself,_,_w,_i,_t,_h,_,_a,_n,_y,_t,_h,_i,_n,_g,_dot,$EE
 _msg151:		.BYTE	_T,_h,_a,_t,_,_item,_,_i,_s,_,_c,_u,_r,_s,_e,_d,_dot,$EE
 _msg152:		.BYTE	_,_,_,$EB
 				.BYTE	_T,_h,_e,_,_item,_,_i,_s,_,_s,_t,_u,_c,_k,_,_t,_o,_,_t,_h,_e,_,_b,_o,_d,_y,_,_b,_e,_c,_a,_u,_s,_e,_,_o,_f,_,_t,_h,_e,_,_c,_u,_r,_s,_e,_dot,$EE
@@ -450,7 +450,7 @@ _msg153:		.BYTE	$F5,_,_u,_s,_e,_s,_,_t,_h,_e,_,_item,_dot,$EE
 _msg154:		.BYTE	$F5,_,_p,_u,_t,_s,_,_t,_h,_e,_,_item,_,_o,_n,_dot,$EE
 _msg155:		.BYTE	$EF
 _msg156:		.BYTE	$F5,_,_l,_i,_g,_h,_t,_s,_,_t,_h,_e,_,_item,_dot,$EE
-_msg157:		.BYTE	$F5,_,_s,_p,_r,_i,_n,_k,_l,_e,_s,_,_t,_h,_e,_,_item,_,_o,_n,_,$B0,_,_b,_o,_d,_y,_dot,$EE
+_msg157:		.BYTE	$F5,_,_s,_p,_r,_i,_n,_k,_l,_e,_s,_,_t,_h,_e,_,_item,_,_o,_n,_,_herhis,_,_b,_o,_d,_y,_dot,$EE
 _msg158:		.BYTE	$F5,_,_r,_e,_a,_d,_s,_,_t,_h,_e,_,_R,_o,_y,_a,_l,_,_S,_c,_r,_o,_l,_l,_dot,$FD,$EB
 				.BYTE	_,_,_,$EB
 				.BYTE	_col,$EB
@@ -471,9 +471,9 @@ _msg15D:		.BYTE	$F5,_,_s,_e,_t,_s,_,_t,_h,_e,_,_item,_,_a,_f,_l,_o,_a,_t,_,_o,_n
 _msg15E:		.BYTE	$F5,_,_s,_e,_t,_s,_,_t,_h,_e,_,_item,_,_o,_n,_,_t,_h,_e,_,_g,_r,_o,_u,_n,_d,_dot,$EE
 _msg15F:		.BYTE	$F5,_,_r,_a,_i,_s,_e,_s,_,_t,_h,_e,_,_item,_,_t,_o,_,_t,_h,_e,_,_s,_k,_i,_e,_s,_dot,$EE
 _txt_block16:
-_msg160:		.BYTE	$F5,_,_r,_a,_i,_s,_e,_s,_,_t,_h,_e,_,_item,_,_o,_v,_e,_r,_,$B0,_,_h,_e,_a,_d,_dot,$EE
+_msg160:		.BYTE	$F5,_,_r,_a,_i,_s,_e,_s,_,_t,_h,_e,_,_item,_,_o,_v,_e,_r,_,_herhis,_,_h,_e,_a,_d,_dot,$EE
 _msg161:		.BYTE	$F5,_,_s,_p,_r,_i,_n,_k,_l,_e,_s,_,_t,_h,_e,_,_item,_,_a,_l,_l,_,_a,_r,_o,_u,_n,_d,_dot,$EE
-_msg162:		.BYTE	$F5,_,_p,_u,_t,_s,_,_t,_h,_e,_,_item,_,_i,_n,_,_t,_h,_e,_,_p,_a,_l,_m,_,_o,_f,_,$B0,_,_h,_a,_n,_d,_dot,$FD,$EB
+_msg162:		.BYTE	$F5,_,_p,_u,_t,_s,_,_t,_h,_e,_,_item,_,_i,_n,_,_t,_h,_e,_,_p,_a,_l,_m,_,_o,_f,_,_herhis,_,_h,_a,_n,_d,_dot,$FD,$EB
 				.BYTE	_,_,_,$EB,$EE
 _msg163:		.BYTE	$F5,_,_h,_a,_s,_,_a,_l,_r,_e,_a,_d,_y,_,_p,_u,_t,_,_t,_h,_e,_,_item,_,_o,_n,_dot,$EE
 _msg164:		.BYTE	_T,_h,_e,_,_k,_i,_n,_g,_,_c,_a,_n,_n,_o,_t,_,_u,_s,_e,_,_t,_h,_a,_t,_,_s,_p,_e,_l,_l,_dot,$EE
@@ -589,7 +589,7 @@ _msg18C:		.BYTE	_apu,_I,_t,_apo,_s,_,_a,_l,_l,_,_o,_v,_e,_r,_,_f,_o,_r,_,_m,_e,_
 				.BYTE	_apu,_O,_h,_sem,_,_t,_r,_a,_v,_e,_l,_e,_r,_dot,_,_P,_l,_e,_a,_s,_e,_,_h,_e,_a,_r,_,_m,_y,_,_d,_y,_i,_n,_g,_,_w,_o,_r,_d,_s,_smc,$FD,$EB
 				.BYTE	_apu,_I,_,_a,_m,_,_O,_r,_t,_e,_g,_a,_,_o,_f,_,_A,_l,_i,_a,_h,_a,_n,_smc,$FD,$EB
 				.BYTE	_apu,_I,_f,_,_y,_o,_u,_,_h,_a,_p,_p,_e,_n,_,_t,_o,_,_g,_o,_,_t,_o,_,_A,_l,_i,_a,_h,_a,_n,_,_i,_n,_,_y,_o,_u,_r,_,_t,_r,_a,_v,_e,_l,_s,_sem,_,_p,_l,_e,_a,_s,_e,_,_v,_i,_s,_i,_t,_,$F5,_,_a,_n,_d,_,_t,_e,_l,_l,_,_o,_f,_,_w,_h,_a,_t,_,_t,_r,_a,_n,_s,_p,_i,_r,_e,_d,_,_h,_e,_r,_e,_smc,$FD,$EB
-				.BYTE	_apu,_A,_s,_k,_,$B3,_,_t,_o,_,_f,_o,_r,_g,_i,_v,_e,_,$B0,_,_f,_a,_t,_h,_e,_r,_,_w,_h,_o,_,_c,_o,_u,_l,_d,_,_n,_o,_t,_,_b,_r,_i,_n,_g,_,_p,_e,_a,_c,_e,_,_t,_o,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_dot,_,_T,_e,_l,_l,_,_h,_ddt,_A,_a,_a,_h,_exc,_apd,$EF
+				.BYTE	_apu,_A,_s,_k,_,_himher,_,_t,_o,_,_f,_o,_r,_g,_i,_v,_e,_,_herhis,_,_f,_a,_t,_h,_e,_r,_,_w,_h,_o,_,_c,_o,_u,_l,_d,_,_n,_o,_t,_,_b,_r,_i,_n,_g,_,_p,_e,_a,_c,_e,_,_t,_o,_,_t,_h,_i,_s,_,_w,_o,_r,_l,_d,_dot,_,_T,_e,_l,_l,_,_h,_ddt,_A,_a,_a,_h,_exc,_apd,$EF
 _msg18D:		.BYTE	_apu,_I,_f,_,_t,_h,_i,_n,_g,_s,_,_r,_e,_m,_a,_i,_n,_,_u,_n,_c,_h,_a,_n,_g,_e,_d,_sem,_,_b,_e,_f,_o,_r,_e,_,_l,_o,_n,_g,_,_t,_h,_e,_,_w,_o,_r,_l,_d,_,_w,_i,_l,_l,_,_b,_e,_,_d,_e,_s,_t,_r,_o,_y,_e,_d,_,_b,_y,_,_t,_h,_e,_,_A,_r,_c,_h,_f,_i,_e,_n,_d,_smc,$FD,$EB
 				.BYTE	_apu,_B,_a,_r,_a,_m,_o,_s,_,_m,_u,_s,_t,_,_b,_e,_,_d,_e,_f,_e,_a,_t,_e,_d,_exc,_apd,$FD,$EB
 				.BYTE	_apu,_S,_e,_e,_k,_,_c,_o,_m,_p,_a,_n,_i,_o,_n,_s,_,_a,_t,_,_t,_h,_e,_,_l,_o,_c,_a,_l,_,_e,_a,_t,_e,_r,_y,_,_a,_n,_d,_,_s,_t,_a,_r,_t,_,_y,_o,_u,_r,_,_q,_u,_e,_s,_t,_smc,$FD,$EB
