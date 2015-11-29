@@ -1057,7 +1057,6 @@ _map9E:
 ; possibly also stores triggers for sub-maps within locations
 ; struct {
 ;   u8 locx, locy;	
-;   u8 location_number;
 ;   u8 entry_tx, entry_ty;
 ;   u8 facing_and_flag; // bottom 2 bits are facing. 4th bit is some other flag
 ; };

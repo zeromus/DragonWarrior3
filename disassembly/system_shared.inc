@@ -2452,6 +2452,7 @@ sub_175049:
 		LDX		#$FF
 		CMP		#7
 		BEQ		loc_17509F
+ ; checks for special maps
 		LDA		_mapNumber
 		CMP		#$A9
 		BNE		loc_175084
