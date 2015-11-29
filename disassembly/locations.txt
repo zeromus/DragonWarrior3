@@ -1,4 +1,4 @@
-$00 - Aliahan
+$00 - Aliahan Town
 $01 - Romaly
 $02 - Eginbear
 $03 - Castle of Baramos
@@ -8,8 +8,8 @@ $06 - Samanao
 $07 - Brecconaly	
 $08 - Castle of Zoma
 $09 - Reeve
-$0A - Portoga
-$0B - Noaniels
+$0A - Portoga Town
+$0B - Noaniels (normally asleep; must be wakened by another flag)
 $0C - Assaram
 $0D - ##DUMMY##
 $0E - Baharata
@@ -58,19 +58,192 @@ $38 - Cave Northwest of Tantegel
 $39 - Cave Southwest of Tantegel
 $3A - Tunnel to Rimuldar..
 $3B - Pyramid
-$3C - Tower of Najima
-$3D - Tower of Garuna
-$3E - Tower of Arp
-$3F - Tower of Shanpane
-$40 - Tower West of Kol
+$3C - Tower of Najima 1F
+$3D - Tower of Garuna 1F
+$3E - Tower of Arp 1F
+$3F - Tower of Shanpane 1F
+$40 - Tower West of Kol 1F
 
-some inaccessible locations:
-cave of enticement
-phantom ship
-hidden village of elves?
-new town?
-isis? most unlikely
-tantegal - from brecconaly?
-portoga castle - from portoga?
-isis castle - from isis?
-aliahan castle - from aliahan?
+;----------- above here, locations relate to _worldmap_trigger_tbl (even if it doesnt always make sense). ---------
+; below here they can only be referenced by handlers.. or from triggers in other maps, in case those arent 'handlers'
+; also i'll write a good spawn location for testing
+; put a breakpoint at 0F:DA32 and then edit $8B (map number) and $30/$31 (spawn point)
+;
+$41 - Aliahan upstairs, Hero's apartment ; 2,2
+$42 - Aliahan upstairs, in building guarded by man at east edge of town
+$43 - Aliahan inn upstairs ; 1,1
+$44 - Aliahan's Hall of Registration ; 5,5
+$45 - Aliahan Castle's jail basement ; 3,9
+$46 - Aliahan Castle ; F,1C
+$47 - Aliahan Castle throne room ; 1,1
+$48 - Romaly Fight Ring basement ; 1,1
+$49 - Glitched
+$4A - Romaly Castle 2F (incl. throne room) ; 10,7
+$4B - Romaly Castle 3F (west tower?)
+$4C - Romaly Castle 4F
+$4D - Romaly Castle 4F (east tower) ; notice 3F of east tower is far away
+$4E - Eginbear Boulder Puzzle Basement ; 5,e
+$4F - Eginbear throne room ; 10,10
+$50 - Isis Town ; 1,8
+$51 - Isis Town, Upstairs in a westerly room
+$52 - Isis Town, Socrus's Upstairs ; 1,1
+$53 - Isis Castle B2 (Meteorite Armband treasure room) ; 1,1
+$54 - Isis Castle B1
+$55 - Isis Castle
+$56 - Isis Castle 2F (includes throne room) ; 1,6
+$57 - Isis Castle 3F (Garden)
+$58 - {{ A green dungeon, where the boss lives, probably Baramos }} ; 10,10
+$59 - Castle of Baramos B1 tunnels ; 6,24
+$5A - Castle of Baramos 2F ; 10,15
+$5B - Glitched/dummied
+$5C - Shrine of Dhama 2F; 1,1
+$5D - Samanao Town upstairs, graveyard shack ; 1,1
+$5E - Samanao Town upstairs, shop ; 1,1
+$5F - Samanao Town hidden graveyard path ; 1,6
+$60 - Samanao Town prison basement ; 2,6
+$61 - Samanao Castle ; 1,1
+$62 - Samanao Castle 2F (Incl. roof walk) ; 1,1
+$63 - Samanao Castle 3F (East tower) ; 1,1
+$64 - Samanao Castle 4F (East tower, jump out the window)
+$65 - Samano Town, hidden church upstairs (Kandar's apartment)
+$66 - Brecconaly upstairs, clue-giving old man ; 1,1
+$67 - Brecconaly upstairs, outskirts southeast, lady with clue about ring of life ; 1,1
+$68 - Tantegal Castle B1, stones of sunlight man in hidden basement southeast ; 1,1
+$69 - Tantegal Castle
+$6A - Tantegal Castle B1, treasure room, Stone of Sulight
+$6B - Tantegal Castle 2F, throne room ; 1,1
+$6C - Tantegal Castle 2F, empty barracks, I guess ; 1,1
+$6D - Reeve, Inn upstairs ; 1,1
+$6E - Reeve, upstairs, Magic Ball -giver ; 1,1
+$6F - Portoga Town, basement, extreme outskirts hidden bunker ; 1,1
+$70 - Portoga Town, upstairs, Sabrina's house ; 8,8
+$71 - Portoga Castle
+$72 - New Town (empty, just the old man) ; 7,A
+$73 - New Town (with merchant) ; 7,A
+$74 - New Town (old man has house now) ;7,A
+$75 - New Town (run into the ground by merchant) ;7,A
+$76 - New Town $74 (upstairs, old man) ;1,1
+$77 - Noaniels asleep, upstairs southwest outskirts, old man clue-giver ;1,1
+$78 - Noaniels asleep, upstairs inn ;1,1
+$79 - Assaram, upstairs, clue-giving noble (mentions portoga and norud); 1,1
+$7A - Assaram, basement, "this is a nice town, especially at night!" ; 1,1
+$7B - dummied
+$7C - dummied
+$7D - Baharata, upstairs, pepper shop
+$7E - Lancel, upstairs, northwest building
+$7F - Cantlin, upstairs, apartments
+$80 - Rimuldar, upstairs, "Place of Prophecy"
+$81 - Rimuldar, upstairs, duplex apartments
+$82 - Luzami, upstairs, telescope ; 4,8
+$83 - Kanave, upstairs, kid's loft ; 3,3
+$84 - Hidden Village of the Elves ; 1,1, walk southeast
+$85 - Tedanki, crypt basement
+$86 - Tedanki, upstairs, weapon shop
+$87 - Isis Town, Casino
+$88 - dummied
+$89 - Muor, upstairs, Papagatero's Multi-Use Building
+$8A - Jipang, basement with jars ; 1,3
+$8B - House of Pirates B1, treasure
+$8C - House of Pirates B1, jail
+$8D - Remote shack, clues about staff of change, pirates, and strange bone
+$8E - Kol, upstairs, tool shop
+$8F - Warp Shrine $1C basement with clue-giver ; 3,3
+$90 - Garinham, basement
+$91 - Alefgard landing, didnt remember this
+$92 - Shrine in the woods (WHERE?); 6,1
+$93 - Basement of $92 with warp gate (taking to Cave of Enticement)
+$94 - Romaly Shrine Tunnel
+$95 - dummied
+$96 - Oasis (Contains Isis Town) (where was the location trigger?)
+$97 - Location with stairs to Tower of Najima B1 and a warp gate to shrine $1C ; 3,3
+$98 - Location with hole dropping to Cave of Enticement B1 ; 8,4
+$99 - Samanao Castle Fight Ring
+$9A - Cantlin Fight Ring
+$9B - Romaly Castle 3F (east tower)
+$9C - Phantom Ship ; 08,10
+$9D - Phantom Ship B1 ; 10,10
+$9E - dummied
+$9F - Tower of Najima B1
+$A0 - Cave of Enticement B1
+$A1 - Cave of Enticement B2 ; 8,8
+$A2 - Cave of Enticement B3, warp gate entry
+$A3 - Cave West of Noaniels B2 ; 10,10
+$A4 - Cave West of Noaniels B3 ; 10,10
+$A5 - Cave West of Noaniels B4 ; 10,10
+$A6 - Location where something went in a huge pit (to Alefgard Landing) ; 10,1A
+$A7 - Cave Southwest of Tantegal B2 ; 10,10
+$A8 - Cave of Necrogond B4(?) ; 16,1a
+$A9 - Cave of Necrogond B3 ; 10,10
+$AA - Cave of Necrogond B2 ; 10,12
+$AB - dummied
+$AC - dummied
+$AD - dummied
+$AE - dummied
+$AF - dummied
+$B0 - dummied
+$B1 - dummied
+$B2 - Cave Northeast of Baharata B2 ; 3 3
+$B3 - dummied
+$B4 - dummied
+$B5 - dummied
+$B6 - dummied
+$B7 - dummied
+$B8 - dummied
+$B9 - dummied
+$BA - dummied
+$BB - Cave of Jipang B2
+$BC - Navel of the Earth B2 ; 10,10
+$BD - Navel of the Earth B3
+$BE - Cave Southeast of Samanao B2 ; 10,10
+$BF - Cave Southeast of Samanao B3 ; 10,10
+$C0 - dummied
+$C1 - _glitched_ watery location with madness happening
+$C2 - dummied
+$C3 - Cave Northwest of Tantegal B2 ; 10,10
+$C4 - dummied
+$C5 - Cave Northwest of Tantegal B3
+$C6 - dummied
+$C7 - dummied
+$C8 - Castle of Zoma B1 ; f,9
+$C9 - Castle of Zoma B2
+$CA - Castle of Zoma B3
+$CB - Castle of Zoma B4
+$CC - Castle of Zoma B5
+$CD - dummied
+$CE - dummied
+$CF - Pyramid; Golden claw room; 16,0d
+$D0 - Pyramid B1
+$D1 - Pyramid 2F
+$D2 - Pyramid 3F
+$D3 - Pyramid 4F
+$D4 - Pyramid 5F
+$D5 - Pyramid Peak, exterior
+$D6 - Tower of Najima 2F
+$D7 - Tower of Najima 3F
+$D8 - Tower of Najima 4F
+$D9 - dummied
+$DA - dummied
+$DB - Tower of Garuna 2F
+$DC - Tower of Garuna 3F ; 5,8
+$DD - Tower of Garuna 4F ; 4,4
+$DE - Tower of Garuna 5F + 6F
+$DF - glitched water level
+$E0 - dummied (glitched water level)
+$E1 - dummied
+$E2 - dummied
+$E3 - dummied
+$E4 - Tower of Arp 2F ; 4,4
+$E5 - Tower of Arp 3F ; 4,4
+$E6 - Tower of Arp 4F ; 4,4
+$E7 - Tower of Arp 5F ; 4,4
+$E8 - Tower of Shanpane 2F
+$E9 - Tower of Shanpane 3F
+$EA - dummied
+$EB - Tower of Shanpane 4F
+$EC - Tower of Shanpane 5F
+$ED - Tower of Najima Inn Basement
+$EE - Tower of Shanpane 6F
+$EF - Tower West of Kol 5F ; 8,8
+$F0 - Tower West of Kol 2F ; 8,8
+$F1 - Tower West of Kol 3F ; 8,8
+$F2 - Tower West of Kol 4F ; 8,8
