@@ -1577,7 +1577,7 @@ loc_20A5A:
 		FARX	_b4_s1C
 		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
 loc_20A68:
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		LDA		byte_6A6F
 		CMP		#$84
 		BEQ		sub_20A1A

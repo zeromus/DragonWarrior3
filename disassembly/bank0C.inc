@@ -214,7 +214,7 @@ loc_128119:
 		BNE		loc_128154
 		JSR		_wrap_bE_sD_display_window_3E
 		MSGX	_msg_m00,$171
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_128139
 		MSGX	_msg_m00,$172
 		JSR		sub_174D4F
@@ -2448,7 +2448,7 @@ sub_12908F:
 		JSR		_wrap_bE_sD_display_window_3E
 		MSGX	_msg_m00,$194
 loc_1290C1:
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1290CC
 		MSGX	_msg_m00,$191
 		JMP		loc_1290C1
@@ -2723,7 +2723,7 @@ loc_1292B5:
 		CPY		#$C
 		BNE		loc_1292B5
 		JSR		_bC_s20
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_ppu_disable
 		JSR		sub_176C41
@@ -3610,7 +3610,7 @@ loc_12988F:
 		TYA
 		JSR		_wrap_msg_m00_arg0
 		MSGX	_msg_m00,$145
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1298D1
 		LDA		_tmp_ptrB4+1
 		BEQ		loc_1298A9
@@ -4189,7 +4189,7 @@ loc_129C0E:
 loc_129C16:
 		JSR		_sleep_30
 		JSR		_bC_s20
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDA		_ram_pal_buf+$D
 		PHA
 		LDA		_ram_pal_buf+$E
@@ -4227,7 +4227,7 @@ loc_129C72:
 		JSR		sub_129F24
 		LDY		#0
 		JSR		sub_129EA1
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		PLA
 		STA		_ram_pal_buf+$F
 		PLA
@@ -4651,7 +4651,7 @@ _bC_s25:
 		PHA
 		LDA		_ram_pal_buf+$F
 		PHA
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		sub_129E5D
 		SYSX	_apu_load,$24
 		JSR		sub_129C94
@@ -5078,7 +5078,7 @@ loc_12A221:
 		BEQ		loc_12A259
 loc_12A239:
 		SYSX	_apu_load,$1E
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		MSGX	_msg_m00,$10D
 		JSR		__pause_or_skip
 		SEC
@@ -5095,7 +5095,7 @@ loc_12A247:
 		BMI		loc_12A239
 loc_12A259:
 		SYSX	_apu_load,$1D
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 byte_12A261:
@@ -5171,13 +5171,13 @@ _bC_s2B:
 		LDA		#0
 		FARX	_bE_sB
 		JSR		_bC_s3A
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		JSR		_wrap_bE_sD_display_window_3E
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		MSGX	_msg_m00,$1B0
 		LDA		#$47
-		FARX	_bD_s27
+		FARX	_bD_s27_give_item_to_player_msg1
 		BCC		loc_12A2FE
 		MSGX	_msg_m00,$1B1
 		LDA		#0
@@ -5304,7 +5304,7 @@ sub_12A3A6:
 		LSR
 		LSR
 		TAX
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		BMI		sub_12A3DC
 loc_12A3B4:
 		LDY		#0
@@ -5698,14 +5698,14 @@ sub_12A621:
 _bC_s19:
 		BIT		_global_game_flags
 		BVS		loc_12A686
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		SYSX	_apu_load,$01
 		FARX	_b0_s56
 		LDA		_global_game_flags
 		ORA		#$40
 		STA		_global_game_flags
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		JSR		sub_177CFC
 		JSR		_ppu_disable
 		LDA		#$F
@@ -7334,7 +7334,7 @@ sub_12B189:
 		BNE		locret_12B1A1
 		JSR		_wrap_bE_sD_display_window_3E
 		MSGX	_msg_m00,$141
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		sub_12B1A2
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7691,7 +7691,7 @@ sub_12B3D1:
 loc_12B41C:
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$699
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_12B42E
 		MSGX	_msg_m00,$69A
 		FARX	_bE_s33
@@ -7762,7 +7762,7 @@ sub_12B493:
 		JSR		_wrap_bE_sD_display_window_3E
 		MSGX	_msg_m00,$69D
 		MSGX	_msg_m00,$69E
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_12B4BE
 		MSGX	_msg_m00,$69F
 loc_12B4BE:
@@ -8051,7 +8051,7 @@ loc_12B6C9:
 		MSGX	_msg_m00,$17B
 loc_12B70E:
 		MSGX	_msg_m00,$17C
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_12B74D
 		MSGX	_msg_m00,$17D
 		JMP		loc_12B70E
@@ -8103,7 +8103,7 @@ loc_12B767:
 		BNE		locret_12B739
 		JSR		_wrap_bE_sD_display_window_3E
 		MSGX	_msg_m00,$141
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_12B786
 		JMP		_bC_s20
 loc_12B786:

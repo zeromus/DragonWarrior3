@@ -61,16 +61,16 @@ _bD_s20_npc_hndl31_ptr:
 		.WORD	_bD_s20_npc_hndl31
 _bD_s21_ptr:
 		.WORD	_bD_s21
-_bD_s22_ptr:
-		.WORD	_bD_s22
+_bD_s22_se_wait_and_map_music_start_ptr:
+		.WORD	_bD_s22_se_wait_and_map_music_start
 _bD_s23_ptr:
 		.WORD	_bD_s23
 _bD_s24_ptr:
 		.WORD	_bD_s24
 _bD_s26_get_first_live_player_with_no_NM_status_ptr:
 		.WORD	_bD_s26_get_first_live_player_with_no_NM_status
-_bD_s27_ptr:
-		.WORD	_bD_s27
+_bD_s27_give_item_to_player_msg1_ptr:
+		.WORD	_bD_s27_give_item_to_player_msg1
 _bD_s28_frame_palette_by_status_adjust_ptr:
 		.WORD	_bD_s28_frame_palette_by_status_adjust
 _bD_s29_ptr:
@@ -86,6 +86,8 @@ _bD_s19:
 		INY
 		LDA		(word_6C),Y
 		STA		byte_81
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s1A:
@@ -169,10 +171,16 @@ locret_1400EC:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s1C:
 		JSR		sub_1772F4
-		JMP		loc_1400F6
+		JMP		sub_1400F6
+
+; =============== S U B	R O U T	I N E =======================================
 _bD_s1D:
 		JSR		sub_177305
-loc_1400F6:
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+sub_1400F6:
 		LDA		_location_type
 		AND		#2
 		BNE		locret_14011C
@@ -235,6 +243,7 @@ _bD_s18:
 		LDA		byte_14018A+7
 		STA		_spr_ram+$F
 		RTS
+		
 byte_14018A:
 		.BYTE	$6F,$80,$6F,$88,$77,$80,$77,$88
 
@@ -764,6 +773,8 @@ loc_1416D5:
 		STA		(word_72),Y
 		JSR		sub_1417DD
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sE:
 		AND		#3
@@ -833,28 +844,28 @@ loc_141724:
 		CMP		#2
 		BEQ		loc_141777
 		JSR		sub_141924
-		JSR		sub_141791
+		JSR		_ptr72_byte_0_dec
 		JSR		sub_141831
 		BCC		loc_141784
-		JMP		sub_1417A5
+		JMP		_ptr72_byte_0_inc
 loc_14175C:
 		JSR		sub_141924
-		JSR		sub_1417A5
+		JSR		_ptr72_byte_0_inc
 		JSR		sub_141831
 		BCC		loc_141784
-		JMP		sub_141791
+		JMP		_ptr72_byte_0_dec
 loc_14176A:
 		JSR		sub_141924
-		JSR		sub_14179B
+		JSR		_ptr72_byte_1_dec
 		JSR		sub_141831
 		BCC		loc_141784
-		BCS		sub_1417AF
+		BCS		_ptr72_byte_1_inc
 loc_141777:
 		JSR		sub_141924
-		JSR		sub_1417AF
+		JSR		_ptr72_byte_1_inc
 		JSR		sub_141831
 		BCC		loc_141784
-		BCS		sub_14179B
+		BCS		_ptr72_byte_1_dec
 loc_141784:
 		LDA		byte_7F
 		BEQ		locret_141790
@@ -866,7 +877,7 @@ locret_141790:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_141791:
+_ptr72_byte_0_dec:
 		LDY		#0
 		LDA		(word_72),Y
 		SEC
@@ -875,7 +886,7 @@ sub_141791:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14179B:
+_ptr72_byte_1_dec:
 		LDY		#1
 		LDA		(word_72),Y
 		SEC
@@ -884,7 +895,7 @@ sub_14179B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1417A5:
+_ptr72_byte_0_inc:
 		LDY		#0
 		LDA		(word_72),Y
 		CLC
@@ -893,7 +904,7 @@ sub_1417A5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1417AF:
+_ptr72_byte_1_inc:
 		LDY		#1
 		LDA		(word_72),Y
 		CLC
@@ -994,7 +1005,7 @@ locret_141801:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141831:
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		JSR		sub_176F34
 		AND		#$E0
 		STA		byte_78
@@ -1039,6 +1050,8 @@ sub_141878:
 		LDA		word_7C
 		AND		#$1F
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s3:
 		TAX
@@ -1049,7 +1062,7 @@ _bD_s3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141884:
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		STX		word_4
 		STY		word_4+1
 		LDA		#0
@@ -1089,7 +1102,7 @@ loc_1418B9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1418BB:
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		TXA
 		CMP		_mapWidth
 		BCS		locret_1418C6
@@ -1114,7 +1127,7 @@ loc_1418D3:
 sub_1418D5:
 		LDA		byte_8E
 		BPL		loc_1418F2
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		TXA
 		SEC
 		SBC		_playerMapX
@@ -1137,7 +1150,7 @@ loc_1418F2:
 sub_1418F4:
 		LDA		byte_79
 		BEQ		loc_1418F2
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		JMP		sub_1777C2
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1170,7 +1183,7 @@ loc_14191C:
 sub_141924:
 		LDA		#0
 		STA		byte_79
-		JSR		sub_141935
+		JSR		_ptr72_get_word
 		JSR		sub_1777C2
 		BCS		locret_141934
 		LDA		#$FF
@@ -1179,7 +1192,7 @@ locret_141934:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_141935:
+_ptr72_get_word:
 		LDY		#0
 		LDA		(word_72),Y
 		TAX
@@ -1504,6 +1517,8 @@ loc_141B3A:
 		STA		word_72
 		JSR		sub_141B45
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_141B45:
 		JSR		sub_141B50
@@ -1783,7 +1798,6 @@ sub_141D09:
 		LDA		word_6+1
 		STA		_spr_ram+3,X
 		INC		byte_8
-locret_141D21:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1816,6 +1830,7 @@ sub_141D22:
 		BNE		locret_141D21
 		LDA		#$FF
 		STA		byte_9
+locret_141D21:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1890,6 +1905,8 @@ locret_141DCE:
 loc_141DCF:
 		LDA		byte_2C
 		BNE		locret_141DCE
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s7:
@@ -1974,6 +1991,8 @@ loc_141E6A:
 		INC		_spr_ram+8,X
 		INC		_spr_ram+$C,X
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_141E76:
 		LDA		word_72
@@ -1991,6 +2010,8 @@ locret_141E84:
 _bD_s4:
 		LDA		byte_2C
 		BNE		locret_141E84
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s5:
@@ -2020,6 +2041,8 @@ sub_141EB3:
 		JSR		sub_141EBA
 		LDX		#7
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_141EBA:
 		LDA		_players_pos_list+4,X
@@ -2032,11 +2055,8 @@ sub_141EBA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; looking for the first non-dead player with NM status flag set
-; returns it's index or first char in formation.
-; so, mostly this routine will select the first character in formation
-; except when it has NM status, but if all other players are dead,
-; the NM status player selected anyway
+; looking for the first non-dead player with NM status flag clear
+; returns it's index or the first char in formation if no others are left.
 ;
 _bD_s26_get_first_live_player_with_no_NM_status:
 		LDX		#0
@@ -2117,14 +2137,14 @@ _bD_s12:
 		TAX
 loc_141F3B:
 		BEQ		locret_141F23
-		JSR		sub_141F44
+		JSR		_argC0_mul_9
 		DEX
 		JMP		loc_141F3B
 locret_141F23:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_141F44:
+_argC0_mul_9:
 		ASL		byte_C0
 		ROL		byte_C1
 		ROL		byte_C2
@@ -2210,6 +2230,8 @@ _question_to_select_char_display_arg12:
 _question_to_select_char_display_arg7:
 		LDX		#7
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 _question_to_select_char_display_ex:
 		STA		byte_C4
@@ -2263,7 +2285,7 @@ sub_141FF1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14200A:
+_players_gold_add_from_arrC0:
 		LDA		byte_C0
 		STA		byte_CE
 		LDA		byte_C1
@@ -2273,10 +2295,10 @@ sub_14200A:
 		JMP		_sram_b0_s1B_players_gold_add
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_142019:
+_player_gold_add_arrC0_test_overflow:
 		JSR		_sram_b0_s1B_players_gold_read
 		CLC
-		LDA		byte_C0
+		LDA		byte_C0		; add arrC0 value to current player's gold
 		ADC		word_4
 		STA		word_4
 		LDA		byte_C1
@@ -2286,7 +2308,7 @@ sub_142019:
 		ADC		word_6
 		STA		word_6
 		SEC
-		LDA		#$9F
+		LDA		#$9F		; decrease 99999 to check if not above
 		SBC		word_4
 		LDA		#$86
 		SBC		word_4+1
@@ -2416,22 +2438,21 @@ loc_1420D0:
 		JMP		loc_1420D0
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s22:
-		FARX	_bB_s7
-		JSR		_map_music_select_and_load
-		RTS
+_bD_s22_se_wait_and_map_music_start:
+		FARX	_bB_s7_apu_wait
+		JMP		_map_music_select_and_load
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1420EE:
-		MSGX	_msg_m00,$205	; "Wery well, i will record your current..."
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$205		; "Wery well, i will record your current..."
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1420FA
 		FARX	_b7_sD
 		RTS
 loc_1420FA:
-		MSGX	_msg_m00,$294	 ; "I can't record due your position, etc.."
-		PLA
-		PLA
+		MSGX	_msg_m00,$294	; "I can't record due your position, etc.."
+		PLA						; here is return one level above the caller of this routine itself
+		PLA						; can't be replaced with MSGX *_break opcode
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2463,7 +2484,7 @@ sub_142135:
 		JMP		sub_1423CC
 loc_14213F:
 		MSGX	_msg_m00,$21E	; "This store deals weapons and armor"
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_14215A
 loc_142147:
 		MSGX	_msg_m00,$21F	; "What will you buy"
@@ -2505,14 +2526,13 @@ loc_142177:
 		CMP		#2
 		BCC		loc_1421A6
 		MSGX	_msg_m00,$224	; "Perhaps someone else"
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		CMP		#1
 		BCC		loc_142177
 		BEQ		loc_1421A6
 		JMP		loc_1421F1
 loc_1421A6:
-		MSGX	_msg_m00,$225	; "Please Come again"
-		RTS
+		MSGX	_msg_m00_break,$225	; "Please Come again"
 loc_1421AA:
 		LDA		byte_C5
 		STA		byte_CF
@@ -2520,7 +2540,7 @@ loc_1421AA:
 		FARX	_b0_s5E_check_if_item_can_be_equipped
 		BCS		loc_1421C0
 		MSGX	_msg_m00,$226	; "Cannot equip with that"
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1421C0
 		JMP		loc_142177
 loc_1421C0:
@@ -2544,12 +2564,11 @@ loc_1421E3:
 		JSR		_sram_b0_s29_player_inventory_item_add
 loc_1421E6:
 		MSGX	_msg_m00,$22A
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1421F1
 		JMP		loc_142147
 loc_1421F1:
-		MSGX	_msg_m00,$22B
-		RTS
+		MSGX	_msg_m00_break,$22B
 loc_1421F5:
 		LDA		byte_6FF
 		CMP		#$1E
@@ -2622,7 +2641,7 @@ loc_14226F:
 		CMP		#2
 		BCC		loc_142290
 		MSGX	_msg_m00,$233
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142265
 loc_142290:
 		JMP		loc_1422DD
@@ -2632,7 +2651,7 @@ loc_142293:
 		LDA		byte_C3
 		STA		byte_D2
 		MSGX	_msg_m00,$231
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1422B0
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
@@ -2658,12 +2677,11 @@ loc_1422CB:
 		JSR		_sram_b0_s29_player_inventory_item_add
 loc_1422D2:
 		MSGX	_msg_m00,$236
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1422DD
 		JMP		loc_142234
 loc_1422DD:
-		MSGX	_msg_m00,$240
-		RTS
+		MSGX	_msg_m00_break,$240
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1422E1:
@@ -2723,23 +2741,23 @@ loc_142348:
 		BPL		loc_142348
 		SYSX	_display_window,$12
 		MSGX	_msg_m00,$23B
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_14236C
 		MSGX	_msg_m00,$23E
 loc_14235E:
 		MSGX	_msg_m00,$23F
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142369
 		JMP		loc_1422DD
 loc_142369:
 		JMP		sub_1422E1
 loc_14236C:
-		JSR		sub_142019
+		JSR		_player_gold_add_arrC0_test_overflow
 		BCS		loc_142377
-		MSGX	_msg_m00,$28A
+		MSGX	_msg_m00,$28A	; "But you can't take that much money"
 		JMP		loc_14235E
 loc_142377:
-		MSGX	_msg_m00,$23C
+		MSGX	_msg_m00,$23C	; "Thank you rof your business"
 		LDA		byte_C3
 		STA		byte_CE
 		LDA		byte_BD
@@ -2754,7 +2772,7 @@ loc_142377:
 		AND		#8
 		BEQ		loc_1423AA
 		SYSX	_apu_load,$17
-		JSR		_bD_s22
+		JSR		_bD_s22_se_wait_and_map_music_start
 		LDA		byte_C5
 		STA		byte_D2
 		MSGX	_msg_m00,$152
@@ -2762,7 +2780,7 @@ loc_142377:
 		JMP		loc_14235E
 loc_1423AA:
 		JSR		_sram_b0_s2A_player_inventory_item_remove
-		JSR		sub_14200A
+		JSR		_players_gold_add_from_arrC0
 		SYSX	_display_window,$12
 		LDA		byte_C5
 		CMP		#$5E
@@ -2778,11 +2796,11 @@ loc_1423C9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1423CC:
-		MSGX	_msg_m00,$5B5+$33	; $5B5+$33 "Oh, my friend. I've been waiting for you"
+		MSGX	_msg_m00,$5E8	; "Oh, my friend. I've been waiting for you"
 loc_1423CF:
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1423DA
-		MSGX	_msg_m00,$5B5+$34
+		MSGX	_msg_m00,$5E9
 		JMP		loc_1423CF
 loc_1423DA:
 		LDA		#0
@@ -2790,8 +2808,7 @@ loc_1423DA:
 		SYSX	_display_window,$36
 		CMP		#8
 		BCC		loc_1423E9
-		MSGX	_msg_m00,$5B5+$35
-		RTS
+		MSGX	_msg_m00_break,$5EA
 loc_1423E9:
 		TAX
 		JSR		_bD_s15
@@ -2811,16 +2828,16 @@ loc_142400:
 		STA		_msg_number_parameter_F8,X
 		DEX
 		BPL		loc_142400
-		MSGX	_msg_m00,$5B5+$36
+		MSGX	_msg_m00,$5EB
 		SYSX	_display_window,$12
 		JSR		loc_14245F
-		MSGX	_msg_m00,$5B5+$37
+		MSGX	_msg_m00,$5EC
 		JSR		sub_14245C
-		MSGX	_msg_m00,$5B5+$39
+		MSGX	_msg_m00,$5EE
 		JSR		sub_14245C
-		MSGX	_msg_m00,$5B5+$3A
+		MSGX	_msg_m00,$5EF
 		JSR		sub_14245C
-		MSGX	_msg_m00_break,$5B5+$3B
+		MSGX	_msg_m00_break,$5F0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142426:
@@ -2836,11 +2853,11 @@ sub_142426:
 		LDA		byte_C5
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		MSGX	_msg_m00_break,$5B5+$3C
+		MSGX	_msg_m00_break,$5F1
 loc_142446:
-		MSGX	_msg_m00_break,$5B5+$3D
+		MSGX	_msg_m00_break,$5F2
 loc_142449:
-		MSGX	_msg_m00_break,$5B5+$3E
+		MSGX	_msg_m00_break,$5F3
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14244C:
@@ -2854,9 +2871,9 @@ sub_14244C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14245C:
-		MSGX	_msg_m00,$5B5+$38
+		MSGX	_msg_m00,$5ED
 loc_14245F:
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142467
 		JMP		sub_14244C
 loc_142467:
@@ -2882,8 +2899,7 @@ sub_14247F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142482:
-		MSGX	_msg_m00,$21D
-		RTS
+		MSGX	_msg_m00_break,$21D
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142486:
@@ -2913,11 +2929,11 @@ loc_142496:
 		STA		_msg_number_parameter_F8
 		MSGX	_msg_m00,$219
 		SYSX	_display_window,$68
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_142482
 		JSR		sub_141FB1
 		BCC		sub_14247F
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		sub_141FF1
 		MSGX	_msg_m00,$21B
 		JSR		sub_142504
@@ -2992,7 +3008,7 @@ loc_142545:
 		JSR		sub_1424E4
 		JSR		_bD_sD
 		FARX	_bE_s13
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		JSR		_ppu_on_and_fade_in
 		JSR		_map_music_select_and_load
 		LDA		#0
@@ -3031,7 +3047,7 @@ loc_14259A:
 loc_1425A1:
 		JMP		loc_142618
 loc_1425A4:
-		JSR		_bD_s22
+		JSR		_bD_s22_se_wait_and_map_music_start
 		JMP		loc_142618
 loc_1425AA:
 		LDA		#7
@@ -3064,7 +3080,7 @@ loc_1425AA:
 		JSR		sub_141FF1
 		STA		byte_CE
 		SYSX	_display_window,$68
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDA		byte_C3
 		STA		byte_D2
 		MSGX	_msg_m00,$20A
@@ -3085,13 +3101,12 @@ loc_142615:
 		MSGX	_msg_m00,$214
 loc_142618:
 		MSGX	_msg_m00,$215
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		CMP		#0
 		BNE		loc_142625
 		JMP		sub_142586
 loc_142625:
-		MSGX	_msg_m00,$216
-		RTS
+		MSGX	_msg_m00_break,$216
 loc_142629:
 		LDA		#$B
 		JSR		_question_to_select_char_display_arg7	; $20B "Whose curse is to be removed"
@@ -3123,7 +3138,7 @@ loc_142629:
 		BCC		loc_142615
 		JSR		sub_141FF1
 		SYSX	_display_window,$68
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		MSGX	_msg_m00,$20D
 		SYSX	_apu_load,$15
 		LDA		byte_BD
@@ -3167,7 +3182,7 @@ loc_1426AC:
 		LDA		byte_C1
 		ADC		#0
 		STA		byte_C1
-		JSR		sub_141F44
+		JSR		_argC0_mul_9
 		LDA		byte_C0
 		STA		_msg_number_parameter_F8
 		LDA		byte_C1
@@ -3184,7 +3199,7 @@ loc_1426F1:
 		JSR		sub_141FF1
 		SYSX	_display_window,$68
 		MSGX	_msg_m00,$202
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		MSGX	_msg_m00,$210
 		SYSX	_apu_load,$15
 		LDA		byte_C3
@@ -3195,7 +3210,7 @@ loc_1426F1:
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
 		JSR		_sram_b0_s8_player_MP_add
-		JSR		_bD_s22
+		JSR		_bD_s22_se_wait_and_map_music_start
 		JSR		sub_142780
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		JMP		loc_142618
@@ -3289,7 +3304,7 @@ loc_14279B:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1427A8:
 		SYSX	_display_window,$68
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		CMP		#0
 		RTS
 byte_1427B1:
@@ -3547,7 +3562,7 @@ loc_142A02:
 		BPL		loc_142A02
 		MSGX	_msg_m00,$270
 		SYSX	_display_window,$68
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142A1B
 		MSGX	_msg_m00,$271
 		JMP		loc_142A6B
@@ -3562,7 +3577,7 @@ loc_142A1B:
 		AND		#8
 		BEQ		loc_142A41
 		SYSX	_apu_load,$17
-		JSR		_bD_s22
+		JSR		_bD_s22_se_wait_and_map_music_start
 		LDA		byte_C5
 		STA		byte_D2
 		MSGX	_msg_m00,$152
@@ -3593,7 +3608,7 @@ loc_142A5C:
 		STA		byte_80
 loc_142A6B:
 		MSGX	_msg_m00,$274
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142A76
 		JMP		sub_142BCB
 loc_142A76:
@@ -3639,7 +3654,7 @@ loc_142ABC:
 loc_142ACC:
 		LDA		byte_C6
 		JSR		sub_142BD2
-		JSR		sub_142019
+		JSR		_player_gold_add_arrC0_test_overflow
 		BCS		loc_142ADC
 		MSGX	_msg_m00,$289
 		JMP		loc_142AA5
@@ -3689,7 +3704,7 @@ loc_142B2C:
 		BPL		loc_142B2C
 		MSGX	_msg_m00,$27C
 		SYSX	_display_window,$68
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142B45
 		MSGX	_msg_m00,$271
 		JMP		loc_142BAE
@@ -3717,7 +3732,7 @@ loc_142B5A:
 		JMP		sub_142BC0
 loc_142B74:
 		MSGX	_msg_m00,$233
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142B50
 		MSGX	_msg_m00,$271
 		JMP		loc_142BAE
@@ -3747,14 +3762,14 @@ loc_142BAE:
 		CMP		#$7F
 		BCS		sub_142BC0
 		MSGX	_msg_m00,$283
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_142BCB
 		JMP		loc_142AFE
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142BC0:
 		MSGX	_msg_m00,$284
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_142BCB
 		JMP		sub_142923
 
@@ -3770,9 +3785,9 @@ sub_142BD2:
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		JSR		sub_141F44
-		JSR		sub_141F44
-		JSR		sub_141F44
+		JSR		_argC0_mul_9
+		JSR		_argC0_mul_9
+		JSR		_argC0_mul_9
 		LDX		#2
 loc_142BE5:
 		LDA		byte_C0,X
@@ -3805,12 +3820,12 @@ loc_142C14:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_142C17:
-		MSGX	_msg_m00,$241
-		FARX	_bE_s1C
+_shrine_of_dhama_prof_change:
+		MSGX	_msg_m00,$241	; "This is srine of Dhama..."
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_142C59
 		LDA		#$42
-		JSR		_question_to_select_char_display_arg7	; $242 "WHose profession do you wish to change"
+		JSR		_question_to_select_char_display_arg7	; $242 "Whose profession do you wish to change"
 		BCS		loc_142C59
 		STA		byte_CE
 		STA		byte_D2
@@ -3836,12 +3851,11 @@ loc_142C44:
 		MSGX	_msg_m00,$244
 		JMP		loc_142C5C
 loc_142C59:
-		MSGX	_msg_m00,$24B
+		MSGX	_msg_m00,$24B	; "So, You're not changing professions"
 loc_142C5C:
-		MSGX	_msg_m00,$24A
-		RTS
+		MSGX	_msg_m00_break,$24A	; "So be on your way."
 loc_142C60:
-		MSGX	_msg_m00,$245
+		MSGX	_msg_m00,$245	; "Which profession <name> does want to choose"
 		JSR		sub_142CBB
 		LDX		#$13
 		JSR		_bD_s10
@@ -3855,10 +3869,10 @@ loc_142C60:
 		JMP		loc_142C5C
 loc_142C7D:
 		MSGX	_msg_m00,$247
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_142C59
 		MSGX	_msg_m00,$248
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_142C59
 		LDA		byte_CF
 		CMP		#3
@@ -4007,7 +4021,7 @@ loc_142DA1:
 loc_142DAE:
 		STA		byte_D2
 		MSGX	_msg_m00,$263
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_142E2F
 		LDA		byte_C3
 		STA		byte_CE
@@ -4067,7 +4081,7 @@ loc_142E0F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E22:
 		MSGX	_msg_m00,$266
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		CMP		#0
 		BNE		sub_142E35
 		JMP		sub_142CE7
@@ -4180,7 +4194,7 @@ _bD_sF:
 		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
 		STA		byte_C0
-		JSR		sub_141F44
+		JSR		_argC0_mul_9
 		LDA		byte_C0
 		STA		_msg_number_parameter_F8
 		STA		byte_6A3B
@@ -4189,7 +4203,7 @@ _bD_sF:
 		STA		byte_6A3C
 		MSGX	_msg_m00,$28C
 		SYSX	_display_window,$68
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_142F4F
 		JSR		sub_141FB1
 		BCS		loc_142F1B
@@ -4221,8 +4235,7 @@ loc_142F1B:
 loc_142F4F:
 		MSGX	_msg_m00,$28D
 loc_142F52:
-		MSGX	_msg_m00,$291
-		RTS
+		MSGX	_msg_m00_break,$291
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sC:
@@ -4315,7 +4328,7 @@ loc_142FED:
 		LDA		#0
 		STA		byte_C2
 loc_143002:
-		JSR		sub_14200A
+		JSR		_players_gold_add_from_arrC0
 		SYSX	_display_window,$68
 locret_143008:
 		RTS
@@ -4350,95 +4363,6 @@ loc_14302A:
 		RTS
 byte_143036:
 		.BYTE	  0,$1A,$34,$4D,$67,$80,$9A,$B4,$CD,$E7
-
-; ---------------------------------------------------------------------------
-; local set of message display routines, instead of using the global 16-bit
-; message index, it uses additional table with offsets of the first msg idx
-; for desired block, each block corresponding with message PRG bank. base
-; block for all these messages is 3.
-;
-; each routine gives lower 8-bin of the message index in data parameter
-; after the JSR opcode. every block parameter has a pair of functions,
-; one will return after displaying the message, another one will break back
-; to the caller routine.
-;
-; the messages from blocks 6 has additional check for gender and status
-; of the hero. it seems that message system checks this by its own, but it
-; is used in many other places too, investigate. most probably this is leftover
-; from japanese version, the english version has only ONE single gender dependent
-; message in bank 5 and nothing more in banks 4, 5, 6. so this function seems
-; unnecessary or need for further local code calling this message.
-;
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b5B5:
-		JSR		_bD_sB_get_hero_and_its_gender_and_status
-		LDY		#6
-		BNE		_msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_param_b5B5_break:
-		JSR		_bD_sB_get_hero_and_its_gender_and_status
-		LDY		#6
-
-;; FALLTHROUGH ;;
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_select_param_break:
-		JSR		__msg_m00_select_param
-
-; =============== S U B	R O U T	I N E =======================================
-_break:
-		PLA
-		PLA
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; ok, why we have here such a wrapper? because "break" type subroutine need to
-; do one more JSR so add another pointer in stack, and the param selection sub
-; know this and use 103/104 instead of 101/102 in stack offset.
-; we can't just jump here for "non break" operations, but need to JSR too.
-;
-; TODO: convert all local parametric JSR's here to SYSX far calls with the same
-; parameters (need to add more sys functions, and it's is possible now, since
-; we have no more limits for sys sub indexes
-;
-_msg_m00_select_param:
-		JSR		__msg_m00_select_param
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-__msg_m00_select_param:
-		TSX							; stack manipulation, X is the same as S
-		INC		$103,X				; increase return pointer directly from stack
-		LDA		$103,X				; to skip parameter byte after opcode
-		STA		byte_6A				; get lower byte of parameter offset
-		BNE		loc_14308A
-		INC		$104,X				; increase higher bits of return pointer if any
-loc_14308A:
-		LDA		$104,X
-		STA		byte_6B				; get higher byte
-		LDX		#0
-		LDA		(byte_6A,X)			; read parameter byte
-
-; =============== S U B	R O U T	I N E =======================================
-_msg_m00_select:
-		CLC									; calculate the 16-bit global message idx
-		ADC		_msg_bank_ofs_list,Y		; Y already loaded by one of the functions above
-		PHA
-		LDA		#0
-		ADC		_msg_bank_ofs_list+1,Y		; so we have table[Y]+u8
-		TAX
-		PLA
-		JSR		_far_bE_s4_msg_m00_delta3
-		SEC
-		RTS
-
-_msg_bank_ofs_list:
-		.WORD	$000	; "$300"
-		.WORD	$0F7	; "$3F7"
-		.WORD	$1F7	; "$4F7"
-		.WORD	$2B5	; "$5B5"
-		.WORD	$3B5	; "$6B5"
 
 ; =============== S U B	R O U T	I N E =======================================
 ; returns status in byte_4/byte_5, gender in byte_7 and index of the hero class
@@ -4475,46 +4399,46 @@ sub_1430F2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1430FA:
+_test_if_party_is_less_than_two:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143102:
+_give_item_to_player_msg0:
 		STA		byte_CF
 		FARX	_b0_s3C_get_free_inventory_slot
-		BCS		sub_143126
-		MSGX	_msg_m00,$5B5+$F1
+		BCS		_wrap_player_inventory_item_add_storeCE
+		MSGX	_msg_m00,$6A6	; "But it looks like you have a plenty of items already."
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s27:
+_bD_s27_give_item_to_player_msg1:
 		STA		byte_CF
 		FARX	_b0_s3C_get_free_inventory_slot
-		BCS		sub_143126
-		MSGX	_msg_m00,$5B5+$F2
+		BCS		_wrap_player_inventory_item_add_storeCE
+		MSGX	_msg_m00,$6A7	; "But it looks like you have a plenty of items already."
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14311A:
+_give_item_to_player_msg2:
 		STA		byte_CF
 		FARX	_b0_s3C_get_free_inventory_slot
-		BCS		sub_143126
-		MSGX	_msg_m00,$5B5+$F3
+		BCS		_wrap_player_inventory_item_add_storeCE
+		MSGX	_msg_m00,$6A8	; "Huh, you guys are all full already..."
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143126:
+_wrap_player_inventory_item_add_storeCE:
 		STA		byte_CE
 		JMP		_sram_b0_s29_player_inventory_item_add
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14312B:
+_wrap_is_anybody_owns_item_storeCE:
 		STA		byte_CE
 		JMP		_sram_b0_s2B_is_anybody_owns_item
 
@@ -4581,7 +4505,7 @@ sub_143179:
 		LDA		word_4
 		ORA		word_4+1
 		BNE		loc_143182
-		MSGX	_msg_m00_break,$5B5+$F4
+		MSGX	_msg_m00_break,$6A9	; "There is no one in that direction"
 loc_143182:
 		LDA		word_4+1
 		BNE		loc_143195
@@ -4598,7 +4522,7 @@ loc_143195:
 		LDA		word_6
 		AND		#$20
 		BEQ		loc_1431C2
-		MSGX	_msg_m00_break,$5B5+$B3	; ""
+		MSGX	_msg_m00_break,$668	; ""
 loc_1431A3:
 		LDA		byte_60CB
 		BPL		sub_1431F7
@@ -4607,7 +4531,7 @@ loc_1431A3:
 		BNE		loc_1431B6
 		LDA		word_4+1
 		BNE		loc_1431B6
-		MSGX	_msg_m00_break,$300+$4E	; $34E "Thanks to you defeating Baramos"
+		MSGX	_msg_m00_break,$34E	; $34E "Thanks to you defeating Baramos"
 loc_1431B6:
 		LDA		_mapNumber
 		BEQ		loc_1431C2
@@ -4644,7 +4568,7 @@ loc_1431D9:
 		LDA		#$69				; base idx $669 "
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1431F7:
@@ -4660,7 +4584,7 @@ loc_143207:
 		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_143212
-		MSGX	_msg_m00_break,$300+  2	; $302 "Zzzz Zzzz"
+		MSGX	_msg_m00_break,$302	; "Zzzz Zzzz"
 loc_143212:
 		LDY		#0
 		LDA		byte_AC
@@ -4696,19 +4620,18 @@ loc_143244:
 		BEQ		loc_143281
 		CMP		#1
 		BNE		loc_143256
-		JSR		_bD_sB_get_hero_and_its_gender_and_status
-		MSGX	_msg_m00_break,$6B5+$1F
+		MSGX	_msg_m00_break_ex,$6D4
 loc_143256:
 		CMP		#2
 		BNE		loc_143262
 		JSR		sub_14315A
-		MSGX	_msg_m00,$6B5+$20
+		MSGX	_msg_m00,$6D5
 		BCS		sub_14327E
 loc_143262:
 		CMP		#3
 		BNE		loc_14326E
 		JSR		sub_14315A
-		MSGX	_msg_m00,$6B5+$21
+		MSGX	_msg_m00,$6D6
 		BCS		sub_14327E
 loc_14326E:
 		STA		byte_5C
@@ -4717,7 +4640,7 @@ loc_14326E:
 		LDA		#$D3
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_14327E:
@@ -4737,7 +4660,7 @@ loc_143288:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 loc_1432A2:
 		DEY
 		DEY
@@ -4752,7 +4675,7 @@ loc_1432A7:
 		BNE		loc_1432BC
 		LDA		byte_60BA
 		BMI		loc_1432BC
-		MSGX	_msg_m00_break,$3F7+$62
+		MSGX	_msg_m00_break,$459
 loc_1432BC:
 		LDY		#$22
 loc_1432BE:
@@ -4763,7 +4686,7 @@ loc_1432BE:
 		DEY
 		DEY
 		BPL		loc_1432BE
-		MSGX	_msg_m00_break,$5B5+$F4
+		MSGX	_msg_m00_break,$6A9
 loc_1432D0:
 		LDA		off_1433DF,Y
 		STA		word_5E
@@ -4823,14 +4746,14 @@ off_1433DF:
 		.WORD	sub_142CE4
 		.WORD	sub_142920
 		.WORD	_wrap_b6_s16
-		.WORD	sub_142C17
+		.WORD	_shrine_of_dhama_prof_change
 		.WORD	_bD_sF
 		.WORD	sub_142573
 		.WORD	sub_1434AC
 		.WORD	sub_1434BB
 		.WORD	sub_1434CA
 		.WORD	sub_1434E3
-		.WORD	_far_bE_s4_msg_m00_delta3_arg5C
+		.WORD	_wrap_msg_m00_b300_arg5C
 		.WORD	sub_143403
 		.WORD	sub_1434B0
 		.WORD	sub_1434BF
@@ -5026,10 +4949,14 @@ sub_1434BB:
 sub_1434BF:
 		LDA		#2
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434C1:
 		CLC
 		ADC		byte_5C
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434C4:
@@ -5045,10 +4972,14 @@ sub_1434CA:
 sub_1434CE:
 		LDA		#$17
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434D0:
 		CLC
 		ADC		byte_5C
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434D3:
@@ -5060,7 +4991,7 @@ sub_1434D9:
 		LDA		#$F7
 		LDX		#0
 		JSR		_add_arg5C_to16
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434E3:
@@ -5075,14 +5006,17 @@ sub_1434ED:
 		LDX		#2
 		JSR		_add_arg5C_to16
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434F4:
-		JSR		_wrap_far_bE_s4_msg_m00_delta3_arg5C_bE_s1C
+		JSR		_wrap_msg_m00_b300_arg5C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_143503
 		LDA		#$D
 		LDX		#0
 		JSR		_add_arg5C_to16
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143503:
@@ -5090,23 +5024,26 @@ sub_143503:
 		LDX		#0
 		JSR		_add_arg5C_to16
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-_far_bE_s4_msg_m00_delta3_arg5C:
+_wrap_msg_m00_b300_arg5C:
 		LDX		byte_5D
 		LDA		byte_5C
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-_far_bE_s4_msg_m00_delta3:
+; get's the full 16-bit index of the message instead of 8-bit and increase
+; it by $300, don't know why they did this in such way, since actually uses
+; 16-bit indexes here, but seems it's the last function we actually need in
+; that form, but which we can alter to show more convinient indexes
+;
+_wrap_msg_m00_b300:
 		INX
 		INX
 		INX
 		FARX	_bE_s4_msg_m00
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_far_bE_s4_msg_m00_delta3_arg5C_bE_s1C:
-		JSR		_far_bE_s4_msg_m00_delta3_arg5C
-		FARX	_bE_s1C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5115,9 +5052,9 @@ _npc_hndl0:
 		LDA		word_4
 		AND		word_4+1
 		BPL		loc_14352E
-		MSGX	_msg_m00_break,$5B5+$00
+		MSGX	_msg_m00_break,$5B5
 loc_14352E:
-		MSGX	_msg_m00_break,$5B5+$01
+		MSGX	_msg_m00_break,$5B6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1:
@@ -5127,30 +5064,30 @@ _npc_hndl1:
 		BMI		loc_143541
 		LDA		byte_D2
 		STA		byte_D3
-		MSGX	_msg_m00_break,$5B5+$0A
+		MSGX	_msg_m00_break,$5BF
 loc_143541:
 		LDA		_global_game_flags
 		BPL		loc_143559
-		MSGX	_msg_m00,$5B5+$06
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5BB
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143553
-		MSGX	_msg_m00,$5B5+$07
+		MSGX	_msg_m00,$5BC
 		BCS		loc_143556
 loc_143553:
-		MSGX	_msg_m00,$5B5+$09
+		MSGX	_msg_m00,$5BE
 loc_143556:
-		MSGX	_msg_m00_break,$5B5+$08
+		MSGX	_msg_m00_break,$5BD
 loc_143559:
 		JSR		sub_1430F2
 		BCS		loc_143563
-		MSGX	_msg_m00,$5B5+$02
+		MSGX	_msg_m00,$5B7
 		BCS		loc_143566
 loc_143563:
-		MSGX	_msg_m00,$5B5+$05
+		MSGX	_msg_m00,$5BA
 loc_143566:
-		JSR		sub_1430FA
+		JSR		_test_if_party_is_less_than_two
 		BCC		loc_14356E
-		MSGX	_msg_m00,$5B5+$03
+		MSGX	_msg_m00,$5B8
 loc_14356E:
 		LDX		#$3C
 		JSR		_sleep_X_sync
@@ -5160,8 +5097,7 @@ loc_14356E:
 		JSR		_wrap_bE_sD_display_window_3E
 		LDA		#$17
 		JSR		sub_143F9E
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	  4
+		MSGX	_msg_m00_break_ex,$5B9
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2:
@@ -5172,30 +5108,30 @@ _npc_hndl2:
 		AND		#$20
 		BNE		loc_1435A6
 		BCS		loc_1435A6
-		MSGX	_msg_m00,$5B5+$14
+		MSGX	_msg_m00,$5C9
 		LDA		#$57
-		JSR		sub_14311A
+		JSR		_give_item_to_player_msg2
 		BCC		locret_1435A5
 		LDA		#$55
 		JSR		sub_143F9E
 locret_1435A5:
 		RTS
 loc_1435A6:
-		MSGX	_msg_m00_break,$5B5+$15
+		MSGX	_msg_m00_break,$5CA
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3:
 		LDA		byte_60CD
 		LSR
 		BCC		loc_1435B3
-		MSGX	_msg_m00_break,$300+$13
+		MSGX	_msg_m00_break,$313
 loc_1435B3:
-		MSGX	_msg_m00,$5B5+$17
+		MSGX	_msg_m00,$5CC
 		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		CMP		#2
 		BCC		loc_1435E2
-		JSR		sub_1430FA
+		JSR		_test_if_party_is_less_than_two
 		BCC		loc_1435E2
 		LDA		#0
 		STA		byte_CE
@@ -5214,17 +5150,17 @@ loc_1435DA:
 		CMP		#4
 		BNE		loc_1435C8
 loc_1435E2:
-		MSGX	_msg_m00_break,$5B5+$18
+		MSGX	_msg_m00_break,$5CD
 loc_1435E5:
 		LDA		byte_CE
 		STA		byte_D2
-		MSGX	_msg_m00,$5B5+$19
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5CE
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143628
-		MSGX	_msg_m00,$5B5+$1B
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5D0
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143628
-		MSGX	_msg_m00,$5B5+$1C
+		MSGX	_msg_m00,$5D1
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_CE
@@ -5243,70 +5179,67 @@ loc_143611:
 		BPL		loc_143611
 		LDA		#$C0
 		JSR		sub_143F9E
-		MSGX	_msg_m00,$5B5+$1D
+		MSGX	_msg_m00,$5D2
 		JSR		sub_1420CC
 		FARX	_b6_s17
 		RTS
 loc_143628:
-		MSGX	_msg_m00_break,$5B5+$1A
+		MSGX	_msg_m00_break,$5CF
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$1E
+		MSGX	_msg_m00_break_ex,$5D3
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5:
 		JSR		sub_143F7B
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$1F
+		MSGX	_msg_m00_break_ex,$5D4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$22
+		MSGX	_msg_m00_break,$5D7
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl7:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$29
+		MSGX	_msg_m00_break,$5DE
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl8:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$2A
+		MSGX	_msg_m00_break,$5DF
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl9:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$2B
+		MSGX	_msg_m00_break,$5E0
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlA:
 		JSR		sub_143F7B
-		JSR		_msg_m00_param_b5B5
-		.BYTE	$2C
+		MSGX	_msg_m00_ex,$5E1
 		LDA		byte_60CE
 		AND		#4
 		BNE		loc_14365F
-		MSGX	_msg_m00,$5B5+$2D
+		MSGX	_msg_m00,$5E2
 loc_14365F:
-		MSGX	_msg_m00_break,$5B5+$2E
+		MSGX	_msg_m00_break,$5E3
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlB:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$2F
+		MSGX	_msg_m00_break,$5E4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlC:
 		JSR		sub_143F7B
-		MSGX	_msg_m00,$5B5+$32
-		MSGX	_msg_m00_break,$5B5+$E0
+		MSGX	_msg_m00,$5E7
+		MSGX	_msg_m00_break,$695
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlD:
-		MSGX	_msg_m00,$5B5+$3F
+		MSGX	_msg_m00,$5F4
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#5
 		FARX	_b0_s1_battle_typeA_launch
@@ -5337,19 +5270,19 @@ loc_14369F:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_1436AE
-		MSGX	_msg_m00_break,$5B5+$F6
+		MSGX	_msg_m00_break,$6AB
 loc_1436AE:
 		LDA		_npcs_pos_list+$34
 		CMP		#7
 		BNE		loc_1436B8
-		MSGX	_msg_m00_break,$5B5+$E5
+		MSGX	_msg_m00_break,$69A
 loc_1436B8:
-		MSGX	_msg_m00,$5B5+$E1
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$696
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1436C3
-		MSGX	_msg_m00_break,$5B5+$E2
+		MSGX	_msg_m00_break,$697
 loc_1436C3:
-		MSGX	_msg_m00,$5B5+$E3
+		MSGX	_msg_m00,$698
 		FARX	_bC_s30
 		RTS
 
@@ -5358,32 +5291,32 @@ _npc_hndlF:
 		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_1436D4
-		MSGX	_msg_m00_break,$5B5+$40
+		MSGX	_msg_m00_break,$5F5
 loc_1436D4:
-		MSGX	_msg_m00_break,$5B5+$41
+		MSGX	_msg_m00_break,$5F6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl10:
-		MSGX	_msg_m00,$5B5+$42
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5F7
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1436E2
 loc_1436DF:
-		MSGX	_msg_m00_break,$5B5+$43
+		MSGX	_msg_m00_break,$5F8
 loc_1436E2:
-		MSGX	_msg_m00,$5B5+$44
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5F9
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1436DF
-		MSGX	_msg_m00_break,$5B5+$45
+		MSGX	_msg_m00_break,$5FA
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl11:
-		MSGX	_msg_m00,$5B5+$46
+		MSGX	_msg_m00,$5FB
 		FARX	_bC_s39
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl12:
-		MSGX	_msg_m00,$5B5+$47
+		MSGX	_msg_m00,$5FC
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_CE
@@ -5399,7 +5332,7 @@ loc_1436FE:
 locret_143710:
 		RTS
 loc_143711:
-		MSGX	_msg_m00_break,$5B5+$48
+		MSGX	_msg_m00_break,$5FD
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl13:
@@ -5408,7 +5341,7 @@ _npc_hndl13:
 		LDA		#$15
 		JMP		sub_1434D3
 loc_14371E:
-		MSGX	_msg_m00_break,$5B5+$4D
+		MSGX	_msg_m00_break,$602
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143721:
@@ -5424,16 +5357,16 @@ loc_14372B:
 _npc_hndl14:
 		JSR		sub_143721
 		BEQ		loc_143736
-		MSGX	_msg_m00_break,$5B5+$4E
+		MSGX	_msg_m00_break,$603
 loc_143736:
-		MSGX	_msg_m00_break,$5B5+$4F
+		MSGX	_msg_m00_break,$604
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl15:
-		MSGX	_msg_m00,$5B5+$50
+		MSGX	_msg_m00,$605
 		JSR		sub_143721
 		BEQ		locret_143744
-		MSGX	_msg_m00_break,$5B5+$51
+		MSGX	_msg_m00_break,$606
 locret_143744:
 		RTS
 
@@ -5443,30 +5376,29 @@ _npc_hndl16:
 		BCS		loc_14374C
 		BEQ		loc_14374F
 loc_14374C:
-		MSGX	_msg_m00_break,$5B5+$55
+		MSGX	_msg_m00_break,$60A
 loc_14374F:
 		LDA		#$5B
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_14375F
 loc_143756:
-		MSGX	_msg_m00,$5B5+$52
+		MSGX	_msg_m00,$607
 		LDA		#$21
-		JSR		sub_143F9E
-		RTS
+		JMP		sub_143F9E
 loc_14375F:
 		LDA		byte_60B9
 		AND		#2
 		BNE		loc_143772
 		JSR		sub_14315A
 		JSR		loc_143756
-		MSGX	_msg_m00,$5B5+$53
+		MSGX	_msg_m00,$608
 		JSR		sub_143166
 loc_143772:
 		JSR		sub_143130
 		LDA		#$5C
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		MSGX	_msg_m00_break,$5B5+$54
+		MSGX	_msg_m00_break,$609
 loc_14377F:
 		LDA		#$5C
 		STA		byte_CE
@@ -5481,9 +5413,9 @@ _npc_hndl17:
 		BCS		loc_143793
 		BEQ		loc_143796
 loc_143793:
-		MSGX	_msg_m00_break,$5B5+$57
+		MSGX	_msg_m00_break,$60C
 loc_143796:
-		MSGX	_msg_m00_break,$5B5+$56
+		MSGX	_msg_m00_break,$60B
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl18:
@@ -5492,56 +5424,56 @@ _npc_hndl18:
 		BNE		loc_1437B1
 		LDA		#$22
 		JSR		sub_143F9E
-		MSGX	_msg_m00,$5B5+$5D
-		MSGX	_msg_m00,$6B5+$1A
+		MSGX	_msg_m00,$612
+		MSGX	_msg_m00,$6CF
 		LDA		#1
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
 loc_1437B1:
-		MSGX	_msg_m00_break,$5B5+$5E
+		MSGX	_msg_m00_break,$613
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl19:
 		LDA		byte_60BF
 		BMI		loc_1437D1
-		MSGX	_msg_m00,$5B5+$5F
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$614
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1437D1
-		MSGX	_msg_m00,$5B5+$60
+		MSGX	_msg_m00,$615
 		LDA		#$4F
-		JSR		_bD_s27
+		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_1437D0
 		LDA		#$57
 		JSR		sub_143F9E
 locret_1437D0:
 		RTS
 loc_1437D1:
-		MSGX	_msg_m00_break,$5B5+$61
+		MSGX	_msg_m00_break,$616
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1A:
-		MSGX	_msg_m00,$5B5+$65
+		MSGX	_msg_m00,$61A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1437D7:
-		MSGX	_msg_m00_break,$5B5+$63
+		MSGX	_msg_m00_break,$618
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1B:
-		MSGX	_msg_m00,$5B5+$66
+		MSGX	_msg_m00,$61B
 		BCS		sub_1437D7
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1C:
-		MSGX	_msg_m00,$5B5+$67
+		MSGX	_msg_m00,$61C
 		LDA		#$6D
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_1437EA
 		RTS
 loc_1437EA:
-		MSGX	_msg_m00,$5B5+$68
+		MSGX	_msg_m00,$61D
 		LDA		#$6D
-		JMP		sub_143102
+		JMP		_give_item_to_player_msg0
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1D:
@@ -5556,18 +5488,18 @@ loc_1437FF:
 		STA		byte_6AD1
 		LDA		#$FF
 		STA		byte_6AD2
-		MSGX	_msg_m00_break,$5B5+$69
+		MSGX	_msg_m00_break,$61E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1E:
 		LDA		byte_60CE
 		AND		#$20
 		BEQ		loc_143814
-		MSGX	_msg_m00_break,$6B5+$1C
+		MSGX	_msg_m00_break,$6D1
 loc_143814:
-		MSGX	_msg_m00,$5B5+$6B
+		MSGX	_msg_m00,$620
 		LDA		#$7C
-		JSR		_bD_s27
+		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143826
 		LDA		#$CD
 		JSR		sub_143F9E
@@ -5580,16 +5512,15 @@ _npc_hndl1F:
 		LDA		_players_pos_list+1
 		CMP		#3
 		BNE		loc_143832
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$71
+		MSGX	_msg_m00_break_ex,$626
 loc_143832:
 		JSR		sub_143847
-		MSGX	_msg_m00,$5B5+$6C
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$621
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143840
-		MSGX	_msg_m00_break,$5B5+$6D
+		MSGX	_msg_m00_break,$622
 loc_143840:
-		MSGX	_msg_m00,$5B5+$6E
+		MSGX	_msg_m00,$623
 		FARX	_bC_s28
 		RTS
 
@@ -5602,15 +5533,14 @@ sub_143847:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl20:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$79
+		MSGX	_msg_m00_break_ex,$62E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl21:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
-		MSGX	_msg_m00_break,$5B5+$7A
+		MSGX	_msg_m00_break,$62F
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl22:
@@ -5619,25 +5549,25 @@ _npc_hndl22:
 		BEQ		loc_14386C
 		LDA		_global_game_flags
 		BMI		loc_1438B6
-		MSGX	_msg_m00_break,$5B5+$83
+		MSGX	_msg_m00_break,$638
 loc_14386C:
 		LDA		#$54
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143881
-		MSGX	_msg_m00,$5B5+$7C
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$631
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_14387E
-		MSGX	_msg_m00_break,$5B5+$7D
+		MSGX	_msg_m00_break,$632
 loc_14387E:
-		MSGX	_msg_m00_break,$5B5+$7E
+		MSGX	_msg_m00_break,$633
 loc_143881:
 		JSR		sub_14315A
-		MSGX	_msg_m00,$5B5+$7F
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$634
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_14388F
-		MSGX	_msg_m00_break,$5B5+$82
+		MSGX	_msg_m00_break,$637
 loc_14388F:
-		MSGX	_msg_m00,$5B5+$80
+		MSGX	_msg_m00,$635
 		JSR		sub_143166
 		JSR		sub_143130
 		LDA		#$6E
@@ -5654,19 +5584,19 @@ loc_14388F:
 		LDA		#$B6
 		JSR		sub_143F9E
 loc_1438B6:
-		MSGX	_msg_m00_break,$5B5+$81
+		MSGX	_msg_m00_break,$636
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl23:
 		LDA		byte_8
 		BNE		loc_1438C1
-		MSGX	_msg_m00_break,$300+$63
+		MSGX	_msg_m00_break,$363
 loc_1438C1:
-		MSGX	_msg_m00_break,$5B5+$87
+		MSGX	_msg_m00_break,$63C
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl24:
-		MSGX	_msg_m00,$5B5+$8A
+		MSGX	_msg_m00,$63F
 		JSR		sub_1430F2
 		BCC		loc_1438D7
 		LDA		_npcs_pos_list
@@ -5689,13 +5619,13 @@ _npc_hndl25:
 		LDA		byte_60CE
 		LSR
 		BCC		loc_1438ED
-		MSGX	_msg_m00_break,$5B5+$8C
+		MSGX	_msg_m00_break,$641
 loc_1438ED:
-		MSGX	_msg_m00,$5B5+$8B
-		MSGX	_msg_m00,$5B5+$8C
-		MSGX	_msg_m00,$5B5+$8D
+		MSGX	_msg_m00,$640
+		MSGX	_msg_m00,$641
+		MSGX	_msg_m00,$642
 		LDA		#$77
-		JSR		sub_14311A
+		JSR		_give_item_to_player_msg2
 		BCC		locret_143905
 		LDA		#$C8
 		JSR		sub_143F9E
@@ -5705,20 +5635,20 @@ locret_143905:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl26:
-		MSGX	_msg_m00,$5B5+$8F
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$644
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143911
-		MSGX	_msg_m00_break,$5B5+$90
+		MSGX	_msg_m00_break,$645
 loc_143911:
-		MSGX	_msg_m00_break,$300+  5
+		MSGX	_msg_m00_break,$305
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl27:
-		MSGX	_msg_m00,$5B5+$91
+		MSGX	_msg_m00,$646
 		LDA		#$72
-		JSR		_bD_s27
+		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_14392A
-		MSGX	_msg_m00,$5B5+$92
+		MSGX	_msg_m00,$647
 		FARX	_b6_s19
 		LDA		#$AE
 		JSR		sub_143F9E
@@ -5729,13 +5659,13 @@ locret_14392A:
 _npc_hndl28:
 		BIT		byte_60B9
 		BVC		loc_143934
-		MSGX	_msg_m00_break,$300+$D4
+		MSGX	_msg_m00_break,$3D4
 loc_143934:
 		LDA		byte_60CF
 		AND		#$3F
 		CMP		#$3F
 		BNE		loc_14394D
-		MSGX	_msg_m00,$300+$D3
+		MSGX	_msg_m00,$3D3
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
 		FARX	_bC_s33
@@ -5744,11 +5674,11 @@ loc_143934:
 locret_14394C:
 		RTS
 loc_14394D:
-		MSGX	_msg_m00,$5B5+$94
+		MSGX	_msg_m00,$649
 		LDA		byte_60CF
 		AND		#$3F
 		BEQ		locret_14394C
-		MSGX	_msg_m00,$5B5+$95
+		MSGX	_msg_m00,$64A
 		LDA		byte_60CF
 		AND		#$3F
 		STA		byte_5C
@@ -5764,19 +5694,18 @@ loc_143969:
 loc_143971:
 		LDA		byte_5D
 		LDX		word_5E
-		JSR		_far_bE_s4_msg_m00_delta3
+		JSR		_wrap_msg_m00_b300
 loc_143978:
 		INC		byte_5D
 		BNE		loc_143969
 		INC		word_5E
 		BNE		loc_143969
 loc_143980:
-		MSGX	_msg_m00_break,$5B5+$9C
+		MSGX	_msg_m00_break,$651
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl29:
-		JSR		_msg_m00_param_b5B5
-		.BYTE	$9D
+		MSGX	_msg_m00_ex,$652
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$11
 		FARX	_b0_s1_battle_typeA_launch
@@ -5808,19 +5737,19 @@ _npc_hndl2A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2B:
-		MSGX	_msg_m00,$5B5+$49
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5FE
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1439D1
 loc_1439CA:
-		MSGX	_msg_m00,$5B5+$4A
+		MSGX	_msg_m00,$5FF
 loc_1439CD:
 		FARX	_b6_s18
 		RTS
 loc_1439D1:
-		MSGX	_msg_m00,$5B5+$4B
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$600
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1439CA
-		MSGX	_msg_m00,$5B5+$4C
+		MSGX	_msg_m00,$601
 		BCS		loc_1439CD
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5831,28 +5760,27 @@ _npc_hndl2C:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
-		MSGX	_msg_m00,$5B5+$C2
+		MSGX	_msg_m00,$677
 		FARX	_b6_s1B
 		JSR		_wrap_bE_sD_display_window_3E
-		MSGX	_msg_m00,$5B5+$C3
+		MSGX	_msg_m00,$678
 		FARX	_b6_s1C
 		LDA		#$B4
-		JSR		sub_143F9E
-		RTS
+		JMP		sub_143F9E
 loc_143A01:
-		MSGX	_msg_m00_break,$5B5+$C4
+		MSGX	_msg_m00_break,$679
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2D:
 		LDA		byte_60BF
 		AND		#$10
 		BEQ		loc_143A0E
-		MSGX	_msg_m00_break,$6B5+$58
+		MSGX	_msg_m00_break,$70D
 loc_143A0E:
-		MSGX	_msg_m00,$5B5+$89
-		MSGX	_msg_m00,$6B5+$58
+		MSGX	_msg_m00,$63E
+		MSGX	_msg_m00,$70D
 		LDA		#$16
-		JSR		_bD_s27
+		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143A20
 		LDA		#$54
 		JSR		sub_143F9E
@@ -5861,12 +5789,12 @@ locret_143A20:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2E:
-		MSGX	_msg_m00,$6B5+$59
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$70E
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143A2C
-		MSGX	_msg_m00_break,$6B5+$5A
+		MSGX	_msg_m00_break,$70F
 loc_143A2C:
-		MSGX	_msg_m00,$6B5+$5B
+		MSGX	_msg_m00,$710
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
@@ -5886,15 +5814,15 @@ _npc_hndl2F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl30:
-		MSGX	_msg_m00_break,$4F7+$16
+		MSGX	_msg_m00_break,$50D
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s20_npc_hndl31:
 		JSR		sub_143847
-		MSGX	_msg_m00,$5B5+$72
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$627
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143A64
-		MSGX	_msg_m00,$5B5+$73
+		MSGX	_msg_m00,$628
 		FARX	_bE_s33
 		RTS
 loc_143A64:
@@ -5907,14 +5835,14 @@ _bD_s20_npc_hndl32:
 		LDA		byte_60B6
 		AND		#$20
 		BNE		loc_143A75
-		MSGX	_msg_m00_break,$6B5+$5C
+		MSGX	_msg_m00_break,$711
 loc_143A75:
 		MSGX	_msg_m00_break,$1A5
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s20_npc_hndl33:
-		MSGX	_msg_m00,$5B5+$CE
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$683
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143AA0
 		LDA		#5
 		STA		byte_C0
@@ -5928,39 +5856,36 @@ _bD_s20_npc_hndl33:
 		STA		byte_64
 		FARX	_b4_s12
 		STA		byte_D2
-		MSGX	_msg_m00_break,$5B5+$CF
+		MSGX	_msg_m00_break,$684
 loc_143AA0:
-		MSGX	_msg_m00_break,$5B5+$D0
+		MSGX	_msg_m00_break,$685
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3E:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$D1
+		MSGX	_msg_m00_break_ex,$686
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3F:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$D2
+		MSGX	_msg_m00_break_ex,$687
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl40:
-		MSGX	_msg_m00,$5B5+$D3
+		MSGX	_msg_m00,$688
 		LDA		_global_game_flags
 		AND		#4
 		BNE		loc_143AB6
 		RTS
 loc_143AB6:
-		MSGX	_msg_m00_break,$5B5+$D4
+		MSGX	_msg_m00_break,$689
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl41:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$D5
+		MSGX	_msg_m00_break_ex,$68A
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl42:
 		LDA		#$3F
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143AC9
 		LDY		#$8E
 		JMP		_npc_hndl47_exp_info_and_progress_save
@@ -5973,12 +5898,12 @@ loc_143AC9:
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143ADA:
-		MSGX	_msg_m00,$5B5+$D6
+		MSGX	_msg_m00,$68B
 loc_143ADD:
-		MSGX	_msg_m00,$5B5+$D7
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$68C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		sub_143AEA
-		MSGX	_msg_m00,$5B5+$D8
+		MSGX	_msg_m00,$68D
 		BCS		loc_143ADD
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5990,7 +5915,7 @@ sub_143AEA:
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143AF8:
-		MSGX	_msg_m00,$5B5+$D9
+		MSGX	_msg_m00,$68E
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$2A
 		JSR		sub_143F9E
@@ -6001,20 +5926,19 @@ loc_143AF8:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl43:
-		MSGX	_msg_m00,$5B5+$DA
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$68F
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143B14
 loc_143B11:
-		MSGX	_msg_m00_break,$5B5+$DB
+		MSGX	_msg_m00_break,$690
 loc_143B14:
-		MSGX	_msg_m00,$5B5+$DC
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$691
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143B21
-		MSGX	_msg_m00,$5B5+$DD
+		MSGX	_msg_m00,$692
 		BCS		loc_143B11
 loc_143B21:
-		JSR		_msg_m00_param_b5B5
-		.BYTE	$DE
+		MSGX	_msg_m00_ex,$693
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s19
 		PLA
@@ -6023,17 +5947,17 @@ loc_143B21:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl44:
-		MSGX	_msg_m00,$5B5+$CD
-		MSGX	_msg_m00_break,$4F7+$8E
+		MSGX	_msg_m00,$682
+		MSGX	_msg_m00_break,$585
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl45:
 		LDA		byte_60CA
 		LSR
 		BCS		loc_143B3E
-		MSGX	_msg_m00_break,$6B5+$18
+		MSGX	_msg_m00_break,$6CD
 loc_143B3E:
-		MSGX	_msg_m00_break,$6B5+$19
+		MSGX	_msg_m00_break,$6CE
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl46:
@@ -6041,13 +5965,12 @@ _npc_hndl46:
 		BPL		loc_143B4E
 		AND		#$10
 		BNE		_npc_hndl47_exp_info_and_progress_save
-		MSGX	_msg_m00_break,$4F7+$15
+		MSGX	_msg_m00_break,$50C
 loc_143B4E:
 		LDA		_global_game_flags
 		BPL		_npc_hndl47_exp_info_and_progress_save
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
-		MSGX	_msg_m00,$189
-		RTS
+		MSGX	_msg_m00_break,$189
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl47_exp_info_and_progress_save:
@@ -6066,7 +5989,7 @@ _npc_hndl47_exp_info_and_progress_save:
 		JSR		sub_143E67
 		LDA		#2
 		JSR		sub_143EBD
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143B96
 loc_143B80:
 		FARX	_b7_sD
@@ -6074,26 +5997,26 @@ loc_143B80:
 		AND		#7
 		CMP		#3
 		BEQ		loc_143B93
-		MSGX	_msg_m00,$4F7+$F
+		MSGX	_msg_m00,$506
 		JMP		loc_143B96
 loc_143B93:
-		MSGX	_msg_m00,$5B5+$EE
+		MSGX	_msg_m00,$6A3
 loc_143B96:
 		LDA		#3
 		JSR		sub_143EBD
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143BCB
 		LDA		#5
 		JSR		sub_143EBD
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
 		JSR		_wrap_bE_sD_display_window_3E
 		JSR		_pal_fade_in
 		LDA		#0
 		STA		byte_6A3E
-		MSGX	_msg_m00,$4F7+$17
+		MSGX	_msg_m00,$50E
 		LDA		_cur_chr0_bank_prg_hi
 		AND		#$EF
 		STA		_cur_chr0_bank_prg_hi
@@ -6107,52 +6030,54 @@ loc_143BCB:
 		JMP		sub_143EB8
 
 ; =============== S U B	R O U T	I N E =======================================
+; a man by the left hand of Aliahan king in the king's hall
+;
 _npc_hndl4D:
-		JSR		sub_1430FA
+		JSR		_test_if_party_is_less_than_two
 		BCS		loc_143BD8
-		MSGX	_msg_m00_break,$5B5+$0B
+		MSGX	_msg_m00_break,$5C0	; "A solo journey is too dangerous.."
 loc_143BD8:
 		LDA		#$39
 		STA		byte_CE
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		BCS		loc_143BF9
 		LDA		#$58
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143BF9
 		LDA		#$59
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143BF9
 		LDA		#$5A
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143BF9
-		MSGX	_msg_m00_break,$5B5+$0C
+		MSGX	_msg_m00_break,$5C1	; "First, find a key..."
 loc_143BF9:
-		MSGX	_msg_m00_break,$5B5+$0D
+		MSGX	_msg_m00_break,$5C2	; "A young hero from Aliahan..."
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4E:
 		LDA		byte_8
 		BEQ		loc_143C03
-		MSGX	_msg_m00_break,$5B5+$0E
+		MSGX	_msg_m00_break,$5C3
 loc_143C03:
-		MSGX	_msg_m00_break,$5B5+$0F
+		MSGX	_msg_m00_break,$5C4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4F:
 		LDA		_global_game_flags
 		BMI		loc_143C0E
-		MSGX	_msg_m00_break,$5B5+$10
+		MSGX	_msg_m00_break,$5C5
 loc_143C0E:
-		MSGX	_msg_m00_break,$5B5+$11
+		MSGX	_msg_m00_break,$5C6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl50:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_6+1
 		BEQ		loc_143C1B
-		MSGX	_msg_m00_break,$5B5+$12
+		MSGX	_msg_m00_break,$5C7
 loc_143C1B:
-		MSGX	_msg_m00_break,$5B5+$13
+		MSGX	_msg_m00_break,$5C8
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl51:
@@ -6161,7 +6086,7 @@ _npc_hndl51:
 		LDA		#$19
 		JMP		sub_1434D3
 loc_143C27:
-		MSGX	_msg_m00_break,$5B5+$16
+		MSGX	_msg_m00_break,$5CB
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl52:
@@ -6171,46 +6096,44 @@ _npc_hndl52:
 		JMP		sub_1434D3
 loc_143C33:
 		JSR		sub_143F7B
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$20
+		MSGX	_msg_m00_break_ex,$5D5
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl53:
 		JSR		sub_143F7B
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$21
+		MSGX	_msg_m00_break_ex,$5D6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl54:
 		JSR		sub_143F7B
-		MSGX	_msg_m00,$5B5+$23
+		MSGX	_msg_m00,$5D8
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$DF
+		MSGX	_msg_m00_break,$694
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl55:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$24
+		MSGX	_msg_m00_break,$5D9
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl56:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$25
+		MSGX	_msg_m00_break,$5DA
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl57:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$26
+		MSGX	_msg_m00_break,$5DB
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl58:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$30
+		MSGX	_msg_m00_break,$5E5
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl59:
 		JSR		sub_143F7B
-		MSGX	_msg_m00_break,$5B5+$31
+		MSGX	_msg_m00_break,$5E6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5A:
@@ -6226,10 +6149,10 @@ _npc_hndl5B:
 _npc_hndl5C:
 		LDA		byte_60B8
 		BPL		loc_143C7D
-		MSGX	_msg_m00_break,$5B5+$5C
+		MSGX	_msg_m00_break,$611
 loc_143C7D:
 		LDA		#$4F
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143C9B
 		JSR		sub_143130
 		LDA		byte_60B8
@@ -6239,76 +6162,72 @@ loc_143C7D:
 		STA		byte_2D
 		LDA		#8
 		STA		byte_2E
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$5B
+		MSGX	_msg_m00_break_ex,$610
 loc_143C9B:
 		LDA		byte_60BF
 		AND		#$40
 		BEQ		loc_143CA5
-		MSGX	_msg_m00_break,$5B5+$5A
+		MSGX	_msg_m00_break,$60F
 loc_143CA5:
-		MSGX	_msg_m00,$5B5+$58
+		MSGX	_msg_m00,$60D
 		LDA		#$5D
-		JSR		sub_14311A
+		JSR		_give_item_to_player_msg2
 		BCS		loc_143CB0
 		RTS
 loc_143CB0:
 		LDA		#$56
 		JSR		sub_143F9E
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$59
+		MSGX	_msg_m00_break_ex,$60E
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5D:
-		MSGX	_msg_m00,$5B5+$62	; $617 "Hey, Papagatero is that you?"
+		MSGX	_msg_m00,$617	; "Hey, Papagatero is that you?"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143CBC:
-		MSGX	_msg_m00_break,$5B5+$63	; $618 "What? You're not him? Well, you sure look like him."
+		MSGX	_msg_m00_break,$618	; "What? You're not him? Well, you sure look like him."
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5E:
-		MSGX	_msg_m00,$5B5+$64	; $619 "It's Papagatero, welcome!"
+		MSGX	_msg_m00,$619	; "It's Papagatero, welcome!"
 		BCS		sub_143CBC
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5F:
-		MSGX	_msg_m00,$300+$62
+		MSGX	_msg_m00,$362
 		LDA		byte_60CE
 		AND		#$20
 		BNE		loc_143CD2
-		MSGX	_msg_m00_break,$5B5+$6A
+		MSGX	_msg_m00_break,$61F
 loc_143CD2:
-		MSGX	_msg_m00_break,$6B5+$1D
+		MSGX	_msg_m00_break,$6D2
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl60:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$78
+		MSGX	_msg_m00_break_ex,$62D
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl61:
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$7B
+		MSGX	_msg_m00_break_ex,$630
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl62:
-		MSGX	_msg_m00,$5B5+$84
-		FARX	_bE_s1C
-		MSGX	_msg_m00_break,$5B5+$85
+		MSGX	_msg_m00,$639
+		FARX	_bE_s1C_yes_or_no_question
+		MSGX	_msg_m00_break,$63A
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl63:
 		LDA		byte_8
 		BNE		loc_143CED
-		MSGX	_msg_m00_break,$5B5+$86
+		MSGX	_msg_m00_break,$63B
 loc_143CED:
 		LDA		#$D
 		JMP		sub_1434C4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl64:
-		MSGX	_msg_m00,$5B5+$8E
+		MSGX	_msg_m00,$643
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$D
 		FARX	_b0_s1_battle_typeA_launch
@@ -6322,7 +6241,7 @@ _npc_hndl64:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl65:
-		MSGX	_msg_m00,$5B5+$A0
+		MSGX	_msg_m00,$655
 		FARX	_b2_s7_screen_spell_blink
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDX		word_4
@@ -6348,52 +6267,52 @@ _npc_hndl66:
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_D4
-		MSGX	_msg_m00_break,$5B5+$A1
+		MSGX	_msg_m00_break,$656
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl67:
-		MSGX	_msg_m00,$5B5+$A2
+		MSGX	_msg_m00,$657
 		LDA		byte_60BF
 		AND		#8
 		BEQ		loc_143D49
-		MSGX	_msg_m00_break,$6B5+$1B
+		MSGX	_msg_m00_break,$6D0
 loc_143D49:
 		LDA		#$47
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCS		loc_143D53
-		MSGX	_msg_m00_break,$5B5+$A5
+		MSGX	_msg_m00_break,$65A
 loc_143D53:
 		LDA		#$10
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143D7C
 		LDA		#$75
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143D7C
 		JSR		sub_143130
 		LDA		#$10
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		JSR		sub_143130
-		MSGX	_msg_m00,$5B5+$A3
+		MSGX	_msg_m00,$658
 		LDA		#$76
-		JSR		sub_143102
+		JSR		_give_item_to_player_msg0
 		BCC		locret_143D7B
 		LDA		#$53
 		JSR		sub_143F9E
 locret_143D7B:
 		RTS
 loc_143D7C:
-		MSGX	_msg_m00_break,$5B5+$A4
+		MSGX	_msg_m00_break,$659
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl68:
 		LDA		byte_60BF
 		AND		#4
 		BEQ		loc_143D89
-		MSGX	_msg_m00_break,$6B5+$1E
+		MSGX	_msg_m00_break,$6D3
 loc_143D89:
-		MSGX	_msg_m00,$5B5+$A6
+		MSGX	_msg_m00,$65B
 		LDA		#$10
-		JSR		_bD_s27
+		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143D98
 		LDA		#$52
 		JSR		sub_143F9E
@@ -6403,66 +6322,62 @@ locret_143D98:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl69:
 		LDA		#$59
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143DA3
-		MSGX	_msg_m00_break,$5B5+$A7
+		MSGX	_msg_m00_break,$65C
 loc_143DA3:
-		MSGX	_msg_m00_break,$5B5+$A8
+		MSGX	_msg_m00_break,$65D
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6A:
-		MSGX	_msg_m00,$5B5+$A9
+		MSGX	_msg_m00,$65E
 		LDA		#$72
-		JSR		sub_14312B
+		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143DB1
 		RTS
 loc_143DB1:
-		MSGX	_msg_m00_break,$5B5+$AA
+		MSGX	_msg_m00_break,$65F
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6B:
 		LDA		byte_60B6
 		AND		#2
 		BNE		loc_143DBE
-		MSGX	_msg_m00_break,$5B5+$AB
+		MSGX	_msg_m00_break,$660
 loc_143DBE:
-		MSGX	_msg_m00_break,$5B5+$AC
+		MSGX	_msg_m00_break,$661
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6C:
 		LDA		byte_60BF
 		AND		#2
 		BEQ		loc_143DD7
-		JSR		_msg_m00_param_b5B5
-		.BYTE	$B0
-		FARX	_bE_s1C
+		MSGX	_msg_m00_ex,$665
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143DD4
-		MSGX	_msg_m00_break,$5B5+$B1
+		MSGX	_msg_m00_break,$666
 loc_143DD4:
-		MSGX	_msg_m00_break,$5B5+$B2
+		MSGX	_msg_m00_break,$667
 loc_143DD7:
-		JSR		_msg_m00_param_b5B5
-		.BYTE	$AD
-		FARX	_bE_s1C
+		MSGX	_msg_m00_ex,$662
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143DF0
 		LDA		#$58
-		JSR		sub_14311A
+		JSR		_give_item_to_player_msg2
 		BCC		locret_143DF3
 		LDA		#$51
 		JSR		sub_143F9E
-		JSR		_msg_m00_param_b5B5_break
-		.BYTE	$AE
+		MSGX	_msg_m00_break_ex,$663
 loc_143DF0:
-		MSGX	_msg_m00_break,$5B5+$AF
+		MSGX	_msg_m00_break,$664
 locret_143DF3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6D:
-		MSGX	_msg_m00,$5B5+$88
-		FARX	_bE_s1C
-		MSGX	_msg_m00_break,$5B5+$85
-		RTS
+		MSGX	_msg_m00,$63D
+		FARX	_bE_s1C_yes_or_no_question
+		MSGX	_msg_m00_break,$63A
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s24:
@@ -6490,7 +6405,7 @@ _bD_s23:
 		JSR		sub_143E67
 		LDA		#2
 		JSR		sub_143EB8
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143E3F
 		JSR		loc_143B80
 		JMP		loc_143E44
@@ -6533,7 +6448,7 @@ loc_143E75:
 		LDA		word_4
 		CMP		#$63
 		BNE		loc_143E88
-		MSGX	_msg_m00,$5B5+$9F
+		MSGX	_msg_m00,$654
 		JMP		loc_143EAF
 loc_143E88:
 		LDA		byte_D2
@@ -6573,7 +6488,7 @@ sub_143EBD:
 		LDA		byte_60CB
 		AND		#$10
 		BEQ		loc_143ECC
-		MSGX	_msg_m00_break,$5B5+$C0
+		MSGX	_msg_m00_break,$675
 loc_143ECC:
 		CMP		#$A
 		BNE		loc_143EDF
@@ -6594,8 +6509,8 @@ loc_143EDF:
 		LDA		#$B
 		BNE		loc_143F13
 loc_143EEE:
-		MSGX	_msg_m00,$6B5+$04
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$6B9
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143EF9
 		JMP		sub_143AEA
 loc_143EF9:
@@ -6620,7 +6535,7 @@ loc_143F13:
 		LDA		#$AC
 		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		_far_bE_s4_msg_m00_delta3_arg5C
+		JMP		_wrap_msg_m00_b300_arg5C
 
 byte_143F25:
 		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A,  1,  2,  3, $B,  5
@@ -6631,10 +6546,10 @@ byte_143F25:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s21:
-		MSGX	_msg_m00,$5B5+$27
-		FARX	_bE_s1C
+		MSGX	_msg_m00,$5DC
+		FARX	_bE_s1C_yes_or_no_question
 		JSR		sub_143F7B
-		MSGX	_msg_m00,$5B5+$28
+		MSGX	_msg_m00,$5DD
 		FARX	_bE_s33
 		RTS
 

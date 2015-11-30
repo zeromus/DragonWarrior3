@@ -18,7 +18,7 @@ loc_24C019:
 		LDX		#1
 		JSR		sub_24C0F3
 		JSR		sub_24C227
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDA		#0
 		STA		byte_F
 		LDA		#4
@@ -49,7 +49,7 @@ loc_24C042:
 ; =============== S U B	R O U T	I N E =======================================
 sub_24C055:
 		LDA		#0
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		LDA		#0
 		FARX	_bB_s3_apu_load
 		LDX		#0
@@ -79,8 +79,8 @@ sub_24C084:
 		LDX		#$14
 		JSR		sub_24C0F3
 		LDA		#$10
-		FARX	_bB_s6
-		FARX	_bB_s4
+		FARX	_bB_s5_apu_flag1
+		FARX	_bB_s4_apu_set_flag0
 		JMP		sub_24C055
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1004,7 +1004,7 @@ loc_24E761:
 		LDA		#$10
 		FARX	_bB_s3_apu_load
 		LDA		#0
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
 		SYSX	_apu_load,$A6
@@ -1028,7 +1028,7 @@ loc_24E761:
 loc_24E7A0:
 		TYA
 		PHA
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		PLA
 		TAY
 		LDX		#7
@@ -1115,7 +1115,7 @@ loc_24E848:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E85A
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		INC		byte_8
 loc_24E85A:
 		LDX		#1
@@ -1138,7 +1138,7 @@ loc_24E86A:
 		LDA		byte_8
 		CMP		#$11
 		BCS		loc_24E88A
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		INC		byte_8
 loc_24E88A:
 		JMP		loc_24E86A

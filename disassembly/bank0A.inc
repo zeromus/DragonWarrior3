@@ -708,7 +708,7 @@ _bA_sD:
 		JSR		sub_F8682
 		JSR		sub_F85B0
 		FARX	_bE_s31_get_map_music_idx
-		FARX	_bB_s5
+		FARX	_bB_s5_apu_unk
 		JSR		sub_F850A
 		LDA		#0
 		STA		byte_28

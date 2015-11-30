@@ -2059,7 +2059,7 @@ locret_9BA5A:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s16:
 		MSGX	_msg_m00,$24C
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		sub_9BA66
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2069,7 +2069,7 @@ sub_9BA63:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA66:
 		MSGX	_msg_m00,$296
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_9BA63
 		FARX	_b7_sD
 		JSR		_sram_b0_s31_get_party_chars_list
@@ -2086,7 +2086,7 @@ sub_9BA66:
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BA85:
 		MSGX	_msg_m00,$24D
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BEQ		sub_9BA90
 		JMP		sub_9BB1F
 
@@ -2135,7 +2135,7 @@ sub_9BADD:
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		sub_9BB17
 		LDA		byte_C6
 		STA		byte_630F
@@ -2267,7 +2267,7 @@ loc_9BBDC:
 		JSR		sub_9BBED
 loc_9BBDF:
 		MSGX	_msg_m00,$257
-		FARX	_bE_s1C
+		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_9BBEA
 		JMP		sub_9BA66
 loc_9BBEA:
@@ -2547,7 +2547,7 @@ loc_9BDA0:
 		CMP		#6
 		BNE		loc_9BDA0
 		LDA		#0
-		FARX	_bB_s6
+		FARX	_bB_s5_apu_flag1
 		LDX		#$C
 loc_9BDC7:
 		LDA		byte_9BDDE,X
@@ -2604,7 +2604,7 @@ _b6_s1D:
 		LDA		#2
 		STA		byte_644
 		STA		byte_6BC
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		LDA		#0
 		STA		_world_map_steps_count
 		JMP		sub_174CD5
@@ -2664,13 +2664,13 @@ loc_9BE9B:
 		LDX		_tmp_ptrB4
 		LDY		_tmp_varB6,X
 		LDA		byte_BA,Y
-		STA		_party_players_list_formation,Y
+		STA		_party_formation,Y
 		JMP		loc_9BE8A
 loc_9BEB2:
 		LDY		#$FF
 loc_9BEB4:
 		INY
-		LDA		_party_players_list_formation,Y
+		LDA		_party_formation,Y
 		BMI		loc_9BEB4
 		DEX
 		BPL		loc_9BEB4
@@ -2682,7 +2682,7 @@ loc_9BEB4:
 		PLA
 		TAY
 		LDA		#$FF
-		STA		_party_players_list_formation,Y
+		STA		_party_formation,Y
 		LDA		#2
 		FARX	_bE_sB
 		INC		_tmp_ptrB4
@@ -2727,7 +2727,7 @@ sub_9BF0D:
 		LDX		#3
 loc_9BF0F:
 		LDA		byte_BA,X
-		STA		_party_players_list_formation,X
+		STA		_party_formation,X
 		DEX
 		BPL		loc_9BF0F
 		RTS
@@ -2789,7 +2789,7 @@ _b6_s1F:
 		SYSX	_apu_load,$1A
 		JSR		sub_9BF72
 		JSR		sub_9BFC3
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 loc_9BF6D:

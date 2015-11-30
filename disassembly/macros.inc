@@ -109,7 +109,11 @@ _herhis = $B0
 _herhimself = $B1
 _heshe = $B2
 _himher = $B3
+_if_plural = $C0
+_idx = $F2
 _item = $F4
+_name = $F5
+_number = $F8
 _hero = $F9
 
 ; == OPCODES ==
@@ -161,13 +165,13 @@ _hero = $F9
 	MAC SYSX
 		BRK
 		.BYTE	{2}
-		.BYTE	[[{1}_idx - _syscall_lib] & $3E]
+		.BYTE	[[{1}_idx - _syscall_lib] & $FE]
 	ENDM
 
 	MAC	MSGX
 		BRK
 		.BYTE	[[{2}] & $FF]
-		.BYTE	[[[{1}_idx - _syscall_lib] + [[{2}] >> 7]] & $3E]
+		.BYTE	[[[{1}_idx - _syscall_lib] + [[{2}] >> 7]] & $FE]
 	ENDM
 	
 	INCLUDE "item_ids.inc"
