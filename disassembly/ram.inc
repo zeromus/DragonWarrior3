@@ -1034,10 +1034,12 @@ _players_gold:
 ;
 _players_selected_list:
 		.BYTE	0,0
-; indexes of the charactes in current formation
+		
+;----------------------------------------------
+; indexes of the charactes in current party
 ; in particular formation order
 ;
-_party_players_list_formation:
+_party_formation:
 		.BYTE	0,0,0,0
 
 ; unused

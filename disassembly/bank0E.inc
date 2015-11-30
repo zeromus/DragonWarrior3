@@ -47,8 +47,8 @@ _bE_s1A_ptr:
 		.WORD	_bE_s1A
 _bE_s1B_ptr:
 		.WORD	_bE_s1B
-_bE_s1C_ptr:
-		.WORD	_bE_s1C
+_bE_s1C_yes_or_no_question_ptr:
+		.WORD	_bE_s1C_yes_or_no_question
 _bE_s1D_get_map_buf_end_ptr_ptr:
 		.WORD	_bE_s1D_get_map_buf_end_ptr
 _bE_s20_decode_map_ptr_to_XY_ptr:
@@ -865,7 +865,7 @@ loc_1585A5:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
 		SYSX	_apu_load,$17
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		CLC
 		RTS
 
@@ -1169,9 +1169,9 @@ loc_158786:
 		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
-_bE_s1C:
-		SYSX	_apu_load,$86
-		SYSX	_display_window,$1D
+_bE_s1C_yes_or_no_question:
+		SYSX	_apu_load,$86			; bik bik
+		SYSX	_display_window,$1D		; yes or no
 		PHA
 		LDA		byte_80
 		PHA
@@ -5528,7 +5528,7 @@ _txt_male_pronoun_lib:
 		.WORD	_txt_he
 		.WORD	_txt_him
 		.WORD	_txt_man
-		.WORD	_txt_He_s
+		.WORD	_txt_he_s
 		.WORD	_txt_son
 		
 _txt_female_pronoun_lib:
@@ -5571,6 +5571,8 @@ _txt_numbers_lib:
 		.WORD	_txt_Seven
 		.WORD	_txt_Eight
 		
+_txt_dummy:
+		.BYTE	$FE
 _txt_his:
 		.BYTE	_h,_i,_s,$FE
 _txt_himself:
@@ -5581,7 +5583,7 @@ _txt_him:
 		.BYTE	_h,_i,_m,$FE
 _txt_man:
 		.BYTE	_m,_a,_n,$FE
-_txt_He_s:
+_txt_he_s:
 		.BYTE	_H,_e,_apo,_s,$FE
 _txt_son:
 		.BYTE	_s,_o,_n,$FE
@@ -5591,8 +5593,6 @@ _txt_herself:
 		.BYTE	_h,_e,_r,_s,_e,_l,_f,$FE
 _txt_she:
 		.BYTE	_s,_h,_e,$FE
-_txt_her:
-		.BYTE	_h,_e,_r,$FE
 _txt_lady:
 		.BYTE	_l,_a,_d,_y,$FE
 _txt_she_s:
@@ -5607,8 +5607,6 @@ _txt_ol:
 		.BYTE	_o,_l,$FE
 _txt_i:
 		.BYTE	_i,$FE
-_txt_dummy:
-		.BYTE	$FE
 _txt_a:
 		.BYTE	_a,$FE
 _txt_ies:
@@ -5810,7 +5808,7 @@ _bE_s20_decode_map_ptr_to_XY:
 		LDX		#word_6C
 		LDY		#>[byte_7400]
 		LDA		#<[byte_7400]
-		JSR		_sub16_to_16		; remove buffer base #$7400
+		JSR		_sub16_from_16		; remove buffer base #$7400
 		LDA		_mapWidth
 		JSR		_div16_to_8			; divide by width
 		TAX							; setup result in X and Y

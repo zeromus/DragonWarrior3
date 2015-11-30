@@ -597,7 +597,7 @@ loc_23580A:
 		STA		_ram_pal_buf
 		JSR		_pal_set_no_fade
 		JSR		_pal_fade_out
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDX		#$64
 		JSR		_sleep_X_sync
 		FARX	_b18_s0_intro_animation
@@ -633,7 +633,7 @@ loc_235861:
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_235856
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		LDX		#$3C
 		JSR		_sleep_X_sync

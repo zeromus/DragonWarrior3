@@ -31,7 +31,7 @@ _b19_s0:
 		LDA		#>[byte_2667D9]
 		STA		word_6C+1
 		JSR		sub_264077
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDA		#<[byte_26786F]
 		STA		word_6C
 		LDA		#>[byte_26786F]

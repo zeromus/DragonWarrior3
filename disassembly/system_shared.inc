@@ -39,8 +39,8 @@ locret_174028:
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]-=Y:A
 ;
-_sub16_to_16:
-		JSR		_add8_to_neg16
+_sub16_from_16:
+		JSR		_sub8_from_16
 		TYA
 		EOR		#$FF
 		SEC
@@ -51,7 +51,7 @@ _sub16_to_16:
 ; =============== S U B	R O U T	I N E =======================================
 ; [X]-=A
 ;
-_add8_to_neg16:
+_sub8_from_16:
 		EOR		#$FF
 		SEC
 		ADC		0,X
@@ -1823,7 +1823,7 @@ _MAIN_ENTRY:
 loc_174BBB:
 ; INTERESTING POINT:
 		JSR		__pause_or_skip
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_location_palette_and_rand_update
 loc_174BC7:
@@ -1840,7 +1840,7 @@ loc_174BCF:
 		BEQ		loc_174BCF
 		FARX	_b7_s8
 		FARX	_b7_sA_sram_test_and_init
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		LDA		byte_60C7
 		BMI		loc_174BFC
 		ORA		#$80
@@ -2610,7 +2610,7 @@ loc_175181:
 		LDA		#$23
 		STA		byte_2A
 loc_175185:
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		sub_175917
 loc_17518B:
 		LDA		#$FF
@@ -2803,7 +2803,7 @@ loc_1752D9:
 		LDA		_location_type
 		ORA		#1
 		STA		_location_type
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		SYSX	_apu_load,$82
 		JSR		_pal_fade_out
 		JSR		sub_1759B8
@@ -2858,7 +2858,7 @@ sub_17532D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175342:
 		FARX	_bE_s32
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		LDA		#$9C
 		STA		_mapNumber
@@ -2985,7 +2985,7 @@ loc_17541D:
 		PLA
 		LDA		#0
 		STA		byte_6B9
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JMP		loc_175195
 
@@ -3193,7 +3193,7 @@ sub_175596:
 		FARX	_bE_s31_get_map_music_idx
 		CMP		#$11
 		BEQ		loc_1755A0
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 loc_1755A0:
 		SYSX	_apu_load,$82
 		JSR		_pal_fade_out
@@ -6135,9 +6135,11 @@ _syscall_lib:
 		; lower bits of message index from argument, and a higher representing
 		; the syscall index itself
 		;
-		; note to myself: not to use these functions as direct calls from
-		; banks, they need argument in Y! redesign the code, to have two
-		; different set of functions with Y and A arguments (it's easy)
+		; note messages with name starting with _sys_ are for MSGX calls and
+		; need the argument passed in Y register
+		; when using as a shortcut with pair of LDA/JSR opcodes (when the index
+		; of message is variable), use _wrap_ prefixed functions instead, they
+		; accept input parameter in A directly.
 		;
 _msg_m00_idx:
 _sys_msg_m00_arg0_idx:			.WORD	_sys_msg_m00_arg0
@@ -6158,6 +6160,33 @@ _sys_msg_m00_arg4_break_idx:	.WORD	_sys_msg_m00_arg4_break
 _sys_msg_m00_arg5_break_idx:	.WORD	_sys_msg_m00_arg5_break
 _sys_msg_m00_arg6_break_idx:	.WORD	_sys_msg_m00_arg6_break
 _sys_msg_m00_arg7_break_idx:	.WORD	_sys_msg_m00_arg7_break
+
+		; the message wrappers from bank D for block 6/7 has additional check for gender and status
+		; of the hero. but it seems that message system checks this by its own, however additinal
+		; call of checking routine is used in many other places too, investigate.
+		; so I put these special msg display routines with additional gender check here to be sure
+		; nothing is broken, but if you prove that this is a redundant call, you can frely remove
+		; this shit and remove in all MSGX functions _ex prefix
+
+_msg_m00_ex_idx:
+_sys_msg_m00_arg0_ex_idx:		.WORD	0	; only used for bank 5, 6, 7
+_sys_msg_m00_arg1_ex_idx:		.WORD	0
+_sys_msg_m00_arg2_ex_idx:		.WORD	0
+_sys_msg_m00_arg3_ex_idx:		.WORD	0
+_sys_msg_m00_arg4_ex_idx:		.WORD	0
+_sys_msg_m00_arg5_ex_idx:		.WORD	_sys_msg_m00_arg5_ex
+_sys_msg_m00_arg6_ex_idx:		.WORD	_sys_msg_m00_arg6_ex
+_sys_msg_m00_arg7_ex_idx:		.WORD	_sys_msg_m00_arg7_ex
+
+_msg_m00_break_ex_idx:
+_sys_msg_m00_arg0_break_ex_idx:	.WORD	0	; remove the rest if prove it unneeded
+_sys_msg_m00_arg1_break_ex_idx:	.WORD	0
+_sys_msg_m00_arg2_break_ex_idx:	.WORD	0
+_sys_msg_m00_arg3_break_ex_idx:	.WORD	0
+_sys_msg_m00_arg4_break_ex_idx:	.WORD	0
+_sys_msg_m00_arg5_break_ex_idx:	.WORD	_sys_msg_m00_arg5_break_ex
+_sys_msg_m00_arg6_break_ex_idx:	.WORD	_sys_msg_m00_arg6_break_ex
+_sys_msg_m00_arg7_break_ex_idx:	.WORD	_sys_msg_m00_arg7_break_ex
 
 		; two more external direct offsets, whould called from bank 4 only
 		; and pointing directly to this bank
@@ -6436,10 +6465,10 @@ _bA_s17_idx:			PTR_IDX	$A,_bA_s17					; $1A9
 
 _bB_s2_apu_init_idx:				PTR_IDX	$B,_bB_s2_apu_init					; $9F
 _bB_s3_apu_load_idx:	PTR_IDX	$B,_bB_s3_apu_load			; $A0
-_bB_s4_idx:				PTR_IDX	$B,_bB_s4					; $A1
-_bB_s5_idx:				PTR_IDX	$B,_bB_s5					; $A2
-_bB_s6_idx:				PTR_IDX	$B,_bB_s6					; $A5
-_bB_s7_idx:				PTR_IDX	$B,_bB_s7					; $F0
+_bB_s4_apu_set_flag0_idx:				PTR_IDX	$B,_bB_s4_apu_set_flag0					; $A1
+_bB_s5_apu_unk_idx:				PTR_IDX	$B,_bB_s5_apu_unk					; $A2
+_bB_s5_apu_flag1_idx:				PTR_IDX	$B,_bB_s5_apu_flag1					; $A5
+_bB_s7_apu_wait_idx:				PTR_IDX	$B,_bB_s7_apu_wait					; $F0
 
 _bC_s0_npc_anim_script_init_idx:	PTR_IDX	$C,_bC_s0_npc_anim_script_init	; $97
 _bC_s1_idx:				PTR_IDX	$C,_bC_s1					; $157
@@ -6520,11 +6549,11 @@ _bD_s1E_idx:			PTR_IDX	$D,_bD_s1E					; $138
 _bD_s1F_idx:			PTR_IDX	$D,_bD_s1F					; $13C
 _bD_s20_npc_hndl31_idx:	PTR_IDX	$D,_bD_s20_npc_hndl31		; $190
 _bD_s21_idx:			PTR_IDX	$D,_bD_s21					; $13E
-_bD_s22_idx:			PTR_IDX	$D,_bD_s22					; $144
+_bD_s22_se_wait_and_map_music_start_idx:			PTR_IDX	$D,_bD_s22_se_wait_and_map_music_start					; $144
 _bD_s23_idx:			PTR_IDX	$D,_bD_s23					; $18C
 _bD_s24_idx:			PTR_IDX	$D,_bD_s24					; $18D
 _bD_s26_get_first_live_player_with_no_NM_status_idx:			PTR_IDX	$D,_bD_s26_get_first_live_player_with_no_NM_status					; $12D
-_bD_s27_idx:			PTR_IDX	$D,_bD_s27					; $A3
+_bD_s27_give_item_to_player_msg1_idx:			PTR_IDX	$D,_bD_s27_give_item_to_player_msg1					; $A3
 _bD_s28_frame_palette_by_status_adjust_idx:	PTR_IDX	$D,_bD_s28_frame_palette_by_status_adjust	; $12F
 _bD_s29_idx:			PTR_IDX	$D,_bD_s29					; $17A
 
@@ -6551,7 +6580,7 @@ _bE_s18_idx:			PTR_IDX	$E,_bE_s18					; $151
 _bE_s19_idx:			PTR_IDX	$E,_bE_s19					; $AC
 _bE_s1A_idx:			PTR_IDX	$E,_bE_s1A					; $AD
 _bE_s1B_idx:			PTR_IDX	$E,_bE_s1B					; $F9
-_bE_s1C_idx:			PTR_IDX	$E,_bE_s1C					; $120
+_bE_s1C_yes_or_no_question_idx:			PTR_IDX	$E,_bE_s1C_yes_or_no_question					; $120
 _bE_s1D_get_map_buf_end_ptr_idx:			PTR_IDX	$E,_bE_s1D_get_map_buf_end_ptr					; $AB
 _bE_s20_decode_map_ptr_to_XY_idx:			PTR_IDX	$E,_bE_s20_decode_map_ptr_to_XY					; $AE
 _bE_s21_idx:			PTR_IDX	$E,_bE_s21					; $AF
@@ -6643,7 +6672,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$E, $A						; $1C _bE_sA, no use here, moved to bank 0F, used directly
 ;		.BYTE	$E,$10						; $A6 _bE_s10, unused copy of $124
 ;		.BYTE	$E,$15						; $11C, bank 0E, idx 15, empty
-;		.BYTE	$E,$1C						; $11F _bE_s1C, different ptrs points to the same sub, the first never used
+;		.BYTE	$E,$1C						; $11F _bE_s1C_yes_or_no_question, different ptrs points to the same sub, the first never used
 ;		.BYTE	$E,$1E						; $87, bank 0e, idx 1E, empty
 ;		.BYTE	$E,$2B						; $107 _bE_s2B, never used
 ; ==
@@ -6823,6 +6852,13 @@ _wrap_msg_m00_arg4:
 		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
+; remove this shit when make sure this FARX not needed at all
+_sys_msg_m00_arg5_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME....
 _sys_msg_m00_arg5:
 		TYA
 _wrap_msg_m00_arg5:
@@ -6830,6 +6866,13 @@ _wrap_msg_m00_arg5:
 		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
+; remove this shit when make sure this FARX not needed at all
+_sys_msg_m00_arg6_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME....
 _sys_msg_m00_arg6:
 		TYA
 _wrap_msg_m00_arg6:
@@ -6837,6 +6880,13 @@ _wrap_msg_m00_arg6:
 		BNE		_wrap_msg_m00
 
 ; =============== S U B	R O U T	I N E =======================================
+; remove this shit when make sure this FARX not needed at all
+_sys_msg_m00_arg7_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME....
 _sys_msg_m00_arg7:
 		TYA
 _wrap_msg_m00_arg7:
@@ -6883,6 +6933,12 @@ _wrap_msg_m00_arg4_break:
 		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg5_break_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME....
 _sys_msg_m00_arg5_break:
 		TYA
 _wrap_msg_m00_arg5_break:
@@ -6890,6 +6946,13 @@ _wrap_msg_m00_arg5_break:
 		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
+; remove this shit when make sure this FARX not needed at all
+_sys_msg_m00_arg6_break_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME....
 _sys_msg_m00_arg6_break:
 		TYA
 _wrap_msg_m00_arg6_break:
@@ -6897,6 +6960,12 @@ _wrap_msg_m00_arg6_break:
 		BNE		_wrap_msg_m00_break
 
 ; =============== S U B	R O U T	I N E =======================================
+_sys_msg_m00_arg7_break_ex:
+		TYA
+		PHA
+		FARX	_bD_sB_get_hero_and_its_gender_and_status
+		PLA
+		TAY		; TODO: MASSSTEERR PLEEESE KILL ME.... or optimize with free tmp var
 _sys_msg_m00_arg7_break:
 		TYA
 _wrap_msg_m00_arg7_break:

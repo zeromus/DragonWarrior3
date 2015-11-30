@@ -2846,9 +2846,9 @@ loc_69267:
 		LDA		byte_CE
 		STA		byte_CF
 		TAX
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		ORA		#$80
-		STA		_party_players_list_formation,X
+		STA		_party_formation,X
 		TXA
 		ASL
 		TAX
@@ -6078,7 +6078,7 @@ sub_6A86B:
 		STA		word_4+1
 		LDX		#word_4
 		PLA
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDA		#2
 		JSR		_div16_to_8
 		PLA
@@ -7490,7 +7490,7 @@ _bs_pcAction_06_equip_attack:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B0DB:
 		FARX	_bB_s3_apu_load
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		SYSX	_apu_load,$10
 		RTS
 
@@ -9206,7 +9206,7 @@ sub_6BACB:
 		LDA		byte_5B
 		JSR		_b4_sF
 		LDX		#byte_59
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDA		byte_43
 		ASL
 		TAY

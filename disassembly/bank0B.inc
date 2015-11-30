@@ -9,14 +9,14 @@ _bB_s2_apu_init_ptr:
 		.WORD	_bB_s2_apu_init
 _bB_s3_apu_load_ptr:
 		.WORD	_bB_s3_apu_load
-_bB_s4_ptr:
-		.WORD	_bB_s4
-_bB_s5_ptr:
-		.WORD	_bB_s5
-_bB_s6_ptr:
-		.WORD	_bB_s6
-_bB_s7_ptr:
-		.WORD	_bB_s7
+_bB_s4_apu_set_flag0_ptr:
+		.WORD	_bB_s4_apu_set_flag0
+_bB_s5_apu_unk_ptr:
+		.WORD	_bB_s5_apu_unk
+_bB_s5_apu_flag1_ptr:
+		.WORD	_bB_s5_apu_flag1
+_bB_s7_apu_wait_ptr:
+		.WORD	_bB_s7_apu_wait
 
 _apu_music_lib:
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,_chnl_stop
@@ -1923,11 +1923,11 @@ byte_2DFB35:
 		.WORD	byte_2DFB35
 
 ; =============== S U B	R O U T	I N E =======================================
-_bB_s7:
+_bB_s7_apu_wait:
 		JSR		_wait_for_nmi_is_over_sync
 		LDA		byte_47F
 		AND		#$20
-		BEQ		_bB_s7
+		BEQ		_bB_s7_apu_wait
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2239,7 +2239,7 @@ loc_2DF57F:
 		CMP		#$F6
 		BNE		loc_2DF58C
 		JSR		_apu_get_stream_byte
-		JSR		_bB_s6
+		JSR		_bB_s5_apu_flag1
 		JMP		_apu_cmd_fetch
 loc_2DF58C:
 		CMP		#$F5
@@ -2413,7 +2413,7 @@ loc_2DF6B0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bB_s6:
+_bB_s5_apu_flag1:
 		AND		#$1F
 		PHA
 		LDA		byte_47F
@@ -2710,7 +2710,7 @@ locret_2DF885:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bB_s4:
+_bB_s4_apu_set_flag0:
 		LDA		_apu_data3+4
 		AND		#$20
 		ORA		#$44
@@ -2774,7 +2774,7 @@ _bB_s2_apu_init:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bB_s5:
+_bB_s5_apu_unk:
 		JSR		sub_2DF9B3
 		ASL
 		CMP		byte_6F0

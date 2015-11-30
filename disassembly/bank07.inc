@@ -70,7 +70,6 @@ _map_data_lib:
 		.WORD	_mapF
 		.BYTE	  2
 		.WORD	_map10
-byte_B0072:
 		.BYTE	  8
 		.WORD	_map11
 		.BYTE	  5
@@ -1319,7 +1318,7 @@ _b7_s1A:
 		CMP		#5
 		BNE		locret_B27A9
 		JSR		_wrap_bE_sD_display_window_3E
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$19E
 		MSGX	_msg_m00,$19F
@@ -1344,7 +1343,7 @@ loc_B27D7:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1B:
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		JSR		sub_B2806
 		SYSX	_apu_load,$1F
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -1684,7 +1683,7 @@ sub_B2A29:
 		JSR		sub_B2B31
 		LDX		#word_40
 		LDA		#3
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDY		#0
 loc_B2A50:
 		LDA		(word_3E),Y
@@ -1703,7 +1702,7 @@ loc_B2A62:
 		PLA
 		TAX
 		JSR		sub_B2BB5
-		LDA		#<[_ppu_queue_buf+$13]
+		LDA		#<[_ppu_queue_buf+$13]		; check if this is a size constant, not a pointer
 		LDY		#>[_ppu_queue_buf+$13]
 		LDX		#word_3C
 		JSR		_add16_to_16
@@ -1733,7 +1732,7 @@ sub_B2A9D:
 		JSR		sub_B2B31
 		LDA		#3
 		LDX		#word_40
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDY		#0
 loc_B2AA9:
 		LDA		#0
@@ -1833,7 +1832,7 @@ loc_B2B2C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2B31:
-		LDA		#<[_ppu_queue_buf+$15]
+		LDA		#<[_ppu_queue_buf+$15]		; check if this is a size constant, not a pointer
 		STA		word_40
 		LDA		#>[_ppu_queue_buf+$15]
 		STA		word_40+1
@@ -1843,7 +1842,7 @@ sub_B2B31:
 sub_B2B3C:
 		LDX		#word_40
 		LDA		#1
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDA		word_40
 		ORA		word_40+1
 		RTS
@@ -1929,7 +1928,7 @@ loc_B2BB2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BB5:
-		LDA		#<[_ppu_queue_buf+$15]
+		LDA		#<[_ppu_queue_buf+$15]		; check if this is a size constant, not a pointer
 		STA		word_3C
 		LDA		#>[_ppu_queue_buf+$15]
 		STA		word_3C+1
@@ -2027,7 +2026,7 @@ loc_B2C43:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2C46:
 		LDX		#word_3C
-		LDA		#<[_ppu_queue_buf+$12]
+		LDA		#<[_ppu_queue_buf+$12]		; check if this is a size constant, not a pointer
 		LDY		#>[_ppu_queue_buf+$12]
 		JSR		_add16_to_16
 		LDY		#0
@@ -2058,7 +2057,7 @@ loc_B2C68:
 		LDY		#0
 		LDA		(word_3C),Y
 		BEQ		loc_B2CC8
-		LDA		#<[_ppu_queue_buf+$13]
+		LDA		#<[_ppu_queue_buf+$13]		; check if this is a size constant, not a pointer
 		LDY		#>[_ppu_queue_buf+$13]
 		LDX		#word_3C
 		JSR		_add16_to_16
@@ -2110,7 +2109,7 @@ sub_B2CD0:
 		JSR		sub_B2B31
 		LDA		#2
 		LDX		#word_40
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDA		#$3A
 		STA		_rand_seed
 		STA		_rand_seed+1
@@ -2131,6 +2130,7 @@ loc_B2CE6:
 		BNE		loc_B2CE6
 locret_B2CFD:
 		RTS
+		
 _txt_manabu_yamana:
 		.BYTE	"MANABU YAMANA"
 byte_B2D0B:
@@ -2499,7 +2499,7 @@ loc_B2FD0:
 _b7_sD:
 		LDX		#3
 loc_B2FE0:
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		BPL		loc_B2FF4
 		CMP		#$FF
 		BEQ		loc_B2FF4
@@ -2549,7 +2549,7 @@ loc_B3030:
 		BPL		loc_B3048
 		LDA		#$FF
 		STA		byte_630F,X
-		STA		_party_players_list_formation,X
+		STA		_party_formation,X
 		TXA
 		ASL
 		TAY
@@ -2696,10 +2696,10 @@ loc_B3127:
 		LDX		byte_55
 		DEX
 		LDA		#$FF
-		STA		_party_players_list_formation,X
+		STA		_party_formation,X
 		LDX		#3
 loc_B3131:
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		STA		byte_630F,X
 		DEX
 		BPL		loc_B3131
@@ -2736,7 +2736,7 @@ _b7_s15:
 		JSR		_b7_sD
 		LDX		#0
 loc_B3171:
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		BMI		loc_B318A
 		TXA
 		ASL
@@ -2755,7 +2755,7 @@ loc_B318A:
 		RTS
 loc_B3190:
 		STX		byte_CE
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		PHA
 		JSR		_b7_s12
 		PLA
@@ -3030,7 +3030,7 @@ byte_B3382:
 _b7_s1E:
 		JSR		sub_B32F1
 		FARX	_bA_s16
-		FARX	_bB_s4
+		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_ppu_disable
 		LDA		#0

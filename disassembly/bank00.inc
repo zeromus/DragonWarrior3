@@ -2159,7 +2159,7 @@ loc_9503:
 		JSR		_far_read_pri_stat_tbl			; use the weapon's power divided by 2 as a PENALTY from the fighter's
 												; base strength. that's weird.
 		LSR
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		BCS		loc_9503						; clamp at 0
 		LDA		#0
 		STA		word_4							;store results and exit
@@ -2923,7 +2923,7 @@ loc_9905:
 		LDY		#0
 loc_9907:
 		LDA		word_4+1,X				; find what char is in your party
-		CMP		_party_players_list_formation,Y
+		CMP		_party_formation,Y
 		BNE		loc_9914
 		LDA		#$FF
 		STA		word_4+1,X				; remove them from complete list
@@ -3015,7 +3015,7 @@ _b0_s31_get_party_chars_list:
 		LDY		#0
 		LDX		#0
 loc_997A:
-		LDA		_party_players_list_formation,Y
+		LDA		_party_formation,Y
 		STA		word_4+1,X
 		BMI		loc_9982
 		INX
@@ -3037,7 +3037,7 @@ _b0_s33_count_non_dead_party_chars:
 		LDX		#0
 		STX		word_4
 loc_9992:
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		BMI		loc_99A1
 		TXA
 		ASL
@@ -3384,7 +3384,7 @@ _status_params_ptr_tbl:
 		.WORD	_players_EXP								; 2 u24[4] arrays starting from EXP
 		.WORD	_players_name								; 3 u8[8][4] arrays startinf from names
 		.WORD	byte_6A4B									; 1 u8[4] array
-		.WORD	_party_players_list_formation				; 1 u8[4] array
+		.WORD	_party_formation				; 1 u8[4] array
 		.WORD	byte_B0										; 1 u8[4] array
 		.WORD	_player_battle_order_and_flags				; 2 u8[4] arrays
 		.WORD	_players_rDEF								; 2 u16[4] arrays
@@ -3477,7 +3477,7 @@ _get_unassigned_formation_char_by_list_idx:
 		LDY		#$FF
 		LDX		#0
 loc_9C27:
-		LDA		_party_players_list_formation,X
+		LDA		_party_formation,X
 		BPL		loc_9C34
 loc_9C2C:
 		INX
@@ -3757,10 +3757,10 @@ loc_9D9E:
 		STA		byte_6A62
 		LDX		#0
 loc_9DB0:
-		LDA		_party_players_list_formation+1,X
+		LDA		_party_formation+1,X
 		STA		byte_6A59,X
 		LDA		#$FF
-		STA		_party_players_list_formation+1,X
+		STA		_party_formation+1,X
 		TXA
 		ASL
 		TAY
@@ -3782,7 +3782,7 @@ _b0_s4F:
 loc_9DDA:
 		TXA
 		LDA		byte_6A59,X
-		STA		_party_players_list_formation+1,X
+		STA		_party_formation+1,X
 		TXA
 		ASL
 		TAY
@@ -4657,7 +4657,7 @@ loc_A410:
 ; player levels-up here
 		INC		_players_level,X
 ; delays and jingles?
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		JSR		_map_music_select_and_load
 		JSR		sub_A8BB
 ; take player's level back down 1?
@@ -6054,7 +6054,7 @@ sub_ADF4:
 		SYSX	_apu_load,$17
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$152	; "the <> is stuck to the body"
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 
@@ -6441,14 +6441,14 @@ _item26_use:
 		FARX	_bC_s2B
 		RTS
 loc_B097:
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _item27_use:
 		SYSX	_apu_load,$1B
-		FARX	_bB_s7
+		FARX	_bB_s7_apu_wait
 		LDA		byte_60C5
 		BMI		loc_B0B5
 		JSR		_b0_s53
@@ -6459,7 +6459,7 @@ _item27_use:
 		SEC
 		RTS
 loc_B0B5:
-		FARX	_bD_s22
+		FARX	_bD_s22_se_wait_and_map_music_start
 		CLC
 		RTS
 

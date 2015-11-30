@@ -509,7 +509,7 @@ sub_176FB2:
 		JSR		_mul16_to_8
 		LDX		#byte_24
 		LDA		_mapWidth
-		JSR		_add8_to_neg16
+		JSR		_sub8_from_16
 		LDA		byte_74
 		LDX		#byte_24
 		JSR		_add8_to_16
