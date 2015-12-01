@@ -4080,7 +4080,7 @@ loc_129B23:
 		CLC
 		RTS
 
-; this is kind of cool, it's a list of location numbers and tile coordinates where something special happes
+; this is kind of cool, it's a list of location numbers and tile coordinates where something special happens (searching-related, i think)
 byte_129B25:
 		.BYTE	$8A,  5,  3,  0,$3B,$16, $C,  1,$3B,$17, $C,  1,$D3, $B,  5,  2
 		.BYTE	$D3, $C,  5,  2,$D3,  6,  9,  3,$D3,  5, $C,  3,$D3,  5, $F,  3

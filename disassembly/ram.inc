@@ -1150,19 +1150,29 @@ byte_60A8:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_60B5:
 		.BYTE	0
-byte_60B6:
+;----------------------------------------------
+; misc quest flag bits
+; $80 - ?
+; $40 - ?
+; $20 - _q_NorudPassageOpened
+; $10 - ?
+; $08 - ?
+; $04 - ?
+; $02 - _q_MagicBallUsed
+; $01 - ?
+;
+byte_60B6: 
 		.BYTE	0
 ;----------------------------------------------
-; global game specific flags
-; bits ABCDEFGH, where
-; 	H - change class to Erdrick
-;	G - ?
-;	F - 
-;	E - ?
-;	D - ?
-;	C - set if in battle mode (does not clear after death in battle!)
-;	B - set after you accept the Golden King's Crown and become a King
-;	A - ?
+; misc quest flag bits
+; $80 - change class to Erdrick
+;	$40 - ?
+;	$20 - ?
+;	$10 - one of the switches in Pyramid 3F
+;	$08 - one of the switches in Pyramid 3F
+;	$04 - set if in battle mode (does not clear after death in battle!)
+;	$02 - set after you accept the Golden King's Crown and become a King
+;	$01 - ?
 ;
 _global_game_flags:
 		.BYTE	0
@@ -1172,8 +1182,17 @@ byte_60B8:
 byte_60B9:
 		.BYTE	0
 ;----------------------------------------------
-; if byte_60BA.0 is set, then we're in the "shrine where you may try your courage". After dying you respawn there
-; this is also related to special location entry position logic for lancel
+; misc quest flag bits
+; somehow related to special location entry position logic for lancel
+; $80 -
+;	$40 -
+;	$20 -
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - we're in the "shrine where you may try your courage". After dying you respawn there
+;
 byte_60BA:
 		.BYTE	0
 ;----------------------------------------------
@@ -1187,9 +1206,9 @@ byte_60C1:
 		.BYTE	0,0
 byte_60C3:
 		.BYTE	0
-byte_60C4:
+byte_60C4: ; Zoma's Castle Quest: if $60C4.7 is set, the statue sneak attack event is finished and the statues and doors are cleared
 		.BYTE	0
-byte_60C5:
+byte_60C5: ; if $60C5.7 is set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
 		.BYTE	0
 byte_60C6:
 		.BYTE	0
