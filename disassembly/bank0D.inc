@@ -796,7 +796,7 @@ _bD_sE:
 		PLA
 		TAX
 		BCC		loc_141722
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_8C
 		BNE		loc_141722
@@ -1006,7 +1006,7 @@ locret_141801:
 ; =============== S U B	R O U T	I N E =======================================
 sub_141831:
 		JSR		_ptr72_get_word
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		STA		byte_78
 		JSR		sub_141878
@@ -1624,7 +1624,7 @@ loc_141BCE:
 		INY
 		LDA		(word_72),Y
 		TAY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		PLA
 		TAX
 		LDA		word_7C
@@ -1679,7 +1679,7 @@ loc_141C46:
 		LDY		_playerMapY
 		INC		word_3C
 		LDX		word_3C
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		CMP		#8
 		BEQ		loc_141C46
@@ -1867,12 +1867,12 @@ loc_141D74:
 		BCC		loc_141DB9
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		STA		byte_79
 		LDX		byte_80
 		LDY		byte_81
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_79
 		BNE		loc_141DB9

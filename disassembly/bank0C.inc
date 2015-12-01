@@ -463,7 +463,7 @@ loc_1282F3:
 		INY
 		LDA		(word_6C),Y
 		TAY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		LDX		#$40
 		AND		#$E0
 		CMP		byte_8C
@@ -1415,7 +1415,7 @@ loc_128967:
 sub_128972:
 		LDX		byte_48
 		LDY		byte_49
-		JMP		sub_176C99
+		JMP		_read_tile_XY
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128979:
@@ -1847,7 +1847,7 @@ loc_128C0F:
 		ORA		byte_128C45,X
 		STA		_playerMapX
 		TAX
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		STA		byte_8C
 		RTS
@@ -2100,19 +2100,19 @@ loc_128E11:
 		STA		byte_97
 		LDX		_players_pos_list
 		LDY		_players_pos_list+1
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		STA		byte_93
 		LDX		_players_pos_list+4
 		LDY		_players_pos_list+5
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		STA		byte_94
 		LDX		_players_pos_list+8
 		LDY		_players_pos_list+9
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		STA		byte_95
 		LDX		_players_pos_list+$C
 		LDY		_players_pos_list+$D
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		STA		byte_96
 		LDA		_players_status+2
 		BMI		loc_128E66
@@ -2978,7 +2978,7 @@ _item_key_use:
 		STX		word_B7+1
 		LDY		_playerMapY
 		STY		byte_B9
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		STA		word_B7
 		TAX
@@ -2990,7 +2990,7 @@ loc_12946E:
 		JSR		sub_129581
 		LDX		word_B7+1
 		LDY		byte_B9
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		TAX
 		AND		#$E0
 		STA		byte_BC
@@ -3031,7 +3031,7 @@ loc_1294B0:
 		JSR		sub_129581
 		LDX		word_B7+1
 		LDY		byte_B9
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		STA		word_B7
 		JSR		sub_1295B8
@@ -3057,7 +3057,7 @@ sub_1294D0:
 		JSR		sub_129585
 		LDX		word_B7+1
 		LDY		byte_B9
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
 		LDA		byte_6DE0,X
@@ -3248,7 +3248,7 @@ sub_1295EB:
 sub_129600:
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
 		LDA		byte_6DE0,X
@@ -4927,7 +4927,7 @@ loc_12A122:
 sub_12A133:
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		PHA
 		PHA
