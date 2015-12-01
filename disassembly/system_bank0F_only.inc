@@ -2005,7 +2005,7 @@ _bE_sA:
 loc_177930:
 		TXA
 		JSR		_mmc1_prg_set
-		JSR		sub_177960
+		JSR		_mdec_Load
 		JSR		sub_177981
 		JSR		sub_177CFC
 		FARX	_bE_s2E_special_map_actions
@@ -2026,90 +2026,111 @@ loc_177950:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177960:
-		JSR		sub_177994
-		JSR		sub_1779A8
+_mdec_Load:
+		JSR		mdec_Init
+		JSR		_mdec_ReadClearTileAndFill
+
+;; FALLTHROUGH ;;  to first iteration of loop
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177966:
-		JSR		sub_1779E7
-loc_177969:
+; reads the next command from the mdec bitstream and dispatches to a handler, which is responsible for returning
+;
+_mdec_Load_CommandLoop:
+		JSR		mdec_ReadBits_2
+
+; select handler for mdec command in A
+.mdec_command_handle_A:
 		CMP		#0
-		BEQ		loc_177978
+		BEQ		.command0
 		CMP		#1
-		BEQ		loc_17797B
+		BEQ		.command1
 		CMP		#2
-		BEQ		loc_17797E
-		JMP		sub_177B44
-loc_177978:
-		JMP		sub_177A2C
-loc_17797B:
-		JMP		sub_177A5B
-loc_17797E:
-		JMP		sub_177B4D
+		BEQ		.command2
+		JMP		_mdec_Command3_WriteDirect
+.command0:
+		JMP		_mdec_Command0_SetTileBrush
+.command1:
+		JMP		_mdec_Command1_FillBox
+.command2:
+		JMP		_mdec_Command2_Path
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177981:
 		LDA		#$FF
 		STA		byte_75
 		LDA		#2
-		JSR		sub_1779ED
+		JSR		_mdec_ReadBits_A
 		CMP		#0
 		BEQ		locret_177993
 		STA		byte_8D
-		JSR		sub_177966
+		JSR		_mdec_Load_CommandLoop
 locret_177993:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177994:
+; pointer to map data should be in u16[$6C]
+mdec_Init:
 		CLC
+; u16[$6C] += 3 (skip the tilemap header)
 		LDA		#3
 		ADC		word_6C
 		STA		word_6C
 		BCC		loc_17799F
 		INC		word_6C+1
+; initialize mdec state
 loc_17799F:
 		LDA		#0
-		STA		byte_74
+		STA		byte_74 ; bitstream counter.. uhh.. or target address
 		STA		byte_75
-		STA		word_7C+1
+		STA		word_7C+1 ; stack pointer
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779A8:
-		JSR		sub_1779CD
-		PHA
+; reads the clear tile from the map header and fills the map buffer with that tile byte
+; 
+_mdec_ReadClearTileAndFill:
+		JSR		_mdec_ReadBits_Tile
+
+		PHA   ; stash the clear tile
+; set ptr to tilemap dest ptr
 		LDA		#<[byte_7400]
 		STA		word_72
 		LDA		#>[byte_7400]
 		STA		word_72+1
-		PLA
+
+		PLA   ; restore the clear tile
+
 		LDY		_mapHeight
 		STY		word_4
 		LDY		#0
 loc_1779BB:
 		LDX		_mapWidth
-loc_1779BD:
-		STA		(word_72),Y
+.store_tile_entry:
+		STA		(word_72),Y     ; writes to tilemap
+; increment pointer
 		INC		word_72
-		BNE		loc_1779C5
+		BNE		.dec_width_counter
 		INC		word_72+1
-loc_1779C5:
+.dec_width_counter:
 		DEX
-		BNE		loc_1779BD
+		BNE		.store_tile_entry
+; decrement height counter
 		DEC		word_4
 		BNE		loc_1779BB
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779CD:
+_mdec_ReadBits_Tile:
 		LDA		byte_8D
-		JMP		sub_1779ED
+		JMP		_mdec_ReadBits_A
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779D2:
-		JSR		sub_1779EB
+; reads a pointer into u16[$4]. 
+; adjusting it to the tilemap output buffer and copies it to u16[$C]
+; 
+_mdec_ReadPtr_SetTo4AndC:
+		JSR		_mdec_ReadPtr ; reads to u16[$4]
+; u16[$C] = u16[$4] += $7400
 		LDA		#0
 		LDY		#byte_74
 		LDX		#word_4
@@ -2121,51 +2142,78 @@ sub_1779D2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779E7:
+; Reads 2 bits, using _mdec_ReadBits_A
+;
+mdec_ReadBits_2:
 		LDA		#2
-		BNE		sub_1779ED
+		BNE		_mdec_ReadBits_A
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779EB:
-		LDA		byte_77
+; reads a pointer from the mdec bitstream, using the pointer size which has been established for the map
+; 
+_mdec_ReadPtr:
+		LDA		byte_77 ; pointer size
+
+; FALLTHROUGH ;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1779ED:
+; reads A # of bits and stores in word_4
+; (the low 8 bits will be returned in A, in case theyre needed)
+;
+_mdec_ReadBits_A:
 		TAX
+; clear the bit accumulator
 		LDA		#0
 		STA		word_4
 		STA		word_4+1
-loc_1779F4:
-		JSR		sub_177A01
+.iterate_readbits_a:
+		JSR		_mdec_ReadBits_1
 		ROL		word_4
 		ROL		word_4+1
 		DEX
-		BNE		loc_1779F4
+		BNE		.iterate_readbits_a
 		LDA		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177A01:
+; reads 1 bit from the mdec bitstream. sets CF with the read bit
+; $74 contains bit counter for 8 bits
+; $6C contains main byte stream pointer.
+; bits are stored MSBit first
+;
+_mdec_ReadBits_1:
+; generate a bitmask for the current bit:
+; loop shifting down #$80 until the $74 counter is reached
 		LDA		#$80
 		LDY		byte_74
 loc_177A05:
-		BEQ		loc_177A0C
+		BEQ		.now_bitmask_is_in_A
 		LSR
 		DEY
 		JMP		loc_177A05
-loc_177A0C:
+
+.now_bitmask_is_in_A:
 		LDY		#0
 		AND		(word_6C),Y
-		STA		_tmp12+1
+		STA		_tmp12+1    ; stash result
+
+; increment bit counter
 		INC		byte_74
 		LDA		byte_74
+
+; did we finish 8 bits?
 		CMP		#8
 		BCC		loc_177A24
 		LDA		#0
 		STA		byte_74
+
+; increment pointer (multiple precision)
 		INC		word_6C
 		BNE		loc_177A24
 		INC		word_6C+1
+
+; load stashed result and set CF accordingly
+
 loc_177A24:
 		LDA		_tmp12+1
 		BEQ		loc_177A2A
@@ -2176,54 +2224,83 @@ loc_177A2A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177A2C:
+; changes current tile 'brush' in u8[$79]-u8[$7C]
+; 
+_mdec_Command0_SetTileBrush:
+; first, assume metatile is small
 		LDA		#0
 		STA		byte_76
-		JSR		sub_1779CD
+
+; read the tile number (or topleft entry of large metatile)
+		JSR		_mdec_ReadBits_Tile
 		STA		byte_79
-		JSR		sub_1779E7
+
+; read next command. if it's other than Command0_SetTile, branch to handle it
+		JSR		mdec_ReadBits_2
 		CMP		#0
 		BNE		loc_177A58
-		JSR		sub_177A01
+
+; read a bit which says whether we're a metatile
+; 0 = metatile
+; 1 = not metatile
+		JSR		_mdec_ReadBits_1
 		BCC		loc_177A42
 		RTS
+
+; we're a metatile. flag as metatile in byte_76 and read the 3 remaining tile entries
 loc_177A42:
 		LDA		#$FF
 		STA		byte_76
-		JSR		sub_1779CD
+		JSR		_mdec_ReadBits_Tile
 		STA		byte_7A
-		JSR		sub_1779CD
+		JSR		_mdec_ReadBits_Tile
 		STA		byte_7B
-		JSR		sub_1779CD
+		JSR		_mdec_ReadBits_Tile
 		STA		word_7C
-		JMP		sub_177966
+		JMP		_mdec_Load_CommandLoop	;	tailcall
+
 loc_177A58:
-		JMP		loc_177969
+		JMP		.mdec_command_handle_A
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177A5B:
-		JSR		sub_1779EB
+; fills a box with the current tile 'brush' .. right?
+; 
+_mdec_Command1_FillBox:
+
+; read a top left corner
+		JSR		_mdec_ReadPtr
+
+; save backup copy into word_b
 		LDA		word_4
 		STA		byte_B
 		LDA		word_4+1
 		STA		byte_C
+
+; divide the corner pointer in word_4 by _mapWidth to turn it into x/y coords
+; why? because its smaller than storing an X and a Y
+; read bottom right corner and repeat
+; in the end, we have coords at ($7,8) and ($9,A)
 		LDA		_mapWidth
 		LDX		#word_4
 		JSR		_div16_to_8
 		STA		word_6+1
 		LDA		word_4
 		STA		byte_8
-		JSR		sub_1779EB
+		JSR		_mdec_ReadPtr     ; read bottom right corner
 		LDA		_mapWidth
 		LDX		#word_4
 		JSR		_div16_to_8
 		STA		byte_9
 		LDA		word_4
 		STA		byte_A
+
+; rebase the top left corner in u16[$b] to a pointer at $7400 (where the map gets stored)
 		LDA		#0
 		LDY		#byte_74
 		LDX		#byte_B
 		JSR		_add16_to_16
+
+; turn $(7,8) into DX,DY
 		LDA		byte_A
 		SEC
 		SBC		byte_8
@@ -2232,91 +2309,116 @@ sub_177A5B:
 		SEC
 		SBC		word_6+1
 		STA		word_6+1
+
+; load the metatile config
 		LDA		byte_76
-		BEQ		loc_177AA2
+		BEQ		.skip_metatile_dxdy
+; for big metatiles: divide DX/DY by 2 since we'll be writing 2 tiles at a time
 		LSR		word_6+1
 		LSR		byte_8
-loc_177AA2:
+
+.skip_metatile_dxdy:
+; inc DX/DY, because the input coordinates were inclusive (so we need to fill 2 tiles when DX-DY=1)
 		INC		word_6+1
 		INC		byte_8
-loc_177AA6:
+
+.fillbox_yloop:
+; start by loading tile number
 		LDA		byte_79
-		LDX		word_6+1
-loc_177AAA:
+		LDX		word_6+1      ; keep DX in X
+
+.fillbox_xloop:
 		LDY		#0
-		PHA
-		LDA		byte_75
-		BEQ		loc_177AC6
-		LDA		(byte_B),Y
-		AND		#$1F
+		PHA                 ; push tilenumber
+
+; check whether OR is required. either OR or store the tile number
+		LDA		byte_75       ; OR flag
+		BEQ		.fillbox_store
+		LDA		(byte_B),Y    ; load existing value
+		AND		#$1F          ; and mask to only bottom 5 bits
 		STA		(byte_B),Y
-		PLA
-		PHA
+		PLA                 ; restore tilenumber
+		PHA                 ; push tilenumber
+		ASL                 ; shl by 5 to make tilenumber the high bits
 		ASL
 		ASL
 		ASL
 		ASL
-		ASL
-		ORA		(byte_B),Y
+		ORA		(byte_B),Y    ; incorporate into target data
 		STA		(byte_B),Y
-		PLA
+		PLA                 ; restore tilenumber
 		JMP		loc_177B0A
-loc_177AC6:
-		LDA		byte_76
-		BEQ		loc_177B07
-		PLA
-		LDA		byte_79
-		STA		(byte_B),Y
-		JSR		sub_177B25
-		LDA		byte_B
+
+.fillbox_store:
+		LDA		byte_76       ; check metatile size
+		BEQ		.fillbox_nometatile    ; branch down to handle non metatile case
+		PLA                 ; restore tilenumber... to balance stack?
+		LDA		byte_79       ; load mt[0,0] but I feel as if this is redundant, it should already be there from the prior PLA
+		STA		(byte_B),Y    ; store mt[0,0]
+		JSR		_mdec_FillBox_IncX ; move from mt[0,0] to mt[1,0]
+		LDA		byte_B        ; save target pointer at mt[1,0] position
 		PHA
 		LDA		byte_C
 		PHA
-		LDA		byte_7A
-		STA		(byte_B),Y
-		JSR		sub_177B38
-		LDA		word_7C
-		STA		(byte_B),Y
-		JSR		sub_177B2C
-		LDA		byte_7B
-		STA		(byte_B),Y
-		PLA
+		LDA		byte_7A       ; load mt[1,0]
+		STA		(byte_B),Y    ; store mt[1,0]
+		JSR		_mdec_FillBox_IncY    ;  move from mt[1,0] to mt[1,1]
+		LDA		word_7C       ; load mt[1,1]
+		STA		(byte_B),Y    ; store mt[1,1]
+		JSR		_mdec_FillBox_DecX    ; move from mt[1,1] to mt[0,1]
+		LDA		byte_7B       ; load mt[0,1]
+		STA		(byte_B),Y    ; store mt[0,1]
+		PLA                 ; restore target pointer, currently at mt[1,0] position
 		STA		byte_C
 		PLA
 		STA		byte_B
-		JSR		sub_177B25
-		DEX
-		BNE		loc_177AAA
-		LDA		_mapWidth
+		JSR		_mdec_FillBox_IncX    ; move from mt[1,0] to mt[2,0], effectively, the next metatile
+		DEX                 ; finish X loop
+		BNE		.fillbox_xloop
+
+; done with X loop
+; do _mapWidth - DX - DX (do it twice because DX was decreased due to 2x'd metatiles)
+; this is the interval we'll need to add to finish the current row and advance to the left edge of the box in the next row
+		LDA		_mapWidth    
 		SEC
 		SBC		word_6+1
 		SEC
 		SBC		word_6+1
-		JSR		sub_177B3A
-		JSR		sub_177B38
-		JMP		loc_177B1E
-loc_177B07:
-		PLA
-		STA		(byte_B),Y
+		JSR		_mdec_FillBox_IncA ;
+		JSR		_mdec_FillBox_IncY    ; increment Y (add another row entirely) because remember the metatiles are 2x2 tiles
+		JMP		.fillbox_nexty
+
+.fillbox_nometatile:
+		PLA                 ; restore tilenumber
+		STA		(byte_B),Y    ; store it in target pointer
+
 loc_177B0A:
-		JSR		sub_177B25
+		JSR		_mdec_FillBox_IncX    ; next X...
 		DEX
-		BNE		loc_177AAA
+		BNE		.fillbox_xloop
+
+; done with X loop
+; do _mapWidth - DX
+; this is the interval we'll need to add to finish the current row and advance to the left edge of the box in the next row
+; use multiple precision add
 		LDA		_mapWidth
 		SEC
 		SBC		word_6+1
 		CLC
 		ADC		byte_B
 		STA		byte_B
-		BCC		loc_177B1E
+		BCC		.fillbox_nexty
 		INC		byte_C
-loc_177B1E:
+
+.fillbox_nexty:
 		DEC		byte_8
-		BNE		loc_177AA6
-		JMP		sub_177966
+		BNE		.fillbox_yloop
+		JMP		_mdec_Load_CommandLoop	;	tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B25:
+; increments the tile buffer target pointer in $B, to effect an increment in the X direction
+;
+_mdec_FillBox_IncX:
 		INC		byte_B
 		BNE		locret_177B2B
 		INC		byte_C
@@ -2324,7 +2426,9 @@ locret_177B2B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B2C:
+; decrements the tile buffer target pointer in $B, to effect a decrement in the X direction
+;
+_mdec_FillBox_DecX:
 		LDA		byte_B
 		SEC
 		SBC		#1
@@ -2335,11 +2439,17 @@ locret_177B37:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B38:
+; increments the tile buffer target pointer in $B by the size of a row, to effect an increment in the Y direction
+;
+_mdec_FillBox_IncY:
 		LDA		_mapWidth
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B3A:
+; increments the tile buffer target pointer in $B by the value in A
+;
+_mdec_FillBox_IncA:
 		CLC
 		ADC		byte_B
 		STA		byte_B
@@ -2349,37 +2459,54 @@ locret_177B43:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B44:
-		JSR		sub_1779D2
-		JSR		sub_177C27
-		JMP		sub_177966
+; writes the current tile 'brush' to the current target pointer
+;
+_mdec_Command3_WriteDirect:
+		JSR		_mdec_ReadPtr_SetTo4AndC
+		JSR		_mdec_WriteTileOrMTAt4
+		JMP		_mdec_Load_CommandLoop	;	tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177B4D:
-		JSR		sub_1779D2
-		JSR		sub_177C27
-		JSR		sub_177C1F
+; writes the current 'brush'
+_mdec_Command2_Path:
+		JSR		_mdec_ReadPtr_SetTo4AndC
+		JSR		_mdec_WriteTileOrMTAt4		; always begin writing at the 1st point of the path
+		JSR		_mdec_PathFollow_InitDelta	; get an initial deltadir
 
-; =============== S U B	R O U T	I N E =======================================
-sub_177B56:
-		JSR		sub_177A01
-		BCS		loc_177B5E
-		JMP		loc_177BBA
-loc_177B5E:
+; read an operation:
+; 0 - step by deltadir and write a tile
+; 1 - do a subcommand
+.mdec_path_commandloop:
+		JSR		_mdec_ReadBits_1
+		BCS		.mdec_path_subcommand
+		JMP		.mdec_path_stepandwrite
+
+.mdec_path_subcommand:
+; read 2 bits of a subcommand:
+; 0 - turn clockwise
+; 1 - turn counterclockwise
+; 2 - read a turn direction, push context, then perform turn
+; 3 - specialcommand
 		LDA		#2
-		JSR		sub_1779ED
+		JSR		_mdec_ReadBits_A
 		CMP		#0
-		BEQ		loc_177BA2
+		BEQ		.mdec_path_clockwise
 		CMP		#1
-		BEQ		loc_177BAE
+		BEQ		.mdec_path_counterclockwise
 		CMP		#2
-		BEQ		loc_177B94
-		JSR		sub_177A01
-		BCS		loc_177B76
-		BCC		sub_177B4D
-loc_177B76:
-		LDX		word_7C+1
-		BEQ		loc_177B91
+		BEQ		_mdec_path_pushandturn
+
+; handle specialcommand (1 bit)
+; 0 - restart path following
+; 1 - pop or terminate (if stack is empty)
+		JSR		_mdec_ReadBits_1
+		BCS		.mdec_path_pop
+		BCC		_mdec_Command2_Path		; restart major mdec command entirely
+
+.mdec_path_pop:
+		LDX		word_7C+1		; load stack pointer
+		BEQ		.mdec_path_popunder_end	; check for SP=0 -> underflow
+; pop 2 items from stack: deltadir, and a $C pointer
 		DEX
 		LDA		byte_647,X
 		STA		byte_78
@@ -2389,70 +2516,91 @@ loc_177B76:
 		DEX
 		LDA		byte_647,X
 		STA		byte_C
-		STX		word_7C+1
-		JMP		sub_177B56
-loc_177B91:
-		JMP		sub_177966
-loc_177B94:
-		JSR		sub_177A01
-		BCC		loc_177B9F
-		JSR		sub_177C99
-		JMP		loc_177BAE
-loc_177B9F:
-		JSR		sub_177C99
-loc_177BA2:
-		LDA		byte_78
+		STX		word_7C+1		; write new stack pointer
+		JMP		.mdec_path_commandloop	; ready for next command
+
+.mdec_path_popunder_end:
+		JMP		_mdec_Load_CommandLoop	;	tailcall
+
+_mdec_path_pushandturn:
+; determine whether we're destined to turn clockwise or counterclockwise
+; 0 - clockwise (of course, it follows the other subcommands)
+; 1 - counterclockwise (of course, it follows the other subcommands)
+		JSR		_mdec_ReadBits_1
+		BCC		.mdec_path_clockwise_destiny
+; destined for counterclockwise
+		JSR		_mdec_path_push
+		JMP		.mdec_path_counterclockwise
+
+.mdec_path_clockwise_destiny:
+		JSR		_mdec_path_push
+
+.mdec_path_clockwise:
+; deltaDir = (deltaDir + 1) & 3;
+		LDA		byte_78		
 		CLC
 		ADC		#1
 		AND		#3
 		STA		byte_78
-		JMP		loc_177BBA
-loc_177BAE:
+		JMP		.mdec_path_stepandwrite
+
+.mdec_path_counterclockwise:
+; deltaDir = (deltaDir + 3) & 3;
 		LDA		byte_78
 		SEC
 		SBC		#1
 		AND		#3
 		STA		byte_78
-		JMP		loc_177BBA
-loc_177BBA:
-		JSR		sub_177BC3
-		JSR		sub_177C62
-		JMP		sub_177B56
+		JMP		.mdec_path_stepandwrite
+
+.mdec_path_stepandwrite:
+		JSR		_mdec_path_delta
+		JSR		_mdec_WriteTileOrMTAtC
+		JMP		.mdec_path_commandloop
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177BC3:
-		LDX		byte_78
-		BEQ		loc_177BCF
+; for path-following, adjusts the target pointer in $C according to the deltadir value:
+; 0: decr(y); 1: incr(x); 2: incr(y); 3: decr(x);
+; 
+_mdec_path_delta:
+		LDX		byte_78			; load deltadir
+		BEQ		.mdec_path_delta_up
 		DEX
-		BEQ		loc_177BD9
+		BEQ		.mdec_path_delta_right
 		DEX
-		BEQ		loc_177BE2
-		BNE		loc_177BEB
-loc_177BCF:
-		JSR		sub_177BF4
-		LDA		byte_76
+		BEQ		.mdec_path_delta_down
+		BNE		.mdec_path_delta_left		; unconditional
+
+.mdec_path_delta_up:
+		JSR		_mdec_path_decy
+		LDA		byte_76				; reference metatilesize to call _mdec_path_decy twice if neded
 		BEQ		locret_177BD8
-		BNE		sub_177BF4
+		BNE		_mdec_path_decy
 locret_177BD8:
 		RTS
-loc_177BD9:
-		JSR		sub_177C00
-		LDA		byte_76
+
+.mdec_path_delta_right:
+		JSR		_mdec_path_incx
+		LDA		byte_76				; reference metatilesize to call _mdec_path_incx twice if neded
 		BEQ		locret_177BD8
-		BNE		sub_177C00
-loc_177BE2:
-		JSR		sub_177C07
-		LDA		byte_76
+		BNE		_mdec_path_incx
+
+.mdec_path_delta_down:
+		JSR		_mdec_path_incy
+		LDA		byte_76				; reference metatilesize to call _mdec_path_incy twice if neded
 		BEQ		locret_177BD8
-		BNE		sub_177C07
-loc_177BEB:
-		JSR		sub_177C13
-		LDA		byte_76
+		BNE		_mdec_path_incy
+
+.mdec_path_delta_left:
+		JSR		_mdec_path_decx
+		LDA		byte_76				; reference metatilesize to call _mdec_path_decx twice if neded
 		BEQ		locret_177BD8
-		BNE		sub_177C13
+		BNE		_mdec_path_decx
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177BF4:
+; subtracts _mapWidth from target pointer in $C using multiple precision
+;
+_mdec_path_decy:
 		LDA		byte_C
 		SEC
 		SBC		_mapWidth
@@ -2463,14 +2611,18 @@ locret_177BFF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C00:
+; increments target pointer in $C
+;
+_mdec_path_incx:
 		INC		byte_C
 		BNE		locret_177BFF
 		INC		byte_D
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C07:
+; adds _mapWidth to target pointer in $C using multiple precision
+;
+_mdec_path_incy:
 		LDA		byte_C
 		CLC
 		ADC		_mapWidth
@@ -2480,7 +2632,9 @@ sub_177C07:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C13:
+; decrements target pointer in $C
+;
+_mdec_path_decx:
 		LDA		byte_C
 		SEC
 		SBC		#1
@@ -2490,97 +2644,111 @@ sub_177C13:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C1F:
+; begins the path following process
+; read 2 bits, which constitutes our 
+;
+_mdec_PathFollow_InitDelta:
 		LDA		#2
-		JSR		sub_1779ED
-		STA		byte_78
+		JSR		_mdec_ReadBits_A
+		STA		byte_78			; save in _mdec_deltadir
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C27:
-		LDA		byte_79
-		LDY		#0
-		JSR		sub_177C46
-		LDA		byte_76
-		BEQ		locret_177C45
-		INY
-		LDA		byte_7A
-		JSR		sub_177C46
-		LDY		_mapWidth
-		LDA		byte_7B
-		JSR		sub_177C46
-		INY
-		LDA		word_7C
-		JMP		sub_177C46
+; writes the current tile/metatile 'brush' to the target pointer in $4 (supports ORing)
+;
+_mdec_WriteTileOrMTAt4:
+		LDA		byte_79     ; load mt[0,0]
+		LDY		#0					; begin at topleft
+		JSR		_mdec_WriteTileAt4
+		LDA		byte_76			; reference metatile size
+		BEQ		locret_177C45	; branch down if its clear (no metatiles)
+		INY								; increment X
+		LDA		byte_7A			; load mt[1,0]
+		JSR		_mdec_WriteTileAt4	
+		LDY		_mapWidth		; set offset to next line, for goal of mt[0,1]
+		LDA		byte_7B			; load mt[0,1]
+		JSR		_mdec_WriteTileAt4
+		INY								; increment X
+		LDA		word_7C			; load mt[1,1]
+		JMP		_mdec_WriteTileAt4
 locret_177C45:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C46:
-		PHA
-		LDA		byte_75
-		BEQ		loc_177C5E
-		LDA		(word_4),Y
+; sets a tile to the target pointer in $4+Y (supports ORing)
+;
+_mdec_WriteTileAt4:
+		PHA               ; save current tile value
+		LDA		byte_75     ; reference the OR flag
+		BEQ		.mdec_no_or  
+		LDA		(word_4),Y  ; mask current value to bottom 5 bits
 		AND		#$1F
+		STA		(word_4),Y 
+		PLA               ; restore current tile value
+		PHA               ; save current tile value
+		ASL               ; shift up by 5 to be MSBits
+		ASL
+		ASL
+		ASL
+		ASL
+		ORA		(word_4),Y  ; incorporate into target value
 		STA		(word_4),Y
-		PLA
-		PHA
-		ASL
-		ASL
-		ASL
-		ASL
-		ASL
-		ORA		(word_4),Y
-		STA		(word_4),Y
-		PLA
+		PLA               ; restore current tile value
 		RTS
-loc_177C5E:
+.mdec_no_or:
 		PLA
-		STA		(word_4),Y
+		STA		(word_4),Y  ; just write the target value
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C62:
-		LDA		byte_79
-		LDY		#0
-		JSR		sub_177C7D
-		LDA		byte_76
-		BEQ		locret_177C45
-		INY
-		LDA		byte_7A
-		JSR		sub_177C7D
-		LDY		_mapWidth
-		LDA		byte_7B
-		JSR		sub_177C7D
-		INY
-		LDA		word_7C
+; writes the current tile/metatile 'brush' at target pointer $C
+; see 
+_mdec_WriteTileOrMTAtC:
+		LDA		byte_79			; load mt[0,0]
+		LDY		#0					; begin at topleft
+		JSR		_mdec_WriteTileAtC
+		LDA		byte_76			; reference metatile size
+		BEQ		locret_177C45	; branch down if its clear (no metatiles)
+		INY								; increment X
+		LDA		byte_7A			; load mt[1,0]
+		JSR		_mdec_WriteTileAtC
+		LDY		_mapWidth		; set offset to next line, for goal of mt[0,1]
+		LDA		byte_7B			; load mt[0,1]
+		JSR		_mdec_WriteTileAtC
+		INY								; increment X
+		LDA		word_7C			; load mt[1,1]
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C7D:
-		PHA
-		LDA		byte_75
-		BEQ		loc_177C95
+; sets a tile to the target pointer in $C+Y (supports ORing)
+;
+_mdec_WriteTileAtC:
+		PHA								; save current tile valu
+		LDA		byte_75			; reference the OR flag
+		BEQ		.mdec_no_or_C
 		LDA		(byte_C),Y
-		AND		#$1F
+		AND		#$1F				; mask current value to bottom 5 bits
+		STA		(byte_C),Y	
+		PLA								; restore current tile value
+		PHA								; save current tile value
+		ASL								; shift up by 5 to be MSBits
+		ASL
+		ASL
+		ASL
+		ASL
+		ORA		(byte_C),Y	; incorporate into target value
 		STA		(byte_C),Y
-		PLA
-		PHA
-		ASL
-		ASL
-		ASL
-		ASL
-		ASL
-		ORA		(byte_C),Y
-		STA		(byte_C),Y
-		PLA
+		PLA								; restore current tile value
 		RTS
-loc_177C95:
+.mdec_no_or_C:
 		PLA
-		STA		(byte_C),Y
+		STA		(byte_C),Y	; just write the target value
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177C99:
+; pushes path-following context using $7D as SP: the current $C target pointer, followed by the current deltadir
+_mdec_path_push:
 		LDX		word_7C+1
 		LDA		byte_C
 		STA		byte_647,X
