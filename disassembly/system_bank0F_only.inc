@@ -1,14 +1,19 @@
 
 		ORG	END_OF_SHARED_ORG
 
-; =============== S U B	R O U T	I N E =======================================
 ; PRG 0F SYSTEM	ROUTINES ONLY STARTS HERE
-sub_176C99:
+
+; =============== S U B	R O U T	I N E =======================================
+; read a tile from the current map, no matter what kind of location it is.
+; regs X&Y contain a tile coord
+;
+_read_tile_XY:
+; save the current bank, then switch to bank 5 (in case it was a world map) and read it
 		LDA		_mmc_cur_prg_bank
 		PHA
-		JSR		sub_176CB4
+		JSR		_read_tile_XY_setbank5
 		PLA
-		JMP		_mmc1_prg_set
+		JMP		_mmc1_prg_set		; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176CA4:
@@ -22,22 +27,31 @@ sub_176CA4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176CB4:
+; used by _read_tile_XY, sets bank 5 and reads the tile
+;
+_read_tile_XY_setbank5:
+; switch to bank 5 in preparation for reading world map data
 		LDA		#5
 		JSR		_mmc1_prg_set
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-sub_176CB9:
+; regs X&Y contain a tile coord which are stashed to $74 and $77
+;
+_read_tile_XY_needbank5:
 		STX		byte_74
 		STX		word_4A+1
 		STY		byte_77
-		JSR		sub_176F1C
+		JSR		_map_ClearReadTiles
 		LDA		_location_type
 		BEQ		loc_176CCD
 		CMP		#2
 		BEQ		loc_176CE3
-		JMP		sub_176F3E
-loc_176CCD:
+		JMP		_map_ReadTileChecked_3x_At_74_77 ; tailcall to location map reader
+
+loc_176CCD: ; location type 0 - overworld
+; return 0 if we're beyond the map margins?
 		CPX		#4
 		BCC		loc_176CFA
 		CPX		#$FC
@@ -47,8 +61,10 @@ loc_176CCD:
 		CPY		#$FC
 		BCS		loc_176CFA
 		JSR		_get_world_map_data_ptr
-		JMP		sub_176DC9
-loc_176CE3:
+		JMP		sub_176DC9 ; tailcall to worldmap reader
+
+loc_176CE3: ; location type 2 - alefgard
+; return a little something special if we're beyond the map margins
 		CPX		#3
 		BCC		loc_176CFD
 		CPX		#$8D
@@ -58,11 +74,15 @@ loc_176CE3:
 		CPY		#$83
 		BCS		loc_176CFD
 		JSR		_get_world_map_data_ptr
-		JSR		sub_176DC9
+		JSR		sub_176DC9 ; could have been a tailcall to the worldmap reader, but isnt
 		RTS
+
+; for returning 0 beyond map margins
 loc_176CFA:
 		LDA		#0
 		RTS
+
+; for returning super-special stuff beyond the alefgard margins
 loc_176CFD:
 		DEX
 		JSR		sub_17701E
@@ -77,6 +97,10 @@ loc_176CFD:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; special map reading code for alefgard. 
+; stashes an X and Y coord in $74,$77.
+; checks for reads beyond margins and runs super-special logic
+;
 sub_176D12:
 		STX		byte_74
 		STY		byte_77
@@ -96,7 +120,7 @@ sub_176D12:
 		STA		word_7C
 		RTS
 loc_176D34:
-		JSR		sub_17701E
+		JSR		sub_17701E ; super-special-maker
 		STA		word_7C
 		RTS
 
@@ -107,10 +131,12 @@ sub_176D3A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176D3F:
-		JSR		sub_176F1C
+		JSR		_map_ClearReadTiles
 		LDA		_location_type
 		CMP		#2
-		BEQ		sub_176D12
+		BEQ		sub_176D12	;	tailcall if alefgard
+
+; stash X and Y to their usual place in $74,$77
 		STX		byte_74
 		STX		word_4A+1
 		STY		byte_77
@@ -160,10 +186,10 @@ loc_176D93:
 		STA		word_6C+1
 		RTS
 loc_176D9E:
-		TYA
+		TYA ; should contain the Y coord we're destined to search for 
 		ASL
 		TAX
-;		BCS		loc_176DAE
+;		BCS		loc_176DAE ; so this would be set if we were y >= #$80. isn't that possible? you can fly all the way around alefgard (cheating) with no bugs...
 		LDA		_b5_d2_world_map_data,X
 		STA		word_6C
 		LDA		_b5_d2_world_map_data+1,X
@@ -408,7 +434,9 @@ sub_176F1A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176F1C:
+; used for clearing a cache used for storing the results of tile reading
+;
+_map_ClearReadTiles:
 		LDA		#0
 		STA		byte_7A
 		STA		byte_7B
@@ -426,99 +454,131 @@ sub_176F29:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176F34:
+; Clobbers u8[$74] and u8[$77] and reads the tile in the X&Y regs into u8[$7C]
+;
+_map_ReadTileCheckedXY:
 		STX		byte_74
 		STY		byte_77
-		JSR		sub_176F56
+		JSR		_map_ReadTileChecked_At_74_77
 		STA		word_7C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176F3E:
+; Reads the tiles at coord u8[$74,$77] into u8$[7B,$7C,$7D]
+;
+_map_ReadTileChecked_3x_At_74_77:
 		DEC		byte_74
-		JSR		sub_176F56
+		JSR		_map_ReadTileChecked_At_74_77
 		STA		byte_7B
 		INC		byte_74
-		JSR		sub_176F56
+		JSR		_map_ReadTileChecked_At_74_77
 		STA		word_7C
 		INC		byte_74
-		JSR		sub_176F56
+		JSR		_map_ReadTileChecked_At_74_77
 		STA		word_7C+1
 		LDA		word_7C
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_176F56:
+; an X,Y tile coord are in $74,$77. 
+; returns A = read a tile from the map, but do something safe if out of bounds. 
+;
+_map_ReadTileChecked_At_74_77:
 		DEC		_mapWidth
 		LDA		_mapWidth
 		INC		_mapWidth
-		CMP		byte_74
-		BCC		loc_176F6D
+
+; check OOB horizontally
+; note that due to wraparound -1 would appear to be 255 and thus out of bounds in the other direction. 
+		CMP		byte_74 ; reference X
+		BCC		.outOfBounds
+; check OOB verically
 		DEC		_mapHeight
 		LDA		_mapHeight
 		INC		_mapHeight
-		CMP		byte_77
-		BCC		loc_176F6D
-		JMP		sub_176FB2
-loc_176F6D:
+		CMP		byte_77 ; reference Y
+		BCC		.outOfBounds
+		JMP		.inBounds
+
+.outOfBounds:
+; check the tileset number
 		LDA		byte_9A
 		CMP		#9
-		BCS		loc_176F9F
-		LDA		byte_8A
-		CMP		#$19
-		BEQ		loc_176F8A
+		BCS		.oobNormal		; tileset >= $#9 : is normal
+		LDA		byte_8A				; reference the map's current OOB tile
+		CMP		#$19					; but one value is special
+		BEQ		.oob19special
+
+; check for Portoga Town. It's OOB tile differs on the south side of town (it's water there, otherwise grass)
 		LDA		_mapNumber
 		CMP		#$A
-		BNE		loc_176F9F
+		BNE		.oobNormal
+; check Y coord for #$15 cutoff
 		LDA		byte_77
 		CMP		#$15
-		BCC		loc_176F9F
-		BMI		loc_176F9F
-		LDA		#$1C
+		BCC		.oobNormal
+		BMI		.oobNormal
+		LDA		#$1C ; return special tile
 		RTS
-loc_176F8A:
+
+.oob19special:
+; reference an 8x8 table of OOB tiles. example: lancel
+; amazing, way to save 64-16 bytes
 		LDA		byte_74
 		AND		#7
 		TAX
 		LDA		byte_77
 		AND		#7
 		TAY
-		LDA		byte_176FA2,X
-		AND		byte_176FAA,Y
-		BNE		loc_176F9F
+		LDA		_oob_diamond_x_tbl,X
+		AND		_oob_diamond_y_tbl,Y
+		BNE		.oobNormal
 		LDA		#$1A
 		RTS
-loc_176F9F:
+
+.oobNormal:
+; just return the tilemapheader[2] which contains this value
 		LDA		byte_8A
 		RTS
-byte_176FA2:
+
+; a couple of tables that help determine a pattern for OOB areas
+; it's this, give or take a flip
+; .1...1..
+; 111.111.
+; 111.111.
+; .1...1..
+; ...1...1
+; 1.111.11
+; 1.111.11
+; ...1...1
+
+_oob_diamond_x_tbl:
 		.BYTE	  1,  2,  4,  8,$10,$20,$40,$80
-byte_176FAA:
+_oob_diamond_y_tbl:
 		.BYTE	$44,$EE,$EE,$44,$11,$BB,$BB,$11
 
-; =============== S U B	R O U T	I N E =======================================
-sub_176FB2:
-		LDA		#0
+.inBounds:
+		LDA		#0						; MSB for 16bit multiplication
 		STA		byte_25
 		LDA		_mapWidth
 		STA		byte_24
-		LDX		#byte_24
-		LDY		byte_77
-		INY
+		LDX		#byte_24			; u16[$24] is prepared with _mapWidth for multiplication
+		LDY		byte_77				; load Y coordinate
+		INY									; increment? that's a surprise
 		TYA
 		JSR		_mul16_to_8
 		LDX		#byte_24
 		LDA		_mapWidth
-		JSR		_sub8_from_16
-		LDA		byte_74
+		JSR		_sub8_from_16	; now subtracting the map width back off? undoing the increment above?
+		LDA		byte_74				; load X coord
 		LDX		#byte_24
-		JSR		_add8_to_16
-		LDY		#byte_74
+		JSR		_add8_to_16		; add to u16[$24]
+		LDY		#byte_74			; rebase to $7400 map data buffer
 		LDA		#0
 		LDX		#byte_24
 		JSR		_add16_to_16
 		LDY		#0
-		LDA		(byte_24),Y
+		LDA		(byte_24),Y		; read final value
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -565,6 +625,8 @@ loc_176FFA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; super special tile making logic for alefgard. almost positively just rendering the edge-of-world tiles
+;
 sub_17701E:
 		CPX		#$9D
 		BEQ		loc_177026
@@ -846,7 +908,7 @@ loc_1771C5:
 		BCC		sub_1771F5
 		LDX		byte_80
 		LDY		byte_81
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_8C
 		BNE		sub_1771F8
@@ -1477,7 +1539,7 @@ sub_177613:
 sub_177619:
 		LDX		byte_80
 		LDY		byte_81
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_8C
 		BNE		sub_177613

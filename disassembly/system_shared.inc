@@ -87,6 +87,7 @@ locret_174054:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[X]*=A
+; should be called: _mul16_by_8
 ;
 _mul16_to_8:
 		STA		_tmp21
@@ -2847,7 +2848,7 @@ loc_175324:
 sub_17532D:
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		LDA		word_7C
 		STA		byte_92
 		AND		#$E0
@@ -3047,7 +3048,7 @@ loc_175485:
 loc_175488:
 		JSR		sub_175917
 		JSR		sub_1754B6
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
 		LDA		byte_6DE0,X
@@ -3490,7 +3491,7 @@ loc_1757B3:
 sub_1757B6:
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		JMP		sub_175853
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4147,7 +4148,7 @@ sub_175BC7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175BE0:
-		JSR		sub_176C99
+		JSR		_read_tile_XY
 		LDA		word_7C
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4676,7 +4677,7 @@ sub_175F30:
 		LDA		_location_type
 		AND		#1
 		BEQ		loc_175F39
-		JMP		sub_176F34
+		JMP		_map_ReadTileCheckedXY
 loc_175F39:
 		JMP		sub_176D3F
 
@@ -4812,7 +4813,7 @@ sub_175FF4:
 		JSR		sub_17601F
 		INC		byte_11
 		JSR		sub_176017
-		JMP		sub_17601F
+		JMP		sub_17601F		; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176007:
@@ -4838,7 +4839,7 @@ sub_176017:
 sub_17601F:
 		LDX		byte_10
 		LDY		byte_11
-		JSR		sub_176CB9
+		JSR		_read_tile_XY_needbank5
 		LDX		word_4
 		LDA		byte_7B
 		STA		byte_580,X

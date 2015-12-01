@@ -320,7 +320,7 @@ sub_158203:
 		JSR		sub_1582F8
 		LDX		word_6
 		LDY		word_6+1
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		CMP		#$E
 		BNE		loc_158227
@@ -365,7 +365,7 @@ loc_15825E:
 		CMP		word_6+1
 		BNE		loc_15824C
 		TAY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_8C
 		BNE		loc_158255
@@ -1008,7 +1008,7 @@ sub_158678:
 		INY
 		LDA		(word_6C),Y
 		TAY
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$E0
 		CMP		byte_8C
 locret_15868E:
@@ -4117,7 +4117,7 @@ loc_15A47E:
 loc_15A4AA:
 		LDX		byte_10
 		LDY		byte_11
-		JSR		sub_176C99
+		JSR		_read_tile_XY
 		JSR		sub_175B72
 		JSR		sub_15A4BE
 		INC		byte_10
@@ -5838,7 +5838,7 @@ _bE_s21:
 		BCC		loc_15AF96
 		LDX		word_3C
 		LDY		word_3C+1
-		JSR		sub_176F34
+		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
 		LDA		byte_6DE0,X

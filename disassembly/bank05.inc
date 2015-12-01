@@ -2427,7 +2427,7 @@ sub_83D08:
 loc_83D18:
 		LDX		byte_10
 		LDY		byte_11
-		JSR		sub_176C99
+		JSR		_read_tile_XY
 		JSR		sub_175B72
 		JSR		sub_175C03
 		INC		byte_10
@@ -2582,7 +2582,7 @@ loc_83E1A:
 		STX		byte_10
 		LDY		byte_49
 		STY		byte_11
-		JSR		sub_176C99
+		JSR		_read_tile_XY
 		JSR		sub_175B72
 		LDA		byte_81
 		ASL
