@@ -6456,14 +6456,14 @@ loc_15B3B2:
 		JMP		(word_6C)
 		
 _special_maps_actions_list:
-		.BYTE	$A0,$2F,$30,  6,$73,$74,$75,$D2,  8,$EF,$CC,$C3,$BB,$48,$87,$99
+		.BYTE	$A0,$2F,$30,$06,$73,$74,$75,$D2,$08,$EF,$CC,$C3,$BB,$48,$87,$99
 		.BYTE	$9A,$62,$EB,$17,$FF
 		
 _special_maps_actions_handlers_lib:
 		.WORD	_mapA0_special_action
 		.WORD	_map2F_30_special_action
 		.WORD	_map2F_30_special_action
-		.WORD	_map06_special_action
+		.WORD	_map06_special_action ; TBD
 		.WORD	_map73_special_action
 		.WORD	_map74_special_action
 		.WORD	_map75_special_action
@@ -6510,11 +6510,13 @@ nullsub_20:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Pyramid 3F : test whether both switches are open
 _mapD2_special_action:
 		LDA		_global_game_flags
 		AND		#$18
 		CMP		#$18
 		BNE		nullsub_20
+; clear a 2x2 area with floor tiles, probably
 		LDA		#$13
 		STA		byte_753A
 		STA		byte_753B
@@ -6523,26 +6525,32 @@ _mapD2_special_action:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Cave by Assaram (both sides, redundant data) : test _q_NorudPassageOpened
+;
 _map2F_30_special_action:
 		LDA		byte_60B6
 		AND		#$20
 		BEQ		locret_15B444
-		LDA		#$27
+		LDA		#$27 ; just a floor tile, erasing a wall in the middle of the level
 		STA		byte_7C71
 		STA		byte_7CD1
 locret_15B444:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Cave of Enticement, B1 : test _q_MagicBallUsed (whether wall is blown down by the Magic Ball)
+;
 _mapA0_special_action:
 		LDA		byte_60B6
 		AND		#2
 		BEQ		locret_15B46C
 		LDA		#$D
+; hardcoded 2x2 tile area to fill with blast tiles
 		STA		byte_75C8
 		STA		byte_75C9
 		STA		byte_75E8
 		STA		byte_75E9
+; cap walls with rubble
 		LDX		#1
 		STX		byte_75C7
 		INX
@@ -6834,16 +6842,18 @@ byte_15B630:
 		.BYTE	 $F, $A,  5,$6B
 
 ; =============== S U B	R O U T	I N E =======================================
+; test whether the statues sneak attack scenario is complete and patch them out of the map if so
+;
 _map08_special_action:
 		LDA		byte_60C4
 		BPL		locret_15B677
 		LDX		#0
 loc_15B653:
-		LDA		_map08_special_patch_list,X
+		LDA		_map08_patch_statues_list,X
 		STA		word_4
-		LDA		_map08_special_patch_list+1,X
+		LDA		_map08_patch_statues_list+1,X
 		STA		word_4+1
-		JSR		_map08_do_special_patch
+		JSR		_map08_patch_2x2
 		INX
 		INX
 		CPX		#$10
@@ -6851,8 +6861,11 @@ loc_15B653:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_map08_do_special_patch:
-		LDA		#$13
+; I would suppose each of these is erasing one of the statues which attacks you. They're each 4x4 large
+; The doors are also controlled.
+;
+_map08_patch_2x2:
+		LDA		#$13		; dungeon floor tile
 		LDY		#0
 		STA		(word_4),Y
 		INY
@@ -6864,28 +6877,30 @@ _map08_do_special_patch:
 locret_15B677:
 		RTS
 		
-_map08_special_patch_list:
-		.WORD	byte_76D4
-		.WORD	byte_79F4
-		.WORD	byte_779A
+_map08_patch_statues_list:
+		.WORD	byte_76D4 ; top door
+		.WORD	byte_79F4 ; bottom door
+		.WORD	byte_779A ; top pair of statues
 		.WORD	byte_779E
-		.WORD	byte_7862
+		.WORD	byte_7862 ; middle pair of statues
 		.WORD	byte_7866
-		.WORD	byte_792A
+		.WORD	byte_792A ; bottom pair of statues
 		.WORD	byte_792E
 
 ; =============== S U B	R O U T	I N E =======================================
+; Tower West of Kol 5F : Erase rubiss's statue if she's been freed
 _mapEF_special_action:
 		LDA		byte_60BA
 		AND		#$20
 		BEQ		locret_15B697
-		LDA		#$13
+		LDA		#$13 ; dungeon floor tile
 		STA		byte_7673
 		STA		byte_7697
 locret_15B697:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Castle of Zoma B5 : 
 _mapCC_special_action:
 		LDA		byte_60C5
 		BPL		locret_15B697
