@@ -1,97 +1,77 @@
 
 		ORG $8000
 
-_b4_s0_ptr:
-		.WORD	_b4_s0
-_b4_s1_ptr:
-		.WORD	_b4_s1
-_b4_s2_ptr:
-		.WORD	_b4_s2
-_b4_s3_ptr:
-		.WORD	_b4_s3
-_b4_s5_do_message_speed_delay_ptr:
-		.WORD	_b4_s5_do_message_speed_delay
-_b4_s6_ptr:
-		.WORD	_b4_s6
-_b4_s7_window_display_safe_ptr:
-		.WORD	_b4_s7_window_display_safe
-_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:
-		.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-_b4_s9_wrap_bE_s4_msg_m00_arg0_ptr:
-		.WORD	_b4_s9_wrap_bE_s4_msg_m00_arg0
-_b4_sA_ptr:
-		.WORD	_b4_sA
-_b4_sC_ptr:
-		.WORD	_b4_sC
-_b4_dD_spells_list_ptr:
-		.WORD	_b4_dD_spells_list
-_b4_sE_ptr:
-		.WORD	_b4_sE
-_b4_sF_ptr:
-		.WORD	_b4_sF
-_b4_s10_ptr:
-		.WORD	_b4_s10
-_b4_s12_ptr:
-		.WORD	_b4_s12
-_b4_s13_ptr:
-		.WORD	_b4_s13
-_b4_s14_ptr:
-		.WORD	_b4_s14
-_b4_s16_do_half_message_speed_delay_ptr:
-		.WORD	_b4_s16_do_half_message_speed_delay
-_b4_s17_ptr:
-		.WORD	_b4_s17
-_b4_s18_ptr:
-		.WORD	_b4_s18
-_b4_s19_ptr:
-		.WORD	_b4_s19
-_b4_s1A_status_pal_adjust_and_update_ptr:
-		.WORD	_b4_s1A_status_pal_adjust_and_update
-_b4_s1B_ptr:
-		.WORD	_b4_s1B
-_b4_s1C_ptr:
-		.WORD	_b4_s1C
-_b4_s1D_ptr:
-		.WORD	_b4_s1D
-_b4_s1E_ptr:
-		.WORD	_b4_s1E
-_b4_s1F_ptr:
-		.WORD	_b4_s1F
-_b4_s20_ptr:
-		.WORD	_b4_s20
-_b4_s21_message_half_delay_or_wait_for_keypress_ptr:
-		.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
-_b4_s23_ptr:
-		.WORD	_b4_s23
-_b4_s24_ptr:
-		.WORD	_b4_s24
-_b4_s25_ptr:
-		.WORD	_b4_s25
-_b4_s26_ptr:
-		.WORD	_b4_s26
-_b4_s27_ptr:
-		.WORD	_b4_s27
-_b4_s28_ptr:
-		.WORD	_b4_s28
-_b4_s29_ptr:
-		.WORD	_b4_s29
-_b4_s2A_ptr:
-		.WORD	_b4_s2A
-_b4_s2B_ptr:
-		.WORD	_b4_s2B
+_b4_s0_type00_battle_mode_handler_ptr:					.WORD	_b4_s0_type00_battle_mode_handler
+_b4_s24_type80_battle_mode_handler_ptr:					.WORD	_b4_s24_type80_battle_mode_handler
+_b4_s25_typeC0_battle_mode_handler_ptr:					.WORD	_b4_s25_typeC0_battle_mode_handler
+_b4_s1_ptr:												.WORD	_b4_s1
+_b4_s2_ptr:												.WORD	_b4_s2
+_b4_s3_ptr:												.WORD	_b4_s3
+_b4_s5_do_message_speed_delay_ptr:						.WORD	_b4_s5_do_message_speed_delay
+_b4_s6_ptr:												.WORD	_b4_s6
+_b4_s7_window_display_safe_ptr:							.WORD	_b4_s7_window_display_safe
+_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+_b4_sA_ptr:												.WORD	_b4_sA
+_b4_sC_ptr:												.WORD	_b4_sC
+_b4_dD_spells_list_ptr:									.WORD	_b4_dD_spells_list
+_b4_sE_ptr:												.WORD	_b4_sE
+_b4_sF_ptr:												.WORD	_b4_sF
+_b4_s10_ptr:											.WORD	_b4_s10
+_b4_s12_ptr:											.WORD	_b4_s12
+_b4_s13_ptr:											.WORD	_b4_s13
+_b4_s14_ptr:											.WORD	_b4_s14
+_b4_s16_do_half_message_speed_delay_ptr:				.WORD	_b4_s16_do_half_message_speed_delay
+_b4_s17_ptr:											.WORD	_b4_s17
+_b4_s18_ptr:											.WORD	_b4_s18
+_b4_s19_ptr:											.WORD	_b4_s19
+_b4_s1A_status_pal_adjust_and_update_ptr:				.WORD	_b4_s1A_status_pal_adjust_and_update
+_b4_s1B_ptr:											.WORD	_b4_s1B
+_b4_s1E_ptr:											.WORD	_b4_s1E
+_b4_s1F_ptr:											.WORD	_b4_s1F
+_b4_s20_ptr:											.WORD	_b4_s20
+_b4_s21_message_half_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
+_b4_s23_ptr:											.WORD	_b4_s23
+_b4_s26_ptr:											.WORD	_b4_s26
+_b4_s27_ptr:											.WORD	_b4_s27
+_b4_s28_ptr:											.WORD	_b4_s28
+_b4_s29_ptr:											.WORD	_b4_s29
+_b4_s2A_ptr:											.WORD	_b4_s2A
+_b4_s2B_ptr:											.WORD	_b4_s2B
+
+; =============== S U B	R O U T	I N E =======================================
+; sets up a battle for _battle_type_fight=01
+_b4_s25_typeC0_battle_mode_handler:
+		LDA		#$C0
+		BNE		sub_680F1
+
+; =============== S U B	R O U T	I N E =======================================
+; sets up a battle for _battle_type_fight=FF
+_b4_s24_type80_battle_mode_handler:
+		LDA		#$80
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+sub_680F1:
+		STA		byte_6A64		; temp battle type flags var copy, not accessed directly if any
+		JMP		_common_battle_handler
 
 ; =============== S U B	R O U T	I N E =======================================
 ; sets up for a _battle_type_fight=00 (normal battle)
-_b4_s0:
-		LDA		#0
-		STA		byte_6A63
+_b4_s0_type00_battle_mode_handler:
 		JSR		_b4_s1A_status_pal_adjust_and_update
-loc_68061:
+		LDA		#0
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_common_battle_handler:
+		STA		_curent_battle_type_flags
 		LDA		_battle_type_fight
 		STA		byte_6A6B
 		LDA		#0
 		STA		byte_6A66
-		LDA		_global_game_flags
+		LDA		_global_game_flags	; "in battle" mode flag set
 		ORA		#$20
 		STA		_global_game_flags
 		FARX	_bE_s5
@@ -104,7 +84,7 @@ loc_68080:
 		JSR		sub_6814E
 		FARX	_b2_sB
 		CMP		#$FD
-		BEQ		loc_680D6
+		BEQ		.common_battle_won
 		FARX	_bA_s2
 		JSR		sub_6AE36
 		JSR		sub_6AE51
@@ -112,30 +92,38 @@ loc_68080:
 		JSR		sub_6889C
 		CMP		#$FF
 		BNE		loc_680AA
-loc_680A0:
+.comon_battle_death:
 ; this is happening at game over after defeat in battle
-; does some combination of change status to DEad, changes screen to red, clears textbox. probably all of the above. it's the main death sequence
+; it's the main death sequence
 		FARX	_b1_sC
-; so this would be some kind of last battle-exiting final cleanup before doing the longjmp to _MAIN_ENTRY
+; return back to the sprite shuffle logic, disabled in battle
 		LDA		#0
 		STA		_spr_force_shuffle_mode
-; and then to main entry? so weird! is this just effectively like a longjmp? did the above set it up correctly?
-; notably, the "<player> is dead under this scenario appears instantly, so it must already be in the PPU queue
-; therefore, we hang waiting for a key at INTERESTING POINT in _MAIN_ENTRY
+; directly return to the _MAIN_ENTRY where the game does some
+; test if game was started after the power up or restarted after
+; the party death, so it decides not to show a title screen and
+; copyrights or goes directly to the king or shrine save point location
+; if we jump there from this point for example (there at
+; least one more place with the same behaviour, when wiping the
+; party with some spell?)
+;
+; this can be done from any point of the game, because it will
+; reinitialize a game banks and reset the stack pointer, as if we start
+; the new game
 		JMP		_MAIN_ENTRY
 loc_680AA:
 		CMP		#$FE
 		BNE		loc_680B4
 		FARX	_b1_sD ; seems to be some kind of battle system high level logic or loop, but not sure
-		JMP		loc_680D6
+		JMP		.common_battle_won
 loc_680B4:
-		BIT		byte_6A63
+		BIT		_curent_battle_type_flags
 		BPL		loc_680CD
 		CMP		#$FC
 		BEQ		loc_6811D
 		CMP		#$FD
 		BEQ		sub_680FE
-		BIT		byte_6A63
+		BIT		_curent_battle_type_flags
 		BVS		loc_680CD
 		LDA		byte_6A66
 		CMP		#$A
@@ -144,39 +132,18 @@ loc_680CD:
 		FARX	_b1_sA
 		LDA		byte_4C
 		BNE		loc_68080
-		BEQ		loc_680A0
-loc_680D6:
+		BEQ		.comon_battle_death
+.common_battle_won:							; battle won, restore the location music
 		JSR		_map_music_select_and_load
-loc_680DC:
+.common_battle_won_ex:
 		FARX	_b0_s50
-		LDA		_global_game_flags
+		LDA		_global_game_flags	; and clear the battle flag
 		AND		#$DF
 		STA		_global_game_flags
 		JSR		sub_174C62
 		LDA		#0
 		STA		byte_8E
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; sets up a battle for _battle_type_fight=FF
-_b4_s24:
-		LDA		#$80
-
-;; FALLTHROUGH ;;
-
-; =============== S U B	R O U T	I N E =======================================
-sub_680F1:
-		STA		byte_6A63
-		STA		byte_6A64
-		JMP		loc_68061
-
-; =============== S U B	R O U T	I N E =======================================
-; sets up a battle for _battle_type_fight=01
-_b4_s25:
-		LDA		#$C0
-		BNE		sub_680F1
-
-;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_680FE:
@@ -203,15 +170,15 @@ loc_68122:
 		LDA		_global_game_flags
 		AND		#$DF
 		STA		_global_game_flags
-		BIT		byte_6A63
+		BIT		_curent_battle_type_flags
 		BVS		loc_68138
 		FARX	_bD_sC
 		JSR		__pause_or_skip
-		JMP		loc_680D6
+		JMP		.common_battle_won
 loc_68138:
 		SYSX	_apu_load,$29
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		JMP		loc_680DC
+		JMP		.common_battle_won_ex
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68141:
@@ -1236,7 +1203,7 @@ locret_6875E:
 loc_6875F:
 		CPY		#$31
 		BCC		loc_68777
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		loc_68771
 		JSR		sub_686F4
 loc_6876B:
@@ -1286,7 +1253,7 @@ loc_687A2:
 		STA		byte_54C,X
 		RTS
 loc_687BC:
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		loc_687CC
 		LDX		byte_51
 		LDA		byte_54C,X
@@ -1490,7 +1457,7 @@ loc_688EF:
 		CMP		byte_52
 		BNE		loc_68921
 		JSR		sub_68931
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BEQ		loc_6890E
 		LDX		byte_4D
 		BEQ		loc_6892E
@@ -1527,7 +1494,7 @@ loc_6892E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68931:
-		BIT		byte_6A63
+		BIT		_curent_battle_type_flags
 		BPL		loc_6897F
 		BVS		loc_6897F
 		JSR		sub_6B2B3
@@ -1545,24 +1512,21 @@ loc_6894A:
 		LDX		byte_6A67
 		LDA		byte_6A77,X
 		BPL		loc_68974
-		LDA		#$CB
-		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0CB	; "Oh, calling it quits, it's okay to loose your bet?"
 		SYSX	_apu_load,$86
 		SYSX	_display_window_ex,$45
 		PHA
 		JSR		sub_6AA51
 		PLA
 		BNE		loc_6897C
-		LDA		#$CC
-		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0CC	; "Very well, please come again"
 loc_6896F:
 		PLA
 		PLA
 		LDA		#$FC
 		RTS
 loc_68974:
-		LDA		#$CD
-		JSR		_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0CD	; "Oh, paking it in, What a shame"
 		JMP		loc_6896F
 loc_6897C:
 		FARX	_bE_s5
@@ -1692,7 +1656,7 @@ sub_68A52:
 		BEQ		loc_68A7D
 		JMP		sub_68B00
 loc_68A7D:
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		loc_68A8F
 		LDA		byte_530+1,X
 		AND		#$10
@@ -1730,7 +1694,7 @@ locret_68AC5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68AC6:
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BEQ		loc_68AD1
 		LDX		byte_4D
 		BEQ		locret_68AD0
@@ -1802,7 +1766,7 @@ _bs_emove_01_protects_itself:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_02_regular_attack:
-		JSR		sub_68BB0
+		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1869,7 +1833,7 @@ loc_68BAB:
 		JMP		loc_6A42E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68BB0:
+_attacks_msg_and_sound:
 		SYSX	_apu_load,$8B
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
 
@@ -1891,7 +1855,7 @@ _bs_emove_03_attack_maybe_crit:
 		BCC		loc_68BD3
 		JMP		_bs_emove_02_regular_attack
 loc_68BD3:
-		JSR		sub_68BB0
+		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		SYSX	_apu_load,$88
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
@@ -1905,7 +1869,7 @@ loc_68BD3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_04_attack_maybe_sleep:
-		JSR		sub_68BB0
+		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
@@ -1919,7 +1883,7 @@ locret_68C09:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_05_attack_maybe_poison:
-		JSR		sub_68BB0
+		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
@@ -1932,7 +1896,7 @@ _bs_emove_05_attack_maybe_poison:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_06_attack_maybe_numb:
-		JSR		sub_68BB0
+		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
 		JSR		sub_68C42
@@ -2904,8 +2868,7 @@ _bs_emove_2C_chant_bounce:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_2B_zoma_freeze_beam:
-		LDA		#$AD
-		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$AD
 		LDA		#$9C
 		FARX	_bB_s3_apu_load
 		FARX	_b2_s8_screen_hit_blink
@@ -3201,7 +3164,7 @@ loc_694D4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_694DA:
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		locret_694FC
 		JSR		sub_68AC6
 		BEQ		locret_694FC
@@ -3226,7 +3189,7 @@ loc_694FD:
 		TAX
 		LDA		_players_status+1,X
 		AND		#$40
-		BNE		sub_6957D
+		BNE		loc_6957D
 		TXA
 		LSR
 		TAX
@@ -3283,10 +3246,10 @@ loc_69562:
 		LDA		off_6BE2A+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
-
-; =============== S U B	R O U T	I N E =======================================
-sub_6957D:
+loc_6957D:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$38
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69580:
@@ -3629,7 +3592,7 @@ loc_697E0:
 		LDA		byte_530,X
 		AND		byte_530+1,X
 		BPL		loc_69831
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BEQ		loc_697F9
 		JSR		sub_6B2B3
 		CMP		byte_64
@@ -4302,10 +4265,10 @@ sub_69C62:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C
 loc_69C7A:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
-locret_69C7D:
-		RTS
 loc_69C7E:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3D
+locret_69C7D:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69C81:
@@ -4379,7 +4342,7 @@ loc_69CF7:
 		BNE		locret_69D1C
 		LDA		#6
 		JSR		sub_6A337
-		BCC		sub_69D1D
+		BCC		loc_69D1D
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
 		JSR		sub_6A35A
 		LDA		byte_530+1,X
@@ -4390,9 +4353,7 @@ loc_69CF7:
 		STA		byte_530,X
 locret_69D1C:
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_69D1D:
+loc_69D1D:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4616,8 +4577,7 @@ sub_69E98:
 		LDA		byte_530+1,X
 		ORA		#$10
 		STA		byte_530+1,X
-		LDA		#$46
-		JMP		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$46
 loc_69EBE:
 		JMP		sub_6B3D8
 loc_69EC1:
@@ -6169,7 +6129,7 @@ _b4_s6:
 		PHA
 		TYA
 		PHA
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		loc_6A921
 		LDA		byte_CE
 		PHA
@@ -6281,7 +6241,8 @@ _wrap_bE_s6_msg_mFF_arg0_safe:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; prints "you have vanquished all of your foes. <hero> thereby gains 23 experience points. you obtain 10 pieces of gold"
+; prints "you have vanquished all of your foes. <hero>
+; thereby gains 23 experience points. you obtain 10 pieces of gold"
 ;
 _b4_s9_wrap_bE_s4_msg_m00_arg0:
 		LDX		#0
@@ -7830,13 +7791,39 @@ sub_6B310:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B324:
-		LDX		#$52
-		JSR		_b4_s1D
+;		LDX		#$52	; select between "<name> is ironized" and "<hero>'s party is ironized"
+;		JSR		_b4_s1D_incX_if_more_than_one_char_in_party
+; --
+		JSR		_sram_b0_s31_get_party_chars_list
+		LDA		#$52	; "<name> is ironized"
+		DEC		word_4
+		BEQ		loc_6B420
+		LDA		#$53	; "<hero>'s party is ironized"
+loc_6B420:
+; --
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		PLA
 		PLA
 locret_6B32E:
 		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+; check for party members number, and increase the input X parameter if
+; there are more than one member in your party.
+; used to adjust the party specific messages during the game.
+;
+;_b4_s1D_incX_if_more_than_one_char_in_party:
+;		TXA
+;		PHA
+;		JSR		_sram_b0_s31_get_party_chars_list
+;		PLA
+;		TAX
+;		DEC		word_4
+;		BEQ		loc_6B420
+;		INX
+;loc_6B420:
+;		TXA
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B32F:
@@ -7981,29 +7968,6 @@ loc_6B401:
 		STA		byte_568
 		RTS
 
-; =============== S U B	R O U T	I N E =======================================
-_b4_s1C:
-		LDA		byte_568
-		AND		#$20
-		BNE		loc_6B412
-		INX
-loc_6B412:
-		TXA
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_b4_s1D:
-		TXA
-		PHA
-		JSR		_sram_b0_s31_get_party_chars_list
-		PLA
-		TAX
-		DEC		word_4
-		BEQ		loc_6B420
-		INX
-loc_6B420:
-		TXA
-		RTS
 byte_6B422:
 		.BYTE	$20,$20,$20,$20,$20,$20,$20,$20
 byte_6B42A:

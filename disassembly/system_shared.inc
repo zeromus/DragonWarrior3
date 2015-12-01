@@ -6359,7 +6359,7 @@ _b2_sC_idx:				PTR_IDX	$2,_b2_sC					; $A4
 _b2_sD_idx:				PTR_IDX	$2,_b2_sD					; $186
 _b2_sE_idx:				PTR_IDX	$2,_b2_sE					; $198
 
-_b4_s0_idx:				PTR_IDX	$4,_b4_s0					; $6B
+_b4_s0_type00_battle_mode_handler_idx:				PTR_IDX	$4,_b4_s0_type00_battle_mode_handler					; $6B
 _b4_s1_idx:				PTR_IDX	$4,_b4_s1					; $6C
 _b4_s2_idx:				PTR_IDX	$4,_b4_s2					; $6D
 _b4_s3_idx:				PTR_IDX	$4,_b4_s3					; $6E
@@ -6367,7 +6367,6 @@ _b4_s5_do_message_speed_delay_idx:	PTR_IDX	$4,_b4_s5_do_message_speed_delay	; $7
 _b4_s6_idx:				PTR_IDX	$4,_b4_s6					; $71
 _b4_s7_window_display_safe_idx:		PTR_IDX	$4,_b4_s7_window_display_safe	; $72
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
-_b4_s9_wrap_bE_s4_msg_m00_arg0_idx:				PTR_IDX	$4,_b4_s9_wrap_bE_s4_msg_m00_arg0					; $74
 _b4_sA_idx:				PTR_IDX	$4,_b4_sA					; $75
 _b4_sC_idx:				PTR_IDX	$4,_b4_sC					; $77
 _b4_sE_idx:				PTR_IDX	$4,_b4_sE					; $A7
@@ -6382,15 +6381,13 @@ _b4_s18_idx:			PTR_IDX	$4,_b4_s18					; $D2
 _b4_s19_idx:			PTR_IDX	$4,_b4_s19					; $D3
 _b4_s1A_status_pal_adjust_and_update_idx:			PTR_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
 _b4_s1B_idx:			PTR_IDX	$4,_b4_s1B					; $D5
-_b4_s1C_idx:			PTR_IDX	$4,_b4_s1C					; $D6
-_b4_s1D_idx:			PTR_IDX	$4,_b4_s1D					; $D7
 _b4_s1E_idx:			PTR_IDX	$4,_b4_s1E					; $ED
 _b4_s1F_idx:			PTR_IDX	$4,_b4_s1F					; $EE
 _b4_s20_idx:			PTR_IDX	$4,_b4_s20					; $EF
 _b4_s21_message_half_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s21_message_half_delay_or_wait_for_keypress	; $131
 _b4_s23_idx:			PTR_IDX	$4,_b4_s23					; $154
-_b4_s24_idx:			PTR_IDX	$4,_b4_s24					; $15C
-_b4_s25_idx:			PTR_IDX	$4,_b4_s25					; $15D
+_b4_s24_type80_battle_mode_handler_idx:			PTR_IDX	$4,_b4_s24_type80_battle_mode_handler					; $15C
+_b4_s25_typeC0_battle_mode_handler_idx:			PTR_IDX	$4,_b4_s25_typeC0_battle_mode_handler					; $15D
 _b4_s26_idx:			PTR_IDX	$4,_b4_s26					; $180
 _b4_s27_idx:			PTR_IDX	$4,_b4_s27					; $19D
 _b4_s28_idx:			PTR_IDX	$4,_b4_s28					; $19E
@@ -6629,8 +6626,11 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$1,$13						; $118 _b1_s13, never used
 ;		.BYTE	$2,  1						; $60 _b2_s1, no use here
 ;		.BYTE	$4,  4						; $6F _b4_s4, no use here
+;		.BYTE	$4,  9						; $74 _b4_s9_wrap_bE_s4_msg_m00_arg0, unused anymore
 ;		.BYTE	$4, $B						; $76 _b4_sB, no use here
 ;		.BYTE	$4,$15						; $B5 _b4_d15, no use here
+;		.BYTE	$4,$1C						; $D6 _b4_s1C_incX_if_568_not_has_bit_20, moved to bank 1, no other banks used it
+;		.BYTE	$4,$1D						; $D7 _b4_s1D_incX_if_more_than_one_char_in_party, not used anymore
 ;		.BYTE	$4,$22						; $140 _b4_s22, no use here, used directly
 ;		.BYTE	$5,  0						; $14 _b5_d0_world_map_data, not used anymore
 ;		.BYTE	$5,  1						; $15 _b5_d1_world_map_data, not used anymore

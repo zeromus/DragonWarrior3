@@ -1911,8 +1911,7 @@ _bA_s12:
 		LDA		_global_game_flags
 		AND		#$DF
 		STA		_global_game_flags
-		LDA		#$7F
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$07F
 		FARX	_b2_s8_screen_hit_blink
 		LDX		#3
 		STX		byte_CF

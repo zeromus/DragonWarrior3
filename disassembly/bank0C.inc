@@ -3206,13 +3206,6 @@ locret_1295CC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; unused
-;_bC_s36:
-;		STA		_tmp_ptrB4
-;		STA		byte_CE
-;		JMP		sub_129874
-
-; =============== S U B	R O U T	I N E =======================================
 _bC_s37:
 		LDX		#$C
 		LDA		_mapNumber
@@ -3589,9 +3582,6 @@ loc_12986B:
 loc_12986F:
 		STA		byte_D3
 		MSGX	_msg_m00,$065
-
-; =============== S U B	R O U T	I N E =======================================
-sub_129874:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		word_4
 		DEY

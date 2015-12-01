@@ -61,38 +61,39 @@ _b0_s3B_players_data_swap_in_battle_ptr:		.WORD	_b0_s3B_players_data_swap_in_bat
 _b0_s3C_get_free_inventory_slot_ptr:			.WORD	_b0_s3C_get_free_inventory_slot
 _b0_s3D_player_detoxicate_ptr:					.WORD	_b0_s3D_player_detoxicate
 _b0_s3D_player_revive_ptr:						.WORD	_b0_s3D_player_revive
-_b0_d3F_other_spell_related_data_ptr:			.WORD	_b0_d3F_other_spell_related_data
-_b0_d42_item_use_effects_list_ptr:				.WORD	_b0_d42_item_use_effects_list
-_b0_d44_item_effects_list_ptr:					.WORD	_b0_d44_item_effects_list
 _b0_s45_check_if_item_equipped_ptr:				.WORD	_b0_s45_check_if_item_equipped
-_b0_s46_ptr:		.WORD	_b0_s46
-_b0_s47_ptr:		.WORD	_b0_s47
-_b0_s48_ptr:		.WORD	_b0_s48
-_b0_s49_ptr:		.WORD	_b0_s49
-_b0_s4D_ptr:		.WORD	_b0_s4D
-_b0_s4E_ptr:		.WORD	_b0_s4E
-_b0_s4F_ptr:		.WORD	_b0_s4F
-_b0_s50_ptr:		.WORD	_b0_s50
+_b0_s46_ptr:									.WORD	_b0_s46
+_b0_s47_ptr:									.WORD	_b0_s47
+_b0_s48_ptr:									.WORD	_b0_s48
+_b0_s49_ptr:									.WORD	_b0_s49
+_b0_s4D_ptr:									.WORD	_b0_s4D
+_b0_s4E_ptr:									.WORD	_b0_s4E
+_b0_s4F_ptr:									.WORD	_b0_s4F
+_b0_s50_ptr:									.WORD	_b0_s50
 _b0_s52_battle_typeFF_launch_ptr:				.WORD	_b0_s52_battle_typeFF_launch
-_b0_s53_ptr:		.WORD	_b0_s53
-_b0_s54_ptr:		.WORD	_b0_s54
-_b0_s55_ptr:		.WORD	_b0_s55
-_b0_s56_ptr:		.WORD	_b0_s56
-_b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
-_b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
+_b0_s53_ptr:									.WORD	_b0_s53
+_b0_s54_ptr:									.WORD	_b0_s54
+_b0_s55_ptr:									.WORD	_b0_s55
+_b0_s56_ptr:									.WORD	_b0_s56
 _b0_s5B_non_battle_mode_spell_cast_ptr:			.WORD	_b0_s5B_non_battle_mode_spell_cast
-_b0_s5C_player_inventory_search_for_cursed_item_ptr:		.WORD	_b0_s5C_player_inventory_search_for_cursed_item
-_b0_s5D_ptr:		.WORD	_b0_s5D
+_b0_s5C_player_inventory_search_for_cursed_item_ptr:	.WORD	_b0_s5C_player_inventory_search_for_cursed_item
+_b0_s5D_ptr:									.WORD	_b0_s5D
 _b0_s5E_check_if_item_can_be_equipped_ptr:		.WORD	_b0_s5E_check_if_item_can_be_equipped
 _b0_s5E_check_if_item_can_be_used_ptr:			.WORD	_b0_s5E_check_if_item_can_be_used
 _b0_s60_get_item_type_ptr:						.WORD	_b0_s60_get_item_type
 _b0_s61_sram_shortcuts_init_ptr:				.WORD	_b0_s61_sram_shortcuts_init
-_b0_s62_ptr:		.WORD	_b0_s62 ; spell related
+_b0_s62_ptr:									.WORD	_b0_s62 ; spell related
 _b0_s63_player_unequip_all_type_items_ptr:		.WORD	_b0_s63_player_unequip_all_type_items
 _b0_s64_respawn_at_the_king_ptr:				.WORD	_b0_s64_respawn_at_the_king
-_b0_s65_ptr:		.WORD	_b0_s65
-_b0_s66_ptr:		.WORD	_b0_s66
-_b0_s67_ptr:		.WORD	_b0_s67
+_b0_s65_ptr:									.WORD	_b0_s65
+_b0_s66_ptr:									.WORD	_b0_s66
+_b0_s67_ptr:									.WORD	_b0_s67
+
+_b0_d3F_other_spell_related_data_ptr:			.WORD	_b0_d3F_other_spell_related_data
+_b0_d42_item_use_effects_list_ptr:				.WORD	_b0_d42_item_use_effects_list
+_b0_d44_item_effects_list_ptr:					.WORD	_b0_d44_item_effects_list
+_b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
+_b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unused anymore
@@ -1109,15 +1110,15 @@ loc_86F5:
 		BEQ		.is_battle_type_1
 		CMP		#$FF							; branch to special logic for battle type != FF
 		BNE		.is_battle_type_0
-		FARX	_b4_s24							; must be battle type FF
+		FARX	_b4_s24_type80_battle_mode_handler	; must be battle type FF
 		JMP		.end_battle_cleanup
 .is_battle_type_1:
-		FARX	_b4_s25
+		FARX	_b4_s25_typeC0_battle_mode_handler
 		JMP		.end_battle_cleanup
 .is_battle_type_0:
-		FARX	_b4_s0
+		FARX	_b4_s0_type00_battle_mode_handler
 .end_battle_cleanup:
-		LDA		#0								; clean up after battle, I think
+		LDA		#0								; restore sprite shuffling mode for ingame
 		STA		_spr_force_shuffle_mode
 		STA		byte_5C
 		RTS
