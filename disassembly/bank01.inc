@@ -1,28 +1,17 @@
 
 		ORG $8000
 
-_b1_s9_ptr:
-		.WORD	_b1_s9
-_b1_sA_ptr:
-		.WORD	_b1_sA
-_b1_sB_ptr:
-		.WORD	_b1_sB
-_b1_sC_ptr:
-		.WORD	_b1_sC
-_b1_sD_ptr:
-		.WORD	_b1_sD
-_b1_sE_ptr:
-		.WORD	_b1_sE
-_b1_s14_ptr:
-		.WORD	_b1_s14
-_b1_s15_ptr:
-		.WORD	_b1_s15
-_b1_s16_ptr:
-		.WORD	_b1_s16
-_b1_s17_ptr:
-		.WORD	_b1_s17
-_b1B_s0_ptr:
-		.WORD	_b1B_s0
+_b1_s9_ptr:			.WORD	_b1_s9
+_b1_sA_ptr:			.WORD	_b1_sA
+_b1_sB_ptr:			.WORD	_b1_sB
+_b1_sC_ptr:			.WORD	_b1_sC
+_b1_sD_ptr:			.WORD	_b1_sD
+_b1_sE_ptr:			.WORD	_b1_sE
+_b1_s14_ptr:		.WORD	_b1_s14
+_b1_s15_ptr:		.WORD	_b1_s15
+_b1_s16_ptr:		.WORD	_b1_s16
+_b1_s17_ptr:		.WORD	_b1_s17
+_b1B_s0_ptr:		.WORD	_b1B_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_s14:
@@ -1324,7 +1313,7 @@ loc_20876:
 		BNE		loc_2086A
 		FARX	_b4_s21_message_half_delay_or_wait_for_keypress
 		FARX	_b4_s5_do_message_speed_delay
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BNE		loc_208F6
 		LDA		byte_6A6B
 		BEQ		loc_20891
@@ -1347,8 +1336,8 @@ loc_208AB:
 		FARX	_b4_sA
 		LDA		#$A0
 		STA		byte_D2
-		LDX		#$6D
-		FARX	_b4_s1C
+		LDX		#$6D	; select between "Suddenly mount an attack" and "Your foes mount an attack"
+		JSR		_incX_if_568_not_has_bit_20
 		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		FARX	_b4_s5_do_message_speed_delay
 		LDA		byte_566
@@ -1370,8 +1359,8 @@ loc_208DC:
 		FARX	_b4_sA
 		LDA		#$A0
 		STA		byte_D2
-		LDX		#$71
-		FARX	_b4_s1C
+		LDX		#$71	; select between "<name> is taking off guard" and "your foes taking off guard"
+		JSR		_incX_if_568_not_has_bit_20
 		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		FARX	_b4_s5_do_message_speed_delay
 		LDA		byte_566
@@ -1396,8 +1385,7 @@ loc_20902:
 		LDA		byte_6A32
 		ORA		#$40
 		STA		byte_6A32
-		LDX		#7
-		JSR		sub_20977
+		JSR		_get_appearance_message_idx
 		FARX	_bE_s6_msg_mFF
 		INC		byte_52
 		LDA		byte_6A32
@@ -1444,15 +1432,20 @@ loc_2096E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_20977:
+_get_appearance_message_idx:
+		LDX		#7
 		LDA		byte_6A32
 		AND		#$E
 		LSR
 		TAY
-		LDA		byte_20982,Y
+		LDA		_appearance_message_list-1,Y
 		RTS
-byte_20982:
-		.BYTE	  0,$13,$14,$16,$15
+_appearance_message_list:
+;		.BYTE	  0	; never used, 6A32 cannot be 0 here
+		.BYTE	$13 ; $713 "$F7 <name> appear!"
+		.BYTE	$14 ; $714 "$F7 <name>'"
+		.BYTE	$16 ; $716 "$F7 <name> appears!"
+		.BYTE	$15 ; $715 "$F7 <name> and"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_20987:
@@ -1507,14 +1500,23 @@ _b1_sC:
 		FARX	_b4_s1B
 		LDA		#0
 		STA		byte_D2
-		LDX		#$27
-		FARX	_b4_s1D
-		TAX
-		CPX		#$27
+; --
+;		LDX		#$27	; "<name> is dead"
+;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; very hacky way to select message (not counting
+;		TAX													; the X usage here instead of A directly lol)
+;		CPX		#$27										; using the generic routine, but not using it's result.
+;		BEQ		loc_209E6									; why not check for party here instantly then?
+;		LDX		#$2B	; "<hero>'s party is wiped out"
+;loc_209E6:
+;		TXA
+; --
+		JSR		_sram_b0_s31_get_party_chars_list
+		LDA		#$27	; "<name> is dead"
+		DEC		word_4
 		BEQ		loc_209E6
-		LDX		#$2B
+		LDA		#$2B	; "<hero>'s party is wiped out"
 loc_209E6:
-		TXA
+; --
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
 		SYSX	_apu_load,$13
@@ -1550,6 +1552,20 @@ _pause_or_skip:
 		JMP		__pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
+; increase the X argument depending on bit 20 in byte_586
+; used for changing battle message type
+; from "<hero> does" to "Your foes does"
+;
+_incX_if_568_not_has_bit_20:
+		LDA		byte_568
+		AND		#$20
+		BNE		loc_6B412
+		INX
+loc_6B412:
+		TXA
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
 _b1_sD:
 		FARX	_b4_sA
 		LDA		#$A0
@@ -1559,23 +1575,23 @@ _b1_sD:
 		BVC		loc_20A4C
 		SYSX	_apu_load,$16
 		JSR		sub_20CAA
-		LDX		#$E
-		FARX	_b4_s1C
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		LDX		#$E	; select between "You have defeated" and "You have vanquished all your foes"
+		JSR		_incX_if_568_not_has_bit_20
+		JSR		_wrap_msg_m00_arg0
 		FARX	_b4_s5_do_message_speed_delay
 		JMP		loc_20A68
 loc_20A4C:
 		JSR		sub_20CAA
-		LDX		#$50
-		FARX	_b4_s1C
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		LDX		#$50 ; select between "<name> start to flee" and "All your foes starts to flee"
+		JSR		_incX_if_568_not_has_bit_20
+		JSR		_wrap_msg_m00_arg0
 		JMP		loc_20A76
 loc_20A5A:
 		SYSX	_apu_load,$16
 		JSR		sub_20CAA
-		LDX		#$5D
-		FARX	_b4_s1C
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		LDX		#$5D ; select between "<name> eparts" and "All your foes depart"
+		JSR		_incX_if_568_not_has_bit_20
+		JSR		_wrap_msg_m00_arg0
 loc_20A68:
 		FARX	_bB_s7_apu_wait
 		LDA		byte_6A6F
@@ -1601,7 +1617,7 @@ loc_20A76:
 		LDX		#byte_5D
 		JSR		_add_16_to_24
 		JSR		sub_20CB4
-		LDY		#_tmp21
+		LDY		#$21	; "<name> gains experience points"
 		LDA		word_4
 		CMP		#1
 		BEQ		loc_20AB7
@@ -1612,7 +1628,7 @@ loc_20A76:
 		LDA		#0
 		TAY
 		JSR		_add_16_to_24
-		LDY		#$B5
+		LDY		#$B5	; "All party members gains experience points"
 loc_20AB7:
 		LDX		#0
 		STX		word_4
@@ -1626,8 +1642,8 @@ loc_20ABB:
 		BNE		loc_20ABB
 		LDA		word_4
 		BEQ		loc_20AED
-		TYA
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		TYA				; "... gains experience points" message
+		JSR		_wrap_msg_m00_arg0
 		LDA		byte_5D
 		STA		byte_CF
 		LDA		word_5E
@@ -1668,14 +1684,13 @@ loc_20B04:
 		STA		byte_530
 		STA		byte_530+1
 		STA		byte_D2
-		LDX		#$62
-		FARX	_b4_s1C
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		LDX		#$62	; select between "<name> had a treasure chest" and "your foes had a treasure chest"
+		JSR		_incX_if_568_not_has_bit_20
+		JSR		_wrap_msg_m00_arg0
 		JSR		sub_20D11
 		STA		byte_D2
 		SYSX	_apu_load,$8F
-		LDA		#$64
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$064	; "<name> opens the treasure chest"
 		PLA
 		STA		byte_D3
 		STA		byte_48
@@ -1689,19 +1704,17 @@ loc_20B40:
 		ORA		#$40
 		STA		byte_60C7
 loc_20B48:
-		LDA		#$65
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$065	; "<name> finds the <item>"
 		JSR		sub_20CDB
 		STA		byte_D4
 		STA		byte_47
 		BCS		loc_20BD1
-		LDX		#$66
-		FARX	_b4_s1D
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+;		LDX		#$66
+;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; here is using a selection, but
+;		JSR		_wrap_msg_m00_arg0							; both messages $066 and $067 are identical
+		MSGX	_msg_m00,$066	; "However the <hero>'s party cannot carry any more items"
 loc_20B5E:
-		LDA		#$45
-		LDX		#1
-		FARX	_bE_s4_msg_m00
+		MSGX	_msg_m00,$145	; "Do you want to discard something?"
 		SYSX	_apu_load,$86
 		SYSX	_display_window_ex,$1D
 		CMP		#0
@@ -1711,25 +1724,21 @@ loc_20B6F:
 		CMP		#$77
 		BCC		loc_20B7D
 loc_20B75:
-		LDA		#$60
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$060	; "Wait, you better not give up now"
 		JMP		loc_20B5E
 loc_20B7D:
 		STA		byte_D3
-		LDA		#$69
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$069	; "<name> gives up the item"
 		JMP		loc_20BE7
 loc_20B87:
-		LDA		#$6A
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$06A	; "Who will discard something?"
 		LDA		#$1C
 		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
 		BEQ		loc_20B6F
 		STA		byte_CE
 		STA		byte_47
-		LDA		#$68
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$068	; "Wait will you discard"
 		LDA		#$2D
 		FARX	_b4_s7_window_display_safe
 		CMP		#$FF
@@ -1750,15 +1759,12 @@ loc_20B87:
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDA		byte_48
 		STA		byte_D4
-		LDA		#$6B
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$06B	; "<name> discards the <item> and acquires the <item>"
 		JMP		loc_20BDC
 loc_20BD1:
 		CMP		byte_D2
 		BEQ		loc_20BDC
-		LDA		#$2D
-		LDX		#1
-		FARX	_bE_s4_msg_m00
+		MSGX	_msg_m00,$12D	; "<name> gives the <item> to <name>'s ghost"
 loc_20BDC:
 		LDA		byte_48
 		STA		byte_CF
@@ -1797,8 +1803,7 @@ loc_20C0C:
 		STA		_msg_number_parameter_F8+2
 		STA		byte_D0
 		JSR		_sram_b0_s1B_players_gold_add
-		LDA		#$26
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$026	; "You obrain <number> piece of gold"
 		JSR		_rand
 		AND		#3
 		BNE		loc_20C6F
@@ -1831,9 +1836,7 @@ loc_20C4F:
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1
 		JSR		_sram_b0_s1B_players_gold_add
-		LDA		#$B6
-; print a message "you have vanquished all of your foes"
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0B6	; "you have vanquished all of your foes""
 loc_20C6F:
 ; calls a level-up related 3-times setup loop.
 ; is this the main post-battle leveling up process?
@@ -1852,17 +1855,14 @@ loc_20C83:
 loc_20C8B:
 		LDA		byte_60CA
 		BPL		loc_20C83
-		LDA		#$B
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$00B	; "Himiko is the orochi!"
 loc_20C95:
-		LDA		#$29
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$029	; "And so the day breaks"
 		LDA		#$3C
 		STA		_world_map_steps_count
 		JMP		loc_20C83
 loc_20CA2:
-		LDA		#$2A
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$02A	; "The false King is no more!"
 		JMP		loc_20C95
 
 ; =============== S U B	R O U T	I N E =======================================

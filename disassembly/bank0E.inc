@@ -11,10 +11,10 @@ _bE_s3_ptr:
 		.WORD	_bE_s3
 _bE_s4_msg_m00_ptr:
 		.WORD	_bE_s4_msg_m00
-_bE_s5_ptr:
-		.WORD	_bE_s5
 _bE_s6_msg_mFF_ptr:
 		.WORD	_bE_s6_msg_mFF
+_bE_s5_ptr:
+		.WORD	_bE_s5
 _bE_s9_ptr:
 		.WORD	_bE_s9
 _bE_sB_ptr:
@@ -4320,24 +4320,25 @@ loc_15A66B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; "typing" display mode, output with/without sound a single char per frame
+;
 _bE_s4_msg_m00:
-		STA		byte_6A33
-		LDA		byte_CE
-		PHA
-		LDA		byte_6A33
 		LDY		#0
-		JSR		_msg_display
-		PLA
-		STA		byte_CE
-		RTS
+		BEQ		_bE_s4_msg_display
 
 ; =============== S U B	R O U T	I N E =======================================
+; fast display mode, writes the message in the window instantly, all chars
+; at once (unless the buffer is full)
+;
 _bE_s6_msg_mFF:
+		LDY		#$FF
+		
+; =============== S U B	R O U T	I N E =======================================
+_bE_s4_msg_display:
 		STA		byte_6A33
 		LDA		byte_CE
 		PHA
 		LDA		byte_6A33
-		LDY		#$FF
 		JSR		_msg_display
 		PLA
 		STA		byte_CE
@@ -4370,15 +4371,15 @@ loc_15A6C8:
 		AND		#$F0
 		CMP		#$A0
 		BNE		loc_15A6D2
-		JMP		sub_15ACE2
+		JMP		_extra_suffixes_Ax_print
 loc_15A6D2:
 		PLA
 locret_15A6D3:
 		RTS
 loc_15A6D4:
-		BMI		.check_for_control_codes
+		BMI		_check_for_extra_codes
 		RTS
-.check_for_control_codes:
+_check_for_extra_codes:
 		CMP		#$FF
 		BEQ		locret_15A6D3
 		CMP		#$FE
@@ -4391,7 +4392,7 @@ loc_15A6D4:
 		BEQ		locret_15A6D3
 		CMP		#$EB
 		BEQ		locret_15A6D3
-		JSR		sub_15A7B5
+		JSR		_check_for_special_codes
 		JMP		loc_15A6BB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4399,7 +4400,7 @@ sub_15A6F5:
 		JSR		sub_15AC10
 		TAX
 		BPL		loc_15A6FE
-		JMP		sub_15A79E
+		JMP		_check_for_terminate_codes
 loc_15A6FE:
 		CMP		#$66
 		BNE		loc_15A709
@@ -4445,7 +4446,7 @@ loc_15A73A:
 		INX
 		JMP		loc_15A718
 loc_15A747:
-		JSR		sub_15A75A
+		JSR		_terminate_code_EB_print
 loc_15A74A:
 		PLA
 		STA		word_4
@@ -4459,7 +4460,7 @@ sub_15A754:
 		JMP		loc_15A76E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A75A:
+_terminate_code_EB_print:
 		BIT		byte_6A32
 		BPL		loc_15A765
 		LDA		byte_80
@@ -4483,13 +4484,13 @@ loc_15A777:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A77B:
+_terminate_code_EF_print:
 		JSR		sub_15A76B
 		JMP		sub_15A791
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A781:
-		JSR		sub_15A75A
+_terminate_code_EE_print:
+		JSR		_terminate_code_EB_print
 		JMP		sub_15A791
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4500,7 +4501,7 @@ sub_15A787:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A78E:
+_terminate_code_FF_print:
 		JSR		sub_15AA51
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4518,74 +4519,85 @@ nullsub_18:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A79E:
+_check_for_terminate_codes:
 		CMP		#$FF
-		BEQ		sub_15A78E
+		BEQ		_terminate_code_FF_print
 		CMP		#$EB
-		BEQ		sub_15A75A
+		BEQ		_terminate_code_EB_print
 		CMP		#$FD
-		BEQ		loc_15A7EC
+		BEQ		__terminate_code_FD_print
 		CMP		#$EF
-		BEQ		sub_15A77B
+		BEQ		_terminate_code_EF_print
 		CMP		#$EE
-		BEQ		sub_15A781
+		BEQ		_terminate_code_EE_print
 loc_15A7B2:
-		JMP		loc_15A7B2
+		JMP		loc_15A7B2						; dead loop if any other codes are here
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A7B5:
+_check_for_special_codes:
 		CMP		#$F9
-		BCS		loc_15A7EF
+		BCS		__special_code_F9_print
 		CMP		#$F8
-		BEQ		loc_15A7F2
+		BEQ		__special_code_F8_print
 		CMP		#$F5
-		BEQ		loc_15A7F5
+		BEQ		__special_code_F5_print
 		CMP		#$F4
-		BEQ		loc_15A80C
+		BEQ		_special_code_F4_print
 		CMP		#$F3
-		BEQ		loc_15A836
+		BEQ		_special_code_F3_print
 		CMP		#$F2
-		BEQ		loc_15A7F8
+		BEQ		__special_code_F2_print
 		CMP		#$F1
-		BEQ		loc_15A7FB
+		BEQ		__special_code_F1_print
 		CMP		#$F0
-		BEQ		loc_15A841
+		BEQ		_special_code_F0_print
 		CMP		#$ED
-		BEQ		loc_15A7FE
+		BEQ		__special_code_ED_print
 		CMP		#$F7
-		BEQ		loc_15A801
+		BEQ		__special_code_F7_print
 		PHA
 		AND		#$F0
 		CMP		#$B0
-		BEQ		loc_15A804
+		BEQ		__special_codes_Bx_print
 		CMP		#$C0
-		BEQ		loc_15A808
+		BEQ		__special_codes_Cx_print
 		PLA
 		AND		#$7F
 		RTS
-loc_15A7EC:
-		JMP		sub_15A8D3
-loc_15A7EF:
-		JMP		loc_15A8AE
-loc_15A7F2:
-		JMP		sub_15A91C
-loc_15A7F5:
-		JMP		loc_15A849
-loc_15A7F8:
-		JMP		loc_15A87B
-loc_15A7FB:
-		JMP		loc_15A8A3
-loc_15A7FE:
-		JMP		sub_15A946
-loc_15A801:
-		JMP		sub_15AD6E
-loc_15A804:
+
+__terminate_code_FD_print:
+		JMP		_terminate_code_FD_print
+
+__special_code_F9_print:
+		JMP		_special_code_F9_print
+
+__special_code_F8_print:
+		JMP		_special_code_F8_print
+
+__special_code_F5_print:
+		JMP		_special_code_F5_print
+
+__special_code_F2_print:
+		JMP		_special_code_F2_print
+
+__special_code_F1_print:
+		JMP		_special_code_F1_print
+
+__special_code_ED_print:
+		JMP		_special_code_ED_print
+
+__special_code_F7_print:
+		JMP		_special_code_F7_print
+
+__special_codes_Bx_print:
 		PLA
-		JMP		sub_15AC41
-loc_15A808:
+		JMP		_special_codes_Bx_print
+		
+__special_codes_Cx_print:
 		PLA
-		JMP		loc_15ACD3
-loc_15A80C:
+		JMP		_special_codes_Cx_print
+
+_special_code_F4_print:
 		JSR		sub_15A987
 		LDX		#0
 		JSR		sub_15A96C
@@ -4610,17 +4622,23 @@ loc_15A830:
 		JSR		sub_15A96E
 loc_15A833:
 		JMP		sub_15A962
-loc_15A836:
+
+; =============== S U B	R O U T	I N E =======================================
+_special_code_F3_print:
 		JSR		sub_15A987
 		LDX		#4
 loc_15A83B:
 		JSR		sub_15A96C
 		JMP		loc_15A833
-loc_15A841:
+
+; =============== S U B	R O U T	I N E =======================================
+_special_code_F0_print:
 		JSR		sub_15A987
 		LDX		#5
 		JMP		loc_15A83B
-loc_15A849:
+		
+; =============== S U B	R O U T	I N E =======================================
+_special_code_F5_print:
 		JSR		sub_15A987
 		BPL		loc_15A8B1
 		AND		#3
@@ -4647,7 +4665,8 @@ loc_15A849:
 loc_15A876:
 		LDX		#3
 		JMP		loc_15A830
-loc_15A87B:
+
+_special_code_F2_print:
 		LDA		byte_82
 		AND		#$7F
 		TAX
@@ -4671,12 +4690,16 @@ loc_15A87B:
 loc_15A89D:
 		JSR		sub_15A992
 		JMP		sub_15A962
-loc_15A8A3:
+
+; =============== S U B	R O U T	I N E =======================================
+_special_code_F1_print:
 		JSR		sub_15A987
 		STA		byte_CE
 		JSR		_sram_b0_s10_tavern_char_name_read
 		JMP		loc_15A8B9
-loc_15A8AE:
+
+; =============== S U B	R O U T	I N E =======================================
+_special_code_F9_print:
 		SEC
 		SBC		#$F9
 loc_15A8B1:
@@ -4701,11 +4724,11 @@ loc_15A8CD:
 		JMP		sub_15A992
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A8D3:
+_terminate_code_FD_print:
 		LDA		byte_80
 		CMP		#2
 		BCC		loc_15A8DC
-		JSR		sub_15A75A
+		JSR		_terminate_code_EB_print
 loc_15A8DC:
 		JSR		sub_15AA2A
 		LDA		#$F8
@@ -4735,7 +4758,7 @@ loc_15A8FA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A91C:
+_special_code_F8_print:
 		LDX		#2
 loc_15A91E:
 		LDA		_msg_number_parameter_F8,X
@@ -4763,7 +4786,7 @@ loc_15A93E:
 		JMP		loc_15A8CD
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15A946:
+_special_code_ED_print:
 		LDY		#0
 loc_15A948:
 		LDA		byte_6AD1,Y
@@ -5121,7 +5144,7 @@ loc_15AB43:
 		ADC		byte_80
 		CMP		#$17
 		BCC		locret_15AB4E
-		JSR		sub_15A75A
+		JSR		_terminate_code_EB_print
 locret_15AB4E:
 		RTS
 
@@ -5294,7 +5317,7 @@ loc_15AC32:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15AC41:
+_special_codes_Bx_print:
 		TAX
 		LDA		word_6+1
 		PHA
@@ -5377,13 +5400,13 @@ loc_15ACB6:
 		BCC		loc_15ACC8
 		LDA		#2
 		STA		_msg_number_parameter_F8
-		BNE		loc_15ACD3
+		BNE		_special_codes_Cx_print
 loc_15ACC8:
 		LDA		#0
 		STA		_msg_number_parameter_F8
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
-loc_15ACD3:
+_special_codes_Cx_print:
 		JSR		sub_15AD31
 		BCC		loc_15ACDD
 		PLA
@@ -5396,7 +5419,7 @@ loc_15ACDD:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15ACE2:
+_extra_suffixes_Ax_print:
 		PLA
 		AND		#$F
 		STA		byte_6A33
@@ -5493,7 +5516,7 @@ loc_15AD5E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15AD6E:
+_special_code_F7_print:
 		LDA		word_4
 		PHA
 		LDA		word_4+1
@@ -6323,8 +6346,7 @@ sub_15B288:
 		LDX		#$2B		; "<hero>'s party is wiped out."
 loc_15B2C7:
 		TXA
-		LDX		#0
-		JSR		_bE_s4_msg_m00
+		JSR		_wrap_msg_m00_arg0
 		JMP		_MAIN_ENTRY
 loc_15B2D0:
 		MSGX	_msg_m00,$027	; "<name><b> is dead."

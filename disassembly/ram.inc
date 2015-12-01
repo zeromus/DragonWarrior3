@@ -1499,7 +1499,7 @@ byte_6A62:
 ;----------------------------------------------
 ; setting this nonzero makes enemies go nuts and fight each other and the battle to run oddly
 ; with maybe no player turn. is it for the arena?
-byte_6A63:
+_curent_battle_type_flags:
 		.BYTE	0
 ;----------------------------------------------
 byte_6A64:

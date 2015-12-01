@@ -1,34 +1,20 @@
 
 		ORG $8000
 
-_b2_s0_ptr:
-		.WORD	_b2_s0
-_b2_s2_ptr:
-		.WORD	_b2_s2
-_b2_s3_ptr:
-		.WORD	_b2_s3
-_b2_s4_ptr:
-		.WORD	_b2_s4
-_b2_s5_ptr:
-		.WORD	_b2_s5
-_b2_s6_screen_damage_shake_ptr:
-		.WORD	_b2_s6_screen_damage_shake
-_b2_s7_screen_spell_blink_ptr:
-		.WORD	_b2_s7_screen_spell_blink
-_b2_s8_screen_hit_blink_ptr:
-		.WORD	_b2_s8_screen_hit_blink
-_b2_s9_ptr:
-		.WORD	_b2_s9
-_b2_sA_ptr:
-		.WORD	_b2_sA
-_b2_sB_ptr:
-		.WORD	_b2_sB
-_b2_sC_ptr:
-		.WORD	_b2_sC
-_b2_sD_ptr:
-		.WORD	_b2_sD
-_b2_sE_ptr:
-		.WORD	_b2_sE
+_b2_s0_ptr:						.WORD	_b2_s0
+_b2_s2_ptr:						.WORD	_b2_s2
+_b2_s3_ptr:						.WORD	_b2_s3
+_b2_s4_ptr:						.WORD	_b2_s4
+_b2_s5_ptr:						.WORD	_b2_s5
+_b2_s6_screen_damage_shake_ptr:	.WORD	_b2_s6_screen_damage_shake
+_b2_s7_screen_spell_blink_ptr:	.WORD	_b2_s7_screen_spell_blink
+_b2_s8_screen_hit_blink_ptr:	.WORD	_b2_s8_screen_hit_blink
+_b2_s9_ptr:						.WORD	_b2_s9
+_b2_sA_ptr:						.WORD	_b2_sA
+_b2_sB_ptr:						.WORD	_b2_sB
+_b2_sC_ptr:						.WORD	_b2_sC
+_b2_sD_ptr:						.WORD	_b2_sD
+_b2_sE_ptr:						.WORD	_b2_sE
 
 _pak_data7C:
 		.BYTE	$C8,$50,$1F,$1F,  1,  1,  7,$3F,$66,  1,  1,  7,$3F,$26,$C8,$60
@@ -2860,7 +2846,7 @@ loc_3A342:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b2_sB:
-		LDA		byte_6A63
+		LDA		_curent_battle_type_flags
 		BEQ		loc_3A355
 		RTS
 loc_3A355:
@@ -3151,8 +3137,7 @@ loc_3A536:
 		BCS		loc_3A569
 		LDA		#$3D
 		FARX	_b4_s7_window_display_safe
-		LDA		#$20
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$020	; "MP is not high enough"
 		FARX	_b4_s5_do_message_speed_delay
 		FARX	_b4_s5_do_message_speed_delay
 		FARX	_b4_s5_do_message_speed_delay
@@ -3206,8 +3191,7 @@ loc_3A5A8:
 		FARX	_b4_s7_window_display_safe
 		LDA		byte_CE
 		STA		byte_D2
-		LDA		#$D1
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0D1	; "<name> does not have items"
 		LDX		#$1E
 		JSR		_sleep_X_sync
 		JMP		loc_3A3CF
@@ -3246,8 +3230,7 @@ loc_3A5FD:
 		FARX	_bE_s5
 		LDA		byte_51
 		STA		byte_D2
-		LDA		#$BF
-		FARX	_b4_s9_wrap_bE_s4_msg_m00_arg0
+		MSGX	_msg_m00,$0BF	; "<name> cannot use the <item>"
 		LDX		#$3C
 		JSR		_sleep_X_sync
 		JMP		loc_3A5A8
@@ -3324,11 +3307,19 @@ loc_3A689:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
 		STA		byte_D2
-		LDX		#$50
-		FARX	_b4_s1D
-		CMP		#$50
+; --
+;		LDX		#$50	; "<name> starts to flee"
+;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; one more hacky way to select a message, but this time
+;		CMP		#$50										; at least A reg is used directly
+;		BEQ		loc_3A6A8
+;		LDA		#8		; "<hero>'s party starts to flee"
+; --
+		JSR		_sram_b0_s31_get_party_chars_list			; the same 11 bytes, but at least one FARX less
+		LDA		#$50	; "<name> starts to flee"
+		DEC		word_4
 		BEQ		loc_3A6A8
-		LDA		#8
+		LDA		#8		; "<hero>'s party starts to flee"
+; --
 loc_3A6A8:
 		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		byte_6A6B
@@ -3353,8 +3344,7 @@ loc_3A6CC:
 		LDA		#$FD
 		RTS
 loc_3A6D7:
-		LDA		#$17
-		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$17
 		LDA		byte_566
 		CLC
 		ADC		#1
@@ -3524,7 +3514,7 @@ sub_3A7E9:
 		CPX		#$D
 		BEQ		loc_3A854
 		LDA		byte_3A950,X
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A7F9:
 		CMP		#$10
 		BNE		loc_3A805
@@ -3535,7 +3525,7 @@ loc_3A805:
 		JSR		sub_3A7E9
 		LDX		byte_47
 		LDA		byte_3A965,X
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A810:
 		CMP		#$1D
 		BNE		loc_3A81D
@@ -3561,13 +3551,13 @@ loc_3A831:
 		STA		byte_D2
 		LDX		byte_47
 		LDA		byte_3A965,X
-		JSR		sub_3A93C
+		JSR		_wrap_msg_mFF_arg0_and_delay
 		LDA		byte_47
 		CMP		#$1D
 		SEC
 		BNE		locret_3A853
 		LDA		#$FC
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A852:
 		CLC
 locret_3A853:
@@ -3576,7 +3566,7 @@ loc_3A854:
 		JSR		sub_3A8A4
 		BCC		loc_3A852
 		LDA		#$E2
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A85E:
@@ -3586,10 +3576,10 @@ sub_3A85E:
 		LDA		word_4
 		BNE		loc_3A874
 		LDA		#$EC
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A86F:
 		LDA		#$EB
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A874:
 		SEC
 		RTS
@@ -3604,7 +3594,7 @@ sub_3A876:
 		LDA		byte_D3
 		STA		byte_D2
 		LDA		#$F1
-		JMP		sub_3A93C
+		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A88B:
 		CLC
 		RTS
@@ -3739,7 +3729,7 @@ _b2_sE:
 		JMP		_add8_to_16	; A = value
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_3A93C:
+_wrap_msg_mFF_arg0_and_delay:
 		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		FARX	_b4_s16_do_half_message_speed_delay
 		SEC
