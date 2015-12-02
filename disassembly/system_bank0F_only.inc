@@ -1020,7 +1020,8 @@ loc_177282:
 		JMP		sub_17732F
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177289:
+; increments $6c pointer (probably an npc list) by 4 bytes (1 record) using multiple precision
+_add_6c_by_4:
 		LDA		word_6C
 		CLC
 		ADC		#4
@@ -1381,6 +1382,10 @@ loc_1774F3:
 		INY
 		INY
 		JMP		loc_1774B0
+
+; =============== T A B L E =================================================
+; handlers for moving player in directions on a location map
+;
 off_17750F:
 		.WORD	sub_177570
 		.WORD	sub_1775C4
@@ -1388,82 +1393,110 @@ off_17750F:
 		.WORD	sub_1775F6
 
 ; =============== S U B	R O U T	I N E =======================================
+; this is called in a location map after a player move begins. the _playerMapX and _playerMapY will already be updated
+; TODO - rename functions involving player input handling _player_XXX to distinguish from NPC automation and control
+;
 sub_177517:
 		LDA		#$FF
 		STA		_spr_force_shuffle_mode
+
+; prepare pointer to _npcs_pos_list in word_6c
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		LDA		#>[_npcs_pos_list]
 		STA		word_6C+1
-		LDA		byte_644
+
+; reference player facing and setup as a table index in off_17750F, reading pointer into word_6e
+		LDA		byte_644					
 		ASL
 		TAX
 		LDA		off_17750F,X
 		STA		word_6E
 		LDA		off_17750F+1,X
 		STA		word_6E+1
+
+; load our new X position and subtract 8 to become a new leftmostTileVisible
 		LDA		_playerMapX
 		SEC
-		SBC		#8
+		SBC		#8 
 		STA		byte_639
-		BCS		loc_17753E
+		BCS		.clamp_leftmost
 		LDA		#0
-loc_17753E:
-		STA		byte_63A
+.clamp_leftmost:
+		STA		byte_63A	; store a clamped value as leftmost "accessible" tile? really, I dont know what this means
+
+; load our new X position and add 7 to become a new rightmostTileVisible
 		LDA		_playerMapX
 		CLC
 		ADC		#7
 		STA		byte_63B
+
+; load our new Y position and subtract 7 to become a new topmostTileVisible
 		LDA		_playerMapY
 		SEC
 		SBC		#7
 		STA		byte_638
-		BCS		loc_177555
+		BCS		.clamp_topmost
 		LDA		#0
-loc_177555:
+.clamp_topmost:		; store a clamped value as topmost "accessible" tile? really, I dont know what this means
 		STA		byte_63C
+
+; load our new Y position and add 7 to become a new bottommostTileVisible
 		LDA		_playerMapY
 		CLC
 		ADC		#7
 		STA		byte_63D
-loc_177560:
+
+;; FALLTHROUGH ;; the below label is a jump target from far away
+
+.check_npc:
+; read from _npcs_pos_list, finish looping check if entry is #$FF (terminator, assumingly)
 		LDY		#0
 		LDA		(word_6C),Y
 		CMP		#$FF
-		BNE		loc_17756D
+		BNE		.run_move_direction_handler
 		LDA		#0
 		STA		_spr_force_shuffle_mode
 		RTS
-loc_17756D:
-		JMP		(word_6E)
+
+.run_move_direction_handler:
+		JMP		(word_6E)		; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
+; moves player upwards in a location map
+;
 sub_177570:
+; read field #3 from the NPC list, check bit $40
 		LDY		#3
 		LDA		(word_6C),Y
 		AND		#$40
 		BEQ		loc_177581
 		LDA		(word_6C),Y
+; check bottom 2 bits
 		AND		#3
 		BNE		loc_177581
-		JMP		sub_177613
+		JMP		.next_npc_and_check
+; read field #1 from the NPC list and stash in a temp value
 loc_177581:
 		LDY		#1
 		LDA		(word_6C),Y
 		STA		byte_81
-		CMP		byte_638
+		CMP		byte_638 ; compare to player's "topmostTileVisible"
 		BEQ		loc_17758F
-		JMP		sub_177613
+		JMP		.next_npc_and_check		; not eligible for unspawning, i guess
+
+; precisely at topmost visible
 loc_17758F:
+; read field #0 and stash in a temp value
 		DEY
 		LDA		(word_6C),Y
 		STA		byte_80
-		CMP		byte_63A
-		BCC		sub_177613
-		CMP		byte_63B
-		BEQ		sub_177619
-		BCS		sub_177613
-		JMP		sub_177619
+		CMP		byte_63A				; test against "leftmostTileAccessible"
+		BCC		.next_npc_and_check ; branch if its rightwards of leftmost tile
+		CMP		byte_63B				; test against "rightmostMapTileVisible"
+		BEQ		sub_177619			; branch if it's _equal_ to rightmostMapTileVisible ?
+		BCS		.next_npc_and_check	; branch if its leftwards of rightmost tile (it's totally OK)
+		JMP		sub_177619			; it's in bounds?
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1775A3:
@@ -1475,13 +1508,13 @@ sub_1775A3:
 		AND		#3
 		CMP		#2
 		BNE		loc_1775B6
-		JMP		sub_177613
+		JMP		.next_npc_and_check
 loc_1775B6:
 		LDY		#1
 		LDA		(word_6C),Y
 		STA		byte_81
 		CMP		byte_63D
-		BNE		sub_177613
+		BNE		.next_npc_and_check
 		JMP		loc_17758F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1494,22 +1527,22 @@ sub_1775C4:
 		AND		#3
 		CMP		#1
 		BNE		loc_1775D7
-		JMP		sub_177613
+		JMP		.next_npc_and_check
 loc_1775D7:
 		LDY		#0
 		LDA		(word_6C),Y
 		STA		byte_80
 		CMP		byte_63B
-		BNE		sub_177613
+		BNE		.next_npc_and_check
 loc_1775E2:
 		INY
 		LDA		(word_6C),Y
 		STA		byte_81
 		CMP		byte_63C
-		BCC		sub_177613
+		BCC		.next_npc_and_check
 		CMP		byte_63D
 		BEQ		sub_177619
-		BCS		sub_177613
+		BCS		.next_npc_and_check
 		JMP		sub_177619
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1522,7 +1555,7 @@ sub_1775F6:
 		AND		#3
 		CMP		#3
 		BNE		loc_177608
-		BEQ		sub_177613
+		BEQ		.next_npc_and_check
 loc_177608:
 		LDY		#0
 		LDA		(word_6C),Y
@@ -1530,39 +1563,42 @@ loc_177608:
 		CMP		byte_639
 		BEQ		loc_1775E2
 
-; =============== S U B	R O U T	I N E =======================================
-sub_177613:
-		JSR		sub_177289
-		JMP		loc_177560
+;; FALLTHROUGH ;;  the below label is a jump target from far away
+
+.next_npc_and_check: 
+		JSR		_add_6c_by_4	;	next NPC
+		JMP		.check_npc		; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
+; this is called when the player moves and an NPC is on the screen 
+;
 sub_177619:
-		LDX		byte_80
+		LDX		byte_80									; reload the NPC's field #0 and #1 (x and y values)
 		LDY		byte_81
-		JSR		_map_ReadTileCheckedXY
+		JSR		_map_ReadTileCheckedXY	; read that tile to test the inside/outside bits?
 		AND		#$E0
-		CMP		byte_8C
-		BNE		sub_177613
+		CMP		byte_8C									; compare against blayer's?
+		BNE		.next_npc_and_check			; no match, NPC is safe to keep visible I guess
 		LDY		#2
-		LDA		(word_6C),Y
-		AND		#$F
-		STA		byte_79
+		LDA		(word_6C),Y							; read field #2 from NPC	
+		AND		#$F											; check bottom 4 bits
+		STA		byte_79									; stash in a temp
 		INY
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y							; read field #3 from NPC
 		PHA
-		AND		#$83
-		STA		byte_78
+		AND		#$83										
+		STA		byte_78									; stash field#3 & #$83 into a temp (%10000011)
 		PLA
-		AND		#$3C
-		STA		byte_6BB
+		AND		#$3C										
+		STA		byte_6BB								; stash field#3 & #$3C into a temp (%00111100)
 		LDA		_heroTileMovePixelsRemain
 		CMP		#9
-		BCS		loc_17764D
+		BCS		loc_17764D							; branch if less than 9 pixels (?)
 		CMP		#8
-		BNE		loc_177650
-		LDA		byte_644
+		BNE		loc_177650							; branch if != 8 pixels ?
+		LDA		byte_644								; test player facing dir
 		CMP		#3
-		BNE		loc_177650
+		BNE		loc_177650							; branch if it isn't leftwards?
 loc_17764D:
 		JSR		sub_177668
 loc_177650:
@@ -1574,10 +1610,12 @@ loc_177650:
 		LDA		byte_6BB
 		FARX	_b5_s4
 		JSR		sub_1773E9
-		JMP		sub_177613
+		JMP		.next_npc_and_check
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; saves word_4 and word_5 on the stack and calls sub_177684
+;
 sub_177668:
 		LDA		word_4
 		PHA
