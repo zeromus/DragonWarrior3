@@ -1886,7 +1886,7 @@ loc_141D74:
 		FARX	_b5_s4
 		JSR		_bD_s1A
 loc_141DB9:
-		JSR		sub_177289
+		JSR		_add_6c_by_4
 		JMP		loc_141D74
 locret_141DBF:
 		RTS
