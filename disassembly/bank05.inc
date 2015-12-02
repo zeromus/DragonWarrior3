@@ -2714,7 +2714,7 @@ _b5_s5_mirror_of_ra_trigger_on:
 		STA		_npcs_pos_list+7
 		LDX		#0
 		FARX	_bC_sB
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$1AB	; "You saw me, Cackle..."
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$10

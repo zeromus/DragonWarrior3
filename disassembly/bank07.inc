@@ -1230,7 +1230,7 @@ loc_B2711:
 		FARX	_b2_s6_screen_damage_shake
 		DEC		word_3C
 		BNE		loc_B2711
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$1A8
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
@@ -1282,7 +1282,7 @@ loc_B275E:
 		STA		byte_80
 		LDA		word_40+1
 		BNE		loc_B2785
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		INC		word_40+1
 loc_B2785:
 		MSGX	_msg_m00,$1A6
@@ -1317,7 +1317,7 @@ _b7_s1A:
 		LDA		_playerMapY
 		CMP		#5
 		BNE		locret_B27A9
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bB_s4_apu_set_flag0
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$19E
@@ -1585,7 +1585,7 @@ loc_B298D:
 		FARX	_b6_s20_player_name_veryfy
 		BNE		loc_B29A1
 		SYSX	_display_window_ex,$58
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		JMP		loc_B298D
 loc_B29A1:
 		LDX		#7
@@ -2086,7 +2086,7 @@ loc_B2C93:
 		FARX	_bB_s3_apu_load
 		SYSX	_display_window_ex,$3E
 		MSGX	_msg_m00,$061
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		PLA
 		PHA
 		TAX

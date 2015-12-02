@@ -4157,16 +4157,16 @@ loc_142E8F:
 		LDA		#0
 		STA		byte_CE
 		SYSX	_display_window,$09
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_display_window,$08
 		SYSX	_display_window,$0A
 		PLA
 		STA		byte_630F
 		FARX	_b7_s14
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		LDX		#0
 		JSR		_bD_s10
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		JMP		sub_142E22
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5094,7 +5094,7 @@ loc_14356E:
 		LDA		#$FF
 		STA		byte_C6
 		FARX	_b6_s1D
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		LDA		#$17
 		JSR		sub_143F9E
 		MSGX	_msg_m00_break_ex,$5B9
@@ -5341,7 +5341,7 @@ _npc_hndl13:
 		LDA		#$15
 		JMP		sub_1434D3
 loc_14371E:
-		MSGX	_msg_m00_break,$602
+		MSGX	_msg_m00_break,$602	; "I cannot sell anything for human being"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143721:
@@ -5762,7 +5762,7 @@ _npc_hndl2C:
 		STA		byte_D3
 		MSGX	_msg_m00,$677
 		FARX	_b6_s1B
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$678
 		FARX	_b6_s1C
 		LDA		#$B4
@@ -6012,7 +6012,7 @@ loc_143B96:
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		JSR		_pal_fade_in
 		LDA		#0
 		STA		byte_6A3E

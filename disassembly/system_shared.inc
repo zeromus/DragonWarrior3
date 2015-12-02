@@ -791,7 +791,6 @@ loc_174409:
 		ROL		_tmp21+2
 		DEY
 		BNE		loc_174409
-
 ;try running a rand repeatedly..
 loc_17440F:
 		JSR		_rand
@@ -1654,25 +1653,25 @@ loc_174B0A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-__pause_or_skip:
+_pause_or_skip:
 		LDX		#0
 loc_174B35:
 		TXA
 		PHA
-		JSR		_calc_pads
+		JSR		_calc_pads					; read pads, wait for sync
 		JSR		_wait_for_nmi_is_over_sync
 		PLA
 		TAX
 		INX
-		CPX		#$5A
+		CPX		#$5A						; loop for 90 frames (1,5 sec)
 		BEQ		locret_174B52
 		LDA		_pads
-		BNE		loc_174B35
+		BNE		loc_174B35					; check if key is pressed
 loc_174B48:
-		JSR		_wait_for_nmi_is_over_sync
+		JSR		_wait_for_nmi_is_over_sync	; then break
 		JSR		_calc_pads
 		LDA		_pads
-		BEQ		loc_174B48
+		BEQ		loc_174B48					; and wait for pads is releaased
 locret_174B52:
 		RTS
 
@@ -1823,7 +1822,7 @@ _MAIN_ENTRY:
 		BEQ		loc_174BC7
 loc_174BBB:
 ; INTERESTING POINT:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_location_palette_and_rand_update
@@ -1875,7 +1874,7 @@ loc_174BFC:
 		STA		byte_60BA
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_s20_npc_hndl31
 		JMP		loc_174C5C
 loc_174C2F:
@@ -1889,13 +1888,13 @@ loc_174C2F:
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_s24
 		JMP		loc_174C5C
 loc_174C51:
 		LDA		#0
 		JSR		loc_1752EB
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_s23
 loc_174C5C:
 		JSR		sub_174D56
@@ -1957,7 +1956,7 @@ loc_174CCA:
 		JMP		_mmc1_prg_set
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_sD_display_window_3E:
+_wrap_bE_sD_wnd3E:
 		FARX	_bE_sD
 		SYSX	_display_window,$3E
 		RTS
@@ -3595,7 +3594,7 @@ sub_175853:
 		LDA		_playerMapY
 		CMP		#$18
 		BNE		loc_175877
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$187
 		DEC		_players_pos_list+1
 		DEC		_playerMapY
@@ -6364,8 +6363,7 @@ _b4_s1_idx:				PTR_IDX	$4,_b4_s1					; $6C
 _b4_s2_idx:				PTR_IDX	$4,_b4_s2					; $6D
 _b4_s3_idx:				PTR_IDX	$4,_b4_s3					; $6E
 _b4_s5_do_message_speed_delay_idx:	PTR_IDX	$4,_b4_s5_do_message_speed_delay	; $70
-_b4_s6_idx:				PTR_IDX	$4,_b4_s6					; $71
-_b4_s7_window_display_safe_idx:		PTR_IDX	$4,_b4_s7_window_display_safe	; $72
+_b4_s6_wndBTL_STAT_idx:				PTR_IDX	$4,_b4_s6_wndBTL_STAT					; $71
 _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
 _b4_sA_idx:				PTR_IDX	$4,_b4_sA					; $75
 _b4_sC_idx:				PTR_IDX	$4,_b4_sC					; $77
@@ -6626,6 +6624,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$1,$13						; $118 _b1_s13, never used
 ;		.BYTE	$2,  1						; $60 _b2_s1, no use here
 ;		.BYTE	$4,  4						; $6F _b4_s4, no use here
+;		.BYTE	$4,  7						; $72 _b4_s7_display_window_ex_safe redundant, removed
 ;		.BYTE	$4,  9						; $74 _b4_s9_wrap_bE_s4_msg_m00_arg0, unused anymore
 ;		.BYTE	$4, $B						; $76 _b4_sB, no use here
 ;		.BYTE	$4,$15						; $B5 _b4_d15, no use here

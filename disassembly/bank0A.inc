@@ -1826,7 +1826,7 @@ _bA_sF:
 		FARX	_bE_sF
 		FARX	_bC_s1A
 		JSR		_ppu_and_dequeue_enable
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bC_s12_sleep_X_sync_50
 		JSR		_pal_fade_in
 		MSGX	_msg_m00,$183
@@ -1843,7 +1843,7 @@ _bA_sF:
 		STA		byte_644
 		STA		byte_6A58
 		JSR		sub_174CD5
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$184
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s12_sleep_X_sync_50
@@ -1864,7 +1864,7 @@ _bA_s10:
 		BNE		locret_F9110
 		LDA		#$40
 		STA		byte_60C6
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$185
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20
@@ -1885,7 +1885,7 @@ _bA_s11:
 		BNE		locret_F9159
 		LDA		#$50
 		STA		byte_60C6
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$188
 		MSGX	_msg_m00,$18D
 		MSGX	_msg_m00,$189
@@ -1937,7 +1937,7 @@ loc_F918B:
 		DEX
 		BPL		loc_F9170
 		FARX	_b4_s1A_status_pal_adjust_and_update
-		FARX	_b4_s6
+		FARX	_b4_s6_wndBTL_STAT
 		RTS
 _bA_d14:
 		.BYTE	  0,  1,  3,  3,  4,  1, $C,  7,$11,  1,$14,  2,$2A,  1,$2D,  3

@@ -1294,8 +1294,7 @@ loc_2083E:
 _b1_s9:
 		LDA		#0
 		STA		byte_576
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		FARX	_b4_sA
 		LDX		#0
 		STX		byte_51
@@ -1494,8 +1493,7 @@ _b1_sC:
 		LDA		_global_game_flags
 		AND		#$DF
 		STA		_global_game_flags
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		FARX	_b4_sA
 		FARX	_b4_s1B
 		LDA		#0
@@ -1543,13 +1541,9 @@ loc_209FA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20A1A:
 		FARX	_bA_s12
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		JSR		_map_music_select_and_load
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_pause_or_skip:
-		JMP		__pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
 ; increase the X argument depending on bit 20 in byte_586
@@ -1598,7 +1592,8 @@ loc_20A68:
 		CMP		#$84
 		BEQ		sub_20A1A
 		CMP		#$86
-		BEQ		_pause_or_skip
+		BNE		loc_20A76
+		JMP		_pause_or_skip
 loc_20A76:
 		JSR		_map_music_select_and_load
 		LDA		byte_5D
@@ -1709,9 +1704,6 @@ loc_20B48:
 		STA		byte_D4
 		STA		byte_47
 		BCS		loc_20BD1
-;		LDX		#$66
-;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; here is using a selection, but
-;		JSR		_wrap_msg_m00_arg0							; both messages $066 and $067 are identical
 		MSGX	_msg_m00,$066	; "However the <hero>'s party cannot carry any more items"
 loc_20B5E:
 		MSGX	_msg_m00,$145	; "Do you want to discard something?"
@@ -1732,15 +1724,13 @@ loc_20B7D:
 		JMP		loc_20BE7
 loc_20B87:
 		MSGX	_msg_m00,$06A	; "Who will discard something?"
-		LDA		#$1C
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$1C
 		CMP		#$FF
 		BEQ		loc_20B6F
 		STA		byte_CE
 		STA		byte_47
 		MSGX	_msg_m00,$068	; "Wait will you discard"
-		LDA		#$2D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$2D
 		CMP		#$FF
 		BEQ		loc_20B87
 		STA		byte_CF
@@ -1849,9 +1839,8 @@ loc_20C6F:
 		CMP		#$11
 		BEQ		loc_20CA2
 loc_20C83:
-		LDA		#$13
-		FARX	_b4_s7_window_display_safe
-		JMP		__pause_or_skip
+		SYSX	_display_window_ex,$13
+		JMP		_pause_or_skip
 loc_20C8B:
 		LDA		byte_60CA
 		BPL		loc_20C83
