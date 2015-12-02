@@ -1,26 +1,24 @@
 
 		ORG $8000
 
-_bE_s0_display_window_ex_ptr:
-		.WORD	_bE_s0_display_window_ex
+_bE_sC_display_window_ptr:			.WORD	_bE_sC_display_window
+_bE_s0_display_window_ex_ptr:		.WORD	_bE_s0_display_window_ex
+
+_bE_s4_msg_m00_ptr:					.WORD	_bE_s4_msg_m00
+_bE_s6_msg_mFF_ptr:					.WORD	_bE_s6_msg_mFF
+
 _bE_s1_MainLoopCheckAButton_ptr:
 		.WORD	_bE_s1_MainLoopCheckAButton
 _bE_s2_ptr:
 		.WORD	_bE_s2
 _bE_s3_ptr:
 		.WORD	_bE_s3
-_bE_s4_msg_m00_ptr:
-		.WORD	_bE_s4_msg_m00
-_bE_s6_msg_mFF_ptr:
-		.WORD	_bE_s6_msg_mFF
 _bE_s5_ptr:
 		.WORD	_bE_s5
 _bE_s9_ptr:
 		.WORD	_bE_s9
 _bE_sB_ptr:
 		.WORD	_bE_sB
-_bE_sC_display_window_ptr:
-		.WORD	_bE_sC_display_window
 _bE_sD_ptr:
 		.WORD	_bE_sD
 _bE_sE_ptr:
@@ -494,7 +492,7 @@ loc_158337:
 		PHA
 		TXA
 		PHA
-		JSR		_wrap_bE_sD_display_window_3E
+		JSR		_wrap_bE_sD_wnd3E
 		PLA
 		TAX
 		PLA
@@ -549,11 +547,11 @@ loc_158385:
 		STA		byte_CE
 		SYSX	_display_window,$68
 		SYSX	_display_window,$09
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_apu_load,$85
 		SYSX	_display_window,$08
 		SYSX	_display_window,$0A
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_apu_load,$85
 		LDA		#1
 		STA		byte_D0
@@ -590,10 +588,10 @@ sub_1583D0:
 loc_1583EA:
 		SYSX	_display_window,$65
 loc_1583ED:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_apu_load,$85
 		SYSX	_display_window,$0C
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_apu_load,$85
 loc_1583FC:
 		INC		byte_D0
@@ -601,7 +599,7 @@ loc_1583FC:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s33:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		JMP		sub_1580A1
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -799,7 +797,7 @@ loc_158550:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15855F:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158562:
@@ -2453,24 +2451,24 @@ _char_status_abbreviations_list:
 		.BYTE	_C,_F
 
 _windows_lib:
-		.WORD	_wnd00
-		.WORD	_wnd01
-		.WORD	_wnd02
-		.WORD	_wnd03
-		.WORD	_wnd04
-		.WORD	_wnd05
-		.WORD	_wnd06
-		.WORD	_wnd07
+		.WORD	_wnd00_stat_pty1
+		.WORD	_wnd00_stat_pty2
+		.WORD	_wnd00_stat_pty3
+		.WORD	_wnd00_stat_pty4
+		.WORD	_wnd00_btl_stat_pty1
+		.WORD	_wnd00_btl_stat_pty2
+		.WORD	_wnd00_btl_stat_pty3
+		.WORD	_wnd00_btl_stat_pty4
 		.WORD	_wnd08
 		.WORD	_wnd09
 		.WORD	_wnd0A
 		.WORD	_wnd0B
 		.WORD	_wnd0C
 		.WORD	_wnd0D
-		.WORD	_wnd0E
-		.WORD	_wnd0F
-		.WORD	_wnd10
-		.WORD	_wnd11
+		.WORD	_wnd0E_minmax_stat_pty1
+		.WORD	_wnd0E_minmax_stat_pty2
+		.WORD	_wnd0E_minmax_stat_pty3
+		.WORD	_wnd0E_minmax_stat_pty4
 		.WORD	_wnd12
 		.WORD	_wnd13
 		.WORD	_wnd14
@@ -2573,38 +2571,38 @@ _windows_lib:
 ;  immediate data ($80 clear)
 ;  commands ($80 set)
 ;
-_wnd00:
+_wnd00_stat_pty1:
 		.BYTE	  8,  4,$AA,$81,$60,$21,$22,$23,  0,  0,  0
-		.BYTE	$2C,$80,  3,$FF
-		.BYTE	$31,$81,  3,$FF
+		.BYTE	 _H,$80,  3,$FF
+		.BYTE	 _M,$81,  3,$FF
 		.BYTE	$92,$20,$8D,  2,$FF
-_wnd01:
+_wnd00_stat_pty2:
 		.BYTE	 $C,  4,$A8,$A0,$20,$21,$22,$23,  0,  0,  0
-		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,$FF
-		.BYTE	$31,$81,  3,  0,$31,$A1,  3,$FF
+		.BYTE	 _H,$80,  3,  0,_H,$A0,  3,$FF
+		.BYTE	 _M,$81,  3,  0,_M,$A1,  3,$FF
 		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,$FF
-_wnd02:
+_wnd00_stat_pty3:
 		.BYTE	$12,  4,$A5,$C1,$60,$21,$22,$23,  0,  0,  0
-		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0,  3,$FF
-		.BYTE	$31,$81,  3,  0,$31,$A1,  3,  0,$31,$C1,  3,$FF
+		.BYTE	 _H,$80,  3,  0,_H,$A0,  3,  0,_H,$C0,  3,$FF
+		.BYTE	 _M,$81,  3,  0,_M,$A1,  3,  0,_M,$C1,  3,$FF
 		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,$FF
-_wnd03:
+_wnd00_stat_pty4:
 		.BYTE	$16,  4,$A3,$E0,$20,$21,$22,$23,  0,  0,  0
-		.BYTE	$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF
-		.BYTE	$31,$81,  3,  0,$31,$A1,  3,  0,$31,$C1,  3,  0,$31,$E1,  3,$FF
+		.BYTE	_H,$80,  3,  0,_H,$A0,  3,  0,_H,$C0,  3,  0,_H,$E0,  3,$FF
+		.BYTE	_M,$81,  3,  0,_M,$A1,  3,  0,_M,$C1,  3,  0,_M,$E1,  3,$FF
 		.BYTE	$92,$20,$8D,  2,  0,$B2,$20,$AD,  2,  0,$D2,$20,$CD,  2,  0,$F2,$20,$ED,  2,$FF
-_wnd04:
+_wnd00_btl_stat_pty1:
 		.BYTE	$80,$12
-		.WORD	_wnd00
-_wnd05:
+		.WORD	_wnd00_stat_pty1
+_wnd00_btl_stat_pty2:
 		.BYTE	$80,$12
-		.WORD	_wnd01
-_wnd06:
+		.WORD	_wnd00_stat_pty2
+_wnd00_btl_stat_pty3:
 		.BYTE	$80,$12
-		.WORD	_wnd02
-_wnd07:
+		.WORD	_wnd00_stat_pty3
+_wnd00_btl_stat_pty4:
 		.BYTE	$80,$12
-		.WORD	_wnd03
+		.WORD	_wnd00_stat_pty4
 _wnd08:
 		.BYTE	 $C,  6,$32,$81,$25,$21,$22,$23,$40,  0,  0
 		.BYTE	  0,$92,$80,$FF
@@ -2646,32 +2644,46 @@ _wnd0D:
 		.BYTE	 _D,_E,_F,_E,_N,_C,_E,$FF
 		.BYTE	  0,_P,_O,_W,_E,_R,$FF,$FE
 		.BYTE	$8A,  3,$FF,$FF
-_wnd0E:
-		.BYTE	  8,  6,$47,  0,$60,$61,$22,$23,  0,  0,  0,$FF,$90,$40,$FF,$FF
-		.BYTE	$2C,$80,  3,$FF,  0,$58,$58,$58,$FF,  0,$82,  3,$FF,$FF,$31,$81
-		.BYTE	  3,$FF,  0,$58,$58,$58,$FF,  0,$83,  3,$FF,$FF
-_wnd0F:
-		.BYTE	 $C,  6,$45,  0,$20,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
-		.BYTE	$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3,$FF,  0,$58,$58,$58,$9E
-		.BYTE	$58,$58,$58,$FF,  0,$82,  3,$9E,$A2,  3,$FF,$FF,$31,$81,  3,  0
-		.BYTE	$31,$A1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$FF,  0,$83,  3
-		.BYTE	$9E,$A3,  3,$FF,$FF
-_wnd10:
-		.BYTE	$12,  6,$44,  0,$60,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
-		.BYTE	$40,  0,$D0,$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3,  0,$2C,$C0
-		.BYTE	  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$9E,$58,$58,$58,$FF,  0
-		.BYTE	$82,  3,$9E,$A2,  3,$9E,$C2,  3,$FF,$FF,$31,$81,  3,  0,$31,$A1
-		.BYTE	  3,  0,$31,$C1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58,$9E,$58
-		.BYTE	$58,$58,$FF,  0,$83,  3,$9E,$A3,  3,$9E,$C3,  3,$FF,$FF
-_wnd11:
-		.BYTE	$16,  6,$42,  0,$20,$61,$22,$23,  0,  0,  0,$FF,$90,$40,  0,$B0
-		.BYTE	$40,  0,$D0,$40,  0,$F0,$40,$FF,$FF,$2C,$80,  3,  0,$2C,$A0,  3
-		.BYTE	  0,$2C,$C0,  3,  0,$2C,$E0,  3,$FF,  0,$58,$58,$58,$9E,$58,$58
-		.BYTE	$58,$9E,$58,$58,$58,$9E,$58,$58,$58,$FF,  0,$82,  3,$9E,$A2,  3
-		.BYTE	$9E,$C2,  3,$9E,$E2,  3,$FF,$FF,$31,$81,  3,  0,$31,$A1,  3,  0
-		.BYTE	$31,$C1,  3,  0,$31,$E1,  3,$FF,  0,$58,$58,$58,$9E,$58,$58,$58
-		.BYTE	$9E,$58,$58,$58,$9E,$58,$58,$58,$FF,  0,$83,  3,$9E,$A3,  3,$9E
-		.BYTE	$C3,  3,$9E,$E3,  3,$FF,$FF
+_wnd0E_minmax_stat_pty1:
+		.BYTE	  8,  6,$47,  0,$60,$61,$22,$23,  0,  0,  0
+		.BYTE	$FF
+		.BYTE	$90,$40,$FF,$FF
+		.BYTE	 _H,$80,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$FF
+		.BYTE	  0,$82,  3,$FF,$FF
+		.BYTE	 _M,$81,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$FF
+		.BYTE	  0,$83,  3,$FF,$FF
+_wnd0E_minmax_stat_pty2:
+		.BYTE	 $C,  6,$45,  0,$20,$61,$22,$23,  0,  0,  0
+		.BYTE	$FF
+		.BYTE	$90,$40,  0,$B0,$40,$FF,$FF
+		.BYTE	 _H,$80,  3,  0,_H,$A0,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$82,  3,$9E,$A2,  3,$FF,$FF
+		.BYTE	 _M,$81,  3,  0,_M,$A1,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$83,  3,$9E,$A3,  3,$FF,$FF
+_wnd0E_minmax_stat_pty3:
+		.BYTE	$12,  6,$44,  0,$60,$61,$22,$23,  0,  0,  0
+		.BYTE	$FF
+		.BYTE	$90,$40,  0,$B0,$40,  0,$D0,$40,$FF,$FF
+		.BYTE	_H,$80,  3,  0,_H,$A0,  3,  0,_H,$C0,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$82,  3,$9E,$A2,  3,$9E,$C2,  3,$FF,$FF
+		.BYTE	_M,$81,  3,  0,_M,$A1,  3,  0,_M,$C1,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$83,  3,$9E,$A3,  3,$9E,$C3,  3,$FF,$FF
+_wnd0E_minmax_stat_pty4:
+		.BYTE	$16,  6,$42,  0,$20,$61,$22,$23,  0,  0,  0
+		.BYTE	$FF
+		.BYTE	$90,$40,  0,$B0,$40,  0,$D0,$40,  0,$F0,$40,$FF,$FF
+		.BYTE	 _H,$80,  3,  0,_H,$A0,  3,  0,_H,$C0,  3,  0,_H,$E0,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$82,  3,$9E,$A2,  3,$9E,$C2,  3,$9E,$E2,  3,$FF,$FF
+		.BYTE	 _M,$81,  3,  0,_M,$A1,  3,  0,_M,$C1,  3,  0,_M,$E1,  3,$FF
+		.BYTE	  0,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$9E,_strk,_strk,_strk,$FF
+		.BYTE	  0,$83,  3,$9E,$A3,  3,$9E,$C3,  3,$9E,$E3,  3,$FF,$FF
 _wnd12:
 		.BYTE	  8,  2,$1B,  0,$20,$21,$22,$23,$40,  0,  0,$2B,$8B,  5,$FF
 _wnd13:

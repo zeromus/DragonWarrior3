@@ -2246,7 +2246,7 @@ loc_9BB92:
 		LDA		#0
 		STA		byte_CE
 		SYSX	_display_window,$09
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SYSX	_display_window,$08
 		SYSX	_display_window,$0A
 		PLA
@@ -2615,7 +2615,7 @@ _b6_s1E:
 		BCS		loc_9BE5A
 		FARX	_bE_s10
 		FARX	_b0_s47
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_9BE5A:
 		LDA		#0
 		STA		byte_8E

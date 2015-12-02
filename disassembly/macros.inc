@@ -78,6 +78,8 @@ _Y = $3D
 _Z = $3E
 ; rightmost dot
 _ldt = $57
+; strike
+_strk = $58
 ; apostrophe right up
 _apa = $62
 ; arrow
@@ -137,12 +139,6 @@ _hero = $F9
 		.WORD	SAFE_STUB_ORG
 		.WORD	SAFE_STUB_ORG
 		.WORD	SAFE_STUB_ORG
-	ENDM
-
-	MAC FAR
-		BRK
-		.BYTE	{1}
-		.BYTE	{2}
 	ENDM
 
 	MAC PTR_IDX

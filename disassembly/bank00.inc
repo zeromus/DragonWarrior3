@@ -95,6 +95,56 @@ _b0_d44_item_effects_list_ptr:					.WORD	_b0_d44_item_effects_list
 _b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
 _b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
 
+; -----------------------------------
+; -- WRAPPERS FOR SYSTEM FUNCTIONS --
+; -----------------------------------
+
+; =============== S U B	R O U T	I N E =======================================
+_wnd_safe:
+		STA		byte_44
+		TXA
+		PHA
+		TYA
+		PHA
+		LDA		byte_CE
+		PHA
+		LDA		byte_44
+		FARX	_bE_sC_display_window
+		STA		byte_44
+		PLA
+		STA		byte_CE
+		PLA
+		TAY
+		PLA
+		TAX
+		LDA		byte_44
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+_wnd2E_ex:
+		SYSX	_display_window,$2E
+		STA		byte_47
+		STA		byte_D4
+		STA		byte_50
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+_wnd3E_bE_s5:
+		SYSX	_display_window,$3E
+		FARX	_bE_s5
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+; helper, used 5 times only in one function
+_wnd3E_msg0xx_wait_key:
+		PHA
+		JSR		_wnd3E_bE_s5
+		LDA		byte_53
+		STA		byte_D2
+		PLA
+		JSR		_wrap_msg_m00_arg0
+		JMP		_wait_for_key
+
 ; =============== S U B	R O U T	I N E =======================================
 ; unused anymore
 ;_b0_s51_wrapper_for_b1B_s0:
@@ -356,8 +406,7 @@ sub_8261:
 		LDA		_repel_or_fairy_water_timer
 		AND		#$7F
 		BNE		loc_828E
-		FARX	_bE_sD
-		SYSX	_display_window,$3E
+		JSR		_wrap_bE_sD_wnd3E
 		LDA		_repel_or_fairy_water_timer
 		AND		#$80
 		BEQ		loc_8285
@@ -3900,7 +3949,7 @@ _exit_and_clear_8E:
 ; =============== S U B	R O U T	I N E =======================================
 _non_battle_mode_spell_cast:
 		LDA		#$29
-		JSR		_wrap_bE_sC_display_window_safe
+		JSR		_wnd_safe
 		CMP		#$FF
 		BEQ		_wrap_bE_sB_arg0_clear_8E
 		STA		byte_53
@@ -3908,14 +3957,14 @@ _non_battle_mode_spell_cast:
 		JSR		_check_if_player_is_dead_ex
 		BCS		loc_9EB3
 		LDA		#$C5	; "<name> is dead and cannot cast the spell"
-		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
+		JMP		_wnd3E_msg0xx_wait_key
 loc_9EB3:
 		JSR		_b0_sE_player_STATUS_read
 		LDA		word_4+1
 		AND		#$40
 		BEQ		loc_9EC1
 		LDA		#$D2	; "<name> is numb and cannot cast the spell"
-		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
+		JMP		_wnd3E_msg0xx_wait_key
 loc_9EC1:
 		LDA		#$44
 		STA		byte_CF
@@ -3924,7 +3973,7 @@ loc_9EC1:
 		CMP		#$C4
 		BNE		loc_9ED3
 		LDA		#$C6	; "<name> is confused and cannot cast the spell"
-		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
+		JMP		_wnd3E_msg0xx_wait_key
 loc_9ED3:
 		JSR		_b0_s2C_player_CLASS_read
 		CMP		#7
@@ -3940,7 +3989,7 @@ loc_9ED3:
 		BNE		loc_9EF3
 loc_9EEE:
 		LDA		#$C4	; "<name> doesn't know any spells..."
-		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
+		JMP		_wnd3E_msg0xx_wait_key
 loc_9EF3:
 		LDA		byte_D0
 		FARX	_b1_s17
@@ -3955,7 +4004,7 @@ loc_9EF3:
 		JSR		_b0_sB_player_MP_consume
 		BCS		loc_9F13
 		LDA		#$20	; "MP is not high enough"
-		JMP		_wrap_wnd3E_bE_s5_msg_m00_arg0
+		JMP		_wnd3E_msg0xx_wait_key
 loc_9F13:
 		LDX		byte_49
 		STX		byte_D3
@@ -3965,7 +4014,7 @@ loc_9F13:
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
 		LDA		#$2B
-		JSR		_wrap_bE_sC_display_window_safe
+		JSR		_wnd_safe
 		JMP		loc_9F2D
 loc_9F2A:
 		FARX	_b1_s15
@@ -3985,7 +4034,7 @@ loc_9F34:
 		AND		#$3F
 		JSR		_b0_s67
 		JSR		_b0_s9_player_MP_subtract
-		JSR		_wrap_wnd3E_bE_s5
+		JSR		_wnd3E_bE_s5
 		MSGX	_msg_m00,$002	; "<name> attacks"
 		SYSX	_apu_load,$8E
 		FARX	_b2_s7_screen_spell_blink
@@ -4042,8 +4091,7 @@ _call_indirect_3C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _cmd_spell_heal:
-		LDA		byte_50
-		JSR		_check_if_player_is_dead
+		JSR		_check_if_player_is_dead_ex
 		BCC		locret_9FE9
 		LDA		byte_49
 		SEC
@@ -4062,8 +4110,8 @@ _spell_heal_ex:
 		BCC		locret_9FE9
 		JSR		_b0_s4_player_HP_add
 		MSGX	_msg_m00,$014	; "<name> has recovered"
-		JSR		_wnd_ATK_DEF_POW_display
-		JSR		__pause_or_skip
+		JSR		_wndMINMAX_STAT_pal_adjust
+		JSR		_pause_or_skip
 		SEC
 locret_9FE9:
 		RTS
@@ -4110,8 +4158,8 @@ loc_A01D:
 		LDA		byte_46
 		BNE		loc_A031
 		LDA		#$14	; "<name> has recovered"
-		JSR		_wrap_msg005_msg_m00_arg0
-		JSR		_wnd_ATK_DEF_POW_display
+		JSR		_msg005_msg0xx
+		JSR		_wndMINMAX_STAT_pal_adjust
 loc_A031:
 		PLA
 		TAX
@@ -4150,7 +4198,7 @@ loc_A05F:
 		LDA		#$3C	; "<name> comes back to life"
 loc_A06C:
 		JSR		_wrap_msg_m00_arg0
-		JSR		_wnd_ATK_DEF_POW_display
+		JSR		_wndMINMAX_STAT_pal_adjust
 		FARX	_bE_s10
 		SEC
 		RTS
@@ -4189,7 +4237,7 @@ _cmd_spell_detoxicate:
 		AND		#$DF
 		STA		_players_status+1,X
 		MSGX	_msg_m00,$044	; "The poison leaves <name>'s body"
-		JSR		_wnd_ATK_DEF_POW_display
+		JSR		_wndMINMAX_STAT_pal_adjust
 		SEC
 locret_A0B9:
 		RTS
@@ -4208,7 +4256,7 @@ _cmd_spell_remove_numbness:
 		AND		#$BF			; clear "NM state
 		STA		_players_status+1,X
 		MSGX	_msg_m00,$042	; "<name>'s numbness goes away"
-		JSR		_wnd_ATK_DEF_POW_display
+		JSR		_wndMINMAX_STAT_pal_adjust
 		SEC
 locret_A0D9:
 		RTS
@@ -4253,37 +4301,6 @@ _warp_b6_sF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bE_sC_display_window_safe:
-		STA		byte_44
-		TXA
-		PHA
-		TYA
-		PHA
-		LDA		byte_CE
-		PHA
-		LDA		byte_44
-		FARX	_bE_sC_display_window
-		STA		byte_44
-		PLA
-		STA		byte_CE
-		PLA
-		TAY
-		PLA
-		TAX
-		LDA		byte_44
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_wnd3E_bE_s5_msg_m00_arg0:
-		PHA
-		JSR		_wrap_wnd3E_bE_s5
-		LDA		byte_53
-		STA		byte_D2
-		PLA
-		JSR		_wrap_msg_m00_arg0
-		JMP		_wait_for_key
-
-; =============== S U B	R O U T	I N E =======================================
 _b0_s55:
 		LDA		_location_type
 		AND		#1
@@ -4307,23 +4324,22 @@ loc_A167:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_wnd3E_bE_s5:
-		SYSX	_display_window,$3E
-		FARX	_bE_s5
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-_wnd_ATK_DEF_POW_display:
+_wndMINMAX_STAT_pal_adjust:
 		LDA		byte_CE
 		PHA
 		FARX	_b4_s1A_status_pal_adjust_and_update
+		JSR		_wndMINMAX_STAT
+		PLA
+		STA		byte_CE
+		RTS
+
+; =============== S U B	R O U T	I N E =======================================
+_wndMINMAX_STAT:
 		JSR		_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
-		ADC		#$D
+		ADC		#$D	; $D + [1..4] _wnd0E_minmax_stat_ply[1..4]
 		FARX	_bE_sC_display_window
-		PLA
-		STA		byte_CE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4615,12 +4631,8 @@ loc_A3CE:
 		BNE		loc_A393
 		LDA		byte_48
 		BEQ		locret_A3EF
-		JSR		_b0_s31_get_party_chars_list
-		LDA		word_4
-		CLC
-		ADC		#$D
-		FARX	_bE_sC_display_window
-		JSR		__pause_or_skip
+		JSR		_wndMINMAX_STAT
+		JSR		_pause_or_skip
 		LDA		#0
 		STA		byte_8E
 		FARX	_bE_sB
@@ -4660,7 +4672,7 @@ loc_A410:
 ; delays and jingles?
 		FARX	_bB_s7_apu_wait
 		JSR		_map_music_select_and_load
-		JSR		sub_A8BB
+		JSR		_wndBTL_STAT
 ; take player's level back down 1?
 		LDX		byte_51
 		DEC		_players_level,X
@@ -4775,7 +4787,7 @@ loc_A448:
 		LDA		byte_52
 		CLC
 		ADC		#$A0	; "Strength goes up <number> point<s>."	base message also AGI, VIT, LUCK, INT
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 
 .no_stat_gain:
 ; go to next target stat. loop back
@@ -4827,7 +4839,7 @@ loc_A50D:
 		INC		_players_MHP+1,X
 loc_A522:
 		LDA		#$B8	; "The maximum HP goes up <number> point<s>."
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 loc_A52C:
 		JSR		_b0_s2C_player_CLASS_read
 		CMP		#4
@@ -4873,7 +4885,7 @@ loc_A56E:
 		INC		_players_MMP+1,X
 loc_A583:
 		LDA		#$B9	; "The maximum MP goes up <number> point<s>."
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 loc_A58D:
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
@@ -5042,7 +5054,7 @@ loc_A6A1:
 		CMP		#4
 		BCS		loc_A6E7
 		LDA		#$BA	; "<name> lerns a new spell"
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 		JMP		loc_A6E7
 loc_A6C0:
 		TYA
@@ -5445,13 +5457,16 @@ _set_u8_in_msg_number_parameter_F8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A8BB:
+; displays the basic battle stat window if battle mode is on, mostly the same
+; as _b4_s6_wndBTL_STAT, but with different flag testing, may be redundant
+;
+_wndBTL_STAT:
 		LDA		byte_CE
 		PHA
 		JSR		_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
-		ADC		#3
+		ADC		#3	; 3 + [1..4] _wnd04_btl_stat_ply[1..4]
 		TAX
 		LDA		_global_game_flags
 		AND		#$20
@@ -5555,7 +5570,7 @@ _other_spell_related_data:
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_wnd3E_msg148_bE_s33:
 		LDA		#$48	; "Doesn't have an item yet"
-		BNE		_wrap_wnd3E_msg_m00_arg1_bE_s33
+		BNE		_wnd3E_msg1xx_bE_s33
 
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_wnd3E_msg167_bE_s33:
@@ -5564,8 +5579,8 @@ _wrap_wnd3E_msg167_bE_s33:
 ;; FALLTHOURGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_wnd3E_msg_m00_arg1_bE_s33:
-		JSR		_wrap_wnd3E_msg_m00_arg1
+_wnd3E_msg1xx_bE_s33:
+		JSR		_wnd3E_msg1xx
 		FARX	_bE_s33
 		RTS
 
@@ -5642,7 +5657,7 @@ loc_AB65:
 		BEQ		loc_AB8B
 		CPX		#$70
 		BEQ		loc_AB8B
-		JSR		_wrap_wnd2E_ex
+		JSR		_wnd2E_ex
 		TAX
 		BPL		loc_AB8B
 loc_AB88:
@@ -5707,7 +5722,7 @@ loc_ABE7:
 		DEC		word_4
 		LDA		word_4
 		BEQ		loc_ABF8
-		JSR		_wrap_wnd2E_ex
+		JSR		_wnd2E_ex
 loc_ABF8:
 		STA		byte_47
 		STA		byte_CE
@@ -5751,7 +5766,7 @@ loc_AC2E:
 loc_AC48:
 		JSR		sub_AD31
 loc_AC4B:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_AC4E:
 		FARX	_bC_s20
 loc_AC51:
@@ -5808,7 +5823,7 @@ loc_AC94:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC9F:
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_ACA2:
 		FARX	_bC_s20
 
@@ -5825,14 +5840,6 @@ sub_ACA9:
 		RTS
 byte_ACB1:
 		.BYTE	$52,$57,$76
-
-; =============== S U B	R O U T	I N E =======================================
-_wrap_wnd2E_ex:
-		SYSX	_display_window,$2E
-		STA		byte_47
-		STA		byte_D4
-		STA		byte_50
-		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
@@ -6006,7 +6013,7 @@ sub_ADAC:
 		DEY				; "is unable to move and can't use the item"
 loc_ADC3:
 		TYA
-		BNE		_wrap_wnd3E_msg_m00_arg1
+		BNE		_wnd3E_msg1xx
 loc_ADC6:
 		JSR		_b0_s5E_check_if_item_can_be_used
 		BCC		_display_name_cannot_use_the_item
@@ -6021,8 +6028,10 @@ loc_ADC6:
 		STA		byte_D3
 		LDA		#$15
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_wnd3E_msg_m00_arg1:
+_wnd3E_msg1xx:
 		PHA
 		SYSX	_display_window,$3E
 		PLA
@@ -6063,19 +6072,19 @@ sub_ADF4:
 ; triggered when *USE is picked on an item in the field
 sub_AE12:
 		LDA		byte_48
-		AND		#$7F ; remove equip bit?
-		CMP		#$68 ; compare to wing of wyvern? that one's special, we need to launch a "where" places list.
+		AND		#$7F						; remove equip bit?
+		CMP		#$68						; compare to wing of wyvern
 		BEQ		loc_AE1D
-		SYSX	_display_window,$3E
+		SYSX	_display_window,$3E			; that one's special, we need to launch a "where" places list.
 loc_AE1D:
-		LDY		#$FD ; pre-roll loop one step early
-		LDA		byte_48 ; reload target item in case above jsr whacked it..?
-		AND		#$7F ; remove equip bit?
+		LDY		#$FD						; pre-roll loop one step early
+		LDA		byte_48						; reload target item in case above jsr whacked it..
+		AND		#$7F						; remove equip bit
 		TAX
 loc_AE24:
 		LDA		_b0_d44_item_effects_list,X	; reference item effects table
 		BPL		loc_AE2C					; if it's <$80, skip Y+=3 (one function pointer and one text message)
-		INY									;Y+=3
+		INY									; Y+=3
 		INY
 		INY
 loc_AE2C:
@@ -6108,7 +6117,7 @@ loc_AE52:
 		BNE		loc_AE68
 loc_AE62:
 		MSGX	_msg_m00,$040	; "But nothing happens"
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_AE68:
 		LDA		#$5C						; idx $15C "Holds <item> by the thread... and Sailor..."
 		BNE		loc_AE4C
@@ -6117,10 +6126,10 @@ loc_AE68:
 _item00_use:
 		LDA		byte_2A
 		CMP		#$4A
-		BNE		_wrap_msg153_exit
+		BNE		_msg_name_uses_item_clc
 		LDA		byte_2B
 		CMP		#$90
-		BNE		_wrap_msg153_exit
+		BNE		_msg_name_uses_item_clc
 		MSGX	_msg_m00,$13C	; "<> throws the <> in the crater"
 		JSR		_sleep_30
 		FARX	_bC_s24
@@ -6159,8 +6168,10 @@ _item09_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_msg153_exit:
-		MSGX	_msg_m00,$153	; "<> uses the <>."
+_msg_name_uses_item_clc:
+		MSGX	_msg_m00,$153	; "<name> uses the <item>."
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 ; a null event handler
@@ -6169,7 +6180,7 @@ _void_event:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bC_s22_item_float_use:
+_item0A_float_use:
 		FARX	_bC_s22
 		RTS
 
@@ -6223,7 +6234,7 @@ _warp_bC_sF_item_key_type3_use:
 _item12_use:
 		MSGX	_msg_m00,$018	; "<name> falls asleep"
 		JSR		_player_set_numb_status
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_b6_s12_item_wakeup_powder_use:
@@ -6264,13 +6275,11 @@ _item_royal_scroll_use:
 		RTS
 loc_AF32:
 		MSGX	_msg_m00,$1A3	; "Well, then there is nothing I can do four you"
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_AF38:
 		MSGX	_msg_m00,$106	; "However, Norud is not here"
-		JSR		__pause_or_skip
-
-; =============== S U B	R O U T	I N E =======================================
-sub_AF3E:
+		JSR		_pause_or_skip
+loc_AF3E:
 		SEC
 		RTS
 
@@ -6284,9 +6293,9 @@ _item1E_use:
 		MSGX	_msg_m00,$0AA	; "<name> flings the <item> into the air."
 		JSR		_sleep_30
 		FARX	_b6_s6
-		BCS		sub_AF3E
+		BCS		loc_AF3E
 		MSGX	_msg_m00,$040	; "But nothing happens."
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 loc_AF78:
 		CLC
 		RTS
@@ -6361,10 +6370,10 @@ loc_AFD8:
 		BEQ		loc_AFF8
 		DEY
 		BNE		loc_AF78
-		LDA		#$B4
+		LDA		#$B4	; "Huh?!"
 		BNE		loc_AFF8
 loc_AFF6:
-		LDA		#$6F
+		LDA		#$6F	; "Yikes! This is cold."
 loc_AFF8:
 		JSR		_wrap_msg_m00_arg0
 		FARX	_bC_s12_sleep_X_sync_50
@@ -6412,7 +6421,7 @@ loc_B056:
 loc_B05F:
 		JSR		_wrap_msg_m00_arg1
 		MSGX	_msg_m00,$114
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_bC_sC_item25_use:
@@ -6493,14 +6502,14 @@ _items_use_lib:
 		.WORD	_item01_use
 		.BYTE	  0
 		.WORD	_void_event
-		.BYTE	$A5				; $0A5	"<name> puts the <> on a finger and makes a wish"
+		.BYTE	$A5				; $0A5	"<name> puts the <item> on a finger and makes a wish"
 		.WORD	_item_ring_of_magic_use
-		.BYTE	$9B				; $09B
-		.WORD	_item08_use
+		.BYTE	$9B				; $09B	"<name> scatters the <item>"
+		.WORD	_item08_use_black_pepper
 		.BYTE	$C				; $10C
 		.WORD	_item09_use
 		.BYTE	  0
-		.WORD	_wrap_bC_s22_item_float_use
+		.WORD	_item0A_float_use
 		.BYTE	$56				; $156
 		.WORD	_item0B_use
 		.BYTE	$60				; $160
@@ -6517,11 +6526,11 @@ _items_use_lib:
 		.WORD	_warp_bC_sF_item_key_type3_use
 		.BYTE	$C
 		.WORD	_item12_use
-		.BYTE	$62				; $162 "Puts the <> in the palm of hand"
+		.BYTE	$62				; $162 "Puts the <item> in the palm of hand"
 		.WORD	_wrap_b6_s12_item_wakeup_powder_use
-		.BYTE	$58
+		.BYTE	$58				; $158
 		.WORD	_item_royal_scroll_use
-		.BYTE	$53
+		.BYTE	$53				; $153
 		.WORD	_item_strength_seed_use
 		.BYTE	$53
 		.WORD	_item_seed_of_agility_use
@@ -6559,9 +6568,9 @@ _items_use_lib:
 		.WORD	_item26_use
 		.BYTE	$AF				; $0AF
 		.WORD	_item27_use
-		.BYTE	$5F				; $15F "<> raises the <> to the skies"
+		.BYTE	$5F				; $15F "<name> raises the <item> to the skies"
 		.WORD	_wrap_b6_s1F_item28_use
-		.BYTE	$C7				; $0C7 "<> gives the <> as an offering"
+		.BYTE	$C7				; $0C7 "<name> gives the <item> as an offering"
 		.WORD	_wrap_bC_s26_item29_use
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6599,7 +6608,7 @@ _item_ring_of_magic_use:
 		LDA		#0
 		STA		byte_D0
 		JSR		_b0_s8_player_MP_add
-		JSR		_wnd_ATK_DEF_POW_display
+		JSR		_wndMINMAX_STAT_pal_adjust
 		JSR		_rand
 		CMP		#$19
 		BCS		loc_B196
@@ -6607,7 +6616,7 @@ _item_ring_of_magic_use:
 		FARX	_b4_s20
 		JSR		_b0_s2A_player_inventory_item_remove
 		LDA		#$A6	; "The Ring silently crumbles into pieces"
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 loc_B196:
 		SEC
 		RTS
@@ -6658,7 +6667,9 @@ _item_seed_of_vitality_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Seems always to print HP, not sure why
+; prints a number points added to the particular parameter while
+; using the sees items
+;
 _item_seeds_use_common:
 		PHA									; stash the stat we came in here with
 		JSR		_rand
@@ -6671,8 +6682,8 @@ _item_seeds_use_common:
 		PHA									; push sum
 		LDA		byte_48
 		CLC
-		ADC		#$41						; "parameter goes up messages based on item type"
-		JSR		_wrap_msg005_msg_m00_arg0
+		ADC		#$41						; "parameter goes up" messages based on item type
+		JSR		_msg005_msg0xx
 		PLA									; pop sum
 		LDX		byte_45						; restore player's index
 		RTS
@@ -6698,7 +6709,7 @@ loc_B212:
 		LDA		word_4
 		JSR		_write_u8_to_u24_msg_number_parameter_F8
 		LDA		#$A8
-		JSR		_wrap_msg005_msg_m00_arg0
+		JSR		_msg005_msg0xx
 		SEC
 		RTS
 
@@ -6721,7 +6732,7 @@ _item1C_use:
 		JSR		sub_B2B9
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		JSR		_cmd_spell_detoxicate
-		BCC		_message_nothing_happens
+		BCC		_msg_nothing_happens_sec
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6739,7 +6750,7 @@ _item1F_use:
 		STA		byte_49
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		JSR		_cmd_spell_revive
-		BCC		_message_nothing_happens
+		BCC		_msg_nothing_happens_sec
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6747,18 +6758,20 @@ _item22_use:
 		JSR		sub_B2B9
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		JSR		_cmd_spell_remove_numbness
-		BCC		_message_nothing_happens
+		BCC		_msg_nothing_happens_sec
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_message_nothing_happens:
+_msg_nothing_happens_sec:
 		MSGX	_msg_m00,$040	; "But nothing happens"
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "<actor> sneezes!" -- but it can't be this simple. is this goof-off tricks? is it only working during battles?
-_item08_use:
+; BLACK PEPPER item should only make all non death players to sneeze if
+; used with item use menu
+;
+_item08_use_black_pepper:
 		JSR		_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		STA		byte_55
@@ -6782,7 +6795,7 @@ loc_B28C:
 		INX
 		CPX		#4
 		BNE		loc_B272
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		SEC
 		RTS
 
@@ -6796,7 +6809,7 @@ _player_set_numb_status:
 		ORA		#$40
 		STA		_players_status+1,X
 		LDA		#$A
-		JSR		_wrap_msg005_msg_m00_arg0	; "<name> is numb and unable to move"
+		JSR		_msg005_msg0xx	; "<name> is numb and unable to move"
 		SEC
 		RTS
 
@@ -6820,7 +6833,7 @@ sub_B2B9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_msg005_msg_m00_arg0:
+_msg005_msg0xx:
 		PHA
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		PLA

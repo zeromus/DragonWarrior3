@@ -1,16 +1,19 @@
 
 		ORG $8000
 
+_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+
+_b4_s5_do_message_speed_delay_ptr:						.WORD	_b4_s5_do_message_speed_delay
+_b4_s16_do_half_message_speed_delay_ptr:				.WORD	_b4_s16_do_half_message_speed_delay
+_b4_s21_message_half_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
+
 _b4_s0_type00_battle_mode_handler_ptr:					.WORD	_b4_s0_type00_battle_mode_handler
 _b4_s24_type80_battle_mode_handler_ptr:					.WORD	_b4_s24_type80_battle_mode_handler
 _b4_s25_typeC0_battle_mode_handler_ptr:					.WORD	_b4_s25_typeC0_battle_mode_handler
 _b4_s1_ptr:												.WORD	_b4_s1
 _b4_s2_ptr:												.WORD	_b4_s2
 _b4_s3_ptr:												.WORD	_b4_s3
-_b4_s5_do_message_speed_delay_ptr:						.WORD	_b4_s5_do_message_speed_delay
-_b4_s6_ptr:												.WORD	_b4_s6
-_b4_s7_window_display_safe_ptr:							.WORD	_b4_s7_window_display_safe
-_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+_b4_s6_wndBTL_STAT_ptr:									.WORD	_b4_s6_wndBTL_STAT
 _b4_sA_ptr:												.WORD	_b4_sA
 _b4_sC_ptr:												.WORD	_b4_sC
 _b4_dD_spells_list_ptr:									.WORD	_b4_dD_spells_list
@@ -20,7 +23,6 @@ _b4_s10_ptr:											.WORD	_b4_s10
 _b4_s12_ptr:											.WORD	_b4_s12
 _b4_s13_ptr:											.WORD	_b4_s13
 _b4_s14_ptr:											.WORD	_b4_s14
-_b4_s16_do_half_message_speed_delay_ptr:				.WORD	_b4_s16_do_half_message_speed_delay
 _b4_s17_ptr:											.WORD	_b4_s17
 _b4_s18_ptr:											.WORD	_b4_s18
 _b4_s19_ptr:											.WORD	_b4_s19
@@ -29,7 +31,6 @@ _b4_s1B_ptr:											.WORD	_b4_s1B
 _b4_s1E_ptr:											.WORD	_b4_s1E
 _b4_s1F_ptr:											.WORD	_b4_s1F
 _b4_s20_ptr:											.WORD	_b4_s20
-_b4_s21_message_half_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
 _b4_s23_ptr:											.WORD	_b4_s23
 _b4_s26_ptr:											.WORD	_b4_s26
 _b4_s27_ptr:											.WORD	_b4_s27
@@ -173,7 +174,7 @@ loc_68122:
 		BIT		_curent_battle_type_flags
 		BVS		loc_68138
 		FARX	_bD_sC
-		JSR		__pause_or_skip
+		JSR		_pause_or_skip
 		JMP		.common_battle_won
 loc_68138:
 		SYSX	_apu_load,$29
@@ -1401,11 +1402,10 @@ loc_68896:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6889C:
-		LDA		#$3D
-		JSR		_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		LDY		#0
 loc_688A3:
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BMI		loc_688AF
 loc_688A8:
 		INY
@@ -1779,7 +1779,7 @@ sub_68B3B:
 loc_68B49:
 		STA		byte_CE
 		TAY
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68AFB
 		JSR		sub_6B1E8
 		BCS		loc_68B75
@@ -1892,7 +1892,7 @@ _bs_emove_05_attack_maybe_poison:
 		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_68E1E
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_06_attack_maybe_numb:
@@ -1905,7 +1905,7 @@ _bs_emove_06_attack_maybe_numb:
 		STA		byte_CE
 		JSR		sub_6B2E6
 		JSR		sub_68E69
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68C42:
@@ -2110,7 +2110,7 @@ _bs_emove_09_curious_dance:
 		BMI		loc_68DA8
 		STA		byte_CE
 		TAY
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68DB0
 		JMP		sub_6A61F
 loc_68DA8:
@@ -2172,7 +2172,7 @@ _bs_emove_11_toxic_breath:
 		LDA		#>[sub_68E18]
 		STA		word_3E+1
 		JSR		sub_694C1
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E18:
@@ -2182,7 +2182,7 @@ sub_68E18:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E1E:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68E42
 		TYA
 		ASL
@@ -2213,7 +2213,7 @@ _bs_emove_12_scorching_breath:
 		LDA		#>[sub_68E63]
 		STA		word_3E+1
 		JSR		sub_694C1
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
@@ -2223,7 +2223,7 @@ sub_68E63:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E69:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68E8D
 		TYA
 		ASL
@@ -2294,7 +2294,7 @@ loc_68EE6:
 loc_68EED:
 		STY		byte_CE
 		STY		byte_D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_68F03
 		TYA
 		PHA
@@ -2312,7 +2312,7 @@ loc_68F09:
 		JMP		loc_698B4
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68F0C:
+_player_idx_to_X_and_status_check:
 		TYA
 		ASL
 		TAX
@@ -2348,7 +2348,7 @@ loc_68F37:
 		JMP		sub_69931
 loc_68F41:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68F6C
 		JSR		sub_68F7E
 		BEQ		loc_68F6D
@@ -2468,7 +2468,7 @@ _bs_emove_21_chant_sacrifice:
 		BMI		loc_69079
 		LDY		#0
 loc_6900A:
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		sub_69058
 		STY		byte_CE
 		STY		byte_D2
@@ -2507,7 +2507,7 @@ sub_69050:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69053:
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		PLA
 		TAY
 
@@ -2650,7 +2650,7 @@ _bs_emove_27_chant_robmagic:
 		BMI		loc_69166
 		STA		byte_CE
 		TAY
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6915D
 		JSR		sub_6A61F
 		LDA		byte_CF
@@ -2689,7 +2689,7 @@ loc_6917E:
 		JMP		sub_69E98
 loc_6918F:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6915D
 		LDA		_players_status,X
 		AND		#$40
@@ -2704,7 +2704,7 @@ loc_6918F:
 		ORA		#$10
 		STA		_players_status+1,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 loc_691BA:
 		JMP		sub_6B3D8
 loc_691BD:
@@ -2736,7 +2736,7 @@ sub_691DF:
 		JMP		loc_69AEB
 loc_691E9:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69219
 		LDA		#$C0
 		JSR		sub_6A84F
@@ -2831,7 +2831,8 @@ loc_69282:
 		JMP		loc_69282
 loc_69295:
 		DEC		byte_4C
-		JSR		sub_6A927
+		JSR		sub_6AA51
+		JSR		_b4_s6_wndBTL_STAT
 		LDA		byte_2C
 		BNE		locret_692B6
 		LDX		#$C
@@ -3146,7 +3147,7 @@ sub_694B8:
 sub_694C1:
 		LDY		#0
 loc_694C3:
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_694D4
 		STY		byte_CE
 		TYA
@@ -3541,7 +3542,7 @@ _bs_pcAction_01_chant:
 		JSR		_sram_b0_sB_player_MP_consume
 		BCC		loc_697C5
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		LDA		byte_D3
 		JSR		sub_68FEB
 		JSR		sub_6A39F
@@ -3747,7 +3748,7 @@ loc_698EF:
 loc_698F1:
 		STY		byte_CE
 		STY		byte_D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_69907
 		TYA
 		PHA
@@ -3850,7 +3851,7 @@ sub_69973:
 		LDA		#0
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		DEC		byte_4C
 		RTS
 
@@ -3990,7 +3991,7 @@ loc_69A8E:
 		JSR		sub_6B2B3
 		STA		byte_CE
 		JSR		_sram_b0_s8_player_MP_add
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 loc_69A99:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4181,7 +4182,7 @@ loc_69BE7:
 		TYA
 		PHA
 		JSR		_b4_sB
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_69BFB
 		JSR		sub_6BF22
 		PLA
@@ -4237,7 +4238,7 @@ loc_69C3B:
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 loc_69C4C:
 		JSR		sub_6A900
 		PHA
@@ -4298,7 +4299,7 @@ sub_69C9D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_69CA7:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69D1C
 		TYA
 		ASL
@@ -4319,7 +4320,7 @@ sub_69CA7:
 		ORA		#3
 		STA		_players_status,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 loc_69CDD:
 		JSR		sub_6B2EF
 		BNE		locret_69D1C
@@ -4377,7 +4378,7 @@ sub_69D35:
 		RTS
 loc_69D3D:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69D5F
 		LDA		_player_battle_order_and_flags,Y
 		AND		#8
@@ -4414,7 +4415,7 @@ sub_69D77:
 		JMP		loc_69DB9
 loc_69D81:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69DAB
 		JSR		_sram_b0_s6_player_MP_read
 		BEQ		loc_69DAC
@@ -4482,7 +4483,7 @@ sub_69DF6:
 		JMP		loc_69E38
 loc_69E00:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69E24
 		TYA
 		ASL
@@ -4717,7 +4718,7 @@ sub_69FA3:
 		PHA
 		STA		byte_CE
 		STA		byte_D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_69FBD
 		LDA		_players_status,X
 		AND		#4
@@ -4744,7 +4745,7 @@ sub_69FC5:
 		BNE		loc_69FF7
 loc_69FD3:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69FC4
 		LDA		_players_status,X
 		ORA		#8
@@ -4807,7 +4808,7 @@ loc_6A049:
 		TYA
 		PHA
 		STY		byte_D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_6A058
 		JSR		_b4_sB
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$89
@@ -4990,7 +4991,7 @@ loc_6A182:
 		LDA		byte_42
 		CMP		#4
 		BNE		loc_6A174
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5187,7 +5188,7 @@ sub_6A2CB:
 		BNE		locret_6A2F6
 loc_6A2D9:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A2F6
 		LDA		_players_status+1,X
 		AND		#$20
@@ -5196,7 +5197,7 @@ loc_6A2D9:
 		AND		#$DF
 		STA		_players_status+1,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$44
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 locret_6A2F6:
 		RTS
 loc_6A2F7:
@@ -5216,7 +5217,7 @@ sub_6A2FF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A30D:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A2F6
 		LDA		_players_status+1,X
 		AND		#$40
@@ -5230,7 +5231,7 @@ sub_6A30D:
 		LDA		#$42
 loc_6A32D:
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 loc_6A333:
 		LDA		#$40
 		BNE		loc_6A32D
@@ -5509,7 +5510,7 @@ sub_6A4E4:
 		BEQ		loc_6A4EE
 		JSR		_b4_s1A_status_pal_adjust_and_update
 loc_6A4EE:
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		JSR		_sram_b0_s2_player_HP_read
 		LDA		word_4
 		ORA		word_4+1
@@ -5562,7 +5563,7 @@ sub_6A544:
 		AND		_players_status+1,X
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		DEC		byte_4C
 		JSR		sub_6A569
 		CLC
@@ -5603,7 +5604,7 @@ loc_6A582:
 		JMP		loc_6A402
 loc_6A58C:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A578
 ; removes $20 from flags at $566
 		LDA		#$20
@@ -5671,7 +5672,7 @@ sub_6A5F7:
 		JMP		loc_6A5E0
 loc_6A604:
 		LDY		byte_CE
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A5F6
 		LDA		word_4
 		STA		byte_CF
@@ -5680,14 +5681,14 @@ loc_6A604:
 		JSR		_sram_b0_s4_player_HP_add
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JMP		_b4_s6
+		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A61F:
 		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_6A66F
 		JSR		sub_6B347
 		BCC		loc_6A633
@@ -5707,7 +5708,7 @@ loc_6A633:
 		STA		_msg_number_parameter_F8
 loc_6A650:
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		JMP		loc_6A659
 loc_6A659:
 		LDY		#$75
@@ -5793,7 +5794,7 @@ sub_6A6DF:
 		JMP		loc_6A755
 loc_6A6E9:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A747
 		JSR		_sram_b0_s18_player_DEF_read
 		LDA		byte_CE
@@ -5891,7 +5892,7 @@ sub_6A790:
 		BNE		loc_6A7C3
 loc_6A797:
 		JSR		sub_6B3D2
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A7BB
 		JSR		_sram_b0_s18_player_DEF_read
 		LDA		byte_47
@@ -6065,10 +6066,20 @@ loc_6A8B1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+sub_6A900:
+		STA		byte_42
+		LDA		#$FF
+		BNE		sub_6A8B7
+
+; =============== S U B	R O U T	I N E =======================================
 sub_6A8B3:
 		STA		byte_42
 		LDA		#0
-loc_6A8B7:
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+sub_6A8B7:
 		STA		byte_10
 		TXA
 		PHA
@@ -6117,18 +6128,12 @@ loc_6A8ED:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A900:
-		STA		byte_42
-		LDA		#$FF
-		BNE		loc_6A8B7
-
-; =============== S U B	R O U T	I N E =======================================
-_b4_s6:
-		PHA
-		TXA
-		PHA
-		TYA
-		PHA
+_b4_s6_wndBTL_STAT:
+;		PHA					; more pointless registers savings, since this
+;		TXA					; function used as FARX routine and no code
+;		PHA					; calling it relays on the XY registers to be safe
+;		TYA					; recheck and remove
+;		PHA
 		LDA		_curent_battle_type_flags
 		BNE		loc_6A921
 		LDA		byte_CE
@@ -6136,24 +6141,17 @@ _b4_s6:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
-		ADC		#3
-		JSR		_b4_s7_window_display_safe
+		ADC		#3	; 3 + [1..4] _wnd04_btl_stat_ply[1..4]
+		FARX	_bE_s0_display_window_ex
 		PLA
 		STA		byte_CE
 loc_6A921:
-		PLA
-		TAY
-		PLA
-		TAX
-		PLA
+;		PLA
+;		TAY
+;		PLA
+;		TAX
+;		PLA
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; "printing something during battle"
-; "message to print comes in A"
-sub_6A927:
-		JSR		sub_6AA51
-		JMP		_b4_s6
 
 ; =============== S U B	R O U T	I N E =======================================
 ; just message output wrapper with paranoid set of saved variables, maybe
@@ -6284,21 +6282,22 @@ _b4_sA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s7_window_display_safe:
-		STA		word_4
-		TXA
-		PHA
-		TYA
-		PHA
-		LDA		word_4
-		FARX	_bE_s0_display_window_ex
-		STA		word_4
-		PLA
-		TAY
-		PLA
-		TAX
-		LDA		word_4
-		RTS
+;_b4_s7_display_window_ex_safe:
+;		STA		word_4
+;		TXA						; FARX calls doesn't save X after exit, just passed it as
+;		PHA						; arg to the functions, SYSX doesn't keep it at all
+;		TYA						; syscalls are keep Y for some functions, but not keep it
+;		PHA						; after exit, so any function that need Y to be saved, should
+;								; keep it by its own
+;		LDA		word_4
+;		FARX	_bE_s0_display_window_ex
+;		STA		word_4
+;		PLA
+;		TAY
+;		PLA						; as a result, we have a redundant function for some reason
+;		TAX						; that may be replaced with regular FARX/SYSX window_display_ex
+;		LDA		word_4
+;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; progresses text at 2x speed
@@ -7176,7 +7175,7 @@ sub_6AF0E:
 		LDA		#0
 		STA		byte_D0
 		JSR		_sram_b0_s8_player_MP_add
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		JSR		_rand
 		CMP		#$19
 		BCS		locret_6AF33
@@ -7481,7 +7480,7 @@ loc_6B109:
 		LDA		#3
 		STA		byte_CF
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6
+		JSR		_b4_s6_wndBTL_STAT
 		JMP		loc_6B145
 loc_6B118:
 		CPY		#4
@@ -7841,7 +7840,7 @@ sub_6B333:
 _b4_s1B:
 		LDY		#0
 loc_6B33E:
-		JSR		sub_68F0C
+		JSR		_player_idx_to_X_and_status_check
 		BMI		locret_6B346
 		INY
 		BNE		loc_6B33E

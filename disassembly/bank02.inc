@@ -2850,7 +2850,7 @@ _b2_sB:
 		BEQ		loc_3A355
 		RTS
 loc_3A355:
-		FARX	_b4_s6
+		FARX	_b4_s6_wndBTL_STAT
 		LDA		byte_566
 		AND		#$C4
 		BEQ		loc_3A360
@@ -2917,14 +2917,13 @@ loc_3A3BC:
 		BNE		loc_3A39B
 loc_3A3CF:
 		FARX	_b4_sC
-		LDA		#$3F
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3F
 		LDX		byte_51
 		JSR		sub_3A6FD
 		LDA		byte_54
 		CLC
 		ADC		#$18
-		FARX	_b4_s7_window_display_safe
+		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BNE		loc_3A417
 		LDA		byte_52
@@ -2990,7 +2989,7 @@ loc_3A454:
 loc_3A457:
 		LDA		#$39
 loc_3A459:
-		FARX	_b4_s7_window_display_safe
+		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BEQ		loc_3A46F
 		CMP		#$80
@@ -3029,8 +3028,7 @@ loc_3A48A:
 loc_3A498:
 		CPY		#2
 		BNE		loc_3A4B0
-		LDA		#$22
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$22
 		CMP		#$FF
 		BNE		loc_3A4A8
 		JMP		loc_3A3CF
@@ -3135,8 +3133,7 @@ loc_3A536:
 		PLA
 		STA		byte_66
 		BCS		loc_3A569
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		MSGX	_msg_m00,$020	; "MP is not high enough"
 		FARX	_b4_s5_do_message_speed_delay
 		FARX	_b4_s5_do_message_speed_delay
@@ -3162,7 +3159,7 @@ loc_3A582:
 		TYA
 		PHA
 		TXA
-		FARX	_b4_s7_window_display_safe
+		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BEQ		loc_3A59B
 		CMP		#$80
@@ -3187,8 +3184,7 @@ loc_3A5A8:
 		JSR		_sram_b0_s28_player_inventory_item_read
 		LDA		word_4
 		BNE		loc_3A5C9
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		LDA		byte_CE
 		STA		byte_D2
 		MSGX	_msg_m00,$0D1	; "<name> does not have items"
@@ -3196,8 +3192,7 @@ loc_3A5A8:
 		JSR		_sleep_X_sync
 		JMP		loc_3A3CF
 loc_3A5C9:
-		LDA		#$3B
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3B
 		CMP		#$FF
 		BNE		loc_3A5D5
 		JMP		loc_3A3CF
@@ -3224,8 +3219,7 @@ loc_3A5F4:
 loc_3A5FD:
 		LDA		byte_46
 		BNE		loc_3A61D
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		FARX	_bE_s2
 		FARX	_bE_s5
 		LDA		byte_51
@@ -3239,8 +3233,7 @@ loc_3A61D:
 		BEQ		loc_3A635
 		CMP		#2
 		BEQ		loc_3A642
-		LDA		#$21
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$21
 		CMP		#$FF
 		BNE		loc_3A631
 loc_3A62E:
@@ -3299,8 +3292,7 @@ loc_3A677:
 		STA		byte_558,X
 		RTS
 loc_3A689:
-		LDA		#$3D
-		FARX	_b4_s7_window_display_safe
+		SYSX	_display_window_ex,$3D
 		FARX	_b4_sA
 		LDA		#$83
 		FARX	_bB_s3_apu_load
