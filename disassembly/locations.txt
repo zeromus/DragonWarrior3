@@ -43,7 +43,7 @@ $29 - Isis Castle throne room
 $2A - Shrine of Honor (isnt that in alefgard, southeast?)
 $2B - Romaly Shrine (east side)
 $2C - Romaly Shrine (west side)
-$2D - Cave on Promontory
+$2D - Cave on Promontory B1
 $2E - Cave West of Noaniels (my system cant decode this one correctly)
 $2F - Cave by Assaram (west side)
 $30 - Cave by Assaram (east side)
@@ -92,7 +92,7 @@ $54 - Isis Castle B1
 $55 - Isis Castle
 $56 - Isis Castle 2F (includes throne room) ; 1,6
 $57 - Isis Castle 3F (Garden)
-$58 - {{ A green dungeon, where the boss lives, probably Baramos }} ; 10,10
+$58 - Baramos's Lair ; 10,10
 $59 - Castle of Baramos B1 tunnels ; 6,24
 $5A - Castle of Baramos 2F ; 10,15
 $5B - Glitched/dummied
@@ -118,11 +118,11 @@ $6E - Reeve, upstairs, Magic Ball -giver ; 1,1
 $6F - Portoga Town, basement, extreme outskirts hidden bunker ; 1,1
 $70 - Portoga Town, upstairs, Sabrina's house ; 8,8
 $71 - Portoga Castle
-$72 - New Town (empty, just the old man) ; 7,A
-$73 - New Town (with merchant) ; 7,A
-$74 - New Town (old man has house now) ;7,A
-$75 - New Town (run into the ground by merchant) ;7,A
-$76 - New Town $74 (upstairs, old man) ;1,1
+$72 - New Town Ver.1 (empty, just the old man) ; 7,A
+$73 - New Town Ver.2 (with merchant) ; 7,A
+$74 - New Town Ver.3 (old man has house now) ;7,A
+$75 - New Town Ver.4 (run into the ground by merchant) ;7,A
+$76 - New Town Ver.3 (upstairs, old man) ;1,1
 $77 - Noaniels asleep, upstairs southwest outskirts, old man clue-giver ;1,1
 $78 - Noaniels asleep, upstairs inn ;1,1
 $79 - Assaram, upstairs, clue-giving noble (mentions portoga and norud); 1,1
@@ -160,7 +160,7 @@ $98 - Location with hole dropping to Cave of Enticement B1 ; 8,4
 $99 - Samanao Castle Fight Ring
 $9A - Cantlin Fight Ring
 $9B - Romaly Castle 3F (east tower)
-$9C - Phantom Ship ; 08,10
+$9C - Phantom Ship 1F ; 08,10
 $9D - Phantom Ship B1 ; 10,10
 $9E - dummied
 $9F - Tower of Najima B1

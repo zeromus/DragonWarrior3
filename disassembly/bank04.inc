@@ -2833,7 +2833,7 @@ loc_69295:
 		DEC		byte_4C
 		JSR		sub_6AA51
 		JSR		_b4_s6_wndBTL_STAT
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_692B6
 		LDX		#$C
 loc_692A0:

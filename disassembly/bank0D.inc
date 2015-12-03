@@ -140,7 +140,7 @@ _bD_s1E:
 loc_1400B2:
 		JSR		sub_1777C2
 		BCC		locret_1400EC
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_1400D6
 		LDA		_playerMapX
@@ -149,7 +149,7 @@ loc_1400B2:
 		STA		byte_81
 		JMP		loc_1400D6
 loc_1400C8:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_1400D6
 		LDA		byte_2A
@@ -1903,7 +1903,7 @@ _bD_s9:
 locret_141DCE:
 		RTS
 loc_141DCF:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_141DCE
 
 ;; FALLTHROUGH ;;
@@ -2008,7 +2008,7 @@ locret_141E84:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s4:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_141E84
 
 ;; FALLTHROUGH ;;
@@ -5219,7 +5219,7 @@ _npc_hndl9:
 _npc_hndlA:
 		JSR		sub_143F7B
 		MSGX	_msg_m00_ex,$5E1
-		LDA		byte_60CE
+		LDA		_q_OrbsCollected
 		AND		#4
 		BNE		loc_14365F
 		MSGX	_msg_m00,$5E2
@@ -5341,7 +5341,7 @@ _npc_hndl13:
 		LDA		#$15
 		JMP		sub_1434D3
 loc_14371E:
-		MSGX	_msg_m00_break,$602	; "I cannot sell anything for human being"
+		MSGX	_msg_m00_break,$602	; "I cannot sell anything to a human being"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143721:
@@ -5492,7 +5492,7 @@ loc_1437FF:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1E:
-		LDA		byte_60CE
+		LDA		_q_OrbsCollected
 		AND		#$20
 		BEQ		loc_143814
 		MSGX	_msg_m00_break,$6D1
@@ -5616,7 +5616,7 @@ locret_1438E3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl25:
-		LDA		byte_60CE
+		LDA		_q_OrbsCollected
 		LSR
 		BCC		loc_1438ED
 		MSGX	_msg_m00_break,$641
@@ -6195,7 +6195,7 @@ _npc_hndl5E:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5F:
 		MSGX	_msg_m00,$362
-		LDA		byte_60CE
+		LDA		_q_OrbsCollected
 		AND		#$20
 		BNE		loc_143CD2
 		MSGX	_msg_m00_break,$61F

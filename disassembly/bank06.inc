@@ -51,8 +51,8 @@ _b6_s1E_ptr:
 		.WORD	_b6_s1E
 _b6_s1F_ptr:
 		.WORD	_b6_s1F
-_b6_s20_player_name_veryfy_ptr:
-		.WORD	_b6_s20_player_name_veryfy
+_b6_s20_player_name_verify_ptr:
+		.WORD	_b6_s20_player_name_verify
 
 _b6_d0:
 		.BYTE	$46,$80,$44,  0,$42,  0,$43,  0,$41,  0,  0,$F5,$FF,$4A,  2,$4A
@@ -1172,7 +1172,7 @@ loc_9B417:
 		ORA		byte_AC
 		STA		byte_AC
 		FARX	_bC_s20
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_9B431
 		SYSX	_apu_load,$9F
 		LDY		#$C9
@@ -1367,7 +1367,7 @@ loc_9B545:
 		LDA		_mapNumber
 		CMP		#$60
 		BEQ		loc_9B524
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_9B557
 		LDA		byte_60B8
 		AND		#$BF
@@ -1450,7 +1450,7 @@ loc_9B5F6:
 		STX		byte_9E
 		STA		byte_9F
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		STA		_npc_anim_script_idx
 		BIT		byte_60CB
 		BVS		locret_9B60B
@@ -2172,7 +2172,7 @@ sub_9BB22:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BB26:
-		JSR		_b6_s20_player_name_veryfy
+		JSR		_b6_s20_player_name_verify
 		BNE		loc_9BB34
 		JSR		sub_9BBED
 		MSGX	_msg_m00,$254
@@ -2284,8 +2284,9 @@ byte_9BBF5:
 		.BYTE	  4,  2,  1,  6,  5,  7
 
 ; =============== S U B	R O U T	I N E =======================================
-; TEST FOR "ERDRICK" in	any cases
-_b6_s20_player_name_veryfy:
+; Tests for a player-input name of "ERDRICK" in	any combination of upper and lower case, to be rejected
+;
+_b6_s20_player_name_verify:
 		LDX		#0
 loc_9BBFD:
 		LDA		byte_9,X
@@ -2296,57 +2297,57 @@ loc_9BBFD:
 		BNE		loc_9BBFD
 		LDA		byte_A
 loc_9BC0A:
-		CMP		#$29
+		CMP		#_E
 		BEQ		loc_9BC13
-		CMP		#$F
+		CMP		#_e
 		BEQ		loc_9BC13
 		RTS
 loc_9BC13:
 		INX
 		LDA		byte_9,X
-		CMP		#$36
+		CMP		#_R
 		BEQ		loc_9BC1F
-		CMP		#$1C
+		CMP		#_r
 		BEQ		loc_9BC1F
 		RTS
 loc_9BC1F:
 		INX
 		LDA		byte_9,X
-		CMP		#$28
+		CMP		#_D
 		BEQ		loc_9BC2B
-		CMP		#$E
+		CMP		#_d
 		BEQ		loc_9BC2B
 		RTS
 loc_9BC2B:
 		INX
 		LDA		byte_9,X
-		CMP		#$36
+		CMP		#_R
 		BEQ		loc_9BC37
-		CMP		#$1C
+		CMP		#_r
 		BEQ		loc_9BC37
 		RTS
 loc_9BC37:
 		INX
 		LDA		byte_9,X
-		CMP		#$2D
+		CMP		#_I
 		BEQ		loc_9BC43
-		CMP		#$13
+		CMP		#_i
 		BEQ		loc_9BC43
 		RTS
 loc_9BC43:
 		INX
 		LDA		byte_9,X
-		CMP		#$27
+		CMP		#_C
 		BEQ		loc_9BC4F
-		CMP		#$D
+		CMP		#_c
 		BEQ		loc_9BC4F
 		RTS
 loc_9BC4F:
 		INX
 		LDA		byte_9,X
-		CMP		#$2F
+		CMP		#_K
 		BEQ		loc_9BC5B
-		CMP		#$15
+		CMP		#_k
 		BEQ		loc_9BC5B
 		RTS
 loc_9BC5B:
@@ -2361,6 +2362,8 @@ loc_9BC61:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Runs a pretty detailed scripted sequence and then sets _f_WarpBlock
+;
 _b6_s17:
 		JSR		sub_9BC74
 		LDA		_global_game_flags

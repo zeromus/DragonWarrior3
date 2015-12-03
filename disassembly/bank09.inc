@@ -1101,7 +1101,7 @@ sub_E3C80:
 		LDA		_mapNumber
 		STA		word_3E
 		BIT		_global_game_flags
-		BVS		loc_E3C93
+		BVS		loc_E3C93						; test _f_IsKingOfRomaly? really?
 		LDX		byte_60CD
 		CMP		#$72
 		BNE		loc_E3C9C
@@ -1213,7 +1213,7 @@ loc_E3D37:
 loc_E3D48:
 		LDA		byte_60CD
 		AND		#$20
-		BEQ		loc_E3D55
+		BEQ		loc_E3D55					; test _q_SamanaoDone
 		LDA		word_3E
 		LDX		#7
 		BNE		loc_E3D19

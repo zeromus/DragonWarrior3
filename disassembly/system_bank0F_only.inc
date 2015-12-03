@@ -875,7 +875,7 @@ loc_17718A:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		sub_1771F8
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_1771A4
 		LDA		_blockPlayerInputDuringMap
 		BNE		loc_1771A4
@@ -1033,7 +1033,7 @@ locret_177294:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177295:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BEQ		loc_1772A8
 		LDX		byte_2D
@@ -1064,7 +1064,7 @@ sub_1772CC:
 		LDA		_location_type
 		AND		#2
 		BNE		locret_1772F3
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_1772DF
 		STX		byte_80
 		STY		byte_81
@@ -1099,7 +1099,7 @@ sub_177305:
 		LDA		#5
 		STA		word_3C
 		LDX		#$18
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#2
 		BNE		loc_177313
 		LDX		#0

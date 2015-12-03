@@ -2044,7 +2044,7 @@ loc_83A99:
 locret_83AAB:
 		RTS
 loc_83AAC:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_83AE2
 		LDA		_location_type
@@ -2721,7 +2721,7 @@ _b5_s5_mirror_of_ra_trigger_on:
 		FARX	_b0_s1_battle_typeA_launch
 		LDA		byte_60CD
 		ORA		#$20
-		STA		byte_60CD
+		STA		byte_60CD		; set _q_SamanaoDone
 		JSR		sub_177CFC
 		LDA		#$F
 		STA		byte_7464
