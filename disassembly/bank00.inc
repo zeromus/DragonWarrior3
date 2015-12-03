@@ -488,7 +488,7 @@ loc_82D7:
 
 loc_82DC:
 		STA		word_4A ; stash the random encounter info byte into u8[4a], in case it wasnt already there
-		LDA		byte_2C ; vehicle type
+		LDA		_player_vehicle ; vehicle type
 		CMP		#1
 		BEQ		.check_encounter_ship ; branch for ship
 		BCC		.check_encounter_foot ; branch for on foot
@@ -4424,7 +4424,7 @@ _command_spell_lib:
 		.WORD	_cmd_spell_detoxicate
 		.WORD	_cmd_spell_remove_numbness
 		.WORD	_cmd_spell_repel
-		.WORD	_warp_bC_s10
+		.WORD	_warp_bC_s10	; cast return? i have reason to suspect
 		.WORD	_warp_bC_sF_item_key_type3_use
 		.WORD	_warp_bC_s1E
 		.WORD	sub_A0EC
@@ -6486,8 +6486,8 @@ _wrap_bC_s26_item29_use:
 		FARX	_bC_s26
 		RTS
 
-; item use callbacks. I guess we could compress this table now that
-; we've changed how the calls work
+; item use callbacks. I guess we could compress this table now that we've changed how the calls work (??)
+; begins at sacred amulet?
 ;
 _items_use_lib:
 		.BYTE	  0

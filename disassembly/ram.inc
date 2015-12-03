@@ -79,7 +79,7 @@ byte_28:
 byte_29:
 		.BYTE	0
 ;----------------------------------------------
-; overworld tile coordinate X and Y . . ? how different from _playerMapX?
+; overworld tile coordinate X and Y . . ? how different from _playerMapX? it just is.
 ; name _playerWorldMapX, perhaps?
 byte_2A:
 		.BYTE	0
@@ -91,7 +91,7 @@ byte_2B:
 ; 0 - on foot
 ; 1 - ship
 ; 2 - ramia
-byte_2C:
+_player_vehicle: ; $2C
 		.BYTE	0
 ;----------------------------------------------
 ; location of the ship. it changes along with byte_2a and byte_2b as long as you're in the ship
@@ -1156,33 +1156,43 @@ byte_60B5:
 		.BYTE	0
 ;----------------------------------------------
 ; misc quest flag bits
-; $80 - ?
-; $40 - ?
-; $20 - _q_NorudPassageOpened
-; $10 - ?
-; $08 - ?
-; $04 - ?
-; $02 - _q_MagicBallUsed
-; $01 - ?
+; $80 -
+; $40 -
+; $20 - _q_NorudPassageOpened - Set once Norud's been shown the royal scroll and opened the psage
+; $10 -
+; $08 -
+; $04 -
+; $02 - _q_MagicBallUsed - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
+; $01 -
 ;
 byte_60B6: 
 		.BYTE	0
 ;----------------------------------------------
-; misc quest flag bits
-; $80 - change class to Erdrick
-;	$40 - This flag is set while you actually ARE king
-;	$20 - ?
+; misc game flag bits (not precisely quest flags)
+; $80 - _f_WarpBlock - Wing of Wyvern / Return is blocked.
+;	$40 - _f_IsKingOfRomaly - This flag is set while you actually ARE king
+;	$20 -
 ;	$10 - one of the switches in Pyramid 3F
 ;	$08 - one of the switches in Pyramid 3F
 ;	$04 - set if in battle mode (does not clear after death in battle!)
 ;	$02 - set after you accept the Golden King's Crown and become a King (is this a once-only bit? see $40 bit for the repeated toggle)
-;	$01 - ?
+;	$01 - _f_Erdrick - In a certain sense, the Is Game Over flag, isn't it?
 ;
 _global_game_flags: ; 60b7
 		.BYTE	0
 ;----------------------------------------------
+; misc quest flag bits
+; $80 -
+;	$40 - 
+;	$20 -
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
 byte_60B8:
 		.BYTE	0
+;----------------------------------------------
 byte_60B9:
 		.BYTE	0
 ;----------------------------------------------
@@ -1228,10 +1238,27 @@ byte_60CB: ; "someQuestFlags_60Cb" - fiddling with values here can make aliahan 
 		.BYTE	0
 byte_60CC:
 		.BYTE	0
+;----------------------------------------------
+; seems to contain only #$FF, indicating something related to orbs. or leaf of the world tree? or lots of things, WTF.
+; no, sometimes it's set bit by bit. WHAT IS THIS!!
+; is part of it the newtown progression conditions?
+; YES.... but uhhh sometimes tis checked as #$FF and this makes no sense
+; $80 -
+;	$40 -
+;	$20 - _q_SamanaoDone - Set once the Samanao quest is done (real King rescued)
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - related to boats...
+;	$01 - related to boats...
 byte_60CD:
 		.BYTE	0
-byte_60CE:
+;----------------------------------------------
+; bitset of collected orbs, PROBABLY in this order
+; xxGBPYRS
+_q_OrbsCollected: ; $60CE
 		.BYTE	0
+;----------------------------------------------
 byte_60CF:
 		.BYTE	0
 byte_60D0:

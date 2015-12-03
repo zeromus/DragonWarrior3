@@ -1927,7 +1927,7 @@ loc_174C93:
 		JSR		_nmi_forbid_ppu_dequeue
 		FARX	_bE_s11
 		JSR		_nmi_forbid_ppu_dequeue
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_174CCA
 		LDA		_location_type
 		AND		#1
@@ -2154,7 +2154,7 @@ loc_174E21:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174E25:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		locret_174E51
 		LDX		_players_pos_list
 		LDY		_players_pos_list+1
@@ -2210,7 +2210,7 @@ loc_174E78:
 		JSR		sub_175049
 		LDA		_blockPlayerInputDuringMap
 		BNE		locret_174E77
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#2
 		BEQ		loc_174E92
 		FARX	_b0_s0_world_map_random_enounter_test
@@ -2236,7 +2236,7 @@ loc_174E9C:
 		STA		_playerMapY
 		STA		_players_pos_list+1
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		LDA		#$A
 		STA		byte_2D
 		LDA		#$13
@@ -2252,7 +2252,7 @@ loc_174E9C:
 loc_174ED8:
 		JSR		sub_174E25
 		JSR		_calc_pads
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#2
 		BNE		loc_174F04
 		LDA		_pads
@@ -2434,7 +2434,7 @@ _world_map_step_forward:
 		LDA		#0
 		STA		_world_map_steps_count
 loc_175046:
-		JMP		sub_17522D
+		JMP		sub_17522D							; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175049:
@@ -2549,7 +2549,7 @@ loc_1750FF:
 		BEQ		loc_175170
 		CMP		#$F
 		BEQ		loc_17513A
-		LDX		byte_2C
+		LDX		_player_vehicle
 		BEQ		loc_175123
 		CMP		#$A
 		BNE		loc_175164
@@ -2623,7 +2623,7 @@ loc_175195:
 		LDA		_location_type
 		AND		#$FA
 		STA		_location_type
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_1751AA
 		LDA		byte_60B8
 		AND		#$BF
@@ -2642,7 +2642,7 @@ loc_1751AA:
 		JSR		_ppu_disable
 		FARX	_bE_sF
 		FARX	_b5_s9
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_1751E5
 		LDA		byte_2A
 		STA		_players_pos_list
@@ -2708,25 +2708,28 @@ locret_17522C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Is this testing whether we're entering a location?
+;
 sub_17522D:
 		LDA		_blockPlayerInputDuringMap
-		BNE		sub_175229
-		LDA		byte_2C
+		BNE		sub_175229				; TAILCALL - return if player input is blocked
+		LDA		_player_vehicle
 		CMP		#2
-		BEQ		locret_17522C
-		LDA		byte_2A
+		BEQ		locret_17522C			; abort if we're in ramia? sure, we can't enter things when we fly over them
+; copy coordinates?
+		LDA		byte_2A	
 		STA		byte_74
 		LDA		byte_2B
 		STA		byte_75
-		LDA		byte_92
+		LDA		byte_92						; analyze current standing-on tile
 		LDX		#$F
-		CMP		#$A
+		CMP		#$A								; piece of town?
 		BEQ		loc_175292
-		CMP		#$B
+		CMP		#$B								; piece of towne?
 		BEQ		loc_175292
-		CMP		#$C
+		CMP		#$C								; piece of castle?
 		BEQ		loc_1752A1
-		CMP		#$D
+		CMP		#$D								; piece of castle?
 		BEQ		loc_1752A1
 		CMP		#$11
 		BEQ		loc_1752BE
@@ -3425,7 +3428,7 @@ loc_17574B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17574F:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_17577B
 		CMP		#1
 		BNE		loc_175767
@@ -3499,7 +3502,7 @@ sub_1757C0:
 		LDY		byte_2B
 		JSR		sub_176D3A
 		STA		byte_92
-		LDX		byte_2C
+		LDX		_player_vehicle
 		BEQ		loc_1757D2
 		DEX
 		BEQ		loc_175826
@@ -3553,7 +3556,7 @@ loc_17581B:
 		RTS
 loc_17581D:
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		FARX	_bC_s6
 loc_175824:
 		CLC
@@ -3578,7 +3581,7 @@ loc_175838:
 		CMP		#$2F
 		BCS		loc_175818
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		FARX	_bC_s6
 		JSR		_map_music_select_and_load
 		FARX	_bD_s18
@@ -3628,7 +3631,7 @@ loc_17589F:
 		SEC
 		RTS
 loc_1758A1:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BEQ		loc_1758C1
 		LDA		_mapNumber
@@ -3665,10 +3668,10 @@ loc_1758D7:
 		CMP		#$FF
 		BNE		loc_1758F2
 loc_1758DF:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_1758F0
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		FARX	_bC_s31
 		JSR		_map_music_select_and_load
 loc_1758F0:
@@ -3868,7 +3871,7 @@ loc_1759FA:
 
 .not_lancel_special:
 ; if we're on the ship, save the ship's location, I think
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_175A22
 		LDA		_playerMapX
@@ -6424,7 +6427,7 @@ _b6_s1C_idx:			PTR_IDX	$6,_b6_s1C					; $188
 _b6_s1D_idx:			PTR_IDX	$6,_b6_s1D					; $187
 _b6_s1E_idx:			PTR_IDX	$6,_b6_s1E					; $196
 _b6_s1F_idx:			PTR_IDX	$6,_b6_s1F					; $BD
-_b6_s20_player_name_veryfy_idx:	PTR_IDX	$6,_b6_s20_player_name_veryfy	; $19A
+_b6_s20_player_name_verify_idx:	PTR_IDX	$6,_b6_s20_player_name_verify	; $19A
 
 _b7_s8_idx:				PTR_IDX	$7,_b7_s8					; $19
 _b7_sA_sram_test_and_init_idx:	PTR_IDX	$7,_b7_sA_sram_test_and_init	; $162

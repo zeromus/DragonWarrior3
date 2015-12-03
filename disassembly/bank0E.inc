@@ -172,7 +172,7 @@ loc_1580EB:
 		INY
 		JSR		sub_174204
 		LDA		#0
-		STA		byte_2C
+		STA		_player_vehicle
 		FARX	_bC_s32
 		FARX	_bD_s18
 		SYSX	_apu_load,$04
@@ -207,7 +207,7 @@ loc_158144:
 		LDA		_pads+2
 		ORA		#1
 		STA		_pads+2
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#2
 		BNE		loc_158153
 		JMP		sub_1580AC ; TAILCALL
@@ -254,7 +254,7 @@ loc_158181:
 		CPY		#$10
 		BNE		loc_158181
 		LDA		#2
-		STA		byte_2C
+		STA		_player_vehicle
 		SYSX	_apu_load,$0E
 		LDA		#0
 		STA		byte_6C9
@@ -1112,7 +1112,7 @@ loc_1586F5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586FE:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_158706
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
@@ -1163,7 +1163,7 @@ loc_158731:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15874F:
 		JSR		sub_158666
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_158759
 		JSR		sub_1586FE
 loc_158759:
@@ -3876,6 +3876,8 @@ sub_15A2B0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Very safely does ? ? ?
+;
 _bE_sB:
 		TAX
 		LDA		byte_80
@@ -3935,20 +3937,29 @@ loc_15A322:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A325:
+; stash A, and turn into entry in a table of 2 byte entries
 		STA		byte_7E
 		ASL
 		TAX
 		LDA		byte_15A346,X
+
+; save 4MSBits of a table entry
 		LSR
 		LSR
 		LSR
 		LSR
 		STA		byte_7F
+
+; save entire table entry
 		LDA		byte_15A346,X
 		STA		byte_82
+
+; fiddle with entire entry and save that too
 		AND		#$F
 		ORA		#$10
 		STA		byte_471
+
+; read paired table entry and save that also
 		LDA		byte_15A346+1,X
 		STA		byte_470
 		RTS
@@ -6069,7 +6080,7 @@ loc_15B0A9:
 		JSR		sub_15B0D5
 		LDA		#0
 		STA		_blockPlayerInputDuringMap
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		locret_15B0D4
 		SYSX	_apu_load,$0B
@@ -6116,10 +6127,12 @@ loc_15B0F3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Getting in the boat?
+;
 _bE_s25:
 		JSR		_spr_ram_clear_10
 		LDA		#1
-		STA		byte_2C
+		STA		_player_vehicle
 		LDA		byte_60CD
 		AND		#1
 		BEQ		loc_15B112
@@ -6421,7 +6434,7 @@ loc_15B2F5:
 		LDA		#$11
 		RTS
 loc_15B30A:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BEQ		loc_15B318
 		LDX		#$B
 		CMP		#1
@@ -6541,14 +6554,16 @@ _special_maps_actions_handlers_lib:
 ; =============== S U B	R O U T	I N E =======================================
 _map73_special_action:
 		LDA		#4
-		BNE		sub_15B416
+		BNE		sub_15B416 ; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 _map74_special_action:
 		LDA		#$10
-		BNE		sub_15B416
+		BNE		sub_15B416 ; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
+;Tests a bit in the enigmatic byte_60CD and then disables warping
+; 
 _map75_special_action:
 		BIT		byte_60CD
 		BVS		nullsub_20
@@ -6557,10 +6572,16 @@ _map75_special_action:
 		STA		_global_game_flags
 		LDA		#$40
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
+; Sets a bit in the enigmatic byte_60CD
+;
 sub_15B416:
 		ORA		byte_60CD
 		STA		byte_60CD
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 nullsub_20:

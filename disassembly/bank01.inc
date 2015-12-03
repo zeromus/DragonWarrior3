@@ -2071,9 +2071,9 @@ loc_29401C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_294028:
-		LDA		_global_game_flags			; check for Erdrick flag
-		LSR
-		BCS		loc_294065
+		LDA		_global_game_flags
+		LSR													; test _f_Erdrick
+		BCS		loc_294065						; branch down if we're Erdrick
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		CMP		#4

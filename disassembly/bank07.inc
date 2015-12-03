@@ -1582,7 +1582,7 @@ loc_B2985:
 loc_B298D:
 		SYSX	_display_window_ex,$41
 		FARX	_b6_s14_name_entry_screen
-		FARX	_b6_s20_player_name_veryfy
+		FARX	_b6_s20_player_name_verify
 		BNE		loc_B29A1
 		SYSX	_display_window_ex,$58
 		JSR		_pause_or_skip

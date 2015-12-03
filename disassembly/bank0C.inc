@@ -2024,7 +2024,7 @@ _bC_s35:
 		BNE		locret_128D96
 		BIT		byte_60C5
 		BVS		locret_128D96
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_128D96
 		LDA		#>[_players_pos_list]
 		STA		word_6C+1
@@ -2053,7 +2053,7 @@ locret_128D96:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s4:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_128D96
 		LDA		byte_644
 		BEQ		loc_128DE6
@@ -2612,46 +2612,52 @@ loc_129199:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s10:
-		JSR		sub_1293DA
-		BCS		.loc_return_false
+		JSR		_is_location_warpable						; determine whether current location can be warped from
+		BCS		.loc_return_false			; return false if 'unwarpable' was true
 		LDA		_global_game_flags
-		BPL		loc_1291F6
+		BPL		loc_1291F6						; branch if _f_WarpBlock is clear
+; assaram is what employs the _f_WarpBlock bit, so only acknowledge it if in Assaram
 		LDA		_mapNumber
 		CMP		#$C
-		BEQ		.loc_return_false
+		BEQ		.loc_return_false			; return false if we're in Assaram.
 		CMP		#$7A
-		BEQ		.loc_return_false
+		BEQ		.loc_return_false			; return false if we're in Assaram basement
+
 loc_1291F6:
 		JSR		_bC_s20
 		LDA		_world_map_steps_count
-		STA		byte_C5
-		CMP		#$78
-		LDA		#$97
-		BCC		loc_129206
-		LDA		#$3D
+		STA		byte_C5											; probably, storing the current time for a day/night palette tweener?
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT	
+		LDA		#DAYNIGHT_CYCLE_MIDNIGHT		; select approximately midnight?
+		BCC		loc_129206									; branch down if it's before nighttime (IOW, daytime)
+		LDA		#DAYNIGHT_CYCLE_NOON				; select approximately noontime?
 loc_129206:
-		STA		_world_map_steps_count
-		JSR		sub_12923C
+		STA		_world_map_steps_count			; store noon or midnight back in the clock. heh, kind of weird and befuddling but largely pointless
+		JSR		sub_12923C									; probably re-adjust the palette on account of having changed t ime
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; must be related to the lamp of darkness. its testing whether its nighttime first, isnt it?
+; apparently 
+;
 _bC_s11:
-		JSR		sub_1293DA
+		JSR		_is_location_warpable
 		BCS		.loc_return_false
 		LDA		_world_map_steps_count
 		STA		byte_C5
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_129232
-		LDA		#$97
+		LDA		#DAYNIGHT_CYCLE_MIDNIGHT
 		STA		_world_map_steps_count
 		MSGX	_msg_m00,$104	; "A darkness oozed out from..."
 		JSR		_sleep_30
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_bC_s20
-		JSR		sub_12923C
+		JSR		sub_12923C									; probably re-adjust the palette on account of having changed t ime
 		SEC
 		RTS
+
 loc_129232:
 		MSGX	_msg_m00,$102	; "But nothing happens now"
 		FARX	_bE_s33
@@ -2908,57 +2914,72 @@ loc_1293D2:
 		BNE		loc_1293C6
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1293DA:
+; Classifies the current location according to whether you can warp out of it (Wing of Wyvern, Return)
+; Also affects whether the Lamp of Darkness works, oddly. Doesn't that eject you from the location? Yeah....
+;
+_is_location_warpable:
 		LDA		_location_type
 		AND		#2
-		BNE		.loc_return_true0
-		LDA		byte_2C
+		BNE		.loc_return_true0		; returns true if we're in alefgard
+		LDA		_player_vehicle
 		CMP		#1
-		BNE		loc_1293ED
-		BIT		byte_60B8
-		BVC		loc_1293ED
+		BNE		loc_1293ED					; branch if we're not in the ship
+		BIT		byte_60B8						; test a quest flag
+		BVC		loc_1293ED					; branch if quest flag isn't set
 		SEC
-		RTS
+		RTS												; return true
+
 loc_1293ED:
 		LDA		_mapNumber
-		CMP		#$9C
-		BEQ		.loc_return_true0
-		CMP		#$9D
-		BEQ		.loc_return_true0
-		CMP		#$60
-		BEQ		.loc_return_true0
+		CMP		#$9C								
+		BEQ		.loc_return_true0		; return true if phantom ship 1F
+		CMP		#$9D								
+		BEQ		.loc_return_true0		; return true if phantom ship B1
+		CMP		#$60								
+		BEQ		.loc_return_true0		; return true if Samanao town prison basement
 		CMP		#$72
-		BNE		sub_129404
+		BNE		sub_129404					; classify further unless we're New Town Ver.1 (why not the others?)
 		LDA		_global_game_flags
-		BMI		.loc_return_true0
+		BMI		.loc_return_true0		; return true if we're erdrick (this is puzzling logic)
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
+; seems to classify areas as CF=1 if the area's a cave-like area
+; uses annoying logic comparable in size to a plain 256 byte table
+; rejects towers, pyramids
+;
 sub_129404:
-		LDA		byte_9A
-		BEQ		.loc_return_false0
+		LDA		byte_9A								; typically 0 for non-area map
+		BEQ		.loc_return_false0		; so return false
 		LDA		_mapNumber
+
 		CMP		#8
-		BEQ		.loc_return_true0
+		BEQ		.loc_return_true0			; return true for Castle of Zoma 1F
 		CMP		#$2D
-		BCC		.loc_return_false0
+		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$2D (Cave on Promontory B1, first dungeon)
 		CMP		#$3C
-		BCC		.loc_return_true0
+		BCC		.loc_return_true0			; return true for everything less than #$3C (Pyramid 1F)
+
 		CMP		#$58
-		BEQ		.loc_return_true0
+		BEQ		.loc_return_true0			; return true for Baramos's Lair
 		CMP		#$5B
-		BEQ		.loc_return_true0
+		BEQ		.loc_return_true0			; return true for Glitched/Dummied!
 		CMP		#$85
-		BEQ		.loc_return_true0
+		BEQ		.loc_return_true0			; return true for Tedanki crypt basement
 		CMP		#$9F
-		BCC		.loc_return_false0
+		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$9F (Tower of Najima B1)
+
 		CMP		#$A6
-		BEQ		.loc_return_false0
+		BEQ		.loc_return_false0		; return false for whichever spot it is you jump into alefgard from
 		CMP		#$C6
-		BCC		.loc_return_true0
+		BCC		.loc_return_true0			; BCC->JB return true for everything less than #$C6 (dummied, but that region is caves)
 		CMP		#$CF
-		BCC		.loc_return_false0
+		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$CF (Pyramid Golden claw room)
 		CMP		#$D6
-		BCS		.loc_return_false0
+		BCS		.loc_return_false0		; BCS->JAE return false for everything >= #$D6 (Tower of Najima 2F)
+
+; otherwise return true
 .loc_return_true0:
 		SEC
 		RTS
@@ -3159,63 +3180,76 @@ loc_129568:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; calculate some kind of a 0 degree rotation of the player facing, for orthogonality
+;
 sub_129581:
 		LDA		#0
-		BEQ		sub_12958F
+		BEQ		sub_12958F		; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
+; calculate some kind of a clockwise 90 degree rotation of the player facing
+;
 sub_129585:
 		LDA		#1
-		BNE		sub_12958F
+		BNE		sub_12958F		; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
+; calculate some kind of a 180 degree rotation of the player facing
+;
 sub_129589:
 		LDA		#2
-		BNE		sub_12958F
+		BNE		sub_12958F		; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
+; calculate some kind of a counter-clockwise 90 degree rotation of the player facing
+;
 sub_12958D:
 		LDA		#3
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
+; A: value added to current player facing. delta values are then set accordingly
+; 
 sub_12958F:
 		CLC
-		ADC		byte_644
-		AND		#3
-		BEQ		loc_1295AA
-		LSR
-		BEQ		loc_1295A3
-		BCC		loc_1295B1
-		DEC		word_B7+1
+		ADC		byte_644		; add A to playerFacingDir
+		AND		#3					; test 2 bits of it
+		BEQ		loc_1295AA	; branch if facing 0=up
+		LSR								; test rightmost bit
+		BEQ		loc_1295A3	; branch if nothing remains, 1=right
+		BCC		loc_1295B1	; branch if we rotated out a 1, 2=down
+		DEC		word_B7+1		; otherwise it's 3=left: decrement two X pointers
 		DEC		byte_BA
 		DEC		byte_BA
 		RTS
-loc_1295A3:
+loc_1295A3:						; right: increment two X pointers
 		INC		word_B7+1
 		INC		byte_BA
 		INC		byte_BA
 		RTS
-loc_1295AA:
+loc_1295AA:						; up: decrement two Y pointers
 		DEC		byte_B9
 		DEC		byte_BB
 		DEC		byte_BB
 		RTS
-loc_1295B1:
+loc_1295B1:						; down: increment two Y pointers
 		INC		byte_B9
 		INC		byte_BB
 		INC		byte_BB
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; classify 
 sub_1295B8:
 		JSR		sub_129404
 		BCS		locret_1295CC
 		LDA		_mapNumber
-		CMP		#$9F
+		CMP		#$9F							; Tower of Najima B1 (first interior map of proper dungeon?)
 		BCS		locret_1295CC
-		CMP		#$41
+		CMP		#$41							; Aliahan upstairs (first interior map?)
 		BCS		loc_1295CB
-		CMP		#$2D
+		CMP		#$2D							; First exterior map of proper dungeon?
 		BCS		locret_1295CC
 loc_1295CB:
 		CLC
@@ -3270,33 +3304,41 @@ sub_129600:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129610:
-		MSGX	_msg_m00,$168
-		JMP		loc_129745
+		MSGX	_msg_m00,$168		; "The king examines the area at his feet but finds nothing"
+		JMP		.done_run_command_search			; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129616:
-		MSGX	_msg_m00,$11C
+		MSGX	_msg_m00,$11C		; "<name> dives headfirst from the ship into the water"
 		JMP		.but_nothing_could_be_found
 
 ; =============== S U B	R O U T	I N E =======================================
-; should be called _run_command_search but I'll leaveit to cah4e3 to rename
+; should be called _run_command_search but I'll leave it to cah4e3 to rename
 ;
 _bC_s1D:
+; special handling for the ineffectual king
 		SYSX	_display_window,$3E
 		LDA		_global_game_flags
 		AND		#$40
 		BNE		sub_129610
-		FARX	_bD_s26_get_first_live_player_with_no_NM_status		; must be AI to detect which player name to use in "<name> opens the chest" etc.
+
+; figure out who the party leader is, for printing an actor for the search
+		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		STA		byte_CE
 		LDA		#0
 		STA		byte_B9
-		LDA		byte_2C
+
+; test $_player_vehicle.0.. indicating whether player is on the ship
+		LDA		_player_vehicle
 		LSR
 		BCS		sub_129616
+
+; this can be handled 2 different ways depending on byte_9A, but I don't know what it means yet
 		LDA		byte_9A
 		BNE		loc_12963D
 		JMP		loc_1297EA
+
 loc_12963D:
 		JSR		sub_129600
 		CMP		#3
@@ -3364,10 +3406,10 @@ loc_129698:
 		STA		_msg_number_parameter_F8+1
 		JSR		_sram_b0_s1B_players_gold_add	; probably the result of getting gold from a chest
 		MSGX	_msg_m00,$026
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1296BD:
 		MSGX	_msg_m00,$149
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1296C3:
 		LDA		byte_60C5
 		BMI		loc_1296BD
@@ -3384,13 +3426,13 @@ loc_1296D2:
 loc_1296DF:
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1296E8:
 		LDA		#$4B
 		STA		_tmp_ptrB4
 		JSR		loc_12986F
 		FARX	_b6_s18
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1296F5:
 		LDA		_tmp_ptrB4
 		PHA
@@ -3426,7 +3468,7 @@ loc_1296F5:
 		LDA		byte_129B25,X
 		INX
 		CMP		_playerMapY
-		BEQ		.switch_pass_1 ; pass#1 if the search succeeded
+		BEQ		.switch_pass_1			; pass#1 if the search succeeded
 
 ; test y coordinate again? pass if it had the same 7 LSBits?
 		AND		#$7F
@@ -3437,7 +3479,7 @@ loc_1296F5:
 		AND		#$3F
 		CMP		_playerMapY
 		BNE		.no_find_switch1
-		JMP		.switch_pass_3	;	pass#3
+		JMP		.switch_pass_3			; pass#3
 
 .no_find_switch3:
 		INX
@@ -3454,7 +3496,7 @@ loc_1296F5:
 		MSGX	_msg_m00,$147  ; "<name> examines the ground at <B0> feet"
 .but_nothing_could_be_found:
 		MSGX	_msg_m00,$146 ; "But nothing can be found!"
-loc_129745:
+.done_run_command_search:
 		FARX	_bE_s33
 		RTS
 
@@ -3516,7 +3558,7 @@ loc_12978A:
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		FARX	_bD_s19
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1297B7:
 		LDA		byte_644
 		BNE		loc_129801
@@ -3524,7 +3566,7 @@ loc_1297B7:
 		LDA		#$3D
 loc_1297C1:
 		JSR		_wrap_msg_m00_arg1
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_1297C7:
 		LDA		byte_644
 		CMP		#2
@@ -3543,45 +3585,51 @@ loc_1297D9:
 		LDA		#$4A
 		STA		_tmp_ptrB4
 		JMP		loc_12986B
+
+; for the overworld, read a very small "table" of one entry, seemingly. the leaf of the world tree is there
 loc_1297EA:
 		LDX		#$68
 loc_1297EC:
-		LDA		byte_129B25,X
+		LDA		byte_129B25,X		; load a target X coord
 		INX
-		CMP		byte_2A
+		CMP		byte_2A					; test against player pos X
 		BNE		loc_1297FB
-		LDA		byte_129B25,X
-		CMP		byte_2B
-		BEQ		loc_12980E
+		LDA		byte_129B25,X		; load a target Y coord
+		CMP		byte_2B					; test against player pos Y
+		BEQ		loc_12980E			; branch if matched
 loc_1297FB:
-		INX
+		INX		; step through 2 more bytes, meaning uncertain
 		INX
 		CPX		#$6B
-		BCC		loc_1297EC
+		BCC		loc_1297EC			; well theres only one item here so we never loop
+; nothing found just searching the overworld:
 loc_129801:
-		MSGX	_msg_m00,$147
+		MSGX	_msg_m00,$147		; "<name> examines the ground at herhis feet."
 loc_129804:
 		JMP		.but_nothing_could_be_found
+
 .switch_pass_3:
 		DEX
 		LDA		byte_129B25,X
 		ASL
 		ROR		byte_B9
+; search for "leaf of the world tree" lands here. X is prepared with some kind of magical value amenable to the following logic, must be a replacement tile number?? senseless on worldmap.
 loc_12980E:
 		INX
 		LDA		byte_129B25,X
 		PHA
-		AND		#$7F
+		AND		#$7F										; remove the 'equip' bit from the item, perhaps?
 		STA		_tmp_ptrB4
 		CMP		#$79
-		BNE		loc_12982B
-		LDA		byte_60CD		; test quest flags in byte_60CD
+		BNE		loc_12982B							; leaf of the world tree branches here...
+		LDA		byte_60CD								; test all quest flags in byte_60CD.. ? what?
 		CMP		#$FF
 		BNE		loc_129827
-		LDA		_global_game_flags			; test erdrick class change flag
+		LDA		_global_game_flags			; test _f_WarpBlock, oddly (once we thought this was erdrick test but it's not) ?  this is all weird
 		BPL		loc_12982B
+
 loc_129827:
-		LDA		#$FF
+		LDA		#$FF										; zero out the received item
 		STA		_tmp_ptrB4
 loc_12982B:
 		TXA
@@ -3594,14 +3642,14 @@ loc_12982B:
 		MSGX	_msg_m00,$147	; "<name> examines the ground at <B0> feet"
 		PLA
 		STA		word_4
-		PLA
-		BMI		loc_12984F
+		PLA														; restore the saved found item, I think
+		BMI		loc_12984F							; analyze equip bit? what the hell is this even good for
 		ASL		byte_B9
 		BCS		loc_12985A
 		JSR		loc_129A20
 		BCC		loc_129868
 loc_129847:
-		LDA		_tmp_ptrB4		; sets up to search a function pointer table
+		LDA		_tmp_ptrB4							; sets up to search a function pointer table
 		JSR		sub_129A62
 		JMP		loc_129856
 loc_12984F:
@@ -3748,14 +3796,14 @@ loc_129943:
 		STA		byte_D2
 		MSGX	_msg_m00,$14B
 loc_129950:
-		JMP		loc_129745
+		JMP		.done_run_command_search
 loc_129953:
 		LDA		_tmp_ptrB4
 		CMP		#$7A
 		BNE		loc_129961
 		LDA		byte_60CD
 		ORA		#8
-		STA		byte_60CD
+		STA		byte_60CD				; set a newtown flag...
 loc_129961:
 		LDA		_tmp_ptrB4
 		AND		#$7F
@@ -3769,8 +3817,8 @@ loc_12996F:
 		ROL
 		DEX
 		BNE		loc_12996F
-		ORA		byte_60CE
-		STA		byte_60CE
+		ORA		_q_OrbsCollected
+		STA		_q_OrbsCollected
 		JSR		_bC_s23
 		RTS
 loc_12997D:
@@ -3793,10 +3841,12 @@ locret_12999B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Munge orbs and newtown flags in an unfathomable way
+;
 _bC_s23:
 		LDY		#6
 		LDX		#0
-		LDA		byte_60CE
+		LDA		_q_OrbsCollected
 loc_1299A3:
 		LSR
 		BCC		loc_1299A7
@@ -3853,7 +3903,7 @@ _bC_s1F:
 		BNE		loc_1299FD
 		LDA		byte_60CD
 		CMP		#$FF
-		BNE		loc_1299FD
+		BNE		loc_1299FD					; test all newtown flags?
 		LDA		_global_game_flags
 		BMI		loc_1299FD
 		INX
@@ -3938,7 +3988,9 @@ sub_129A54:
 		SEC
 		RTS
 
-; performs a complete search using sub_129A54 
+; =============== S U B	R O U T	I N E =======================================
+; performs a complete search using sub_129A54
+;
 sub_129A62:
 		LDX		#$51
 		JSR		sub_129A54
@@ -4081,7 +4133,7 @@ sub_129AD2:
 		BNE		sub_129A62		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $80 of quest flag byte_60BA
+; tests bit $80 of quest flag byte_60B6
 ;
 sub_129AD6:
 		LDA		byte_60B6
@@ -4089,6 +4141,8 @@ sub_129AD6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; seems to check whether an orb has been acquired
+;
 sub_129ADB:
 		LDA		_tmp_ptrB4
 		AND		#$7F
@@ -4181,7 +4235,11 @@ byte_129B5D:
 		.BYTE	$85,$04,$45,$64		; Tedanki basement
 		.BYTE	$13,$12,$4D,$63		;	Luzami
 		.BYTE	$57,$06,$45,$4E		; Isis castle 3F
-		.BYTE	$7B,$4C,$E9,$1C		; Dummied (this value should not searched, by means of hardcoded loop bounds)
+; the search usually ends here
+
+; but I think only when we're in the overworld, this area is searched differently by weird code.
+; for some odd reason, we 'search' one entry here, but its an oddly-formed record
+		.BYTE	$7B,$4C,$E9,$1C
 
 ; =============== S O M E T H I N G =================================================
 
@@ -4191,6 +4249,7 @@ off_129B91:
 ; =============== T A B L E =================================================
 ; A dictionary for function pointers keyed to special values
 ; some of these just bounce to searches for other values?
+; I think it's some kind of award-only-once check for several kinds of items
 ;
 byte_129B93:
 		.BYTE	$10
@@ -4236,7 +4295,7 @@ byte_129B93:
 		.BYTE	$76
 		.WORD	sub_129AD6
 		.BYTE	$77
-		.WORD	sub_129ADB
+		.WORD	sub_129ADB ; first orb, notably, and see there's 6
 		.BYTE	$78
 		.WORD	sub_129ADB
 		.BYTE	$79
@@ -4250,7 +4309,7 @@ byte_129B93:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s22:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		EOR		#1
 		CLC
 		ADC		#$5D	; "<name> sets the <item> afloat on the ocean" or "sets the <item> on the ground"
@@ -5148,53 +5207,74 @@ loc_12A1F6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Handles playing the Echoing Flute
+;
 _bC_sC:
 		LDA		_location_type
-		BEQ		loc_12A239
-		LDA		byte_60CE
-		LDX		#6
+		BEQ		.flute_no_echo				; branch if we're in the overworld
+		LDA		_q_OrbsCollected							; load bitset of acquired orbs, we'll shift it around to test the orb for this area
+
+		LDX		#6										; setup a six times loop through _orb_areas_tbl
 loc_12A221:
-		LDY		byte_12A261-1,X
-		CPY		_mapNumber
-		BEQ		loc_12A247
+		LDY		_orb_areas_tbl-1,X
+		CPY		_mapNumber						; did we match the current map?
+		BEQ		.orb_area
 		LSR
 		DEX
 		BNE		loc_12A221
-		LDY		#$18
+
+; special: if it's house of pirates (theres two areas for this orb where the flute will echo, the building and the basement)
+		LDY		#$18 ; House of Pirates
 		CPY		_mapNumber
-		BNE		loc_12A239
-		LDA		byte_60CE
+		BNE		.flute_no_echo
+		LDA		_q_OrbsCollected
 		AND		#2
-		BEQ		loc_12A259
-loc_12A239:
+		BEQ		.flute_echo						; branch straight to echo if we haven't collected this orb yet
+; fall through to the dud if we have collected it
+
+; play the dud music, I would assume
+.flute_no_echo:
 		SYSX	_apu_load,$1E
 		FARX	_bD_s22_se_wait_and_map_music_start
 		MSGX	_msg_m00,$10D
 		JSR		_pause_or_skip
 		SEC
 		RTS
-loc_12A247:
-		LSR
-		BCS		loc_12A239
-		CPX		#4
-		BNE		loc_12A259
-		LDY		byte_60CD
+
+; matched a map in the table. see whether the orb's still here
+.orb_area:
+		LSR													; test the rotated bit from _q_OrbsCollected
+		BCS		.flute_no_echo				; if it's set, we've collected it--theres no echo
+
+; orb's still there...
+		CPX		#4					
+		BNE		.flute_echo						; test for House of Pirates again
+		LDY		byte_60CD							; meaning unknown
 		INY
-		BNE		loc_12A239
-		LDA		_global_game_flags
-		BMI		loc_12A239
-loc_12A259:
+		BNE		.flute_no_echo				; branch if byte_60CD was anything but #$FF
+		LDA		_global_game_flags		; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
+		BMI		.flute_no_echo				; branch if it was set
+
+.flute_echo:
 		SYSX	_apu_load,$1D
 		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
-byte_12A261:
-		.BYTE	$15,$BD,$17,$75,$8B,$20
+
+_orb_areas_tbl:	; a quick list of areas with orbs
+		.BYTE	$15	; Tedanki
+		.BYTE	$BD ; Navel of the Earth B3
+		.BYTE	$17 ; Jipang
+		.BYTE	$75 ; New Town Ver.4
+		.BYTE	$8B ; House of Pirates B1, treasure
+		.BYTE	$20 ; Silver Orb shrine (near Necrogond)
 
 ; =============== S U B	R O U T	I N E =======================================
+; Something dealing with the 6 orbs
+;
 _bC_s26:
 		LDA		_mapNumber
-		CMP		#$25
+		CMP		#$25					; Ramia's egg room
 		BNE		loc_12A281
 		LDX		#$C
 loc_12A26F:
@@ -5252,8 +5332,14 @@ loc_12A29D:
 		FARX	_b6_s1A
 		SEC
 		RTS
+
 byte_12A2CB:
-		.BYTE	  7,  4,  3,  6, $B,  6,  3, $A, $B, $A,  7, $C
+		.BYTE	  $07,$04
+		.BYTE	  $03,$06
+		.BYTE	  $0B,$06
+		.BYTE	  $03,$0A
+		.BYTE	  $0B,$0A
+		.BYTE	  $07,$0C
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2B:
@@ -5288,7 +5374,7 @@ loc_12A308:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A312:
 		FARX	_bE_sD
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_12A326
 		LDX		#[_bC_s16_idx-_sys_idx_lib]>>1
 		STX		word_3C
@@ -7212,7 +7298,7 @@ off_12AFEE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B01C:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_12B040
 		LDA		byte_60C9
 		AND		#$3F
@@ -7231,7 +7317,7 @@ locret_12B040:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B041:
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_12B040
 		LDA		byte_AC
 		AND		#$1F
@@ -7301,7 +7387,7 @@ locret_12B0AF:
 sub_12B0B0:
 		LDA		byte_9A
 		BNE		locret_12B0AF
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		locret_12B0AF
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
@@ -7378,7 +7464,7 @@ _bC_s29:
 		LDA		byte_2B
 		CMP		#$48
 		BNE		locret_12B163
-		LDA		byte_2C
+		LDA		_player_vehicle
 		CMP		#1
 		BNE		locret_12B163
 		JSR		_wrap_bE_sD_wnd3E
@@ -7428,6 +7514,8 @@ sub_12B189:
 		BEQ		sub_12B1A2
 
 ; =============== S U B	R O U T	I N E =======================================
+; wraps _bE_sB with an argument of u8[$8E]=A=0
+;
 _bC_s20:
 		LDA		#0
 		STA		byte_8E
@@ -7494,7 +7582,7 @@ sub_12B200:
 		BNE		locret_12B21A
 		LDA		byte_60CD
 		AND		#$20
-		BNE		locret_12B21A
+		BNE		locret_12B21A						; test _q_SamanaoDone
 		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_12B21B
@@ -8652,7 +8740,7 @@ sub_12BAB8:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BAC3:
 		LDY		#$18
-		LDA		byte_2C
+		LDA		_player_vehicle
 		BNE		loc_12BA67
 		LDA		#$A
 		STA		byte_2D
