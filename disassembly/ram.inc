@@ -57,10 +57,13 @@ _rand_seed:
 		.BYTE	0,0
 _ppuByteToWrite:
 		.BYTE	0
-byte_1F: ; ppuDMAList{low}
+;----------------------------------------------
+; these are used as a u16 pointer for NT target operations (put into ppu dma)
+byte_1F:
 		.BYTE	0
-byte_20: ; ppuDMAList{high}
+byte_20:
 		.BYTE	0
+;----------------------------------------------
 _tmp21:
 		.BYTE	0,0,0
 byte_24:
@@ -1167,15 +1170,15 @@ byte_60B6:
 ;----------------------------------------------
 ; misc quest flag bits
 ; $80 - change class to Erdrick
-;	$40 - ?
+;	$40 - This flag is set while you actually ARE king
 ;	$20 - ?
 ;	$10 - one of the switches in Pyramid 3F
 ;	$08 - one of the switches in Pyramid 3F
 ;	$04 - set if in battle mode (does not clear after death in battle!)
-;	$02 - set after you accept the Golden King's Crown and become a King
+;	$02 - set after you accept the Golden King's Crown and become a King (is this a once-only bit? see $40 bit for the repeated toggle)
 ;	$01 - ?
 ;
-_global_game_flags:
+_global_game_flags: ; 60b7
 		.BYTE	0
 ;----------------------------------------------
 byte_60B8:
@@ -1777,6 +1780,10 @@ byte_6D40:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+; collision flags for tile types, somehow. set set all to 0 and no tiles collide, set to ff and all tiles collide
+; besides this, some values can make tiles turn into stairs
+; size unknown
 byte_6DE0:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0
@@ -1847,6 +1854,12 @@ byte_6E00:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+;----------------------------------------------
+; it looks like there's a "tileset" here:
+; for each tile type, there are 4 BG pattern names to use for it when rendering a map (worldmap or areamap) to NT
+; It's not clear how big it is.
+; It's likely that flip or palette flags follow it.
 byte_7200:
 		.BYTE	0
 byte_7201:
@@ -1889,7 +1902,13 @@ byte_7320:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-byte_7400: ;"areaTileMap"
+
+;----------------------------------------------
+;
+; TODO - confirm how large this is, but it probably goes all the way to $8000
+; TODO - remove all these other pointers
+; I'm going to switch from calling these locations, to calling them areas. locations seems more appropriate to a higher conceptual level, if it exists.
+_area_tilemap:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

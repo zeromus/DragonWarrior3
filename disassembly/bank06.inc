@@ -2847,7 +2847,7 @@ loc_9BFC1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BFC3:
+sub_9BFC3: ;ZING
 		LDA		byte_60B6
 		ORA		#$80
 		STA		byte_60B6

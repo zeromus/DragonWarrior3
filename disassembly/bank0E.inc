@@ -190,6 +190,8 @@ sub_15811B:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; something about trying to handle player input on map
+; launches command menu, among other things
+;
 sub_15812C:
 		LDA		byte_6BD
 		AND		#1
@@ -208,18 +210,22 @@ loc_158144:
 		LDA		byte_2C
 		CMP		#2
 		BNE		loc_158153
-		JMP		sub_1580AC
+		JMP		sub_1580AC ; TAILCALL
+
+; consider launching the command menu
 loc_158153:
 		LDA		byte_2A
 		CMP		byte_9E
-		BNE		sub_15819F
+		BNE		_run_command_menu	; TAILCALL
 		LDA		byte_2B
 		CMP		byte_9F
-		BNE		sub_15819F
+		BNE		_run_command_menu	; TAILCALL
 		LDA		_location_type
-		BNE		sub_15819F
-		JSR		sub_1580A1
+		BNE		_run_command_menu	; TAILCALL - branch to run command window if not overworld
+		JSR		sub_1580A1	; but we're in the overworld
 		JSR		_bE_s32
+
+; setup a loop over _spr_ram
 		LDX		#$10
 loc_15816B:
 		LDA		_spr_ram,X
@@ -231,6 +237,8 @@ loc_158172:
 		INX
 		INX
 		BNE		loc_15816B
+
+; munge _spr_ram more
 loc_158178:
 		LDA		_spr_ram+3,X
 		CMP		#$80
@@ -253,7 +261,7 @@ loc_158181:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15819F:
+_run_command_menu:
 		LDA		#$FF
 		STA		byte_8E
 		JSR		_bE_sD
@@ -261,54 +269,63 @@ sub_15819F:
 		SYSX	_apu_load,$85
 		SYSX	_display_window,$14
 		CMP		#$FF
-		BNE		loc_1581B8
-		LDA		#3
-		JMP		_bE_sB
-loc_1581B8:
+		BNE		.check_command_selection
+		LDA		#3					; close the menu?
+		JMP		_bE_sB			; TAILCALL
+
+.check_command_selection:
 		CMP		#0
-		BEQ		sub_1581E1
+		BEQ		.command_selection_talk		; TAILCALL
 		CMP		#1
-		BEQ		loc_1581D0
+		BEQ		.command_selection_spell		; TAILCALL
 		CMP		#2
-		BEQ		loc_1581D4
+		BEQ		.command_selection_status		; TAILCALL
 		CMP		#3
-		BEQ		loc_1581D7
+		BEQ		.command_selection_item		; TAILCALL
 		CMP		#5
-		BEQ		loc_1581DE
-		FARX	_bC_s1D
+		BEQ		.command_selection_equip		; TAILCALL
+		FARX	_bC_s1D				; search
 		RTS
-loc_1581D0:
-		FARX	_b0_s5B_non_battle_mode_spell_cast
+
+.command_selection_spell:
+		FARX	_b0_s5B_non_battle_mode_spell_cast	; should probably be renamed orthogonally: _run_command_spell
 		RTS
-loc_1581D4:
-		JMP		sub_158377
-loc_1581D7:
+
+.command_selection_status:
+		JMP		_run_command_status
+
+.command_selection_item:
 		FARX	_b0_s5D
 		FARX	_b0_s50
 		RTS
-loc_1581DE:
-		JMP		sub_158409
+
+.command_selection_equip:
+		JMP		_run_command_equip
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1581E1:
+.command_selection_talk:
 		LDA		_mapNumber
-		CMP		#$F
-		BNE		sub_158203
+		CMP		#$F						; test for lancel
+		BNE		_spell_talk_usual		; TAILCALL to usual handler
+
+; special handling for lancel: test position and do other weird stuff
 		LDA		_playerMapY
 		CMP		#3
-		BNE		sub_158203
+		BNE		_spell_talk_usual
 		LDA		_players_pos_list+3
 		AND		#3
-		CMP		byte_644
-		BEQ		sub_158203
+		CMP		byte_644		; reference playerFacingDir
+		BEQ		_spell_talk_usual	; TAILCALL
 		STA		byte_644
-		JSR		sub_158203
+		JSR		_spell_talk_usual	; TAILCALL
 		LDA		#0
 		STA		byte_644
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158203:
+; Normal handler for Command:Talk
+;
+_spell_talk_usual:
 		LDA		_playerMapX
 		STA		word_6
 		LDA		_playerMapY
@@ -527,13 +544,17 @@ locret_158373:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158377:
-		BIT		_global_game_flags		; check for wearing the King's shoes
-		BVC		loc_158385
+; Main handler for the STATUS command
+;
+_run_command_status:
+; special logic for the king
+		BIT		_global_game_flags
+		BVC		.command_status_usual
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$166	; "It is said that long ago the king was wery powerful"
-		JMP		_bE_s33
-loc_158385:
+		JMP		_bE_s33	; TAILCALL
+
+.command_status_usual:
 		SYSX	_display_window,$1E
 		CMP		#$FF
 		BEQ		loc_158374
@@ -603,13 +624,15 @@ _bE_s33:
 		JMP		sub_1580A1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_158409:
+_run_command_equip:
+; special logic for the king
 		BIT		_global_game_flags
-		BVC		loc_158417
+		BVC		.equip_command_usual
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$165	; "The king is already wearing the royal robes"
-		JMP		_bE_s33
-loc_158417:
+		JMP		_bE_s33		; tailcall
+
+.equip_command_usual:
 		SYSX	_display_window,$24
 		CMP		#$FF
 		BNE		loc_158421
@@ -5820,14 +5843,14 @@ _bE_s1D_get_map_buf_end_ptr:
 		LDA		_mapHeight
 		LDX		#word_6C
 		JSR		_mul16_to_8
-		LDA		#<[byte_7400-1]
-		LDY		#>[byte_7400-1]
+		LDA		#<[_area_tilemap-1]
+		LDY		#>[_area_tilemap-1]
 		JSR		_add16_to_16
-;		LDA		#<[byte_7400-1]
+;		LDA		#<[_area_tilemap-1]
 ;		CLC
 ;		ADC		word_6C
 ;		STA		word_6C
-;		LDA		#>[byte_7400-1]
+;		LDA		#>[_area_tilemap-1]
 ;		ADC		word_6C+1
 ;		STA		word_6C+1
 		RTS
@@ -5841,8 +5864,8 @@ _bE_s20_decode_map_ptr_to_XY:
 		LDA		word_6C+1
 		PHA
 		LDX		#word_6C
-		LDY		#>[byte_7400]
-		LDA		#<[byte_7400]
+		LDY		#>[_area_tilemap]
+		LDA		#<[_area_tilemap]
 		JSR		_sub16_from_16		; remove buffer base #$7400
 		LDA		_mapWidth
 		JSR		_div16_to_8			; divide by width
@@ -6612,9 +6635,9 @@ locret_15B481:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s2F:
-		LDA		#<[byte_7400]
+		LDA		#<[_area_tilemap]
 		STA		word_6C
-		LDA		#>[byte_7400]
+		LDA		#>[_area_tilemap]
 		STA		word_6C+1
 		LDX		#0
 loc_15B48C:
@@ -6799,9 +6822,9 @@ loc_15B58F:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s16:
 		JSR		_bE_s1D_get_map_buf_end_ptr
-		LDA		#<[byte_7400]
+		LDA		#<[_area_tilemap]
 		STA		word_6E
-		LDA		#>[byte_7400]
+		LDA		#>[_area_tilemap]
 		STA		word_6E+1
 		LDA		#0
 		STA		word_3C
@@ -6941,7 +6964,7 @@ _mapCC_special_action:
 		LDX		#$B
 		LDY		#$13
 		LDA		#5
-		JMP		sub_177CC8
+		JMP		_areamap_SetTileXY
 
 ; =============== S U B	R O U T	I N E =======================================
 _mapC3_special_action:

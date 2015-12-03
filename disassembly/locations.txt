@@ -6,7 +6,7 @@ $04 - Final Key Shrine
 $05 - ##DUMMY##
 $06 - Samanao
 $07 - Brecconaly	
-$08 - Castle of Zoma
+$08 - Castle of Zoma 1F
 $09 - Reeve
 $0A - Portoga Town
 $0B - Noaniels (normally asleep; must be wakened by another flag)
@@ -57,7 +57,7 @@ $37 - Cave Southeast of Samanao
 $38 - Cave Northwest of Tantegel
 $39 - Cave Southwest of Tantegel
 $3A - Tunnel to Rimuldar..
-$3B - Pyramid
+$3B - Pyramid 1F
 $3C - Tower of Najima 1F
 $3D - Tower of Garuna 1F
 $3E - Tower of Arp 1F
