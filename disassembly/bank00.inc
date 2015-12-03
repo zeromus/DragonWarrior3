@@ -6318,7 +6318,7 @@ loc_AF92:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item23_use:
+_item08_water_blaster_use:
 		LDA		_playerMapX
 		STA		word_4+1
 		LDA		_playerMapY
@@ -6365,7 +6365,7 @@ loc_AFD8:
 		LDA		word_6
 		AND		#$1F
 		TAX
-		LDA		#$70
+		LDA		#$70	; "C'mon! Stop that!"
 		LDY		byte_B006,X
 		BEQ		loc_AFF6
 		DEY
@@ -6561,7 +6561,7 @@ _items_use_lib:
 		.BYTE	$53
 		.WORD	_item22_use
 		.BYTE	$5B
-		.WORD	_item23_use
+		.WORD	_item08_water_blaster_use
 		.BYTE	$5C
 		.WORD	_item24_use
 		.BYTE	$59
