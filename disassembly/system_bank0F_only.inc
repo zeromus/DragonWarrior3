@@ -2193,9 +2193,9 @@ _mdec_ReadClearTileAndFill:
 
 		PHA   ; stash the clear tile
 ; set ptr to tilemap dest ptr
-		LDA		#<[byte_7400]
+		LDA		#<[_area_tilemap]
 		STA		word_72
-		LDA		#>[byte_7400]
+		LDA		#>[_area_tilemap]
 		STA		word_72+1
 
 		PLA   ; restore the clear tile
@@ -2884,19 +2884,25 @@ sub_177CBC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177CC8:
+; A: new tile value (5 bits)
+; X: target location map X coordinate
+; Y: target location map Y coordinate
+;
+_areamap_SetTileXY:
 		PHA
-		JSR		sub_177CD6
-		AND		#$E0
-		STA		(word_6),Y
+		JSR		_areamap_ReadTileXY
+		AND		#$E0									; mask out the low 5 bits
+		STA		(word_6),Y						;	store it back in preparation for ORing in the new tile value
 		PLA
 		ORA		(word_6),Y
 		STA		(word_6),Y
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177CD6:
-		TXA
+; 
+;
+_areamap_ReadTileXY:
+		TXA									; stash the X coordinate
 		PHA
 		LDA		_mapWidth
 		STA		word_6
@@ -2904,17 +2910,17 @@ sub_177CD6:
 		STA		word_6+1
 		TYA
 		LDX		#word_6
-		JSR		_mul16_to_8
+		JSR		_mul16_to_8		; using word_6, multiply Y by map width
 		LDA		#0
 		LDY		#byte_74
 		LDX		#word_6
-		JSR		_add16_to_16
-		PLA
+		JSR		_add16_to_16	;	adjust to a pointer inside _area_tilemap ($7400 )
+		PLA									; restore the X coordinate and incorporate into pointer
 		LDY		#0
 		LDX		#word_6
 		JSR		_add16_to_16
 		LDY		#0
-		LDA		(word_6),Y
+		LDA		(word_6),Y		; finally read the value
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

@@ -524,7 +524,7 @@ _print_char:
 		JMP		_ppu_queue_tile
 
 ; =============== S U B	R O U T	I N E =======================================
-; calculates an NT addr into u16_1f from u16_4 based on current scroll parameters
+; calculates an NT addr into u16[$1f] from u16[4] based on current scroll parameters
 ; and outputs a good PPU address at $1F-$20
 ;
 _ppu_calc_nt_offset:
@@ -2687,9 +2687,9 @@ _map_music_select_and_load:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175219:
-		LDA		#>[byte_7400]
+		LDA		#>[_area_tilemap]
 		STA		word_6C+1
-		LDA		#<[byte_7400]
+		LDA		#<[_area_tilemap]
 		STA		word_6C
 		RTS
 
@@ -3057,7 +3057,7 @@ loc_175488:
 		FARX	_bC_s37
 		LDX		_playerMapX
 		LDY		_playerMapY
-		JSR		sub_177CC8
+		JSR		_areamap_SetTileXY
 loc_1754A7:
 		LDA		#$FF
 		PHA

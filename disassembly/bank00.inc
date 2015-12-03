@@ -3918,8 +3918,10 @@ byte_9E5C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s5B_non_battle_mode_spell_cast:
+; special logic for the king
 		BIT		_global_game_flags
-		BVC		_non_battle_mode_spell_cast
+		BVC		_spell_command_usual	; TAILCALL to usual handler
+; if king display error message:
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$164	; "The king cannot use that spell"
 
@@ -3947,7 +3949,7 @@ _exit_and_clear_8E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_non_battle_mode_spell_cast:
+_spell_command_usual:
 		LDA		#$29
 		JSR		_wnd_safe
 		CMP		#$FF
