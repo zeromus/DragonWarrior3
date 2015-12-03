@@ -3282,8 +3282,6 @@ loc_177F24:
 		PHA
 		LDA		(word_6C),Y
 		AND		#1
-		BEQ		loc_177F5F		; redundant code
-loc_177F5F:
 		PLA
 		TAY
 loc_177F61:
@@ -3306,7 +3304,6 @@ loc_177F78:
 		STA		word_6
 		PLA
 		JMP		_mmc1_prg_set
-_unused_2:
-		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+
 _debug_flags:
 		.BYTE	$FF
