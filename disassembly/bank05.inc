@@ -1,22 +1,14 @@
 
 		ORG $8000
 
-_b5_s3_ptr:
-		.WORD	_b5_s3
-_b5_s4_ptr:
-		.WORD	_b5_s4
-_b5_s5_mirror_of_ra_trigger_on_ptr:
-		.WORD	_b5_s5_mirror_of_ra_trigger_on
-_b5_s7_ptr:
-		.WORD	_b5_s7
-_b5_s8_ptr:
-		.WORD	_b5_s8
-_b5_s9_ptr:
-		.WORD	_b5_s9
-_b5_sA_ptr:
-		.WORD	_b5_sA
-_b5_sB_ppu_font_load_ptr:
-		.WORD	_b5_sB_ppu_font_load
+		PTR_IDX		_b5_s3
+		PTR_IDX		_b5_s4
+		PTR_IDX		_b5_s5_mirror_of_ra_trigger_on
+		PTR_IDX		_b5_s7
+		PTR_IDX		_b5_s8
+		PTR_IDX		_b5_s9
+		PTR_IDX		_b5_sA
+		PTR_IDX		_b5_sB_ppu_font_load
 
 _b5_d0_world_map_data:
 		.WORD	byte_8021A
@@ -2719,9 +2711,9 @@ _b5_s5_mirror_of_ra_trigger_on:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$10
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		ORA		#$20
-		STA		byte_60CD		; set _q_SamanaoDone
+		STA		_global_flags_array.byte18		; set _q_SamanaoDone
 		JSR		sub_177CFC
 		LDA		#$F
 		STA		byte_7464

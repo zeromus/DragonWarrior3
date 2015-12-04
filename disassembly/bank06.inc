@@ -1,58 +1,32 @@
 
 		ORG $8000
 
-_b6_s6_ptr:
-		.WORD	_b6_s6
-_b6_s8_world_map_pal_update_ptr:
-		.WORD	_b6_s8_world_map_pal_update
-_b6_d9_world_map_step_daytime_list_ptr:
-		.WORD	_b6_d9_world_map_step_daytime_list
-_b6_dA_world_pal_ofs_list_ptr:
-		.WORD	_b6_dA_world_pal_ofs_list
-_b6_dB_world_map_palette_lib_ptr:
-		.WORD	_b6_dB_world_map_palette_lib
-_b6_sC_ptr:
-		.WORD	_b6_sC
-_b6_sD_ptr:
-		.WORD	_b6_sD
-_b6_sE_ptr:
-		.WORD	_b6_sE
-_b6_sF_ptr:
-		.WORD	_b6_sF
-_b6_s10_ptr:
-		.WORD	_b6_s10
-_b6_s11_ptr:
-		.WORD	_b6_s11
-_b6_s12_sleeping_willage_trigger_ptr:
-		.WORD	_b6_s12_sleeping_willage_trigger
-_b6_s13_ptr:
-		.WORD	_b6_s13
-_b6_s14_name_entry_screen_ptr:
-		.WORD	_b6_s14_name_entry_screen
-_b6_s15_ptr:
-		.WORD	_b6_s15
-_b6_s16_ptr:
-		.WORD	_b6_s16
-_b6_s17_ptr:
-		.WORD	_b6_s17
-_b6_s18_ptr:
-		.WORD	_b6_s18
-_b6_s19_ptr:
-		.WORD	_b6_s19
-_b6_s1A_ptr:
-		.WORD	_b6_s1A
-_b6_s1B_ptr:
-		.WORD	_b6_s1B
-_b6_s1C_ptr:
-		.WORD	_b6_s1C
-_b6_s1D_ptr:
-		.WORD	_b6_s1D
-_b6_s1E_ptr:
-		.WORD	_b6_s1E
-_b6_s1F_ptr:
-		.WORD	_b6_s1F
-_b6_s20_player_name_verify_ptr:
-		.WORD	_b6_s20_player_name_verify
+		PTR_IDX		_b6_s6
+		PTR_IDX		_b6_s8_world_map_pal_update
+		PTR_IDX		_b6_d9_world_map_step_daytime_list
+		PTR_IDX		_b6_dA_world_pal_ofs_list
+		PTR_IDX		_b6_dB_world_map_palette_lib
+		PTR_IDX		_b6_sC
+		PTR_IDX		_b6_sD
+		PTR_IDX		_b6_sE
+		PTR_IDX		_b6_sF
+		PTR_IDX		_b6_s10
+		PTR_IDX		_b6_s11
+		PTR_IDX		_b6_s12_sleeping_willage_trigger
+		PTR_IDX		_b6_s13
+		PTR_IDX		_b6_s14_name_entry_screen
+		PTR_IDX		_b6_s15
+		PTR_IDX		_b6_s16
+		PTR_IDX		_b6_s17
+		PTR_IDX		_b6_s18
+		PTR_IDX		_b6_s19
+		PTR_IDX		_b6_s1A
+		PTR_IDX		_b6_s1B
+		PTR_IDX		_b6_s1C
+		PTR_IDX		_b6_s1D
+		PTR_IDX		_b6_s1E
+		PTR_IDX		_b6_s1F
+		PTR_IDX		_b6_s20_player_name_verify
 
 _b6_d0:
 		.BYTE	$46,$80,$44,  0,$42,  0,$43,  0,$41,  0,  0,$F5,$FF,$4A,  2,$4A
@@ -1145,12 +1119,12 @@ _b6_sC:
 		LDA		_mapNumber
 		CMP		#$CC
 		BEQ		loc_9B456
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$80
-		STA		byte_60C4
-		LDA		_global_game_flags
+		STA		_global_flags_array.byteF
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		JSR		loc_175185
 		SEC
 locret_9B408:
@@ -1186,12 +1160,12 @@ loc_9B431:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9B433:
-		LDA		byte_60C9
+		LDA		_global_flags_array.byte14
 		BNE		loc_9B454
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BNE		loc_9B454
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		loc_9B44E
 		LDA		_mapNumber
 		CMP		#$C
@@ -1324,9 +1298,9 @@ _b6_s11:
 		BNE		loc_9B524
 		LDA		#0
 		STA		_npc_anim_script_idx
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ORA		#$40
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		SYSX	_apu_load,$26
 loc_9B510:
 		SEC
@@ -1353,10 +1327,10 @@ loc_9B529:
 		LDA		_mapNumber
 		CMP		#$60
 		BEQ		loc_9B524
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BNE		loc_9B524
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		loc_9B545
 		LDA		_mapNumber
 		CMP		#$C
@@ -1369,9 +1343,9 @@ loc_9B545:
 		BEQ		loc_9B524
 		LDA		_player_vehicle
 		BEQ		loc_9B557
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$BF
-		STA		byte_60B8
+		STA		_global_flags_array.byte3
 loc_9B557:
 		LDA		byte_50
 		STA		byte_CF
@@ -1383,9 +1357,9 @@ loc_9B557:
 		STA		byte_644
 		SYSX	_apu_load,$92
 		JSR		_pal_fade_out
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
@@ -1409,7 +1383,7 @@ _b6_s13:
 		BCC		loc_9B5B2
 		LDX		#2
 		LDY		#$3C
-		BIT		byte_60C5
+		BIT		_global_flags_array.byte10
 		BMI		loc_9B5B2
 		LDY		#$78
 loc_9B5B2:
@@ -1422,11 +1396,11 @@ loc_9B5B2:
 		STA		byte_2A
 		LDA		word_9B60C+1,X
 		STA		byte_2B
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$C0
 		CMP		#$80
 		BNE		loc_9B5E0
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$90
 		CMP		#$80
 		BEQ		loc_9B5E0
@@ -1437,9 +1411,9 @@ loc_9B5B2:
 loc_9B5E0:
 		LDX		#1
 		LDA		#0
-		BIT		byte_60B9
+		BIT		_global_flags_array.byte4
 		BVC		loc_9B5F6
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$90
 		CMP		#$80
 		BEQ		loc_9B5F6
@@ -1452,7 +1426,7 @@ loc_9B5F6:
 		LDA		#0
 		STA		_player_vehicle
 		STA		_npc_anim_script_idx
-		BIT		byte_60CB
+		BIT		_global_flags_array.byte16
 		BVS		locret_9B60B
 		STA		byte_9B
 		STA		byte_9C
@@ -1491,12 +1465,12 @@ loc_9B666:
 		CLC
 		RTS
 loc_9B668:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BNE		loc_9B666
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#4
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		MSGX	_msg_m00,$11A	; "Look the willagers starting to wake up"
 		SEC
 		RTS
@@ -1506,9 +1480,9 @@ _b6_s15:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		loc_9B666
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$C0
-		STA		byte_60B8
+		STA		_global_flags_array.byte3
 		JSR		_rand
 		AND		#$1F
 		CMP		#$F
@@ -1522,11 +1496,11 @@ loc_9B69B:
 		BNE		loc_9B6A1
 		LDA		#$20
 loc_9B6A1:
-		ORA		byte_60B8
-		STA		byte_60B8
+		ORA		_global_flags_array.byte3
+		STA		_global_flags_array.byte3
 loc_9B6A7:
 		LDA		#$14
-		STA		byte_60C9
+		STA		_global_flags_array.byte14
 		FARX	_bE_s10
 		SEC
 		RTS
@@ -2366,9 +2340,9 @@ loc_9BC61:
 ;
 _b6_s17:
 		JSR		sub_9BC74
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2851,9 +2825,9 @@ loc_9BFC1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_9BFC3: ;ZING
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ORA		#$80
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		LDA		#$E
 		STA		word_4
 		STA		word_4+1

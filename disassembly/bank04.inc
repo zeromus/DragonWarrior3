@@ -1,43 +1,43 @@
 
 		ORG $8000
 
-_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		PTR_IDX		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 
-_b4_s5_do_message_speed_delay_ptr:						.WORD	_b4_s5_do_message_speed_delay
-_b4_s16_do_half_message_speed_delay_ptr:				.WORD	_b4_s16_do_half_message_speed_delay
-_b4_s21_message_half_delay_or_wait_for_keypress_ptr:	.WORD	_b4_s21_message_half_delay_or_wait_for_keypress
+		PTR_IDX		_b4_s5_do_message_speed_delay
+		PTR_IDX		_b4_s16_do_half_message_speed_delay
+		PTR_IDX		_b4_s21_message_half_delay_or_wait_for_keypress
 
-_b4_s0_type00_battle_mode_handler_ptr:					.WORD	_b4_s0_type00_battle_mode_handler
-_b4_s24_type80_battle_mode_handler_ptr:					.WORD	_b4_s24_type80_battle_mode_handler
-_b4_s25_typeC0_battle_mode_handler_ptr:					.WORD	_b4_s25_typeC0_battle_mode_handler
-_b4_s1_ptr:												.WORD	_b4_s1
-_b4_s2_ptr:												.WORD	_b4_s2
-_b4_s3_ptr:												.WORD	_b4_s3
-_b4_s6_wndBTL_STAT_ptr:									.WORD	_b4_s6_wndBTL_STAT
-_b4_sA_ptr:												.WORD	_b4_sA
-_b4_sC_ptr:												.WORD	_b4_sC
-_b4_dD_spells_list_ptr:									.WORD	_b4_dD_spells_list
-_b4_sE_ptr:												.WORD	_b4_sE
-_b4_sF_ptr:												.WORD	_b4_sF
-_b4_s10_ptr:											.WORD	_b4_s10
-_b4_s12_ptr:											.WORD	_b4_s12
-_b4_s13_ptr:											.WORD	_b4_s13
-_b4_s14_ptr:											.WORD	_b4_s14
-_b4_s17_ptr:											.WORD	_b4_s17
-_b4_s18_ptr:											.WORD	_b4_s18
-_b4_s19_ptr:											.WORD	_b4_s19
-_b4_s1A_status_pal_adjust_and_update_ptr:				.WORD	_b4_s1A_status_pal_adjust_and_update
-_b4_s1B_ptr:											.WORD	_b4_s1B
-_b4_s1E_ptr:											.WORD	_b4_s1E
-_b4_s1F_ptr:											.WORD	_b4_s1F
-_b4_s20_ptr:											.WORD	_b4_s20
-_b4_s23_ptr:											.WORD	_b4_s23
-_b4_s26_ptr:											.WORD	_b4_s26
-_b4_s27_ptr:											.WORD	_b4_s27
-_b4_s28_ptr:											.WORD	_b4_s28
-_b4_s29_ptr:											.WORD	_b4_s29
-_b4_s2A_ptr:											.WORD	_b4_s2A
-_b4_s2B_ptr:											.WORD	_b4_s2B
+		PTR_IDX		_b4_s0_type00_battle_mode_handler
+		PTR_IDX		_b4_s24_type80_battle_mode_handler
+		PTR_IDX		_b4_s25_typeC0_battle_mode_handler
+		PTR_IDX		_b4_s1
+		PTR_IDX		_b4_s2
+		PTR_IDX		_b4_s3
+		PTR_IDX		_b4_s6_wndBTL_STAT
+		PTR_IDX		_b4_sA
+		PTR_IDX		_b4_sC
+		PTR_IDX		_b4_dD_spells_list
+		PTR_IDX		_b4_sE
+		PTR_IDX		_b4_sF
+		PTR_IDX		_b4_s10
+		PTR_IDX		_b4_s12
+		PTR_IDX		_b4_s13
+		PTR_IDX		_b4_s14
+		PTR_IDX		_b4_s17
+		PTR_IDX		_b4_s18
+		PTR_IDX		_b4_s19
+		PTR_IDX		_b4_s1A_status_pal_adjust_and_update
+		PTR_IDX		_b4_s1B
+		PTR_IDX		_b4_s1E
+		PTR_IDX		_b4_s1F
+		PTR_IDX		_b4_s20
+		PTR_IDX		_b4_s23
+		PTR_IDX		_b4_s26
+		PTR_IDX		_b4_s27
+		PTR_IDX		_b4_s28
+		PTR_IDX		_b4_s29
+		PTR_IDX		_b4_s2A
+		PTR_IDX		_b4_s2B
 
 ; =============== S U B	R O U T	I N E =======================================
 ; sets up a battle for _battle_type_fight=01
@@ -72,9 +72,9 @@ _common_battle_handler:
 		STA		byte_6A6B
 		LDA		#0
 		STA		byte_6A66
-		LDA		_global_game_flags	; "in battle" mode flag set
+		LDA		_global_flags_array.byte2	; "in battle" mode flag set
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		FARX	_bE_s5
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
@@ -138,9 +138,9 @@ loc_680CD:
 		JSR		_map_music_select_and_load
 .common_battle_won_ex:
 		FARX	_b0_s50
-		LDA		_global_game_flags	; and clear the battle flag
+		LDA		_global_flags_array.byte2	; and clear the battle flag
 		AND		#$DF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		JSR		sub_174C62
 		LDA		#0
 		STA		byte_8E
@@ -168,9 +168,9 @@ loc_6811D:
 		LDA		#$FE
 		STA		byte_6A65
 loc_68122:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$DF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		BIT		_curent_battle_type_flags
 		BVS		loc_68138
 		FARX	_bD_sC
@@ -4539,9 +4539,9 @@ sub_69E5B:
 		JSR		_b4_s5_do_message_speed_delay
 		FARX	_b6_s6
 		BCC		loc_69E7C
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$DF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		_spr_force_shuffle_mode
 		LDX		#$FB
@@ -6374,17 +6374,17 @@ _pads_copy_to_tmp:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA34:
-		LDA		#[_b2_s3_idx-_sys_idx_lib]>>1
+		LDA		#_b2_s3_fidx
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA38:
-		LDA		#[_b2_s4_idx-_sys_idx_lib]>>1
+		LDA		#_b2_s4_fidx
 		BNE		sub_6AA3E
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3C:
-		LDA		#[_b2_s5_idx-_sys_idx_lib]>>1
+		LDA		#_b2_s5_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3E:
@@ -7108,7 +7108,7 @@ loc_6AEA2:
 		LDX		#0
 		LDY		#0
 loc_6AEA6:
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$80
 		BMI		loc_6AEBA
@@ -7136,7 +7136,7 @@ loc_6AED0:
 loc_6AED7:
 		LDA		byte_6B270,Y
 		STA		byte_49
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#4
 		BEQ		loc_6AEEC

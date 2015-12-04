@@ -1152,24 +1152,29 @@ byte_608E:
 		.BYTE	0,0,0,0,0,0,0,0,0,0
 byte_60A8:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
-byte_60B5:
+
+_global_flags_array:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte0: ; 60b5
 		.BYTE	0
-;----------------------------------------------
-; misc quest flag bits
-; $80 -
-; $40 -
-; $20 - _q_NorudPassageOpened - Set once Norud's been shown the royal scroll and opened the psage
-; $10 -
-; $08 -
-; $04 -
-; $02 - _q_MagicBallUsed - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
-; $01 -
-;
-byte_60B6: 
+;	$80 -
+;	$40 -
+;	$20 - _q_NorudPassageOpened - Set once Norud's been shown the royal scroll and opened the psage
+;	$10 -
+;	$08 -
+;	$04 -
+;	$02 - _q_MagicBallUsed - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
+;	$01 -
+_global_flags_array.byte1: ; 60b6
 		.BYTE	0
-;----------------------------------------------
-; misc game flag bits (not precisely quest flags)
-; $80 - _f_WarpBlock - Wing of Wyvern / Return is blocked.
+;	$80 - _f_WarpBlock - Wing of Wyvern / Return is blocked.
 ;	$40 - _f_IsKingOfRomaly - This flag is set while you actually ARE king
 ;	$20 -
 ;	$10 - one of the switches in Pyramid 3F
@@ -1177,12 +1182,9 @@ byte_60B6:
 ;	$04 - set if in battle mode (does not clear after death in battle!)
 ;	$02 - set after you accept the Golden King's Crown and become a King (is this a once-only bit? see $40 bit for the repeated toggle)
 ;	$01 - _f_Erdrick - In a certain sense, the Is Game Over flag, isn't it?
-;
-_global_game_flags: ; 60b7
+_global_flags_array.byte2: ; 60b7
 		.BYTE	0
-;----------------------------------------------
-; misc quest flag bits
-; $80 -
+;	$80 -
 ;	$40 - 
 ;	$20 -
 ;	$10 - 
@@ -1190,60 +1192,198 @@ _global_game_flags: ; 60b7
 ;	$04 - 
 ;	$02 - 
 ;	$01 - 
-byte_60B8:
+_global_flags_array.byte3: ; 60b8
 		.BYTE	0
-;----------------------------------------------
-byte_60B9:
-		.BYTE	0
-;----------------------------------------------
-; misc quest flag bits
-; somehow related to special location entry position logic for lancel
-; $80 -
-;	$40 -
-;	$20 -
+;	$80 - 
+;	$40 - 
+;	$20 - 
 ;	$10 - 
 ;	$08 - 
 ;	$04 - 
 ;	$02 - 
+;	$01 - 
+_global_flags_array.byte4: ; 60b9
+		.BYTE	0
+;	somehow related to special location entry position logic for lancel
+;	$80 -
+;	$40 -
+;	$20 -
+;	$10 -
+;	$08 -
+;	$04 -
+;	$02 -
 ;	$01 - we're in the "shrine where you may try your courage". After dying you respawn there
-;
-byte_60BA:
+_global_flags_array.byte5: ; 60ba
 		.BYTE	0
-;----------------------------------------------
-byte_60BB:
-		.BYTE	0,0,0,0
-byte_60BF:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte6:
 		.BYTE	0
-byte_60C0:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte7:
 		.BYTE	0
-byte_60C1:
-		.BYTE	0,0
-byte_60C3:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte8:
 		.BYTE	0
-byte_60C4: ; Zoma's Castle Quest: if $60C4.7 is set, the statue sneak attack event is finished and the statues and doors are cleared
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte9:
 		.BYTE	0
-byte_60C5: ; if $60C5.7 is set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byteA: ; 60bf
 		.BYTE	0
-byte_60C6:
+_backup_y: ; 60c0
 		.BYTE	0
-byte_60C7:
+_backup_x:
 		.BYTE	0
-byte_60C8:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byteD:
 		.BYTE	0
-byte_60C9:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byteE:
 		.BYTE	0
-byte_60CA: ; "someQuestFlags_60ca" - fiddling with values here can make aliahan look like baramos is dead
+;	$80 - Zoma's Castle Quest: if set, the statue sneak attack event is finished and the statues and doors are cleared
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byteF:
 		.BYTE	0
-byte_60CB: ; "someQuestFlags_60Cb" - fiddling with values here can make aliahan look like baramos is dead
+;	$80 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte10:
 		.BYTE	0
-byte_60CC:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte11:
 		.BYTE	0
-;----------------------------------------------
-; seems to contain only #$FF, indicating something related to orbs. or leaf of the world tree? or lots of things, WTF.
-; no, sometimes it's set bit by bit. WHAT IS THIS!!
-; is part of it the newtown progression conditions?
-; YES.... but uhhh sometimes tis checked as #$FF and this makes no sense
-; $80 -
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte12:
+		.BYTE	0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte13:
+		.BYTE	0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte14:
+		.BYTE	0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte15: ; fiddling with values here can make aliahan look like baramos is dead
+		.BYTE	0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte16: ; fiddling with values here can make aliahan look like baramos is dead
+		.BYTE	0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte17:
+		.BYTE	0
+;	seems to contain only #$FF, indicating something related to orbs. or leaf of the world tree? or lots of things, WTF.
+;	no, sometimes it's set bit by bit. WHAT IS THIS!!
+;	is part of it the newtown progression conditions?
+;	YES.... but uhhh sometimes tis checked as #$FF and this makes no sense
+;	$80 -
 ;	$40 -
 ;	$20 - _q_SamanaoDone - Set once the Samanao quest is done (real King rescued)
 ;	$10 - 
@@ -1251,18 +1391,44 @@ byte_60CC:
 ;	$04 - 
 ;	$02 - related to boats...
 ;	$01 - related to boats...
-byte_60CD:
+_global_flags_array.byte18:
 		.BYTE	0
-;----------------------------------------------
-; bitset of collected orbs, PROBABLY in this order
-; xxGBPYRS
+;	bitset of collected orbs, PROBABLY in this order
+;	xxGBPYRS
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
 _q_OrbsCollected: ; $60CE
 		.BYTE	0
-;----------------------------------------------
-byte_60CF:
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte1A:
 		.BYTE	0
-byte_60D0:
-		.BYTE	0,0,0,0,0,0
+;	$80 - 
+;	$40 - 
+;	$20 - 
+;	$10 - 
+;	$08 - 
+;	$04 - 
+;	$02 - 
+;	$01 - 
+_global_flags_array.byte1B:
+		.BYTE	0
+
+; unused
+		.BYTE	0,0,0,0,0
+		
 ; u8[12]
 _tavern_chars_level:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0

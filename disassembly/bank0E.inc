@@ -1,86 +1,49 @@
 
 		ORG $8000
 
-_bE_sC_display_window_ptr:			.WORD	_bE_sC_display_window
-_bE_s0_display_window_ex_ptr:		.WORD	_bE_s0_display_window_ex
+		PTR_IDX		_bE_sC_display_window
+		PTR_IDX		_bE_s0_display_window_ex
 
-_bE_s4_msg_m00_ptr:					.WORD	_bE_s4_msg_m00
-_bE_s6_msg_mFF_ptr:					.WORD	_bE_s6_msg_mFF
+		PTR_IDX		_bE_s4_msg_m00
+		PTR_IDX		_bE_s6_msg_mFF
 
-_bE_s1_MainLoopCheckAButton_ptr:
-		.WORD	_bE_s1_MainLoopCheckAButton
-_bE_s2_ptr:
-		.WORD	_bE_s2
-_bE_s3_ptr:
-		.WORD	_bE_s3
-_bE_s5_ptr:
-		.WORD	_bE_s5
-_bE_s9_ptr:
-		.WORD	_bE_s9
-_bE_sB_ptr:
-		.WORD	_bE_sB
-_bE_sD_ptr:
-		.WORD	_bE_sD
-_bE_sE_ptr:
-		.WORD	_bE_sE
-_bE_sF_ptr:
-		.WORD	_bE_sF
-_bE_s10_ptr:
-		.WORD	_bE_s10
-_bE_s11_ptr:
-		.WORD	_bE_s11
-_bE_s12_ptr:
-		.WORD	_bE_s12
-_bE_s13_ptr:
-		.WORD	_bE_s13
-_bE_s14_ptr:
-		.WORD	_bE_s14
-_bE_s16_ptr:
-		.WORD	_bE_s16
-_bE_s18_ptr:
-		.WORD	_bE_s18
-_bE_s19_ptr:
-		.WORD	_bE_s19
-_bE_s1A_ptr:
-		.WORD	_bE_s1A
-_bE_s1B_ptr:
-		.WORD	_bE_s1B
-_bE_s1C_yes_or_no_question_ptr:
-		.WORD	_bE_s1C_yes_or_no_question
-_bE_s1D_get_map_buf_end_ptr_ptr:
-		.WORD	_bE_s1D_get_map_buf_end_ptr
-_bE_s20_decode_map_ptr_to_XY_ptr:
-		.WORD	_bE_s20_decode_map_ptr_to_XY
-_bE_s21_ptr:
-		.WORD	_bE_s21
-_bE_s22_ptr:
-		.WORD	_bE_s22
-_bE_s23_ptr:
-		.WORD	_bE_s23
-_bE_s24_ptr:
-		.WORD	_bE_s24
-_bE_s25_ptr:
-		.WORD	_bE_s25
-_bE_s26_ptr:
-		.WORD	_bE_s26
-_bE_s2E_special_map_actions_ptr:
-		.WORD	_bE_s2E_special_map_actions
-_bE_s2F_ptr:
-		.WORD	_bE_s2F
-_bE_s30_ptr:
-		.WORD	_bE_s30
-_bE_s31_get_map_music_idx_ptr:
-		.WORD	_bE_s31_get_map_music_idx
-_bE_s32_ptr:
-		.WORD	_bE_s32
-_bE_s33_ptr:
-		.WORD	_bE_s33
-_bE_s34_ptr:
-		.WORD	_bE_s34
-_bE_s36_ptr:
-		.WORD	_bE_s36
-_bE_s38_print_char_force_dequeue_ptr:
-		.WORD	_bE_s38_print_char_force_dequeue
+		PTR_IDX		_bE_s1_MainLoopCheckAButton
+		PTR_IDX		_bE_s2
+		PTR_IDX		_bE_s3
+		PTR_IDX		_bE_s5
+		PTR_IDX		_bE_s9
+		PTR_IDX		_bE_sB
+		PTR_IDX		_bE_sD
+		PTR_IDX		_bE_sE
+		PTR_IDX		_bE_sF
+		PTR_IDX		_bE_s10
+		PTR_IDX		_bE_s11
+		PTR_IDX		_bE_s12
+		PTR_IDX		_bE_s13
+		PTR_IDX		_bE_s14
+		PTR_IDX		_bE_s16
+		PTR_IDX		_bE_s18
+		PTR_IDX		_bE_s19
+		PTR_IDX		_bE_s1A
+		PTR_IDX		_bE_s1B
+		PTR_IDX		_bE_s1C_yes_or_no_question
+		PTR_IDX		_bE_s1D_get_map_buf_end_ptr
+		PTR_IDX		_bE_s20_decode_map_ptr_to_XY
+		PTR_IDX		_bE_s21
+		PTR_IDX		_bE_s22
+		PTR_IDX		_bE_s23
+		PTR_IDX		_bE_s24
+		PTR_IDX		_bE_s25
+		PTR_IDX		_bE_s26
+		PTR_IDX		_bE_s2E_special_map_actions
+		PTR_IDX		_bE_s2F
+		PTR_IDX		_bE_s30
+		PTR_IDX		_bE_s31_get_map_music_number
+		PTR_IDX		_bE_s32
+		PTR_IDX		_bE_s33
+		PTR_IDX		_bE_s34
+		PTR_IDX		_bE_s36
+		PTR_IDX		_bE_s38_print_char_force_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
 ; called from main loop
@@ -414,7 +377,7 @@ loc_15825E:
 		CMP		#$78
 		BNE		loc_1582BF
 loc_1582A5:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BNE		loc_1582BF
 		BEQ		loc_1582D6
@@ -548,7 +511,7 @@ locret_158373:
 ;
 _run_command_status:
 ; special logic for the king
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVC		.command_status_usual
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$166	; "It is said that long ago the king was wery powerful"
@@ -626,7 +589,7 @@ _bE_s33:
 ; =============== S U B	R O U T	I N E =======================================
 _run_command_equip:
 ; special logic for the king
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVC		.equip_command_usual
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$165	; "The king is already wearing the royal robes"
@@ -799,7 +762,7 @@ sub_15851F:
 		PLA
 		TAX
 		BCC		loc_158550
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_15854E
@@ -870,7 +833,7 @@ sub_15858D:
 		AND		#$7F
 		STA		byte_D2
 		TAX
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BNE		loc_1585A5
@@ -1378,22 +1341,22 @@ loc_1588BA:
 ; need a table of param read routines coresponding to special codes
 ;
 _sys_idx_list0:
-		.BYTE	[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s6_player_MP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s3_player_MHP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s7_player_MMP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s11_player_STR_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s12_player_AGI_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s13_player_VIT_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s14_player_INT_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s15_player_LUCK_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s16_player_ATK_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s18_player_DEF_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1B_players_gold_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s19_player_EXP_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_sD_tavern_char_LV_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b7_sF_player_log_read_idx-_sys_idx_lib]>>1
+		.BYTE	_b0_s2_player_HP_read_fidx
+		.BYTE	_b0_s6_player_MP_read_fidx
+		.BYTE	_b0_s3_player_MHP_read_fidx
+		.BYTE	_b0_s7_player_MMP_read_fidx
+		.BYTE	_b0_s11_player_STR_read_fidx
+		.BYTE	_b0_s12_player_AGI_read_fidx
+		.BYTE	_b0_s13_player_VIT_read_fidx
+		.BYTE	_b0_s14_player_INT_read_fidx
+		.BYTE	_b0_s15_player_LUCK_read_fidx
+		.BYTE	_b0_s16_player_ATK_read_fidx
+		.BYTE	_b0_s18_player_DEF_read_fidx
+		.BYTE	_b0_s1B_players_gold_read_fidx
+		.BYTE	_b0_s19_player_EXP_read_fidx
+		.BYTE	_b0_sC_player_LV_read_fidx
+		.BYTE	_b0_sD_tavern_char_LV_read_fidx
+		.BYTE	_b7_sF_player_log_read_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1588D3:
@@ -1488,13 +1451,13 @@ loc_158970:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15897F:
 		LDX		#5
-		LDA		#[_b0_s2C_player_CLASS_read_idx-_sys_idx_lib]>>1
+		LDA		#_b0_s2C_player_CLASS_read_fidx
 		BNE		loc_158989
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158985:
 		LDX		#6
-		LDA		#[_b0_s2F_player_gender_read_idx-_sys_idx_lib]>>1
+		LDA		#_b0_s2F_player_gender_read_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 loc_158989:
@@ -1627,15 +1590,15 @@ _txt_non_equipped:
 		.BYTE	_N,_O,_N,0,_E,_Q,_U,_I,_P,_P,_E,_D
 
 _sys_idx_list1:
-		.BYTE	[_b0_s1F_get_weapon_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_get_armor_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_shield_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s22_helm_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s28_player_inventory_item_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1E_player_euipped_item_read_idx-_sys_idx_lib]>>1
+		.BYTE	_b0_s1F_get_weapon_from_inventory_fidx
+		.BYTE	_b0_s21_get_armor_from_inventory_fidx
+		.BYTE	_b0_s21_shield_from_inventory_fidx
+		.BYTE	_b0_s22_helm_from_inventory_fidx
+		.BYTE	_b0_s28_player_inventory_item_read_fidx
+		.BYTE	_b0_s1E_player_euipped_item_read_fidx
+		.BYTE	_b0_s1E_player_euipped_item_read_fidx
+		.BYTE	_b0_s1E_player_euipped_item_read_fidx
+		.BYTE	_b0_s1E_player_euipped_item_read_fidx
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -1744,8 +1707,8 @@ loc_158B40:
 		JMP		sub_158B8A
 
 _sys_idx_list2:
-		.BYTE	[_b0_s34_read_spell_related_data_byte_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s35_idx-_sys_idx_lib]>>1
+		.BYTE	_b0_s34_read_spell_related_data_byte_fidx
+		.BYTE	_b0_s35_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158B47:
@@ -2127,13 +2090,13 @@ loc_158DA7:
 		INC		_window_frame_height_var
 		RTS
 _sys_idx_list3:
-		.BYTE	[_b0_s31_get_party_chars_list_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s28_player_inventory_item_read_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s1F_get_weapon_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_get_armor_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s21_shield_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s22_helm_from_inventory_idx-_sys_idx_lib]>>1
-		.BYTE	[_b0_s31_get_party_chars_list_idx-_sys_idx_lib]>>1
+		.BYTE	_b0_s31_get_party_chars_list_fidx
+		.BYTE	_b0_s28_player_inventory_item_read_fidx
+		.BYTE	_b0_s1F_get_weapon_from_inventory_fidx
+		.BYTE	_b0_s21_get_armor_from_inventory_fidx
+		.BYTE	_b0_s21_shield_from_inventory_fidx
+		.BYTE	_b0_s22_helm_from_inventory_fidx
+		.BYTE	_b0_s31_get_party_chars_list_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_158DB9:
@@ -2439,13 +2402,13 @@ byte_158F53:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; when displaying a level, there must be non-numeric values according to
-; special statuses retrieved previously in _b0_sC_player_LV_read_idx in
+; special statuses retrieved previously in _b0_sC_player_LV_read_fidx in
 ; temp var word_4+1, so here we check to this particular routine and wether
 ; it return any special codes. if any, display special status instead of
 ; number and break back to the main window display loop
 ;
 _char_special_status_display:
-		CMP		#[_b0_sC_player_LV_read_idx-_sys_idx_lib]>>1
+		CMP		#_b0_sC_player_LV_read_fidx
 		BNE		locret_158F79
 		LDX		word_4+1
 		BEQ		locret_158F79
@@ -5982,9 +5945,9 @@ loc_15AFD2:
 		LDA		_mapNumber
 		CMP		#9
 		BNE		loc_15B007
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 loc_15B007:
 		CLC
 		RTS
@@ -6090,7 +6053,7 @@ loc_15B0A9:
 		LDA		byte_2B
 		CMP		#$3B
 		BNE		locret_15B0D4
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#4
 		BEQ		locret_15B0D4
 		FARX	_bC_s25
@@ -6133,12 +6096,12 @@ _bE_s25:
 		JSR		_spr_ram_clear_10
 		LDA		#1
 		STA		_player_vehicle
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		AND		#1
 		BEQ		loc_15B112
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		ORA		#2
-		STA		byte_60CD
+		STA		_global_flags_array.byte18
 loc_15B112:
 		INC		_blockPlayerInputDuringMap
 		FARX	_bD_s5
@@ -6192,9 +6155,9 @@ locret_15B169:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s24:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BMI		locret_15B169
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$90
 		CMP		#$80
 		BEQ		locret_15B169
@@ -6409,8 +6372,8 @@ loc_15B2D0:
 ; bank exists that calls both at the same time, they were used mostly two
 ; opcodes in a lot of places. now replaced with macro subroutine
 ;
-_bE_s31_get_map_music_idx:
-		LDA		byte_60C5
+_bE_s31_get_map_music_number:
+		LDA		_global_flags_array.byte10
 		BPL		loc_15B2F5
 		LDA		_mapNumber
 		CMP		#$6B
@@ -6562,24 +6525,24 @@ _map74_special_action:
 		BNE		sub_15B416 ; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-;Tests a bit in the enigmatic byte_60CD and then disables warping
+;Tests a bit in the enigmatic _global_flags_array.byte18 and then disables warping
 ; 
 _map75_special_action:
-		BIT		byte_60CD
+		BIT		_global_flags_array.byte18
 		BVS		nullsub_20
 		LDA		#$80
-		ORA		_global_game_flags
-		STA		_global_game_flags
+		ORA		_global_flags_array.byte2
+		STA		_global_flags_array.byte2
 		LDA		#$40
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-; Sets a bit in the enigmatic byte_60CD
+; Sets a bit in the enigmatic _global_flags_array.byte18
 ;
 sub_15B416:
-		ORA		byte_60CD
-		STA		byte_60CD
+		ORA		_global_flags_array.byte18
+		STA		_global_flags_array.byte18
 
 ;; FALLTHROUGH ;;
 
@@ -6590,7 +6553,7 @@ nullsub_20:
 ; =============== S U B	R O U T	I N E =======================================
 ; Pyramid 3F : test whether both switches are open
 _mapD2_special_action:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$18
 		CMP		#$18
 		BNE		nullsub_20
@@ -6606,7 +6569,7 @@ _mapD2_special_action:
 ; Cave by Assaram (both sides, redundant data) : test _q_NorudPassageOpened
 ;
 _map2F_30_special_action:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#$20
 		BEQ		locret_15B444
 		LDA		#$27 ; just a floor tile, erasing a wall in the middle of the level
@@ -6619,7 +6582,7 @@ locret_15B444:
 ; Cave of Enticement, B1 : test _q_MagicBallUsed (whether wall is blown down by the Magic Ball)
 ;
 _mapA0_special_action:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#2
 		BEQ		locret_15B46C
 		LDA		#$D
@@ -6648,9 +6611,9 @@ _map06_special_action:
 		LDA		_playerMapY
 		CMP		#1
 		BNE		locret_15B481
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#2
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 locret_15B481:
 		RTS
 
@@ -6887,7 +6850,7 @@ loc_15B5E5:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s36:
-		LDA		byte_60C3
+		LDA		_global_flags_array.byteE
 		AND		#7
 		ASL
 		ASL
@@ -6923,7 +6886,7 @@ byte_15B630:
 ; test whether the statues sneak attack scenario is complete and patch them out of the map if so
 ;
 _map08_special_action:
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		BPL		locret_15B677
 		LDX		#0
 loc_15B653:
@@ -6968,7 +6931,7 @@ _map08_patch_statues_list:
 ; =============== S U B	R O U T	I N E =======================================
 ; Tower West of Kol 5F : Erase rubiss's statue if she's been freed
 _mapEF_special_action:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$20
 		BEQ		locret_15B697
 		LDA		#$13 ; dungeon floor tile
@@ -6980,7 +6943,7 @@ locret_15B697:
 ; =============== S U B	R O U T	I N E =======================================
 ; Castle of Zoma B5 : 
 _mapCC_special_action:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		locret_15B697
 		LDX		#$B
 		LDY		#$13
@@ -6989,7 +6952,7 @@ _mapCC_special_action:
 
 ; =============== S U B	R O U T	I N E =======================================
 _mapC3_special_action:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		AND		#$20
 		BEQ		locret_15B6B0
 		FARX	_bC_s1B
@@ -6998,7 +6961,7 @@ locret_15B6B0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _mapBB_special_action:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		locret_15B6BB
 		LDA		#$AC
 		STA		byte_7633
@@ -7012,7 +6975,7 @@ _wrap_b1B_s0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _map62_special_action:
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		AND		#$20
 		BEQ		locret_15B6CC
 		LDA		#$F
@@ -7022,7 +6985,7 @@ locret_15B6CC:
 
 ; =============== S U B	R O U T	I N E =======================================
 _mapEB_special_action:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		BPL		locret_15B6D7
 		LDA		#$12
 		STA		byte_7579
@@ -7031,7 +6994,7 @@ locret_15B6D7:
 
 ; =============== S U B	R O U T	I N E =======================================
 _map17_special_action:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		BPL		locret_15B6E2
 		LDA		#$F
 		STA		byte_7522
@@ -7040,18 +7003,18 @@ locret_15B6E2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1B:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		AND		#$50
 		LSR
-		ORA		byte_60CA
-		STA		byte_60CA
-		LDA		byte_60B9
+		ORA		_global_flags_array.byte15
+		STA		_global_flags_array.byte15
+		LDA		_global_flags_array.byte4
 		AND		#4
-		ORA		byte_60CA
-		STA		byte_60CA
-		LDA		byte_60C5
+		ORA		_global_flags_array.byte15
+		STA		_global_flags_array.byte15
+		LDA		_global_flags_array.byte10
 		AND		#$E0
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7348,10 +7311,10 @@ loc_15B933:
 		BPL		loc_15B9B6
 		LDA		word_4+1
 		BPL		loc_15B9B6
-		LDA		byte_60C9
+		LDA		_global_flags_array.byte14
 		AND		#$3F
 		BEQ		loc_15B957
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$3F
 		CLC
 		ADC		#$F
@@ -7359,7 +7322,7 @@ loc_15B952:
 		STA		byte_6ABF
 		BNE		loc_15B99C
 loc_15B957:
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		LDA		#$F
 		BVS		loc_15B952
 		JSR		_sram_b0_s2C_player_CLASS_read

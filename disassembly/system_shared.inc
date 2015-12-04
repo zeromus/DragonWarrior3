@@ -1331,7 +1331,7 @@ _spr_shuffle_safe:
 		LDA		_spr_force_shuffle_mode		; if 0 or FF - force sprite shuffle
 		CMP		#$FD
 		BNE		loc_17491C
-		LDA		_global_game_flags					; or else additional bit is tested
+		LDA		_global_flags_array.byte2					; or else additional bit is tested
 		AND		#$20						; both set as FD/20 in battle mode?
 		BNE		loc_17491F
 loc_17491C:
@@ -1841,17 +1841,17 @@ loc_174BCF:
 		FARX	_b7_s8
 		FARX	_b7_sA_sram_test_and_init
 		FARX	_bB_s4_apu_set_flag0
-		LDA		byte_60C7
+		LDA		_global_flags_array.byte12
 		BMI		loc_174BFC
 		ORA		#$80
-		STA		byte_60C7
+		STA		_global_flags_array.byte12
 		FARX	_bA_sF
 		JMP		loc_174C5C
 
 ;we end up here after a death
 ;check how/where to respawn: at the shrine or at the last king
 loc_174BF2:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BNE		loc_174BFC
 		FARX	_b0_s64_respawn_at_the_king ; respawn at a king or other save point i suppose
@@ -1859,19 +1859,19 @@ loc_174BF2:
 ;respawn at a shrine:
 loc_174BFC:
 		LDA		#$50
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 		JSR		_ppu_disable
 		FARX	_bE_sF
 		JSR		_ppu_and_dequeue_enable
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$BF
-		STA		byte_60B8
-		LDA		byte_60BA
+		STA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		loc_174C2F
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$FC
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		LDA		#0
 		JSR		loc_1752EB
 		JSR		_wrap_bE_sD_wnd3E
@@ -1908,7 +1908,7 @@ sub_174C62:
 		LDA		byte_9A
 		JSR		sub_1762FC
 		JSR		_location_palette_and_rand_update
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		loc_174C84
 		FARX	_b0_s4F
@@ -2355,7 +2355,7 @@ loc_174F85:
 		ORA		word_3C
 		STA		_pads
 loc_174FA2:
-		BIT		byte_60C6
+		BIT		_global_flags_array.byte11
 		BVS		loc_174FBB
 		LDA		_pads
 		AND		#$F0
@@ -2365,7 +2365,7 @@ loc_174FA2:
 		TYA
 		JSR		sub_1762C3
 		LDA		#$E0
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 loc_174FBB:
 		LDA		_playerMapX
 		STA		word_3C
@@ -2575,19 +2575,19 @@ loc_17513A:
 		CMP		#3
 		BEQ		loc_17514F
 loc_175140:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$FC
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		INC		byte_2B
 		LDA		#2
 		JMP		loc_175164
 loc_17514F:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		loc_175140
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		ORA		#2
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		LDA		#$6B
 		STA		byte_2A
 		LDA		#3
@@ -2625,19 +2625,19 @@ loc_175195:
 		STA		_location_type
 		LDA		_player_vehicle
 		BEQ		loc_1751AA
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$BF
-		STA		byte_60B8
+		STA		_global_flags_array.byte3
 loc_1751AA:
 		LDA		#0
 		STA		byte_9A
 		JSR		sub_1762FC
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
-		LDA		byte_60BA
+		STA		_global_flags_array.byte2
+		LDA		_global_flags_array.byte5
 		AND		#$EF
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		JSR		_location_palette_and_rand_update
 		JSR		_ppu_disable
 		FARX	_bE_sF
@@ -2654,9 +2654,9 @@ loc_1751AA:
 		JMP		loc_1751F7
 loc_1751E5:
 		FARX	_bC_s3
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		loc_1751F4
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$20
 		BEQ		loc_1751F7
 loc_1751F4:
@@ -2666,9 +2666,9 @@ loc_1751F7:
 		LDA		#6
 		JSR		_mmc1_prg_set
 		FARX	_b0_s66
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		locret_175211
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$20
 		BNE		locret_175211
 		FARX	_b7_s19
@@ -2681,7 +2681,7 @@ locret_175211:
 ; program, using pair of opcodes instead.
 ;
 _map_music_select_and_load:
-		FARX	_bE_s31_get_map_music_idx
+		FARX	_bE_s31_get_map_music_number
 		FARX	_bB_s3_apu_load
 		RTS
 
@@ -2832,7 +2832,7 @@ sub_17530A:
 		PLA
 		BNE		loc_175324
 		FARX	_bC_s4
-		BIT		byte_60C5
+		BIT		_global_flags_array.byte10
 		BVC		loc_17531E
 		PLA
 		PLA
@@ -2998,9 +2998,9 @@ sub_17542D:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_17542F:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		AND		#$A0
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		LDA		#0
 		STA		word_4
 		JSR		sub_175219
@@ -3193,7 +3193,7 @@ sub_175569:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175596:
-		FARX	_bE_s31_get_map_music_idx
+		FARX	_bE_s31_get_map_music_number
 		CMP		#$11
 		BEQ		loc_1755A0
 		FARX	_bB_s4_apu_set_flag0
@@ -3372,13 +3372,13 @@ loc_1756F2:
 		LDA		byte_9A
 		BNE		locret_17570C
 loc_1756F6:
-		BIT		byte_60B9
+		BIT		_global_flags_array.byte4
 		BVS		loc_175701
 		LDA		byte_2A
 		EOR		#$80
 		STA		byte_9E
 loc_175701:
-		BIT		byte_60CB
+		BIT		_global_flags_array.byte16
 		BVS		locret_17570C
 		LDA		byte_2A
 		EOR		#$80
@@ -3592,7 +3592,7 @@ loc_175838:
 sub_175853:
 		LDA		_mapNumber
 		BNE		loc_175877
-		LDA		byte_60C6
+		LDA		_global_flags_array.byte11
 		BPL		loc_175877
 		LDA		_playerMapY
 		CMP		#$18
@@ -3768,7 +3768,7 @@ loc_175956:
 		BNE		loc_175999
 		LDY		#0
 loc_175975:
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		AND		byte_1759AB,Y
 		CMP		byte_1759A6,Y
 		BCC		loc_175986
@@ -3790,7 +3790,7 @@ loc_175986:
 loc_175999:
 		CPX		#$C6
 		BNE		loc_1759ED
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		loc_1759ED
 		LDX		#$A6
 		BNE		loc_1759ED
@@ -3857,7 +3857,7 @@ loc_1759FA:
 		LDA		_mapNumber
 		CMP		#$F ; special logic for lancel somehow
 		BNE		.not_lancel_special
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		.not_lancel_special
 ; store 1 = facing direction and 0,3 as spawning position
@@ -6131,8 +6131,8 @@ _syscall_lib:
 		; far sys call routines, each takes lower 8-bit of filesystem index,
 		; a higher bits selecting with the number of the syscall itself
 		;
-		.WORD	_sys0_safe
-		.WORD	_sys1_safe
+		SYS_IDX		_sys0_safe
+		SYS_IDX		_sys1_safe
 
 		; more common syscall wrappers for message output, as well, takes the
 		; lower bits of message index from argument, and a higher representing
@@ -6144,66 +6144,64 @@ _syscall_lib:
 		; of message is variable), use _wrap_ prefixed functions instead, they
 		; accept input parameter in A directly.
 		;
-_msg_m00_idx:
-_sys_msg_m00_arg0_idx:			.WORD	_sys_msg_m00_arg0
-_sys_msg_m00_arg1_idx:			.WORD	_sys_msg_m00_arg1
-_sys_msg_m00_arg2_idx:			.WORD	_sys_msg_m00_arg2
-_sys_msg_m00_arg3_idx:			.WORD	_sys_msg_m00_arg3
-_sys_msg_m00_arg4_idx:			.WORD	_sys_msg_m00_arg4
-_sys_msg_m00_arg5_idx:			.WORD	_sys_msg_m00_arg5
-_sys_msg_m00_arg6_idx:			.WORD	_sys_msg_m00_arg6
-_sys_msg_m00_arg7_idx:			.WORD	_sys_msg_m00_arg7
+_msg_m00_sidx EQU	[. - _syscall_lib]
+		SYS_IDX		_sys_msg_m00_arg0
+		SYS_IDX		_sys_msg_m00_arg1
+		SYS_IDX		_sys_msg_m00_arg2
+		SYS_IDX		_sys_msg_m00_arg3
+		SYS_IDX		_sys_msg_m00_arg4
+		SYS_IDX		_sys_msg_m00_arg5
+		SYS_IDX		_sys_msg_m00_arg6
+		SYS_IDX		_sys_msg_m00_arg7
 
-_msg_m00_break_idx:
-_sys_msg_m00_arg0_break_idx:	.WORD	_sys_msg_m00_arg0_break
-_sys_msg_m00_arg1_break_idx:	.WORD	_sys_msg_m00_arg1_break
-_sys_msg_m00_arg2_break_idx:	.WORD	_sys_msg_m00_arg2_break
-_sys_msg_m00_arg3_break_idx:	.WORD	_sys_msg_m00_arg3_break
-_sys_msg_m00_arg4_break_idx:	.WORD	_sys_msg_m00_arg4_break
-_sys_msg_m00_arg5_break_idx:	.WORD	_sys_msg_m00_arg5_break
-_sys_msg_m00_arg6_break_idx:	.WORD	_sys_msg_m00_arg6_break
-_sys_msg_m00_arg7_break_idx:	.WORD	_sys_msg_m00_arg7_break
+_msg_m00_break_sidx	EQU	[. - _syscall_lib]
+		SYS_IDX		_sys_msg_m00_arg0_break
+		SYS_IDX		_sys_msg_m00_arg1_break
+		SYS_IDX		_sys_msg_m00_arg2_break
+		SYS_IDX		_sys_msg_m00_arg3_break
+		SYS_IDX		_sys_msg_m00_arg4_break
+		SYS_IDX		_sys_msg_m00_arg5_break
+		SYS_IDX		_sys_msg_m00_arg6_break
+		SYS_IDX		_sys_msg_m00_arg7_break
 
 		; the message wrappers from bank D for block 6/7 has additional check for gender and status
 		; of the hero. but it seems that message system checks this by its own, however additinal
-		; call of checking routine is used in many other places too, investigate.
-		; so I put these special msg display routines with additional gender check here to be sure
+		; call of checking routine is used in many other places too, need to investigate.
+		; I put these special msg display routines with additional gender check here to be sure
 		; nothing is broken, but if you prove that this is a redundant call, you can frely remove
-		; this shit and remove in all MSGX functions _ex prefix
+		; this shit and remove all MSGX functions with _ex suffix
 
-_msg_m00_ex_idx:
-_sys_msg_m00_arg0_ex_idx:		.WORD	0	; only used for bank 5, 6, 7
-_sys_msg_m00_arg1_ex_idx:		.WORD	0
-_sys_msg_m00_arg2_ex_idx:		.WORD	0
-_sys_msg_m00_arg3_ex_idx:		.WORD	0
-_sys_msg_m00_arg4_ex_idx:		.WORD	0
-_sys_msg_m00_arg5_ex_idx:		.WORD	_sys_msg_m00_arg5_ex
-_sys_msg_m00_arg6_ex_idx:		.WORD	_sys_msg_m00_arg6_ex
-_sys_msg_m00_arg7_ex_idx:		.WORD	_sys_msg_m00_arg7_ex
+_msg_m00_ex_sidx	EQU	[. - _syscall_lib]
+		.WORD	0	; only used for bank 5, 6, 7
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		SYS_IDX		_sys_msg_m00_arg5_ex
+		SYS_IDX		_sys_msg_m00_arg6_ex
+		SYS_IDX		_sys_msg_m00_arg7_ex
 
-_msg_m00_break_ex_idx:
-_sys_msg_m00_arg0_break_ex_idx:	.WORD	0	; remove the rest if prove it unneeded
-_sys_msg_m00_arg1_break_ex_idx:	.WORD	0
-_sys_msg_m00_arg2_break_ex_idx:	.WORD	0
-_sys_msg_m00_arg3_break_ex_idx:	.WORD	0
-_sys_msg_m00_arg4_break_ex_idx:	.WORD	0
-_sys_msg_m00_arg5_break_ex_idx:	.WORD	_sys_msg_m00_arg5_break_ex
-_sys_msg_m00_arg6_break_ex_idx:	.WORD	_sys_msg_m00_arg6_break_ex
-_sys_msg_m00_arg7_break_ex_idx:	.WORD	_sys_msg_m00_arg7_break_ex
+_msg_m00_break_ex_sidx	EQU	[. - _syscall_lib]
+		.WORD	0	; remove the rest if prove it unneeded
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		.WORD	0
+		SYS_IDX		_sys_msg_m00_arg5_break_ex
+		SYS_IDX		_sys_msg_m00_arg6_break_ex
+		SYS_IDX		_sys_msg_m00_arg7_break_ex
 
 		; two more external direct offsets, whould called from bank 4 only
 		; and pointing directly to this bank
 		;
-_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:
-		.WORD	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
-_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break_idx:
-		.WORD	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
+		SYS_IDX		_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		SYS_IDX		_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break
 
 		; other common routines
 		;
-_display_window_idx:			.WORD	_display_window
-_display_window_ex_idx:			.WORD	_display_window_ex
-_apu_load_idx:					.WORD	_apu_load
+		SYS_IDX		_display_window
+		SYS_IDX		_display_window_ex
+		SYS_IDX		_apu_load
 
 ; == FILESYSTEM DATA ==
 
@@ -6212,33 +6210,33 @@ _sys_idx_lib:
 ; keep this records within first 256 indexes!
 ; data entries goes first
 ;
-_b0_d3F_other_spell_related_data_idx:			PTR_IDX	$0,_b0_d3F_other_spell_related_data					; $B2
-_b0_d42_item_use_effects_list_idx:	PTR_IDX	$0,_b0_d42_item_use_effects_list	; $90
-_b0_d44_item_effects_list_idx:			PTR_IDX	$0,_b0_d44_item_effects_list					; $92
-_b0_d58_hero_spell_related_data00_idx:			PTR_IDX	$0,_b0_d58_hero_spell_related_data00					; $DF
-_b0_d59_common_spell_related_data00_idx:			PTR_IDX	$0,_b0_d59_common_spell_related_data00					; $E0
-_b4_dD_spells_list_idx:	PTR_IDX	$4,_b4_dD_spells_list		; $78
-_b6_d9_world_map_step_daytime_list_idx:	PTR_IDX	$6,_b6_d9_world_map_step_daytime_list	; $89
-_b6_dA_world_pal_ofs_list_idx:	PTR_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
-_b6_dB_world_map_palette_lib_idx:PTR_IDX	$6,_b6_dB_world_map_palette_lib	; $8B
-_bA_d14_idx:			PTR_IDX	$A,_bA_d14					; $B6
-_bA_d15_idx:			PTR_IDX	$A,_bA_d15					; $B7
+		FILE_IDX	$0,_b0_d3F_other_spell_related_data					; $B2
+		FILE_IDX	$0,_b0_d42_item_use_effects_list	; $90
+		FILE_IDX	$0,_b0_d44_item_effects_list					; $92
+		FILE_IDX	$0,_b0_d58_hero_spell_related_data00					; $DF
+		FILE_IDX	$0,_b0_d59_common_spell_related_data00					; $E0
+		FILE_IDX	$4,_b4_dD_spells_list		; $78
+		FILE_IDX	$6,_b6_d9_world_map_step_daytime_list	; $89
+		FILE_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
+		FILE_IDX	$6,_b6_dB_world_map_palette_lib	; $8B
+		FILE_IDX	$A,_bA_d14					; $B6
+		FILE_IDX	$A,_bA_d15					; $B7
 ;
 ; then indirectly used subs
 ;
-_b2_s3_idx:				PTR_IDX	$2,_b2_s3					; $62, used indirectly in sub_6AA34
-_b2_s4_idx:				PTR_IDX	$2,_b2_s4					; $63, used indirectly in sub_6AA38
-_b2_s5_idx:				PTR_IDX	$2,_b2_s5					; $64, used indirectly in sub_6AA3C
-_b7_sF_player_log_read_idx:	PTR_IDX	$7,_b7_sF_player_log_read	; $167, used indirectly from _sys_safe_select
-_b7_s1B_idx:			PTR_IDX	$7,_b7_s1B					; $F6, used indirectly
-_bC_s15_idx:			PTR_IDX	$C,_bC_s15					; $C9, used indirectly
-_bC_s16_idx:			PTR_IDX	$C,_bC_s16					; $CA, used indirectly
-_bC_s18_idx:			PTR_IDX	$C,_bC_s18					; $CF, used indirectly
-_bC_s1C_idx:			PTR_IDX	$C,_bC_s1C					; $F3, used indirectly
-_bC_s2C_idx:			PTR_IDX	$C,_bC_s2C					; $FE, used indirectly
-_bC_s2D_idx:			PTR_IDX	$C,_bC_s2D					; $E2, used indirectly
-_bC_s38_idx:			PTR_IDX	$C,_bC_s38					; $FA
-_bD_s19_idx:			PTR_IDX	$D,_bD_s19					; $FD, copy of $133, used in _bC_s17_sys0_spr_effects_call, don't know why they need a second bank routine
+		FILE_IDX	$2,_b2_s3					; $62, used indirectly in sub_6AA34
+		FILE_IDX	$2,_b2_s4					; $63, used indirectly in sub_6AA38
+		FILE_IDX	$2,_b2_s5					; $64, used indirectly in sub_6AA3C
+		FILE_IDX	$7,_b7_sF_player_log_read	; $167, used indirectly from _sys_safe_select
+		FILE_IDX	$7,_b7_s1B					; $F6, used indirectly
+		FILE_IDX	$C,_bC_s15					; $C9, used indirectly
+		FILE_IDX	$C,_bC_s16					; $CA, used indirectly
+		FILE_IDX	$C,_bC_s18					; $CF, used indirectly
+		FILE_IDX	$C,_bC_s1C					; $F3, used indirectly
+		FILE_IDX	$C,_bC_s2C					; $FE, used indirectly
+		FILE_IDX	$C,_bC_s2D					; $E2, used indirectly
+		FILE_IDX	$C,_bC_s38					; $FA
+		FILE_IDX	$D,_bD_s19					; $FD, copy of $133, used in _bC_s17_sys0_spr_effects_call, don't know why they need a second bank routine
 ;
 ; then SRAM shourtcuts
 ; WARNING! shrtcuts are copied to SRAM and used in the same order
@@ -6247,367 +6245,367 @@ _bD_s19_idx:			PTR_IDX	$D,_bD_s19					; $FD, copy of $133, used in _bC_s17_sys0_
 ; rearrangement script or remove this damn shortcuts and replace
 ; them with nice sexy direct links in system bank
 ;
-_b0_s2_player_HP_read_idx:		PTR_IDX	$0,_b0_s2_player_HP_read		; $23
-_b0_s3_player_MHP_read_idx:	PTR_IDX	$0,_b0_s3_player_MHP_read	; $24
-_b0_s4_player_HP_add_idx:		PTR_IDX	$0,_b0_s4_player_HP_add			; $25
-_b0_s5_player_HP_subtract_idx:	PTR_IDX	$0,_b0_s5_player_HP_subtract	; $26
-_b0_s6_player_MP_read_idx:				PTR_IDX	$0,_b0_s6_player_MP_read					; $27
-_b0_s7_player_MMP_read_idx:				PTR_IDX	$0,_b0_s7_player_MMP_read					; $28
-_b0_s8_player_MP_add_idx:				PTR_IDX	$0,_b0_s8_player_MP_add					; $29
-_b0_s9_player_MP_subtract_idx:				PTR_IDX	$0,_b0_s9_player_MP_subtract					; $2A
-_b0_sB_player_MP_consume_idx:				PTR_IDX	$0,_b0_sB_player_MP_consume					; $2C
-_b0_sC_player_LV_read_idx:	PTR_IDX	$0,_b0_sC_player_LV_read; $2D
-_b0_sD_tavern_char_LV_read_idx:				PTR_IDX	$0,_b0_sD_tavern_char_LV_read					; $2E
-_b0_sE_player_STATUS_read_idx:				PTR_IDX	$0,_b0_sE_player_STATUS_read					; $2F
-_b0_sF_unassigned_formation_char_name_read_idx:				PTR_IDX	$0,_b0_sF_unassigned_formation_char_name_read					; $30
-_b0_s10_tavern_char_name_read_idx:			PTR_IDX	$0,_b0_s10_tavern_char_name_read					; $31
-_b0_s11_player_STR_read_idx:			PTR_IDX	$0,_b0_s11_player_STR_read					; $32
-_b0_s12_player_AGI_read_idx:			PTR_IDX	$0,_b0_s12_player_AGI_read					; $33
-_b0_s13_player_VIT_read_idx:			PTR_IDX	$0,_b0_s13_player_VIT_read					; $34
-_b0_s14_player_INT_read_idx:			PTR_IDX	$0,_b0_s14_player_INT_read					; $35
-_b0_s15_player_LUCK_read_idx:			PTR_IDX	$0,_b0_s15_player_LUCK_read					; $36
-_b0_s16_player_ATK_read_idx:			PTR_IDX	$0,_b0_s16_player_ATK_read					; $37
-_b0_s17_player_rATK_read_idx:			PTR_IDX	$0,_b0_s17_player_rATK_read					; $38
-_b0_s18_player_DEF_read_idx:			PTR_IDX	$0,_b0_s18_player_DEF_read					; $39
-_b0_s19_player_EXP_read_idx:			PTR_IDX	$0,_b0_s19_player_EXP_read					; $3A
-_b0_s1A_player_EXP_add_idx:			PTR_IDX	$0,_b0_s1A_player_EXP_add					; $3B
-_b0_s1B_players_gold_read_idx:			PTR_IDX	$0,_b0_s1B_players_gold_read					; $3C
-_b0_s1B_players_gold_add_idx:			PTR_IDX	$0,_b0_s1B_players_gold_add					; $3D
-_b0_s1B_players_gold_subtract_idx:			PTR_IDX	$0,_b0_s1B_players_gold_subtract					; $3E
-_b0_s1E_player_euipped_item_read_idx:			PTR_IDX	$0,_b0_s1E_player_euipped_item_read					; $3F
-_b0_s1F_get_weapon_from_inventory_idx:			PTR_IDX	$0,_b0_s1F_get_weapon_from_inventory					; $40
-_b0_s21_shield_from_inventory_idx:			PTR_IDX	$0,_b0_s21_shield_from_inventory					; $41
-_b0_s21_get_armor_from_inventory_idx:			PTR_IDX	$0,_b0_s21_get_armor_from_inventory					; $42
-_b0_s22_helm_from_inventory_idx:			PTR_IDX	$0,_b0_s22_helm_from_inventory					; $43
-_b0_s23_player_equip_weapon_idx:			PTR_IDX	$0,_b0_s23_player_equip_weapon					; $44
-_b0_s24_player_equip_shield_idx:			PTR_IDX	$0,_b0_s24_player_equip_shield					; $45
-_b0_s25_player_equip_armor_idx:			PTR_IDX	$0,_b0_s25_player_equip_armor					; $46
-_b0_s24_player_equip_helm_idx:			PTR_IDX	$0,_b0_s24_player_equip_helm					; $47
-_b0_s28_player_inventory_item_read_idx:			PTR_IDX	$0,_b0_s28_player_inventory_item_read					; $49
-_b0_s29_player_inventory_item_add_idx:			PTR_IDX	$0,_b0_s29_player_inventory_item_add					; $4A
-_b0_s2A_player_inventory_item_remove_idx:			PTR_IDX	$0,_b0_s2A_player_inventory_item_remove					; $4B
-_b0_s2B_is_anybody_owns_item_idx:			PTR_IDX	$0,_b0_s2B_is_anybody_owns_item					; $4C
-_b0_s2C_player_CLASS_read_idx:	PTR_IDX	$0,_b0_s2C_player_CLASS_read	; $4D
-_b0_s2E_tavern_char_CLASS_read_idx:			PTR_IDX	$0,_b0_s2E_tavern_char_CLASS_read					; $4F
-_b0_s2F_player_gender_read_idx:			PTR_IDX	$0,_b0_s2F_player_gender_read					; $50
-_b0_s30_tavern_char_gender_read_idx:			PTR_IDX	$0,_b0_s30_tavern_char_gender_read					; $51
-_b0_s31_get_party_chars_list_idx:			PTR_IDX	$0,_b0_s31_get_party_chars_list					; $52
-_b0_s32_get_tavern_chars_list_idx:			PTR_IDX	$0,_b0_s32_get_tavern_chars_list					; $53
-_b0_s33_count_non_dead_party_chars_idx:			PTR_IDX	$0,_b0_s33_count_non_dead_party_chars					; $54
-_b0_s34_read_spell_related_data_byte_idx:			PTR_IDX	$0,_b0_s34_read_spell_related_data_byte					; $55
-_b0_s35_idx:			PTR_IDX	$0,_b0_s35					; $56
-_b0_s37_idx:			PTR_IDX	$0,_b0_s37					; $58
-_b0_s38_idx:			PTR_IDX	$0,_b0_s38					; $59
-_b0_s39_idx:			PTR_IDX	$0,_b0_s39					; $5A
-_b0_s3A_players_data_swap_idx:			PTR_IDX	$0,_b0_s3A_players_data_swap					; $5B
-_b0_s3B_players_data_swap_in_battle_idx:			PTR_IDX	$0,_b0_s3B_players_data_swap_in_battle					; $5C
+		FILE_IDX	$0,_b0_s2_player_HP_read		; $23
+		FILE_IDX	$0,_b0_s3_player_MHP_read	; $24
+		FILE_IDX	$0,_b0_s4_player_HP_add			; $25
+		FILE_IDX	$0,_b0_s5_player_HP_subtract	; $26
+		FILE_IDX	$0,_b0_s6_player_MP_read					; $27
+		FILE_IDX	$0,_b0_s7_player_MMP_read					; $28
+		FILE_IDX	$0,_b0_s8_player_MP_add					; $29
+		FILE_IDX	$0,_b0_s9_player_MP_subtract					; $2A
+		FILE_IDX	$0,_b0_sB_player_MP_consume					; $2C
+		FILE_IDX	$0,_b0_sC_player_LV_read; $2D
+		FILE_IDX	$0,_b0_sD_tavern_char_LV_read					; $2E
+		FILE_IDX	$0,_b0_sE_player_STATUS_read					; $2F
+		FILE_IDX	$0,_b0_sF_unassigned_formation_char_name_read					; $30
+		FILE_IDX	$0,_b0_s10_tavern_char_name_read					; $31
+		FILE_IDX	$0,_b0_s11_player_STR_read					; $32
+		FILE_IDX	$0,_b0_s12_player_AGI_read					; $33
+		FILE_IDX	$0,_b0_s13_player_VIT_read					; $34
+		FILE_IDX	$0,_b0_s14_player_INT_read					; $35
+		FILE_IDX	$0,_b0_s15_player_LUCK_read					; $36
+		FILE_IDX	$0,_b0_s16_player_ATK_read					; $37
+		FILE_IDX	$0,_b0_s17_player_rATK_read					; $38
+		FILE_IDX	$0,_b0_s18_player_DEF_read					; $39
+		FILE_IDX	$0,_b0_s19_player_EXP_read					; $3A
+		FILE_IDX	$0,_b0_s1A_player_EXP_add					; $3B
+		FILE_IDX	$0,_b0_s1B_players_gold_read					; $3C
+		FILE_IDX	$0,_b0_s1B_players_gold_add					; $3D
+		FILE_IDX	$0,_b0_s1B_players_gold_subtract					; $3E
+		FILE_IDX	$0,_b0_s1E_player_euipped_item_read					; $3F
+		FILE_IDX	$0,_b0_s1F_get_weapon_from_inventory					; $40
+		FILE_IDX	$0,_b0_s21_shield_from_inventory					; $41
+		FILE_IDX	$0,_b0_s21_get_armor_from_inventory					; $42
+		FILE_IDX	$0,_b0_s22_helm_from_inventory					; $43
+		FILE_IDX	$0,_b0_s23_player_equip_weapon					; $44
+		FILE_IDX	$0,_b0_s24_player_equip_shield					; $45
+		FILE_IDX	$0,_b0_s25_player_equip_armor					; $46
+		FILE_IDX	$0,_b0_s24_player_equip_helm					; $47
+		FILE_IDX	$0,_b0_s28_player_inventory_item_read					; $49
+		FILE_IDX	$0,_b0_s29_player_inventory_item_add					; $4A
+		FILE_IDX	$0,_b0_s2A_player_inventory_item_remove					; $4B
+		FILE_IDX	$0,_b0_s2B_is_anybody_owns_item					; $4C
+		FILE_IDX	$0,_b0_s2C_player_CLASS_read	; $4D
+		FILE_IDX	$0,_b0_s2E_tavern_char_CLASS_read					; $4F
+		FILE_IDX	$0,_b0_s2F_player_gender_read					; $50
+		FILE_IDX	$0,_b0_s30_tavern_char_gender_read					; $51
+		FILE_IDX	$0,_b0_s31_get_party_chars_list					; $52
+		FILE_IDX	$0,_b0_s32_get_tavern_chars_list					; $53
+		FILE_IDX	$0,_b0_s33_count_non_dead_party_chars					; $54
+		FILE_IDX	$0,_b0_s34_read_spell_related_data_byte					; $55
+		FILE_IDX	$0,_b0_s35					; $56
+		FILE_IDX	$0,_b0_s37					; $58
+		FILE_IDX	$0,_b0_s38					; $59
+		FILE_IDX	$0,_b0_s39					; $5A
+		FILE_IDX	$0,_b0_s3A_players_data_swap					; $5B
+		FILE_IDX	$0,_b0_s3B_players_data_swap_in_battle					; $5C
 ;
 ; the rest of the records list, used only in BRK instructions, no matter
 ; what sys page they will be
 ;
-_b0_s0_world_map_random_enounter_test_idx:	PTR_IDX	$0,_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
-_b0_s1_battle_typeA_launch_idx:				PTR_IDX	$0,_b0_s1_battle_typeA_launch					; $14E
-_b0_s3C_get_free_inventory_slot_idx:			PTR_IDX	$0,_b0_s3C_get_free_inventory_slot					; $68
-_b0_s3D_player_detoxicate_idx:			PTR_IDX	$0,_b0_s3D_player_detoxicate					; $7A
-_b0_s3D_player_revive_idx:			PTR_IDX	$0,_b0_s3D_player_revive					; $7B
-_b0_s45_check_if_item_equipped_idx:			PTR_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
-_b0_s46_idx:			PTR_IDX	$0,_b0_s46					; $A9
-_b0_s47_idx:			PTR_IDX	$0,_b0_s47					; $AA
-_b0_s48_idx:			PTR_IDX	$0,_b0_s48					; $110
-_b0_s49_idx:			PTR_IDX	$0,_b0_s49					; $111
-_b0_s4D_idx:			PTR_IDX	$0,_b0_s4D					; $12C
-_b0_s4E_idx:			PTR_IDX	$0,_b0_s4E					; $145
-_b0_s4F_idx:			PTR_IDX	$0,_b0_s4F					; $146
-_b0_s50_idx:			PTR_IDX	$0,_b0_s50					; $149
-_b0_s52_battle_typeFF_launch_idx:			PTR_IDX	$0,_b0_s52_battle_typeFF_launch					; $14D
-_b0_s53_idx:			PTR_IDX	$0,_b0_s53					; $14F
-_b0_s54_idx:			PTR_IDX	$0,_b0_s54					; $155
-_b0_s55_idx:			PTR_IDX	$0,_b0_s55					; $173
-_b0_s56_idx:			PTR_IDX	$0,_b0_s56					; $17B
-_b0_s5B_non_battle_mode_spell_cast_idx:			PTR_IDX	$0,_b0_s5B_non_battle_mode_spell_cast					; $E4
-_b0_s5C_player_inventory_search_for_cursed_item_idx:			PTR_IDX	$0,_b0_s5C_player_inventory_search_for_cursed_item					; $129
-_b0_s5D_idx:			PTR_IDX	$0,_b0_s5D					; $EC
-_b0_s5E_check_if_item_can_be_equipped_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
-_b0_s5E_check_if_item_can_be_used_idx:			PTR_IDX	$0,_b0_s5E_check_if_item_can_be_used					; $109
-_b0_s60_get_item_type_idx:			PTR_IDX	$0,_b0_s60_get_item_type					; $10A
-_b0_s61_sram_shortcuts_init_idx:	PTR_IDX	$0,_b0_s61_sram_shortcuts_init	; $122
-_b0_s62_idx:			PTR_IDX	$0,_b0_s62					; $12A
-_b0_s63_player_unequip_all_type_items_idx:			PTR_IDX	$0,_b0_s63_player_unequip_all_type_items					; $130
-_b0_s64_respawn_at_the_king_idx:			PTR_IDX	$0,_b0_s64_respawn_at_the_king					; $12E
-_b0_s65_idx:			PTR_IDX	$0,_b0_s65					; $163
-_b0_s66_idx:			PTR_IDX	$0,_b0_s66					; $164
-_b0_s67_idx:			PTR_IDX	$0,_b0_s67					; $199
+		FILE_IDX	$0,_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
+		FILE_IDX	$0,_b0_s1_battle_typeA_launch					; $14E
+		FILE_IDX	$0,_b0_s3C_get_free_inventory_slot					; $68
+		FILE_IDX	$0,_b0_s3D_player_detoxicate					; $7A
+		FILE_IDX	$0,_b0_s3D_player_revive					; $7B
+		FILE_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
+		FILE_IDX	$0,_b0_s46					; $A9
+		FILE_IDX	$0,_b0_s47					; $AA
+		FILE_IDX	$0,_b0_s48					; $110
+		FILE_IDX	$0,_b0_s49					; $111
+		FILE_IDX	$0,_b0_s4D					; $12C
+		FILE_IDX	$0,_b0_s4E					; $145
+		FILE_IDX	$0,_b0_s4F					; $146
+		FILE_IDX	$0,_b0_s50					; $149
+		FILE_IDX	$0,_b0_s52_battle_typeFF_launch					; $14D
+		FILE_IDX	$0,_b0_s53_random_encounter_select					; $14F
+		FILE_IDX	$0,_b0_s54					; $155
+		FILE_IDX	$0,_b0_s55					; $173
+		FILE_IDX	$0,_b0_s56					; $17B
+		FILE_IDX	$0,_b0_s5B_non_battle_mode_spell_cast					; $E4
+		FILE_IDX	$0,_b0_s5C_player_inventory_search_for_cursed_item					; $129
+		FILE_IDX	$0,_b0_s5D					; $EC
+		FILE_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
+		FILE_IDX	$0,_b0_s5E_check_if_item_can_be_used					; $109
+		FILE_IDX	$0,_b0_s60_get_item_type					; $10A
+		FILE_IDX	$0,_b0_s61_sram_shortcuts_init	; $122
+		FILE_IDX	$0,_b0_s62					; $12A
+		FILE_IDX	$0,_b0_s63_player_unequip_all_type_items					; $130
+		FILE_IDX	$0,_b0_s64_respawn_at_the_king					; $12E
+		FILE_IDX	$0,_b0_s65					; $163
+		FILE_IDX	$0,_b0_s66					; $164
+		FILE_IDX	$0,_b0_s67					; $199
 
-_b1_s9_idx:				PTR_IDX	$1,_b1_s9					; $D8
-_b1_sA_idx:				PTR_IDX	$1,_b1_sA					; $D9
-_b1_sB_idx:				PTR_IDX	$1,_b1_sB					; $DA
-_b1_sC_idx:				PTR_IDX	$1,_b1_sC					; $DB
-_b1_sD_idx:				PTR_IDX	$1,_b1_sD					; $DC
-_b1_sE_idx:				PTR_IDX	$1,_b1_sE					; $13F
-_b1_s14_idx:			PTR_IDX	$1,_b1_s14					; $114
-_b1_s15_idx:			PTR_IDX	$1,_b1_s15					; $115
-_b1_s16_idx:			PTR_IDX	$1,_b1_s16					; $116
-_b1_s17_idx:			PTR_IDX	$1,_b1_s17					; $117
+		FILE_IDX	$1,_b1_s9					; $D8
+		FILE_IDX	$1,_b1_sA					; $D9
+		FILE_IDX	$1,_b1_sB					; $DA
+		FILE_IDX	$1,_b1_sC					; $DB
+		FILE_IDX	$1,_b1_sD					; $DC
+		FILE_IDX	$1,_b1_sE					; $13F
+		FILE_IDX	$1,_b1_s14					; $114
+		FILE_IDX	$1,_b1_s15					; $115
+		FILE_IDX	$1,_b1_s16					; $116
+		FILE_IDX	$1,_b1_s17					; $117
 
-_b2_s0_idx:				PTR_IDX	$2,_b2_s0					; $5F
-_b2_s2_idx:				PTR_IDX	$2,_b2_s2					; $61
-_b2_s6_screen_damage_shake_idx:	PTR_IDX	$2,_b2_s6_screen_damage_shake	; $65
-_b2_s7_screen_spell_blink_idx:	PTR_IDX	$2,_b2_s7_screen_spell_blink	; $66
-_b2_s8_screen_hit_blink_idx:PTR_IDX	$2,_b2_s8_screen_hit_blink	; $EA
-_b2_s9_idx:				PTR_IDX	$2,_b2_s9					; $CB
-_b2_sA_idx:				PTR_IDX	$2,_b2_sA					; $69
-_b2_sB_idx:				PTR_IDX	$2,_b2_sB					; $79
-_b2_sC_idx:				PTR_IDX	$2,_b2_sC					; $A4
-_b2_sD_idx:				PTR_IDX	$2,_b2_sD					; $186
-_b2_sE_idx:				PTR_IDX	$2,_b2_sE					; $198
+		FILE_IDX	$2,_b2_s0					; $5F
+		FILE_IDX	$2,_b2_s2					; $61
+		FILE_IDX	$2,_b2_s6_screen_damage_shake	; $65
+		FILE_IDX	$2,_b2_s7_screen_spell_blink	; $66
+		FILE_IDX	$2,_b2_s8_screen_hit_blink	; $EA
+		FILE_IDX	$2,_b2_s9					; $CB
+		FILE_IDX	$2,_b2_sA					; $69
+		FILE_IDX	$2,_b2_sB					; $79
+		FILE_IDX	$2,_b2_sC					; $A4
+		FILE_IDX	$2,_b2_sD					; $186
+		FILE_IDX	$2,_b2_sE					; $198
 
-_b4_s0_type00_battle_mode_handler_idx:				PTR_IDX	$4,_b4_s0_type00_battle_mode_handler					; $6B
-_b4_s1_idx:				PTR_IDX	$4,_b4_s1					; $6C
-_b4_s2_idx:				PTR_IDX	$4,_b4_s2					; $6D
-_b4_s3_idx:				PTR_IDX	$4,_b4_s3					; $6E
-_b4_s5_do_message_speed_delay_idx:	PTR_IDX	$4,_b4_s5_do_message_speed_delay	; $70
-_b4_s6_wndBTL_STAT_idx:				PTR_IDX	$4,_b4_s6_wndBTL_STAT					; $71
-_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
-_b4_sA_idx:				PTR_IDX	$4,_b4_sA					; $75
-_b4_sC_idx:				PTR_IDX	$4,_b4_sC					; $77
-_b4_sE_idx:				PTR_IDX	$4,_b4_sE					; $A7
-_b4_sF_idx:				PTR_IDX	$4,_b4_sF					; $7C
-_b4_s10_idx:			PTR_IDX	$4,_b4_s10					; $B0
-_b4_s12_idx:			PTR_IDX	$4,_b4_s12					; $B1
-_b4_s13_idx:			PTR_IDX	$4,_b4_s13					; $B3
-_b4_s14_idx:			PTR_IDX	$4,_b4_s14					; $B4
-_b4_s16_do_half_message_speed_delay_idx:PTR_IDX	$4,_b4_s16_do_half_message_speed_delay	; $D0
-_b4_s17_idx:			PTR_IDX	$4,_b4_s17					; $D1
-_b4_s18_idx:			PTR_IDX	$4,_b4_s18					; $D2
-_b4_s19_idx:			PTR_IDX	$4,_b4_s19					; $D3
-_b4_s1A_status_pal_adjust_and_update_idx:			PTR_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
-_b4_s1B_idx:			PTR_IDX	$4,_b4_s1B					; $D5
-_b4_s1E_idx:			PTR_IDX	$4,_b4_s1E					; $ED
-_b4_s1F_idx:			PTR_IDX	$4,_b4_s1F					; $EE
-_b4_s20_idx:			PTR_IDX	$4,_b4_s20					; $EF
-_b4_s21_message_half_delay_or_wait_for_keypress_idx:	PTR_IDX	$4,_b4_s21_message_half_delay_or_wait_for_keypress	; $131
-_b4_s23_idx:			PTR_IDX	$4,_b4_s23					; $154
-_b4_s24_type80_battle_mode_handler_idx:			PTR_IDX	$4,_b4_s24_type80_battle_mode_handler					; $15C
-_b4_s25_typeC0_battle_mode_handler_idx:			PTR_IDX	$4,_b4_s25_typeC0_battle_mode_handler					; $15D
-_b4_s26_idx:			PTR_IDX	$4,_b4_s26					; $180
-_b4_s27_idx:			PTR_IDX	$4,_b4_s27					; $19D
-_b4_s28_idx:			PTR_IDX	$4,_b4_s28					; $19E
-_b4_s29_idx:			PTR_IDX	$4,_b4_s29					; $19F
-_b4_s2A_idx:			PTR_IDX	$4,_b4_s2A					; $1A0
-_b4_s2B_idx:			PTR_IDX	$4,_b4_s2B					; $1A1
+		FILE_IDX	$4,_b4_s0_type00_battle_mode_handler					; $6B
+		FILE_IDX	$4,_b4_s1					; $6C
+		FILE_IDX	$4,_b4_s2					; $6D
+		FILE_IDX	$4,_b4_s3					; $6E
+		FILE_IDX	$4,_b4_s5_do_message_speed_delay	; $70
+		FILE_IDX	$4,_b4_s6_wndBTL_STAT					; $71
+		FILE_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
+		FILE_IDX	$4,_b4_sA					; $75
+		FILE_IDX	$4,_b4_sC					; $77
+		FILE_IDX	$4,_b4_sE					; $A7
+		FILE_IDX	$4,_b4_sF					; $7C
+		FILE_IDX	$4,_b4_s10					; $B0
+		FILE_IDX	$4,_b4_s12					; $B1
+		FILE_IDX	$4,_b4_s13					; $B3
+		FILE_IDX	$4,_b4_s14					; $B4
+		FILE_IDX	$4,_b4_s16_do_half_message_speed_delay	; $D0
+		FILE_IDX	$4,_b4_s17					; $D1
+		FILE_IDX	$4,_b4_s18					; $D2
+		FILE_IDX	$4,_b4_s19					; $D3
+		FILE_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
+		FILE_IDX	$4,_b4_s1B					; $D5
+		FILE_IDX	$4,_b4_s1E					; $ED
+		FILE_IDX	$4,_b4_s1F					; $EE
+		FILE_IDX	$4,_b4_s20					; $EF
+		FILE_IDX	$4,_b4_s21_message_half_delay_or_wait_for_keypress	; $131
+		FILE_IDX	$4,_b4_s23					; $154
+		FILE_IDX	$4,_b4_s24_type80_battle_mode_handler					; $15C
+		FILE_IDX	$4,_b4_s25_typeC0_battle_mode_handler					; $15D
+		FILE_IDX	$4,_b4_s26					; $180
+		FILE_IDX	$4,_b4_s27					; $19D
+		FILE_IDX	$4,_b4_s28					; $19E
+		FILE_IDX	$4,_b4_s29					; $19F
+		FILE_IDX	$4,_b4_s2A					; $1A0
+		FILE_IDX	$4,_b4_s2B					; $1A1
 
-_b5_s3_idx:				PTR_IDX	$5,_b5_s3					; $99
-_b5_s4_idx:				PTR_IDX	$5,_b5_s4					; $13
-_b5_s5_mirror_of_ra_trigger_on_idx:				PTR_IDX	$5,_b5_s5_mirror_of_ra_trigger_on					; $156
-_b5_s7_idx:				PTR_IDX	$5,_b5_s7					; $12
-_b5_s8_idx:				PTR_IDX	$5,_b5_s8					; $179
-_b5_s9_idx:				PTR_IDX	$5,_b5_s9					; $F1
-_b5_sA_idx:				PTR_IDX	$5,_b5_sA					; $F2
-_b5_sB_ppu_font_load_idx:	PTR_IDX	$5,_b5_sB_ppu_font_load	; $15F
+		FILE_IDX	$5,_b5_s3					; $99
+		FILE_IDX	$5,_b5_s4					; $13
+		FILE_IDX	$5,_b5_s5_mirror_of_ra_trigger_on					; $156
+		FILE_IDX	$5,_b5_s7					; $12
+		FILE_IDX	$5,_b5_s8					; $179
+		FILE_IDX	$5,_b5_s9					; $F1
+		FILE_IDX	$5,_b5_sA					; $F2
+		FILE_IDX	$5,_b5_sB_ppu_font_load	; $15F
 
-_b6_s6_idx:				PTR_IDX	$6,_b6_s6					; $112
-_b6_s8_world_map_pal_update_idx:	PTR_IDX	$6,_b6_s8_world_map_pal_update	; $88
-_b6_sC_idx:				PTR_IDX	$6,_b6_sC					; $C4
-_b6_sD_idx:				PTR_IDX	$6,_b6_sD					; $C5
-_b6_sE_idx:				PTR_IDX	$6,_b6_sE					; $C6
-_b6_sF_idx:				PTR_IDX	$6,_b6_sF					; $C7
-_b6_s10_idx:			PTR_IDX	$6,_b6_s10					; $DE
-_b6_s11_idx:			PTR_IDX	$6,_b6_s11					; $E3
-_b6_s12_sleeping_willage_trigger_idx:			PTR_IDX	$6,_b6_s12_sleeping_willage_trigger					; $142
-_b6_s13_idx:			PTR_IDX	$6,_b6_s13					; $153
-_b6_s14_name_entry_screen_idx:	PTR_IDX	$6,_b6_s14_name_entry_screen	; $161
-_b6_s15_idx:			PTR_IDX	$6,_b6_s15					; $16E
-_b6_s16_idx:			PTR_IDX	$6,_b6_s16					; $185
-_b6_s17_idx:			PTR_IDX	$6,_b6_s17					; $105
-_b6_s18_idx:			PTR_IDX	$6,_b6_s18					; $17F
-_b6_s19_idx:			PTR_IDX	$6,_b6_s19					; $181
-_b6_s1A_idx:			PTR_IDX	$6,_b6_s1A					; $194
-_b6_s1B_idx:			PTR_IDX	$6,_b6_s1B					; $189
-_b6_s1C_idx:			PTR_IDX	$6,_b6_s1C					; $188
-_b6_s1D_idx:			PTR_IDX	$6,_b6_s1D					; $187
-_b6_s1E_idx:			PTR_IDX	$6,_b6_s1E					; $196
-_b6_s1F_idx:			PTR_IDX	$6,_b6_s1F					; $BD
-_b6_s20_player_name_verify_idx:	PTR_IDX	$6,_b6_s20_player_name_verify	; $19A
+		FILE_IDX	$6,_b6_s6					; $112
+		FILE_IDX	$6,_b6_s8_world_map_pal_update	; $88
+		FILE_IDX	$6,_b6_sC					; $C4
+		FILE_IDX	$6,_b6_sD					; $C5
+		FILE_IDX	$6,_b6_sE					; $C6
+		FILE_IDX	$6,_b6_sF					; $C7
+		FILE_IDX	$6,_b6_s10					; $DE
+		FILE_IDX	$6,_b6_s11					; $E3
+		FILE_IDX	$6,_b6_s12_sleeping_willage_trigger					; $142
+		FILE_IDX	$6,_b6_s13					; $153
+		FILE_IDX	$6,_b6_s14_name_entry_screen	; $161
+		FILE_IDX	$6,_b6_s15					; $16E
+		FILE_IDX	$6,_b6_s16					; $185
+		FILE_IDX	$6,_b6_s17					; $105
+		FILE_IDX	$6,_b6_s18					; $17F
+		FILE_IDX	$6,_b6_s19					; $181
+		FILE_IDX	$6,_b6_s1A					; $194
+		FILE_IDX	$6,_b6_s1B					; $189
+		FILE_IDX	$6,_b6_s1C					; $188
+		FILE_IDX	$6,_b6_s1D					; $187
+		FILE_IDX	$6,_b6_s1E					; $196
+		FILE_IDX	$6,_b6_s1F					; $BD
+		FILE_IDX	$6,_b6_s20_player_name_verify	; $19A
 
-_b7_s8_idx:				PTR_IDX	$7,_b7_s8					; $19
-_b7_sA_sram_test_and_init_idx:	PTR_IDX	$7,_b7_sA_sram_test_and_init	; $162
-_b7_sD_idx:				PTR_IDX	$7,_b7_sD					; $165
-_b7_sE_player_log_list_idx:	PTR_IDX	$7,_b7_sE_player_log_list	; $166
-_b7_s10_idx:			PTR_IDX	$7,_b7_s10					; $168
-_b7_s11_idx:			PTR_IDX	$7,_b7_s11					; $169
-_b7_s12_idx:			PTR_IDX	$7,_b7_s12					; $16A
-_b7_s13_idx:			PTR_IDX	$7,_b7_s13					; $16B
-_b7_s14_idx:			PTR_IDX	$7,_b7_s14					; $16C
-_b7_s15_idx:			PTR_IDX	$7,_b7_s15					; $16F
-_b7_s19_idx:			PTR_IDX	$7,_b7_s19					; $17C
-_b7_s1A_idx:			PTR_IDX	$7,_b7_s1A					; $17E
-_b7_s1C_idx:			PTR_IDX	$7,_b7_s1C					; $10C
-_b7_s1D_idx:			PTR_IDX	$7,_b7_s1D					; $195
+		FILE_IDX	$7,_b7_s8					; $19
+		FILE_IDX	$7,_b7_sA_sram_test_and_init	; $162
+		FILE_IDX	$7,_b7_sD					; $165
+		FILE_IDX	$7,_b7_sE_player_log_list	; $166
+		FILE_IDX	$7,_b7_s10					; $168
+		FILE_IDX	$7,_b7_s11					; $169
+		FILE_IDX	$7,_b7_s12					; $16A
+		FILE_IDX	$7,_b7_s13					; $16B
+		FILE_IDX	$7,_b7_s14					; $16C
+		FILE_IDX	$7,_b7_s15					; $16F
+		FILE_IDX	$7,_b7_s19					; $17C
+		FILE_IDX	$7,_b7_s1A					; $17E
+		FILE_IDX	$7,_b7_s1C					; $10C
+		FILE_IDX	$7,_b7_s1D					; $195
 
-_bA_s1_idx:				PTR_IDX	$A,_bA_s1					; $10
-_bA_s2_idx:				PTR_IDX	$A,_bA_s2					; $19B
-_bA_s3_idx:				PTR_IDX	$A,_bA_s3					; $19C
-_bA_s4_div24_to_8_idx:	PTR_IDX	$A,_bA_s4_div24_to_8		; $1A2
-_bA_s6_idx:				PTR_IDX	$A,_bA_s6					; $1A4
-_bA_s8_idx:				PTR_IDX	$A,_bA_s8					; $178
-_bA_sA_idx:				PTR_IDX	$A,_bA_sA					; $E5
-_bA_sB_idx:				PTR_IDX	$A,_bA_sB					; $197
-_bA_sC_idx:				PTR_IDX	$A,_bA_sC					; $8C
-_bA_sD_idx:				PTR_IDX	$A,_bA_sD					; $8D
-_bA_sE_idx:				PTR_IDX	$A,_bA_sE					; $1A6
-_bA_sF_idx:				PTR_IDX	$A,_bA_sF					; $160
-_bA_s10_idx:			PTR_IDX	$A,_bA_s10					; $175
-_bA_s11_idx:			PTR_IDX	$A,_bA_s11					; $176
-_bA_s12_idx:			PTR_IDX	$A,_bA_s12					; $10B
-_bA_s16_idx:			PTR_IDX	$A,_bA_s16					; $1A8
-_bA_s17_idx:			PTR_IDX	$A,_bA_s17					; $1A9
+		FILE_IDX	$A,_bA_s1					; $10
+		FILE_IDX	$A,_bA_s2					; $19B
+		FILE_IDX	$A,_bA_s3					; $19C
+		FILE_IDX	$A,_bA_s4_div24_to_8		; $1A2
+		FILE_IDX	$A,_bA_s6					; $1A4
+		FILE_IDX	$A,_bA_s8					; $178
+		FILE_IDX	$A,_bA_sA					; $E5
+		FILE_IDX	$A,_bA_sB					; $197
+		FILE_IDX	$A,_bA_sC					; $8C
+		FILE_IDX	$A,_bA_sD					; $8D
+		FILE_IDX	$A,_bA_sE					; $1A6
+		FILE_IDX	$A,_bA_sF					; $160
+		FILE_IDX	$A,_bA_s10					; $175
+		FILE_IDX	$A,_bA_s11					; $176
+		FILE_IDX	$A,_bA_s12					; $10B
+		FILE_IDX	$A,_bA_s16					; $1A8
+		FILE_IDX	$A,_bA_s17					; $1A9
 
-_bB_s2_apu_init_idx:				PTR_IDX	$B,_bB_s2_apu_init					; $9F
-_bB_s3_apu_load_idx:	PTR_IDX	$B,_bB_s3_apu_load			; $A0
-_bB_s4_apu_set_flag0_idx:				PTR_IDX	$B,_bB_s4_apu_set_flag0					; $A1
-_bB_s5_apu_unk_idx:				PTR_IDX	$B,_bB_s5_apu_unk					; $A2
-_bB_s5_apu_flag1_idx:				PTR_IDX	$B,_bB_s5_apu_flag1					; $A5
-_bB_s7_apu_wait_idx:				PTR_IDX	$B,_bB_s7_apu_wait					; $F0
+		FILE_IDX	$B,_bB_s2_apu_init					; $9F
+		FILE_IDX	$B,_bB_s3_apu_load			; $A0
+		FILE_IDX	$B,_bB_s4_apu_set_flag0					; $A1
+		FILE_IDX	$B,_bB_s5_apu_unk					; $A2
+		FILE_IDX	$B,_bB_s5_apu_flag1					; $A5
+		FILE_IDX	$B,_bB_s7_apu_wait					; $F0
 
-_bC_s0_npc_anim_script_init_idx:	PTR_IDX	$C,_bC_s0_npc_anim_script_init	; $97
-_bC_s1_idx:				PTR_IDX	$C,_bC_s1					; $157
-_bC_s2_idx:				PTR_IDX	$C,_bC_s2					; $5E
-_bC_s3_idx:				PTR_IDX	$C,_bC_s3					; $82
-_bC_s4_idx:				PTR_IDX	$C,_bC_s4					; $83
-_bC_s5_idx:				PTR_IDX	$C,_bC_s5					; $84
-_bC_s6_idx:				PTR_IDX	$C,_bC_s6					; $85
-_bC_s9_idx:				PTR_IDX	$C,_bC_s9					; $9B
-_bC_sA_idx:				PTR_IDX	$C,_bC_sA					; $9D
-_bC_sB_idx:				PTR_IDX	$C,_bC_sB					; $172
-_bC_sC_idx:				PTR_IDX	$C,_bC_sC					; $16D
-_bC_sD_item_key_type0_use_idx:				PTR_IDX	$C,_bC_sD_item_key_type0_use					; $B8
-_bC_sE_item_key_type1_use_idx:				PTR_IDX	$C,_bC_sE_item_key_type1_use					; $B9
-_bC_sF_item_key_type3_use_idx:				PTR_IDX	$C,_bC_sF_item_key_type3_use					; $BA
-_bC_s10_idx:			PTR_IDX	$C,_bC_s10					; $BB
-_bC_s11_idx:			PTR_IDX	$C,_bC_s11					; $BC
-_bC_s12_sleep_X_sync_50_idx:PTR_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
-_bC_s13_use_magic_ball_idx:			PTR_IDX	$C,_bC_s13_use_magic_ball					; $BE
-_bC_s14_idx:			PTR_IDX	$C,_bC_s14					; $C8
-_bC_s17_sys0_spr_effects_call_idx:	PTR_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
-_bC_s19_idx:			PTR_IDX	$C,_bC_s19					; $143
-_bC_s1A_idx:			PTR_IDX	$C,_bC_s1A					; $15B
-_bC_s1B_idx:			PTR_IDX	$C,_bC_s1B					; $15E
-_bC_s1D_idx:			PTR_IDX	$C,_bC_s1D					; $16
-_bC_s1E_idx:			PTR_IDX	$C,_bC_s1E					; $F5
-_bC_s1F_idx:			PTR_IDX	$C,_bC_s1F					; $17
-_bC_s20_idx:			PTR_IDX	$C,_bC_s20					; $171
-_bC_s21_idx:			PTR_IDX	$C,_bC_s21					; $F7
-_bC_s22_idx:			PTR_IDX	$C,_bC_s22					; $F8
-_bC_s23_idx:			PTR_IDX	$C,_bC_s23					; $192
-_bC_s24_idx:			PTR_IDX	$C,_bC_s24					; $139
-_bC_s25_idx:			PTR_IDX	$C,_bC_s25					; $FB
-_bC_s26_idx:			PTR_IDX	$C,_bC_s26					; $18A
-_bC_s27_idx:			PTR_IDX	$C,_bC_s27					; $147
-_bC_s28_idx:			PTR_IDX	$C,_bC_s28					; $148
-_bC_s2A_idx:			PTR_IDX	$C,_bC_s2A					; $100
-_bC_s2B_idx:			PTR_IDX	$C,_bC_s2B					; $18E
-_bC_s2E_sleep_X_sync_50_wait_50_or_skip_idx:PTR_IDX	$C,_bC_s2E_sleep_X_sync_50_wait_50_or_skip	; $170
-_bC_s2F_idx:			PTR_IDX	$C,_bC_s2F					; $14A
-_bC_s30_idx:			PTR_IDX	$C,_bC_s30					; $14B
-_bC_s31_idx:			PTR_IDX	$C,_bC_s31					; $11D
-_bC_s32_idx:			PTR_IDX	$C,_bC_s32					; $123
-_bC_s33_idx:			PTR_IDX	$C,_bC_s33					; $126
-_bC_s34_idx:			PTR_IDX	$C,_bC_s34					; $159
-_bC_s35_idx:			PTR_IDX	$C,_bC_s35					; $15A
-_bC_s37_idx:			PTR_IDX	$C,_bC_s37					; $12B
-_bC_s39_idx:			PTR_IDX	$C,_bC_s39					; $13A
-_bC_s3A_idx:			PTR_IDX	$C,_bC_s3A					; $13B
-_bC_s3B_idx:			PTR_IDX	$C,_bC_s3B					; $141
+		FILE_IDX	$C,_bC_s0_npc_anim_script_init	; $97
+		FILE_IDX	$C,_bC_s1					; $157
+		FILE_IDX	$C,_bC_s2					; $5E
+		FILE_IDX	$C,_bC_s3					; $82
+		FILE_IDX	$C,_bC_s4					; $83
+		FILE_IDX	$C,_bC_s5					; $84
+		FILE_IDX	$C,_bC_s6					; $85
+		FILE_IDX	$C,_bC_s9					; $9B
+		FILE_IDX	$C,_bC_sA					; $9D
+		FILE_IDX	$C,_bC_sB					; $172
+		FILE_IDX	$C,_bC_sC					; $16D
+		FILE_IDX	$C,_bC_sD_item_key_type0_use					; $B8
+		FILE_IDX	$C,_bC_sE_item_key_type1_use					; $B9
+		FILE_IDX	$C,_bC_sF_item_key_type3_use					; $BA
+		FILE_IDX	$C,_bC_s10					; $BB
+		FILE_IDX	$C,_bC_s11					; $BC
+		FILE_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
+		FILE_IDX	$C,_bC_s13_use_magic_ball					; $BE
+		FILE_IDX	$C,_bC_s14					; $C8
+		FILE_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
+		FILE_IDX	$C,_bC_s19					; $143
+		FILE_IDX	$C,_bC_s1A					; $15B
+		FILE_IDX	$C,_bC_s1B					; $15E
+		FILE_IDX	$C,_bC_s1D					; $16
+		FILE_IDX	$C,_bC_s1E					; $F5
+		FILE_IDX	$C,_bC_s1F					; $17
+		FILE_IDX	$C,_bC_s20					; $171
+		FILE_IDX	$C,_bC_s21					; $F7
+		FILE_IDX	$C,_bC_s22					; $F8
+		FILE_IDX	$C,_bC_s23					; $192
+		FILE_IDX	$C,_bC_s24					; $139
+		FILE_IDX	$C,_bC_s25					; $FB
+		FILE_IDX	$C,_bC_s26					; $18A
+		FILE_IDX	$C,_bC_s27					; $147
+		FILE_IDX	$C,_bC_s28					; $148
+		FILE_IDX	$C,_bC_s2A					; $100
+		FILE_IDX	$C,_bC_s2B					; $18E
+		FILE_IDX	$C,_bC_s2E_sleep_X_sync_50_wait_50_or_skip	; $170
+		FILE_IDX	$C,_bC_s2F					; $14A
+		FILE_IDX	$C,_bC_s30					; $14B
+		FILE_IDX	$C,_bC_s31					; $11D
+		FILE_IDX	$C,_bC_s32					; $123
+		FILE_IDX	$C,_bC_s33					; $126
+		FILE_IDX	$C,_bC_s34					; $159
+		FILE_IDX	$C,_bC_s35					; $15A
+		FILE_IDX	$C,_bC_s37					; $12B
+		FILE_IDX	$C,_bC_s39					; $13A
+		FILE_IDX	$C,_bC_s3A					; $13B
+		FILE_IDX	$C,_bC_s3B					; $141
 
-_bD_s2_idx:				PTR_IDX	$D,_bD_s2					; $0A
-_bD_s3_idx:				PTR_IDX	$D,_bD_s3					; $0B
-_bD_s4_idx:				PTR_IDX	$D,_bD_s4					; $0C
-_bD_s5_idx:				PTR_IDX	$D,_bD_s5					; $0D
-_bD_s6_idx:				PTR_IDX	$D,_bD_s6					; $0E
-_bD_s7_idx:				PTR_IDX	$D,_bD_s7					; $0F
-_bD_s9_idx:				PTR_IDX	$D,_bD_s9					; $11
-_bD_sA_idx:				PTR_IDX	$D,_bD_sA					; $158
-_bD_sB_get_hero_and_its_gender_and_status_idx:				PTR_IDX	$D,_bD_sB_get_hero_and_its_gender_and_status					; $17D
-_bD_sC_idx:				PTR_IDX	$D,_bD_sC					; $183
-_bD_sD_idx:				PTR_IDX	$D,_bD_sD					; $DD
-_bD_sE_idx:				PTR_IDX	$D,_bD_sE					; $106
-_bD_s10_idx:			PTR_IDX	$D,_bD_s10					; $184
-_bD_s11_idx:			PTR_IDX	$D,_bD_s11					; $18B
-_bD_s12_idx:			PTR_IDX	$D,_bD_s12					; $102
-_bD_s13_idx:			PTR_IDX	$D,_bD_s13					; $103
-_bD_s14_idx:			PTR_IDX	$D,_bD_s14					; $10D
-_bD_s15_idx:			PTR_IDX	$D,_bD_s15					; $10E
-_bD_s16_idx:			PTR_IDX	$D,_bD_s16					; $127
-_bD_s17_idx:			PTR_IDX	$D,_bD_s17					; $128
-_bD_s18_idx:			PTR_IDX	$D,_bD_s18					; $132
-_bD_s1A_idx:			PTR_IDX	$D,_bD_s1A					; $134
-_bD_s1B_idx:			PTR_IDX	$D,_bD_s1B					; $135
-_bD_s1C_idx:			PTR_IDX	$D,_bD_s1C					; $136
-_bD_s1D_idx:			PTR_IDX	$D,_bD_s1D					; $137
-_bD_s1E_idx:			PTR_IDX	$D,_bD_s1E					; $138
-_bD_s1F_idx:			PTR_IDX	$D,_bD_s1F					; $13C
-_bD_s20_npc_hndl31_idx:	PTR_IDX	$D,_bD_s20_npc_hndl31		; $190
-_bD_s21_idx:			PTR_IDX	$D,_bD_s21					; $13E
-_bD_s22_se_wait_and_map_music_start_idx:			PTR_IDX	$D,_bD_s22_se_wait_and_map_music_start					; $144
-_bD_s23_idx:			PTR_IDX	$D,_bD_s23					; $18C
-_bD_s24_idx:			PTR_IDX	$D,_bD_s24					; $18D
-_bD_s26_get_first_live_player_with_no_NM_status_idx:			PTR_IDX	$D,_bD_s26_get_first_live_player_with_no_NM_status					; $12D
-_bD_s27_give_item_to_player_msg1_idx:			PTR_IDX	$D,_bD_s27_give_item_to_player_msg1					; $A3
-_bD_s28_frame_palette_by_status_adjust_idx:	PTR_IDX	$D,_bD_s28_frame_palette_by_status_adjust	; $12F
-_bD_s29_idx:			PTR_IDX	$D,_bD_s29					; $17A
+		FILE_IDX	$D,_bD_s2					; $0A
+		FILE_IDX	$D,_bD_s3					; $0B
+		FILE_IDX	$D,_bD_s4					; $0C
+		FILE_IDX	$D,_bD_s5					; $0D
+		FILE_IDX	$D,_bD_s6					; $0E
+		FILE_IDX	$D,_bD_s7					; $0F
+		FILE_IDX	$D,_bD_s9					; $11
+		FILE_IDX	$D,_bD_sA					; $158
+		FILE_IDX	$D,_bD_sB_get_hero_and_its_gender_and_status					; $17D
+		FILE_IDX	$D,_bD_sC					; $183
+		FILE_IDX	$D,_bD_sD					; $DD
+		FILE_IDX	$D,_bD_sE					; $106
+		FILE_IDX	$D,_bD_s10					; $184
+		FILE_IDX	$D,_bD_s11					; $18B
+		FILE_IDX	$D,_bD_s12					; $102
+		FILE_IDX	$D,_bD_s13					; $103
+		FILE_IDX	$D,_bD_s14					; $10D
+		FILE_IDX	$D,_bD_s15					; $10E
+		FILE_IDX	$D,_bD_s16					; $127
+		FILE_IDX	$D,_bD_s17					; $128
+		FILE_IDX	$D,_bD_s18					; $132
+		FILE_IDX	$D,_bD_s1A					; $134
+		FILE_IDX	$D,_bD_s1B					; $135
+		FILE_IDX	$D,_bD_s1C					; $136
+		FILE_IDX	$D,_bD_s1D					; $137
+		FILE_IDX	$D,_bD_s1E					; $138
+		FILE_IDX	$D,_bD_s1F					; $13C
+		FILE_IDX	$D,_bD_s20_npc_hndl31		; $190
+		FILE_IDX	$D,_bD_s21					; $13E
+		FILE_IDX	$D,_bD_s22_se_wait_and_map_music_start					; $144
+		FILE_IDX	$D,_bD_s23					; $18C
+		FILE_IDX	$D,_bD_s24					; $18D
+		FILE_IDX	$D,_bD_s26_get_first_live_player_with_no_NM_status					; $12D
+		FILE_IDX	$D,_bD_s27_give_item_to_player_msg1					; $A3
+		FILE_IDX	$D,_bD_s28_frame_palette_by_status_adjust	; $12F
+		FILE_IDX	$D,_bD_s29					; $17A
 
-_bE_s0_display_window_ex_idx:				PTR_IDX	$E,_bE_s0_display_window_ex					; $00
-_bE_s1_MainLoopCheckAButton_idx:				PTR_IDX	$E,_bE_s1_MainLoopCheckAButton					; $01
-_bE_s2_idx:				PTR_IDX	$E,_bE_s2					; $02
-_bE_s3_idx:				PTR_IDX	$E,_bE_s3					; $03
-_bE_s4_msg_m00_idx:		PTR_IDX	$E,_bE_s4_msg_m00			; $04
-_bE_s5_idx:				PTR_IDX	$E,_bE_s5					; $05
-_bE_s6_msg_mFF_idx:		PTR_IDX	$E,_bE_s6_msg_mFF			; $06
-_bE_s9_idx:				PTR_IDX	$E,_bE_s9					; $09
-_bE_sB_idx:				PTR_IDX	$E,_bE_sB					; $1F
-_bE_sC_display_window_idx:				PTR_IDX	$E,_bE_sC_display_window					; $20
-_bE_sD_idx:				PTR_IDX	$E,_bE_sD					; $21
-_bE_sE_idx:				PTR_IDX	$E,_bE_sE					; $A8
-_bE_sF_idx:				PTR_IDX	$E,_bE_sF					; $121
-_bE_s10_idx:			PTR_IDX	$E,_bE_s10					; $124
-_bE_s11_idx:			PTR_IDX	$E,_bE_s11					; $193
-_bE_s12_idx:			PTR_IDX	$E,_bE_s12					; $119
-_bE_s13_idx:			PTR_IDX	$E,_bE_s13					; $11A
-_bE_s14_idx:			PTR_IDX	$E,_bE_s14					; $11B
-_bE_s16_idx:			PTR_IDX	$E,_bE_s16					; $11E
-_bE_s18_idx:			PTR_IDX	$E,_bE_s18					; $151
-_bE_s19_idx:			PTR_IDX	$E,_bE_s19					; $AC
-_bE_s1A_idx:			PTR_IDX	$E,_bE_s1A					; $AD
-_bE_s1B_idx:			PTR_IDX	$E,_bE_s1B					; $F9
-_bE_s1C_yes_or_no_question_idx:			PTR_IDX	$E,_bE_s1C_yes_or_no_question					; $120
-_bE_s1D_get_map_buf_end_ptr_idx:			PTR_IDX	$E,_bE_s1D_get_map_buf_end_ptr					; $AB
-_bE_s20_decode_map_ptr_to_XY_idx:			PTR_IDX	$E,_bE_s20_decode_map_ptr_to_XY					; $AE
-_bE_s21_idx:			PTR_IDX	$E,_bE_s21					; $AF
-_bE_s22_idx:			PTR_IDX	$E,_bE_s22					; $BF
-_bE_s23_idx:			PTR_IDX	$E,_bE_s23					; $C0
-_bE_s24_idx:			PTR_IDX	$E,_bE_s24					; $C1
-_bE_s25_idx:			PTR_IDX	$E,_bE_s25					; $C2
-_bE_s26_idx:			PTR_IDX	$E,_bE_s26					; $C3
-_bE_s2E_special_map_actions_idx:			PTR_IDX	$E,_bE_s2E_special_map_actions					; $E6
-_bE_s2F_idx:			PTR_IDX	$E,_bE_s2F					; $E7
-_bE_s30_idx:			PTR_IDX	$E,_bE_s30					; $E8
-_bE_s31_get_map_music_idx_idx:			PTR_IDX	$E,_bE_s31_get_map_music_idx					; $E9
-_bE_s32_idx:			PTR_IDX	$E,_bE_s32					; $EB
-_bE_s33_idx:			PTR_IDX	$E,_bE_s33					; $F4
-_bE_s34_idx:			PTR_IDX	$E,_bE_s34					; $125
-_bE_s36_idx:			PTR_IDX	$E,_bE_s36					; $150
-_bE_s38_print_char_force_dequeue_idx:			PTR_IDX	$E,_bE_s38_print_char_force_dequeue					; $152
+		FILE_IDX	$E,_bE_s0_display_window_ex					; $00
+		FILE_IDX	$E,_bE_s1_MainLoopCheckAButton					; $01
+		FILE_IDX	$E,_bE_s2					; $02
+		FILE_IDX	$E,_bE_s3					; $03
+		FILE_IDX	$E,_bE_s4_msg_m00			; $04
+		FILE_IDX	$E,_bE_s5					; $05
+		FILE_IDX	$E,_bE_s6_msg_mFF			; $06
+		FILE_IDX	$E,_bE_s9					; $09
+		FILE_IDX	$E,_bE_sB					; $1F
+		FILE_IDX	$E,_bE_sC_display_window					; $20
+		FILE_IDX	$E,_bE_sD					; $21
+		FILE_IDX	$E,_bE_sE					; $A8
+		FILE_IDX	$E,_bE_sF					; $121
+		FILE_IDX	$E,_bE_s10					; $124
+		FILE_IDX	$E,_bE_s11					; $193
+		FILE_IDX	$E,_bE_s12					; $119
+		FILE_IDX	$E,_bE_s13					; $11A
+		FILE_IDX	$E,_bE_s14					; $11B
+		FILE_IDX	$E,_bE_s16					; $11E
+		FILE_IDX	$E,_bE_s18					; $151
+		FILE_IDX	$E,_bE_s19					; $AC
+		FILE_IDX	$E,_bE_s1A					; $AD
+		FILE_IDX	$E,_bE_s1B					; $F9
+		FILE_IDX	$E,_bE_s1C_yes_or_no_question					; $120
+		FILE_IDX	$E,_bE_s1D_get_map_buf_end_ptr					; $AB
+		FILE_IDX	$E,_bE_s20_decode_map_ptr_to_XY					; $AE
+		FILE_IDX	$E,_bE_s21					; $AF
+		FILE_IDX	$E,_bE_s22					; $BF
+		FILE_IDX	$E,_bE_s23					; $C0
+		FILE_IDX	$E,_bE_s24					; $C1
+		FILE_IDX	$E,_bE_s25					; $C2
+		FILE_IDX	$E,_bE_s26					; $C3
+		FILE_IDX	$E,_bE_s2E_special_map_actions					; $E6
+		FILE_IDX	$E,_bE_s2F					; $E7
+		FILE_IDX	$E,_bE_s30					; $E8
+		FILE_IDX	$E,_bE_s31_get_map_music_number					; $E9
+		FILE_IDX	$E,_bE_s32					; $EB
+		FILE_IDX	$E,_bE_s33					; $F4
+		FILE_IDX	$E,_bE_s34					; $125
+		FILE_IDX	$E,_bE_s36					; $150
+		FILE_IDX	$E,_bE_s38_print_char_force_dequeue					; $152
 
 ; now we can add a higher bank routines here in the common list
 ;
-_b16_s0_location_palette_setup_idx:			PTR_IDX	$7,_b16_s0_location_palette_setup					; $1AA, moved to bank 07
-_b17_s0_copyrights_screen_idx:	PTR_IDX	$17,_b17_s0_copyrights_screen	; $1AB
-_b17_s1_title_screen_idx:PTR_IDX	$17,_b17_s1_title_screen	; $1AC
-_b18_s0_intro_animation_idx:PTR_IDX	$18,_b18_s0_intro_animation	; $1AD
-_b18_s1_idx:			PTR_IDX	$18,_b18_s1					; $1AE
-_b19_s0_idx:			PTR_IDX	$19,_b19_s0					; $1AF
-_b1A_s0_idx:			PTR_IDX	$1A,_b1A_s0					; $1B0
-_b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
+		FILE_IDX	$7,_b16_s0_location_palette_setup					; $1AA, moved to bank 07
+		FILE_IDX	$17,_b17_s0_copyrights_screen	; $1AB
+		FILE_IDX	$17,_b17_s1_title_screen	; $1AC
+		FILE_IDX	$18,_b18_s0_intro_animation	; $1AD
+		FILE_IDX	$18,_b18_s1					; $1AE
+		FILE_IDX	$19,_b19_s0					; $1AF
+		FILE_IDX	$1A,_b1A_s0					; $1B0
+		FILE_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 
 ; == removed unused, unneeded or empty filesystem entries
 ;
@@ -6656,7 +6654,7 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$7,$1E						; $1A7 _b7_s1E, no use here, used directly
 ;		.BYTE	$8,  0						; $18 bank 08, idx 00, empty
 ;		.BYTE	$A,  0						; $1A bank 0a, idx 00, empty
-;		.BYTE	$A,  1						; $1B _bA_s1, unused copy of _bA_s1_idx
+;		.BYTE	$A,  1						; $1B _bA_s1, unused copy of _bA_s1
 ;		.BYTE	$A,  2						; $81 _bA_s2, unused copy of $19B
 ;		.BYTE	$A,  3						; $86 _bA_s3, unused copy of $19C
 ;		.BYTE	$A,  5						; $1A3 _bA_s5_add16_to_24, unused copy of $FC
@@ -6670,8 +6668,8 @@ _b1B_s0_idx:			PTR_IDX	$1,_b1B_s0					; $1B1, moved to bank 01
 ;		.BYTE	$D,  1						; $FF _bD_d1_ofs, not used anymore
 ;		.BYTE	$D, $F						; $182 _bD_sF, no use here, used directly
 ;		.BYTE	$D,$19						; $133 _bD_s19 were used as copy of $FD
-;		.BYTE	$E,  4						; $08 _bE_s4_msg_m00, were used as dupe of _bE_s4_msg_m00_idx, removed
-;		.BYTE	$E,  6						; $07 _bE_s6_msg_mFF, unused dupe of _bE_s6_msg_mFF_idx
+;		.BYTE	$E,  4						; $08 _bE_s4_msg_m00, were used as dupe of _bE_s4_msg_m00, removed
+;		.BYTE	$E,  6						; $07 _bE_s6_msg_mFF, unused dupe of _bE_s6_msg_mFF
 ;		.BYTE	$E, $A						; $1C _bE_sA, no use here, moved to bank 0F, used directly
 ;		.BYTE	$E,$10						; $A6 _bE_s10, unused copy of $124
 ;		.BYTE	$E,$15						; $11C, bank 0E, idx 15, empty

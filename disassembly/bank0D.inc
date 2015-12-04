@@ -1,80 +1,43 @@
 
 		ORG $8000
 
-_bD_s2_ptr:
-		.WORD	_bD_s2
-_bD_s3_ptr:
-		.WORD	_bD_s3
-_bD_s4_ptr:
-		.WORD	_bD_s4
-_bD_s5_ptr:
-		.WORD	_bD_s5
-_bD_s6_ptr:
-		.WORD	_bD_s6
-_bD_s7_ptr:
-		.WORD	_bD_s7
-_bD_s9_ptr:
-		.WORD	_bD_s9
-_bD_sA_ptr:
-		.WORD	_bD_sA
-_bD_sB_get_hero_and_its_gender_and_status_ptr:
-		.WORD	_bD_sB_get_hero_and_its_gender_and_status
-_bD_sC_ptr:
-		.WORD	_bD_sC
-_bD_sD_ptr:
-		.WORD	_bD_sD
-_bD_sE_ptr:
-		.WORD	_bD_sE
-_bD_s10_ptr:
-		.WORD	_bD_s10
-_bD_s11_ptr:
-		.WORD	_bD_s11
-_bD_s12_ptr:
-		.WORD	_bD_s12
-_bD_s13_ptr:
-		.WORD	_bD_s13
-_bD_s14_ptr:
-		.WORD	_bD_s14
-_bD_s15_ptr:
-		.WORD	_bD_s15
-_bD_s16_ptr:
-		.WORD	_bD_s16
-_bD_s17_ptr:
-		.WORD	_bD_s17
-_bD_s18_ptr:
-		.WORD	_bD_s18
-_bD_s19_ptr:
-		.WORD	_bD_s19
-_bD_s1A_ptr:
-		.WORD	_bD_s1A
-_bD_s1B_ptr:
-		.WORD	_bD_s1B
-_bD_s1C_ptr:
-		.WORD	_bD_s1C
-_bD_s1D_ptr:
-		.WORD	_bD_s1D
-_bD_s1E_ptr:
-		.WORD	_bD_s1E
-_bD_s1F_ptr:
-		.WORD	_bD_s1F
-_bD_s20_npc_hndl31_ptr:
-		.WORD	_bD_s20_npc_hndl31
-_bD_s21_ptr:
-		.WORD	_bD_s21
-_bD_s22_se_wait_and_map_music_start_ptr:
-		.WORD	_bD_s22_se_wait_and_map_music_start
-_bD_s23_ptr:
-		.WORD	_bD_s23
-_bD_s24_ptr:
-		.WORD	_bD_s24
-_bD_s26_get_first_live_player_with_no_NM_status_ptr:
-		.WORD	_bD_s26_get_first_live_player_with_no_NM_status
-_bD_s27_give_item_to_player_msg1_ptr:
-		.WORD	_bD_s27_give_item_to_player_msg1
-_bD_s28_frame_palette_by_status_adjust_ptr:
-		.WORD	_bD_s28_frame_palette_by_status_adjust
-_bD_s29_ptr:
-		.WORD	_bD_s29
+		PTR_IDX		_bD_s2
+		PTR_IDX		_bD_s3
+		PTR_IDX		_bD_s4
+		PTR_IDX		_bD_s5
+		PTR_IDX		_bD_s6
+		PTR_IDX		_bD_s7
+		PTR_IDX		_bD_s9
+		PTR_IDX		_bD_sA
+		PTR_IDX		_bD_sB_get_hero_and_its_gender_and_status
+		PTR_IDX		_bD_sC
+		PTR_IDX		_bD_sD
+		PTR_IDX		_bD_sE
+		PTR_IDX		_bD_s10
+		PTR_IDX		_bD_s11
+		PTR_IDX		_bD_s12
+		PTR_IDX		_bD_s13
+		PTR_IDX		_bD_s14
+		PTR_IDX		_bD_s15
+		PTR_IDX		_bD_s16
+		PTR_IDX		_bD_s17
+		PTR_IDX		_bD_s18
+		PTR_IDX		_bD_s19
+		PTR_IDX		_bD_s1A
+		PTR_IDX		_bD_s1B
+		PTR_IDX		_bD_s1C
+		PTR_IDX		_bD_s1D
+		PTR_IDX		_bD_s1E
+		PTR_IDX		_bD_s1F
+		PTR_IDX		_bD_s20_npc_hndl31
+		PTR_IDX		_bD_s21
+		PTR_IDX		_bD_s22_se_wait_and_map_music_start
+		PTR_IDX		_bD_s23
+		PTR_IDX		_bD_s24
+		PTR_IDX		_bD_s26_get_first_live_player_with_no_NM_status
+		PTR_IDX		_bD_s27_give_item_to_player_msg1
+		PTR_IDX		_bD_s28_frame_palette_by_status_adjust
+		PTR_IDX		_bD_s29
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s19:
@@ -634,7 +597,7 @@ loc_1415EF:
 		LDA		#$2A
 		BNE		loc_141614
 loc_1415FC:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$20
 		BNE		loc_14160A
 		LDA		_world_map_steps_count
@@ -712,7 +675,7 @@ loc_141666:
 		CMP		#$78
 		BNE		loc_141682
 loc_14167B:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BEQ		locret_141665
 loc_141682:
@@ -2124,14 +2087,14 @@ loc_141F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s12:
-		LDA		#[_b0_d44_item_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d44_item_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$7F
 		STA		byte_C0
 		LDA		#0
 		STA		byte_C1
 		STA		byte_C2
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#3
 		TAX
@@ -2577,10 +2540,10 @@ loc_1421F5:
 loc_1421FF:
 		CMP		#$29
 		BNE		loc_14221D
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#$20
 		BEQ		loc_14221D
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_14221D
 		LDA		#$1C
 		STA		byte_CE
@@ -2716,7 +2679,7 @@ loc_142303:
 		CMP		#$5E
 		BEQ		loc_142333
 		TAX
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_14233A
@@ -2767,7 +2730,7 @@ loc_142377:
 		AND		#$80
 		BEQ		loc_1423AA
 		LDX		byte_C5
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
@@ -2785,12 +2748,12 @@ loc_1423AA:
 		LDA		byte_C5
 		CMP		#$5E
 		BNE		loc_1423C9
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		ORA		#$20
-		STA		byte_60B9
-		LDA		_global_game_flags
+		STA		_global_flags_array.byte4
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 loc_1423C9:
 		JMP		loc_14235E
 
@@ -3572,7 +3535,7 @@ loc_142A1B:
 		BPL		loc_142A41
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
@@ -4028,7 +3991,7 @@ loc_142DAE:
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BNE		loc_142DD0
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#1
 		BNE		loc_142DD0
 		MSGX	_msg_m00,$264
@@ -4515,16 +4478,16 @@ loc_143182:
 		CMP		#$F2
 		BCS		loc_143195
 		LDA		#$AC
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 loc_143195:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		loc_1431A3
 		LDA		word_6
 		AND		#$20
 		BEQ		loc_1431C2
 		MSGX	_msg_m00_break,$668	; ""
 loc_1431A3:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		sub_1431F7
 		LDA		word_4
 		CMP		#$99
@@ -4581,7 +4544,7 @@ sub_1431F7:
 		CMP		#$78
 		BNE		loc_143212
 loc_143207:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BNE		loc_143212
 		MSGX	_msg_m00_break,$302	; "Zzzz Zzzz"
@@ -4590,9 +4553,9 @@ loc_143212:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		loc_143244
-		LDA		byte_60C9
+		LDA		_global_flags_array.byte14
 		BNE		loc_143231
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		loc_143281
 		LDA		word_6
 		PHA
@@ -4603,7 +4566,7 @@ loc_143212:
 		BNE		loc_143244
 loc_143231:
 		LDY		#$20
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$3F
 		CMP		#$17
 		BEQ		loc_143244
@@ -4646,7 +4609,7 @@ loc_14326E:
 sub_14327E:
 		JSR		sub_143166
 loc_143281:
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVC		loc_1432A7
 		LDY		#$15
 loc_143288:
@@ -4673,7 +4636,7 @@ loc_1432A7:
 		LDA		word_4+1
 		CMP		#2
 		BNE		loc_1432BC
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		BMI		loc_1432BC
 		MSGX	_msg_m00_break,$459
 loc_1432BC:
@@ -5066,7 +5029,7 @@ _npc_hndl1:
 		STA		byte_D3
 		MSGX	_msg_m00_break,$5BF
 loc_143541:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		loc_143559
 		MSGX	_msg_m00,$5BB
 		FARX	_bE_s1C_yes_or_no_question
@@ -5096,15 +5059,15 @@ loc_14356E:
 		FARX	_b6_s1D
 		JSR		_wrap_bE_sD_wnd3E
 		LDA		#$17
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		MSGX	_msg_m00_break_ex,$5B9
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#2
 		BNE		loc_1435A6
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#$20
 		BNE		loc_1435A6
 		BCS		loc_1435A6
@@ -5113,7 +5076,7 @@ _npc_hndl2:
 		JSR		_give_item_to_player_msg2
 		BCC		locret_1435A5
 		LDA		#$55
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_1435A5:
 		RTS
 loc_1435A6:
@@ -5121,7 +5084,7 @@ loc_1435A6:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl3:
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		LSR
 		BCC		loc_1435B3
 		MSGX	_msg_m00_break,$313
@@ -5168,17 +5131,17 @@ loc_1435E5:
 		LDX		#7
 loc_143607:
 		LDA		word_4,X
-		STA		byte_60CD,X
+		STA		_global_flags_array.byte18,X
 		DEX
 		CPX		#4
 		BCS		loc_143607
 loc_143611:
 		LDA		word_4,X
-		STA		byte_60BB,X
+		STA		_global_flags_array.byte6,X
 		DEX
 		BPL		loc_143611
 		LDA		#$C0
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		MSGX	_msg_m00,$5D2
 		JSR		sub_1420CC
 		FARX	_b6_s17
@@ -5288,7 +5251,7 @@ loc_1436C3:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlF:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BNE		loc_1436D4
 		MSGX	_msg_m00_break,$5F5
@@ -5345,9 +5308,9 @@ loc_14371E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143721:
-		LDA		byte_60C9
+		LDA		_global_flags_array.byte14
 		BEQ		loc_14372B
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		AND		#$3F
 loc_14372B:
 		CMP		#$1E
@@ -5384,9 +5347,9 @@ loc_14374F:
 loc_143756:
 		MSGX	_msg_m00,$607
 		LDA		#$21
-		JMP		sub_143F9E
+		JMP		_global_game_flag_set
 loc_14375F:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#2
 		BNE		loc_143772
 		JSR		sub_14315A
@@ -5403,7 +5366,7 @@ loc_14377F:
 		LDA		#$5C
 		STA		byte_CE
 		FARX	_b0_s4D
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		RTS
 
@@ -5419,11 +5382,11 @@ loc_143796:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl18:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#4
 		BNE		loc_1437B1
 		LDA		#$22
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		MSGX	_msg_m00,$612
 		MSGX	_msg_m00,$6CF
 		LDA		#1
@@ -5434,7 +5397,7 @@ loc_1437B1:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl19:
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		BMI		loc_1437D1
 		MSGX	_msg_m00,$614
 		FARX	_bE_s1C_yes_or_no_question
@@ -5444,7 +5407,7 @@ _npc_hndl19:
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_1437D0
 		LDA		#$57
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_1437D0:
 		RTS
 loc_1437D1:
@@ -5502,7 +5465,7 @@ loc_143814:
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143826
 		LDA		#$CD
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		FARX	_bC_s23
 locret_143826:
 		RTS
@@ -5544,10 +5507,10 @@ _npc_hndl21:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl22:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#8
 		BEQ		loc_14386C
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_1438B6
 		MSGX	_msg_m00_break,$638
 loc_14386C:
@@ -5574,15 +5537,15 @@ loc_14388F:
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
 		LDA		#$17
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		LDA		#$23
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		LDA		#$40
 		STA		byte_9B
 		LDA		#$6C
 		STA		byte_9C
 		LDA		#$B6
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 loc_1438B6:
 		MSGX	_msg_m00_break,$636
 
@@ -5628,7 +5591,7 @@ loc_1438ED:
 		JSR		_give_item_to_player_msg2
 		BCC		locret_143905
 		LDA		#$C8
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		FARX	_bC_s23
 locret_143905:
 		RTS
@@ -5651,17 +5614,17 @@ _npc_hndl27:
 		MSGX	_msg_m00,$647
 		FARX	_b6_s19
 		LDA		#$AE
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_14392A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl28:
-		BIT		byte_60B9
+		BIT		_global_flags_array.byte4
 		BVC		loc_143934
 		MSGX	_msg_m00_break,$3D4
 loc_143934:
-		LDA		byte_60CF
+		LDA		_global_flags_array.byte1A
 		AND		#$3F
 		CMP		#$3F
 		BNE		loc_14394D
@@ -5675,11 +5638,11 @@ locret_14394C:
 		RTS
 loc_14394D:
 		MSGX	_msg_m00,$649
-		LDA		byte_60CF
+		LDA		_global_flags_array.byte1A
 		AND		#$3F
 		BEQ		locret_14394C
 		MSGX	_msg_m00,$64A
-		LDA		byte_60CF
+		LDA		_global_flags_array.byte1A
 		AND		#$3F
 		STA		byte_5C
 		LDA		#$4B
@@ -5710,7 +5673,7 @@ _npc_hndl29:
 		LDA		#$11
 		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$B7
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		LDA		#$80
 		STA		_npcs_pos_list
 		JSR		sub_174CBD
@@ -5754,7 +5717,7 @@ loc_1439D1:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2C:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$10
 		BNE		loc_143A01
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
@@ -5766,13 +5729,13 @@ _npc_hndl2C:
 		MSGX	_msg_m00,$678
 		FARX	_b6_s1C
 		LDA		#$B4
-		JMP		sub_143F9E
+		JMP		_global_game_flag_set
 loc_143A01:
 		MSGX	_msg_m00_break,$679
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2D:
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#$10
 		BEQ		loc_143A0E
 		MSGX	_msg_m00_break,$70D
@@ -5783,7 +5746,7 @@ loc_143A0E:
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143A20
 		LDA		#$54
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_143A20:
 		RTS
 
@@ -5799,7 +5762,7 @@ loc_143A2C:
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
 		LDA		#$27
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		JSR		sub_177CFC
 		LDA		#$F
 		STA		byte_7522
@@ -5832,7 +5795,7 @@ loc_143A64:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s20_npc_hndl32:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#$20
 		BNE		loc_143A75
 		MSGX	_msg_m00_break,$711
@@ -5871,7 +5834,7 @@ _npc_hndl3F:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl40:
 		MSGX	_msg_m00,$688
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BNE		loc_143AB6
 		RTS
@@ -5918,7 +5881,7 @@ loc_143AF8:
 		MSGX	_msg_m00,$68E
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$2A
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		FARX	_bC_s19
 		PLA
 		PLA
@@ -5952,7 +5915,7 @@ _npc_hndl44:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl45:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		LSR
 		BCS		loc_143B3E
 		MSGX	_msg_m00_break,$6CD
@@ -5961,13 +5924,13 @@ loc_143B3E:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl46:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		loc_143B4E
 		AND		#$10
 		BNE		_npc_hndl47_exp_info_and_progress_save
 		MSGX	_msg_m00_break,$50C
 loc_143B4E:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		_npc_hndl47_exp_info_and_progress_save
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00_break,$189
@@ -5979,10 +5942,10 @@ _npc_hndl47_exp_info_and_progress_save:
 		SEC
 		SBC		#$46
 		STA		byte_5C
-		LDA		byte_60C3
+		LDA		_global_flags_array.byteE
 		AND		#$F8
 		ORA		byte_5C
-		STA		byte_60C3
+		STA		_global_flags_array.byteE
 		JSR		sub_143E48
 		LDA		#0
 		JSR		sub_143EB8
@@ -5993,7 +5956,7 @@ _npc_hndl47_exp_info_and_progress_save:
 		BNE		loc_143B96
 loc_143B80:
 		FARX	_b7_sD
-		LDA		byte_60C3
+		LDA		_global_flags_array.byteE
 		AND		#7
 		CMP		#3
 		BEQ		loc_143B93
@@ -6064,7 +6027,7 @@ loc_143C03:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4F:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_143C0E
 		MSGX	_msg_m00_break,$5C5
 loc_143C0E:
@@ -6147,7 +6110,7 @@ _npc_hndl5B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5C:
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		BPL		loc_143C7D
 		MSGX	_msg_m00_break,$611
 loc_143C7D:
@@ -6155,16 +6118,16 @@ loc_143C7D:
 		JSR		_wrap_is_anybody_owns_item_storeCE
 		BCC		loc_143C9B
 		JSR		sub_143130
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		ORA		#$C0
-		STA		byte_60B8
+		STA		_global_flags_array.byte3
 		LDA		#3
 		STA		byte_2D
 		LDA		#8
 		STA		byte_2E
 		MSGX	_msg_m00_break_ex,$610
 loc_143C9B:
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#$40
 		BEQ		loc_143CA5
 		MSGX	_msg_m00_break,$60F
@@ -6176,7 +6139,7 @@ loc_143CA5:
 		RTS
 loc_143CB0:
 		LDA		#$56
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		MSGX	_msg_m00_break_ex,$60E
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6272,7 +6235,7 @@ _npc_hndl66:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl67:
 		MSGX	_msg_m00,$657
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#8
 		BEQ		loc_143D49
 		MSGX	_msg_m00_break,$6D0
@@ -6297,7 +6260,7 @@ loc_143D53:
 		JSR		_give_item_to_player_msg0
 		BCC		locret_143D7B
 		LDA		#$53
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_143D7B:
 		RTS
 loc_143D7C:
@@ -6305,7 +6268,7 @@ loc_143D7C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl68:
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#4
 		BEQ		loc_143D89
 		MSGX	_msg_m00_break,$6D3
@@ -6315,7 +6278,7 @@ loc_143D89:
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143D98
 		LDA		#$52
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 locret_143D98:
 		RTS
 
@@ -6340,7 +6303,7 @@ loc_143DB1:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6B:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#2
 		BNE		loc_143DBE
 		MSGX	_msg_m00_break,$660
@@ -6349,7 +6312,7 @@ loc_143DBE:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6C:
-		LDA		byte_60BF
+		LDA		_global_flags_array.byteA
 		AND		#2
 		BEQ		loc_143DD7
 		MSGX	_msg_m00_ex,$665
@@ -6366,7 +6329,7 @@ loc_143DD7:
 		JSR		_give_item_to_player_msg2
 		BCC		locret_143DF3
 		LDA		#$51
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		MSGX	_msg_m00_break_ex,$663
 loc_143DF0:
 		MSGX	_msg_m00_break,$664
@@ -6381,7 +6344,7 @@ _npc_hndl6D:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s24:
-		LDA		byte_60C3
+		LDA		_global_flags_array.byteE
 		AND		#7
 		JSR		sub_143E48
 		LDA		#6
@@ -6395,7 +6358,7 @@ _bD_s24:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s23:
-		LDA		byte_60C3
+		LDA		_global_flags_array.byteE
 		AND		#7
 		JSR		sub_143E48
 		LDA		#7
@@ -6485,14 +6448,14 @@ sub_143EBD:
 		TAY
 		LDA		(byte_66),Y
 		BNE		loc_143ECC
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$10
 		BEQ		loc_143ECC
 		MSGX	_msg_m00_break,$675
 loc_143ECC:
 		CMP		#$A
 		BNE		loc_143EDF
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#4
 		BNE		loc_143EDB
 		LDA		#$A
@@ -6503,7 +6466,7 @@ loc_143EDB:
 loc_143EDF:
 		CMP		#$B
 		BNE		loc_143EFD
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#4
 		BNE		loc_143EEE
 		LDA		#$B
@@ -6519,11 +6482,11 @@ loc_143EF9:
 loc_143EFD:
 		CMP		#$1E
 		BNE		loc_143F13
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#8
 		BNE		loc_143F11
 		LDA		#$2B
-		JSR		sub_143F9E
+		JSR		_global_game_flag_set
 		LDA		#$1E
 		BNE		loc_143F13
 loc_143F11:
@@ -6557,14 +6520,14 @@ _bD_s21:
 sub_143F7B:
 		LDX		#0
 loc_143F7D:
-		LDA		byte_60BB,X
+		LDA		_global_flags_array.byte6,X
 		BEQ		loc_143F98
 		STA		byte_6AD1,X
 		INX
 		CPX		#4
 		BNE		loc_143F7D
 loc_143F8A:
-		LDA		byte_60CD,X
+		LDA		_global_flags_array.byte18,X
 		BEQ		loc_143F98
 		STA		byte_6AD1,X
 		INX
@@ -6577,9 +6540,17 @@ loc_143F98:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143F9E:
-		STY		byte_60C0
-		STX		byte_60C1
+; this is a common for many games function to set the 1-bit flags in flags
+; array, flag referenced as continuous number of bit in this array, so it will
+; calc where the byte with this bit is, then mask bit itself. this function
+; used only in this bank, only for setting, the rest of code used direct access
+; and test to the rest of flags
+; need to unuficate all this stuff and assign an unique names to all flags
+; so we can use similar functions all around the source
+;
+_global_game_flag_set:
+		STY		_backup_y
+		STX		_backup_x
 		PHA
 		AND		#7
 		TAY
@@ -6588,13 +6559,13 @@ sub_143F9E:
 		LSR
 		LSR
 		TAX
-		LDA		byte_143FBD,Y
-		ORA		byte_60B5,X
-		STA		byte_60B5,X
-		LDX		byte_60C1
-		LDY		byte_60C0
+		LDA		_bitmasks,Y
+		ORA		_global_flags_array,X
+		STA		_global_flags_array,X
+		LDX		_backup_x
+		LDY		_backup_y
 		RTS
-byte_143FBD:
+_bitmasks:
 		.BYTE	  1,  2,  4,  8,$10,$20,$40,$80
 
 		ECHO "bank 0D free space", [SAFE_STUB_ORG-.]
