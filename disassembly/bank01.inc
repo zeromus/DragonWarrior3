@@ -1,17 +1,17 @@
 
 		ORG $8000
 
-_b1_s9_ptr:			.WORD	_b1_s9
-_b1_sA_ptr:			.WORD	_b1_sA
-_b1_sB_ptr:			.WORD	_b1_sB
-_b1_sC_ptr:			.WORD	_b1_sC
-_b1_sD_ptr:			.WORD	_b1_sD
-_b1_sE_ptr:			.WORD	_b1_sE
-_b1_s14_ptr:		.WORD	_b1_s14
-_b1_s15_ptr:		.WORD	_b1_s15
-_b1_s16_ptr:		.WORD	_b1_s16
-_b1_s17_ptr:		.WORD	_b1_s17
-_b1B_s0_ptr:		.WORD	_b1B_s0
+		PTR_IDX		_b1_s9
+		PTR_IDX		_b1_sA
+		PTR_IDX		_b1_sB
+		PTR_IDX		_b1_sC
+		PTR_IDX		_b1_sD
+		PTR_IDX		_b1_sE
+		PTR_IDX		_b1_s14
+		PTR_IDX		_b1_s15
+		PTR_IDX		_b1_s16
+		PTR_IDX		_b1_s17
+		PTR_IDX		_b1B_s0
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_s14:
@@ -1191,7 +1191,7 @@ _b1_sA:
 		STA		byte_566
 		AND		#$C0
 		BNE		locret_207B5
-		SYSX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55
 locret_207B5:
 		RTS
 
@@ -1213,9 +1213,9 @@ loc_207B8:
 		ASL
 		TAX
 		LDA		byte_207EF-1,X
-		STX		byte_60C1
+		STX		_backup_x
 		FARX	_b4_sF
-		LDX		byte_60C1
+		LDX		_backup_x
 		ADC		byte_207EF-2,X
 		STA		byte_65
 		LDA		#0
@@ -1490,9 +1490,9 @@ loc_209C0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sC:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$DF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		SYSX	_display_window_ex,$3D
 		FARX	_b4_sA
 		FARX	_b4_s1B
@@ -1519,7 +1519,7 @@ loc_209E6:
 		FARX	_bE_s6_msg_mFF
 		SYSX	_apu_load,$13
 		FARX	_b0_s50
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BNE		loc_209FA
 		RTS
@@ -1691,13 +1691,13 @@ loc_20B04:
 		STA		byte_48
 		CMP		#$1D
 		BNE		loc_20B48
-		BIT		byte_60C7
+		BIT		_global_flags_array.byte12
 		BVC		loc_20B40
 		JMP		loc_20BE7
 loc_20B40:
-		LDA		byte_60C7
+		LDA		_global_flags_array.byte12
 		ORA		#$40
-		STA		byte_60C7
+		STA		_global_flags_array.byte12
 loc_20B48:
 		MSGX	_msg_m00,$065	; "<name> finds the <item>"
 		JSR		sub_20CDB
@@ -1742,7 +1742,7 @@ loc_20B87:
 		AND		#$7F
 		STA		byte_D3
 		TAX
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BNE		loc_20B75
@@ -1842,7 +1842,7 @@ loc_20C83:
 		SYSX	_display_window_ex,$13
 		JMP		_pause_or_skip
 loc_20C8B:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		BPL		loc_20C83
 		MSGX	_msg_m00,$00B	; "Himiko is the orochi!"
 loc_20C95:
@@ -2071,9 +2071,9 @@ loc_29401C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_294028:
-		LDA		_global_game_flags
-		LSR													; test _f_Erdrick
-		BCS		loc_294065						; branch down if we're Erdrick
+		LDA		_global_flags_array.byte2
+		LSR									; test _f_Erdrick
+		BCS		loc_294065					; branch down if we're Erdrick
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		CMP		#4

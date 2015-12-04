@@ -1,44 +1,25 @@
 
 		ORG $8000
 
-_bA_s1_ptr:
-		.WORD	_bA_s1
-_bA_s2_ptr:
-		.WORD	_bA_s2
-_bA_s3_ptr:
-		.WORD	_bA_s3
-_bA_s4_div24_to_8_ptr:
-		.WORD	_bA_s4_div24_to_8
-_bA_s6_ptr:
-		.WORD	_bA_s6
-_bA_s8_ptr:
-		.WORD	_bA_s8
-_bA_sA_ptr:
-		.WORD	_bA_sA
-_bA_sB_ptr:
-		.WORD	_bA_sB
-_bA_sC_ptr:
-		.WORD	_bA_sC
-_bA_sD_ptr:
-		.WORD	_bA_sD
-_bA_sE_ptr:
-		.WORD	_bA_sE
-_bA_sF_ptr:
-		.WORD	_bA_sF
-_bA_s10_ptr:
-		.WORD	_bA_s10
-_bA_s11_ptr:
-		.WORD	_bA_s11
-_bA_s12_ptr:
-		.WORD	_bA_s12
-_bA_d14_ptr:
-		.WORD	_bA_d14
-_bA_d15_ptr:
-		.WORD	_bA_d15
-_bA_s16_ptr:
-		.WORD	_bA_s16
-_bA_s17_ptr:
-		.WORD	_bA_s17
+		PTR_IDX		_bA_s1
+		PTR_IDX		_bA_s2
+		PTR_IDX		_bA_s3
+		PTR_IDX		_bA_s4_div24_to_8
+		PTR_IDX		_bA_s6
+		PTR_IDX		_bA_s8
+		PTR_IDX		_bA_sA
+		PTR_IDX		_bA_sB
+		PTR_IDX		_bA_sC
+		PTR_IDX		_bA_sD
+		PTR_IDX		_bA_sE
+		PTR_IDX		_bA_sF
+		PTR_IDX		_bA_s10
+		PTR_IDX		_bA_s11
+		PTR_IDX		_bA_s12
+		PTR_IDX		_bA_d14
+		PTR_IDX		_bA_d15
+		PTR_IDX		_bA_s16
+		PTR_IDX		_bA_s17
 
 ; =============== S U B	R O U T	I N E =======================================
 ; input arguments: X:A - 9-bit message index
@@ -641,10 +622,10 @@ loc_F8416:
 		BCC		loc_F8462
 		LDX		byte_CE
 		LDA		_players_class_gender,X
-		LDX		#[_b0_d58_hero_spell_related_data00_idx-_sys_idx_lib]>>1
+		LDX		#_b0_d58_hero_spell_related_data00_fidx
 		AND		#7
 		BEQ		loc_F843F
-		LDX		#[_b0_d59_common_spell_related_data00_idx-_sys_idx_lib]>>1
+		LDX		#_b0_d59_common_spell_related_data00_fidx
 loc_F843F:
 		TXA
 		LDX		byte_10
@@ -707,14 +688,14 @@ _bA_sD:
 		FARX	_b5_sA
 		JSR		sub_F8682
 		JSR		sub_F85B0
-		FARX	_bE_s31_get_map_music_idx
+		FARX	_bE_s31_get_map_music_number
 		FARX	_bB_s5_apu_unk
 		JSR		sub_F850A
 		LDA		#0
 		STA		byte_28
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1849,21 +1830,21 @@ _bA_sF:
 		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s20
 		LDA		#$20
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 		LDA		#$29
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s10:
-		LDA		byte_60C6
+		LDA		_global_flags_array.byte11
 		AND		#$20
 		BEQ		locret_F9110
 		LDA		_playerMapX
 		CMP		#7
 		BNE		locret_F9110
 		LDA		#$40
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$185
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -1875,7 +1856,7 @@ locret_F9110:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s11:
-		LDA		byte_60C6
+		LDA		_global_flags_array.byte11
 		BPL		locret_F9159
 		LDA		_playerMapX
 		CMP		#9
@@ -1884,15 +1865,15 @@ _bA_s11:
 		CMP		#5
 		BNE		locret_F9159
 		LDA		#$50
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$188
 		MSGX	_msg_m00,$18D
 		MSGX	_msg_m00,$189
 		FARX	_bE_s33
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#$32
 		STA		_players_gold
 		LDX		#$FF
@@ -1908,9 +1889,9 @@ locret_F9159:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s12:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$DF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		MSGX	_msg_m00,$07F
 		FARX	_b2_s8_screen_hit_blink
 		LDX		#3
@@ -1985,7 +1966,7 @@ loc_F92F6:
 		CMP		#$37
 		BNE		loc_F92E7
 		LDA		#0
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

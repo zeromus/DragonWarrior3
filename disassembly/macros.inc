@@ -143,33 +143,65 @@ _hero = $F9
 		.WORD	SAFE_STUB_ORG
 	ENDM
 
+	; to make sure that you won't use different types of indexes in wrong macroses
+	; every different macros shuold use a different type of indexes now
+	; _pidx - is for index of routine in particular bank ($8000 base)
+	; _fidx - index of the filesystem entry
+	; _sidx - index of the system routine offset (already >>1 to simplify calculations)
+
 	MAC PTR_IDX
-		.BYTE	{1},[[{2}_ptr-SYSCALL_PTR_ORG]>>1]
+{1}_pidx	EQU	[[. - SYSCALL_PTR_ORG] >> 1]
+		.WORD	{1}
 	ENDM
 	
-	; we have here two different macroses for the same BRK opcode format
-	; to shorten the far call definition instead of SYSX _sys0,[lib_name]
-	; FARX assuming, that _sys0 and _sys1 are the first and the second
-	; syscall routines
-	;
-	; syscall idx already multiplied by 2 to simplify calculations
-	;
-	MAC FARX
-		BRK
-		.BYTE	[[[{1}_idx - _sys_idx_lib] >> 1] & $FF]
-		.BYTE	[[[{1}_idx - _sys_idx_lib] >> 8] & 2]
+	MAC FILE_IDX
+{2}_fidx	EQU	[[. - _sys_idx_lib] >> 1]
+		.BYTE	{1},{2}_pidx
 	ENDM
 	
+	MAC	SYS_IDX
+{1}_sidx	EQU	[. - _syscall_lib]
+		.WORD	{1}
+	ENDM
+
+	; BRK opcodes are all the same, handled identically in all cases
+	; every BRK opcode is an system routine index + 8-bit argument passed to it
+	; but with some assumptions we could use the same BRK opcodes for different
+	; purposes, so:
+	;
+	; SYSX is a general purpose macros, used to call any defined system routine
+	; (_sys_ prefix) and pass the 8-bit parameter to it
+	;
 	MAC SYSX
 		BRK
 		.BYTE	{2}
-		.BYTE	[[{1}_idx - _syscall_lib] & $FE]
+		.BYTE	[{1}_sidx & $FE]
 	ENDM
 
+	; FARX macros calls is a _sys routine which takes the 8-bit number
+	; as an index of the file in filesystem and call the corresponding subroutine
+	; parameters to the subroutines passed with registers A and X directly
+	; althoug one such _sys routine can handle only 256 filesystem entries
+	; but we not limited in a number of similar routines to be used, every
+	; single routine may handle its own filesystem indexes range, so literally we
+	; can have any amount of filesystem entries
+	;
+	MAC FARX
+		BRK
+		.BYTE	[[{1}_fidx] & $FF]
+		.BYTE	[[{1}_fidx] >> 7] & 2]
+	ENDM
+	
+	; MSGX macros correspond to the set of special _sys routines that displays
+	; a messages in game. there are more than $700 different messages in this game
+	; but we can pass only $100 at once in one such function, so we neet at least
+	; 8 of each kind, that is no problem since maximum amount of _sys routines
+	; here is 128
+	;
 	MAC	MSGX
 		BRK
 		.BYTE	[[{2}] & $FF]
-		.BYTE	[[[{1}_idx - _syscall_lib] + [[{2}] >> 7]] & $FE]
+		.BYTE	[[{1}_sidx + [[{2}] >> 7]] & $FE]
 	ENDM
 	
 	INCLUDE "item_ids.inc"

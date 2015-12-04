@@ -1,40 +1,23 @@
 
 		ORG $8000
 
-_b7_s8_ptr:
-		.WORD	_b7_s8
-_b7_sA_sram_test_and_init_ptr:
-		.WORD	_b7_sA_sram_test_and_init
-_b7_sD_ptr:
-		.WORD	_b7_sD
-_b7_sE_player_log_list_ptr:
-		.WORD	_b7_sE_player_log_list
-_b7_sF_player_log_read_ptr:
-		.WORD	_b7_sF_player_log_read
-_b7_s10_ptr:
-		.WORD	_b7_s10
-_b7_s11_ptr:
-		.WORD	_b7_s11
-_b7_s12_ptr:
-		.WORD	_b7_s12
-_b7_s13_ptr:
-		.WORD	_b7_s13
-_b7_s14_ptr:
-		.WORD	_b7_s14
-_b7_s15_ptr:
-		.WORD	_b7_s15
-_b7_s19_ptr:
-		.WORD	_b7_s19
-_b7_s1A_ptr:
-		.WORD	_b7_s1A
-_b7_s1B_ptr:
-		.WORD	_b7_s1B
-_b7_s1C_ptr:
-		.WORD	_b7_s1C
-_b7_s1D_ptr:
-		.WORD	_b7_s1D
-_b16_s0_location_palette_setup_ptr:
-		.WORD	_b16_s0_location_palette_setup
+		PTR_IDX		_b7_s8
+		PTR_IDX		_b7_sA_sram_test_and_init
+		PTR_IDX		_b7_sD
+		PTR_IDX		_b7_sE_player_log_list
+		PTR_IDX		_b7_sF_player_log_read
+		PTR_IDX		_b7_s10
+		PTR_IDX		_b7_s11
+		PTR_IDX		_b7_s12
+		PTR_IDX		_b7_s13
+		PTR_IDX		_b7_s14
+		PTR_IDX		_b7_s15
+		PTR_IDX		_b7_s19
+		PTR_IDX		_b7_s1A
+		PTR_IDX		_b7_s1B
+		PTR_IDX		_b7_s1C
+		PTR_IDX		_b7_s1D
+		PTR_IDX		_b16_s0_location_palette_setup
 
 _map_data_lib:
 		.WORD	_map0
@@ -1253,9 +1236,9 @@ loc_B272B:
 		LDA		word_3C
 		CMP		#$18
 		BNE		loc_B272B
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		ORA		#$20
-		STA		byte_60CB
+		STA		_global_flags_array.byte16
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		ASL
@@ -1309,7 +1292,7 @@ byte_B27AA:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1A:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		locret_B27A9
 		LDA		_playerMapX
 		CMP		#$A
@@ -1495,7 +1478,7 @@ sub_B28ED:
 		JSR		_ppu_screen_clear
 		LDA		#0
 		STA		byte_6A58
-		LDA		byte_60C7
+		LDA		_global_flags_array.byte12
 		BMI		loc_B2914
 		LDA		#$41
 		STA		_mapNumber
@@ -2886,6 +2869,7 @@ byte_B327B:
 		.BYTE	  6,  9,  8,  0,  1
 byte_B3280:
 		.BYTE	  4,  2,  3,  0,  2
+
 _tavern_chars_data_ptr_tbl:
 		.WORD	_tavern_chars_level
 		.WORD	_tavern_chars_HP
@@ -3708,7 +3692,7 @@ loc_21C041:
 		LDY		#0
 loc_21C047:
 		STY		_tmp_varB6
-		LDA		#[_b6_dB_world_map_palette_lib_idx-_sys_idx_lib]>>1
+		LDA		#_b6_dB_world_map_palette_lib_fidx
 		JSR		_sys0_byte_read_x			; far read palette byte
 											; all world map data located in bank 6
 											; why this loop uses X, while Y is the same?

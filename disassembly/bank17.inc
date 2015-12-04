@@ -1,10 +1,8 @@
 
 		ORG $8000
 
-_b17_s0_copyrights_screen_ptr:
-		.WORD	_b17_s0_copyrights_screen
-_b17_s1_title_screen_ptr:
-		.WORD	_b17_s1_title_screen
+		PTR_IDX		_b17_s0_copyrights_screen
+		PTR_IDX		_b17_s1_title_screen
 
 ; =============== S U B	R O U T	I N E =======================================
 _b17_s0_copyrights_screen:
@@ -191,9 +189,9 @@ sub_23412F:
 sub_234136:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync
@@ -1278,9 +1276,9 @@ sub_235C85:
 sub_235C8C:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync

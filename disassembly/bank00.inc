@@ -1,99 +1,99 @@
 
 		ORG $8000
 
-_b0_s0_world_map_random_enounter_test_ptr:		.WORD	_b0_s0_world_map_random_enounter_test
-_b0_s1_battle_typeA_launch_ptr:					.WORD	_b0_s1_battle_typeA_launch
-_b0_s2_player_HP_read_ptr:						.WORD	_b0_s2_player_HP_read
-_b0_s3_player_MHP_read_ptr:						.WORD	_b0_s3_player_MHP_read
-_b0_s4_player_HP_add_ptr:						.WORD	_b0_s4_player_HP_add
-_b0_s5_player_HP_subtract_ptr:					.WORD	_b0_s5_player_HP_subtract
-_b0_s6_player_MP_read_ptr:						.WORD	_b0_s6_player_MP_read
-_b0_s7_player_MMP_read_ptr:						.WORD	_b0_s7_player_MMP_read
-_b0_s8_player_MP_add_ptr:						.WORD	_b0_s8_player_MP_add
-_b0_s9_player_MP_subtract_ptr:					.WORD	_b0_s9_player_MP_subtract
-_b0_sA_player_MP_set_sero_ptr:					.WORD	_b0_sA_player_MP_set_sero
-_b0_sB_player_MP_consume_ptr:					.WORD	_b0_sB_player_MP_consume
-_b0_sC_player_LV_read_ptr:						.WORD	_b0_sC_player_LV_read
-_b0_sD_tavern_char_LV_read_ptr:					.WORD	_b0_sD_tavern_char_LV_read
-_b0_sE_player_STATUS_read_ptr:					.WORD	_b0_sE_player_STATUS_read
-_b0_sF_unassigned_formation_char_name_read_ptr:	.WORD	_b0_sF_unassigned_formation_char_name_read
-_b0_s10_tavern_char_name_read_ptr:				.WORD	_b0_s10_tavern_char_name_read
-_b0_s11_player_STR_read_ptr:					.WORD	_b0_s11_player_STR_read
-_b0_s12_player_AGI_read_ptr:					.WORD	_b0_s12_player_AGI_read
-_b0_s13_player_VIT_read_ptr:					.WORD	_b0_s13_player_VIT_read
-_b0_s14_player_INT_read_ptr:					.WORD	_b0_s14_player_INT_read
-_b0_s15_player_LUCK_read_ptr:					.WORD	_b0_s15_player_LUCK_read
-_b0_s16_player_ATK_read_ptr:					.WORD	_b0_s16_player_ATK_read
-_b0_s17_player_rATK_read_ptr:					.WORD	_b0_s17_player_rATK_read
-_b0_s18_player_DEF_read_ptr:					.WORD	_b0_s18_player_DEF_read
-_b0_s19_player_EXP_read_ptr:					.WORD	_b0_s19_player_EXP_read
-_b0_s1A_player_EXP_add_ptr:						.WORD	_b0_s1A_player_EXP_add
-_b0_s1B_players_gold_read_ptr:					.WORD	_b0_s1B_players_gold_read
-_b0_s1B_players_gold_add_ptr:					.WORD	_b0_s1B_players_gold_add
-_b0_s1B_players_gold_subtract_ptr:				.WORD	_b0_s1B_players_gold_subtract
-_b0_s1E_player_euipped_item_read_ptr:			.WORD	_b0_s1E_player_euipped_item_read
-_b0_s1F_get_weapon_from_inventory_ptr:			.WORD	_b0_s1F_get_weapon_from_inventory
-_b0_s21_shield_from_inventory_ptr:				.WORD	_b0_s21_shield_from_inventory
-_b0_s21_get_armor_from_inventory_ptr:			.WORD	_b0_s21_get_armor_from_inventory
-_b0_s22_helm_from_inventory_ptr:				.WORD	_b0_s22_helm_from_inventory
-_b0_s23_player_equip_weapon_ptr:				.WORD	_b0_s23_player_equip_weapon
-_b0_s24_player_equip_shield_ptr:				.WORD	_b0_s24_player_equip_shield
-_b0_s25_player_equip_armor_ptr:					.WORD	_b0_s25_player_equip_armor
-_b0_s24_player_equip_helm_ptr:					.WORD	_b0_s24_player_equip_helm
-_b0_s28_player_inventory_item_read_ptr:			.WORD	_b0_s28_player_inventory_item_read
-_b0_s29_player_inventory_item_add_ptr:			.WORD	_b0_s29_player_inventory_item_add
-_b0_s2A_player_inventory_item_remove_ptr:		.WORD	_b0_s2A_player_inventory_item_remove
-_b0_s2B_is_anybody_owns_item_ptr:				.WORD	_b0_s2B_is_anybody_owns_item
-_b0_s2C_player_CLASS_read_ptr:					.WORD	_b0_s2C_player_CLASS_read
-_b0_s2E_tavern_char_CLASS_read_ptr:				.WORD	_b0_s2E_tavern_char_CLASS_read
-_b0_s2F_player_gender_read_ptr:					.WORD	_b0_s2F_player_gender_read
-_b0_s30_tavern_char_gender_read_ptr:			.WORD	_b0_s30_tavern_char_gender_read
-_b0_s31_get_party_chars_list_ptr:				.WORD	_b0_s31_get_party_chars_list
-_b0_s32_get_tavern_chars_list_ptr:				.WORD	_b0_s32_get_tavern_chars_list
-_b0_s33_count_non_dead_party_chars_ptr:			.WORD	_b0_s33_count_non_dead_party_chars
-_b0_s34_read_spell_related_data_byte_ptr:		.WORD	_b0_s34_read_spell_related_data_byte
-_b0_s35_ptr:									.WORD	_b0_s35	; spell related
-_b0_s37_ptr:									.WORD	_b0_s37 ; spell related
-_b0_s38_ptr:									.WORD	_b0_s38 ; spell related
-_b0_s39_ptr:									.WORD	_b0_s39 ; spell related
-_b0_s3A_players_data_swap_ptr:					.WORD	_b0_s3A_players_data_swap
-_b0_s3B_players_data_swap_in_battle_ptr:		.WORD	_b0_s3B_players_data_swap_in_battle
-_b0_s3C_get_free_inventory_slot_ptr:			.WORD	_b0_s3C_get_free_inventory_slot
-_b0_s3D_player_detoxicate_ptr:					.WORD	_b0_s3D_player_detoxicate
-_b0_s3D_player_revive_ptr:						.WORD	_b0_s3D_player_revive
-_b0_s45_check_if_item_equipped_ptr:				.WORD	_b0_s45_check_if_item_equipped
-_b0_s46_ptr:									.WORD	_b0_s46
-_b0_s47_ptr:									.WORD	_b0_s47
-_b0_s48_ptr:									.WORD	_b0_s48
-_b0_s49_ptr:									.WORD	_b0_s49
-_b0_s4D_ptr:									.WORD	_b0_s4D
-_b0_s4E_ptr:									.WORD	_b0_s4E
-_b0_s4F_ptr:									.WORD	_b0_s4F
-_b0_s50_ptr:									.WORD	_b0_s50
-_b0_s52_battle_typeFF_launch_ptr:				.WORD	_b0_s52_battle_typeFF_launch
-_b0_s53_ptr:									.WORD	_b0_s53
-_b0_s54_ptr:									.WORD	_b0_s54
-_b0_s55_ptr:									.WORD	_b0_s55
-_b0_s56_ptr:									.WORD	_b0_s56
-_b0_s5B_non_battle_mode_spell_cast_ptr:			.WORD	_b0_s5B_non_battle_mode_spell_cast
-_b0_s5C_player_inventory_search_for_cursed_item_ptr:	.WORD	_b0_s5C_player_inventory_search_for_cursed_item
-_b0_s5D_ptr:									.WORD	_b0_s5D
-_b0_s5E_check_if_item_can_be_equipped_ptr:		.WORD	_b0_s5E_check_if_item_can_be_equipped
-_b0_s5E_check_if_item_can_be_used_ptr:			.WORD	_b0_s5E_check_if_item_can_be_used
-_b0_s60_get_item_type_ptr:						.WORD	_b0_s60_get_item_type
-_b0_s61_sram_shortcuts_init_ptr:				.WORD	_b0_s61_sram_shortcuts_init
-_b0_s62_ptr:									.WORD	_b0_s62 ; spell related
-_b0_s63_player_unequip_all_type_items_ptr:		.WORD	_b0_s63_player_unequip_all_type_items
-_b0_s64_respawn_at_the_king_ptr:				.WORD	_b0_s64_respawn_at_the_king
-_b0_s65_ptr:									.WORD	_b0_s65
-_b0_s66_ptr:									.WORD	_b0_s66
-_b0_s67_ptr:									.WORD	_b0_s67
+		PTR_IDX		_b0_s0_world_map_random_enounter_test
+		PTR_IDX		_b0_s1_battle_typeA_launch
+		PTR_IDX		_b0_s2_player_HP_read
+		PTR_IDX		_b0_s3_player_MHP_read
+		PTR_IDX		_b0_s4_player_HP_add
+		PTR_IDX		_b0_s5_player_HP_subtract
+		PTR_IDX		_b0_s6_player_MP_read
+		PTR_IDX		_b0_s7_player_MMP_read
+		PTR_IDX		_b0_s8_player_MP_add
+		PTR_IDX		_b0_s9_player_MP_subtract
+		PTR_IDX		_b0_sA_player_MP_set_sero
+		PTR_IDX		_b0_sB_player_MP_consume
+		PTR_IDX		_b0_sC_player_LV_read
+		PTR_IDX		_b0_sD_tavern_char_LV_read
+		PTR_IDX		_b0_sE_player_STATUS_read
+		PTR_IDX		_b0_sF_unassigned_formation_char_name_read
+		PTR_IDX		_b0_s10_tavern_char_name_read
+		PTR_IDX		_b0_s11_player_STR_read
+		PTR_IDX		_b0_s12_player_AGI_read
+		PTR_IDX		_b0_s13_player_VIT_read
+		PTR_IDX		_b0_s14_player_INT_read
+		PTR_IDX		_b0_s15_player_LUCK_read
+		PTR_IDX		_b0_s16_player_ATK_read
+		PTR_IDX		_b0_s17_player_rATK_read
+		PTR_IDX		_b0_s18_player_DEF_read
+		PTR_IDX		_b0_s19_player_EXP_read
+		PTR_IDX		_b0_s1A_player_EXP_add
+		PTR_IDX		_b0_s1B_players_gold_read
+		PTR_IDX		_b0_s1B_players_gold_add
+		PTR_IDX		_b0_s1B_players_gold_subtract
+		PTR_IDX		_b0_s1E_player_euipped_item_read
+		PTR_IDX		_b0_s1F_get_weapon_from_inventory
+		PTR_IDX		_b0_s21_shield_from_inventory
+		PTR_IDX		_b0_s21_get_armor_from_inventory
+		PTR_IDX		_b0_s22_helm_from_inventory
+		PTR_IDX		_b0_s23_player_equip_weapon
+		PTR_IDX		_b0_s24_player_equip_shield
+		PTR_IDX		_b0_s25_player_equip_armor
+		PTR_IDX		_b0_s24_player_equip_helm
+		PTR_IDX		_b0_s28_player_inventory_item_read
+		PTR_IDX		_b0_s29_player_inventory_item_add
+		PTR_IDX		_b0_s2A_player_inventory_item_remove
+		PTR_IDX		_b0_s2B_is_anybody_owns_item
+		PTR_IDX		_b0_s2C_player_CLASS_read
+		PTR_IDX		_b0_s2E_tavern_char_CLASS_read
+		PTR_IDX		_b0_s2F_player_gender_read
+		PTR_IDX		_b0_s30_tavern_char_gender_read
+		PTR_IDX		_b0_s31_get_party_chars_list
+		PTR_IDX		_b0_s32_get_tavern_chars_list
+		PTR_IDX		_b0_s33_count_non_dead_party_chars
+		PTR_IDX		_b0_s34_read_spell_related_data_byte
+		PTR_IDX		_b0_s35	; spell related
+		PTR_IDX		_b0_s37 ; spell related
+		PTR_IDX		_b0_s38 ; spell related
+		PTR_IDX		_b0_s39 ; spell related
+		PTR_IDX		_b0_s3A_players_data_swap
+		PTR_IDX		_b0_s3B_players_data_swap_in_battle
+		PTR_IDX		_b0_s3C_get_free_inventory_slot
+		PTR_IDX		_b0_s3D_player_detoxicate
+		PTR_IDX		_b0_s3D_player_revive
+		PTR_IDX		_b0_s45_check_if_item_equipped
+		PTR_IDX		_b0_s46
+		PTR_IDX		_b0_s47
+		PTR_IDX		_b0_s48
+		PTR_IDX		_b0_s49
+		PTR_IDX		_b0_s4D
+		PTR_IDX		_b0_s4E
+		PTR_IDX		_b0_s4F
+		PTR_IDX		_b0_s50
+		PTR_IDX		_b0_s52_battle_typeFF_launch
+		PTR_IDX		_b0_s53_random_encounter_select
+		PTR_IDX		_b0_s54
+		PTR_IDX		_b0_s55
+		PTR_IDX		_b0_s56
+		PTR_IDX		_b0_s5B_non_battle_mode_spell_cast
+		PTR_IDX		_b0_s5C_player_inventory_search_for_cursed_item
+		PTR_IDX		_b0_s5D
+		PTR_IDX		_b0_s5E_check_if_item_can_be_equipped
+		PTR_IDX		_b0_s5E_check_if_item_can_be_used
+		PTR_IDX		_b0_s60_get_item_type
+		PTR_IDX		_b0_s61_sram_shortcuts_init
+		PTR_IDX		_b0_s62 ; spell related
+		PTR_IDX		_b0_s63_player_unequip_all_type_items
+		PTR_IDX		_b0_s64_respawn_at_the_king
+		PTR_IDX		_b0_s65
+		PTR_IDX		_b0_s66
+		PTR_IDX		_b0_s67
 
-_b0_d3F_other_spell_related_data_ptr:			.WORD	_b0_d3F_other_spell_related_data
-_b0_d42_item_use_effects_list_ptr:				.WORD	_b0_d42_item_use_effects_list
-_b0_d44_item_effects_list_ptr:					.WORD	_b0_d44_item_effects_list
-_b0_d58_hero_spell_related_data00_ptr:			.WORD	_b0_d58_hero_spell_related_data00
-_b0_d59_common_spell_related_data00_ptr:		.WORD	_b0_d59_common_spell_related_data00
+		PTR_IDX		_b0_d3F_other_spell_related_data
+		PTR_IDX		_b0_d42_item_use_effects_list
+		PTR_IDX		_b0_d44_item_effects_list
+		PTR_IDX		_b0_d58_hero_spell_related_data00
+		PTR_IDX		_b0_d59_common_spell_related_data00
 
 ; -----------------------------------
 ; -- WRAPPERS FOR SYSTEM FUNCTIONS --
@@ -144,6 +144,13 @@ _wnd3E_msg0xx_wait_key:
 		PLA
 		JSR		_wrap_msg_m00_arg0
 		JMP		_wait_for_key
+
+; =============== S U B	R O U T	I N E =======================================
+_msg005_msg0xx:
+		PHA
+		MSGX	_msg_m00,$005	; "$FD, $EF"
+		PLA
+		JMP		_wrap_msg_m00_arg0
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unused anymore
@@ -367,37 +374,34 @@ _b0_s0_world_map_random_enounter_test:
 		DEY
 		CPY		#$FE
 		BCS		locret_823F
-		LDA		byte_60C5
-		BPL		loc_8240
-locret_823F:
-		RTS
-loc_8240:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte10
+		BMI		locret_823F
+		LDA		_global_flags_array.byte16
 		AND		#$90
 		CMP		#$80
 		BEQ		locret_823F
 		LDA		#$FF
 		STA		byte_5C
-		JSR		sub_8261
+		JSR		_world_map_random_enounter_select
 		LDA		byte_5C
-		BEQ		loc_8255
-		RTS
-loc_8255:
+		BNE		locret_823F
 		JMP		sub_174CBD
+locret_823F:
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s53:
+_b0_s53_random_encounter_select:
 		LDA		#$FF
 		STA		word_5E
 		STA		_enemy_roster_index_list
-		BNE		loc_8292
-
-;; FALLTHROUGH ;;
+		BNE		_random_enounter_select ; unconditional jump
 
 ; =============== S U B	R O U T	I N E =======================================
 ; called once per step, probably evaluating whether there should be a random encounter
-sub_8261:
-		LDA		byte_9A ; tilesetNumber_9A, but that must not be what it really means
+; special case only for world map to check the repel and fairy water status
+;
+_world_map_random_enounter_select:
+		LDA		byte_9A			; tilesetNumber_9A, but that must not be what it really means
 		BNE		loc_828E
 		LDA		_repel_or_fairy_water_timer
 		AND		#$7F
@@ -413,33 +417,39 @@ sub_8261:
 		MSGX	_msg_m00,$19B	; "The Effect of Repel has run out"
 		JMP		loc_8288
 loc_8285:
-		MSGX	_msg_m00,$19A ; "The Effect of Fairy Water has run out"
+		MSGX	_msg_m00,$19A	; "The Effect of Fairy Water has run out"
 loc_8288:
 		FARX	_bE_s33
 		JSR		_wait_for_nmi_is_over_sync
 loc_828E:
 		LDA		#0
 		STA		word_5E
-loc_8292:
-; begin setting up for a normal battle?
-; no, this runs each step, to test whether to do a random battle i think
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+; this runs each step, to test whether to do a random battle
+_random_enounter_select:
 		LDA		#0
 		STA		byte_4C
 		STA		_battle_type_fight
 		LDA		_location_type
 		AND		#1
-		BNE		loc_8310
+		BNE		_location_is_other
 		LDA		_location_type
 		AND		#2
-		BEQ		loc_82C3
+		BEQ		_location_is_owerworld		; location_type = not overworld or location, but...? alefgard? ocean?
 
-; location_type = not overworld or location, but...? alefgard? ocean?
+; load overworld tile coordinate X, subtract #F.. that's odd. mask it then by #$7F and shift it down.
+; result is.. (coord-7)>>4)&7 as far as I can tell FYI, alefgard seems to be 158x135. therefore after
+; subtraction it's 143x130. so I dont see what use any of that was. 
+; but everything beyond a 120x120 area is ocean. i dunno. maybe it's fill tiles and the map is really
+; 120x120. at least, it does truly fit in the #$7F mask well, you cant ever get into the water to the
+; left and upwards of #$F and #$5 so maybe the idea here is just adjusting a the grid (8x8 blocks in
+; this case?) to fit neatly in the world
+; Uhhh _can_ you get into the water? this map im looking at has a ship screencapped in
+; it http://www.nesmaps.com/maps/DragonWarrior3/DragonWarrior3Overworld2LMap.html
 
-; load overworld tile coordinate X, subtract #F.. that's odd. mask it then by #$7F and shift it down. result is.. (coord-7)>>4)&7 as far as I can tell
-; FYI, alefgard seems to be 158x135. therefore after subtraction it's 143x130. so I dont see what use any of that was. 
-; but everything beyond a 120x120 area is ocean. i dunno. maybe it's fill tiles and the map is really 120x120. at least, it does truly fit in the #$7F mask
-; well, you cant ever get into the water to the left and upwards of #$F and #$5 so maybe the idea here is just adjusting a the grid (8x8 blocks in this case?) to fit neatly in the world
-; Uhhh _can_ you get into the water? this map im looking at has a ship screencapped in it http://www.nesmaps.com/maps/DragonWarrior3/DragonWarrior3Overworld2LMap.html
 		LDA		byte_2A 
 		SEC
 		SBC		#$F
@@ -449,9 +459,8 @@ loc_8292:
 		LSR
 		LSR
 		STA		word_4A
-; similar weird logic for overworld tile coordinate Y.. ((coord-5)>>1)&#$38 (next 3 higher bits than the Y coord).
-		LDA		byte_2B
-		SEC
+		LDA		byte_2B			; similar weird logic for overworld tile coordinate Y..
+		SEC						; ((coord-5)>>1)&#$38 (next 3 higher bits than the Y coord).
 		SBC		#5
 		AND		#$70
 		LSR
@@ -463,10 +472,12 @@ loc_8292:
 		LDY		#$40
 		BNE		loc_82D7 ; unconditional jump
 
-loc_82C3:
-; location_type = overworld
-; use overworld tile coordinate to create an index: (overworld_x>>4)|(overworld_y&0xF0) and reference a table
+; =============== S U B	R O U T	I N E =======================================
+; use overworld tile coordinate to create an index:
+; (overworld_x>>4)|(overworld_y&0xF0) and reference a table
 ; leave that stashed in u8[4a]
+;
+_location_is_owerworld:
 		LDA		byte_2A
 		LSR
 		LSR
@@ -479,56 +490,47 @@ loc_82C3:
 		TAX
 		LDA		byte_8946,X
 		LDY		#0
-
-; if the result was a special value #$FF (no random encounters here) then dont have a battle? this codepath is unused since that data doesnt exist
 loc_82D7:
-		CMP		#$FF
-		BNE		loc_82DC
+		CMP		#$FF						; if the result was a special value #$FF (no random encounters here) then dont
+		BNE		loc_82DC					;  have a battle? this codepath is unused since that data doesnt exist
 		RTS
-
 loc_82DC:
-		STA		word_4A ; stash the random encounter info byte into u8[4a], in case it wasnt already there
-		LDA		_player_vehicle ; vehicle type
+		STA		word_4A						; stash the random encounter info byte into u8[4a], in case it wasnt already there
+		LDA		_player_vehicle				; vehicle type
 		CMP		#1
-		BEQ		.check_encounter_ship ; branch for ship
-		BCC		.check_encounter_foot ; branch for on foot
-		RTS ; return for ramia, no random encounters
-
+		BEQ		.check_encounter_ship		; branch for ship
+		BCC		.check_encounter_foot		; branch for on foot
+		RTS									; return for ramia, no random encounters
 .check_encounter_ship:
-; pick apart the selected random encounter definition byte: put top two bits into 4A
-		LDA		#0
+		LDA		#0							; pick apart the selected random encounter definition byte: put top two bits into 4A
 		STA		byte_4F ; meaning unsure
 		ROL		word_4A
 		ROL
 		ROL		word_4A
 		ROL
 		STA		word_4A
-		TYA ; maybe #$40 or maybe #$00? must be picking one of two blocks of the table, selecting the oceanic entries?
-		CLC
+		TYA									; maybe #$40 or maybe #$00? must be picking one of two blocks of the table,
+		CLC									; selecting the oceanic entries?
 		ADC		word_4A
-		JMP		loc_835A
-
+		JMP		sub_835A
 .check_encounter_foot:
-; no random encounters in non-terrain tiles (after 8, theyre non-terrain tiles (castles and such)
-		LDA		byte_92
+		LDA		byte_92						; no random encounters in non-terrain tiles (after 8, theyre non-terrain tiles (castles and such)
 		CMP		#8 
 		BCC		loc_8307
-		CMP		#$1E ; glacier terrain type was patched in here. it counts as terrain
+		CMP		#$1E						; glacier terrain type was patched in here. it counts as terrain
 		BEQ		loc_8305
 		RTS
-
 loc_8305:
-		LDA		#1 ; use 1 for value of 4F, instead of actual overworld terrain tile
+		LDA		#1							; use 1 for value of 4F, instead of actual overworld terrain tile
 loc_8307:
 		STA		byte_4F
-; reload random encounter definition byte and branch down to shared code
-		LDA		word_4A 
+		LDA		word_4A						; reload random encounter definition byte and branch down to shared code
 		AND		#$3F
-		JMP		loc_835A
+		JMP		sub_835A
 ; -- end of overworld specific random encounter checking --
 
-; location_type = location, more or less
-loc_8310:
+; =============== S U B	R O U T	I N E =======================================
+_location_is_other:
 		LDA		#8
 		STA		byte_4F
 		LDA		byte_6AE6
@@ -564,7 +566,7 @@ loc_8348:
 		ADC		byte_8377,X
 		STA		word_4A
 		INX
-		CPX		#$16 ; loop 16 times
+		CPX		#$16						; loop 16 times
 		BCC		loc_832B
 		RTS
 loc_8356:
@@ -573,23 +575,22 @@ loc_8356:
 
 ;; FALLTHROUGH ;;
 
-loc_835A:
-; check again, possibly redundantly, for a random encounter definition byte of FF (which means no random encounters)
-		STA		word_4A+1
-		CMP		#$FF
+; =============== S U B	R O U T	I N E =======================================
+sub_835A:
+		STA		word_4A+1					; check again, possibly redundantly, for a random encounter definition
+		CMP		#$FF						; byte of FF (which means no random encounters)
 		BEQ		locret_8376
-;create a pointer u16[4b] * 15 into _random_encounter_overworld_tbl and read a byte from it
-		LDA		#$F
-		LDX		#word_4A+1
+		LDA		#$F							; create a pointer u16[4b] * 15 into _random_encounter_overworld_tbl and
+		LDX		#word_4A+1					; read a byte from it
 		JSR		_mul16_to_8
 		LDA		#<[_random_encounter_overworld_tbl]
 		LDY		#>[_random_encounter_overworld_tbl]
 		JSR		_add16_to_16
 		LDY		#0
 		LDA		(word_4A+1),Y
-		BNE		loc_838D ; now we have a pointer to detailed information about the random encounters in this tile. branch down to do more
-; fall through and return if the entry is 0
-locret_8376:
+		BNE		sub_838D					; now we have a pointer to detailed information about the random encounters
+											; in this tile. branch down to do more
+locret_8376:								; fall through and return if the entry is 0
 		RTS
 
 ; =============== T A B L E =================================================
@@ -597,14 +598,13 @@ locret_8376:
 byte_8377:
 		.BYTE	  $03,$04,$08,$09,$2D,$41,$58,$5B,$9C,$AB,$B2,$B3,$BB,$C0,$C3,$CD,$CF,$D9,$DB,$DF,$E4,$F3
 
-loc_838D:
+; =============== S U B	R O U T	I N E =======================================
 ; at this point, u16[4b] contains a pointer to a random encounter info database (15 bytes long)
-		STA		word_4A ; stash first random encounter info byte
-		LDA		word_5E ; some kind of difference between enemy and player levels, but not sure about that yet, maybe something entirely different at this point
-		BNE		loc_83F3
-
-; reload _random_encounter_overworld_tbl[0] and isolate top 3 bits. use to reference a table
-		LDA		word_4A
+sub_838D:
+		STA		word_4A						; stash first random encounter info byte
+		LDA		word_5E						; some kind of difference between enemy and player levels, but not sure
+		BNE		loc_83F3					; about that yet, maybe something entirely different at this point	
+		LDA		word_4A						; reload _random_encounter_overworld_tbl[0] and isolate top 3 bits. use to reference a table
 		LSR
 		LSR
 		LSR
@@ -612,73 +612,57 @@ loc_838D:
 		LSR
 		TAX
 		LDA		byte_8628,X
-; alternate randomization for special values 1 and 2?
-		CPX		#3
-		BCS		loc_83AE ; BCS->JAE branch down if not special value
+		CPX		#3							; alternate randomization for special values 1 and 2?
+		BCS		loc_83AE					; BCS->JAE branch down if not special value
 		STA		byte_4D
 		JSR		_rand
 		CMP		byte_4D
-		BCC		loc_83AC ; BCC->JB branch down (battle) if we rolled a value under that probability (1 in 255 or 1 in 127 i guess)
-		RTS			; no battle
+		BCC		loc_83AC					; BCC->JB branch down (battle) if we rolled a value under that probability (1 in 255 or 1 in 127 i guess)
+		RTS									; no battle
 loc_83AC:
-		LDA		#1 ; use probability as 1 i guess? 
+		LDA		#1							; use probability as 1 i guess? 
 loc_83AE:
 		STA		byte_4D
 		LDA		#0
-		STA		byte_4E ; some multiple precision clears
-		LDX		byte_4F ; some multiple precision clears
-
-; if we're not in a location, check daytime or nighttime. 
-		LDA		_location_type
+		STA		byte_4E						; some multiple precision clears
+		LDX		byte_4F						; some multiple precision clears
+		LDA		_location_type				; if we're not in a location, check daytime or nighttime. 
 		BNE		loc_83C1
 		LDA		_world_map_steps_count
 		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
-		BCS		loc_83C6 ; BCS->JAE branch down if nighttime
+		BCS		loc_83C6					; BCS->JAE branch down if nighttime
 loc_83C1:
 		LDA		_random_encounter_overworld_probability_daytime_tbl,X
-		BNE		loc_83C9 ; unconditional, since this value should never be 0
+		BNE		loc_83C9					; unconditional, since this value should never be 0
 loc_83C6:
 		LDA		_random_encounter_overworld_probability_nighttime_tbl,X
 loc_83C9:
-; u16[4d] *= the value we just loaded
-		LDX		#byte_4D
+		LDX		#byte_4D					; u16[4d] *= the value we just loaded
 		JSR		_mul16_to_8
-
-; for 4d, use special case of #$64 when player has golden claw 
-		LDA		#ITEM_GOLDEN_CLAW
+		LDA		#ITEM_GOLDEN_CLAW			; for 4d, use special case of #$64 when player has golden claw 
 		STA		byte_CE
 		JSR		_b0_s2B_is_anybody_owns_item
 		BCC		loc_83DD
 		LDA		#$64
 		STA		byte_4D
-		BNE		loc_83EB ; unconditinal
-
-; player doesnt have golden claw
-loc_83DD:
-		LDA		byte_4E ; well, this should be zero?
-		BNE		loc_83E7 ; branch if 
+		BNE		loc_83EB					; unconditinal jump
+loc_83DD:									; player doesnt have golden claw
+		LDA		byte_4E						; well, this should be zero?
+		BNE		loc_83E7					; branch if 
 		LDA		byte_4D
-
-; clamp u8[$4D] at #$64
-		CMP		#$64
+		CMP		#$64						; clamp u8[$4D] at #$64
 		BCC		loc_83EB
 loc_83E7:
 		LDA		#$64
 		STA		byte_4D
-
 loc_83EB:
-; so the maximum odds of getting a battle are $63=99 -> 98 in 255
-		JSR		_rand
+		JSR		_rand						; so the maximum odds of getting a battle are $63=99 -> 98 in 255
 		CMP		byte_4D
-		BCC		loc_83F3 ; BCC->JB branch to battle if we're less than the target value
-		RTS		; no battle
-
-; passed random encounter roll. start setting up the battle
+		BCC		loc_83F3					; BCC->JB branch to battle if we're less than the target value
+		RTS									; no battle
 loc_83F3:
-		JSR		_reset_enemy_data_buffers
-
-; reload 4A which contained _random_encounter_overworld_tbl[0] and pick apart the fields
-		LDA		word_4A
+		JSR		_reset_enemy_data_buffers	; passed random encounter roll. start setting up the battle
+		LDA		word_4A						; reload 4A which contained _random_encounter_overworld_tbl[0] and pick apart the fields
 		AND		#3
 		STA		byte_49
 		LDA		word_4A
@@ -686,9 +670,7 @@ loc_83F3:
 		LSR
 		LSR
 		STA		byte_4D
-
-;u16[4D] *= #$11 to get an index into a table
-		LDA		#0
+		LDA		#0							;u16[4D] *= #$11 to get an index into a table
 		STA		byte_4E
 		LDA		#17
 		LDX		#byte_4D
@@ -696,58 +678,47 @@ loc_83F3:
 		LDA		#<[byte_90F3]
 		LDY		#>[byte_90F3]
 		JSR		_add16_to_16
-; move to next byte in _random_encounter_overworld_tbl entry (pointer was in 4A)
-		LDA		#1
+		LDA		#1							; move to next byte in _random_encounter_overworld_tbl entry (pointer was in 4A)
 		LDX		#word_4A+1
 		JSR		_add8_to_16
 		LDA		#100
 		STA		byte_55
-
-; top of ~100 times loop
-loc_8424:
+loc_8424:									; top of ~100 times loop
 		DEC		byte_55
 		BNE		loc_8429
-		RTS ; abort if we didnt satisfy whatever is going on
-
+		RTS									; abort if we didnt satisfy whatever is going on
 loc_8429:
 		JSR		_rand
 		LDY		#0
-; try up to #$D times walking through the table at u16[4D]
 loc_842E:
-		CMP		(byte_4D),Y
-		BCC		loc_8437 ; BCC->JB - branch down if we rolled a value under the current entry at Y
+		CMP		(byte_4D),Y					; try up to #$D times walking through the table at u16[4D]
+		BCC		loc_8437					; BCC->JB - branch down if we rolled a value under the current entry at Y
 		INY
 		CPY		#$D
-		BCC		loc_842E ; BCC->JB - branch back up and try again if Y hasnt run out (#$C is the last offste referenced)
-
-; Y is at an entry we found. load corresponding entry from _random_encounter_overworld_tbl
+		BCC		loc_842E					; BCC->JB - branch back up and try again if Y hasnt run out (#$C is the last offste referenced)
 loc_8437:
-		JSR		sub_8595
-		BEQ		loc_8424 ; try again? what did we accomplish? we validated Y values in the JSR above.. other than that, nothing
-		LDA		(word_4A+1),Y
+		JSR		sub_8595					; Y is at an entry we found. load corresponding entry from _random_encounter_overworld_tbl
+		BEQ		loc_8424					; try again? what did we accomplish? we validated Y values in the JSR above.
+		LDA		(word_4A+1),Y				; other than that, nothing
 		CMP		#$FF
-		BEQ		loc_8424 ; try again if we're FF
+		BEQ		loc_8424					; try again if we're FF
 		CPY		#5
-		BCC		loc_84B3 ; BCC->JB - branch far away if we're <5
-		BEQ		loc_84C3 ; branch far away if we're ==5
+		BCC		loc_84B3					; BCC->JB - branch far away if we're <5
+		BEQ		loc_84C3					; branch far away if we're ==5
 		CPY		#11
-		BCC		loc_84B0 ; branch far away if we're 6,7,8,9,10
-		BEQ		loc_84B6 ; branch far away if we're 11
-		LDA		(word_4A+1),Y ; just reload the value again otherwise (why?) seems redundant
-
-; store this value in u16[4F] and multiply it by 6; use it as an offset to byte_907B
-		STA		byte_4F
+		BCC		loc_84B0					; branch far away if we're 6,7,8,9,10
+		BEQ		loc_84B6					; branch far away if we're 11
+		LDA		(word_4A+1),Y				; just reload the value again otherwise (why?) seems redundant
+		STA		byte_4F						; store this value in u16[4F] and multiply it by 6; use it as an offset to byte_907B
 		LDA		#0
 		STA		byte_50
 		LDA		#6
-		LDX		#byte_4F ; u16[4F] *= 6
+		LDX		#byte_4F					; u16[4F] *= 6
 		JSR		_mul16_to_8
 		LDA		#<[byte_907B]
 		LDY		#>[byte_907B]
 		JSR		_add16_to_16
-
-; clear u16[52]
-		LDX		#0
+		LDX		#0							; clear u16[52]
 		STX		byte_53
 		STX		byte_52
 loc_846C:
@@ -798,7 +769,7 @@ loc_84B6:
 loc_84BB:
 		LDA		(word_4A+1),Y
 		STA		_enemy_roster_index_list
-		JMP		sub_85B3 ; overworld battle launch from here
+		JMP		sub_85B3						; overworld battle launch from here
 loc_84C3:
 		LDA		#$14
 		STA		byte_56
@@ -847,16 +818,15 @@ loc_8507:
 		LDA		#3
 		AND		byte_4F
 		TAX
-		LDA		byte_8630,X ; (1,  2,  2,  5)
-		JSR		sub_1743F1 ; registers are preserved
-
+		LDA		byte_8630,X					; (1,  2,  2,  5)
+		JSR		sub_1743F1					; registers are preserved
 ; incorporate value from another table
-; have we just added a +/- factor (above) to the base value (below)? seems unlikely, values below are quite large
+; have we just added a +/- factor (above) to the base value (below)?
+; seems unlikely, values below are quite large
 		CLC
-		ADC		byte_8634,X ; (8,  4,  2,  3)
+		ADC		byte_8634,X					; (8,  4,  2,  3)
 		STA		_enemy_group_count
-		JMP		loc_84BB ; for overworld battle, branch back up to launch battle
-
+		JMP		loc_84BB					; for overworld battle, branch back up to launch battle
 loc_851C:
 		LDA		#0
 		LDX		#9
@@ -926,30 +896,28 @@ loc_857E:
 ; =============== S U B	R O U T	I N E =======================================
 ; Y: some value
 sub_8595:
-; return doing nothing if we're in the overworld map
-		LDA		_location_type
-		BEQ		loc_859A
-		RTS
-loc_859A:
+		LDA		_location_type				; return doing nothing if we're in the overworld map
+		BNE		locret_85AB
 		LDA		_world_map_steps_count
 		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
-		BCS		loc_85AC ; BCS->JAE branch down if it's nighttime
+		BCS		loc_85AC					; BCS->JAE branch down if it's nighttime
 		CPY		#4
 		BEQ		locret_85AB
 		CPY		#$A
 		BEQ		locret_85AB
 		CPY		#$D
-locret_85AB:
 		RTS
 loc_85AC:
 		CPY		#0
 		BEQ		locret_85AB
 		CPY		#6
+locret_85AB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; evaluate player level vs enemies and word_5E somehow..
+; leave difference in A for storing in 6A6A?
 sub_85B3:
-; evaluate player level vs enemies and word_5E somehow.. leave difference in A for storing in 6A6A?
 		JSR		_enemy_roster_get_levels
 		LDA		_players_level
 		SEC
@@ -958,15 +926,12 @@ sub_85B3:
 		LDA		#0
 loc_85C0:
 		STA		byte_6A6A
-		LDA		_location_type ; 0 in main worldmap...
+		LDA		_location_type				; 0 in main worldmap...
 		AND		#1
 		BNE		_battle_launch_ex
-
-; run the battle unless we have time remaining on repel/fairy water. a flag is in MSBit so only test bottom 7
-		LDA		_repel_or_fairy_water_timer 	
-		AND		#$7F
+		LDA		_repel_or_fairy_water_timer	; run the battle unless we have time remaining on repel/fairy water.
+		AND		#$7F						;  a flag is in MSBit so only test bottom 7
 		BEQ		_battle_launch_ex
-
 		LDA		word_5E
 		BNE		_battle_launch_ex
 		LDA		byte_6A6A
@@ -1042,8 +1007,6 @@ byte_8628:
 ; related to the severity/probability of random battles in an overworld terrain type
 byte_8630:
 		.BYTE	  1,  2,  2,  5
-
-
 byte_8634:
 		.BYTE	  8,  4,  2,  3
 byte_8638:
@@ -1053,7 +1016,7 @@ byte_8640:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; if enemy roster first slot is empty, shifts all enemy data by 1 left,
-; then set the last as empty, so compress enemy list
+; then set the last as empty (compress enemy list)
 ;
 _enemy_roster_compress:
 		LDX		#0
@@ -1128,9 +1091,9 @@ loc_86C2:
 		JSR		_ppu_screen_clear	; now, finally, the last bit of the screen will be blanked
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0					; reset screen scroll position to 0,0 so the battle can appear there
 		STA		_ppu_scroll_shadow	;  regardless of where the map was located
 		STA		_ppu_scroll_shadow+1
@@ -1261,7 +1224,7 @@ loc_87B0:
 ; called repeatedly while the sqirly screen wipe happens
 ; byte swapps an array u16 words_4D[4]
 sub_87BA:
-		LDX		#$4D
+		LDX		#byte_4D
 loc_87BC:
 		JSR		_byteswap_word_at_X
 		INX
@@ -1331,10 +1294,10 @@ byte_8820:
 ; =============== S U B	R O U T	I N E =======================================
 ; byteswaps u16[X]
 _byteswap_word_at_X:
-		LDA		byte_0,X
-		LDY		byte_1,X
-		STY		byte_0,X
-		STA		byte_1,X
+		LDA		0,X
+		LDY		1,X
+		STY		0,X
+		STA		1,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1342,7 +1305,7 @@ _byteswap_word_at_X:
 sub_8831:
 		LDY		#0
 loc_8833:
-		LDA		byte_0,X
+		LDA		0,X
 		STA		byte_4D,Y
 		INX
 		INY
@@ -1404,9 +1367,9 @@ loc_8885:
 ; =============== S U B	R O U T	I N E =======================================
 ; related to the pre-battle screen wipe, seems to run more commonly than some of the other subroutines but still not onc per stage
 sub_8897:
-		LDX		#$58
+		LDX		#byte_58
 		JSR		sub_8831
-		LDX		#$5C
+		LDX		#byte_5C
 		JMP		sub_8831
 
 ; =============== T A B L E =================================================
@@ -1415,8 +1378,13 @@ sub_8897:
 ; however, this is put at $5B0 (since the table is slim, it is patched in at just the right location)
 ; it appears to be continually written on top of the bitmap that the swirly wipe generates, but im not 100% sure about that
 _wipe_fight_tbl:
-		.BYTE	$BC,$73,$D2,$27,  4,$89,$12,$21,  4,  9,$12,$21,$1C,  9,$1E,$21
-		.BYTE	  4,$E9,$12,$21,  4,$89,$12,  1,$84,$F3,$12,$21
+		.BYTE	$BC,$73,$D2,$27
+		.BYTE	  4,$89,$12,$21
+		.BYTE	  4,  9,$12,$21
+		.BYTE	$1C,  9,$1E,$21
+		.BYTE	  4,$E9,$12,$21
+		.BYTE	  4,$89,$12,  1
+		.BYTE	$84,$F3,$12,$21
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_88BD:
@@ -1947,7 +1915,7 @@ _b0_sC_player_LV_read:
 		BIT		word_4+1
 		BPL		_de_status_ret						; bit 80 of the second byte is 0, so player is dead
 		BVS		_nm_status_ret						; bit 40 of the second byte is 1, so player is "NM"
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$20
 		BEQ		_non_battle_flags					; battle flags has priority
 		LDX		byte_CE
@@ -2092,7 +2060,7 @@ _b0_s12_player_AGI_read:
 		BEQ		.armband_equipped
 .no_armband_equipped:
 		LDX		byte_CE 					; load target player
-		LDA		_players_AGI,X 			; read AGI stat
+		LDA		_players_AGI,X				; read AGI stat
 loc_9496:
 		STA		word_4						; store return value
 locret_9498:
@@ -2110,7 +2078,7 @@ locret_9498:
 ;"PC_calc_EffVIT"
 _b0_s13_player_VIT_read:
 		LDX		byte_CE
-		LDA		_players_VIT,X 		; reference VIT stat
+		LDA		_players_VIT,X				; reference VIT stat
 		STA		word_4
 		RTS
 
@@ -2119,7 +2087,7 @@ _b0_s13_player_VIT_read:
 ;
 ;"PC_calc_EffINT"
 _b0_s14_player_INT_read:
-		LDX		byte_CE 					; load "target"
+		LDX		byte_CE						; load "target"
 		LDA		_players_INT,X
 		STA		word_4
 		RTS
@@ -2130,11 +2098,11 @@ _b0_s14_player_INT_read:
 ;
 ;"PC_calc_EffLUCK"
 _b0_s15_player_LUCK_read:
-		JSR		_b0_s1E_player_euipped_item_read						; scan inventory
+		JSR		_b0_s1E_player_euipped_item_read	; scan inventory
 		LDA		word_6+1					; load helm from inventory
 		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
-		LDX		byte_CE 					; "target"
+		LDX		byte_CE						; "target"
 		LDA		_players_LUCK,X				; load pc.luck for PC=target
 loc_94C2:
 		STA		word_4
@@ -2381,7 +2349,7 @@ loc_9625:
 		LDA		#$86
 		STA		word_4+1
 		LDA		#1
-		STA		word_6			; clamp at 99999
+		STA		word_6				; clamp at 99999
 loc_9631:
 		LDY		#2
 loc_9633:
@@ -2433,11 +2401,11 @@ _b0_s1E_player_euipped_item_read:
 		PHA
 .iterate_inventory ; 9676
 		LDA		_players_inventory_list,X	; checking inventory for something special? equipped?
-		BPL		.nextslot			; skip if nonequipped
-		CMP		#$FF				; skip if nulled
-		BEQ		.nextslot			; mask off equipbit?
+		BPL		.nextslot					; skip if nonequipped
+		CMP		#$FF						; skip if nulled
+		BEQ		.nextslot					; mask off equipbit?
 		AND		#$7F
-		JSR		_b0_s60_get_item_type				; test against desired type
+		JSR		_b0_s60_get_item_type		; test against desired type
 		CMP		_tmp12+1
 		BEQ		loc_9690
 .nextslot:
@@ -3429,16 +3397,16 @@ _mulA_to_tmp4:
 
 ; shortcuts to PC stats tables and other unknown things
 _status_params_ptr_tbl:
-		.WORD	_players_level								; 7 u8[4] arrays starting from levels
-		.WORD	_players_HP									; 5 u16[4] arrays starting from HP
-		.WORD	_players_EXP								; 2 u24[4] arrays starting from EXP
-		.WORD	_players_name								; 3 u8[8][4] arrays startinf from names
-		.WORD	byte_6A4B									; 1 u8[4] array
+		.WORD	_players_level					; 7 u8[4] arrays starting from levels
+		.WORD	_players_HP						; 5 u16[4] arrays starting from HP
+		.WORD	_players_EXP					; 2 u24[4] arrays starting from EXP
+		.WORD	_players_name					; 3 u8[8][4] arrays startinf from names
+		.WORD	byte_6A4B						; 1 u8[4] array
 		.WORD	_party_formation				; 1 u8[4] array
-		.WORD	byte_B0										; 1 u8[4] array
-		.WORD	_player_battle_order_and_flags				; 2 u8[4] arrays
-		.WORD	_players_rDEF								; 2 u16[4] arrays
-		.WORD	byte_540 									; 3 u8[12] arrays
+		.WORD	byte_B0							; 1 u8[4] array
+		.WORD	_player_battle_order_and_flags	; 2 u8[4] arrays
+		.WORD	_players_rDEF					; 2 u16[4] arrays
+		.WORD	byte_540 						; 3 u8[12] arrays
 _status_params_size_list:
 		.BYTE	  1,  2,  3,  8,  1,  1,  1 ,  1,  2,  1
 _status_param_lists_count:
@@ -3918,12 +3886,10 @@ byte_9E5C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s5B_non_battle_mode_spell_cast:
-; special logic for the king
-		BIT		_global_game_flags
-		BVC		_spell_command_usual	; TAILCALL to usual handler
-; if king display error message:
-		SYSX	_display_window,$3E
-		MSGX	_msg_m00,$164	; "The king cannot use that spell"
+		BIT		_global_flags_array.byte2	; special logic for the king
+		BVC		_spell_command_usual		; TAILCALL to usual handler
+		SYSX	_display_window,$3E			; if king display error message:
+		MSGX	_msg_m00,$164				; "The king cannot use that spell"
 
 ;; FALLTHROUGH ;;
 
@@ -3999,7 +3965,7 @@ loc_9EF3:
 		BEQ		_wait_for_key
 		STA		byte_49
 		TAX
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
+		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
@@ -4012,7 +3978,7 @@ loc_9F13:
 		STX		byte_D3
 		CPX		#$26
 		BEQ		loc_9F2A
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
+		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
 		BPL		loc_9F34
 		LDA		#$2B
@@ -4031,7 +3997,7 @@ loc_9F34:
 		STA		byte_D2
 		STA		byte_CE
 		LDX		byte_49
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
+		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67
@@ -4446,7 +4412,7 @@ _b0_s61_sram_shortcuts_init:
 		STA		word_4
 		LDA		#>[_sram_b0_s2_player_HP_read]
 		STA		word_4+1
-		LDX		#[_b0_s2_player_HP_read_idx-_sys_idx_lib]>>1	; first sub idx in lib
+		LDX		#_b0_s2_player_HP_read_fidx	; first sub idx in lib
 loc_A208a:
 		LDY		#0
 loc_A208:
@@ -4466,7 +4432,7 @@ loc_A208:
 		ADC		#0
 		STA		word_4+1
 		INX
-		CPX		#[_b0_s3B_players_data_swap_in_battle_idx-_sys_idx_lib+1]>>1	; last sub idx in lib
+		CPX		#_b0_s3B_players_data_swap_in_battle_fidx	; last sub idx in lib
 		BNE		loc_A208a
 		RTS
 
@@ -4649,7 +4615,7 @@ loc_A3F0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A3FB:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$20
 		BNE		loc_A410
 		LDA		byte_48
@@ -5470,7 +5436,7 @@ _wndBTL_STAT:
 		CLC
 		ADC		#3	; 3 + [1..4] _wnd04_btl_stat_ply[1..4]
 		TAX
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$20
 		BEQ		loc_A8D2
 		TXA
@@ -5588,7 +5554,7 @@ _wnd3E_msg1xx_bE_s33:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s5D:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$40
 		BNE		_wrap_wnd3E_msg167_bE_s33
 		SYSX	_display_window,$2C
@@ -6162,7 +6128,7 @@ _item09_use:
 		LDA		_playerMapY
 		CMP		#6
 		BNE		_void_event
-		LDA		byte_60CD ; probably some quest flags
+		LDA		_global_flags_array.byte18 ; probably some quest flags
 		AND		#$20
 		BNE		_void_event
 		FARX	_b5_s5_mirror_of_ra_trigger_on		; lion event
@@ -6245,7 +6211,7 @@ _wrap_b6_s12_item_wakeup_powder_use:
 
 ; =============== S U B	R O U T	I N E =======================================
 _item_royal_scroll_use:
-		LDA		byte_60B6				; reference a quest flag to see whether this quest has already been done
+		LDA		_global_flags_array.byte1				; reference a quest flag to see whether this quest has already been done
 		AND		#$20
 		BNE		_void_event
 		LDA		_mapNumber
@@ -6318,6 +6284,10 @@ loc_AF92:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; surprisingly complex water blaster usage routine, which selects for every
+; kind of different NPCs a different kind of messages either the "huh?",
+; "stop that" or "yikes, it's cold"... why so much care about this?
+;
 _item08_water_blaster_use:
 		LDA		_playerMapX
 		STA		word_4+1
@@ -6447,7 +6417,7 @@ _item26_use:
 		BCC		loc_B097
 		CMP		#$14
 		BCS		loc_B097
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$20
 		BNE		loc_B097
 		FARX	_bC_s2B
@@ -6461,9 +6431,9 @@ loc_B097:
 _item27_use:
 		SYSX	_apu_load,$1B
 		FARX	_bB_s7_apu_wait
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BMI		loc_B0B5
-		JSR		_b0_s53
+		JSR		_b0_s53_random_encounter_select
 		LDY		_enemy_roster_index_list
 		INY
 		BEQ		loc_B0B5
@@ -6834,13 +6804,6 @@ sub_B2B9:
 		STA		byte_53
 		RTS
 
-; =============== S U B	R O U T	I N E =======================================
-_msg005_msg0xx:
-		PHA
-		MSGX	_msg_m00,$005	; "$FD, $EF"
-		PLA
-		JMP		_wrap_msg_m00_arg0
-
 ; struct EnemyInfo
 ;	{
 ;		u8 level; //0
@@ -6871,12 +6834,16 @@ _msg005_msg0xx:
 ;				u8 oddflags[3]; // $13,$14,$15 - unknown meanings
 ;			};
 ;		};
-;		u8 drop_odds; //$16 presumably, a value a random byte roll has to exceed, but thats just a wild guess. note the $B4 odds of dropping a $B0 item (wayfarer's clothes) for enemy $12... ENEMY_GAS_CLOUDS ? well, that seems unlikely.
+;		u8 drop_odds;	//$16 presumably, a value a random byte roll has to exceed, but thats just a wild guess.
+;						//note the $B4 odds of dropping a $B0 item (wayfarer's clothes) for enemy $12...
+;						// ENEMY_GAS_CLOUDS ? well, that seems unlikely.
 ; }
-; one day I'd like to work out a procedure for building these from a text file. maybe a small lua or c# script that can run and convert an input configuration file to a .bin for INCBIN at this point.
-; it might also be nice to reprogram the table to be less dumb, that would be good practice programming. could move it to a spare bank
+; one day I'd like to work out a procedure for building these from a text file. maybe a small lua or c# script
+; that can run and convert an input configuration file to a .bin for INCBIN at this point.
+; it might also be nice to reprogram the table to be less dumb, that would be good practice programming. could
+; move it to a spare bank
 _b0_d43_enemies_lib:
-;		       LV  |XP   |AGI| GP|ATK|DEF| HP| MP|ITM|        MOVES                  |  A   B   C   D|ODDS
+;		         LV|XP     |AGI| GP|ATK|DEF| HP| MP|ITM|            MOVES              |  A|  B|  C|  D|ODDS
 		.BYTE	  1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
 		.BYTE	  1,  5,  0,  6,  2, $A,  6,  9,  0,$E5,$82,  2,  2,  2,  2,  2,  2,  2,  0,  0,$30,$30,$25 ; black raven
 		.BYTE	  2,  7,  0,  5,  2, $C,  8, $A,  0,$E5,$82,  7,  2,  2,  2,  7,  2,  2,  0,  0,$30,$30,$22 ; pretty good drop odds, lets check it: that's a horned rabbit with 1/16 odds of dropping a medical herb

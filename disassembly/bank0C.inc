@@ -1,118 +1,62 @@
 
 		ORG $8000
 
-_bC_s0_npc_anim_script_init_ptr:
-		.WORD	_bC_s0_npc_anim_script_init
-_bC_s1_ptr:
-		.WORD	_bC_s1
-_bC_s2_ptr:
-		.WORD	_bC_s2
-_bC_s3_ptr:
-		.WORD	_bC_s3
-_bC_s4_ptr:
-		.WORD	_bC_s4
-_bC_s5_ptr:
-		.WORD	_bC_s5
-_bC_s6_ptr:
-		.WORD	_bC_s6
-_bC_s9_ptr:
-		.WORD	_bC_s9
-_bC_sA_ptr:
-		.WORD	_bC_sA
-_bC_sB_ptr:
-		.WORD	_bC_sB
-_bC_sC_ptr:
-		.WORD	_bC_sC
-_bC_sD_item_key_type0_use_ptr:
-		.WORD	_bC_sD_item_key_type0_use
-_bC_sE_item_key_type1_use_ptr:
-		.WORD	_bC_sE_item_key_type1_use
-_bC_sF_item_key_type3_use_ptr:
-		.WORD	_bC_sF_item_key_type3_use
-_bC_s10_ptr:
-		.WORD	_bC_s10
-_bC_s11_ptr:
-		.WORD	_bC_s11
-_bC_s12_sleep_X_sync_50_ptr:
-		.WORD	_bC_s12_sleep_X_sync_50
-_bC_s13_use_magic_ball_ptr:
-		.WORD	_bC_s13_use_magic_ball
-_bC_s14_ptr:
-		.WORD	_bC_s14
-_bC_s15_ptr:
-		.WORD	_bC_s15
-_bC_s16_ptr:
-		.WORD	_bC_s16
-_bC_s17_sys0_spr_effects_call_ptr:
-		.WORD	_bC_s17_sys0_spr_effects_call
-_bC_s18_ptr:
-		.WORD	_bC_s18
-_bC_s19_ptr:
-		.WORD	_bC_s19
-_bC_s1A_ptr:
-		.WORD	_bC_s1A
-_bC_s1B_ptr:
-		.WORD	_bC_s1B
-_bC_s1C_ptr:
-		.WORD	_bC_s1C
-_bC_s1D_ptr:
-		.WORD	_bC_s1D
-_bC_s1E_ptr:
-		.WORD	_bC_s1E
-_bC_s1F_ptr:
-		.WORD	_bC_s1F
-_bC_s20_ptr:
-		.WORD	_bC_s20
-_bC_s21_ptr:
-		.WORD	_bC_s21
-_bC_s22_ptr:
-		.WORD	_bC_s22
-_bC_s23_ptr:
-		.WORD	_bC_s23
-_bC_s24_ptr:
-		.WORD	_bC_s24
-_bC_s25_ptr:
-		.WORD	_bC_s25
-_bC_s26_ptr:
-		.WORD	_bC_s26
-_bC_s27_ptr:
-		.WORD	_bC_s27
-_bC_s28_ptr:
-		.WORD	_bC_s28
-_bC_s2A_ptr:
-		.WORD	_bC_s2A
-_bC_s2B_ptr:
-		.WORD	_bC_s2B
-_bC_s2C_ptr:
-		.WORD	_bC_s2C
-_bC_s2D_ptr:
-		.WORD	_bC_s2D
-_bC_s2E_sleep_X_sync_50_wait_50_or_skip_ptr:
-		.WORD	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-_bC_s2F_ptr:
-		.WORD	_bC_s2F
-_bC_s30_ptr:
-		.WORD	_bC_s30
-_bC_s31_ptr:
-		.WORD	_bC_s31
-_bC_s32_ptr:
-		.WORD	_bC_s32
-_bC_s33_ptr:
-		.WORD	_bC_s33
-_bC_s34_ptr:
-		.WORD	_bC_s34
-_bC_s35_ptr:
-		.WORD	_bC_s35
-_bC_s37_ptr:
-		.WORD	_bC_s37
-_bC_s38_ptr:
-		.WORD	_bC_s38
-_bC_s39_ptr:
-		.WORD	_bC_s39
-_bC_s3A_ptr:
-		.WORD	_bC_s3A
-_bC_s3B_ptr:
-		.WORD	_bC_s3B
+		PTR_IDX		_bC_s0_npc_anim_script_init
+		PTR_IDX		_bC_s1
+		PTR_IDX		_bC_s2
+		PTR_IDX		_bC_s3
+		PTR_IDX		_bC_s4
+		PTR_IDX		_bC_s5
+		PTR_IDX		_bC_s6
+		PTR_IDX		_bC_s9
+		PTR_IDX		_bC_sA
+		PTR_IDX		_bC_sB
+		PTR_IDX		_bC_sC
+		PTR_IDX		_bC_sD_item_key_type0_use
+		PTR_IDX		_bC_sE_item_key_type1_use
+		PTR_IDX		_bC_sF_item_key_type3_use
+		PTR_IDX		_bC_s10
+		PTR_IDX		_bC_s11
+		PTR_IDX		_bC_s12_sleep_X_sync_50
+		PTR_IDX		_bC_s13_use_magic_ball
+		PTR_IDX		_bC_s14
+		PTR_IDX		_bC_s15
+		PTR_IDX		_bC_s16
+		PTR_IDX		_bC_s17_sys0_spr_effects_call
+		PTR_IDX		_bC_s18
+		PTR_IDX		_bC_s19
+		PTR_IDX		_bC_s1A
+		PTR_IDX		_bC_s1B
+		PTR_IDX		_bC_s1C
+		PTR_IDX		_bC_s1D
+		PTR_IDX		_bC_s1E
+		PTR_IDX		_bC_s1F
+		PTR_IDX		_bC_s20
+		PTR_IDX		_bC_s21
+		PTR_IDX		_bC_s22
+		PTR_IDX		_bC_s23
+		PTR_IDX		_bC_s24
+		PTR_IDX		_bC_s25
+		PTR_IDX		_bC_s26
+		PTR_IDX		_bC_s27
+		PTR_IDX		_bC_s28
+		PTR_IDX		_bC_s2A
+		PTR_IDX		_bC_s2B
+		PTR_IDX		_bC_s2C
+		PTR_IDX		_bC_s2D
+		PTR_IDX		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
+		PTR_IDX		_bC_s2F
+		PTR_IDX		_bC_s30
+		PTR_IDX		_bC_s31
+		PTR_IDX		_bC_s32
+		PTR_IDX		_bC_s33
+		PTR_IDX		_bC_s34
+		PTR_IDX		_bC_s35
+		PTR_IDX		_bC_s37
+		PTR_IDX		_bC_s38
+		PTR_IDX		_bC_s39
+		PTR_IDX		_bC_s3A
+		PTR_IDX		_bC_s3B
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s1:
@@ -240,9 +184,9 @@ loc_128154:
 		BNE		loc_128175
 		LDA		#4
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		ORA		#$40
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		LDA		#$80
 		STA		_npcs_pos_list
 		STA		_npcs_pos_list+4
@@ -261,7 +205,7 @@ loc_128185:
 		CMP		#$2C
 		BNE		loc_12819A
 		LDA		#$C0
-		STA		byte_60C6
+		STA		_global_flags_array.byte11
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$186
 		JSR		sub_174D4F
@@ -279,7 +223,7 @@ loc_12819A:
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_12B91A
 		LDA		#1
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 loc_1281BE:
 		JSR		sub_174CBD
 		PLA
@@ -289,16 +233,16 @@ loc_1281C4:
 		LDA		_npc_anim_script_idx
 		CMP		#$32
 		BNE		loc_1281D3
-		LDA		byte_60CC
+		LDA		_global_flags_array.byte17
 		ORA		#$40
-		STA		byte_60CC
+		STA		_global_flags_array.byte17
 loc_1281D3:
 		LDA		_npc_anim_script_idx
 		CMP		#2
 		BNE		loc_1281E4
 		LDA		#0
 		STA		_npc_anim_script_idx
-		LDY		#[_b7_s1B_idx-_sys_idx_lib]>>1
+		LDY		#_b7_s1B_fidx
 		JMP		_sys0_unsafe
 loc_1281E4:
 		CMP		#$33
@@ -627,9 +571,9 @@ loc_1283CA:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$1A5
 		JSR		sub_174D4F
-		LDA		byte_60B6				; set _q_NorudPassageOpened
+		LDA		_global_flags_array.byte1				; set _q_NorudPassageOpened
 		ORA		#$20
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		LDA		#$A
 		RTS
 
@@ -2022,7 +1966,7 @@ _bC_s35:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		locret_128D96
-		BIT		byte_60C5
+		BIT		_global_flags_array.byte10
 		BVS		locret_128D96
 		LDA		_player_vehicle
 		BNE		locret_128D96
@@ -2174,7 +2118,7 @@ _bC_s34:
 		LDA		_playerMapY
 		CMP		#$C
 		BNE		locret_128F02
-		BIT		byte_60C5
+		BIT		_global_flags_array.byte10
 		BVC		locret_128F02
 		SYSX	_apu_load,$21
 		JSR		sub_128F03
@@ -2198,7 +2142,7 @@ _bC_s34:
 		JSR		_bC_s1A
 		JSR		_ppu_on_and_fade_in
 		LDA		#$80
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		LDA		#$A
 		STA		byte_92
 		LDX		#$B
@@ -2366,9 +2310,9 @@ loc_128FE7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129007:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		ORA		#$20
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		JSR		_bC_s1B
 		FARX	_b5_sA
 		JSR		sub_128F03
@@ -2443,7 +2387,7 @@ sub_129087:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12908F:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		AND		#4
 		BEQ		locret_1290E0
 		LDA		_playerMapX
@@ -2473,7 +2417,7 @@ loc_1290CC:
 		MSGX	_msg_m00,$192
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$80
-		STA		byte_60C8
+		STA		_global_flags_array.byte13
 		LDA		#$12
 		STA		byte_7579
 		LDA		#$2F
@@ -2484,14 +2428,14 @@ locret_1290E0:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1290E1:
 		LDY		_playerMapY
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		BMI		locret_1290E0
 		CMP		#1
 		BCS		loc_1290FF
 		CPY		#4
 		BNE		locret_1290E0
 		LDA		#1
-		STA		byte_60C8
+		STA		_global_flags_array.byte13
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$18E
 		LDA		#$2D
@@ -2502,7 +2446,7 @@ loc_1290FF:
 		CPY		#6
 		BNE		locret_1290E0
 		LDA		#3
-		STA		byte_60C8
+		STA		_global_flags_array.byte13
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$18F
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -2519,7 +2463,7 @@ locret_12911F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129120:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		BMI		locret_12911F
 		AND		#4
 		BNE		locret_12911F
@@ -2527,7 +2471,7 @@ sub_129120:
 		CMP		#8
 		BNE		locret_12911F
 		LDA		#7
-		STA		byte_60C8
+		STA		_global_flags_array.byte13
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$190
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -2552,10 +2496,10 @@ sub_12915C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129162:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_129199
-		ORA		byte_60B9
-		ORA		byte_60CA
+		ORA		_global_flags_array.byte4
+		ORA		_global_flags_array.byte15
 		BMI		locret_129198
 		LDA		_playerMapX
 		CMP		#$21
@@ -2565,9 +2509,9 @@ sub_129162:
 		BNE		locret_129198
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#$AC
 		STA		byte_7633
 		JSR		sub_174CBD
@@ -2583,9 +2527,9 @@ loc_129199:
 		LDA		_playerMapY
 		CMP		#$C
 		BNE		locret_129198
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		ORA		#$80
-		STA		byte_60CA
+		STA		_global_flags_array.byte15
 		FARX	_bE_s22
 		JSR		_pal_fade_out
 		LDA		#$9D
@@ -2614,7 +2558,7 @@ loc_129199:
 _bC_s10:
 		JSR		_is_location_warpable						; determine whether current location can be warped from
 		BCS		.loc_return_false			; return false if 'unwarpable' was true
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		loc_1291F6						; branch if _f_WarpBlock is clear
 ; assaram is what employs the _f_WarpBlock bit, so only acknowledge it if in Assaram
 		LDA		_mapNumber
@@ -2675,7 +2619,7 @@ sub_12923C:
 		BNE		sub_1292B0
 		LDX		#6
 loc_129246:
-		LDA		#[_b6_d9_world_map_step_daytime_list_idx-_sys_idx_lib]>>1
+		LDA		#_b6_d9_world_map_step_daytime_list_fidx
 		JSR		_sys0_byte_read_x
 		CMP		byte_C5
 		BCC		loc_129254
@@ -2684,7 +2628,7 @@ loc_129246:
 		BNE		loc_129246
 loc_129254:
 		STX		byte_C5
-		LDA		#[_b6_dA_world_pal_ofs_list_idx-_sys_idx_lib]>>1
+		LDA		#_b6_dA_world_pal_ofs_list_fidx
 		JSR		_sys0_byte_read_x
 		TAY
 		CPX		#4
@@ -2703,7 +2647,7 @@ loc_12926C:
 		PHA
 		TYA
 		PHA
-		LDA		#[_b6_dB_world_map_palette_lib_idx-_sys_idx_lib]>>1
+		LDA		#_b6_dB_world_map_palette_lib_fidx
 		JSR		_sys0_byte_read_y
 		PHA
 		LDA		byte_1292A4,X
@@ -2924,7 +2868,7 @@ _is_location_warpable:
 		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_1293ED					; branch if we're not in the ship
-		BIT		byte_60B8						; test a quest flag
+		BIT		_global_flags_array.byte3						; test a quest flag
 		BVC		loc_1293ED					; branch if quest flag isn't set
 		SEC
 		RTS												; return true
@@ -2939,7 +2883,7 @@ loc_1293ED:
 		BEQ		.loc_return_true0		; return true if Samanao town prison basement
 		CMP		#$72
 		BNE		sub_129404					; classify further unless we're New Town Ver.1 (why not the others?)
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		.loc_return_true0		; return true if we're erdrick (this is puzzling logic)
 
 ;; FALLTHROUGH ;;
@@ -3318,7 +3262,7 @@ sub_129616:
 _bC_s1D:
 ; special handling for the ineffectual king
 		SYSX	_display_window,$3E
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$40
 		BNE		sub_129610
 
@@ -3355,7 +3299,7 @@ loc_129647:
 		ASL
 		ADC		word_4
 		TAY
-		LDA		#[_bA_d15_idx-_sys_idx_lib]>>1
+		LDA		#_bA_d15_fidx
 		JSR		_sys0_byte_read_y
 		STA		_tmp_ptrB4
 		LDY		word_4
@@ -3411,14 +3355,14 @@ loc_1296BD:
 		MSGX	_msg_m00,$149
 		JMP		.done_run_command_search
 loc_1296C3:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BMI		loc_1296BD
 		MSGX	_msg_m00,$1AC
 		JSR		_sleep_30
 		LDA		#$C
 		BNE		loc_1296DF
 loc_1296D2:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BMI		loc_1296BD
 		MSGX	_msg_m00,$1AD
 		JSR		_sleep_30
@@ -3514,7 +3458,7 @@ loc_1296F5:
 		BEQ		.but_nothing_could_be_found
 		LDA		word_6+1						; unstash that thing we just stashed
 		BPL		loc_12976B					; branch down if it was >=#$80 (used for samanao only probably)
-		LDA		_global_game_flags	; test whether we're the king
+		LDA		_global_flags_array.byte2	; test whether we're the king
 		AND		#2
 		BEQ		.but_nothing_could_be_found	; nothing can be found.. if we're king.. emergency stopgap?
 		LDA		word_6+1						; unstash that thing we just stashed
@@ -3540,7 +3484,7 @@ loc_12976B:
 		BEQ		loc_1297D9
 		BNE		.but_nothing_could_be_found
 loc_12978A:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		BMI		loc_129801
 		LDA		_npcs_pos_list
 		CMP		#5
@@ -3578,7 +3522,7 @@ loc_1297D2:
 		LDA		#$A9
 		BNE		loc_1297C1
 loc_1297D9:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		AND		#2
 		BNE		loc_129801
 		MSGX	_msg_m00,$144
@@ -3618,14 +3562,14 @@ loc_12980E:
 		INX
 		LDA		byte_129B25,X
 		PHA
-		AND		#$7F										; remove the 'equip' bit from the item, perhaps?
+		AND		#$7F								; remove the 'equip' bit from the item, perhaps?
 		STA		_tmp_ptrB4
 		CMP		#$79
 		BNE		loc_12982B							; leaf of the world tree branches here...
-		LDA		byte_60CD								; test all quest flags in byte_60CD.. ? what?
+		LDA		_global_flags_array.byte18			; test all quest flags in _global_flags_array.byte18.. ? what?
 		CMP		#$FF
 		BNE		loc_129827
-		LDA		_global_game_flags			; test _f_WarpBlock, oddly (once we thought this was erdrick test but it's not) ?  this is all weird
+		LDA		_global_flags_array.byte2			; test _f_WarpBlock, oddly (once we thought this was erdrick test but it's not) ?  this is all weird
 		BPL		loc_12982B
 
 loc_129827:
@@ -3642,7 +3586,7 @@ loc_12982B:
 		MSGX	_msg_m00,$147	; "<name> examines the ground at <B0> feet"
 		PLA
 		STA		word_4
-		PLA														; restore the saved found item, I think
+		PLA											; restore the saved found item, I think
 		BMI		loc_12984F							; analyze equip bit? what the hell is this even good for
 		ASL		byte_B9
 		BCS		loc_12985A
@@ -3713,7 +3657,7 @@ loc_1298A9:
 		LDA		word_4+1
 		AND		#$7F
 		TAX
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
@@ -3801,9 +3745,9 @@ loc_129953:
 		LDA		_tmp_ptrB4
 		CMP		#$7A
 		BNE		loc_129961
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		ORA		#8
-		STA		byte_60CD				; set a newtown flag...
+		STA		_global_flags_array.byte18				; set a newtown flag...
 loc_129961:
 		LDA		_tmp_ptrB4
 		AND		#$7F
@@ -3827,16 +3771,16 @@ loc_12997D:
 		LDA		_mapNumber
 		CMP		#$57
 		BNE		loc_12998F
-		LSR		byte_60CA
+		LSR		_global_flags_array.byte15
 		SEC
-		ROL		byte_60CA
+		ROL		_global_flags_array.byte15
 		RTS
 loc_12998F:
 		CMP		#$4A
 		BNE		locret_12999B
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		ORA		#2
-		STA		byte_60CA
+		STA		_global_flags_array.byte15
 locret_12999B:
 		RTS
 
@@ -3856,9 +3800,9 @@ loc_1299A7:
 		BNE		loc_1299A3
 		CPX		#3
 		BCC		locret_1299B5
-		ASL		byte_60CD
+		ASL		_global_flags_array.byte18
 		SEC
-		ROR		byte_60CD
+		ROR		_global_flags_array.byte18
 locret_1299B5:
 		RTS
 
@@ -3901,10 +3845,10 @@ _bC_s1F:
 		LDA		_mapNumber
 		CMP		#$75
 		BNE		loc_1299FD
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		CMP		#$FF
 		BNE		loc_1299FD					; test all newtown flags?
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_1299FD
 		INX
 		INX
@@ -3913,12 +3857,12 @@ loc_1299FD:
 		STA		word_4
 		LDX		#0
 loc_129A02:
-		LDA		#[_bA_d14_idx-_sys_idx_lib]>>1
+		LDA		#_bA_d14_fidx
 		JSR		_sys0_byte_read_x
 		INX
 		CMP		_mapNumber
 		BEQ		loc_129A1B
-		LDA		#[_bA_d14_idx-_sys_idx_lib]>>1
+		LDA		#_bA_d14_fidx
 		JSR		_sys0_byte_read_x
 		INX
 		CLC
@@ -4010,10 +3954,10 @@ sub_129A69:
 		JMP		(word_B7)
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $08 of quest flag byte_60B6
+; tests bit $08 of quest flag _global_flags_array.byte1
 ;
 sub_129A82:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#8
 		BNE		.return_CF_1
 
@@ -4023,18 +3967,18 @@ sub_129A89:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $80 of quest flag byte_60B8
+; tests bit $80 of quest flag _global_flags_array.byte3
 ;
 sub_129A8B:
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		ASL
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $20 of quest flag byte_60CD
+; tests bit $20 of quest flag _global_flags_array.byte18
 ;
 sub_129A90:
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		ASL
 		ASL
 		ASL
@@ -4048,10 +3992,10 @@ sub_129A97:
 		BNE		sub_129A62		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $01 of quest flag byte_60B6
+; tests bit $01 of quest flag _global_flags_array.byte1
 ;
 sub_129A9B:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		LSR
 		RTS
 
@@ -4077,20 +4021,20 @@ sub_129AA8:
 		BNE		sub_129A62		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $04 of quest flag _global_game_flags
+; tests bit $04 of quest flag _global_flags_array.byte2
 ;
 sub_129AAC:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		LSR
 		LSR
 		LSR
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $20 of quest flag byte_60B6
+; tests bit $20 of quest flag _global_flags_array.byte1
 ;
 sub_129AB3:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ASL
 		ASL
 		ASL
@@ -4100,26 +4044,26 @@ sub_129AB3:
 ; tests a quest flag and returns CF=1 or performs a sub_129A62 search for target #$1C
 ;
 sub_129ABA:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#$20
 		BNE		.return_CF_1
 		LDA		#$1C
 		BNE		sub_129A62
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $40 of quest flag byte_60B6
+; tests bit $40 of quest flag _global_flags_array.byte1
 ;
 sub_129AC5:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ASL
 		ASL
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $20 of quest flag byte_60BA
+; tests bit $20 of quest flag _global_flags_array.byte5
 ;
 sub_129ACB:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		ASL
 		ASL
 		ASL
@@ -4133,10 +4077,10 @@ sub_129AD2:
 		BNE		sub_129A62		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $80 of quest flag byte_60B6
+; tests bit $80 of quest flag _global_flags_array.byte1
 ;
 sub_129AD6:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ASL
 		RTS
 
@@ -4149,7 +4093,7 @@ sub_129ADB:
 		SEC
 		SBC		#$76
 		TAY
-		LDA		byte_60CF
+		LDA		_global_flags_array.byte1A
 loc_129AE6:
 		LSR
 		DEY
@@ -4173,7 +4117,7 @@ loc_129AFE:
 		ASL
 		ADC		word_4
 		TAX
-		LDA		#[_bA_d15_idx-_sys_idx_lib]>>1
+		LDA		#_bA_d15_fidx
 		JSR		_sys0_byte_read_x
 		TAX
 		LDA		_mapNumber
@@ -4327,7 +4271,7 @@ _bC_s22:
 		BCC		loc_129C0E
 		CMP		#$3D
 		BCS		loc_129C0E
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#4
 		BEQ		loc_129C16
 loc_129C0E:
@@ -4345,9 +4289,9 @@ loc_129C16:
 		PHA
 		LDA		_ram_pal_buf+$F
 		PHA
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ORA		#4
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		JSR		sub_129E5D
 		SYSX	_apu_load,$24
 		JSR		sub_129C94
@@ -4791,9 +4735,9 @@ loc_129F28:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s25:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#$FB
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		LDA		_ram_pal_buf+$D
 		PHA
 		LDA		_ram_pal_buf+$E
@@ -4846,9 +4790,9 @@ loc_129FA2:
 		SYSX	_apu_load,$97
 		FARX	_b2_s8_screen_hit_blink
 		JSR		sub_129FE2
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ORA		#2
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		SEC
 		RTS
 
@@ -5249,10 +5193,10 @@ loc_12A221:
 ; orb's still there...
 		CPX		#4					
 		BNE		.flute_echo						; test for House of Pirates again
-		LDY		byte_60CD							; meaning unknown
+		LDY		_global_flags_array.byte18							; meaning unknown
 		INY
-		BNE		.flute_no_echo				; branch if byte_60CD was anything but #$FF
-		LDA		_global_game_flags		; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
+		BNE		.flute_no_echo				; branch if _global_flags_array.byte18 was anything but #$FF
+		LDA		_global_flags_array.byte2		; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
 		BMI		.flute_no_echo				; branch if it was set
 
 .flute_echo:
@@ -5301,7 +5245,7 @@ loc_12A288:
 		DEX
 		BPL		loc_12A288
 		STA		word_4
-		AND		byte_60D0
+		AND		_global_flags_array.byte1B
 		BNE		loc_12A281
 		LDA		byte_48
 		SEC
@@ -5314,14 +5258,14 @@ loc_12A29D:
 		DEX
 		BNE		loc_12A29D
 		STA		word_4+1
-		AND		byte_60CF
+		AND		_global_flags_array.byte1A
 		BNE		loc_12A281
-		LDA		byte_60CF
+		LDA		_global_flags_array.byte1A
 		ORA		word_4+1
-		STA		byte_60CF
-		LDA		byte_60D0
+		STA		_global_flags_array.byte1A
+		LDA		_global_flags_array.byte1B
 		ORA		word_4
-		STA		byte_60D0
+		STA		_global_flags_array.byte1B
 		LDA		word_6
 		PHA
 		JSR		_sleep_30
@@ -5359,9 +5303,9 @@ _bC_s2B:
 		LDA		#0
 		BEQ		loc_12A308
 loc_12A2FE:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$DF
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		LDA		#1
 loc_12A308:
 		PHA
@@ -5376,9 +5320,9 @@ sub_12A312:
 		FARX	_bE_sD
 		LDA		_player_vehicle
 		BNE		loc_12A326
-		LDX		#[_bC_s16_idx-_sys_idx_lib]>>1
+		LDX		#_bC_s16_fidx
 		STX		word_3C
-		LDX		#[_bC_s15_idx-_sys_idx_lib]>>1
+		LDX		#_bC_s15_fidx
 		STX		word_3C+1
 		SYSX	_apu_load,$9F
 		JSR		_bC_s17_sys0_spr_effects_call
@@ -5562,17 +5506,17 @@ _bC_s3B:
 		STA		byte_7673
 		LDA		#7
 		STA		byte_7697
-		LDA		#[_bC_s2D_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s2D_fidx
 		STA		word_3C
-		LDA		#[_bC_s2C_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s2C_fidx
 		STA		word_3C+1
 		JMP		_bC_s17_sys0_spr_effects_call
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s3A:
-		LDA		#[_bC_s2C_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s2C_fidx
 		STA		word_3C
-		LDA		#[_bC_s2D_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s2D_fidx
 		STA		word_3C+1
 		JSR		_bC_s17_sys0_spr_effects_call
 		LDA		#$13
@@ -5587,8 +5531,8 @@ _bC_s3A:
 		LDA		#$10
 		STA		word_6C
 		ASL
-		ORA		byte_60BA
-		STA		byte_60BA
+		ORA		_global_flags_array.byte5
+		STA		_global_flags_array.byte5
 		LDX		#0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5605,10 +5549,10 @@ _bC_sB:
 locret_12A47A:
 		RTS
 byte_12A47B:
-		.BYTE	[_bC_s38_idx-_sys_idx_lib]>>1
-		.BYTE	[_bD_s19_idx-_sys_idx_lib]>>1
-		.BYTE	[_bD_s19_idx-_sys_idx_lib]>>1
-		.BYTE	[_bC_s38_idx-_sys_idx_lib]>>1
+		.BYTE	_bC_s38_fidx
+		.BYTE	_bD_s19_fidx
+		.BYTE	_bD_s19_fidx
+		.BYTE	_bC_s38_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2C:
@@ -5726,9 +5670,9 @@ _bC_s33:
 		STA		byte_9E
 		LDA		#$F4
 		STA		byte_9F
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		ORA		#$40
-		STA		byte_60B9
+		STA		_global_flags_array.byte4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5872,15 +5816,15 @@ sub_12A621:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s19:
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVS		loc_12A686
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		SYSX	_apu_load,$01
 		FARX	_b0_s56
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$40
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		FARX	_bB_s7_apu_wait
 		JSR		sub_177CFC
 		JSR		_ppu_disable
@@ -5907,9 +5851,9 @@ _bC_s19:
 loc_12A686:
 		JSR		_pal_fade_out
 		FARX	_b0_s4F
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$BF
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		FARX	_bE_s10
 		LDA		#$12
 		STA		_playerMapX
@@ -5924,9 +5868,9 @@ loc_12A686:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s28:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		ORA		#1
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		JSR		sub_12A6C8
 		LDY		#$19
 		LDA		_world_map_steps_count
@@ -6011,9 +5955,9 @@ _bC_s2F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s30:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#$1B
 		JMP		_bC_s0_npc_anim_script_init
 
@@ -6567,9 +6511,9 @@ loc_12AA8E:
 		JSR		sub_12AE80
 		JSR		sub_12AF78
 		SYSX	_apu_load,$04
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		ORA		#8
-		STA		byte_60B6
+		STA		_global_flags_array.byte1
 		SEC
 		RTS
 
@@ -7300,11 +7244,11 @@ off_12AFEE:
 sub_12B01C:
 		LDA		_player_vehicle
 		BNE		locret_12B040
-		LDA		byte_60C9
+		LDA		_global_flags_array.byte14
 		AND		#$3F
 		BEQ		locret_12B040
-		DEC		byte_60C9
-		LDA		byte_60C9
+		DEC		_global_flags_array.byte14
+		LDA		_global_flags_array.byte14
 		AND		#$3F
 		BNE		locret_12B040
 		JSR		_wait_for_nmi_is_over_sync
@@ -7455,7 +7399,7 @@ locret_12B123:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s29:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#$40
 		BNE		locret_12B163
 		LDA		byte_2A
@@ -7538,15 +7482,15 @@ loc_12B1B2:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		MSGX	_msg_m00,$1AE
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#8
 		BNE		loc_12B1F9
 		LDA		#8
-		ORA		_global_game_flags
-		STA		_global_game_flags
+		ORA		_global_flags_array.byte2
+		STA		_global_flags_array.byte2
 		BNE		loc_12B1FC
 loc_12B1CB:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		TAX
 		AND		#8
 		BEQ		loc_12B1AC
@@ -7555,7 +7499,7 @@ loc_12B1CB:
 		BNE		loc_12B1F9
 		TXA
 		ORA		#$10
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		SYSX	_apu_load,$A3
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
@@ -7580,7 +7524,7 @@ sub_12B200:
 		LDA		_playerMapY
 		CMP		#$D
 		BNE		locret_12B21A
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		AND		#$20
 		BNE		locret_12B21A						; test _q_SamanaoDone
 		LDA		_world_map_steps_count
@@ -7590,15 +7534,15 @@ locret_12B21A:
 		RTS
 loc_12B21B:
 		JSR		_wrap_bE_sD_wnd3E
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#1
 		BEQ		loc_12B22B
 		MSGX	_msg_m00,$170
 		JMP		loc_12B236
 loc_12B22B:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		ORA		#1
-		STA		byte_60B9
+		STA		_global_flags_array.byte4
 		MSGX	_msg_m00,$16A
 loc_12B236:
 		MSGX	_msg_m00,$16B
@@ -7661,7 +7605,7 @@ loc_12B298:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B29D:
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVC		locret_12B2BC
 		LDA		_playerMapX
 		AND		#$FE
@@ -7683,10 +7627,10 @@ sub_12B2BD:
 		LDA		byte_644
 		CMP		#3
 		BNE		locret_12B2BC
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		CMP		#$FF
 		BNE		loc_12B2D0
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		locret_12B2BC
 loc_12B2D0:
 		LDA		_playerMapX
@@ -7712,7 +7656,7 @@ sub_12B2EB:
 		LDA		_playerMapY
 		CMP		#3
 		BNE		locret_12B30C
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#2
 		BNE		loc_12B30D
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
@@ -7727,9 +7671,9 @@ loc_12B30D:
 		STA		byte_6BC
 		STA		byte_644
 		FARX	_b0_s4F
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$FC
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		LDA		#0
 		JSR		sub_12B353
 		JSR		_wrap_bE_sD_wnd3E
@@ -7834,7 +7778,7 @@ off_12B3CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B3D1:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BPL		locret_12B42D
 		LDA		_playerMapX
 		CMP		#7
@@ -7842,7 +7786,7 @@ sub_12B3D1:
 		LDA		_playerMapY
 		CMP		#$12
 		BNE		locret_12B42D
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$10
 		BNE		loc_12B453
 		LDA		_npcs_pos_list+$34
@@ -7918,15 +7862,15 @@ loc_12B484:
 		MSGX	_msg_m00,$6A5
 loc_12B487:
 		JSR		sub_174D4F
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 locret_12B492:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B493:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$10
 		BNE		locret_12B492
 		LDA		_playerMapX
@@ -7934,9 +7878,9 @@ sub_12B493:
 		BNE		locret_12B492
 		LDA		_npcs_pos_list+4
 		BMI		locret_12B492
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		ORA		#$10
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$69D
 		MSGX	_msg_m00,$69E
@@ -7982,7 +7926,7 @@ locret_12B517:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B518:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#$10
 		BNE		locret_12B517
 		LDA		_playerMapX
@@ -8040,9 +7984,9 @@ loc_12B564:
 		LDA		#<[_npcs_pos_list+$C]
 		STA		word_6C
 		JSR		_bC_s38
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		ORA		#$10
-		STA		byte_60B9
+		STA		_global_flags_array.byte4
 		FARX	_bE_s33
 		SYSX	_apu_load,$07
 locret_12B5AC:
@@ -8050,7 +7994,7 @@ locret_12B5AC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B5AD:
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		BMI		locret_12B5AC
 		LDA		_playerMapX
 		CMP		#$14
@@ -8062,7 +8006,7 @@ sub_12B5AD:
 		BCS		loc_12B5EA
 		CMP		#$1A
 		BNE		loc_12B5F3
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$1F
 		BNE		locret_12B5AC
 		LDX		#$10
@@ -8074,20 +8018,20 @@ sub_12B5AD:
 		INX
 		STX		byte_7A27
 		LDA		#1
-		STA		byte_60C4
+		STA		_global_flags_array.byteF
 		SYSX	_apu_load,$95
 		JMP		loc_12B6A2
 loc_12B5EA:
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$80
-		STA		byte_60C4
+		STA		_global_flags_array.byteF
 		RTS
 loc_12B5F3:
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$1F
 		BEQ		locret_12B5AC
-		INC		byte_60C4
-		LDA		byte_60C4
+		INC		_global_flags_array.byteF
+		LDA		_global_flags_array.byteF
 		AND		#$1F
 		CMP		#$1B
 		BNE		loc_12B615
@@ -8103,7 +8047,7 @@ loc_12B615:
 		CMP		#$1F
 		BNE		locret_12B682
 loc_12B61D:
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$1F
 		SEC
 		SBC		#$1B
@@ -8112,10 +8056,10 @@ loc_12B61D:
 		LDA		byte_12B612,X
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		CLC
 		ADC		#$20
-		STA		byte_60C4
+		STA		_global_flags_array.byteF
 		AND		#$60
 		LSR
 		LSR
@@ -8133,7 +8077,7 @@ loc_12B61D:
 		JSR		_add16_to_16
 		JSR		sub_12B672
 		JSR		sub_12B667
-		LDA		byte_60C4
+		LDA		_global_flags_array.byteF
 		AND		#$60
 		CMP		#$60
 		BEQ		sub_12B683
@@ -8165,7 +8109,7 @@ locret_12B682:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B683:
 		LDA		#$80
-		STA		byte_60C4
+		STA		_global_flags_array.byteF
 		LDA		#$13
 		STA		byte_76D4
 		STA		byte_76D5
@@ -8186,7 +8130,7 @@ locret_12B6AE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B6AF:
-		BIT		byte_60BA
+		BIT		_global_flags_array.byte5
 		BMI		locret_12B6AE
 		BVS		loc_12B71C
 		LDA		_playerMapY
@@ -8221,8 +8165,8 @@ loc_12B6C9:
 		LDA		#$80
 		STA		_npcs_pos_list+$14
 		STA		_npcs_pos_list+$18
-		ORA		byte_60BA
-		STA		byte_60BA
+		ORA		_global_flags_array.byte5
+		STA		_global_flags_array.byte5
 		JSR		sub_12B7AD
 		JSR		sub_174CBD
 		JSR		_wrap_bE_sD_wnd3E
@@ -8249,10 +8193,10 @@ loc_12B71C:
 locret_12B739:
 		RTS
 loc_12B73A:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		locret_12B739
 		ORA		#$80
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$179
 		JMP		sub_174D4F
@@ -8298,9 +8242,9 @@ loc_12B792:
 		CPX		#$C
 		BNE		loc_12B792
 		JSR		sub_12B7AD
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$BF
-		STA		byte_60BA
+		STA		_global_flags_array.byte5
 		JSR		_bC_s20
 		LDA		#$24
 		JMP		_bC_s0_npc_anim_script_init
@@ -8337,7 +8281,7 @@ locret_12B7E0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B7E1:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		ASL
 		BCS		loc_12B819
 		ASL
@@ -8370,7 +8314,7 @@ loc_12B801:
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_12B91A
 		JSR		sub_174CBD
-		ASL		byte_60C5
+		ASL		_global_flags_array.byte10
 		RTS
 loc_12B819:
 		JSR		_bC_s34
@@ -8403,9 +8347,9 @@ sub_12B820:
 		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00,$1A7
-		LDA		#[_bC_s18_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s18_fidx
 		STA		word_3C
-		LDA		#[_bC_s1C_idx-_sys_idx_lib]>>1
+		LDA		#_bC_s1C_fidx
 		STA		word_3C+1
 		JSR		_bC_s17_sys0_spr_effects_call
 		LDA		#$80
@@ -8416,7 +8360,7 @@ sub_12B820:
 		JSR		_wait_for_nmi_is_over_sync
 		JSR		sub_174D4F
 		LDA		#$C0
-		STA		byte_60C5
+		STA		_global_flags_array.byte10
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8554,7 +8498,7 @@ byte_12B946:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B97E:
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BPL		locret_12B998
 		AND		#$20
 		BNE		locret_12B998
@@ -8640,7 +8584,7 @@ nullsub_14:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BA11:
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		nullsub_14
 		LDX		#$10
@@ -8698,7 +8642,7 @@ loc_12BA69:
 		LDA		_mapNumber
 		CMP		#$91
 		BEQ		sub_12BA9A
-		LDA		byte_60B8
+		LDA		_global_flags_array.byte3
 		BPL		sub_12BAA5
 		AND		#$40
 		BEQ		sub_12BAA5
@@ -8719,7 +8663,7 @@ sub_12BA9A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BAA5:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		locret_12BAB7
 		LDA		#$80
 		STA		_npcs_pos_list+$14
@@ -8731,7 +8675,7 @@ locret_12BAB7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BAB8:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		locret_12BAB7
 		LDA		#$80
 		STA		_npcs_pos_list
@@ -8750,9 +8694,9 @@ sub_12BAC3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BAD3:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		loc_12BAE1
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$10
 		BNE		loc_12BB0C
 		BEQ		locret_12BB11
@@ -8760,9 +8704,9 @@ loc_12BAE1:
 		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_12BAF1
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		RTS
 loc_12BAF1:
 		LDA		byte_6A62
@@ -8789,9 +8733,9 @@ byte_12BB12:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB1E:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		locret_12BB11
-		LDA		byte_60BA
+		LDA		_global_flags_array.byte5
 		AND		#$10
 		BNE		locret_12BB11
 		LDX		#$14
@@ -8799,7 +8743,7 @@ sub_12BB1E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB2F:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#$10
 		BEQ		locret_12BB11
 		LDX		#$10
@@ -8814,7 +8758,7 @@ nullsub_16:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB41:
 		LDA		#$80
-		BIT		byte_60BA
+		BIT		_global_flags_array.byte5
 		BMI		loc_12BB4B
 		BVS		loc_12BB51
 		RTS
@@ -8851,12 +8795,12 @@ loc_12BB77:
 		STY		_npcs_pos_list+$11
 		STA		_npcs_pos_list+$13
 loc_12BB80:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		RTS
 loc_12BB89:
-		LDA		byte_60C6
+		LDA		_global_flags_array.byte11
 		BPL		loc_12BB80
 		LDX		#$10
 		LDY		#$17
@@ -8865,7 +8809,7 @@ loc_12BB89:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB96:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		AND		#4
 		BNE		locret_12BBAB
 loc_12BB9D:
@@ -8880,19 +8824,19 @@ locret_12BBAB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBAC:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		BMI		loc_12BBA5
 		AND		#3
 		ORA		#$80
 		CMP		#$83
 		BEQ		loc_12BBA5
 		LDA		#0
-		STA		byte_60C8
+		STA		_global_flags_array.byte13
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBBF:
-		LDA		byte_60C8
+		LDA		_global_flags_array.byte13
 		BMI		loc_12BB9D
 		AND		#4
 		BNE		loc_12BB9D
@@ -8900,9 +8844,9 @@ sub_12BBBF:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBC9:
-		LDA		byte_60B9
-		ORA		_global_game_flags
-		ORA		byte_60CA
+		LDA		_global_flags_array.byte4
+		ORA		_global_flags_array.byte2
+		ORA		_global_flags_array.byte15
 		BPL		locret_12BBD9
 		LDA		#$80
 		STA		_npcs_pos_list
@@ -8911,7 +8855,7 @@ locret_12BBD9:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBDA:
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#$20
 		BEQ		locret_12BBF0
 		LDA		#$32
@@ -8925,7 +8869,7 @@ locret_12BBF0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBF1:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		BPL		locret_12BBFB
 		LDA		#$80
 		STA		_npcs_pos_list
@@ -8939,7 +8883,7 @@ nullsub_15:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBFD:
 		LDX		#0
-		LDA		byte_60D0
+		LDA		_global_flags_array.byte1B
 		STA		word_4
 loc_12BC04:
 		LSR		word_4
@@ -8953,7 +8897,7 @@ loc_12BC14:
 		INX
 		CPX		#6
 		BNE		loc_12BC04
-		BIT		byte_60B9
+		BIT		_global_flags_array.byte4
 		BVC		locret_12BC23
 		LDA		#$80
 		STA		_npcs_pos_list+8
@@ -8967,7 +8911,7 @@ byte_12BC24:
 ;
 ; =============== S U B	R O U T	I N E =======================================
 sub_CBF80:
-		LDA		byte_60CB
+		LDA		_global_flags_array.byte16
 		AND		#$10
 		BEQ		locret_CBF96
 		LDA		#$80
@@ -9001,9 +8945,9 @@ locret_CBFAD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_CBFAE:
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		BMI		locret_CBFCB
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		BPL		locret_CBFCB
 		LDX		#6
 		LDA		_world_map_steps_count
@@ -9025,14 +8969,14 @@ loc_CBFCC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BC2A:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#$7F
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BC33:
-		BIT		byte_60C6
+		BIT		_global_flags_array.byte11
 		BVC		locret_12BC40
 		LDA		_npcs_pos_list+3
 		AND		#$FC

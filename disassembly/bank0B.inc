@@ -5,18 +5,12 @@
 ; == SOUND ENGINE BANK ==
 ; =======================
 
-_bB_s2_apu_init_ptr:
-		.WORD	_bB_s2_apu_init
-_bB_s3_apu_load_ptr:
-		.WORD	_bB_s3_apu_load
-_bB_s4_apu_set_flag0_ptr:
-		.WORD	_bB_s4_apu_set_flag0
-_bB_s5_apu_unk_ptr:
-		.WORD	_bB_s5_apu_unk
-_bB_s5_apu_flag1_ptr:
-		.WORD	_bB_s5_apu_flag1
-_bB_s7_apu_wait_ptr:
-		.WORD	_bB_s7_apu_wait
+		PTR_IDX		_bB_s2_apu_init
+		PTR_IDX		_bB_s3_apu_load
+		PTR_IDX		_bB_s4_apu_set_flag0
+		PTR_IDX		_bB_s5_apu_unk
+		PTR_IDX		_bB_s5_apu_flag1
+		PTR_IDX		_bB_s7_apu_wait
 
 _apu_music_lib:
 		.WORD	_chnl_empty,_chnl_stop,_chnl_stop,_chnl_stop

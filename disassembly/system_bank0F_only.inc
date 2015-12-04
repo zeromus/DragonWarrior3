@@ -607,7 +607,7 @@ loc_176FFA:
 		LDA		_location_type
 		AND		#2
 		BEQ		loc_176FF8
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		BPL		loc_176FF8
 		LDA		byte_77
 		CMP		#$3A
@@ -692,7 +692,7 @@ loc_177077:
 ; =============== S U B	R O U T	I N E =======================================
 sub_17707A:
 		PHA
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#8
 		BNE		loc_177084
 loc_177082:
@@ -721,7 +721,7 @@ loc_17709D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1770A0:
 		PHA
-		LDA		byte_60B6
+		LDA		_global_flags_array.byte1
 		AND		#4
 		BNE		loc_1770AA
 		PLA
@@ -757,7 +757,7 @@ loc_1770CD:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1770D0:
 		PHA
-		LDA		byte_60C5
+		LDA		_global_flags_array.byte10
 		BMI		loc_1770D8
 		PLA
 		RTS
@@ -864,7 +864,7 @@ loc_177159:
 		CMP		#$78
 		BNE		loc_177183
 loc_17717C:
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		AND		#4
 		BEQ		loc_177156
 loc_177183:
@@ -3204,7 +3204,7 @@ loc_177ED1:
 loc_177ED8:
 		CPY		#$8D
 		BNE		loc_177EEF
-		LDA		byte_60B9
+		LDA		_global_flags_array.byte4
 		AND		#8
 		BEQ		loc_177EEF
 		STX		byte_6ABE

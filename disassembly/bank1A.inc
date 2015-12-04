@@ -1,8 +1,7 @@
 
 		ORG $8000
 
-_b1A_s0_ptr:
-		.WORD	_b1A_s0
+		PTR_IDX		_b1A_s0
 
 byte_27C002:
 		.BYTE	  0,  0,  0,  0,  1,  3,  0,  9,  0,  0,  1,  3,  6, $C,$1F,$37

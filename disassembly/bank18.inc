@@ -1,10 +1,8 @@
 
 		ORG $8000
 
-_b18_s0_intro_animation_ptr:
-		.WORD	_b18_s0_intro_animation
-_b18_s1_ptr:
-		.WORD	_b18_s1
+		PTR_IDX		_b18_s0_intro_animation
+		PTR_IDX		_b18_s1
 
 ; =============== S U B	R O U T	I N E =======================================
 _b18_s0_intro_animation:
@@ -135,9 +133,9 @@ sub_24C0E5:
 sub_24C0F3:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync
@@ -163,9 +161,9 @@ _b18_s1:
 		JSR		sub_24C2B1
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#0
 		STA		_ppu_spr_dma_sent
 		JSR		_wait_for_nmi_is_over_sync
@@ -189,9 +187,9 @@ loc_24C151:
 sub_24C156:
 		LDA		#$FD
 		STA		_spr_force_shuffle_mode
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		ORA		#$20
-		STA		_global_game_flags
+		STA		_global_flags_array.byte2
 		LDA		#$F
 		LDX		#$19
 loc_24C166:

@@ -1100,9 +1100,9 @@ byte_E3C4C:
 sub_E3C80:
 		LDA		_mapNumber
 		STA		word_3E
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BVS		loc_E3C93						; test _f_IsKingOfRomaly? really?
-		LDX		byte_60CD
+		LDX		_global_flags_array.byte18
 		CMP		#$72
 		BNE		loc_E3C9C
 		JMP		loc_E3D37
@@ -1124,12 +1124,12 @@ loc_E3C9C:
 loc_E3CAC:
 		CMP		#$E
 		BNE		loc_E3CC4
-		LDX		byte_60BA
+		LDX		_global_flags_array.byte5
 		BPL		loc_E3CB9
 		LDA		#$C2
 		BNE		loc_E3D14
 loc_E3CB9:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		AND		#4
 		BEQ		locret_E3D16
 		LDA		#$C0
@@ -1137,14 +1137,14 @@ loc_E3CB9:
 loc_E3CC4:
 		CMP		#$7D
 		BNE		loc_E3CD1
-		LDX		byte_60BA
+		LDX		_global_flags_array.byte5
 		BPL		loc_E3D14
 		LDA		#$C1
 		BNE		loc_E3D14
 loc_E3CD1:
 		CMP		#$23
 		BNE		loc_E3CE0
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		AND		#$20
 		BEQ		locret_E3D16
 		LDA		#$95
@@ -1152,28 +1152,28 @@ loc_E3CD1:
 loc_E3CE0:
 		CMP		#$47
 		BNE		loc_E3CED
-		LDX		byte_60CB
+		LDX		_global_flags_array.byte16
 		BPL		locret_E3D16
 		LDA		#$AC
 		BNE		loc_E3D14
 loc_E3CED:
 		CMP		#$6B
 		BNE		loc_E3CFA
-		LDX		byte_60C5
+		LDX		_global_flags_array.byte10
 		BPL		locret_E3D16
 		LDA		#$AB
 		BNE		loc_E3D14
 loc_E3CFA:
 		CMP		#$17
 		BNE		loc_E3D07
-		LDX		byte_60B9
+		LDX		_global_flags_array.byte4
 		BPL		locret_E3D16
 		LDA		#$B7
 		BNE		loc_E3D14
 loc_E3D07:
 		CMP		#$8A
 		BNE		loc_E3D14
-		LDX		byte_60B9
+		LDX		_global_flags_array.byte4
 		BPL		locret_E3D16
 		LDA		#$B8
 		BNE		loc_E3D14
@@ -1196,14 +1196,14 @@ loc_E3D25:
 loc_E3D2A:
 		CPX		#$FF
 		BNE		loc_E3D14
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		BMI		locret_E3D16
 		LDA		#$CE
 		BNE		loc_E3D14
 loc_E3D37:
 		CPX		#0
 		BEQ		loc_E3D14
-		BIT		_global_game_flags
+		BIT		_global_flags_array.byte2
 		BMI		loc_E3D14
 		TXA
 		LSR
@@ -1211,14 +1211,14 @@ loc_E3D37:
 		BCS		loc_E3D14
 		BCC		locret_E3D16
 loc_E3D48:
-		LDA		byte_60CD
+		LDA		_global_flags_array.byte18
 		AND		#$20
 		BEQ		loc_E3D55					; test _q_SamanaoDone
 		LDA		word_3E
 		LDX		#7
 		BNE		loc_E3D19
 loc_E3D55:
-		LDA		byte_60CA
+		LDA		_global_flags_array.byte15
 		AND		#8
 		BEQ		locret_E3D16
 		LDA		_mapNumber

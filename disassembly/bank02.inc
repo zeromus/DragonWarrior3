@@ -1,20 +1,20 @@
 
 		ORG $8000
 
-_b2_s0_ptr:						.WORD	_b2_s0
-_b2_s2_ptr:						.WORD	_b2_s2
-_b2_s3_ptr:						.WORD	_b2_s3
-_b2_s4_ptr:						.WORD	_b2_s4
-_b2_s5_ptr:						.WORD	_b2_s5
-_b2_s6_screen_damage_shake_ptr:	.WORD	_b2_s6_screen_damage_shake
-_b2_s7_screen_spell_blink_ptr:	.WORD	_b2_s7_screen_spell_blink
-_b2_s8_screen_hit_blink_ptr:	.WORD	_b2_s8_screen_hit_blink
-_b2_s9_ptr:						.WORD	_b2_s9
-_b2_sA_ptr:						.WORD	_b2_sA
-_b2_sB_ptr:						.WORD	_b2_sB
-_b2_sC_ptr:						.WORD	_b2_sC
-_b2_sD_ptr:						.WORD	_b2_sD
-_b2_sE_ptr:						.WORD	_b2_sE
+		PTR_IDX		_b2_s0
+		PTR_IDX		_b2_s2
+		PTR_IDX		_b2_s3
+		PTR_IDX		_b2_s4
+		PTR_IDX		_b2_s5
+		PTR_IDX		_b2_s6_screen_damage_shake
+		PTR_IDX		_b2_s7_screen_spell_blink
+		PTR_IDX		_b2_s8_screen_hit_blink
+		PTR_IDX		_b2_s9
+		PTR_IDX		_b2_sA
+		PTR_IDX		_b2_sB
+		PTR_IDX		_b2_sC
+		PTR_IDX		_b2_sD
+		PTR_IDX		_b2_sE
 
 _pak_data7C:
 		.BYTE	$C8,$50,$1F,$1F,  1,  1,  7,$3F,$66,  1,  1,  7,$3F,$26,$C8,$60
@@ -3086,7 +3086,7 @@ loc_3A500:
 		STA		byte_6A4B,X
 		PLA
 		TAY
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
+		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_y
 		AND		#$3F
 		STA		byte_CF
@@ -3141,7 +3141,7 @@ loc_3A536:
 		FARX	_b4_s5_do_message_speed_delay
 		JMP		loc_3A3CF
 loc_3A569:
-		LDA		#[_b4_dD_spells_list_idx-_sys_idx_lib]>>1
+		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_y
 		BMI		loc_3A57B
 		LDX		#0
@@ -3250,7 +3250,7 @@ loc_3A635:
 		BNE		loc_3A677
 loc_3A642:
 		LDX		byte_45
-		LDA		#[_b0_d42_item_use_effects_list_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x
 		STA		byte_46
 		BIT		byte_46
@@ -3413,7 +3413,7 @@ loc_3A752:
 		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#[_b0_d3F_other_spell_related_data_idx-_sys_idx_lib]>>1
+		LDA		#_b0_d3F_other_spell_related_data_fidx
 		JSR		_sys0_byte_read_x
 		TAX
 		STA		byte_47
@@ -3813,7 +3813,7 @@ sub_3A9E8:
 		PHA
 		TYA
 		BNE		loc_3AA0A
-		LDA		_global_game_flags
+		LDA		_global_flags_array.byte2
 		LSR
 		BCC		loc_3AA0A
 		LDA		#<[_str_lib_erdrick]
