@@ -4237,8 +4237,8 @@ _cmd_spell_repel:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_s10:
-		FARX	_bC_s10
+_warp_bC_s10_spell_return:
+		FARX	_bC_s10_spell_return
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4390,7 +4390,7 @@ _command_spell_lib:
 		.WORD	_cmd_spell_detoxicate
 		.WORD	_cmd_spell_remove_numbness
 		.WORD	_cmd_spell_repel
-		.WORD	_warp_bC_s10	; cast return? i have reason to suspect
+		.WORD	_warp_bC_s10_spell_return
 		.WORD	_warp_bC_sF_item_key_type3_use
 		.WORD	_warp_bC_s1E
 		.WORD	sub_A0EC
@@ -5736,7 +5736,7 @@ loc_AC48:
 loc_AC4B:
 		JSR		_pause_or_skip
 loc_AC4E:
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 loc_AC51:
 		JSR		sub_AC57
 		JMP		sub_ACA9
@@ -5793,7 +5793,7 @@ loc_AC94:
 sub_AC9F:
 		JSR		_pause_or_skip
 loc_ACA2:
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACA5:
@@ -6156,7 +6156,7 @@ _item0A_float_use:
 ; delay and "A darkness oozes out from the lamp and covers ..."
 _item0B_use:
 		FARX	_bC_s12_sleep_X_sync_50
-		FARX	_bC_s11
+		FARX	_bC_s11_item_lamp_of_darkness_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6165,7 +6165,7 @@ _item0C_use:
 		FARX	_b6_s15
 		BCC		locret_AECC
 		JSR		_sleep_30
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		SEC
 locret_AECC:
 		RTS
@@ -6349,7 +6349,7 @@ loc_AFF6:
 loc_AFF8:
 		JSR		_wrap_msg_m00_arg0
 		FARX	_bC_s12_sleep_X_sync_50
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		FARX	_b6_s10
 		SEC
 		RTS

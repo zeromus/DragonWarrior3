@@ -2024,7 +2024,7 @@ _far_read_pri_stat_tbl:
 ; =============== S U B	R O U T	I N E =======================================
 sub_174D4F:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3057,7 +3057,7 @@ loc_175488:
 		AND		#$F
 		CMP		#$F
 		BNE		loc_1754A7
-		FARX	_bC_s37
+		FARX	_bC_s37_get_special_areas_tile_idx
 		LDX		_playerMapX
 		LDY		_playerMapY
 		JSR		_areamap_SetTileXY
@@ -6219,7 +6219,7 @@ _sys_idx_lib:
 		FILE_IDX	$6,_b6_d9_world_map_step_daytime_list	; $89
 		FILE_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
 		FILE_IDX	$6,_b6_dB_world_map_palette_lib	; $8B
-		FILE_IDX	$A,_bA_d14					; $B6
+		FILE_IDX	$A,_bA_d14_chests_count_list					; $B6
 		FILE_IDX	$A,_bA_d15					; $B7
 ;
 ; then indirectly used subs
@@ -6481,8 +6481,8 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_sD_item_key_type0_use					; $B8
 		FILE_IDX	$C,_bC_sE_item_key_type1_use					; $B9
 		FILE_IDX	$C,_bC_sF_item_key_type3_use					; $BA
-		FILE_IDX	$C,_bC_s10					; $BB
-		FILE_IDX	$C,_bC_s11					; $BC
+		FILE_IDX	$C,_bC_s10_spell_return					; $BB
+		FILE_IDX	$C,_bC_s11_item_lamp_of_darkness_use					; $BC
 		FILE_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
 		FILE_IDX	$C,_bC_s13_use_magic_ball					; $BE
 		FILE_IDX	$C,_bC_s14					; $C8
@@ -6492,8 +6492,8 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s1B					; $15E
 		FILE_IDX	$C,_bC_s1D					; $16
 		FILE_IDX	$C,_bC_s1E					; $F5
-		FILE_IDX	$C,_bC_s1F					; $17
-		FILE_IDX	$C,_bC_s20					; $171
+		FILE_IDX	$C,_bC_s1F_get_chest_idx					; $17
+		FILE_IDX	$C,_bC_s20_warp_bE_sB_arg0					; $171
 		FILE_IDX	$C,_bC_s21					; $F7
 		FILE_IDX	$C,_bC_s22					; $F8
 		FILE_IDX	$C,_bC_s23					; $192
@@ -6512,7 +6512,7 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s33					; $126
 		FILE_IDX	$C,_bC_s34					; $159
 		FILE_IDX	$C,_bC_s35					; $15A
-		FILE_IDX	$C,_bC_s37					; $12B
+		FILE_IDX	$C,_bC_s37_get_special_areas_tile_idx					; $12B
 		FILE_IDX	$C,_bC_s39					; $13A
 		FILE_IDX	$C,_bC_s3A					; $13B
 		FILE_IDX	$C,_bC_s3B					; $141

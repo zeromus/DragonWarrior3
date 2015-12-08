@@ -16,10 +16,11 @@
 		PTR_IDX		_bA_s10
 		PTR_IDX		_bA_s11
 		PTR_IDX		_bA_s12
-		PTR_IDX		_bA_d14
-		PTR_IDX		_bA_d15
 		PTR_IDX		_bA_s16
 		PTR_IDX		_bA_s17
+
+		PTR_IDX		_bA_d14_chests_count_list
+		PTR_IDX		_bA_d15
 
 ; =============== S U B	R O U T	I N E =======================================
 ; input arguments: X:A - 9-bit message index
@@ -1828,7 +1829,7 @@ _bA_sF:
 		MSGX	_msg_m00,$184
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s12_sleep_X_sync_50
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		LDA		#$20
 		STA		_global_flags_array.byte11
 		LDA		#$29
@@ -1848,7 +1849,7 @@ _bA_s10:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$185
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		LDA		#$2B
 		FARX	_bC_s0_npc_anim_script_init
 locret_F9110:
@@ -1920,7 +1921,10 @@ loc_F918B:
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_b4_s6_wndBTL_STAT
 		RTS
-_bA_d14:
+
+; list of u8[2] pairs _MapNumber:LocationChestsCount for 64 different maps
+;
+_bA_d14_chests_count_list:
 		.BYTE	  0,  1,  3,  3,  4,  1, $C,  7,$11,  1,$14,  2,$2A,  1,$2D,  3
 		.BYTE	$2E,  2,$2F,  0,$30,  2,$34,  6,$36,  5,$3B,  8,$3D,  1,$3F,  1
 		.BYTE	$40,  2,$46,  6,$4E,  1,$53,  1,$55,  8,$69,  3,$6A,  1,$71,  3

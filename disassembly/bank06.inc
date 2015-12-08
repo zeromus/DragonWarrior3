@@ -1145,7 +1145,7 @@ loc_9B417:
 		LDA		#$19
 		ORA		byte_AC
 		STA		byte_AC
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		LDA		_player_vehicle
 		BNE		loc_9B431
 		SYSX	_apu_load,$9F
@@ -2762,7 +2762,7 @@ loc_9BF46:
 _b6_s1F:
 		JSR		sub_9BFB3
 		BCC		loc_9BF6D
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		SYSX	_apu_load,$1A
 		JSR		sub_9BF72
 		JSR		sub_9BFC3

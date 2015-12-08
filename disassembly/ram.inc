@@ -1147,11 +1147,13 @@ byte_608C:
 		.BYTE	0
 byte_608D:
 		.BYTE	0
-byte_608E:
+_chest_open_flags:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0
-byte_60A8:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
+_chest_tmp_idx:
+		.BYTE	0
+_tmp_spr_pal_buf:
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 
 _global_flags_array:
 ;	$80 - 

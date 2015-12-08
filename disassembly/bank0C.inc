@@ -15,8 +15,8 @@
 		PTR_IDX		_bC_sD_item_key_type0_use
 		PTR_IDX		_bC_sE_item_key_type1_use
 		PTR_IDX		_bC_sF_item_key_type3_use
-		PTR_IDX		_bC_s10
-		PTR_IDX		_bC_s11
+		PTR_IDX		_bC_s10_spell_return
+		PTR_IDX		_bC_s11_item_lamp_of_darkness_use
 		PTR_IDX		_bC_s12_sleep_X_sync_50
 		PTR_IDX		_bC_s13_use_magic_ball
 		PTR_IDX		_bC_s14
@@ -30,8 +30,8 @@
 		PTR_IDX		_bC_s1C
 		PTR_IDX		_bC_s1D
 		PTR_IDX		_bC_s1E
-		PTR_IDX		_bC_s1F
-		PTR_IDX		_bC_s20
+		PTR_IDX		_bC_s1F_get_chest_idx
+		PTR_IDX		_bC_s20_warp_bE_sB_arg0
 		PTR_IDX		_bC_s21
 		PTR_IDX		_bC_s22
 		PTR_IDX		_bC_s23
@@ -52,7 +52,7 @@
 		PTR_IDX		_bC_s33
 		PTR_IDX		_bC_s34
 		PTR_IDX		_bC_s35
-		PTR_IDX		_bC_s37
+		PTR_IDX		_bC_s37_get_special_areas_tile_idx
 		PTR_IDX		_bC_s38
 		PTR_IDX		_bC_s39
 		PTR_IDX		_bC_s3A
@@ -283,7 +283,7 @@ loc_12821D:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$176
 		JSR		_bC_s12_sleep_X_sync_50
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		LDA		#$25
 loc_128233:
 		CMP		#$26
@@ -339,7 +339,7 @@ loc_128296:
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$95
 		FARX	_bB_s3_apu_load
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		PLA
 		SEC
 		SBC		#8
@@ -990,25 +990,25 @@ _anim_scr3A:
 ; this should be called _poke_tile_screen but it's better for cah4e3 to rename these kinds of things
 ;
 _bC_sA:
-		PHA													; stash target tile
+		PHA								; stash target tile
 		JSR		_ppu_calc_nt_offset		; calculates NT position of taret X/Y to u16[$1f]
-		PLA													; restore target tile
+		PLA								; restore target tile
 		JSR		_poke_tile_nt
-		JMP		sub_12874C						; tailcall
+		JMP		sub_12874C				; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 ; A: the target tile to set
 ; u16[$1F]: Target NT address of operation
 ; 
 _poke_tile_nt:
-		ASL										; transform a tile number to a 'tileset' address (4 bytes per tile)
+		ASL								; transform a tile number to a 'tileset' address (4 bytes per tile)
 		ASL
 		TAY
 		LDX		_ppu_queue_pos
-		JSR		_poke_halftile_NT			; write top 2 patterns of tile to ppu queue
+		JSR		_poke_halftile_NT		; write top 2 patterns of tile to ppu queue
 		LDA		byte_1F					; load NT target address
 		CLC
-		ADC		#$1F						; get us to the next line, minus one--from the topright pattern of the tile to the bottomleft
+		ADC		#$1F					; get us to the next line, minus one--from the topright pattern of the tile to the bottomleft
 		STA		byte_1F					; store back to NT target address
 
 ;; FALLTHROUGH ;;
@@ -1020,7 +1020,7 @@ _poke_tile_nt:
 ;
 _poke_halftile_NT:
 		JSR		_poke_quartertile_NT	; queue a tile
-		INC		byte_1F			; move to next entry in NT
+		INC		byte_1F					; move to next entry in NT
 		INY								; move to next pattern in tileset
 		JSR		_poke_quartertile_NT	; queue a tile
 		INY								; move to next pattern in tileset
@@ -1031,14 +1031,14 @@ _poke_halftile_NT:
 ; Y: Offset in tileset
 ;
 _poke_quartertile_NT:
-		LDA		byte_20						; store
-		STA		_ppu_queue_buf,X	; the current
-		INX											; NT target address
-		LDA		byte_1F						; into the
-		STA		_ppu_queue_buf,X	; queue
+		LDA		byte_20					; store
+		STA		_ppu_queue_buf,X		; the current
+		INX								; NT target address
+		LDA		byte_1F					; into the
+		STA		_ppu_queue_buf,X		; queue
 		INX
 		LDA		byte_7200,Y				; reference the tileset to get a pattern name
-		STA		_ppu_queue_buf,X	; store into the queue
+		STA		_ppu_queue_buf,X		; store into the queue
 		INX
 		INC		_ppu_queue_chunks_count	; queue bookkeeping
 		RTS
@@ -1243,14 +1243,6 @@ loc_12887F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12888D:
-		LDA		#0
-		STA		_spr_force_shuffle_mode
-		JSR		_wait_for_nmi_is_over_sync
-locret_128894:
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
 sub_128895:
 		BCS		locret_128894
 		LDA		#$FF
@@ -1308,9 +1300,13 @@ sub_128895:
 		BEQ		loc_128914
 		LDA		#0
 		STA		_spr_force_shuffle_mode
+locret_128894:
 		RTS
 loc_128914:
-		JMP		sub_12888D
+		LDA		#0
+		STA		_spr_force_shuffle_mode
+		JSR		_wait_for_nmi_is_over_sync
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128917:
@@ -2454,8 +2450,10 @@ loc_1290FF:
 loc_129117:
 		JSR		_bC_s0_npc_anim_script_init
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-sub_12911A:
+_warp_bE_sB_arg0:
 		LDA		#0
 		FARX	_bE_sB
 locret_12911F:
@@ -2475,7 +2473,7 @@ sub_129120:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$190
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		JSR		sub_12911A
+		JSR		_warp_bE_sB_arg0
 		LDA		#$1E
 		STA		byte_92
 		LDX		#$10
@@ -2484,15 +2482,15 @@ sub_129120:
 		STY		word_4+1
 		JSR		_bC_sA
 		LDA		#0
-		JSR		sub_12915C
+		JSR		_chest_mark_as_opened
 		LDA		#1
-		JSR		sub_12915C
+		JSR		_chest_mark_as_opened
 		JMP		_ppu_force_dequeue
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12915C:
-		JSR		_bC_s1F
-		JMP		sub_129A38
+_chest_mark_as_opened:
+		JSR		_bC_s1F_get_chest_idx
+		JMP		_chest_open_flag_set
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_129162:
@@ -2555,37 +2553,38 @@ loc_129199:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s10:
-		JSR		_is_location_warpable						; determine whether current location can be warped from
-		BCS		.loc_return_false			; return false if 'unwarpable' was true
+; seems may be shared by the command menu and "RETURN" spell as well as
+; "WING OF WYVERN" item
+;
+_bC_s10_spell_return:
+		JSR		_is_location_warpable			; determine whether current location can be warped from
+		BCS		.loc_return_false				; return false if 'unwarpable' was true
 		LDA		_global_flags_array.byte2
 		BPL		loc_1291F6						; branch if _f_WarpBlock is clear
-; assaram is what employs the _f_WarpBlock bit, so only acknowledge it if in Assaram
-		LDA		_mapNumber
+		LDA		_mapNumber						; assaram is what employs the _f_WarpBlock bit, so only acknowledge it if in Assaram
 		CMP		#$C
-		BEQ		.loc_return_false			; return false if we're in Assaram.
+		BEQ		.loc_return_false				; return false if we're in Assaram.
 		CMP		#$7A
-		BEQ		.loc_return_false			; return false if we're in Assaram basement
-
+		BEQ		.loc_return_false				; return false if we're in Assaram basement
 loc_1291F6:
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		LDA		_world_map_steps_count
-		STA		byte_C5											; probably, storing the current time for a day/night palette tweener?
-		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT	
-		LDA		#DAYNIGHT_CYCLE_MIDNIGHT		; select approximately midnight?
-		BCC		loc_129206									; branch down if it's before nighttime (IOW, daytime)
-		LDA		#DAYNIGHT_CYCLE_NOON				; select approximately noontime?
+		STA		byte_C5							; storing the current time for a day/night palette tweener
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT		; when jumping the daytime is set according closest current
+		LDA		#DAYNIGHT_CYCLE_MIDNIGHT		; time of day, if you close to night, then land at a midnight
+		BCC		loc_129206						; in other case return at a daylight
+		LDA		#DAYNIGHT_CYCLE_NOON
 loc_129206:
 		STA		_world_map_steps_count			; store noon or midnight back in the clock. heh, kind of weird and befuddling but largely pointless
-		JSR		sub_12923C									; probably re-adjust the palette on account of having changed t ime
+		JSR		sub_12923C						; probably re-adjust the palette on account of having changed time
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; must be related to the lamp of darkness. its testing whether its nighttime first, isnt it?
-; apparently 
+; "LAMP OF DARKNESS" item use, may be used only at a daytime, if you try
+; to use it at night, nothing won't happer by obvious reason
 ;
-_bC_s11:
+_bC_s11_item_lamp_of_darkness_use:
 		JSR		_is_location_warpable
 		BCS		.loc_return_false
 		LDA		_world_map_steps_count
@@ -2597,11 +2596,10 @@ _bC_s11:
 		MSGX	_msg_m00,$104	; "A darkness oozed out from..."
 		JSR		_sleep_30
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		JSR		_bC_s20
-		JSR		sub_12923C									; probably re-adjust the palette on account of having changed t ime
+		JSR		_bC_s20_warp_bE_sB_arg0
+		JSR		sub_12923C						; probably re-adjust the palette on account of having changed t ime
 		SEC
 		RTS
-
 loc_129232:
 		MSGX	_msg_m00,$102	; "But nothing happens now"
 		FARX	_bE_s33
@@ -2676,7 +2674,7 @@ loc_12929A:
 		DEC		byte_C5
 		LDA		byte_C5
 		BNE		loc_12926A
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		RTS
 byte_1292A4:
 		.BYTE	  1,  4,  7, $A,  2,  5,  8, $B,  3,  6,  9, $C
@@ -2689,7 +2687,7 @@ loc_1292B5:
 		JSR		sub_1292F5
 		CPY		#$C
 		BNE		loc_1292B5
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		JSR		_ppu_disable
@@ -2864,27 +2862,26 @@ loc_1293D2:
 _is_location_warpable:
 		LDA		_location_type
 		AND		#2
-		BNE		.loc_return_true0		; returns true if we're in alefgard
+		BNE		.loc_return_true0			; returns true if we're in alefgard
 		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_1293ED					; branch if we're not in the ship
-		BIT		_global_flags_array.byte3						; test a quest flag
+		BIT		_global_flags_array.byte3	; test a quest flag
 		BVC		loc_1293ED					; branch if quest flag isn't set
 		SEC
-		RTS												; return true
-
+		RTS									; return true
 loc_1293ED:
 		LDA		_mapNumber
 		CMP		#$9C								
-		BEQ		.loc_return_true0		; return true if phantom ship 1F
+		BEQ		.loc_return_true0			; return true if phantom ship 1F
 		CMP		#$9D								
-		BEQ		.loc_return_true0		; return true if phantom ship B1
+		BEQ		.loc_return_true0			; return true if phantom ship B1
 		CMP		#$60								
-		BEQ		.loc_return_true0		; return true if Samanao town prison basement
+		BEQ		.loc_return_true0			; return true if Samanao town prison basement
 		CMP		#$72
-		BNE		sub_129404					; classify further unless we're New Town Ver.1 (why not the others?)
+		BNE		_location_type_test			; classify further unless we're New Town Ver.1 (why not the others?)
 		LDA		_global_flags_array.byte2
-		BMI		.loc_return_true0		; return true if we're erdrick (this is puzzling logic)
+		BMI		.loc_return_true0			; return true if we're erdrick (this is puzzling logic)
 
 ;; FALLTHROUGH ;;
 
@@ -2893,18 +2890,16 @@ loc_1293ED:
 ; uses annoying logic comparable in size to a plain 256 byte table
 ; rejects towers, pyramids
 ;
-sub_129404:
-		LDA		byte_9A								; typically 0 for non-area map
-		BEQ		.loc_return_false0		; so return false
+_location_type_test:
+		LDA		byte_9A						; typically 0 for non-area map
+		BEQ		.loc_return_false0			; so return false
 		LDA		_mapNumber
-
 		CMP		#8
 		BEQ		.loc_return_true0			; return true for Castle of Zoma 1F
 		CMP		#$2D
-		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$2D (Cave on Promontory B1, first dungeon)
+		BCC		.loc_return_false0			; BCC->JB return false for everything less than #$2D (Cave on Promontory B1, first dungeon)
 		CMP		#$3C
 		BCC		.loc_return_true0			; return true for everything less than #$3C (Pyramid 1F)
-
 		CMP		#$58
 		BEQ		.loc_return_true0			; return true for Baramos's Lair
 		CMP		#$5B
@@ -2912,17 +2907,15 @@ sub_129404:
 		CMP		#$85
 		BEQ		.loc_return_true0			; return true for Tedanki crypt basement
 		CMP		#$9F
-		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$9F (Tower of Najima B1)
-
+		BCC		.loc_return_false0			; BCC->JB return false for everything less than #$9F (Tower of Najima B1)
 		CMP		#$A6
-		BEQ		.loc_return_false0		; return false for whichever spot it is you jump into alefgard from
+		BEQ		.loc_return_false0			; return false for whichever spot it is you jump into alefgard from
 		CMP		#$C6
 		BCC		.loc_return_true0			; BCC->JB return true for everything less than #$C6 (dummied, but that region is caves)
 		CMP		#$CF
-		BCC		.loc_return_false0		; BCC->JB return false for everything less than #$CF (Pyramid Golden claw room)
+		BCC		.loc_return_false0			; BCC->JB return false for everything less than #$CF (Pyramid Golden claw room)
 		CMP		#$D6
-		BCS		.loc_return_false0		; BCS->JAE return false for everything >= #$D6 (Tower of Najima 2F)
-
+		BCS		.loc_return_false0			; BCS->JAE return false for everything >= #$D6 (Tower of Najima 2F)
 ; otherwise return true
 .loc_return_true0:
 		SEC
@@ -3027,8 +3020,7 @@ loc_1294C9:
 ; =============== S U B	R O U T	I N E =======================================
 sub_1294D0:
 		JSR		_sleep_30
-		LDA		#0
-		FARX	_bE_sB
+		JSR		_warp_bE_sB_arg0
 		LDA		#$90
 		FARX	_bB_s3_apu_load
 		JSR		sub_129526
@@ -3158,11 +3150,11 @@ sub_12958D:
 sub_12958F:
 		CLC
 		ADC		byte_644		; add A to playerFacingDir
-		AND		#3					; test 2 bits of it
-		BEQ		loc_1295AA	; branch if facing 0=up
-		LSR								; test rightmost bit
-		BEQ		loc_1295A3	; branch if nothing remains, 1=right
-		BCC		loc_1295B1	; branch if we rotated out a 1, 2=down
+		AND		#3				; test 2 bits of it
+		BEQ		loc_1295AA		; branch if facing 0=up
+		LSR						; test rightmost bit
+		BEQ		loc_1295A3		; branch if nothing remains, 1=right
+		BCC		loc_1295B1		; branch if we rotated out a 1, 2=down
 		DEC		word_B7+1		; otherwise it's 3=left: decrement two X pointers
 		DEC		byte_BA
 		DEC		byte_BA
@@ -3186,14 +3178,14 @@ loc_1295B1:						; down: increment two Y pointers
 ; =============== S U B	R O U T	I N E =======================================
 ; classify 
 sub_1295B8:
-		JSR		sub_129404
+		JSR		_location_type_test
 		BCS		locret_1295CC
 		LDA		_mapNumber
-		CMP		#$9F							; Tower of Najima B1 (first interior map of proper dungeon?)
+		CMP		#$9F			; Tower of Najima B1 (first interior map of proper dungeon?)
 		BCS		locret_1295CC
-		CMP		#$41							; Aliahan upstairs (first interior map?)
+		CMP		#$41			; Aliahan upstairs (first interior map?)
 		BCS		loc_1295CB
-		CMP		#$2D							; First exterior map of proper dungeon?
+		CMP		#$2D			; First exterior map of proper dungeon?
 		BCS		locret_1295CC
 loc_1295CB:
 		CLC
@@ -3201,11 +3193,15 @@ locret_1295CC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s37:
+; quick lookup for replacement tile for 4 special locations to redisplay
+; them when area is revisited after triggering the event, if any has on this
+; map
+;
+_bC_s37_get_special_areas_tile_idx:
 		LDX		#$C
 		LDA		_mapNumber
 loc_1295D9:
-		CMP		byte_129B5D,X
+		CMP		_special_tiles_shortcut,X
 		BEQ		loc_1295E5
 		DEX
 		DEX
@@ -3214,7 +3210,7 @@ loc_1295D9:
 		BPL		loc_1295D9
 		RTS
 loc_1295E5:
-		LDA		byte_129B5D+3,X
+		LDA		_special_tiles_shortcut+3,X	; get this tile instantly
 		AND		#$7F
 		RTS
 
@@ -3223,16 +3219,16 @@ loc_1295E5:
 ; sets that tile in the areamap and refreshes it on-screen 
 ;
 sub_1295EB:
-		PHA													; stash the target tile value
+		PHA									; stash the target tile value
 		LDX		_playerMapX
 		LDY		_playerMapY
 		JSR		_areamap_SetTileXY
-		LDA		#$10									; set "center of screen" where player stands for an NT refresh
+		LDA		#$10						; set "center of screen" where player stands for an NT refresh
 		STA		word_4
 		LDA		#$E
 		STA		word_4+1
-		PLA													; recover target tile value
-		JSR		_bC_sA								; set tile to NT
+		PLA									; recover target tile value
+		JSR		_bC_sA						; set tile to NT
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3281,7 +3277,7 @@ _bC_s1D:
 ; this can be handled 2 different ways depending on byte_9A, but I don't know what it means yet
 		LDA		byte_9A
 		BNE		loc_12963D
-		JMP		loc_1297EA
+		JMP		_leaf_of_world_tree_special_check
 
 loc_12963D:
 		JSR		sub_129600
@@ -3291,7 +3287,7 @@ loc_12963D:
 loc_129647:
 		MSGX	_msg_m00,$147
 		JSR		sub_1299B6
-		JSR		_bC_s1F
+		JSR		_bC_s1F_get_chest_idx
 		PHP
 		TXA
 		ASL
@@ -3305,12 +3301,12 @@ loc_129647:
 		LDY		word_4
 		PLP
 		BCS		loc_129688
-		JSR		sub_129A38
+		JSR		_chest_open_flag_set
 		LDA		#$8F
 		FARX	_bB_s3_apu_load
 		LDA		#$1F
 		JSR		sub_1295EB
-		MSGX	_msg_m00,$064
+		MSGX	_msg_m00,$064		; "<name> opens the treasure chest"
 		LDA		_mapNumber
 		CMP		#$D3				; special logic for Pyramid 4F (mummy sneak attack)
 		BNE		loc_12967D
@@ -3320,7 +3316,7 @@ loc_12967D:
 		BMI		loc_12968B
 		CMP		#$7F
 		BEQ		loc_129698
-		JMP		loc_12986B
+		JMP		.item_found
 loc_129688:
 		JMP		loc_129847
 loc_12968B:
@@ -3328,7 +3324,7 @@ loc_12968B:
 		INY
 		BEQ		loc_1296BD
 		INY
-		BEQ		loc_1296C3
+		BEQ		.mimic_or_man_eater_chest
 		INY
 		BEQ		loc_1296D2
 		INY
@@ -3354,17 +3350,17 @@ loc_129698:
 loc_1296BD:
 		MSGX	_msg_m00,$149
 		JMP		.done_run_command_search
-loc_1296C3:
+.mimic_or_man_eater_chest:
 		LDA		_global_flags_array.byte10
 		BMI		loc_1296BD
-		MSGX	_msg_m00,$1AC
+		MSGX	_msg_m00,$1AC	; "Wow! The treasure chest is a mimic!"
 		JSR		_sleep_30
 		LDA		#$C
 		BNE		loc_1296DF
 loc_1296D2:
 		LDA		_global_flags_array.byte10
 		BMI		loc_1296BD
-		MSGX	_msg_m00,$1AD
+		MSGX	_msg_m00,$1AD	; "Whoa! The treasure chest is a man-eater!"
 		JSR		_sleep_30
 		LDA		#$12
 loc_1296DF:
@@ -3380,8 +3376,8 @@ loc_1296E8:
 loc_1296F5:
 		LDA		_tmp_ptrB4
 		PHA
-		MSGX	_msg_m00,$13E		; "From out of nowhere, eerie voices are heard" (mummies attack when you open some treasure chests in the pyramid)
-		JSR		_sleep_30
+		MSGX	_msg_m00,$13E		; "From out of nowhere, eerie voices are heard"
+		JSR		_sleep_30			; (mummies attack when you open some treasure chests in the pyramid)
 		LDA		#$B
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
@@ -3391,53 +3387,38 @@ loc_1296F5:
 		STA		byte_CE
 		RTS
 
-; begin search for a "switch" type interactive object?
 .begin_search_switch:
-		LDX		#0
-
+		LDX		#0					; begin search for a "switch" type interactive object?
 .search_switch_next:
-; read record #0 (map number) and test against current map
-		LDA		byte_129B25,X
+		LDA		_special_events_locatoin_list,X		; read record #0 (map number) and test against current map
 		INX
 		CMP		_mapNumber
 		BNE		.no_find_switch3
-
-; read record #1 (tile x coord) and test against player's position
-		LDA		byte_129B25,X
+		LDA		_special_events_locatoin_list,X		; read record #1 (tile x coord) and test against player's position
 		INX
 		CMP		_playerMapX
 		BNE		.no_find_switch2
-
-; read record #2 (tile y coord) and test against player's position
-		LDA		byte_129B25,X
+		LDA		_special_events_locatoin_list,X		; read record #2 (tile y coord) and test against player's position
 		INX
 		CMP		_playerMapY
-		BEQ		.switch_pass_1			; pass#1 if the search succeeded
-
-; test y coordinate again? pass if it had the same 7 LSBits?
-		AND		#$7F
+		BEQ		.do_special_actor	; jump to actor if search is succeeded and map Y location isn't a special value
+		AND		#$7F				; check if map Y coord is a special value ($80 bit set)
 		CMP		_playerMapY
-		BEQ		.switch_pass_2			; pass#2
-
-; test y coordinate again? pass if it had the same 6 LSBits?
-		AND		#$3F
+		BEQ		.do_more_lookup1	; jump to additional record data search
+		AND		#$3F				; check if there are more special values ($40 bit set)
 		CMP		_playerMapY
 		BNE		.no_find_switch1
-		JMP		.switch_pass_3			; pass#3
-
+		JMP		.do_more_lookup2	; pass#3
 .no_find_switch3:
 		INX
 .no_find_switch2:
 		INX
 .no_find_switch1:
-		INX
-
-; test for end of loop through switch table
-		CPX		#$68
+		INX							; test for end of loop through switch table, size of data, 104 bytes (41 records)
+		CPX		#[_special_events_locatoin_end-_special_events_locatoin_list]
 		BNE		.search_switch_next
-
 ; if this was no special 'switch' location, pretend we were searching at our feet, and nothing was found
-		MSGX	_msg_m00,$147  ; "<name> examines the ground at <B0> feet"
+		MSGX	_msg_m00,$147  ; "<name> examines the ground at <her/his> feet"
 .but_nothing_could_be_found:
 		MSGX	_msg_m00,$146 ; "But nothing can be found!"
 .done_run_command_search:
@@ -3445,50 +3426,52 @@ loc_1296F5:
 		RTS
 
 ; special switch related?
-.switch_pass_2:
-		LDA		byte_129B25,X				; grab the final byte of the switch struct (replacement tile) and stash it
+.do_more_lookup1:
+		LDA		_special_events_locatoin_list,X				; grab the final byte of the switch struct (replacement tile) and stash it
 		PHA
-		MSGX	_msg_m00,$147				; "<name> examines the ground at <B0> feet"
+		MSGX	_msg_m00,$147				; "<name> examines the ground at <her/his> feet"
 		PLA
-		STA		word_6+1						;	stash it again
+		STA		word_6+1					; stash it again
 		JSR		sub_129600					; read some kind of... tileset flags byte and search for special values
 		CMP		#1
 		BEQ		.but_nothing_could_be_found
 		CMP		#$A
 		BEQ		.but_nothing_could_be_found
-		LDA		word_6+1						; unstash that thing we just stashed
-		BPL		loc_12976B					; branch down if it was >=#$80 (used for samanao only probably)
+		LDA		word_6+1					; unstash that thing we just stashed
+		BPL		loc_12976B					; branch down if it was <$80 (used for samanao only probably)
 		LDA		_global_flags_array.byte2	; test whether we're the king
 		AND		#2
 		BEQ		.but_nothing_could_be_found	; nothing can be found.. if we're king.. emergency stopgap?
-		LDA		word_6+1						; unstash that thing we just stashed
-; -- --------------------------- --
-
+		LDA		word_6+1					; unstash that thing we just stashed
 loc_12976B:										
-		AND		#$7F								; mask off special handling flag, left only with tile number
+		AND		#$7F						; mask off special handling flag, left only with tile number
 		JSR		sub_1295EB
 		JSR		_ppu_set_dequeue_flag
 		LDA		#$F
-		BNE		loc_1297C1
+		BNE		.msg1xx_and_done_search	; unconditional jump
 
-.switch_pass_1:
-		LDY		byte_129B25,X
-		BEQ		loc_12978A
+; =============== S U B	R O U T	I N E =======================================
+.do_special_actor:
+		LDY		_special_events_locatoin_list,X
+		BEQ		.do_special_actor0
 		DEY
-		BEQ		loc_1297B7
+		BEQ		.do_special_actor1
 		DEY
-		BEQ		loc_1297C7
+		BEQ		.do_special_actor2
 		DEY
-		BEQ		loc_1297D2
+		BEQ		.do_special_actor3
 		DEY
-		BEQ		loc_1297D9
-		BNE		.but_nothing_could_be_found
-loc_12978A:
+		BEQ		.do_special_actor4
+		BNE		.but_nothing_could_be_found		; wrong actor, nothing found instead
+; ---------------------------
+; a womain hiding in the jar
+;
+.do_special_actor0:
 		LDA		_global_flags_array.byte4
-		BMI		loc_129801
+		BMI		.examines_the_ground_at
 		LDA		_npcs_pos_list
 		CMP		#5
-		BEQ		loc_129801
+		BEQ		.examines_the_ground_at
 		MSGX	_msg_m00,$1B2 ; "Look, there's a woman hiding in this jar!"
 		JSR		_sleep_30
 		LDA		#$92
@@ -3503,66 +3486,86 @@ loc_12978A:
 		STA		word_6C
 		FARX	_bD_s19
 		JMP		.done_run_command_search
-loc_1297B7:
+; ---------------------------
+; wall with inscription at the pyramid
+;
+.do_special_actor1:
 		LDA		byte_644
-		BNE		loc_129801
-		MSGX	_msg_m00,$13B
-		LDA		#$3D
-loc_1297C1:
+		BNE		.examines_the_ground_at
+		MSGX	_msg_m00,$13B	; "<name> examines the wall"
+		LDA		#$3D	; "Cursed be those..."
+.msg1xx_and_done_search:
 		JSR		_wrap_msg_m00_arg1
 		JMP		.done_run_command_search
-loc_1297C7:
+; ---------------------------
+; door with inscription at the pyramid
+;
+.do_special_actor2:
 		LDA		byte_644
 		CMP		#2
-		BNE		loc_129801
-		LDA		#$42
-		BNE		loc_1297C1
-loc_1297D2:
-		MSGX	_msg_m00,$144
-		LDA		#$A9
-		BNE		loc_1297C1
-loc_1297D9:
+		BNE		.examines_the_ground_at
+		LDA		#$42	; "<name> examines the door... It is written about the curse"
+		BNE		.msg1xx_and_done_search
+; ---------------------------
+; stone casket at the pyramid
+;
+.do_special_actor3:
+		MSGX	_msg_m00,$144	; "<name> examined the casket"
+		LDA		#$A9	; "The casket is made of stone, too heavy"
+		BNE		.msg1xx_and_done_search
+; ---------------------------
+; golden claw casket at the pyramid
+;
+.do_special_actor4:
 		LDA		_global_flags_array.byte15
 		AND		#2
-		BNE		loc_129801
-		MSGX	_msg_m00,$144
-		LDA		#$4A
+		BNE		.examines_the_ground_at
+		MSGX	_msg_m00,$144	; "<name> examined the casket"
+		LDA		#$4A			; Golden Claw item
 		STA		_tmp_ptrB4
-		JMP		loc_12986B
+		JMP		.item_found
 
-; for the overworld, read a very small "table" of one entry, seemingly. the leaf of the world tree is there
-loc_1297EA:
-		LDX		#$68
-loc_1297EC:
-		LDA		byte_129B25,X		; load a target X coord
+; leaf of the world tree is there
+; we need to use such weird indexes here, because using the common subroutine to test
+; other regular entries do_more_lookup2
+;
+_leaf_of_world_tree_special_check:
+		LDX		#$68				; for the overworld, read a very small "table" of one 3-byte entry.
+loc_1297EC:							; still part of _special_events_locatoin_list, with to map index in it
+		LDA		_leaf_of_world_tree_check_data-$68,X
 		INX
-		CMP		byte_2A					; test against player pos X
+		CMP		byte_2A
 		BNE		loc_1297FB
-		LDA		byte_129B25,X		; load a target Y coord
-		CMP		byte_2B					; test against player pos Y
-		BEQ		loc_12980E			; branch if matched
+		LDA		_leaf_of_world_tree_check_data-$68,X
+		CMP		byte_2B
+		BEQ		do_more_lookup2_ex	; branch if matched
 loc_1297FB:
-		INX		; step through 2 more bytes, meaning uncertain
+		INX							; step through 2 more bytes, meaning uncertain
 		INX
-		CPX		#$6B
+		CPX		#$6B				; and stop
 		BCC		loc_1297EC			; well theres only one item here so we never loop
-; nothing found just searching the overworld:
-loc_129801:
-		MSGX	_msg_m00,$147		; "<name> examines the ground at herhis feet."
-loc_129804:
+									; we should probably do remove all this loop logic
+									; or maybe leave it for the future use if any?
+									;
+.examines_the_ground_at:			; nothing found just searching the overworld:
+		MSGX	_msg_m00,$147		; "<name> examines the ground at <her/his> feet."
+._but_nothing_could_be_found:
 		JMP		.but_nothing_could_be_found
 
-.switch_pass_3:
-		DEX
-		LDA		byte_129B25,X
-		ASL
+.do_more_lookup2:
+		DEX											; we jump here with X pointed to data value of 4-byte record in table
+		LDA		_special_events_locatoin_list,X		; look back to get the Y location of the point one more time
+		ASL											; and extract it's 80 bit if any
 		ROR		byte_B9
-; search for "leaf of the world tree" lands here. X is prepared with some kind of magical value amenable to the following logic, must be a replacement tile number?? senseless on worldmap.
-loc_12980E:
-		INX
-		LDA		byte_129B25,X
-		PHA
-		AND		#$7F								; remove the 'equip' bit from the item, perhaps?
+		
+; search for "leaf of the world tree" lands here, used the same way
+; as in do_more_lookup2 routines, just a little hack for a special tile case
+;
+do_more_lookup2_ex:
+		INX											
+		LDA		_special_events_locatoin_list,X		; get the tile index
+		PHA											; 
+		AND		#$7F								; test if this is a special case (leaf of world tree)
 		STA		_tmp_ptrB4
 		CMP		#$79
 		BNE		loc_12982B							; leaf of the world tree branches here...
@@ -3571,9 +3574,8 @@ loc_12980E:
 		BNE		loc_129827
 		LDA		_global_flags_array.byte2			; test _f_WarpBlock, oddly (once we thought this was erdrick test but it's not) ?  this is all weird
 		BPL		loc_12982B
-
 loc_129827:
-		LDA		#$FF										; zero out the received item
+		LDA		#$FF								; zero out the received item
 		STA		_tmp_ptrB4
 loc_12982B:
 		TXA
@@ -3581,61 +3583,61 @@ loc_12982B:
 		LSR
 		CLC
 		ADC		#$B6
-		STA		byte_60A8
+		STA		_chest_tmp_idx
 		PHA
-		MSGX	_msg_m00,$147	; "<name> examines the ground at <B0> feet"
+		MSGX	_msg_m00,$147	; "<name> examines the ground at <her/his> feet"
 		PLA
 		STA		word_4
 		PLA											; restore the saved found item, I think
 		BMI		loc_12984F							; analyze equip bit? what the hell is this even good for
 		ASL		byte_B9
 		BCS		loc_12985A
-		JSR		loc_129A20
+		JSR		_test_chest_open_flag
 		BCC		loc_129868
 loc_129847:
 		LDA		_tmp_ptrB4							; sets up to search a function pointer table
-		JSR		sub_129A62
+		JSR		_item_obtain_lookup
 		JMP		loc_129856
 loc_12984F:
 		LDX		#0
 		LDA		_tmp_ptrB4
-		JSR		sub_129A69
+		JSR		_item_obtain_handler_exec
 loc_129856:
-		BCS		loc_129804
-		BCC		loc_12986B
+		BCS		._but_nothing_could_be_found
+		BCC		.item_found
 loc_12985A:
 		LDA		byte_6AE6
 		AND		#1
-		BNE		loc_129804
+		BNE		._but_nothing_could_be_found
 		ORA		#1
 		STA		byte_6AE6
-		BNE		loc_12986B
+		BNE		.item_found
 loc_129868:
-		JSR		sub_129A38
-loc_12986B:
+		JSR		_chest_open_flag_set
+.item_found:
 		LDA		_tmp_ptrB4
-		BMI		loc_129804
+		BMI		._but_nothing_could_be_found
 loc_12986F:
 		STA		byte_D3
-		MSGX	_msg_m00,$065
+		MSGX	_msg_m00,$065		; "<name> finds the <item>"
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		word_4
 		DEY
-		STY		_tmp_ptrB4+1
+		STY		_tmp_ptrB4+1		; store the number of players in party -1
 		FARX	_b0_s3C_get_free_inventory_slot
 		BCC		loc_129888
 		LDA		word_4
 		STA		byte_CE
 		JMP		loc_129939
 loc_129888:
-		LDY		#$67
-		LDA		_tmp_ptrB4+1
+		LDY		#$67				; both $066 and $067 are the identical and it is "Can't carry any item"
+		LDA		_tmp_ptrB4+1		; so here is some difference, seems remnant of japanese version
 		BNE		loc_12988F
-		DEY
+		DEY							; display 66 message (the same)
 loc_12988F:
-		TYA
+		TYA							; have trying to display different messages for different number of players in party
 		JSR		_wrap_msg_m00_arg0
-		MSGX	_msg_m00,$145
+		MSGX	_msg_m00,$145		; "Do you want to discard something?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1298D1
 		LDA		_tmp_ptrB4+1
@@ -3661,18 +3663,18 @@ loc_1298A9:
 		JSR		_sys0_byte_read_x
 		AND		#$10
 		BEQ		loc_1298E5
-		MSGX	_msg_m00,$12A
+		MSGX	_msg_m00,$12A	; "It must not be trown away"
 loc_1298CD:
 		LDA		_tmp_ptrB4+1
 		BNE		loc_12989F
 loc_1298D1:
-		JSR		loc_129A20
-		JSR		sub_129A46
+		JSR		_test_chest_open_flag
+		JSR		_chest_open_flag_clear
 		LDA		#0
 		STA		byte_D2
 		LDA		_tmp_ptrB4
 		STA		byte_D3
-		MSGX	_msg_m00,$069
+		MSGX	_msg_m00,$069	; "<name> gives up the <item>"
 		JMP		loc_129943
 loc_1298E5:
 		LDA		_tmp_varB6
@@ -3738,7 +3740,7 @@ loc_129943:
 		BNE		loc_129950
 		LDA		_tmp_varB6
 		STA		byte_D2
-		MSGX	_msg_m00,$14B
+		MSGX	_msg_m00,$14B	; "A message also found in a treasure chest" - Dream Ruby chestspecial
 loc_129950:
 		JMP		.done_run_command_search
 loc_129953:
@@ -3840,9 +3842,14 @@ loc_1299E5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s1F:
-		TAX
-		LDA		_mapNumber
+; look for particular map data and corresponding chests number on it,
+; calculating the resulting chest sum which is a global chest index
+; X is a chest blag byte idx,
+; Y is a chest flag bit number
+;
+_bC_s1F_get_chest_idx:
+		TAX									; initial index of chest to begin with (0 or 1)
+		LDA		_mapNumber					; special case test
 		CMP		#$75
 		BNE		loc_1299FD
 		LDA		_global_flags_array.byte18
@@ -3854,27 +3861,31 @@ _bC_s1F:
 		INX
 loc_1299FD:
 		TXA
-		STA		word_4
+		STA		word_4						; store initial counter
 		LDX		#0
 loc_129A02:
-		LDA		#_bA_d14_fidx
+		LDA		#_bA_d14_chests_count_list_fidx	; get the mapNumber from table
 		JSR		_sys0_byte_read_x
 		INX
 		CMP		_mapNumber
-		BEQ		loc_129A1B
-		LDA		#_bA_d14_fidx
+		BEQ		loc_129A1B						; if number doesn't match
+		LDA		#_bA_d14_chests_count_list_fidx	; get the number of chests on this location
 		JSR		_sys0_byte_read_x
 		INX
 		CLC
-		ADC		word_4
-		STA		word_4
-		CPX		#$80
-		BCC		loc_129A02
+		ADC		word_4						; add to the counter.
+		STA		word_4						; so we can find a global index of desired chest on map
+		CPX		#$80						; total out of 64 locations with chests
+		BCC		loc_129A02					; repeat to the end of table
 loc_129A1B:
 		LDA		word_4
-		STA		byte_60A8
-loc_129A20:
-		LDA		byte_60A8
+		STA		_chest_tmp_idx				; sum of chests until we reach particular location
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_test_chest_open_flag:
+		LDA		_chest_tmp_idx				; we now have the final index, test if chest is aplready opened
 		PHA
 		LSR
 		LSR
@@ -3884,48 +3895,52 @@ loc_129A20:
 		AND		#7
 		TAY
 		STA		word_4
-		LDA		byte_608E,X
+		LDA		_chest_open_flags,X			; check if we have particular bit is set for some reason
 loc_129A31:
 		ASL
 		DEY
-		BPL		loc_129A31
+		BPL		loc_129A31					; return only status and index of the chest flag
 		LDY		word_4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129A38:
+; sets the chest opened flag in a global chest list (38 bytes, 38*8 chests max)
+;
+_chest_open_flag_set:
 		SEC
 		LDA		#0
 loc_129A3B:
 		ROR
 		DEY
 		BPL		loc_129A3B
-		ORA		byte_608E,X
-		STA		byte_608E,X
+		ORA		_chest_open_flags,X
+		STA		_chest_open_flags,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129A46:
+; you may put an item in the chest back, and so close it sometimes!
+;
+_chest_open_flag_clear:
 		CLC
 		LDA		#$FF
 loc_129A49:
 		ROR
 		DEY
 		BPL		loc_129A49
-		AND		byte_608E,X
-		STA		byte_608E,X
+		AND		_chest_open_flags,X
+		STA		_chest_open_flags,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; searches for the entry A in byte_129B93
+; searches for the entry A in _item_obtain_extra_handlers, start from index 51 (last entry
 ;
-sub_129A54:
-		CMP		byte_129B93-3,X
+_item_obtain_search:
+		CMP		_item_obtain_extra_handlers,X
 		BEQ		.return_CF_1
 		DEX
 		DEX
 		DEX
-		BPL		sub_129A54
+		BPL		_item_obtain_search
 		CLC
 		RTS
 .return_CF_1:
@@ -3933,19 +3948,20 @@ sub_129A54:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a complete search using sub_129A54
+; performs a complete search of the particular item handler, input argument
+; A = item index
 ;
-sub_129A62:
-		LDX		#$51
-		JSR		sub_129A54
+_item_obtain_lookup:
+		LDX		#[_item_obtain_extra_handlers_last_entry-_item_obtain_extra_handlers]	; last entry ($51)
+		JSR		_item_obtain_search
 		BCC		.return_CF_1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129A69:
+_item_obtain_handler_exec:
 		STA		byte_CE
-		LDY		off_129B91,X
+		LDY		_item_obtain_extra_handlers+1,X
 		STY		word_B7
-		LDY		off_129B91+1,X
+		LDY		_item_obtain_extra_handlers+2,X
 		STY		word_B7+1
 		FARX	_bD_s17
 		BCC		.return_CF_1
@@ -3956,20 +3972,20 @@ sub_129A69:
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $08 of quest flag _global_flags_array.byte1
 ;
-sub_129A82:
+_item11_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		AND		#8
 		BNE		.return_CF_1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129A89:
+_item_obtain_dummy_hndl:
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $80 of quest flag _global_flags_array.byte3
 ;
-sub_129A8B:
+_item4F_obtain_hndl:
 		LDA		_global_flags_array.byte3
 		ASL
 		RTS
@@ -3977,7 +3993,7 @@ sub_129A8B:
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $20 of quest flag _global_flags_array.byte18
 ;
-sub_129A90:
+_item51_obtain_hndl:
 		LDA		_global_flags_array.byte18
 		ASL
 		ASL
@@ -3985,45 +4001,45 @@ sub_129A90:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a sub_129A62 search for target #$6E
+; performs a _item_obtain_lookup search for target #$6E
 ;
-sub_129A97:
+_item54_obtain_hndl:
 		LDA		#$6E
-		BNE		sub_129A62		; unconditional
+		BNE		_item_obtain_lookup		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $01 of quest flag _global_flags_array.byte1
 ;
-sub_129A9B:
+_item57_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		LSR
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a sub_129A62 search for target #$5A
+; performs a _item_obtain_lookup search for target #$5A
 ;
-sub_129AA0:
+_item59_obtain_hndl:
 		LDA		#$5A
-		BNE		sub_129A62		; unconditional
+		BNE		_item_obtain_lookup		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a sub_129A62 search for target #$59
+; performs a _item_obtain_lookup search for target #$59
 ;
-sub_129AA4:
+_item58_obtain_hndl:
 		LDA		#$59
-		BNE		sub_129A62		; unconditional
+		BNE		_item_obtain_lookup		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a sub_129A62 search for target #$5C
+; performs a _item_obtain_lookup search for target #$5C
 ;
-sub_129AA8:
+_item5B_obtain_hndl:
 		LDA		#$5C
-		BNE		sub_129A62		; unconditional
+		BNE		_item_obtain_lookup		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $04 of quest flag _global_flags_array.byte2
 ;
-sub_129AAC:
+_item5C_obtain_hndl:
 		LDA		_global_flags_array.byte2
 		LSR
 		LSR
@@ -4033,7 +4049,7 @@ sub_129AAC:
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $20 of quest flag _global_flags_array.byte1
 ;
-sub_129AB3:
+_item5D_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		ASL
 		ASL
@@ -4041,19 +4057,19 @@ sub_129AB3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests a quest flag and returns CF=1 or performs a sub_129A62 search for target #$1C
+; tests a quest flag and returns CF=1 or performs a _item_obtain_lookup search for target #$1C
 ;
-sub_129ABA:
+_item5E_obtain_hndl:
 		LDA		_global_flags_array.byte4
 		AND		#$20
 		BNE		.return_CF_1
 		LDA		#$1C
-		BNE		sub_129A62
+		BNE		_item_obtain_lookup
 
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $40 of quest flag _global_flags_array.byte1
 ;
-sub_129AC5:
+_item6B_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		ASL
 		ASL
@@ -4062,7 +4078,7 @@ sub_129AC5:
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $20 of quest flag _global_flags_array.byte5
 ;
-sub_129ACB:
+_item70_obtain_hndl:
 		LDA		_global_flags_array.byte5
 		ASL
 		ASL
@@ -4070,24 +4086,24 @@ sub_129ACB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; performs a sub_129A62 search for target #$76
+; performs a _item_obtain_lookup search for target #$76
 ;
-sub_129AD2:
+_item10_47_75_obtain_hndl:
 		LDA		#$76
-		BNE		sub_129A62		; unconditional
+		BNE		_item_obtain_lookup		; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $80 of quest flag _global_flags_array.byte1
 ;
-sub_129AD6:
+_item76_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		ASL
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; seems to check whether an orb has been acquired
+; check whether an orb has been acquired
 ;
-sub_129ADB:
+_item_orb_obtain_common_hndl:
 		LDA		_tmp_ptrB4
 		AND		#$7F
 		SEC
@@ -4106,7 +4122,7 @@ _bC_s1E:
 		CMP		#3
 		BNE		loc_129B23
 		JSR		sub_1299B6
-		JSR		_bC_s1F
+		JSR		_bC_s1F_get_chest_idx
 		LDY		#$3A
 		BCC		loc_129AFE
 		BNE		loc_129B1D
@@ -4145,18 +4161,20 @@ loc_129B23:
 		RTS
 
 ; =============== T A B L E =================================================
+; regular values, mostly for Pyramid, only a special places with no other purpose
+; than a displaying a message
 ; struct switch_info {
 ;   u8 areanum;
 ;   u8 tx,ty;
-;   u8 replacement_tile; //probably but not 100% sure
-;  } [26]
-byte_129B25:
+;   u8 actor_hndl_idx;
+;  } [14]
+_special_events_locatoin_list:
 		.BYTE	$8A,  5,  3,  0		; jipang, basement with jars
-		.BYTE	$3B,$16, $C,  1		; pyramid 1F
+		.BYTE	$3B,$16, $C,  1		; pyramid 1F ; wall inscriptions
 		.BYTE	$3B,$17, $C,  1		; pyramid 1F
-		.BYTE	$D3, $B,  5,  2		; pyramid 4F ; some chests have mummy men sneak attacks
+		.BYTE	$D3, $B,  5,  2		; pyramid 4F ; door inscriptions
 		.BYTE	$D3, $C,  5,  2		; pyramid 4F
-		.BYTE	$D3,  6,  9,  3		; pyramid 4F
+		.BYTE	$D3,  6,  9,  3		; pyramid 4F ; stone castets around the mummy chests
 		.BYTE	$D3,  5, $C,  3		; pyramid 4F
 		.BYTE	$D3,  5, $F,  3		; pyramid 4F
 		.BYTE	$D3,  6,$12,  3		; pyramid 4F
@@ -4165,91 +4183,105 @@ byte_129B25:
 		.BYTE	$D3,$12, $F,  3		; pyramid 4F
 		.BYTE	$D3,$11,$12,  3		; pyramid 4F
 		.BYTE	$CF,$16, $C,  4		; pyramid golden claw room
-; the table is searched from here sometimes
-byte_129B5D:
+; special values with ty |= 0x80
+; struct switch_info {
+;   u8 areanum;
+;   u8 tx,ty;
+;   u8 tile_replace_idx;
+;  } [4]
+_special_tiles_shortcut:
 		.BYTE	$06,$1C,$86,$89		; Samanao
 		.BYTE	$08,$19,$85,$0E		; Castle of Zoma 1F
-		.BYTE	$D0,$10,$9B,$0E		; Pyramid B1
+		.BYTE	$D0,$10,$9B,$0E		; Pyramid B1, secret passage
 		.BYTE	$18,$1A,$8B,$09		; House of Pirates
+; special values with ty |= 0x40, which is a treated as a special chests as well
+; struct switch_info {
+;   u8 areanum;
+;   u8 tx,ty;
+;   u8 ;
+;  } [8]
 		.BYTE	$75,$04,$42,$79		; New Town (one of the incarnations)
 		.BYTE	$1D,$0E,$50,$11		; A shrine
 		.BYTE	$1A,$0B,$4C,$70		; Kol
 		.BYTE	$19,$0F,$50,$1B		; Soo
 		.BYTE	$12,$17,$63,$5E		; Haukness
 		.BYTE	$85,$04,$45,$64		; Tedanki basement
-		.BYTE	$13,$12,$4D,$63		;	Luzami
+		.BYTE	$13,$12,$4D,$63		; Luzami
 		.BYTE	$57,$06,$45,$4E		; Isis castle 3F
-; the search usually ends here
+; the search ends here
+_special_events_locatoin_end:
 
-; but I think only when we're in the overworld, this area is searched differently by weird code.
-; for some odd reason, we 'search' one entry here, but its an oddly-formed record
-		.BYTE	$7B,$4C,$E9,$1C
-
-; =============== S O M E T H I N G =================================================
-
-off_129B91:
-		.WORD	sub_129A89
+; some kind of hacky-hacky by developers, this item is different as from
+; records of data above, its values compared against different variables
+; in a special handler, there is no area index, but the tile number value
+; should be passed then to a common routine, called by do_more_lookup2
+;
+_leaf_of_world_tree_check_data:
+		.BYTE	    $7B,$4C,$E9
 
 ; =============== T A B L E =================================================
 ; A dictionary for function pointers keyed to special values
 ; some of these just bounce to searches for other values?
 ; I think it's some kind of award-only-once check for several kinds of items
 ;
-byte_129B93:
+_item_obtain_extra_handlers:
+		.BYTE	$1C
+		.WORD	_item_obtain_dummy_hndl
 		.BYTE	$10
-		.WORD	sub_129AD2
+		.WORD	_item10_47_75_obtain_hndl
 		.BYTE	$11
-		.WORD	sub_129A82
+		.WORD	_item11_obtain_hndl
 		.BYTE	$47
-		.WORD	sub_129AD2
+		.WORD	_item10_47_75_obtain_hndl
 		.BYTE	$4F
-		.WORD	sub_129A8B
+		.WORD	_item4F_obtain_hndl
 		.BYTE	$51
-		.WORD	sub_129A90
+		.WORD	_item51_obtain_hndl
 		.BYTE	$52
-		.WORD	sub_129A89
+		.WORD	_item_obtain_dummy_hndl
 		.BYTE	$54
-		.WORD	sub_129A97
+		.WORD	_item54_obtain_hndl
 		.BYTE	$57
-		.WORD	sub_129A9B
+		.WORD	_item57_obtain_hndl
 		.BYTE	$58
-		.WORD	sub_129AA4
+		.WORD	_item58_obtain_hndl
 		.BYTE	$59
-		.WORD	sub_129AA0
+		.WORD	_item59_obtain_hndl
 		.BYTE	$5A
-		.WORD	sub_129A89
+		.WORD	_item_obtain_dummy_hndl
 		.BYTE	$5B
-		.WORD	sub_129AA8
+		.WORD	_item5B_obtain_hndl
 		.BYTE	$5C
-		.WORD	sub_129AAC
+		.WORD	_item5C_obtain_hndl
 		.BYTE	$5D
-		.WORD	sub_129AB3
+		.WORD	_item5D_obtain_hndl
 		.BYTE	$5E
-		.WORD	sub_129ABA
+		.WORD	_item5E_obtain_hndl
 		.BYTE	$6B
-		.WORD	sub_129AC5
+		.WORD	_item6B_obtain_hndl
 		.BYTE	$6E
-		.WORD	sub_129A89
+		.WORD	_item_obtain_dummy_hndl
 		.BYTE	$70
-		.WORD	sub_129ACB
+		.WORD	_item70_obtain_hndl
 		.BYTE	$72
-		.WORD	sub_129A89
+		.WORD	_item_obtain_dummy_hndl
 		.BYTE	$75
-		.WORD	sub_129AD2
+		.WORD	_item10_47_75_obtain_hndl
 		.BYTE	$76
-		.WORD	sub_129AD6
+		.WORD	_item76_obtain_hndl
 		.BYTE	$77
-		.WORD	sub_129ADB ; first orb, notably, and see there's 6
+		.WORD	_item_orb_obtain_common_hndl ; first orb, notably, and see there's 6
 		.BYTE	$78
-		.WORD	sub_129ADB
+		.WORD	_item_orb_obtain_common_hndl
 		.BYTE	$79
-		.WORD	sub_129ADB
+		.WORD	_item_orb_obtain_common_hndl
 		.BYTE	$7A
-		.WORD	sub_129ADB
+		.WORD	_item_orb_obtain_common_hndl
 		.BYTE	$7B
-		.WORD	sub_129ADB
+		.WORD	_item_orb_obtain_common_hndl
+_item_obtain_extra_handlers_last_entry:
 		.BYTE	$7C
-		.WORD	sub_129ADB
+		.WORD	_item_orb_obtain_common_hndl
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s22:
@@ -4281,7 +4313,7 @@ loc_129C0E:
 		RTS
 loc_129C16:
 		JSR		_sleep_30
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		FARX	_bB_s4_apu_set_flag0
 		LDA		_ram_pal_buf+$D
 		PHA
@@ -4666,8 +4698,7 @@ sub_129EBC:
 		JSR		sub_12A1ED
 		LDX		#$28
 		JSR		sub_12A1ED
-		LDA		#0
-		FARX	_bE_sB
+		JSR		_warp_bE_sB_arg0
 		LDA		#1
 		STA		word_40+1
 		LDA		#$40
@@ -4784,8 +4815,7 @@ loc_129F9D:
 loc_129FA2:
 		MSGX	_msg_m00,$117	; "<name> sets up the <item> on the wall"
 		JSR		_sleep_30
-		LDA		#0
-		FARX	_bE_sB
+		JSR		_warp_bE_sB_arg0
 		JSR		sub_129FC3
 		SYSX	_apu_load,$97
 		FARX	_b2_s8_screen_hit_blink
@@ -5269,7 +5299,7 @@ loc_12A29D:
 		LDA		word_6
 		PHA
 		JSR		_sleep_30
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		JSR		_sleep_30
 		PLA
 		LSR
@@ -5288,8 +5318,7 @@ byte_12A2CB:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2B:
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		LDA		#0
-		FARX	_bE_sB
+		JSR		_warp_bE_sB_arg0
 		JSR		_bC_s3A
 		FARX	_bD_s22_se_wait_and_map_music_start
 		JSR		_wrap_bE_sD_wnd3E
@@ -5344,7 +5373,7 @@ loc_12A341:
 		TYA
 		FARX	_bE_s4_msg_m00
 		JSR		_pause_or_skip
-		JMP		_bC_s20
+		JMP		_bC_s20_warp_bE_sB_arg0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A34B:
@@ -6490,9 +6519,7 @@ loc_12AA8C:
 		CLC
 		RTS
 loc_12AA8E:
-		LDA		#0
-		STA		byte_8E
-		FARX	_bE_sB
+		JSR		_bC_s20_warp_bE_sB_arg0
 		JSR		sub_12AE73
 		JSR		sub_12AB1E
 		JSR		sub_12AAD4
@@ -7416,7 +7443,7 @@ _bC_s29:
 		SYSX	_apu_load,$00
 		SYSX	_apu_load,$0C
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		LDA		#0
 		STA		byte_6EB
 		LDA		#$C
@@ -7460,7 +7487,7 @@ sub_12B189:
 ; =============== S U B	R O U T	I N E =======================================
 ; wraps _bE_sB with an argument of u8[$8E]=A=0
 ;
-_bC_s20:
+_bC_s20_warp_bE_sB_arg0:
 		LDA		#0
 		STA		byte_8E
 		FARX	_bE_sB
@@ -7828,7 +7855,7 @@ loc_12B42E:
 		STA		word_4+1
 		STA		word_6
 		JSR		_sram_b0_s1B_players_gold_subtract
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 loc_12B443:
 		LDA		#$1C
 		JMP		_bC_s0_npc_anim_script_init
@@ -8227,7 +8254,7 @@ loc_12B767:
 		MSGX	_msg_m00,$141
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_12B786
-		JMP		_bC_s20
+		JMP		_bC_s20_warp_bE_sB_arg0
 loc_12B786:
 		LDA		#$73
 		LDX		#0
@@ -8245,7 +8272,7 @@ loc_12B792:
 		LDA		_global_flags_array.byte5
 		AND		#$BF
 		STA		_global_flags_array.byte5
-		JSR		_bC_s20
+		JSR		_bC_s20_warp_bE_sB_arg0
 		LDA		#$24
 		JMP		_bC_s0_npc_anim_script_init
 

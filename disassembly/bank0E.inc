@@ -233,21 +233,21 @@ _run_command_menu:
 		SYSX	_display_window,$14
 		CMP		#$FF
 		BNE		.check_command_selection
-		LDA		#3					; close the menu?
-		JMP		_bE_sB			; TAILCALL
+		LDA		#3							; close the menu?
+		JMP		_bE_sB						; TAILCALL
 
 .check_command_selection:
 		CMP		#0
 		BEQ		.command_selection_talk		; TAILCALL
 		CMP		#1
-		BEQ		.command_selection_spell		; TAILCALL
+		BEQ		.command_selection_spell	; TAILCALL
 		CMP		#2
-		BEQ		.command_selection_status		; TAILCALL
+		BEQ		.command_selection_status	; TAILCALL
 		CMP		#3
 		BEQ		.command_selection_item		; TAILCALL
 		CMP		#5
-		BEQ		.command_selection_equip		; TAILCALL
-		FARX	_bC_s1D				; search
+		BEQ		.command_selection_equip	; TAILCALL
+		FARX	_bC_s1D						; search
 		RTS
 
 .command_selection_spell:
@@ -6837,7 +6837,7 @@ loc_15B5D8:
 loc_15B5E5:
 		LDA		word_3C
 		INC		word_3C
-		FARX	_bC_s1F
+		FARX	_bC_s1F_get_chest_idx
 		BCC		loc_15B5D2
 		LDA		#$1F
 		STA		word_3E
