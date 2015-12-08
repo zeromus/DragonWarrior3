@@ -1216,7 +1216,7 @@ loc_B2711:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$1A8
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		SYSX	_apu_load,$18
 		LDA		#0
 		STA		word_3C
@@ -1282,7 +1282,7 @@ loc_B278A:
 		FARX	_bD_s11
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		LDA		#$40
 		STA		_world_map_steps_count
 locret_B27A9:
@@ -1317,7 +1317,7 @@ loc_B27D7:
 		INX
 		CPX		#$38
 		BCC		loc_B27D7
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		SYSX	_apu_load,$02
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#2

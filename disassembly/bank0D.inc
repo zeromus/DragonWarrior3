@@ -5630,7 +5630,7 @@ loc_143934:
 		BNE		loc_14394D
 		MSGX	_msg_m00,$3D3
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s20
+		FARX	_bC_s20_warp_bE_sB_arg0
 		FARX	_bC_s33
 		PLA
 		PLA

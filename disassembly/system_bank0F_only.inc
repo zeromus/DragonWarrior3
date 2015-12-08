@@ -2981,7 +2981,7 @@ sub_177D53:
 		LDA		#1
 		STA		word_3C
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_177D62
 		ASL		word_3C
 loc_177D62:
@@ -3232,7 +3232,7 @@ sub_177EFC:
 		LDA		#$10
 		STA		word_4+1
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_177F10
 		LSR		word_4+1
 loc_177F10:
@@ -3259,7 +3259,7 @@ loc_177F24:
 		INY
 		INY
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_177F61
 		LDY		#0
 		LDA		(word_6C),Y
@@ -3289,7 +3289,7 @@ loc_177F61:
 		STA		word_4
 		LDY		#1
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_177F78
 		LDY		#0
 		LDA		(word_6C),Y
@@ -3306,4 +3306,4 @@ loc_177F78:
 		JMP		_mmc1_prg_set
 
 _debug_flags:
-		.BYTE	$FF
+		.BYTE	$00 ; $FF

@@ -2829,7 +2829,7 @@ _b2_s9:
 		LDX		#$C
 loc_3A32F:
 		LDA		_ram_pal_buf+$C,X
-		STA		byte_60A8,X
+		STA		_tmp_spr_pal_buf-1,X
 		DEX
 		BNE		loc_3A32F
 		LDA		#$FF
@@ -2837,7 +2837,7 @@ loc_3A32F:
 		JSR		sub_3A157
 		LDX		#$C
 loc_3A342:
-		LDA		byte_60A8,X
+		LDA		_tmp_spr_pal_buf-1,X
 		STA		_ram_pal_buf+$C,X
 		DEX
 		BNE		loc_3A342
