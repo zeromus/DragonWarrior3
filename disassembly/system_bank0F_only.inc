@@ -1043,9 +1043,9 @@ sub_177295:
 		JSR		sub_1777B7
 		BCC		loc_1772C3
 loc_1772A8:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		byte_80
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_81
 		LDA		#4
 		JSR		sub_1778D7
@@ -1833,9 +1833,9 @@ loc_1777A8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1777B7:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		word_6
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		word_6+1
 		JMP		sub_1777E0
 
@@ -1921,9 +1921,9 @@ sub_177827:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177832:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		word_6
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		word_6+1
 loc_17783A:
 		STX		word_4
@@ -1981,7 +1981,7 @@ sub_17787B:
 loc_177889:
 		LDA		byte_81
 		SEC
-		SBC		byte_2B
+		SBC		_playerWorldY
 loc_17788E:
 		CLC
 		ADC		#7
@@ -2021,7 +2021,7 @@ sub_1778B5:
 loc_1778C3:
 		LDA		byte_80
 		SEC
-		SBC		byte_2A
+		SBC		_playerWorldX
 loc_1778C8:
 		CLC
 		ADC		#8

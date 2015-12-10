@@ -1115,10 +1115,10 @@ loc_E3C99:
 loc_E3C9C:
 		CMP		#$75
 		BEQ		loc_E3C96
-		LDX		byte_2A
+		LDX		_playerWorldX
 		CPX		#$D7
 		BNE		loc_E3CAC
-		LDY		byte_2B
+		LDY		_playerWorldY
 		CPY		#$9A
 		BEQ		loc_E3C99
 loc_E3CAC:

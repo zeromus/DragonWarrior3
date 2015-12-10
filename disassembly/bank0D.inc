@@ -108,16 +108,16 @@ loc_1400B2:
 		BNE		loc_1400D6
 		LDA		_playerMapX
 		STA		byte_80
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_81
 		JMP		loc_1400D6
 loc_1400C8:
 		LDA		_player_vehicle
 		CMP		#1
 		BNE		loc_1400D6
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		byte_80
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_81
 loc_1400D6:
 		JSR		sub_140192
@@ -1177,9 +1177,9 @@ sub_14193F:
 		BNE		locret_14193E
 		LDX		byte_9B
 		LDY		byte_9C
-		CPX		byte_2A
+		CPX		_playerWorldX
 		BNE		loc_14195B
-		CPY		byte_2B
+		CPY		_playerWorldY
 		BEQ		locret_14193E
 loc_14195B:
 		LDA		byte_97
@@ -1278,7 +1278,7 @@ sub_1419FB:
 		BEQ		loc_141A1D
 		CMP		#2
 		BEQ		loc_141A3F
-		LDA		byte_2A
+		LDA		_playerWorldX
 		SEC
 		SBC		#8
 		TAX
@@ -1290,7 +1290,7 @@ sub_1419FB:
 		SEC
 		RTS
 loc_141A1D:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CLC
 		ADC		#6
 		TAX
@@ -1302,7 +1302,7 @@ loc_141A1D:
 		SEC
 		RTS
 loc_141A2E:
-		LDA		byte_2B
+		LDA		_playerWorldY
 		SEC
 		SBC		#7
 		TAX
@@ -1314,7 +1314,7 @@ loc_141A2E:
 		SEC
 		RTS
 loc_141A3F:
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CLC
 		ADC		#6
 		TAX
@@ -1331,9 +1331,9 @@ loc_141A50:
 		BCS		locret_141A91
 		LDX		byte_80
 		LDY		byte_81
-		CPX		byte_2A
+		CPX		_playerWorldX
 		BNE		loc_141A61
-		CPY		byte_2B
+		CPY		_playerWorldY
 		BEQ		loc_141A4E
 loc_141A61:
 		CPX		byte_2D
@@ -1371,13 +1371,13 @@ sub_141A92:
 		BPL		loc_141AAE
 		LDA		byte_80
 		SEC
-		SBC		byte_2A
+		SBC		_playerWorldX
 		CLC
 		ADC		#8
 		STA		word_4
 		LDA		byte_81
 		SEC
-		SBC		byte_2B
+		SBC		_playerWorldY
 		CLC
 		ADC		#7
 		STA		word_4+1
@@ -5681,12 +5681,12 @@ _npc_hndl29:
 		STX		byte_9E
 		STX		byte_2D
 		INX
-		STX		byte_751
+		STX		_players_returnable_locations+1
 		STX		byte_754
 		STX		byte_757
 		STX		byte_75A
 		INX
-		STX		byte_750
+		STX		_players_returnable_locations
 		STX		byte_753
 		STX		byte_756
 		STX		byte_759

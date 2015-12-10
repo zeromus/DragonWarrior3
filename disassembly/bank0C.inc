@@ -1836,14 +1836,14 @@ _bC_s32:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128C77:
-		STX		byte_2A
-		STY		byte_2B
+		STX		_playerWorldX
+		STY		_playerWorldY
 		JSR		sub_128CC1
 		LDA		word_3C+1
-		STA		byte_2B
+		STA		_playerWorldY
 		STA		_players_pos_list+1
 		LDA		word_3C
-		STA		byte_2A
+		STA		_playerWorldX
 		STA		_players_pos_list
 		RTS
 
@@ -1868,20 +1868,20 @@ _bC_s31:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128CAB:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		word_3C
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		word_3C+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s3:
-		LDX		byte_2A
-		LDY		byte_2B
+		LDX		_playerWorldX
+		LDY		_playerWorldY
 		JSR		sub_176CA4
 		STA		byte_92
-		LDX		byte_2A
-		LDY		byte_2B
+		LDX		_playerWorldX
+		LDY		_playerWorldY
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_128CC1:
@@ -2129,9 +2129,9 @@ _bC_s34:
 		LDA		#5
 		STA		_playerMapY
 		LDA		#$2F
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$15
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		#0
 		STA		byte_644
 		JSR		loc_1752EB
@@ -2144,13 +2144,13 @@ _bC_s34:
 		LDX		#$B
 loc_128EEB:
 		LDA		#$F
-		STA		byte_750,X
+		STA		_players_returnable_locations,X
 		DEX
 		LDA		#$80
-		STA		byte_750,X
+		STA		_players_returnable_locations,X
 		DEX
 		LDA		#0
-		STA		byte_750,X
+		STA		_players_returnable_locations,X
 		DEX
 		BPL		loc_128EEB
 		JSR		sub_12A743
@@ -2531,9 +2531,9 @@ loc_129199:
 		FARX	_bE_s22
 		JSR		_pal_fade_out
 		LDA		#$9D
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$93
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		#$15
 		STA		_playerMapX
 		LDA		#8
@@ -3534,10 +3534,10 @@ _leaf_of_world_tree_special_check:
 loc_1297EC:							; still part of _special_events_locatoin_list, with to map index in it
 		LDA		_leaf_of_world_tree_check_data-$68,X
 		INX
-		CMP		byte_2A
+		CMP		_playerWorldX
 		BNE		loc_1297FB
 		LDA		_leaf_of_world_tree_check_data-$68,X
-		CMP		byte_2B
+		CMP		_playerWorldY
 		BEQ		do_more_lookup2_ex	; branch if matched
 loc_1297FB:
 		INX							; step through 2 more bytes, meaning uncertain
@@ -4293,12 +4293,12 @@ _bC_s22:
 		LDA		_location_type
 		LSR
 		BCS		loc_129C0E
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$A1
 		BCC		loc_129C0E
 		CMP		#$A4
 		BCS		loc_129C0E
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$38
 		BCC		loc_129C0E
 		CMP		#$3D
@@ -4480,11 +4480,11 @@ byte_129D57:
 sub_129D63:
 		LDA		#$AA
 		SEC
-		SBC		byte_2A
+		SBC		_playerWorldX
 		STA		word_4+1
 		LDA		#$40
 		SEC
-		SBC		byte_2B
+		SBC		_playerWorldY
 		ASL
 		STA		word_6
 		RTS
@@ -4602,12 +4602,12 @@ loc_129E09:
 		BNE		loc_129E09
 		LDA		#$A9
 		SEC
-		SBC		byte_2A
+		SBC		_playerWorldX
 		ASL
 		STA		word_4
 		LDA		#$40
 		SEC
-		SBC		byte_2B
+		SBC		_playerWorldY
 		ASL
 		STA		word_4+1
 		INC		word_4
@@ -5975,9 +5975,9 @@ _bC_s2F:
 		LDA		#$F
 		STA		_mapNumber
 		LDA		#$6C
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$D6
-		STA		byte_2B
+		STA		_playerWorldY
 		LDX		#$FF
 		TXS
 		JMP		loc_174BBB
@@ -6509,10 +6509,10 @@ loc_12AA6B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s24:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$4A
 		BNE		loc_12AA8C
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$90
 		BEQ		loc_12AA8E
 loc_12AA8C:
@@ -7333,7 +7333,7 @@ loc_12B08A:
 		JSR		sub_12B0A6
 		BPL		loc_12B09D
 		LDY		word_3C+1
-		LDA		byte_B0,Y
+		LDA		_party_equipment_buffs,Y
 		AND		#2
 		BEQ		loc_12B09D
 		STY		byte_CE
@@ -7369,7 +7369,7 @@ loc_12B0C4:
 		JSR		sub_12B0A6
 		BPL		loc_12B0DB
 		LDY		word_3E+1
-		LDA		byte_B0,Y
+		LDA		_party_equipment_buffs,Y
 		AND		#4
 		BEQ		loc_12B0DB
 		STY		byte_CE
@@ -7429,10 +7429,10 @@ _bC_s29:
 		LDA		_global_flags_array.byte1
 		AND		#$40
 		BNE		locret_12B163
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$56
 		BNE		locret_12B163
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$48
 		BNE		locret_12B163
 		LDA		_player_vehicle

@@ -79,11 +79,12 @@ byte_28:
 byte_29:
 		.BYTE	0
 ;----------------------------------------------
-; overworld tile coordinate X and Y . . ? how different from _playerMapX? it just is.
-; name _playerWorldMapX, perhaps?
-byte_2A:
+; overworld tile coordinate X and Y. These stay when you're in an area map, 
+; possibly so we know where to respawn to when exiting an area, but maybe thats' coded some other way
+;
+_playerWorldX: ;$2A
 		.BYTE	0
-byte_2B:
+_playerWorldY: ;$2B
 		.BYTE	0
 ;----------------------------------------------
 ; current vehicle type. roughly these values, but not 100% confirmed
@@ -94,7 +95,7 @@ byte_2B:
 _player_vehicle: ; $2C
 		.BYTE	0
 ;----------------------------------------------
-; location of the ship. it changes along with byte_2a and byte_2b as long as you're in the ship
+; location of the ship. it changes along with _playerWorldX and _playerWorldY as long as you're in the ship
 byte_2D:
 		.BYTE	0
 byte_2E:
@@ -394,8 +395,16 @@ byte_AC:
 		.BYTE	0
 _repel_or_fairy_water_timer:
 		.BYTE	0,0,0
-byte_B0:
+;----------------------------------------------
+; u8 _party_equipment_buffs[4]
+; Continually re-evaluated from inventory. It's a bitmask of special effects.
+; $01 - Flame protection
+; $02 - HP restoration each step
+; $04 - EXP gain each step
+;
+_party_equipment_buffs:
 		.BYTE	0,0,0,0
+;----------------------------------------------
 _tmp_ptrB4:
 		.BYTE	0,0
 _tmp_varB6:
@@ -909,9 +918,13 @@ _apu_chan_ret_pc:
 byte_6FF:
 		.BYTE	0
 ;----------------------------------------------
+; beginning of STATS area or maybe PLAYER area, not sure what to name it
+;
+
+;----------------------------------------------
 ; u8[4] - LEVEL stat for 4 PCs
 ;
-_players_level:
+_players_level: ; $700
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - STR stat for 4 PCs
@@ -984,13 +997,11 @@ _players_status:
 _players_EXP:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; u24 pc.returnlist[4] - ? ? dont remember what this was
-byte_750:
-		.BYTE	0
-byte_751:
-		.BYTE	0
-byte_752:
-		.BYTE	0
+; u8 returnable_locations[3] - a bit vector of locations visited, returnable targets. check _returnable_areas_tbl for meanings
+; 
+_players_returnable_locations:
+		.BYTE	0,0,0
+;----------------------------------------------
 byte_753:
 		.BYTE	0
 byte_754:
@@ -1024,9 +1035,18 @@ _players_spell:
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
-		.BYTE	0,0,0,0,0,0,0,0
-_players_gold:
+		.BYTE	0 ; this is the last byte cleared during the load file operation, for some reason
+		.BYTE   0,0,0,0,0,0,0
+
+;--------------------------------------------------------------------------------------------
+; target of a 9 byte file load operation
+; Call this the 'PARTY' file area?
+;
+
+_players_gold: ; $7BC 
 		.BYTE	0,0,0
+
+;$7C0:
 
 ;----------------------------------------------
 ; 8 + 4 bits used for every possible generated
@@ -1045,6 +1065,10 @@ _players_selected_list:
 ;
 _party_formation:
 		.BYTE	0,0,0,0
+
+; END target of a 9 byte file load operation
+;--------------------------------------------------------------------------------------------
+
 
 ; unused
 ;		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -1331,7 +1355,7 @@ _global_flags_array.byte11:
 ;	$01 - 
 _global_flags_array.byte12:
 		.BYTE	0
-;	$80 - 
+;	$80 - _q_game_begin - set once the game is begun (used to determine whether to start a save file in the hero's house_
 ;	$40 - 
 ;	$20 - 
 ;	$10 - 
@@ -1415,7 +1439,7 @@ _q_OrbsCollected: ; $60CE
 ;	$04 - 
 ;	$02 - 
 ;	$01 - 
-_global_flags_array.byte1A:
+_global_flags_array.byte1A: ; $60CF
 		.BYTE	0
 ;	$80 - 
 ;	$40 - 
@@ -1425,11 +1449,13 @@ _global_flags_array.byte1A:
 ;	$04 - 
 ;	$02 - 
 ;	$01 - 
-_global_flags_array.byte1B:
+_global_flags_array.byte1B: ; $60D0
 		.BYTE	0
 
 ; unused
 		.BYTE	0,0,0,0,0
+
+; (end of a load-file related copy target)
 		
 ; u8[12]
 _tavern_chars_level:
@@ -1541,7 +1567,9 @@ byte_63C9:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_63E7:
-		.BYTE	0,0
+		.BYTE	0 ; a message speed used as the source of a loadfile operation
+
+		.BYTE	0
 byte_63E9:
 		.BYTE	0
 byte_63EA:
@@ -1710,8 +1738,12 @@ byte_6A67:
 		.BYTE	0
 byte_6A68:
 		.BYTE	0
+;----------------------------------------------
+; contains 3 LSBits indicating which save slots are created, but this isn't actually save data.
+; This value gets generated when the save system is initialized
 byte_6A69:
 		.BYTE	0
+;----------------------------------------------
 byte_6A6A:
 		.BYTE	0
 byte_6A6B:

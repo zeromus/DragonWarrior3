@@ -1311,6 +1311,8 @@ _b6_s6:
 		LDA		byte_9A
 		CMP		#$C
 		BCC		loc_9B529
+
+; check for a few special areas
 		LDA		_mapNumber
 		LDX		#2
 loc_9B51C:
@@ -1321,11 +1323,16 @@ loc_9B51C:
 loc_9B524:
 		CLC
 		RTS
+
+; a small table of area numbers
 byte_9B526:
-		.BYTE	$85,$58,$33
+		.BYTE	$85 ; Tedanki, crypt basement
+		.BYTE	$58 ; Baramos's Lair
+		.BYTE	$33 ; Shrine of Dhama
+
 loc_9B529:
 		LDA		_mapNumber
-		CMP		#$60
+		CMP		#$60 ; Samanao Town prison basement
 		BEQ		loc_9B524
 		LDA		_global_flags_array.byte5
 		AND		#1
@@ -1333,13 +1340,13 @@ loc_9B529:
 		LDA		_global_flags_array.byte2
 		BPL		loc_9B545
 		LDA		_mapNumber
-		CMP		#$C
+		CMP		#$C ; Assaram
 		BEQ		loc_9B524
 		CMP		#$7A
 		BEQ		loc_9B524
 loc_9B545:
 		LDA		_mapNumber
-		CMP		#$60
+		CMP		#$60 ; Samanao Town prison basement
 		BEQ		loc_9B524
 		LDA		_player_vehicle
 		BEQ		loc_9B557
@@ -1393,9 +1400,9 @@ loc_9B5B2:
 		ASL
 		TAX
 		LDA		word_9B60C,X
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		word_9B60C+1,X
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		_global_flags_array.byte3
 		AND		#$C0
 		CMP		#$80
@@ -1417,8 +1424,8 @@ loc_9B5E0:
 		AND		#$90
 		CMP		#$80
 		BEQ		loc_9B5F6
-		LDA		byte_2B
-		LDX		byte_2A
+		LDA		_playerWorldY
+		LDX		_playerWorldX
 loc_9B5F6:
 		DEX
 		STX		byte_9E
@@ -2145,11 +2152,15 @@ sub_9BB22:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Seems to be the tavern name registration process
+; Something weird happens in here. If you enter "Erdrick" then he tells you "Edrick? Oh, you mean Erdrick! The name Erdrick demands the utmost respect.."
+; It seems to be a joke, the registrar is thinking the player mis-spoke. Surely you didn't mean Erdrick!
+;
 sub_9BB26:
 		JSR		_b6_s20_player_name_verify
-		BNE		loc_9BB34
+		BNE		loc_9BB34			; branch if mismatch (name permissible)
 		JSR		sub_9BBED
-		MSGX	_msg_m00,$254
+		MSGX	_msg_m00,$254 ; "Edrick?"
 		JMP		loc_9BBDF
 loc_9BB34:
 		LDX		#7
@@ -2186,7 +2197,7 @@ loc_9BB5B:
 		BNE		loc_9BB5B
 		PLA
 		JSR		sub_9BBED
-		MSGX	_msg_m00,$253
+		MSGX	_msg_m00,$253 ; "Huh? That person is already registered"
 		JMP		loc_9BBDF
 loc_9BB73:
 		PLA
@@ -2235,12 +2246,12 @@ loc_9BB92:
 		FARX	_b7_s13
 loc_9BBD3:
 		JSR		sub_9BBED
-		MSGX	_msg_m00,$255
+		MSGX	_msg_m00,$255 ; "Oh; you mean Erdrick!"
 		JMP		loc_9BBDF
 loc_9BBDC:
 		JSR		sub_9BBED
 loc_9BBDF:
-		MSGX	_msg_m00,$257
+		MSGX	_msg_m00,$257 ; "Do you want to register anyone else?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_9BBEA
 		JMP		sub_9BA66
@@ -2259,6 +2270,7 @@ byte_9BBF5:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Tests for a player-input name of "ERDRICK" in	any combination of upper and lower case, to be rejected
+; Probably returns ZF=1 if it matches (to be rejected) and ZF=0 for mismatch
 ;
 _b6_s20_player_name_verify:
 		LDX		#0
@@ -2544,12 +2556,12 @@ _b6_s1C:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		SYSX	_apu_load,$03
 		LDA		#$FF
-		STA		byte_750
+		STA		_players_returnable_locations
 		STA		byte_753
 		STA		byte_756
 		STA		byte_759
 		LSR
-		STA		byte_751
+		STA		_players_returnable_locations+1
 		STA		byte_754
 		STA		byte_757
 		STA		byte_75A
@@ -2759,18 +2771,20 @@ loc_9BF46:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Using the rainbow Drop
+;
 _b6_s1F:
-		JSR		sub_9BFB3
+		JSR		sub_9BFB3									; test whether we're on the right location
 		BCC		loc_9BF6D
 		FARX	_bC_s20_warp_bE_sB_arg0
-		SYSX	_apu_load,$1A
+		SYSX	_apu_load,$1A							; play musical jingle
 		JSR		sub_9BF72
 		JSR		sub_9BFC3
 		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 loc_9BF6D:
-		MSGX	_msg_m00,$101
+		MSGX	_msg_m00,$101							; "But nothing happens here"
 		CLC
 		RTS
 
@@ -2810,11 +2824,13 @@ loc_9BF8B:
 		JMP		_pal_set_no_fade
 
 ; =============== S U B	R O U T	I N E =======================================
+; Checks for the location in Alefgard where the Rainbow Drop is to be used
+;
 sub_9BFB3:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$54
 		BNE		loc_9BFC1
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$3A
 		BNE		loc_9BFC1
 		SEC

@@ -1220,10 +1220,10 @@ _chr_data_unk1:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s6:
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$48
 		BNE		loc_F8C8C
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$5B
 		BEQ		loc_F8C8E
 loc_F8C8C:
