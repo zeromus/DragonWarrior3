@@ -1448,50 +1448,57 @@ loc_B28B5:
 		SYSX	_apu_load,$28
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B28C6:
-		JSR		sub_B2BF5
-		JSR		sub_B2BCE
-		JSR		sub_B2AF2
-		JSR		sub_B2ABA
-		JSR		sub_B28D8
-		JMP		sub_B28C6
+; Main menu main loop
+;
+.MM_main_loop:
+		JSR		sub_B2BF5							;
+		JSR		sub_B2BCE							; clears screen
+		JSR		sub_B2AF2							;
+		JSR		_MM_run_wnd
+		JSR		_MM_handle_selection
+		JMP		.MM_main_loop	
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B28D8:
+; Input: A=selection from main menu
+; Runs the handler for the selected item
+;
+_MM_handle_selection:
 		ASL
 		TAX
-		LDA		off_B2D2B,X
+		LDA		_MM_handler_tbl,X
 		STA		word_3C
-		LDA		off_B2D2B+1,X
+		LDA		_MM_handler_tbl+1,X
 		STA		word_3C+1
-		JMP		(word_3C)
+		JMP		(word_3C)						; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B28E7:
+_MM_continue_quest:
 		JSR		sub_B2B48
 		JSR		sub_B2917
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B28ED:
-		JSR		_b7_s14
+; Loads a save file from the main menu. Might be a newly-created or previously existing one.
+;
+.menu_load_file:
+		JSR		_b7_s14												; load the data
 		JSR		_pal_fade_out
 		JSR		_ppu_screen_clear
 		LDA		#0
-		STA		byte_6A58
-		LDA		_global_flags_array.byte12
-		BMI		loc_B2914
-		LDA		#$41
+		STA		byte_6A58											; We think this is cleared, when entering the game from the menu, otherwise set. Don't fully understand yet
+		LDA		_global_flags_array.byte12		; test _q_game_begin
+		BMI		loc_B2914											; branch down if the game's already begun
+		LDA		#$41													; area: hero's apartment, upstairs
 		STA		_mapNumber
-		LDA		#4
+		LDA		#4														; corresponding game-beginning intro tile
 		STA		_playerMapX
 		LDA		#6
 		STA		_playerMapY
-		LDA		#$B3
-		STA		byte_2A
+		LDA		#$B3													; initialize worldmap location to aliahan
+		STA		_playerWorldX
 		LDA		#$DA
-		STA		byte_2B
+		STA		_playerWorldY
 loc_B2914:
-		PLA
+		PLA																	
 		PLA
 		RTS
 
@@ -1533,7 +1540,7 @@ locret_B295A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B295B:
+_MM_change_message_speed:
 		JSR		sub_B2B48
 		JSR		sub_B2917
 
@@ -1550,34 +1557,40 @@ locret_B2974:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_begin_new_quest:
+_MM_begin_new_quest:
 		JSR		loc_B2B51
 		JSR		sub_B2917
 		LDX		#0
 		JSR		sub_B2BB5
 		JSR		sub_B2A9D
+
+; initialize some save slot data
 		LDX		#$7F
-loc_B2985:
+.clear_save_slot_to_ff:
 		LDA		#$FF
 		STA		byte_631F,X
 		DEX
-		BPL		loc_B2985
-loc_B298D:
+		BPL		.clear_save_slot_to_ff
+
+.enter_name_again:
 		SYSX	_display_window_ex,$41
-		FARX	_b6_s14_name_entry_screen
+		FARX	_b6_s14_name_entry_screen				; name goes to $9
 		FARX	_b6_s20_player_name_verify
-		BNE		loc_B29A1
-		SYSX	_display_window_ex,$58
+		BNE		.name_is_ok											; continue process if no match?
+		SYSX	_display_window_ex,#WND_INPUT_YOUR_NAME
 		JSR		_pause_or_skip
-		JMP		loc_B298D
-loc_B29A1:
+		JMP		.enter_name_again
+
+.name_is_ok:
+; push the entire name on the stack
 		LDX		#7
-loc_B29A3:
+.push_name_on_stack:
 		LDA		byte_9,X
 		PHA
 		DEX
-		BPL		loc_B29A3
-		SYSX	_display_window_ex,$42
+		BPL		.push_name_on_stack
+
+		SYSX	_display_window_ex,#WND_CHOOSE_SEX				; choose sex
 		STA		word_4
 		LDX		#0
 loc_B29B0:
@@ -1635,11 +1648,11 @@ loc_B29F2:
 		STX		byte_63E7
 		JSR		sub_B2961
 		LDA		#$FF
-		STA		byte_6310
+		STA		byte_6310										; doesnt look like anything uses these bytes..
 		STA		byte_6311
 		STA		byte_6312
 		JSR		_b7_s1D
-		JMP		sub_B28ED
+		JMP		.menu_load_file							; tailcall to file load
 loc_B2A1F:
 		LDX		#0
 		TXA
@@ -1651,7 +1664,7 @@ locret_B2A28:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2A29:
+_MM_copy_quest:
 		JSR		sub_B2B48
 		JSR		sub_B2B98
 		JSR		sub_B2BB5
@@ -1698,7 +1711,7 @@ loc_B2A62:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2A83:
+_MM_erase_quest:
 		JSR		sub_B2B48
 		STA		byte_CE
 		JSR		sub_B2B98
@@ -1730,12 +1743,12 @@ locret_B2AB9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2ABA:
+_MM_run_wnd:
 		LDA		byte_6A69
-		AND		#7
-		BEQ		loc_B2AC9
+		AND		#7					; check which save slots are created?
+		BEQ		loc_B2AC9		; branch if none of them are created?
 		CMP		#7
-		BEQ		loc_B2ACD
+		BEQ		loc_B2ACD		; branch if all of them are created?
 		LDA		#$61
 		BNE		loc_B2ACF
 loc_B2AC9:
@@ -1744,7 +1757,9 @@ loc_B2AC9:
 loc_B2ACD:
 		LDA		#$62
 loc_B2ACF:
-		PHA
+		PHA								; save wnd resource id
+
+; byte_42 = (A-#$61)*5 (create a lookup table offset)
 		SEC
 		SBC		#$61
 		STA		byte_42
@@ -1752,20 +1767,25 @@ loc_B2ACF:
 		ASL
 		ADC		byte_42
 		STA		byte_42
-		PLA
-		FARX	_bE_s0_display_window_ex
-		CMP		#$FF
-		BEQ		loc_B2AED
+
+		PLA															; restore wnd resource ID
+		FARX	_bE_s0_display_window_ex	; display the required window
+		CMP		#$FF											; test against B button press
+		BEQ		.mm_B_pressed
+
+; add the chosen menu item to byte_42 which we just built
+; this is giving us a lookup table from wnd resource selections to actual logical selection values (since the wnd resource organization varies)
 		CLC
 		ADC		byte_42
 		TAX
 		LDA		byte_B2D0B,X
 		STA		byte_42
 		RTS
-loc_B2AED:
+
+.mm_B_pressed:
 		PLA
 		PLA
-		JMP		sub_B28C6
+		JMP		.MM_main_loop
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2AF2:
@@ -1831,6 +1851,8 @@ sub_B2B3C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Runs the "adventure log" selector for the main menu
+;
 sub_B2B48:
 		LDA		#$FF
 		JSR		sub_B2B73
@@ -1920,7 +1942,7 @@ sub_B2BB5:
 		JSR		_mul16_to_8
 		LDA		#<[_tavern_chars_level]
 		LDY		#>[_tavern_chars_level]
-		JMP		_add16_to_16
+		JMP		_add16_to_16							; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BCE:
@@ -2116,17 +2138,26 @@ locret_B2CFD:
 		
 _txt_manabu_yamana:
 		.BYTE	"MANABU YAMANA"
+
+; should be at least 3 rows of 5 entries here, maybe more
 byte_B2D0B:
-		.BYTE	  0,  2,  3,  4,  1,  0,  4,  1,  0,  0,  2
+		.BYTE	  0,  2,  3,  4,  1
+		.BYTE	  0,  4,  1,  0,  0
+		.BYTE	  2
 byte_B2D16:
 		.BYTE	  0,  0,  0,  1,  0,  0,  0,  1,  0,  2,  0,  0,  0,  2,  0,  1
 		.BYTE	  2,  0,  0,  1,  2
-off_B2D2B:
-		.WORD	sub_B28E7
-		.WORD	sub_B295B
-		.WORD	_begin_new_quest
-		.WORD	sub_B2A29
-		.WORD	sub_B2A83
+
+; =============== T A B L E =================================================
+; Handlers for main menu items
+;
+_MM_handler_tbl:
+		.WORD	_MM_continue_quest
+		.WORD	_MM_change_message_speed
+		.WORD	_MM_begin_new_quest
+		.WORD	_MM_copy_quest
+		.WORD	_MM_erase_quest
+
 byte_B2D3F:
 		.BYTE	  4,  1,  2
 _txt_default_tavern_chars_name:
@@ -2429,14 +2460,21 @@ loc_B2F86:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Load-file related operations
+;
 _b7_s14:
+
+; _clears_ $#B5 bytes in STATS area or PLAYER area, not sure what to name it.
+; Not the entire area, though? oddly, it seems to end partyway through the final "_players_spell" list, and the gold isn't copied here (but certainly done elsewhere)
 		LDX		#0
 loc_B2F8C:
 		LDA		#0
-		STA		_players_level,X
+		STA		_players_level,X ;$700
 		INX
 		CPX		#$B5
 		BNE		loc_B2F8C
+
+; copy #$D4 bytes from $6313 to $6001, effectively loading some save data
 		LDX		#0
 loc_B2F98:
 		LDA		byte_6313,X
@@ -2444,6 +2482,8 @@ loc_B2F98:
 		INX
 		CPX		#$D4
 		BNE		loc_B2F98
+
+; copy 9 bytes from $630A to the 'PARTY' file area
 		LDX		#0
 loc_B2FA5:
 		LDA		byte_630A,X
@@ -2451,14 +2491,20 @@ loc_B2FA5:
 		INX
 		CPX		#9
 		BNE		loc_B2FA5
+
+; reset 3 bytes at byte_6A4B to #$5? Weird.
 		LDX		#3
 loc_B2FB2:
 		LDA		#5
 		STA		byte_6A4B,X
 		DEX
 		BPL		loc_B2FB2
-		LDA		byte_63E7
+
+; copy the message speed into the active slot
+		LDA		byte_63E7 ; this is the next byte after the source of the #$D4 copy
 		STA		_cur_message_speed
+
+; setup a 4 times loop reading bytes at byte_630F and doing something special? This seems classs or party member related, but the values arent making much sense
 		LDX		#0
 loc_B2FC2:
 		TXA
@@ -2474,8 +2520,8 @@ loc_B2FD0:
 		INX
 		CPX		#4
 		BNE		loc_B2FC2
-		FARX	_b0_s47
-		FARX	_b0_s50
+		FARX	_b0_s47 ; a leveling process??? maybe it's preparing the EXP-needed-to-levelup report the king gives.
+		FARX	_b0_s50 ; refresh some status???
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2546,6 +2592,8 @@ loc_B3048:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Load-file related
+;
 sub_B304F:
 		PHA
 		LDA		#<[sub_B3200]
@@ -2563,12 +2611,16 @@ loc_B3068:
 		STA		byte_48
 		LDA		#0
 		STA		byte_42
+
+; as part of a loop, reference two tables and store in u16[$43]
 loc_B306E:
 		LDX		byte_42
 		LDA		byte_B3299,X
 		STA		byte_43
 		LDA		byte_B329E,X
 		STA		byte_44
+
+; turn X into pointers into _tavern_chars_data_ptr_tbl and _players_data_ptr_tbl
 		TXA
 		ASL
 		TAX
@@ -2580,6 +2632,8 @@ loc_B306E:
 		STA		word_3E
 		LDA		_players_data_ptr_tbl+1,X
 		STA		word_3E+1
+
+; 
 		LDX		#3
 loc_B3093:
 		LDA		byte_630F,X
@@ -2619,6 +2673,8 @@ loc_B30B3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Involved in loading save files. Results in $700 being written to
+;
 sub_B30D5:
 		LDA		byte_45
 		STA		word_4
@@ -2793,6 +2849,9 @@ sub_B31E2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Load-file related...
+; uses word_40 as temp to multiply A by byte_44, and returns result in A
+; 
 sub_B31EA:
 		STA		word_40
 		LDA		#0
@@ -3110,9 +3169,9 @@ loc_B3541:
 		ADC		word_40+1
 		TAX
 		LDA		word_B3574,X
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		word_B3574+1,X
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		byte_B3576,X
 		STA		_location_type
 		LDA		#0
@@ -3281,7 +3340,7 @@ sub_B3648:
 		LDA		#0
 		STA		byte_644
 loc_B364D:
-		DEC		byte_2B
+		DEC		_playerWorldY
 		JSR		sub_B3666
 		DEC		byte_43
 		BNE		loc_B364D
@@ -3292,7 +3351,7 @@ sub_B3657:
 		LDA		#2
 		STA		byte_644
 loc_B365C:
-		INC		byte_2B
+		INC		_playerWorldY
 		JSR		sub_B3666
 		DEC		byte_43
 		BNE		loc_B365C

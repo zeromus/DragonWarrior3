@@ -366,11 +366,11 @@ _b0_s0_world_map_random_enounter_test:
 		BCS		locret_823F		;
 		LDA		_npc_anim_script_idx
 		BNE		locret_823F
-		LDX		byte_2A
+		LDX		_playerWorldX
 		DEX
 		CPX		#$FE
 		BCS		locret_823F
-		LDY		byte_2B
+		LDY		_playerWorldY
 		DEY
 		CPY		#$FE
 		BCS		locret_823F
@@ -450,7 +450,7 @@ _random_enounter_select:
 ; Uhhh _can_ you get into the water? this map im looking at has a ship screencapped in
 ; it http://www.nesmaps.com/maps/DragonWarrior3/DragonWarrior3Overworld2LMap.html
 
-		LDA		byte_2A 
+		LDA		_playerWorldX 
 		SEC
 		SBC		#$F
 		AND		#$7F
@@ -459,7 +459,7 @@ _random_enounter_select:
 		LSR
 		LSR
 		STA		word_4A
-		LDA		byte_2B			; similar weird logic for overworld tile coordinate Y..
+		LDA		_playerWorldY			; similar weird logic for overworld tile coordinate Y..
 		SEC						; ((coord-5)>>1)&#$38 (next 3 higher bits than the Y coord).
 		SBC		#5
 		AND		#$70
@@ -478,13 +478,13 @@ _random_enounter_select:
 ; leave that stashed in u8[4a]
 ;
 _location_is_owerworld:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		LSR
 		LSR
 		LSR
 		LSR
 		STA		word_4A
-		LDA		byte_2B
+		LDA		_playerWorldY
 		AND		#$F0
 		ORA		word_4A
 		TAX
@@ -1653,8 +1653,8 @@ _b0_d41_item_use_list:
 ; ITEM_WIZARDS_WAND $E2 (casts spells, yep)
 ; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
 ;
-; bit 10 means that item cannot be thrown away from inventory
-; bit  8 means that item is cursed
+; bit $10 means that item cannot be thrown away from inventory
+; bit $08 means that item is cursed
 ;
 _b0_d42_item_use_effects_list:
 		.BYTE	  0,  1,  2,  2,  1,  2,  2,$E2,  1,  1,  1,  2,  1,$E3,$E3,  2
@@ -3403,7 +3403,7 @@ _status_params_ptr_tbl:
 		.WORD	_players_name					; 3 u8[8][4] arrays startinf from names
 		.WORD	byte_6A4B						; 1 u8[4] array
 		.WORD	_party_formation				; 1 u8[4] array
-		.WORD	byte_B0							; 1 u8[4] array
+		.WORD	_party_equipment_buffs							; 1 u8[4] array
 		.WORD	_player_battle_order_and_flags	; 2 u8[4] arrays
 		.WORD	_players_rDEF					; 2 u16[4] arrays
 		.WORD	byte_540 						; 3 u8[12] arrays
@@ -3611,11 +3611,11 @@ _common_spell_related_data:
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s48:
 		JSR		_CE_mul3
-		LDA		byte_750,X
+		LDA		_players_returnable_locations,X
 		STA		word_6
-		LDA		byte_751,X
+		LDA		_players_returnable_locations+1,X
 		STA		word_6+1
-		LDA		byte_752,X
+		LDA		_players_returnable_locations+2,X
 		STA		byte_8
 		LDA		#0
 		STA		word_4
@@ -3655,14 +3655,18 @@ loc_9CF2:
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s49:
 		LDX		#0
+
+; check our _mapNumber against a special list
 loc_9CF7:
-		LDA		byte_9E5C,X
+		LDA		_returnable_areas_tbl,X
 		CMP		_mapNumber
-		BEQ		loc_9D05
+		BEQ		loc_9D05			; branch for a match
 		INX
-		CPX		#$14
+		CPX		#$14					; size of list
 		BNE		loc_9CF7
 		RTS
+
+; found a match. probably test
 loc_9D05:
 		LDA		#0
 		STA		word_4
@@ -3689,15 +3693,15 @@ loc_9D1A:
 		ASL
 		ADC		word_6+1
 		TAY
-		LDA		byte_750,Y
+		LDA		_players_returnable_locations,Y
 		ORA		word_4
-		STA		byte_750,Y
-		LDA		byte_751,Y
+		STA		_players_returnable_locations,Y
+		LDA		_players_returnable_locations+1,Y
 		ORA		word_4+1
-		STA		byte_751,Y
-		LDA		byte_752,Y
+		STA		_players_returnable_locations+1,Y
+		LDA		_players_returnable_locations+2,Y
 		ORA		word_6
-		STA		byte_752,Y
+		STA		_players_returnable_locations+2,Y
 loc_9D44:
 		INX
 		CPX		#4
@@ -3824,22 +3828,25 @@ locret_9E08:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Analyzes inventory for each player for items giving buffs
+; (not done being cracked yet)
+;
 _b0_s50:
 		LDA		#0
 		STA		byte_CE
-loc_9E0D:
+.player_buff_loop:
 		LDA		byte_CE
-		ASL
+		ASL																	; player number to offset for _players_status
 		TAX
 		LDA		_players_status,X
 		BPL		loc_9E42
 		LDX		byte_CE
 		LDY		#0
-		STY		byte_B0,X
+		STY		_party_equipment_buffs,X
 loc_9E1C:
 		TYA
 		PHA
-		LDA		byte_9E4B,Y
+		LDA		_equipment_with_buffs_tbl,Y
 		STA		byte_CF
 		TYA
 		PHA
@@ -3847,30 +3854,43 @@ loc_9E1C:
 		PLA
 		TAY
 		LDA		byte_CF
-		ORA		#$80
+		ORA		#$80													; probably checking whether it's equipped
 		CMP		word_4
 		BNE		loc_9E3B
 		LDX		byte_CE
-		LDA		byte_9E50,Y
-		ORA		byte_B0,X
-		STA		byte_B0,X
+		LDA		_equipment_buffs_tbl,Y				; load the parameter for the found item
+		ORA		_party_equipment_buffs,X
+		STA		_party_equipment_buffs,X
 loc_9E3B:
 		PLA
 		TAY
 		INY
-		CPY		#5
+		CPY		#5														; size of _party_equipment_buffs list
 		BNE		loc_9E1C
+
+; finish looping across characters
 loc_9E42:
 		INC		byte_CE
 		LDA		byte_CE
 		CMP		#4
-		BCC		loc_9E0D
+		BCC		.player_buff_loop
 		RTS
 
-byte_9E4B:
-		.BYTE	$2C,$2E,$28,$48,$49
-byte_9E50:
-		.BYTE	  1,  1,  3,  2,  4
+; =============== T A B L E S =================================================
+; A table of special items with buff effects, and the related buff flags (see _party_equipment_buffs)
+_equipment_with_buffs_tbl:
+		.BYTE #ITEM_SACRED_ROBE
+		.BYTE #ITEM_WATER_FLYING_CLOTH
+		.BYTE #ITEM_ARMOR_OF_RADIANCE
+		.BYTE #ITEM_RING_OF_LIFE
+		.BYTE #ITEM_SHOES_OF_HAPPINESS
+; TODO - symbolic constants
+_equipment_buffs_tbl:
+		.BYTE 1
+		.BYTE 1
+		.BYTE 3
+		.BYTE 2
+		.BYTE 4
 
 ; =============== S U B	R O U T	I N E =======================================
 _CE_mul3:
@@ -3880,9 +3900,30 @@ _CE_mul3:
 		TAX
 		RTS
 
-byte_9E5C:
-		.BYTE	  0,  9,  1,$14, $B, $C,$50, $A, $E,$33, $F,$17,  2,  6,$19,  7
-		.BYTE	$12,$10,$1A,$11
+; =============== T A B L E =================================================
+; The sorted list of returnable areas
+;
+_returnable_areas_tbl:
+		.BYTE	 $00 ; Aliahan Town
+		.BYTE	 $09 ; Reeve
+		.BYTE	 $01 ; Romaly
+		.BYTE	 $14 ; Kanave
+		.BYTE	 $0B ; Noaniels
+		.BYTE	 $0C ; Assaram
+		.BYTE	 $50 ; Isis town
+		.BYTE	 $0A ; Portoga town
+		.BYTE	 $0E ; Baharata
+		.BYTE	 $33 ; Shrine of Dhama
+		.BYTE	 $0F ; Lancel
+		.BYTE	 $17 ; Jipang
+		.BYTE	 $02 ; Eginbear
+		.BYTE	 $06 ; Samanao
+		.BYTE	 $19 ; Soo
+		.BYTE	 $07 ; Brecconaly
+		.BYTE	 $12 ; Haukness
+		.BYTE	 $10 ; Cantlin
+		.BYTE	 $1A ; Kol
+		.BYTE	 $11 ; Rimuldar
 
 ; =============== S U B	R O U T	I N E =======================================
 _b0_s5B_non_battle_mode_spell_cast:
@@ -6092,10 +6133,10 @@ loc_AE68:
 
 ; =============== S U B	R O U T	I N E =======================================
 _item00_use:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$4A
 		BNE		_msg_name_uses_item_clc
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$90
 		BNE		_msg_name_uses_item_clc
 		MSGX	_msg_m00,$13C	; "<> throws the <> in the crater"
@@ -6364,7 +6405,7 @@ _item24_use:
 		STA		_msg_number_parameter_F8+2
 		LDA		byte_9C
 		SEC
-		SBC		byte_2B
+		SBC		_playerWorldY
 		BMI		loc_B03C
 		STA		_msg_number_parameter_F8
 		LDA		#$12
@@ -6379,7 +6420,7 @@ loc_B045:
 		JSR		_wrap_msg_m00_arg1
 		LDA		byte_9B
 		SEC
-		SBC		byte_2A
+		SBC		_playerWorldX
 		BMI		loc_B056
 		STA		_msg_number_parameter_F8
 		LDA		#$11
@@ -6457,7 +6498,8 @@ _wrap_bC_s26_item29_use:
 		RTS
 
 ; item use callbacks. I guess we could compress this table now that we've changed how the calls work (??)
-; begins at sacred amulet?
+; begins at sacred amulet?  or maybe it's the ring of life.
+; TODO - there's something majorly messed up about the naming of the handlers in here. they must be indexed somewhere else
 ;
 _items_use_lib:
 		.BYTE	  0
@@ -6475,7 +6517,7 @@ _items_use_lib:
 		.BYTE	  0
 		.WORD	_void_event
 		.BYTE	$A5				; $0A5	"<name> puts the <item> on a finger and makes a wish"
-		.WORD	_item_ring_of_magic_use
+		.WORD	_item_wizards_ring_use
 		.BYTE	$9B				; $09B	"<name> scatters the <item>"
 		.WORD	_item08_use_black_pepper
 		.BYTE	$C				; $10C
@@ -6541,7 +6583,7 @@ _items_use_lib:
 		.BYTE	$AF				; $0AF
 		.WORD	_item27_use
 		.BYTE	$5F				; $15F "<name> raises the <item> to the skies"
-		.WORD	_wrap_b6_s1F_item28_use
+		.WORD	_wrap_b6_s1F_item28_use ; rainbow drop
 		.BYTE	$C7				; $0C7 "<name> gives the <item> as an offering"
 		.WORD	_wrap_bC_s26_item29_use
 
@@ -6570,7 +6612,7 @@ loc_B166:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item_ring_of_magic_use:
+_item_wizards_ring_use:
 		LDA		byte_45
 		STA		byte_CE
 		LDA		#$19
@@ -7017,9 +7059,9 @@ loc_BF74:
 		LDA		#0
 		STA		_cur_chr0_bank_prg_hi
 		LDA		#$AC
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$DB
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		#$30
 		STA		_current_pc_status_pal_value
 		LDA		#$FF

@@ -2638,7 +2638,7 @@ sub_83E7E:
 		LDA		_playerMapX
 		RTS
 loc_83E87:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2649,7 +2649,7 @@ sub_83E8A:
 		LDA		_playerMapY
 		RTS
 loc_83E93:
-		LDA		byte_2B
+		LDA		_playerWorldY
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

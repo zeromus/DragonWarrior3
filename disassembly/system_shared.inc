@@ -1936,8 +1936,8 @@ loc_174C93:
 		LDY		_playerMapY
 		JMP		loc_174CB1
 loc_174CAD:
-		LDX		byte_2A
-		LDY		byte_2B
+		LDX		_playerWorldX
+		LDY		_playerWorldY
 loc_174CB1:
 		STX		_players_pos_list
 		STY		_players_pos_list+1
@@ -2226,12 +2226,12 @@ loc_174E9C:
 		LDA		#3
 		STA		_location_type
 		LDA		#$2D
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#6
 		STA		_playerMapX
 		STA		_players_pos_list
 		LDA		#$30
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		#3
 		STA		_playerMapY
 		STA		_players_pos_list+1
@@ -2554,9 +2554,9 @@ loc_1750FF:
 		CMP		#$A
 		BNE		loc_175164
 		LDA		#$18
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$62
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		byte_644
 		JMP		loc_175164
 loc_175123:
@@ -2578,7 +2578,7 @@ loc_175140:
 		LDA		_global_flags_array.byte5
 		AND		#$FC
 		STA		_global_flags_array.byte5
-		INC		byte_2B
+		INC		_playerWorldY
 		LDA		#2
 		JMP		loc_175164
 loc_17514F:
@@ -2589,7 +2589,7 @@ loc_17514F:
 		ORA		#2
 		STA		_global_flags_array.byte5
 		LDA		#$6B
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#3
 loc_175164:
 		JSR		sub_175917
@@ -2599,16 +2599,16 @@ loc_175164:
 		JMP		loc_175192
 loc_175170:
 		LDA		#$49
-		STA		byte_2B
+		STA		_playerWorldY
 		LDA		_playerMapX
 		CMP		#$FF
 		BEQ		loc_175181
 		LDA		#$26
-		STA		byte_2A
+		STA		_playerWorldX
 		JMP		loc_175185
 loc_175181:
 		LDA		#$23
-		STA		byte_2A
+		STA		_playerWorldX
 loc_175185:
 		FARX	_bB_s4_apu_set_flag0
 		JSR		sub_175917
@@ -2644,10 +2644,10 @@ loc_1751AA:
 		FARX	_b5_s9
 		LDA		_player_vehicle
 		BEQ		loc_1751E5
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		_players_pos_list
 		STA		byte_2D
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		_players_pos_list+1
 		STA		byte_2E
 		FARX	_bD_s1B
@@ -2717,9 +2717,9 @@ sub_17522D:
 		CMP		#2
 		BEQ		locret_17522C			; abort if we're in ramia? sure, we can't enter things when we fly over them
 ; copy coordinates?
-		LDA		byte_2A	
+		LDA		_playerWorldX	
 		STA		byte_74
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_75
 		LDA		byte_92						; analyze current standing-on tile
 		LDX		#$F
@@ -2743,10 +2743,10 @@ sub_17522D:
 		BEQ		loc_1752C7
 		JSR		sub_17592E
 		BCS		loc_1752B0
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		byte_9B
 		BNE		loc_17527F
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		byte_9C
 		BNE		loc_17527F
 		LDA		_location_type
@@ -2767,7 +2767,7 @@ loc_175292:
 		BNE		loc_1752BE
 		LDA		byte_6B9
 		BNE		locret_175291
-		DEC		byte_2A
+		DEC		_playerWorldX
 		DEC		byte_74
 		BNE		loc_1752BE
 loc_1752A1:
@@ -2776,7 +2776,7 @@ loc_1752A1:
 		LDA		byte_6B9
 		BNE		locret_175291
 		DEC		byte_74
-		DEC		byte_2A
+		DEC		_playerWorldX
 		BNE		loc_1752BE
 loc_1752B0:
 		PHA
@@ -2920,7 +2920,7 @@ sub_1753A1:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1753AA:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$22
 		BNE		loc_1753C0
 		LDA		#$10
@@ -2958,9 +2958,9 @@ loc_1753E6:
 		CMP		#$DB
 		BCS		loc_1753F8
 		LDA		#$A5
-		STA		byte_2A
+		STA		_playerWorldX
 		LDA		#$DA
-		STA		byte_2B
+		STA		_playerWorldY
 loc_1753F8:
 		LDA		byte_644
 		BEQ		loc_175409
@@ -2968,21 +2968,21 @@ loc_1753F8:
 		BEQ		loc_17540F
 		CMP		#2
 		BEQ		loc_17541B
-		DEC		byte_2A
+		DEC		_playerWorldX
 		BNE		loc_17541D
 loc_175409:
-		DEC		byte_2B
-		DEC		byte_2B
+		DEC		_playerWorldY
+		DEC		_playerWorldY
 		BNE		loc_17541D
 loc_17540F:
-		INC		byte_2A
+		INC		_playerWorldX
 		LDA		byte_9A
 		CMP		#$19
 		BCS		loc_17541D
-		INC		byte_2A
+		INC		_playerWorldX
 		BNE		loc_17541D
 loc_17541B:
-		INC		byte_2B
+		INC		_playerWorldY
 loc_17541D:
 		PLA
 		PLA
@@ -3150,10 +3150,10 @@ sub_175516:
 		PHA
 		INY
 		LDA		(word_6C),Y
-		STA		byte_2A
+		STA		_playerWorldX
 		INY
 		LDA		(word_6C),Y
-		STA		byte_2B
+		STA		_playerWorldY
 		PLA
 		PHA
 		FARX	_bA_sC
@@ -3186,10 +3186,10 @@ sub_175569:
 		JSR		_mmc1_prg_set
 		LDY		#0
 		LDA		(word_6C),Y
-		STA		byte_2A
+		STA		_playerWorldX
 		INY
 		LDA		(word_6C),Y
-		STA		byte_2B
+		STA		_playerWorldY
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175596:
@@ -3241,12 +3241,12 @@ sub_1755CA:
 		INC		_players_pos_list
 		JMP		sub_17574F
 loc_1755ED:
-		DEC		byte_2A
+		DEC		_playerWorldX
 		DEC		_players_pos_list
 		JSR		sub_1757C0
 		LDX		#3
 		BCC		loc_175638
-		INC		byte_2A
+		INC		_playerWorldX
 		INC		_players_pos_list
 		JMP		sub_17574F
 
@@ -3268,12 +3268,12 @@ sub_175601:
 		INC		_players_pos_list+1
 		JMP		sub_17574F
 loc_175624:
-		DEC		byte_2B
+		DEC		_playerWorldY
 		DEC		_players_pos_list+1
 		JSR		sub_1757C0
 		LDX		#0
 		BCC		loc_175638
-		INC		byte_2B
+		INC		_playerWorldY
 		INC		_players_pos_list+1
 		JMP		sub_17574F
 loc_175638:
@@ -3304,12 +3304,12 @@ sub_17564B:
 		DEC		_players_pos_list
 		JMP		sub_17574F
 loc_17566E:
-		INC		byte_2A
+		INC		_playerWorldX
 		INC		_players_pos_list
 		JSR		sub_1757C0
 		LDX		#1
 		BCC		loc_175638
-		DEC		byte_2A
+		DEC		_playerWorldX
 		DEC		_players_pos_list
 		JMP		sub_17574F
 
@@ -3331,12 +3331,12 @@ sub_175682:
 		DEC		_players_pos_list+1
 		JMP		sub_17574F
 loc_1756A5:
-		INC		byte_2B
+		INC		_playerWorldY
 		INC		_players_pos_list+1
 		JSR		sub_1757C0
 		LDX		#2
 		BCC		loc_1756B9
-		DEC		byte_2B
+		DEC		_playerWorldY
 		DEC		_players_pos_list+1
 		JMP		sub_17574F
 loc_1756B9:
@@ -3374,13 +3374,13 @@ loc_1756F2:
 loc_1756F6:
 		BIT		_global_flags_array.byte4
 		BVS		loc_175701
-		LDA		byte_2A
+		LDA		_playerWorldX
 		EOR		#$80
 		STA		byte_9E
 loc_175701:
 		BIT		_global_flags_array.byte16
 		BVS		locret_17570C
-		LDA		byte_2A
+		LDA		_playerWorldX
 		EOR		#$80
 		STA		byte_9B
 locret_17570C:
@@ -3498,8 +3498,8 @@ sub_1757B6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1757C0:
-		LDX		byte_2A
-		LDY		byte_2B
+		LDX		_playerWorldX
+		LDY		_playerWorldY
 		JSR		sub_176D3A
 		STA		byte_92
 		LDX		_player_vehicle
@@ -3532,10 +3532,10 @@ loc_1757F4:
 		LDX		#0
 		STX		_blockPlayerInputDuringMap
 		LDA		byte_2D
-		CMP		byte_2A
+		CMP		_playerWorldX
 		BNE		loc_17580C
 		LDA		byte_2E
-		CMP		byte_2B
+		CMP		_playerWorldY
 		BNE		loc_17580C
 		STX		byte_6B9
 		INX
@@ -3544,10 +3544,10 @@ loc_1757F4:
 		RTS
 loc_17580C:
 		LDA		byte_9B
-		CMP		byte_2A
+		CMP		_playerWorldX
 		BNE		loc_17581B
 		LDA		byte_9C
-		CMP		byte_2B
+		CMP		_playerWorldY
 		BEQ		loc_175824
 loc_175818:
 		SYSX	_apu_load,$A2
@@ -3564,10 +3564,10 @@ loc_175824:
 loc_175826:
 		LDA		word_7C
 		BNE		loc_175838
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		byte_9B
 		BNE		loc_175836
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		byte_9C
 		BEQ		loc_17581D
 loc_175836:
@@ -4661,7 +4661,7 @@ sub_175F1C:
 		LDA		_playerMapX
 		RTS
 loc_175F23:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4671,7 +4671,7 @@ sub_175F26:
 		LDA		_playerMapY
 		RTS
 loc_175F2D:
-		LDA		byte_2B
+		LDA		_playerWorldY
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6031,9 +6031,9 @@ _sleep_30:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_176C41:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		byte_74
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_75
 		LDA		_location_type
 		PHA

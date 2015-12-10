@@ -177,10 +177,10 @@ loc_158144:
 
 ; consider launching the command menu
 loc_158153:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		byte_9E
 		BNE		_run_command_menu	; TAILCALL
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		byte_9F
 		BNE		_run_command_menu	; TAILCALL
 		LDA		_location_type
@@ -971,11 +971,11 @@ loc_158663:
 ; =============== S U B	R O U T	I N E =======================================
 sub_158666:
 		JSR		sub_158655
-		LDA		byte_2A
+		LDA		_playerWorldX
 		SEC
 		SBC		#8
 		STA		word_6
-		LDA		byte_2B
+		LDA		_playerWorldY
 		SEC
 		SBC		#7
 		STA		word_6+1
@@ -2436,6 +2436,9 @@ _char_status_abbreviations_list:
 		.BYTE	_S,_L
 		.BYTE	_C,_F
 
+; =============== T A B L E =================================================
+; Pointers to window resources
+;
 _windows_lib:
 		.WORD	_wnd00_stat_pty1
 		.WORD	_wnd00_stat_pty2
@@ -2503,7 +2506,7 @@ _windows_lib:
 		.WORD	_wnd3F
 		.WORD	_wnd40
 		.WORD	_wnd41
-		.WORD	_wnd42
+		.WORD	_wnd_choose_sex
 		.WORD	_wnd43
 		.WORD	_wnd44
 		.WORD	_wnd45
@@ -2525,7 +2528,7 @@ _windows_lib:
 		.WORD	_wnd55
 		.WORD	_wnd56
 		.WORD	_wnd57
-		.WORD	_wnd58
+		.WORD	_wnd58_input_your_name
 		.WORD	_wnd59
 		.WORD	_wnd5A
 		.WORD	_wnd5B
@@ -2796,9 +2799,10 @@ _wnd40:
 _wnd41:
 		.BYTE	 $C,  3,$25,$83,$4C,$21,$22,$23,  0,  0,  0,$5A,$5A,$5A,$5A,$5A
 		.BYTE	$5A,$5A,$5A,$FF,$FF
-_wnd42:
-		.BYTE	 $A,  3,$68,$83,$4B,$21,$22,$A3,  1,  2,  0,$31,$25,$30,$29,$FF
-		.BYTE	$2A,$29,$31,$25,$30,$29,$FF
+_wnd_choose_sex:
+		.BYTE	$A,  3,$68,$83,$4B,$21,$22,$A3,  1,  2,  0
+		.BYTE	_M,_A,_L,_E,$FF
+		.BYTE	_F,_E,_M,_A,_L,_E,$FF
 _wnd43:
 		.BYTE	 $C,  7,$54,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
 		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
@@ -2872,9 +2876,9 @@ _wnd57:
 		.BYTE	 $F,$6C,$FF,$FF,$FF,  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0
 		.BYTE	  7,  0,  8,  0,  9,$FF,$FF,  0,$2A, $B,$1D,$1E,$FE,$9E,$37,$16
 		.BYTE	$19,$21,$FF,$FF
-_wnd58:
-		.BYTE	$14,  2,$73,  0,$60,$21,$22,$23,  0,  0,  0,$2D,$32,$34,$39,$38
-		.BYTE	  0,$3D,$33,$39,$36,  0,$32,$25,$31,$29,$70,$FF
+_wnd58_input_your_name:
+		.BYTE	$14,  2,$73,  0,$60,$21,$22,$23,  0,  0,  0
+		.BYTE	_I,_N,_P,_U,_T, 0, _Y,_O,_U,_R, 0,_N,_A,_M,_E,_exc,$FF
 _wnd59:
 		.BYTE	$14,  6,$73,  0,$20,$21,$22,$23,$40,  0,  0,  0,$99,$80,$FF,  0
 		.BYTE	$30,$29,$3A,$29,$30,$9E,$8F,  2,$FF,  0,$28,$19,  0,$23,$19,$1F
@@ -4213,9 +4217,9 @@ byte_15A5CD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_15A5DD:
-		LDA		byte_2A
+		LDA		_playerWorldX
 		STA		byte_74
-		LDA		byte_2B
+		LDA		_playerWorldY
 		STA		byte_75
 		LDA		_location_type
 		AND		#1
@@ -6047,10 +6051,10 @@ loc_15B0A9:
 		CMP		#1
 		BNE		locret_15B0D4
 		SYSX	_apu_load,$0B
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		#$A2
 		BNE		locret_15B0D4
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		#$3B
 		BNE		locret_15B0D4
 		LDA		_global_flags_array.byte1
@@ -6388,10 +6392,10 @@ loc_15B2F5:
 		LDA		_location_type
 		AND		#2
 		BNE		loc_15B30A
-		LDA		byte_2A
+		LDA		_playerWorldX
 		CMP		byte_9B
 		BNE		loc_15B30A
-		LDA		byte_2B
+		LDA		_playerWorldY
 		CMP		byte_9C
 		BNE		loc_15B30A
 		LDA		#$11
@@ -6864,7 +6868,7 @@ _bE_s36:
 		LDA		byte_15B630+3,X
 		STA		_mapNumber
 		FARX	_b6_s13
-		DEC		byte_2B
+		DEC		_playerWorldY
 		LDA		#$40
 		STA		byte_9B
 		LDA		#$6C

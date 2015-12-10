@@ -3840,7 +3840,7 @@ _str_libs_list:
 		.WORD	_str_lib4_spells
 		.WORD	_str_lib5_classes
 		.WORD	_str_lib6_sex
-		.WORD	_str_lib7_locations
+		.WORD	_str_lib7_returnable_locations
 		.WORD	_str_lib8_items_hi0
 		.WORD	_str_lib9_items_hi1
 		.WORD	_str_libA_enemy_hi0
@@ -3860,7 +3860,7 @@ _str_lib_erdrick:
 _str_lib6_sex:
 		.BYTE	_M,_a,_l,_e,$FF
 		.BYTE	_F,_e,_m,_a,_l,_e,$FF
-_str_lib7_locations:
+_str_lib7_returnable_locations:
 		.BYTE	_A,_l,_i,_a,_h,_a,_n,$FF
 		.BYTE	_R,_e,_e,_v,_e,__,__,$FF
 		.BYTE	_R,_o,_m,_a,_l,_y,__,__,$FF
