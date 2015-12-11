@@ -2447,7 +2447,7 @@ sub_175049:
 		LDA		byte_92
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		LDX		#$FF
 		CMP		#7
@@ -2561,7 +2561,7 @@ loc_1750FF:
 		JMP		loc_175164
 loc_175123:
 		LDX		byte_8A
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#7
 		BNE		loc_175185
@@ -2915,7 +2915,7 @@ sub_1753A1:
 		LDA		byte_94
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3053,7 +3053,7 @@ loc_175488:
 		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#$F
 		BNE		loc_1754A7
@@ -3209,7 +3209,7 @@ sub_1755AB:
 		LDA		byte_92
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		CMP		#9
 		BNE		locret_1755C9
 		LDA		byte_90
@@ -4095,7 +4095,7 @@ sub_175B72:
 		LDA		word_7C
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		TAY
 		TXA
@@ -4911,7 +4911,7 @@ loc_176092:
 		TXA
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		TAY
 		TXA
@@ -5469,7 +5469,7 @@ loc_176432:
 		LDX		word_4A
 		LDY		word_4A+1
 		LDA		byte_4D
-		STA		byte_6DE0,Y
+		STA		_tile_type_and_collision_flags,Y
 		LDA		byte_7300,X
 		STA		byte_7300,Y
 		LDA		word_4A
@@ -5592,7 +5592,7 @@ loc_17650C:
 		LDA		byte_51
 		CPX		#$20
 		BCS		loc_17651F
-		STA		byte_6DE0,X
+		STA		_tile_type_and_collision_flags,X
 loc_17651F:
 		INC		byte_25
 		LDA		#3
@@ -6220,7 +6220,7 @@ _sys_idx_lib:
 		FILE_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
 		FILE_IDX	$6,_b6_dB_world_map_palette_lib	; $8B
 		FILE_IDX	$A,_bA_d14_chests_count_list					; $B6
-		FILE_IDX	$A,_bA_d15					; $B7
+		FILE_IDX	$A,_bA_d15_chests_content_list					; $B7
 ;
 ; then indirectly used subs
 ;
@@ -6414,7 +6414,7 @@ _sys_idx_lib:
 		FILE_IDX	$6,_b6_s12_sleeping_willage_trigger					; $142
 		FILE_IDX	$6,_b6_s13					; $153
 		FILE_IDX	$6,_b6_s14_name_entry_screen	; $161
-		FILE_IDX	$6,_b6_s15					; $16E
+		FILE_IDX	$6,_b6_s15_item_staff_of_change_use					; $16E
 		FILE_IDX	$6,_b6_s16					; $185
 		FILE_IDX	$6,_b6_s17					; $105
 		FILE_IDX	$6,_b6_s18					; $17F
@@ -6490,9 +6490,9 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s19					; $143
 		FILE_IDX	$C,_bC_s1A					; $15B
 		FILE_IDX	$C,_bC_s1B					; $15E
-		FILE_IDX	$C,_bC_s1D					; $16
-		FILE_IDX	$C,_bC_s1E					; $F5
-		FILE_IDX	$C,_bC_s1F_get_chest_idx					; $17
+		FILE_IDX	$C,_bC_s1D_run_command_search					; $16
+		FILE_IDX	$C,_bC_s1E_spell_x_ray_use					; $F5
+		FILE_IDX	$C,_bC_s1F_get_chest_flag_and_idx					; $17
 		FILE_IDX	$C,_bC_s20_warp_bE_sB_arg0					; $171
 		FILE_IDX	$C,_bC_s21					; $F7
 		FILE_IDX	$C,_bC_s22					; $F8
@@ -6535,7 +6535,7 @@ _sys_idx_lib:
 		FILE_IDX	$D,_bD_s13					; $103
 		FILE_IDX	$D,_bD_s14					; $10D
 		FILE_IDX	$D,_bD_s15					; $10E
-		FILE_IDX	$D,_bD_s16					; $127
+		FILE_IDX	$D,_bD_s16_general_speak_with_npc					; $127
 		FILE_IDX	$D,_bD_s17					; $128
 		FILE_IDX	$D,_bD_s18					; $132
 		FILE_IDX	$D,_bD_s1A					; $134

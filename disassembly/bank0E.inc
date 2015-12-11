@@ -90,10 +90,10 @@ sub_1580AC:
 		LDY		byte_9F
 		JSR		sub_176CA4
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$80
 		BNE		sub_15811B
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#1
 		BEQ		sub_15811B
@@ -247,7 +247,7 @@ _run_command_menu:
 		BEQ		.command_selection_item		; TAILCALL
 		CMP		#5
 		BEQ		.command_selection_equip	; TAILCALL
-		FARX	_bC_s1D						; search
+		FARX	_bC_s1D_run_command_search	; search
 		RTS
 
 .command_selection_spell:
@@ -307,7 +307,7 @@ _spell_talk_usual:
 		JMP		loc_158238
 loc_158227:
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#$D
 		BNE		loc_158238
@@ -422,7 +422,7 @@ loc_1582D6:
 		STA		word_4+1
 		PLA
 		STA		word_4
-		FARX	_bD_s16
+		FARX	_bD_s16_general_speak_with_npc
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5877,11 +5877,11 @@ _bE_s21:
 		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#4
 		BEQ		loc_15AF98
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		BPL		loc_15AF98
 loc_15AF96:
 		SEC
@@ -6247,7 +6247,7 @@ loc_15B200:
 		TXA
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		LDX		#2
 		LDY		#$16
 		CMP		#5
@@ -6629,7 +6629,7 @@ _bE_s2F:
 		STA		word_6C+1
 		LDX		#0
 loc_15B48C:
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$70
 		CMP		#$50
 		BEQ		loc_15B4A4
@@ -6668,7 +6668,7 @@ loc_15B4BD:
 		PLA
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$70
 		BEQ		loc_15B4D3
 		CMP		#$40
@@ -6708,7 +6708,7 @@ loc_15B50A:
 loc_15B50C:
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$70
 		BNE		loc_15B538
 loc_15B516:
@@ -6748,7 +6748,7 @@ loc_15B549:
 		LDA		(word_6C),Y
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#$B
 		BEQ		loc_15B572
@@ -6822,7 +6822,7 @@ loc_15B5C2:
 		LDA		(word_6E),Y
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#3
 		BEQ		loc_15B5E5
@@ -6841,7 +6841,7 @@ loc_15B5D8:
 loc_15B5E5:
 		LDA		word_3C
 		INC		word_3C
-		FARX	_bC_s1F_get_chest_idx
+		FARX	_bC_s1F_get_chest_flag_and_idx
 		BCC		loc_15B5D2
 		LDA		#$1F
 		STA		word_3E
@@ -7454,7 +7454,7 @@ sub_15BA44:
 		AND		#$1F
 		TAX
 ; load tile info. does 6de0 contain information about each loaded tile type?
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		LDX		#3
 ; classify
 		AND		#$F

@@ -15,7 +15,7 @@
 		PTR_IDX		_b6_s12_sleeping_willage_trigger
 		PTR_IDX		_b6_s13
 		PTR_IDX		_b6_s14_name_entry_screen
-		PTR_IDX		_b6_s15
+		PTR_IDX		_b6_s15_item_staff_of_change_use
 		PTR_IDX		_b6_s16
 		PTR_IDX		_b6_s17
 		PTR_IDX		_b6_s18
@@ -1190,7 +1190,7 @@ _b6_sF:
 		LDA		byte_93
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		CMP		#5
 		BEQ		loc_9B46C
 		CMP		#6
@@ -1483,7 +1483,7 @@ loc_9B668:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s15:
+_b6_s15_item_staff_of_change_use:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		loc_9B666
@@ -1491,16 +1491,18 @@ _b6_s15:
 		AND		#$C0
 		STA		_global_flags_array.byte3
 		JSR		_rand
-		AND		#$1F
+; 1C free
+; --
+		AND		#$1F				; random 00..1F
 		CMP		#$F
-		BCC		loc_9B69B
-		BEQ		loc_9B69B
+		BCC		.change_personalyty	; 0,1,2,3,4,5,6,7,8,9,A,B,D,E,F	- indexes as is
+		BEQ		.change_personalyty
 		CMP		#$14
-		BCC		loc_9B6B1
-		AND		#$F
-loc_9B69B:
+		BCC		loc_9B6B1			; 10,11,12,13 replace to 17,18,1E,20
+		AND		#$F					; 14,15,16,17,18,19,1A,1B,1C,1D,1E,1F to 4,5,6,7,8,9,A,B,20,D,E,F
+.change_personalyty:
 		CMP		#$C
-		BNE		loc_9B6A1
+		BNE		loc_9B6A1			; C replace to 20
 		LDA		#$20
 loc_9B6A1:
 		ORA		_global_flags_array.byte3
@@ -1513,9 +1515,31 @@ loc_9B6A7:
 		RTS
 loc_9B6B1:
 		TAX
-		LDA		loc_9B6A7,X
-		BNE		loc_9B69B
+		LDA		byte_9B6B7-$10,X
+		BNE		.change_personalyty
+byte_9B6B7:
 		.BYTE	$17,$18,$1E,$20
+; --
+; 1D free
+; --
+;		AND		#$1F
+;		BCC		#$14
+;		SEC
+;		SBC		#$14	; wrap around the same values
+;loc_9B6B1:
+;		TAX
+;		LDA		byte_9B6B7,X
+;		ORA		_global_flags_array.byte3
+;		STA		_global_flags_array.byte3
+;		LDA		#$14
+;		STA		_global_flags_array.byte14
+;		FARX	_bE_s10
+;		SEC
+;		RTS
+;byte_9B6B7:
+;		.BYTE	$00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$20,$0D,$0E,$0F
+;		.BYTE	$17,$18,$1E,$20
+; --
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s8_world_map_pal_update:

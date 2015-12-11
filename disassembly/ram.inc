@@ -1202,10 +1202,10 @@ _global_flags_array.byte1: ; 60b6
 		.BYTE	0
 ;	$80 - _f_WarpBlock - Wing of Wyvern / Return is blocked.
 ;	$40 - _f_IsKingOfRomaly - This flag is set while you actually ARE king
-;	$20 -
+;	$20 - set if in battle mode (does not clear after death in battle!)
 ;	$10 - one of the switches in Pyramid 3F
 ;	$08 - one of the switches in Pyramid 3F
-;	$04 - set if in battle mode (does not clear after death in battle!)
+;	$04 - Sleeping Village is awake
 ;	$02 - set after you accept the Golden King's Crown and become a King (is this a once-only bit? see $40 bit for the repeated toggle)
 ;	$01 - _f_Erdrick - In a certain sense, the Is Game Over flag, isn't it?
 _global_flags_array.byte2: ; 60b7
@@ -1284,7 +1284,7 @@ _global_flags_array.byte9:
 ;	$80 - 
 ;	$40 - 
 ;	$20 - 
-;	$10 - 
+;	$10 - obtain sword of illusion
 ;	$08 - 
 ;	$04 - 
 ;	$02 - 
@@ -2008,14 +2008,13 @@ byte_6D40:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-; collision flags for tile types, somehow. set set all to 0 and no tiles collide, set to ff and all tiles collide
-; besides this, some values can make tiles turn into stairs
-; size unknown
-byte_6DE0:
+; collision flags for tile types, somehow. set set all to 0 and no tiles collide,
+; set to ff and all tiles collide besides this, some values can make tiles turn into
+; stairs or chests
+; u8[32]
+_tile_type_and_collision_flags:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-		.BYTE	0,0,0
-byte_6DF3:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_6E00:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

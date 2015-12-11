@@ -2692,7 +2692,7 @@ loc_83ED2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b5_s5_mirror_of_ra_trigger_on:
-		MSGX	_msg_m00,$1AA	; "Look there is an image of lion..."
+		MSGX	_msg_m00,$1AA	; "Look there is an image of sleeping monster..."
 		JSR		sub_174D4F
 		LDA		#<[_npcs_pos_list+4]
 		STA		word_6C

@@ -19,7 +19,7 @@
 		PTR_IDX		_bD_s13
 		PTR_IDX		_bD_s14
 		PTR_IDX		_bD_s15
-		PTR_IDX		_bD_s16
+		PTR_IDX		_bD_s16_general_speak_with_npc
 		PTR_IDX		_bD_s17
 		PTR_IDX		_bD_s18
 		PTR_IDX		_bD_s19
@@ -995,7 +995,7 @@ sub_141862:
 		LDA		word_7C
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#7
 		BEQ		loc_141876
@@ -1018,7 +1018,7 @@ sub_141878:
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s3:
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		BPL		loc_141874
 		SEC
 		RTS
@@ -2407,7 +2407,7 @@ _bD_s22_se_wait_and_map_music_start:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1420EE:
-		MSGX	_msg_m00,$205		; "Wery well, i will record your current..."
+		MSGX	_msg_m00,$205	; "Wery well, i will record your current..."
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1420FA
 		FARX	_b7_sD
@@ -4196,9 +4196,9 @@ loc_142F1B:
 		PLA
 		RTS
 loc_142F4F:
-		MSGX	_msg_m00,$28D
+		MSGX	_msg_m00,$28D	; "You kidding, you're not interested"
 loc_142F52:
-		MSGX	_msg_m00_break,$291
+		MSGX	_msg_m00_break,$291	; "Come back again"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_sC:
@@ -4221,10 +4221,7 @@ loc_142F6C:
 		STA		byte_D2
 		PLP
 		BEQ		loc_142F84
-		LDA		#$CF
-		LDX		#0
-		FARX	_bE_s4_msg_m00
-		JMP		locret_143008
+		MSGX	_msg_m00_break,$0CF	; "<name> comes out a winner. <hero> bet is lost"
 loc_142F84:
 		LDX		#0
 loc_142F86:
@@ -4276,14 +4273,10 @@ loc_142FDD:
 		STA		word_4,X
 		DEX
 		BPL		loc_142FDD
-		LDA		#$CE
-		LDX		#0
-		FARX	_bE_s4_msg_m00
+		MSGX	_msg_m00,$0CE	; "<name> comes out on top. <hero> obtains <number> of gold."
 		JMP		loc_143002
 loc_142FED:
-		LDA		#$D0
-		LDX		#0
-		FARX	_bE_s4_msg_m00
+		MSGX	_msg_m00,$0D0	; match ended a draw, money back
 		LDA		byte_6A3B
 		STA		byte_C0
 		LDA		byte_6A3C
@@ -4458,13 +4451,13 @@ loc_143168:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s16:
-		JSR		sub_143179
+_bD_s16_general_speak_with_npc:
+		JSR		_general_speak_with_npc
 		FARX	_bE_s33
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143179:
+_general_speak_with_npc:
 		LDA		word_4
 		ORA		word_4+1
 		BNE		loc_143182
@@ -4488,7 +4481,7 @@ loc_143195:
 		MSGX	_msg_m00_break,$668	; ""
 loc_1431A3:
 		LDA		_global_flags_array.byte16
-		BPL		sub_1431F7
+		BPL		loc_1431F7
 		LDA		word_4
 		CMP		#$99
 		BNE		loc_1431B6
@@ -4499,11 +4492,11 @@ loc_1431B6:
 		LDA		_mapNumber
 		BEQ		loc_1431C2
 		CMP		#$41
-		BCC		sub_1431F7
+		BCC		loc_1431F7
 		CMP		#$48
-		BCS		sub_1431F7
+		BCS		loc_1431F7
 loc_1431C2:
-		LDY		#$63
+		LDY		#[byte_14333D_last-byte_14333D]
 loc_1431C4:
 		LDA		byte_14333D,Y
 		CMP		word_4
@@ -4516,7 +4509,7 @@ loc_1431D2:
 		DEY
 		DEY
 		BPL		loc_1431C4
-		BMI		sub_1431F7
+		BMI		loc_1431F7
 loc_1431D9:
 		LDA		byte_14333D+2,Y
 		PHA
@@ -4528,13 +4521,11 @@ loc_1431D9:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		LDA		#$69				; base idx $669 "
+		LDA		#$69				; base idx $669
 		LDX		#3
 		JSR		_add_arg5C_to16
 		JMP		_wrap_msg_m00_b300_arg5C
-
-; =============== S U B	R O U T	I N E =======================================
-sub_1431F7:
+loc_1431F7:
 		LDA		word_6
 		AND		#$1F
 		STA		word_6
@@ -4589,13 +4580,13 @@ loc_143256:
 		BNE		loc_143262
 		JSR		sub_14315A
 		MSGX	_msg_m00,$6D5
-		BCS		sub_14327E
+		BCS		loc_14327E
 loc_143262:
 		CMP		#3
 		BNE		loc_14326E
 		JSR		sub_14315A
 		MSGX	_msg_m00,$6D6
-		BCS		sub_14327E
+		BCS		loc_14327E
 loc_14326E:
 		STA		byte_5C
 		LDA		#0
@@ -4604,14 +4595,12 @@ loc_14326E:
 		LDX		#3
 		JSR		_add_arg5C_to16
 		JMP		_wrap_msg_m00_b300_arg5C
-
-; =============== S U B	R O U T	I N E =======================================
-sub_14327E:
+loc_14327E:
 		JSR		sub_143166
 loc_143281:
 		BIT		_global_flags_array.byte2
 		BVC		loc_1432A7
-		LDY		#$15
+		LDY		#[byte_1433A3_last-byte_1433A3]
 loc_143288:
 		LDA		word_4
 		CMP		byte_1433A3,Y
@@ -4640,10 +4629,10 @@ loc_1432A7:
 		BMI		loc_1432BC
 		MSGX	_msg_m00_break,$459
 loc_1432BC:
-		LDY		#$22
+		LDY		#[byte_1433BC_last-byte_1433BC]
 loc_1432BE:
-		LDA		byte_1433A3+$18,Y
-		LDX		byte_1433BC,Y
+		LDA		byte_1433BC,Y
+		LDX		byte_1433BC+1,Y
 		JSR		sub_14313B
 		BCS		loc_1432D0
 		DEY
@@ -4656,6 +4645,7 @@ loc_1432D0:
 		LDA		off_1433DF+1,Y
 		STA		word_5E+1
 		JMP		(word_5E)
+		
 byte_1432DD:
 		.BYTE	  4,  5,  7,  8,  9, $A, $F, $B,  6, $E, $A, $C,  0, $D,$13,$14
 		.BYTE	$16,$15,  0,  0,$12,  0,  0,$10,  0, $C,  9,  2,  0,  0,$11,  0
@@ -4697,14 +4687,38 @@ byte_14333D:
 		.BYTE	$13,  3,$15
 		.BYTE	$DA,  3,$16
 		.BYTE	$1C,  3,$17
+byte_14333D_last:		
 		.BYTE	$DC,  3,$18
 byte_1433A3:
-		.BYTE	  5,  0,$EB,$A5,  1,$EB,$25,  1,$EC,$26,  1,$ED,$27,  1,$EE,$28
-		.BYTE	  1,$EF,$29,  1,$F0,$2A,  1,$DB,  1
+		.BYTE	  5,  0,$EB
+		.BYTE	$A5,  1,$EB
+		.BYTE	$25,  1,$EC
+		.BYTE	$26,  1,$ED
+		.BYTE	$27,  1,$EE
+		.BYTE	$28,  1,$EF
+		.BYTE	$29,  1,$F0
+byte_1433A3_last:
+		.BYTE	$2A,  1,$DB
 byte_1433BC:
-		.BYTE	  0,  2,  0,  3,  0,  4,  0,  5,  0,  6,  0, $A,  0,$28,  0,$32
-		.BYTE	  0,$3C,  0,$50,  0,$68,  1,$E0,  1,$EA,  1,$FE,  1,$1C,  2,$26
-		.BYTE	  2,$C0,  3
+		.WORD	$001
+		.WORD	$002
+		.WORD	$003
+		.WORD	$004
+		.WORD	$005
+		.WORD	$006
+		.WORD	$00A	; 10
+		.WORD	$028	; 40
+		.WORD	$032	; 50
+		.WORD	$03C	; 60
+		.WORD	$050	; 80
+		.WORD	$168	; 
+		.WORD	$1E0
+		.WORD	$1EA
+		.WORD	$1FE
+		.WORD	$21C
+		.WORD	$226
+byte_1433BC_last:
+		.WORD	$3C0	; 960
 off_1433DF:
 		.WORD	sub_142CE4
 		.WORD	sub_142920
@@ -4990,19 +5004,14 @@ sub_143503:
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_msg_m00_b300_arg5C:
-		LDX		byte_5D
-		LDA		byte_5C
-
-;; FALLTHROUGH ;;
-
-; =============== S U B	R O U T	I N E =======================================
 ; get's the full 16-bit index of the message instead of 8-bit and increase
 ; it by $300, don't know why they did this in such way, since actually uses
 ; 16-bit indexes here, but seems it's the last function we actually need in
 ; that form, but which we can alter to show more convinient indexes
 ;
-_wrap_msg_m00_b300:
+_wrap_msg_m00_b300_arg5C:
+		LDX		byte_5D
+		LDA		byte_5C
 		INX
 		INX
 		INX
@@ -5299,7 +5308,7 @@ loc_143711:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl13:
-		JSR		sub_143721
+		JSR		_elf_village_human_test
 		BNE		loc_14371E
 		LDA		#$15
 		JMP		sub_1434D3
@@ -5307,10 +5316,10 @@ loc_14371E:
 		MSGX	_msg_m00_break,$602	; "I cannot sell anything to a human being"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143721:
-		LDA		_global_flags_array.byte14
+_elf_village_human_test:
+		LDA		_global_flags_array.byte14	; staff of change timer
 		BEQ		loc_14372B
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3	; if it counting and the index of char is $1E
 		AND		#$3F
 loc_14372B:
 		CMP		#$1E
@@ -5318,16 +5327,16 @@ loc_14372B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl14:
-		JSR		sub_143721
+		JSR		_elf_village_human_test
 		BEQ		loc_143736
-		MSGX	_msg_m00_break,$603
+		MSGX	_msg_m00_break,$603	; "Ah! A human!"
 loc_143736:
-		MSGX	_msg_m00_break,$604
+		MSGX	_msg_m00_break,$604	; "The dwarf is my friend!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl15:
 		MSGX	_msg_m00,$605
-		JSR		sub_143721
+		JSR		_elf_village_human_test
 		BEQ		locret_143744
 		MSGX	_msg_m00_break,$606
 locret_143744:
@@ -5637,27 +5646,29 @@ loc_143934:
 locret_14394C:
 		RTS
 loc_14394D:
-		MSGX	_msg_m00,$649
+		MSGX	_msg_m00,$649	; "We are we are protecting the egg..."
 		LDA		_global_flags_array.byte1A
 		AND		#$3F
 		BEQ		locret_14394C
-		MSGX	_msg_m00,$64A
+		MSGX	_msg_m00,$64A	; "You have already placed the.."
 		LDA		_global_flags_array.byte1A
-		AND		#$3F
+		AND		#$3F		; mask 6 bits
 		STA		byte_5C
-		LDA		#$4B
+		LDA		#$4B		; base msg $64B - silver, yellow, purple, blue, green, red ... orb
 		STA		byte_5D
-		LDA		#3
+;		LDA		#3
+		LDA		#6
 		STA		word_5E
 loc_143969:
-		LSR		byte_5C
-		BCS		loc_143971
-		BEQ		loc_143980
-		BNE		loc_143978
+		LSR		byte_5C		; shift bit
+		BCS		loc_143971	; if 1 - display message
+		BEQ		loc_143980	; if no bits left - default message
+		BNE		loc_143978	; find first non zero bit
 loc_143971:
 		LDA		byte_5D
 		LDX		word_5E
-		JSR		_wrap_msg_m00_b300
+;		JSR		_wrap_msg_m00_b300	; get rid of this strange routine
+		FARX	_bE_s4_msg_m00
 loc_143978:
 		INC		byte_5D
 		BNE		loc_143969
@@ -5740,12 +5751,12 @@ _npc_hndl2D:
 		BEQ		loc_143A0E
 		MSGX	_msg_m00_break,$70D
 loc_143A0E:
-		MSGX	_msg_m00,$63E
-		MSGX	_msg_m00,$70D
+		MSGX	_msg_m00,$63E	; gives the sword of illusion
+		MSGX	_msg_m00,$70D	; explain how to use it
 		LDA		#$16
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143A20
-		LDA		#$54
+		LDA		#$54	; _global_flags_array.byteA or $10
 		JSR		_global_game_flag_set
 locret_143A20:
 		RTS

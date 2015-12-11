@@ -1475,7 +1475,8 @@ byte_8A86:
 ; random encounter info structs. each entry is 15 bytes long
 ; [0] - PPPAAABB
 ;     P: probability of encounter index
-;     A: related to which byte_90F3 table entry is chosen. oddly, the table doesnt have 8 entries despite having 3 bits reserved here. so we should see no $10 bit set in [0] (that's true)
+;     A: related to which byte_90F3 table entry is chosen. oddly, the table doesnt have 8 entries despite
+;        having 3 bits reserved here. so we should see no $10 bit set in [0] (that's true)
 ;     B: ?
 ; [1]-[D] - Contains something (enemy or group?) related to each entry in one of the byte_90F3 records
 ;           these are then used at least to reference byte_907B, so I dont expect them to exceed 20, but they do...
@@ -4278,13 +4279,13 @@ _cmd_spell_repel:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_s10_spell_return:
+_cmd_spell_return:
 		FARX	_bC_s10_spell_return
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_s1E:
-		FARX	_bC_s1E
+_cmd_spell_x_ray:
+		FARX	_bC_s1E_spell_x_ray_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4431,9 +4432,9 @@ _command_spell_lib:
 		.WORD	_cmd_spell_detoxicate
 		.WORD	_cmd_spell_remove_numbness
 		.WORD	_cmd_spell_repel
-		.WORD	_warp_bC_s10_spell_return
-		.WORD	_warp_bC_sF_item_key_type3_use
-		.WORD	_warp_bC_s1E
+		.WORD	_cmd_spell_return
+		.WORD	_cmd_spell_open
+		.WORD	_cmd_spell_x_ray
 		.WORD	sub_A0EC
 		.WORD	_warp_b6_sC
 		.WORD	_warp_b6_sD
@@ -6155,11 +6156,9 @@ locret_AE8B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; For the mirror of ra, i think. If on a special map, at a special spot, says
-; "Look! There is an image of a sleeping monster reflected in the mirror!"
-; otherwise "But nothing happens!"
+; used in particular place at the 2nd floor of the Samano castle
 ;
-_item09_use:
+_item09_mirror_of_ra_use:
 		LDA		_mapNumber
 		CMP		#$62
 		BNE		_void_event
@@ -6172,7 +6171,7 @@ _item09_use:
 		LDA		_global_flags_array.byte18 ; probably some quest flags
 		AND		#$20
 		BNE		_void_event
-		FARX	_b5_s5_mirror_of_ra_trigger_on		; lion event
+		FARX	_b5_s5_mirror_of_ra_trigger_on
 		SEC
 		RTS
 
@@ -6201,9 +6200,9 @@ _item0B_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; become a princess. cool!
-_item0C_use:
-		FARX	_b6_s15
+; staff of change usage
+_item0C_staff_of_change_use:
+		FARX	_b6_s15_item_staff_of_change_use
 		BCC		locret_AECC
 		JSR		_sleep_30
 		FARX	_bC_s20_warp_bE_sB_arg0
@@ -6234,7 +6233,7 @@ _warp_bC_sE_item_key_type1_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_sF_item_key_type3_use:
+_cmd_spell_open:
 		FARX	_bC_sF_item_key_type3_use
 		RTS
 
@@ -6521,13 +6520,13 @@ _items_use_lib:
 		.BYTE	$9B				; $09B	"<name> scatters the <item>"
 		.WORD	_item08_use_black_pepper
 		.BYTE	$C				; $10C
-		.WORD	_item09_use
+		.WORD	_item09_mirror_of_ra_use
 		.BYTE	  0
 		.WORD	_item0A_float_use
 		.BYTE	$56				; $156
 		.WORD	_item0B_use
 		.BYTE	$60				; $160
-		.WORD	_item0C_use
+		.WORD	_item0C_staff_of_change_use
 		.BYTE	$57				; $157
 		.WORD	_item0D_use
 		.BYTE	  0
@@ -6537,7 +6536,7 @@ _items_use_lib:
 		.BYTE	$53
 		.WORD	_warp_bC_sE_item_key_type1_use
 		.BYTE	$53
-		.WORD	_warp_bC_sF_item_key_type3_use
+		.WORD	_cmd_spell_open
 		.BYTE	$C
 		.WORD	_item12_use
 		.BYTE	$62				; $162 "Puts the <item> in the palm of hand"
