@@ -28,9 +28,9 @@
 		PTR_IDX		_bC_s1A
 		PTR_IDX		_bC_s1B
 		PTR_IDX		_bC_s1C
-		PTR_IDX		_bC_s1D
-		PTR_IDX		_bC_s1E
-		PTR_IDX		_bC_s1F_get_chest_idx
+		PTR_IDX		_bC_s1D_run_command_search
+		PTR_IDX		_bC_s1E_spell_x_ray_use
+		PTR_IDX		_bC_s1F_get_chest_flag_and_idx
 		PTR_IDX		_bC_s20_warp_bE_sB_arg0
 		PTR_IDX		_bC_s21
 		PTR_IDX		_bC_s22
@@ -1318,7 +1318,7 @@ sub_128917:
 		LDA		word_7C
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#7
 		BEQ		loc_128965
@@ -1631,7 +1631,7 @@ sub_128B03:
 		LDA		word_7C
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#7
 		BEQ		loc_128B29
@@ -1688,7 +1688,7 @@ sub_128B55:
 		LDA		word_7C
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#7
 		BEQ		loc_128B7B
@@ -2489,7 +2489,7 @@ sub_129120:
 
 ; =============== S U B	R O U T	I N E =======================================
 _chest_mark_as_opened:
-		JSR		_bC_s1F_get_chest_idx
+		JSR		_bC_s1F_get_chest_flag_and_idx
 		JMP		_chest_open_flag_set
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2957,7 +2957,7 @@ _item_key_use:
 		AND		#$1F
 		STA		word_B7
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		BEQ		loc_12946E
 		JSR		sub_1294A8
@@ -2972,7 +2972,7 @@ loc_12946E:
 		TXA
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#$D
 		BNE		loc_129490
@@ -3034,7 +3034,7 @@ sub_1294D0:
 		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		CMP		#$B
 		BEQ		loc_12950F
@@ -3218,7 +3218,7 @@ loc_1295E5:
 ; A: tile to set to player's current position
 ; sets that tile in the areamap and refreshes it on-screen 
 ;
-sub_1295EB:
+_set_tile_at_player_position:
 		PHA									; stash the target tile value
 		LDX		_playerMapX
 		LDY		_playerMapY
@@ -3232,13 +3232,13 @@ sub_1295EB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_129600:
+_get_tile_collision_type_under_players_feet:
 		LDX		_playerMapX
 		LDY		_playerMapY
 		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
 		RTS
 
@@ -3253,113 +3253,108 @@ sub_129616:
 		JMP		.but_nothing_could_be_found
 
 ; =============== S U B	R O U T	I N E =======================================
-; should be called _run_command_search but I'll leave it to cah4e3 to rename
+; search command main handler
 ;
-_bC_s1D:
-; special handling for the ineffectual king
-		SYSX	_display_window,$3E
+_bC_s1D_run_command_search:
+		SYSX	_display_window,$3E			; special handling for the ineffectual king
 		LDA		_global_flags_array.byte2
 		AND		#$40
-		BNE		sub_129610
-
-; figure out who the party leader is, for printing an actor for the search
+		BNE		sub_129610					; figure out who the party leader is, for printing an actor for the search
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 		STA		byte_CE
 		LDA		#0
 		STA		byte_B9
-
-; test $_player_vehicle.0.. indicating whether player is on the ship
-		LDA		_player_vehicle
+		LDA		_player_vehicle				; test $_player_vehicle.0.. indicating whether player is on the ship
 		LSR
 		BCS		sub_129616
-
-; this can be handled 2 different ways depending on byte_9A, but I don't know what it means yet
-		LDA		byte_9A
-		BNE		loc_12963D
+		LDA		byte_9A						; this can be handled 2 different ways depending on byte_9A,
+		BNE		loc_12963D					; but I don't know what it means yet
 		JMP		_leaf_of_world_tree_special_check
-
 loc_12963D:
-		JSR		sub_129600
+		JSR		_get_tile_collision_type_under_players_feet
 		CMP		#3
 		BEQ		loc_129647
 		JMP		.begin_search_switch
 loc_129647:
-		MSGX	_msg_m00,$147
-		JSR		sub_1299B6
-		JSR		_bC_s1F_get_chest_idx
-		PHP
+		MSGX	_msg_m00,$147	; "<name> examine the ground at <here/his> feet"
+		JSR		_get_chest_idx_player_stand_on
+		JSR		_bC_s1F_get_chest_flag_and_idx
+		PHP									; keep flags of chest status
 		TXA
 		ASL
 		ASL
 		ASL
-		ADC		word_4
+		ADC		word_4						; calc the global chest number
 		TAY
-		LDA		#_bA_d15_fidx
-		JSR		_sys0_byte_read_y
-		STA		_tmp_ptrB4
+		LDA		#_bA_d15_chests_content_list_fidx
+		JSR		_sys0_byte_read_y			; read its content
+		STA		_tmp_ptrB4					; backup item
 		LDY		word_4
 		PLP
-		BCS		loc_129688
-		JSR		_chest_open_flag_set
+		BCS		_j.already_opened			; if chest already opened
+		JSR		_chest_open_flag_set		; mark chest as opened
 		LDA		#$8F
-		FARX	_bB_s3_apu_load
+		FARX	_bB_s3_apu_load				; open sound
 		LDA		#$1F
-		JSR		sub_1295EB
-		MSGX	_msg_m00,$064		; "<name> opens the treasure chest"
+		JSR		_set_tile_at_player_position
+		MSGX	_msg_m00,$064	; "<name> opens the treasure chest"
 		LDA		_mapNumber
-		CMP		#$D3				; special logic for Pyramid 4F (mummy sneak attack)
+		CMP		#$D3						; special logic for Pyramid 4F (mummy sneak attack)
 		BNE		loc_12967D
-		JSR		loc_1296F5
+		JSR		_mummy_sneak_attack_from_chest
 loc_12967D:
-		LDA		_tmp_ptrB4
-		BMI		loc_12968B
+		LDA		_tmp_ptrB4					; now restore item
+		BMI		.non_item_chest				; test for non-item chests
 		CMP		#$7F
-		BEQ		loc_129698
+		BEQ		.money_chest				; special case for money $7F with no flag $80 set
 		JMP		.item_found
-loc_129688:
-		JMP		loc_129847
-loc_12968B:
+_j.already_opened:
+		JMP		.already_opened
+.non_item_chest:
 		TAY
 		INY
-		BEQ		loc_1296BD
+		BEQ		.empty_chest				; $FF empty chest
 		INY
-		BEQ		.mimic_or_man_eater_chest
+		BEQ		.mimic_chest				; $FE mimic chest
 		INY
-		BEQ		loc_1296D2
+		BEQ		.man_eater_chest			; $FD man-eater
 		INY
-		BEQ		loc_1296E8
-loc_129698:
+		BEQ		.meteorite_armband_chest					; $FC Meteorite Armband?
+.money_chest:
 		LDX		#0
 		STX		_msg_number_parameter_F8+2
 		STX		byte_D0
 		STX		byte_CF
-		LDA		_tmp_ptrB4
+		LDA		_tmp_ptrB4					; get rid of $80 bit
 		ASL
 		ASL
-		ROL		byte_CF
+		ROL		byte_CF						; mul to 8
 		ASL
 		ROL		byte_CF
 		STA		_msg_number_parameter_F8
 		STA		byte_CE
 		LDA		byte_CF
-		STA		_msg_number_parameter_F8+1
-		JSR		_sram_b0_s1B_players_gold_add	; probably the result of getting gold from a chest
+		STA		_msg_number_parameter_F8+1	; set number param to message display
+		JSR		_sram_b0_s1B_players_gold_add	; gold from chest added
 		MSGX	_msg_m00,$026
 		JMP		.done_run_command_search
-loc_1296BD:
-		MSGX	_msg_m00,$149
+
+.empty_chest:
+		MSGX	_msg_m00,$149	; "Chest is empty"
 		JMP		.done_run_command_search
-.mimic_or_man_eater_chest:
+
+.mimic_chest:
 		LDA		_global_flags_array.byte10
-		BMI		loc_1296BD
+		BMI		.empty_chest
 		MSGX	_msg_m00,$1AC	; "Wow! The treasure chest is a mimic!"
 		JSR		_sleep_30
 		LDA		#$C
-		BNE		loc_1296DF
-loc_1296D2:
+		BNE		loc_1296DF	; unconditional
+
+.man_eater_chest:
 		LDA		_global_flags_array.byte10
-		BMI		loc_1296BD
+		BMI		.empty_chest
 		MSGX	_msg_m00,$1AD	; "Whoa! The treasure chest is a man-eater!"
 		JSR		_sleep_30
 		LDA		#$12
@@ -3367,13 +3362,15 @@ loc_1296DF:
 		FARX	_b0_s1_battle_typeA_launch
 		JSR		sub_174CBD
 		JMP		.done_run_command_search
-loc_1296E8:
+
+.meteorite_armband_chest:
 		LDA		#$4B
 		STA		_tmp_ptrB4
-		JSR		loc_12986F
+		JSR		.item_found_ex
 		FARX	_b6_s18
 		JMP		.done_run_command_search
-loc_1296F5:
+
+_mummy_sneak_attack_from_chest:
 		LDA		_tmp_ptrB4
 		PHA
 		MSGX	_msg_m00,$13E		; "From out of nowhere, eerie voices are heard"
@@ -3417,7 +3414,8 @@ loc_1296F5:
 		INX							; test for end of loop through switch table, size of data, 104 bytes (41 records)
 		CPX		#[_special_events_locatoin_end-_special_events_locatoin_list]
 		BNE		.search_switch_next
-; if this was no special 'switch' location, pretend we were searching at our feet, and nothing was found
+; if this was no special 'switch' location, pretend we were
+; searching at our feet, and nothing was found
 		MSGX	_msg_m00,$147  ; "<name> examines the ground at <her/his> feet"
 .but_nothing_could_be_found:
 		MSGX	_msg_m00,$146 ; "But nothing can be found!"
@@ -3427,12 +3425,12 @@ loc_1296F5:
 
 ; special switch related?
 .do_more_lookup1:
-		LDA		_special_events_locatoin_list,X				; grab the final byte of the switch struct (replacement tile) and stash it
+		LDA		_special_events_locatoin_list,X	; grab the final byte of the switch struct (replacement tile) and stash it
 		PHA
 		MSGX	_msg_m00,$147				; "<name> examines the ground at <her/his> feet"
 		PLA
 		STA		word_6+1					; stash it again
-		JSR		sub_129600					; read some kind of... tileset flags byte and search for special values
+		JSR		_get_tile_collision_type_under_players_feet					; read some kind of... tileset flags byte and search for special values
 		CMP		#1
 		BEQ		.but_nothing_could_be_found
 		CMP		#$A
@@ -3445,7 +3443,7 @@ loc_1296F5:
 		LDA		word_6+1					; unstash that thing we just stashed
 loc_12976B:										
 		AND		#$7F						; mask off special handling flag, left only with tile number
-		JSR		sub_1295EB
+		JSR		_set_tile_at_player_position
 		JSR		_ppu_set_dequeue_flag
 		LDA		#$F
 		BNE		.msg1xx_and_done_search	; unconditional jump
@@ -3594,7 +3592,7 @@ loc_12982B:
 		BCS		loc_12985A
 		JSR		_test_chest_open_flag
 		BCC		loc_129868
-loc_129847:
+.already_opened:
 		LDA		_tmp_ptrB4							; sets up to search a function pointer table
 		JSR		_item_obtain_lookup
 		JMP		loc_129856
@@ -3617,7 +3615,7 @@ loc_129868:
 .item_found:
 		LDA		_tmp_ptrB4
 		BMI		._but_nothing_could_be_found
-loc_12986F:
+.item_found_ex:
 		STA		byte_D3
 		MSGX	_msg_m00,$065		; "<name> finds the <item>"
 		JSR		_sram_b0_s31_get_party_chars_list
@@ -3809,28 +3807,28 @@ locret_1299B5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1299B6:
+_get_chest_idx_player_stand_on:
 		LDA		#>[_area_tilemap]
 		STA		word_6C+1
 		LDA		#<[_area_tilemap]
 		STA		word_6C
-		STA		word_4
+		STA		word_4				; here must be 0. fix it, if _are_tilemap is shifted somehow
 loc_1299C0:
 		LDY		#0
-		LDA		(word_6C),Y
+		LDA		(word_6C),Y			; scan the whole are map
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
-		CMP		#3
-		BNE		loc_1299DD
+		CMP		#3					; test the particular collision glaf
+		BNE		loc_1299DD			; look only for type 3 tiles (chest?)
 		FARX	_bE_s20_decode_map_ptr_to_XY
-		CPY		_playerMapY
+		CPY		_playerMapY			; test if this tile is under the players feet
 		BNE		loc_1299DB
 		CPX		_playerMapX
 		BEQ		loc_1299E5
 loc_1299DB:
-		INC		word_4
+		INC		word_4				; increase counter of chests
 loc_1299DD:
 		INC		word_6C
 		BNE		loc_1299E3
@@ -3838,17 +3836,18 @@ loc_1299DD:
 loc_1299E3:
 		BNE		loc_1299C0
 loc_1299E5:
-		LDA		word_4
+		LDA		word_4				; return chest number for the current map
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; look for particular map data and corresponding chests number on it,
-; calculating the resulting chest sum which is a global chest index
-; X is a chest blag byte idx,
-; Y is a chest flag bit number
+; input argument is a chest index for the current map and current map number
+; calculating the global chest number
+; test the chest open/close status, return at as well as chest flag indexes:
+; X is a chest flag byte idx,
+; Y or byte_4 is a chest flag bit number
 ;
-_bC_s1F_get_chest_idx:
-		TAX									; initial index of chest to begin with (0 or 1)
+_bC_s1F_get_chest_flag_and_idx:
+		TAX									; chest index for the current map (counted from left to right top to bottom tile by tile)
 		LDA		_mapNumber					; special case test
 		CMP		#$75
 		BNE		loc_1299FD
@@ -3857,17 +3856,17 @@ _bC_s1F_get_chest_idx:
 		BNE		loc_1299FD					; test all newtown flags?
 		LDA		_global_flags_array.byte2
 		BMI		loc_1299FD
-		INX
+		INX									; skip some chests for the particular map
 		INX
 loc_1299FD:
 		TXA
-		STA		word_4						; store initial counter
+		STA		word_4						; store initial chest number
 		LDX		#0
 loc_129A02:
 		LDA		#_bA_d14_chests_count_list_fidx	; get the mapNumber from table
 		JSR		_sys0_byte_read_x
 		INX
-		CMP		_mapNumber
+		CMP		_mapNumber						; and check if we on it
 		BEQ		loc_129A1B						; if number doesn't match
 		LDA		#_bA_d14_chests_count_list_fidx	; get the number of chests on this location
 		JSR		_sys0_byte_read_x
@@ -3879,7 +3878,7 @@ loc_129A02:
 		BCC		loc_129A02					; repeat to the end of table
 loc_129A1B:
 		LDA		word_4
-		STA		_chest_tmp_idx				; sum of chests until we reach particular location
+		STA		_chest_tmp_idx				; sum of chests until we reach particular location in table
 
 ;; FALLTHROUGH ;;
 
@@ -4117,34 +4116,39 @@ loc_129AE6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s1E:
-		JSR		sub_129600
+; check the content of the chest, tells you if it's empty,
+; not empty chests are glows Blue
+; mimic/man-eater chests are glows Red
+; at Pyramid 4F all chests glows Yellow
+;
+_bC_s1E_spell_x_ray_use:
+		JSR		_get_tile_collision_type_under_players_feet
 		CMP		#3
-		BNE		loc_129B23
-		JSR		sub_1299B6
-		JSR		_bC_s1F_get_chest_idx
-		LDY		#$3A
+		BNE		loc_129B23				; skip if not a chest
+		JSR		_get_chest_idx_player_stand_on
+		JSR		_bC_s1F_get_chest_flag_and_idx
+		LDY		#$3A	; $13A "The treasure chest seems to be empty"
 		BCC		loc_129AFE
-		BNE		loc_129B1D
+		BNE		loc_129B1D				; branch if chest is open
 loc_129AFE:
-		TXA
+		TXA								; calculate global chest index
 		ASL
 		ASL
 		ASL
-		ADC		word_4
+		ADC		word_4					; since we erased Y, use copy in byte_4
 		TAX
-		LDA		#_bA_d15_fidx
-		JSR		_sys0_byte_read_x
-		TAX
+		LDA		#_bA_d15_chests_content_list_fidx
+		JSR		_sys0_byte_read_x		; read it's content
+		TAX								; send it to X
 		LDA		_mapNumber
 		CMP		#$D3
-		BEQ		loc_129B1B
+		BEQ		loc_129B1B				; if map is #$D3 msg $138 "A Yellow light glows within the treasure chest"
 		INX
-		BEQ		loc_129B1D
+		BEQ		loc_129B1D				; $FF the chest is empty inside
 		INX
-		BEQ		loc_129B1A
+		BEQ		loc_129B1A				; $FE msg $137 "A Red light glows..."
 		INX
-		BNE		loc_129B1C
+		BNE		loc_129B1C				; $FD - the same $137, any other value msg $139 "A Blue light glows..."
 loc_129B1A:
 		DEY
 loc_129B1B:
@@ -5577,6 +5581,7 @@ _bC_sB:
 		JSR		_bC_s17_sys0_spr_effects_call
 locret_12A47A:
 		RTS
+		
 byte_12A47B:
 		.BYTE	_bC_s38_fidx
 		.BYTE	_bD_s19_fidx
@@ -7207,7 +7212,7 @@ _bC_s14:
 		JSR		sub_12B041
 		JSR		sub_12B080
 		JSR		sub_12B0B0
-		JSR		sub_12B01C
+		JSR		_item_staff_of_change_timer
 		JSR		sub_12B0FA
 loc_12AFA9:
 		LDA		byte_9A
@@ -7268,7 +7273,7 @@ off_12AFEE:
 		.WORD	sub_12B9A1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12B01C:
+_item_staff_of_change_timer:
 		LDA		_player_vehicle
 		BNE		locret_12B040
 		LDA		_global_flags_array.byte14
@@ -7281,7 +7286,7 @@ sub_12B01C:
 		JSR		_wait_for_nmi_is_over_sync
 		FARX	_bE_s10
 		JSR		_wrap_bE_sD_wnd3E
-		MSGX	_msg_m00,$1AF
+		MSGX	_msg_m00,$1AF	; "The Staff of Change effect wears off"
 		FARX	_bE_s33
 locret_12B040:
 		RTS
@@ -7406,7 +7411,7 @@ loc_12B0FF:
 		LDA		byte_93,Y
 		AND		#$1F
 		TAX
-		LDA		byte_6DE0,X
+		LDA		_tile_type_and_collision_flags,X
 		CMP		#5
 		BEQ		locret_12B123
 		CMP		#6
@@ -7503,7 +7508,7 @@ sub_12B1A2:
 		BEQ		loc_12B1CB
 loc_12B1AC:
 		LDA		#8
-		STA		byte_6DF3
+		STA		_tile_type_and_collision_flags+$13
 		RTS
 loc_12B1B2:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status

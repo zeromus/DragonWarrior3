@@ -20,7 +20,7 @@
 		PTR_IDX		_bA_s17
 
 		PTR_IDX		_bA_d14_chests_count_list
-		PTR_IDX		_bA_d15
+		PTR_IDX		_bA_d15_chests_content_list
 
 ; =============== S U B	R O U T	I N E =======================================
 ; input arguments: X:A - 9-bit message index
@@ -1933,7 +1933,14 @@ _bA_d14_chests_count_list:
 		.BYTE	$CA,  1,$CB,  6,$D1,  1,$D2,  2,$D3, $C,$D4,  1,$D6,  1,$D7,  2
 		.BYTE	$DB,  1,$DC,  2,$DE,  1,$E5,  4,$E7,  3,$E9,  1,$EE,  2,$F0,  8
 		.BYTE	$F1,  1,$F2,  1,$39,  2,$A7,  3,$35,  1,$62,  1,$EB,  1,$17,  1
-_bA_d15:
+
+; list ot u8[$C1] chests in game, all chests content is predetermined and
+; never change
+; $FF - empty chest
+; $FE,$FD - mimic/man-eater chests
+; $7F, $8x - money chest, (value & 0x7F) * 8, so $81 is 8 gold, $7F 1016 maximum value
+;
+_bA_d15_chests_content_list:
 		.BYTE	$FF, $F,$4E,$42,$5A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$48,  8,  1,$FF
 		.BYTE	$82,$30,$65,$68,$A4,$21,  1,$9D,$67,$FD,$65,$C5,$FD,$34,$9F,$FE
 		.BYTE	$FE,$63,$FF,$FF,$FF,$FF,$FD,$FD,$FF,$FF,$63,$68,$FE,$7F,$68,$90
