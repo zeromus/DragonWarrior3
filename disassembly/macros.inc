@@ -82,6 +82,7 @@ _Z = $3E
 _ldt = $57
 ; strike
 _strk = $58
+_star = $5A
 ; apostrophe right up
 _apa = $62
 ; arrow
@@ -98,6 +99,8 @@ _sem = $6A
 _str = $6B
 ; leftmost dot
 _dot = $6C
+_lparen = $6D
+_rparen = $6E
 _que = $6F
 _exc = $70
 ; when textbox is waiting for user to scroll

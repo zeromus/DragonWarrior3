@@ -1473,7 +1473,7 @@ _MM_handle_selection:
 
 ; =============== S U B	R O U T	I N E =======================================
 _MM_continue_quest:
-		JSR		sub_B2B48
+		JSR		_MM_select_existing_slot
 		JSR		sub_B2917
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1541,7 +1541,7 @@ locret_B295A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _MM_change_message_speed:
-		JSR		sub_B2B48
+		JSR		_MM_select_existing_slot
 		JSR		sub_B2917
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1558,7 +1558,7 @@ locret_B2974:
 
 ; =============== S U B	R O U T	I N E =======================================
 _MM_begin_new_quest:
-		JSR		loc_B2B51
+		JSR		_MM_select_empty_slot
 		JSR		sub_B2917
 		LDX		#0
 		JSR		sub_B2BB5
@@ -1590,7 +1590,7 @@ _MM_begin_new_quest:
 		DEX
 		BPL		.push_name_on_stack
 
-		SYSX	_display_window_ex,#WND_CHOOSE_SEX				; choose sex
+		SYSX	_display_window_ex,#WND_MM_CHOOSE_SEX 
 		STA		word_4
 		LDX		#0
 loc_B29B0:
@@ -1665,14 +1665,14 @@ locret_B2A28:
 
 ; =============== S U B	R O U T	I N E =======================================
 _MM_copy_quest:
-		JSR		sub_B2B48
+		JSR		_MM_select_existing_slot
 		JSR		sub_B2B98
 		JSR		sub_B2BB5
 		LDA		word_3C
 		STA		word_3E
 		LDA		word_3C+1
 		STA		word_3E+1
-		JSR		loc_B2B51
+		JSR		_MM_select_empty_slot
 		JSR		sub_B2B98
 		PHA
 		JSR		sub_B2BB5
@@ -1712,7 +1712,7 @@ loc_B2A62:
 
 ; =============== S U B	R O U T	I N E =======================================
 _MM_erase_quest:
-		JSR		sub_B2B48
+		JSR		_MM_select_existing_slot
 		STA		byte_CE
 		JSR		sub_B2B98
 		LDA		#$FE
@@ -1851,18 +1851,25 @@ sub_B2B3C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Runs the "adventure log" selector for the main menu
+; Runs the "adventure log" selector for the main menu's copy, continue, etc. options
+; This can only happen if we have at least one existing slot. Is this is important?
 ;
-sub_B2B48:
+_MM_select_existing_slot:
 		LDA		#$FF
-		JSR		sub_B2B73
-		ADC		#$5A
-		BNE		loc_B2B58
-loc_B2B51:
+		JSR		_MM_scan_slots_exist		; find full slots. turn the return value to a wnd resource offset,
+		ADC		#WND_CHOOSE_ACTIVE_SLOT_1	; 0 is a possible return value, although I don't see how
+		BNE		.mm_run_slot_selector		; unconditional tailcall
+
+; =============== S U B	R O U T	I N E =======================================
+; Runs the "adventure log" selector for the main menu's "Begin a new quest" option.
+; This can only happen if we have at least one free slot. Is this is important?
+;
+_MM_select_empty_slot:
 		LDA		#0
-		JSR		sub_B2B73
-		ADC		#$50
-loc_B2B58:
+		JSR		_MM_scan_slots_exist		; find empty slots. turn the return value to a wnd resource offset,
+		ADC		#$50						; 0 is a possible return value, although I don't see how
+
+.mm_run_slot_selector:
 		FARX	_bE_s0_display_window_ex
 		CMP		#$FF
 		BEQ		loc_B2B70
@@ -1883,24 +1890,27 @@ loc_B2B70:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2B73:
+; Finds full (A=#$FF) (?) or empty (A=#$00) (?) slots and stores resulting bitmask in byte_42 and notably returns it in A
+; This seems waaaaay excessively complicated.
+;
+_MM_scan_slots_exist:
 		EOR		byte_6A69
 		STA		word_4
 		LDX		#1
-		STX		word_4+1
+		STX		word_4+1		; u8[5] is reset to 1. this is going to be a bitmask
 		DEX
-		STX		word_6
-		LDX		#3
+		STX		word_6			; u8[6] is reset to 0
+		LDX		#3				; setup a 3 times counter
 loc_B2B81:
 		LSR		word_4
-		BCS		loc_B2B8B
+		BCS		loc_B2B8B		; branch if 1 was shifted out (dont incorporate result)
 		LDA		word_4+1
 		ADC		word_6
-		STA		word_6
+		STA		word_6			; u8[6] += u8[5] (incorporate into final bit)
 loc_B2B8B:
-		ASL		word_4+1
-		DEX
-		BNE		loc_B2B81
+		ASL		word_4+1		; shift up the bitmask
+		DEX						; decrement counter
+		BNE		loc_B2B81		; branch up if we havent finished 3 times counter
 		DEC		word_6
 		LDA		word_6
 		STA		byte_42

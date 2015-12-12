@@ -1,4 +1,49 @@
-Placeholders
+MENU Commands (seem to be different from MESSAGE.. partly? entirely?
+
+example: $80,$03 - print player 1's HP right aligned in a field of size 3
+example: $99,$80 - print slot 1 hero's name LEFT aligned in a field of size 8 (i'm 90% sure)
+
+These values are probably picked apart into a numeric 1,2,3,4 parameter. IOW, the following bitfields:
+
+[CnnP PPPP]
+    C - command bit (set for all these commands)
+   nn - Numeric parameter
+ppppp - Chosen parameter
+
+$80 - HP of player 1
+$81 - MP of player 1
+$89 - .. a player's attack power ..
+$8B - .. seems to print gold pieces ..
+$8C - EXP of player 1
+$8D - LEVEL of player 1
+$90 - Name of player 1 (used by post-battle info panel)
+$92 - Class of player 1
+$99 - Name of Slot 1 hero (used by main menu)
+
+$A0 - HP of player 2
+$A1 - MP of player 2
+$AC - EXP of player 2
+$AD - LEVEL of player 2
+$B0 - Name of player 2?
+$B2 - Class of player 2
+$B9 - Name of Slot 2 hero (used by main menu)
+
+$C0 - HP of player 3
+$C1 - HP of player 3
+$CC - EXP of player 3
+$CD - LEVEL of player 3
+$D0 - Name of player 3
+$D2 - Class of player 3
+$D9 - Name of Slot 3 hero (used by main menu)
+
+$E0 - HP of player 4
+$E1 - MP of player 4
+$EC - EXP of player 4
+$ED - LEVEL of player 4
+$F0 - Name of player 4
+$F2 - Class of player 4
+
+MESSAGE Placeholders
 
 $B0 - His/Her of actor
 $B1 - Himself/Herself of actor?
@@ -18,5 +63,17 @@ $EB - New paragraph
 $EE - Terminate string 1
 $EF - Terminate string 2
 $FD - Some control code probably
-$FE - 
+$FE - spaces or tabs?
 $FF - Terminate string 3
+
+--------------------
+
+Questionable:
+$9E or $8F - spaces or tabs?
+$DE - tab? 4 spaces
+$FE,$9E - 9 spaces
+$9E,$8F - 3 spaces
+
+
+Maybe some of the questionable spaces or tabs are gotoxys
+
