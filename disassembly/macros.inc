@@ -117,7 +117,11 @@ _herhimself = $B1
 _heshe = $B2
 _himher = $B3
 _if_plural = $C0
+; name of merchant you set to make a town
+_merchant = $ED
+_class = $F0
 _idx = $F2
+_spell = $F3
 _item = $F4
 _name = $F5
 _number = $F8

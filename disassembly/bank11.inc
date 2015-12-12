@@ -236,16 +236,16 @@ _msg242:		.BYTE	_apu,_W,_h,_o,_s,_e,_,_p,_r,_o,_f,_e,_s,_s,_i,_o,_n,_,_d,_o,_,_y
 _msg243:		.BYTE	_apu,_I,_d,_i,_o,_t,_exc,$EB
 				.BYTE	_Y,_o,_u,_,_w,_i,_s,_h,_,_t,_o,_,_q,_u,_i,_t,_,_b,_e,_i,_n,_g,_,_a,_,_h,_e,_r,_o,_exc,_que,$EB
 				.BYTE	_T,_h,_a,_t,_,_o,_n,_e,_,_t,_h,_i,_n,_g,_,_I,_,_w,_i,_l,_l,_,_n,_o,_t,_,_a,_l,_l,_o,_w,_exc,_exc,_apd,$EF
-_msg244:		.BYTE	_apu,_H,_u,_h,_exc,_,_name,_,_i,_s,_n,_apo,_t,_,_e,_v,_e,_n,_,_a,_t,_,_f,_u,_l,_l,_,$F0,_,_s,_t,_a,_t,_u,_s,_exc,$FD,$EB
+_msg244:		.BYTE	_apu,_H,_u,_h,_exc,_,_name,_,_i,_s,_n,_apo,_t,_,_e,_v,_e,_n,_,_a,_t,_,_f,_u,_l,_l,_,_class,_,_s,_t,_a,_t,_u,_s,_exc,$FD,$EB
 				.BYTE	_,_,_,$EB
 				.BYTE	_W,_a,_i,_t,_,_t,_i,_l,_l,_,_y,_o,_u,_,_g,_e,_t,_,_t,_o,_,_a,_,_h,_i,_g,_h,_e,_r,_,_s,_t,_a,_t,_u,_s,_exc,_apd,$EF
 _msg245:		.BYTE	_apu,_W,_h,_i,_c,_h,_,_p,_r,_o,_f,_e,_s,_s,_i,_o,_n,_,_d,_o,_e,_s,_,_name,_,_w,_a,_n,_t,_,_t,_o,_,_c,_h,_o,_o,_s,_e,_que,_apd,$EF
 _txt_block25:
 _msg246:		.BYTE	_apu,_D,_u,_n,_c,_e,_exc,$EB
 				.BYTE	_Y,_o,_u,_apo,_r,_e,_,_a,_l,_r,_e,_a,_d,_y,_,_t,_h,_a,_t,_exc,_apd,$EE
-_msg247:		.BYTE	_apu,_name,_,_w,_a,_n,_t,_s,_,_t,_o,_,_b,_e,_,$F0,_que,_apd,$EF
+_msg247:		.BYTE	_apu,_name,_,_w,_a,_n,_t,_s,_,_t,_o,_,_b,_e,_,_class,_que,_apd,$EF
 _msg248:		.BYTE	_apu,_A,_r,_e,_,_y,_o,_u,_,_p,_r,_e,_p,_a,_r,_e,_d,_,_t,_o,_,_b,_e,_g,_i,_n,_,_y,_o,_u,_r,_,_t,_r,_a,_i,_n,_i,_n,_g,_,_a,_g,_a,_i,_n,_,_f,_r,_o,_m,_,_l,_e,_v,_e,_l,_,_o,_n,_e,_que,_apd,$EF
-_msg249:		.BYTE	_apu,_V,_e,_r,_y,_,_w,_e,_l,_l,_dot,_,_F,_r,_o,_m,_,_n,_o,_w,_,_o,_n,_,_name,_,_i,_s,_,_a,_,$F0,_smc,$EF
+_msg249:		.BYTE	_apu,_V,_e,_r,_y,_,_w,_e,_l,_l,_dot,_,_F,_r,_o,_m,_,_n,_o,_w,_,_o,_n,_,_name,_,_i,_s,_,_a,_,_class,_smc,$EF
 _msg24A:		.BYTE	$FD,$EB
 				.BYTE	_apu,_S,_o,_sem,_,_b,_e,_,_o,_n,_,_y,_o,_u,_r,_,_w,_a,_y,_exc,_apd,$EF
 _msg24B:		.BYTE	_apu,_S,_o,_dot,_,_Y,_o,_u,_apo,_r,_e,_,_n,_o,_t,_,_c,_h,_a,_n,_g,_i,_n,_g,_,_p,_r,_o,_f,_e,_s,_s,_i,_o,_n,_s,_,_a,_f,_t,_e,_r,_,_a,_l,_l,_dot,_,_V,_e,_r,_y,_,_w,_e,_l,_l,_smc,$EE
