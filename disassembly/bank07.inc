@@ -1577,7 +1577,7 @@ _MM_begin_new_quest:
 		FARX	_b6_s14_name_entry_screen				; name goes to $9
 		FARX	_b6_s20_player_name_verify
 		BNE		.name_is_ok											; continue process if no match?
-		SYSX	_display_window_ex,#WND_INPUT_YOUR_NAME
+		SYSX	_display_window_ex,WND_INPUT_YOUR_NAME
 		JSR		_pause_or_skip
 		JMP		.enter_name_again
 
@@ -1590,7 +1590,7 @@ _MM_begin_new_quest:
 		DEX
 		BPL		.push_name_on_stack
 
-		SYSX	_display_window_ex,#WND_MM_CHOOSE_SEX 
+		SYSX	_display_window_ex,WND_MM_CHOOSE_SEX 
 		STA		word_4
 		LDX		#0
 loc_B29B0:
