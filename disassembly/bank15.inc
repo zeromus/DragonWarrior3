@@ -39,8 +39,8 @@ _msg692:		.BYTE	_apu,_W,_h,_e,_w,_exc,_,_T,_h,_a,_t,_apo,_s,_,_a,_,_r,_e,_l,_i,_
 _msg693:		.BYTE	_apu,_I,_,_s,_e,_e,_dot,_,_I,_,_s,_h,_a,_l,_l,_,_n,_o,_t,_,_m,_a,_k,_e,_,_y,_e,_,_c,_o,_n,_t,_i,_n,_u,_e,_,_i,_n,_,_s,_o,_m,_e,_t,_h,_i,_n,_g,_,_y,_e,_,_d,_i,_s,_l,_i,_k,_e,_smc,$FD,$EB
 				.BYTE	_apu,_I,_,_u,_n,_d,_e,_r,_s,_t,_a,_n,_d,_,_n,_o,_w,_sem,_,_name,_dot,$EB
 				.BYTE	_I,_t,_apo,_s,_,_b,_e,_t,_t,_e,_r,_,_f,_o,_r,_,_t,_h,_e,_e,_,_t,_o,_,_c,_o,_n,_t,_i,_n,_u,_e,_,_y,_o,_u,_r,_,_t,_r,_a,_v,_e,_l,_s,_smc,$EF
-_msg694:		.BYTE	_apu,_T,_h,_i,_s,_,_i,_s,_,_t,_h,_e,_,_t,_o,_w,_n,_,_t,_h,_a,_t,_,$ED,_,_b,_u,_i,_l,_t,_smc,$EF
-_msg695:		.BYTE	_apu,_B,_u,_t,_,_i,_t,_apo,_s,_,_n,_o,_t,_,_j,_u,_s,_t,_,$ED,_apo,_s,_,_t,_o,_w,_n,_,_a,_n,_y,_m,_o,_r,_e,_smc,$EF
+_msg694:		.BYTE	_apu,_T,_h,_i,_s,_,_i,_s,_,_t,_h,_e,_,_t,_o,_w,_n,_,_t,_h,_a,_t,_,_merchant,_,_b,_u,_i,_l,_t,_smc,$EF
+_msg695:		.BYTE	_apu,_B,_u,_t,_,_i,_t,_apo,_s,_,_n,_o,_t,_,_j,_u,_s,_t,_,_merchant,_apo,_s,_,_t,_o,_w,_n,_,_a,_n,_y,_m,_o,_r,_e,_smc,$EF
 _msg696:		.BYTE	_apu,_H,_e,_y,_sem,_,_c,_u,_t,_i,_e,_,_p,_i,_e,_exc,$EB
 				.BYTE	_W,_a,_n,_t,_,_t,_o,_,_h,_a,_v,_e,_,_y,_o,_u,_r,_,_f,_o,_r,_t,_u,_n,_e,_,_t,_o,_l,_d,_que,_apd,$EF
 _msg697:		.BYTE	_apu,_O,_h,_sem,_,_t,_o,_o,_,_s,_t,_u,_c,_k,_,_u,_p,_sem,_,_h,_u,_h,_que,$EB

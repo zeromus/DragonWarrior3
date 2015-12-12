@@ -16,7 +16,7 @@
 _txt_block0:
 _msg000:		.BYTE	_name,_idx,_,_i,_s,_,_a,_s,_s,_e,_s,_s,_i,_n,_g,_,_t,_h,_e,_,_s,_i,_t,_u,_a,_t,_i,_o,_n,_dot,$EE
 _msg001:		.BYTE	_name,_idx,_,_a,_t,_t,_a,_c,_k,_s,_exc,$EE
-_msg002:		.BYTE	_name,_idx,_,_c,_h,_a,_n,_t,_s,_,$F3,_dot,$EE
+_msg002:		.BYTE	_name,_idx,_,_c,_h,_a,_n,_t,_s,_,_spell,_dot,$EE
 _msg003:		.BYTE	_name,_,_u,_s,_e,_s,_,_t,_h,_e,_,_item,_dot,$EE
 _msg004:		.BYTE	_name,_idx,_,_p,_r,_o,_t,_e,_c,_t,_s,_,_i,_t,_s,_e,_l,_f,_dot,$EE
 _msg005:		.BYTE	$FD,$EF
@@ -158,7 +158,7 @@ _msg074:		.BYTE	_name,_idx,_,_h,_a,_s,_,_c,_o,_m,_e,_,_t,_o,_,_i,_t,_s,_,_s,_e,_
 _msg075:		.BYTE	_number,_,_M,_P,_,_p,_o,_i,_n,_t,$C0,_,_a,_r,_e,_,_s,_n,_a,_t,_c,_h,_e,_d,_,_f,_r,_o,_m,_,_name,_idx,_dot,$EE
 _msg076:		.BYTE	_Z,_o,_m,_a,_,_n,_u,_l,_l,_i,_f,_i,_e,_s,_,_t,_h,_e,_,_p,_o,_w,_e,_r,_,_o,_f,_,_a,_l,_l,_,_t,_h,_e,_,_s,_p,_e,_l,_l,_s,_,_o,_f,_,_hero,_apo,_s,_,_p,_a,_r,_t,_y,_dot,$EE
 _msg077:		.BYTE	_name,_,_a,_s,_s,_u,_m,_e,_s,_,_herhis,_,_o,_r,_i,_g,_i,_n,_a,_l,_,_s,_h,_a,_p,_e,_dot,$EE
-_msg078:		.BYTE	_T,_h,_e,_,_e,_f,_f,_e,_c,_t,_,_o,_f,_,_t,_h,_e,_,$F3,_,_i,_s,_,_g,_o,_n,_e,_dot,$EE
+_msg078:		.BYTE	_T,_h,_e,_,_e,_f,_f,_e,_c,_t,_,_o,_f,_,_t,_h,_e,_,_spell,_,_i,_s,_,_g,_o,_n,_e,_dot,$EE
 _msg079:		.BYTE	_name,_idx,_,_i,_s,_,_u,_n,_h,_u,_r,_t,_dot,$EE
 _msg07A:		.BYTE	_M,_i,_s,_s,_e,_d,_exc,$EB
 				.BYTE	_name,_idx,_,_i,_s,_,_u,_n,_h,_u,_r,_t,_dot,$EE
