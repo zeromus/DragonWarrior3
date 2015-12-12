@@ -2476,7 +2476,7 @@ _windows_lib:
 		.WORD	_wnd1F
 		.WORD	_wnd20
 		.WORD	_wnd21
-		.WORD	_wnd22
+		.WORD	_wnd22_sage_spell_select
 		.WORD	_wnd23
 		.WORD	_wnd24
 		.WORD	_wnd25
@@ -2770,7 +2770,7 @@ _wnd21:
 		.BYTE	_U,_S,_E,$FF
 		.BYTE	_E,_Q,_U,_I,_P,$FF
 
-_wnd22:
+_wnd22_sage_spell_select:
 		.BYTE	$0A,$03,$B2,$81,$44,$21,$22,$A3,$01,$02,$0
 		.BYTE	_W,_i,_z,_a,_r,_d,$FF
 		.BYTE	_P,_i,_l,_g,_r,_i,_m,$FF

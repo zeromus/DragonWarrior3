@@ -32,6 +32,8 @@ WND_CHURCH = $17
 WND_YESNO = $1D
 WND_COMMAND_STATUS = $1E
 
+WND_SAGE_SPELL_SELECT = $22
+
 ; these are reused in the tavern too
 WND_MM_NAME_ENTRY = $40
 WND_MM_NAME_FIELD = $41
