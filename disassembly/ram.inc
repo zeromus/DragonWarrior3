@@ -929,53 +929,53 @@ _players_level: ; $700
 ;----------------------------------------------
 ; u8[4] - STR stat for 4 PCs
 ;
-_players_STR:
+_players_STR: ; $ 704
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - AGI stat for 4 PCs
 ;
-_players_AGI:
+_players_AGI: ; $ 708
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - INT stat for 4 PCs
 ;
-_players_INT:
+_players_INT: ; $ 70C
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - LUCK stat for 4 PCs
 ;
-_players_LUCK:
+_players_LUCK: ; $ 710
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - VIT stat for 4 PCs
 ;
-_players_VIT:
+_players_VIT: ; $ 714
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - class and gender flag for 4 players
 ; see class_ids.inc for meaning of classes. please write where the gender was?
 ;
-_players_class_gender:
+_players_class_gender: ; $ 718
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - HP for 4 players
 ;
-_players_HP:
+_players_HP: ; $ 71C
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - MHP for 4 players
 ;
-_players_MHP:
+_players_MHP: ; $ 720
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - MP for 4 players
 ;
-_players_MP:
+_players_MP: ; $ 724
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - MMP for 4 players
 ;
-_players_MMP:
+_players_MMP: ; $ 728
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[] pc.status - Status for 4 players
@@ -989,7 +989,7 @@ _players_MMP:
 ; N - "NM" status flag
 ; D - Death flag. Character is dead if clear
 ;
-_players_status:
+_players_status: ;  ; $ 72C
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u24[4] - EXP stat for 4 players
@@ -1017,21 +1017,21 @@ byte_75A:
 ;----------------------------------------------
 ; u8[4][8] 8 character name for 4 players
 ;
-_players_name:
+_players_name: ; $75C
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8[4][8] PC_inventory - 8 entries for 4 PCs
-_players_inventory_list:
+_players_inventory_list: ; $77C
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8[4][8] spells list, 4 for battle, 4 for command
-_players_spell:
+_players_spell: ; $79C
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
