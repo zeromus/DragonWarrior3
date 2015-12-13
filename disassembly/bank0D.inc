@@ -3739,7 +3739,7 @@ sub_142BC0:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142BCB:
 		MSGX	_msg_m00,$285
-		FARX	_b0_s50
+		FARX	_b0_s50_players_item_buffs_refresh
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4043,7 +4043,7 @@ loc_142E0F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E22:
-		MSGX	_msg_m00,$266
+		MSGX	_msg_m00,$266	; "Is there anything else?"
 		FARX	_bE_s1C_yes_or_no_question
 		CMP		#0
 		BNE		sub_142E35
@@ -4051,13 +4051,13 @@ sub_142E22:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E2F:
-		MSGX	_msg_m00,$262
+		MSGX	_msg_m00,$262	; "Deary me! Did you change your mind? That's probably just as well`<wait>"
 		JMP		sub_142E22
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142E35:
-		MSGX	_msg_m00,$267
-		FARX	_b0_s47
+		MSGX	_msg_m00,$267	; "Come back again!"
+		FARX	_b0_s47_players_next_EXP_calc
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5693,14 +5693,14 @@ _npc_hndl29:
 		STX		byte_2D
 		INX
 		STX		_players_returnable_locations+1
-		STX		byte_754
-		STX		byte_757
-		STX		byte_75A
+		STX		_players_returnable_locations+4
+		STX		_players_returnable_locations+7
+		STX		_players_returnable_locations+$A
 		INX
 		STX		_players_returnable_locations
-		STX		byte_753
-		STX		byte_756
-		STX		byte_759
+		STX		_players_returnable_locations+3
+		STX		_players_returnable_locations+6
+		STX		_players_returnable_locations+9
 		PLA
 		PLA
 		RTS
@@ -6363,7 +6363,7 @@ _bD_s24:
 		JSR		sub_143E67
 		LDA		#4
 		JSR		sub_143EB8
-		FARX	_b0_s50
+		FARX	_b0_s50_players_item_buffs_refresh
 		FARX	_bE_s33
 		RTS
 
@@ -6409,7 +6409,7 @@ sub_143E48:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_143E67:
-		FARX	_b0_s47
+		FARX	_b0_s47_players_next_EXP_calc
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_64
@@ -6422,7 +6422,7 @@ loc_143E75:
 		LDA		word_4
 		CMP		#$63
 		BNE		loc_143E88
-		MSGX	_msg_m00,$654
+		MSGX	_msg_m00,$654	; "<name> is now strong enough!"
 		JMP		loc_143EAF
 loc_143E88:
 		LDA		byte_D2
@@ -6430,13 +6430,13 @@ loc_143E88:
 		ADC		byte_D2
 		TAY
 		SEC
-		LDA		byte_6A3F,Y
+		LDA		_players_next_EXP,Y
 		SBC		_players_EXP,Y
 		STA		_msg_number_parameter_F8
-		LDA		byte_6A40,Y
+		LDA		_players_next_EXP+1,Y
 		SBC		_players_EXP+1,Y
 		STA		_msg_number_parameter_F8+1
-		LDA		byte_6A41,Y
+		LDA		_players_next_EXP+2,Y
 		SBC		_players_EXP+2,Y
 		STA		_msg_number_parameter_F8+2
 		LDA		#1
@@ -6462,7 +6462,7 @@ sub_143EBD:
 		LDA		_global_flags_array.byte16
 		AND		#$10
 		BEQ		loc_143ECC
-		MSGX	_msg_m00_break,$675
+		MSGX	_msg_m00_break,$675	; "The king seems to have lost all his power"
 loc_143ECC:
 		CMP		#$A
 		BNE		loc_143EDF
@@ -6512,11 +6512,13 @@ loc_143F13:
 		JMP		_wrap_msg_m00_b300_arg5C
 
 byte_143F25:
-		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A,  1,  2,  3, $B,  5
-		.BYTE	  6,  7,  8,  4, $F,  1,  2,  3,  4,  5,  6,$10,  8,  4,$11,$12
-		.BYTE	$13,$14,$15,$16,$17,$18,$19,$15,$1A,  1,  2,  3,  4,  5,  6,  7
-		.BYTE	  8,  4,$1B,  1,  2,  3,$1C,  5,  6,$1D,  8,  4,$1E,  1,  2,  3
-		.BYTE	  4,  5,  6,$20,  8,  4
+		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9
+		.BYTE	 $A,  1,  2,  3, $B,  5,  6,  7,  8,  4
+		.BYTE	 $F,  1,  2,  3,  4,  5,  6,$10,  8,  4
+		.BYTE	$11,$12,$13,$14,$15,$16,$17,$18,$19,$15
+		.BYTE	$1A,  1,  2,  3,  4,  5,  6,  7,  8,  4
+		.BYTE	$1B,  1,  2,  3,$1C,  5,  6,$1D,  8,  4
+		.BYTE	$1E,  1,  2,  3,  4,  5,  6,$20,  8,  4
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s21:

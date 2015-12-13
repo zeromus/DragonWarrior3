@@ -997,23 +997,14 @@ _players_status: ;  ; $ 72C
 _players_EXP:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; u8 returnable_locations[3] - a bit vector of locations visited, returnable targets. check _returnable_areas_tbl for meanings
+; u8 returnable_locations[4][3] - a bit vector of locations visited, returnable targets.
+; for some reason, ,every player has its separate returnable locations list, so, if some
+; player were dead if you visit some locations, it can't return to it.
+; but all locations are synced sometimes, investigate
+; check _returnable_areas_tbl for meanings
 ; 
 _players_returnable_locations:
-		.BYTE	0,0,0
-;----------------------------------------------
-byte_753:
-		.BYTE	0
-byte_754:
-		.BYTE	0,0
-byte_756:
-		.BYTE	0
-byte_757:
-		.BYTE	0,0
-byte_759:
-		.BYTE	0
-byte_75A:
-		.BYTE	0,0
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8[4][8] 8 character name for 4 players
 ;
@@ -1701,12 +1692,8 @@ byte_6A3D:
 		.BYTE	0
 byte_6A3E:
 		.BYTE	0
-byte_6A3F:
-		.BYTE	0
-byte_6A40:
-		.BYTE	0
-byte_6A41:
-		.BYTE	0,0,0,0,0,0,0,0,0,0
+_players_next_EXP:
+		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 byte_6A4B:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------

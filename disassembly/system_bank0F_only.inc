@@ -2112,7 +2112,7 @@ loc_177930:
 		FARX	_bE_s2F
 		FARX	_bE_s30
 		FARX	_bE_s16
-		FARX	_b0_s49
+		FARX	_b0_s49_set_returnable_locations_bit
 		LDX		#0
 		LDA		#$80
 loc_177950:

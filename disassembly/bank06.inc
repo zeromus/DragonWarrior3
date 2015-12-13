@@ -1356,7 +1356,7 @@ loc_9B545:
 loc_9B557:
 		LDA		byte_50
 		STA		byte_CF
-		FARX	_b0_s48
+		FARX	_b0_s48_get_count_returnable_locations
 		JSR		_b6_s13
 		FARX	_bE_s1B
 		FARX	_b0_s66
@@ -2581,14 +2581,14 @@ _b6_s1C:
 		SYSX	_apu_load,$03
 		LDA		#$FF
 		STA		_players_returnable_locations
-		STA		byte_753
-		STA		byte_756
-		STA		byte_759
+		STA		_players_returnable_locations+3
+		STA		_players_returnable_locations+6
+		STA		_players_returnable_locations+9
 		LSR
 		STA		_players_returnable_locations+1
-		STA		byte_754
-		STA		byte_757
-		STA		byte_75A
+		STA		_players_returnable_locations+4
+		STA		_players_returnable_locations+7
+		STA		_players_returnable_locations+$A
 		LDA		#$AC
 		STA		byte_9E
 		LDA		#$DB
@@ -2627,7 +2627,7 @@ _b6_s1E:
 		JSR		sub_9BE69
 		BCS		loc_9BE5A
 		FARX	_bE_s10
-		FARX	_b0_s47
+		FARX	_b0_s47_players_next_EXP_calc
 		JSR		_pause_or_skip
 loc_9BE5A:
 		LDA		#0

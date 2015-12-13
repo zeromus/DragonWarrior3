@@ -137,7 +137,7 @@ loc_680CD:
 .common_battle_won:							; battle won, restore the location music
 		JSR		_map_music_select_and_load
 .common_battle_won_ex:
-		FARX	_b0_s50
+		FARX	_b0_s50_players_item_buffs_refresh
 		LDA		_global_flags_array.byte2	; and clear the battle flag
 		AND		#$DF
 		STA		_global_flags_array.byte2

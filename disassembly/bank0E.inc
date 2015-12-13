@@ -235,7 +235,6 @@ _run_command_menu:
 		BNE		.check_command_selection
 		LDA		#3							; close the menu?
 		JMP		_bE_sB						; TAILCALL
-
 .check_command_selection:
 		CMP		#0
 		BEQ		.command_selection_talk		; TAILCALL
@@ -249,38 +248,30 @@ _run_command_menu:
 		BEQ		.command_selection_equip	; TAILCALL
 		FARX	_bC_s1D_run_command_search	; search
 		RTS
-
 .command_selection_spell:
-		FARX	_b0_s5B_non_battle_mode_spell_cast	; should probably be renamed orthogonally: _run_command_spell
+		FARX	_b0_s5B_run_command_spell
 		RTS
-
 .command_selection_status:
 		JMP		_run_command_status
-
 .command_selection_item:
-		FARX	_b0_s5D
-		FARX	_b0_s50
+		FARX	_b0_s5D_run_command_item_use
+		FARX	_b0_s50_players_item_buffs_refresh
 		RTS
-
 .command_selection_equip:
 		JMP		_run_command_equip
-
-; =============== S U B	R O U T	I N E =======================================
 .command_selection_talk:
 		LDA		_mapNumber
 		CMP		#$F						; test for lancel
 		BNE		_spell_talk_usual		; TAILCALL to usual handler
-
-; special handling for lancel: test position and do other weird stuff
-		LDA		_playerMapY
+		LDA		_playerMapY				; special handling for lancel: test position and do other weird stuff
 		CMP		#3
 		BNE		_spell_talk_usual
 		LDA		_players_pos_list+3
 		AND		#3
-		CMP		byte_644		; reference playerFacingDir
-		BEQ		_spell_talk_usual	; TAILCALL
+		CMP		byte_644				; reference playerFacingDir
+		BEQ		_spell_talk_usual		; TAILCALL
 		STA		byte_644
-		JSR		_spell_talk_usual	; TAILCALL
+		JSR		_spell_talk_usual		; TAILCALL
 		LDA		#0
 		STA		byte_644
 		RTS
@@ -722,7 +713,7 @@ sub_1584ED:
 loc_158504:
 		JSR		_bE_s10
 loc_158507:
-		FARX	_b0_s50
+		FARX	_b0_s50_players_item_buffs_refresh
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2518,7 +2509,7 @@ _windows_lib:
 		.WORD	_wnd48
 		.WORD	_wnd4A
 		.WORD	_wnd4B
-		.WORD	_wnd4C
+		.WORD	_wnd4C_merchant_command_item
 		.WORD	_wnd37
 		.WORD	_wnd4E
 		.WORD	_wnd4F
@@ -2919,10 +2910,12 @@ _wnd4A:
 _wnd4B:
 		.BYTE	 $A,  5,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF,  4
 		.BYTE	$FF,  5,$FF
-_wnd4C:
-		.BYTE	 $C,  5,$53,  0,$A0,$21,$22,$A3,  2,  2,  0,$39,$37,$29,$FF,$38
-		.BYTE	$36,$25,$32,$37,$2A,$29,$36,$FF,$28,$2D,$37,$27,$25,$36,$28,$FF
-		.BYTE	$25,$34,$34,$36,$25,$2D,$37,$29,$FF
+_wnd4C_merchant_command_item:
+		.BYTE	 $C,  5,$53,  0,$A0,$21,$22,$A3,  2,  2,  0
+		.BYTE	_U,_S,_E,$FF
+		.BYTE	_T,_R,_A,_N,_S,_F,_E,_R,$FF
+		.BYTE	_D,_I,_S,_C,_A,_R,_D,$FF
+		.BYTE	_A,_P,_P,_R,_A,_I,_S,_E,$FF
 _wnd4E:
 		.BYTE	  8,$10,$3B,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$51,$FF
 _wnd4F:
