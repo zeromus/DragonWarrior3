@@ -140,7 +140,7 @@ sub_20122:
 		FARX	_bD_s1F
 		RTS
 loc_2012C:
-		FARX	_b0_s48
+		FARX	_b0_s48_get_count_returnable_locations
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -298,7 +298,7 @@ sub_20200:
 		TAX
 		LDA		#0
 		STA		byte_635,X
-		FARX	_b0_s48
+		FARX	_b0_s48_get_count_returnable_locations
 		LDA		word_4+1
 		JMP		sub_206E8
 
@@ -415,7 +415,7 @@ sub_202DA:
 ; =============== S U B	R O U T	I N E =======================================
 sub_202E0:
 		JSR		sub_20720
-		FARX	_b0_s48
+		FARX	_b0_s48_get_count_returnable_locations
 		LDA		word_7C+1
 		ASL
 		ASL
@@ -1518,7 +1518,7 @@ loc_209E6:
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
 		SYSX	_apu_load,$13
-		FARX	_b0_s50
+		FARX	_b0_s50_players_item_buffs_refresh
 		LDA		_global_flags_array.byte5
 		AND		#1
 		BNE		loc_209FA
@@ -1805,8 +1805,7 @@ loc_20C36:
 		LDA		_players_status,Y
 		AND		_players_status+1,Y
 		BPL		loc_20C4A
-; fetch player's class. setting up money multiplier for merchant?
-		LDA		_players_class_gender,X
+		LDA		_players_class_gender,X					; fetch player's class. setting up money multiplier for merchant?
 		AND		#7
 		CMP		#CLASS_MERCHANT
 		BEQ		loc_20C4F
@@ -1828,10 +1827,8 @@ loc_20C4F:
 		JSR		_sram_b0_s1B_players_gold_add
 		MSGX	_msg_m00,$0B6	; "you have vanquished all of your foes""
 loc_20C6F:
-; calls a level-up related 3-times setup loop.
-; is this the main post-battle leveling up process?
-		FARX	_b0_s47
-		FARX	_b0_s46
+		FARX	_b0_s47_players_next_EXP_calc			; calls a recalculation next level value for each player
+		FARX	_b0_s46_players_level_up_test			; test if players are leveling up
 		LDA		byte_6A6B
 		CMP		#2
 		BEQ		loc_20C8B

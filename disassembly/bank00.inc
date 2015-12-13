@@ -62,22 +62,22 @@
 		PTR_IDX		_b0_s3D_player_detoxicate
 		PTR_IDX		_b0_s3D_player_revive
 		PTR_IDX		_b0_s45_check_if_item_equipped
-		PTR_IDX		_b0_s46
-		PTR_IDX		_b0_s47
-		PTR_IDX		_b0_s48
-		PTR_IDX		_b0_s49
+		PTR_IDX		_b0_s46_players_level_up_test
+		PTR_IDX		_b0_s47_players_next_EXP_calc
+		PTR_IDX		_b0_s48_get_count_returnable_locations
+		PTR_IDX		_b0_s49_set_returnable_locations_bit
 		PTR_IDX		_b0_s4D
 		PTR_IDX		_b0_s4E
 		PTR_IDX		_b0_s4F
-		PTR_IDX		_b0_s50
+		PTR_IDX		_b0_s50_players_item_buffs_refresh
 		PTR_IDX		_b0_s52_battle_typeFF_launch
 		PTR_IDX		_b0_s53_random_encounter_select
 		PTR_IDX		_b0_s54
 		PTR_IDX		_b0_s55
 		PTR_IDX		_b0_s56
-		PTR_IDX		_b0_s5B_non_battle_mode_spell_cast
+		PTR_IDX		_b0_s5B_run_command_spell
 		PTR_IDX		_b0_s5C_player_inventory_search_for_cursed_item
-		PTR_IDX		_b0_s5D
+		PTR_IDX		_b0_s5D_run_command_item_use
 		PTR_IDX		_b0_s5E_check_if_item_can_be_equipped
 		PTR_IDX		_b0_s5E_check_if_item_can_be_used
 		PTR_IDX		_b0_s60_get_item_type
@@ -3404,7 +3404,7 @@ _status_params_ptr_tbl:
 		.WORD	_players_name					; 3 u8[8][4] arrays startinf from names
 		.WORD	byte_6A4B						; 1 u8[4] array
 		.WORD	_party_formation				; 1 u8[4] array
-		.WORD	_party_equipment_buffs							; 1 u8[4] array
+		.WORD	_party_equipment_buffs			; 1 u8[4] array
 		.WORD	_player_battle_order_and_flags	; 2 u8[4] arrays
 		.WORD	_players_rDEF					; 2 u16[4] arrays
 		.WORD	byte_540 						; 3 u8[12] arrays
@@ -3610,7 +3610,9 @@ _common_spell_related_data:
 		.WORD	_common_spell_related_data0B
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s48:
+; return the number of currently available returnable locations
+;
+_b0_s48_get_count_returnable_locations:
 		JSR		_CE_mul3
 		LDA		_players_returnable_locations,X
 		STA		word_6
@@ -3654,29 +3656,27 @@ loc_9CF2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s49:
+; sets the returnable location bit for every non-dead player
+;
+_b0_s49_set_returnable_locations_bit:
 		LDX		#0
-
-; check our _mapNumber against a special list
 loc_9CF7:
-		LDA		_returnable_areas_tbl,X
+		LDA		_returnable_areas_tbl,X		; check our _mapNumber against a special list
 		CMP		_mapNumber
-		BEQ		loc_9D05			; branch for a match
+		BEQ		loc_9D05					; branch for a match
 		INX
-		CPX		#$14					; size of list
+		CPX		#$14						; size of list
 		BNE		loc_9CF7
 		RTS
-
-; found a match. probably test
 loc_9D05:
-		LDA		#0
+		LDA		#0							; found a match, number of location is X
 		STA		word_4
 		STA		word_4+1
 		STA		word_6
 		INX
 		SEC
 loc_9D0F:
-		ROL		word_4
+		ROL		word_4						; store the Xth bit in tmp var
 		ROL		word_4+1
 		ROL		word_6
 		DEX
@@ -3686,7 +3686,7 @@ loc_9D1A:
 		TXA
 		ASL
 		TAY
-		LDA		_players_status,Y
+		LDA		_players_status,Y			; check if player is not dead
 		AND		_players_status+1,Y
 		BPL		loc_9D44
 		TXA
@@ -3694,7 +3694,7 @@ loc_9D1A:
 		ASL
 		ADC		word_6+1
 		TAY
-		LDA		_players_returnable_locations,Y
+		LDA		_players_returnable_locations,Y	; apply return location bit
 		ORA		word_4
 		STA		_players_returnable_locations,Y
 		LDA		_players_returnable_locations+1,Y
@@ -3706,7 +3706,7 @@ loc_9D1A:
 loc_9D44:
 		INX
 		CPX		#4
-		BNE		loc_9D1A
+		BNE		loc_9D1A					; continue for all players
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3829,15 +3829,14 @@ locret_9E08:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Analyzes inventory for each player for items giving buffs
-; (not done being cracked yet)
+; Analyzes inventory for each player for items giving buffs and refresh buffs statuses
 ;
-_b0_s50:
+_b0_s50_players_item_buffs_refresh:
 		LDA		#0
 		STA		byte_CE
 .player_buff_loop:
 		LDA		byte_CE
-		ASL																	; player number to offset for _players_status
+		ASL											; player number to offset for _players_status
 		TAX
 		LDA		_players_status,X
 		BPL		loc_9E42
@@ -3855,7 +3854,7 @@ loc_9E1C:
 		PLA
 		TAY
 		LDA		byte_CF
-		ORA		#$80													; probably checking whether it's equipped
+		ORA		#$80								; probably checking whether it's equipped
 		CMP		word_4
 		BNE		loc_9E3B
 		LDX		byte_CE
@@ -3866,12 +3865,10 @@ loc_9E3B:
 		PLA
 		TAY
 		INY
-		CPY		#5														; size of _party_equipment_buffs list
+		CPY		#5									; size of _party_equipment_buffs list
 		BNE		loc_9E1C
-
-; finish looping across characters
 loc_9E42:
-		INC		byte_CE
+		INC		byte_CE								; finish looping across characters
 		LDA		byte_CE
 		CMP		#4
 		BCC		.player_buff_loop
@@ -3879,14 +3876,14 @@ loc_9E42:
 
 ; =============== T A B L E S =================================================
 ; A table of special items with buff effects, and the related buff flags (see _party_equipment_buffs)
+;
 _equipment_with_buffs_tbl:
 		.BYTE #ITEM_SACRED_ROBE
 		.BYTE #ITEM_WATER_FLYING_CLOTH
 		.BYTE #ITEM_ARMOR_OF_RADIANCE
 		.BYTE #ITEM_RING_OF_LIFE
 		.BYTE #ITEM_SHOES_OF_HAPPINESS
-; TODO - symbolic constants
-_equipment_buffs_tbl:
+_equipment_buffs_tbl:						; TODO - symbolic constants
 		.BYTE 1
 		.BYTE 1
 		.BYTE 3
@@ -3927,7 +3924,7 @@ _returnable_areas_tbl:
 		.BYTE	 $11 ; Rimuldar
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s5B_non_battle_mode_spell_cast:
+_b0_s5B_run_command_spell:
 		BIT		_global_flags_array.byte2	; special logic for the king
 		BVC		_spell_command_usual		; TAILCALL to usual handler
 		SYSX	_display_window,$3E			; if king display error message:
@@ -4558,13 +4555,13 @@ _b0_d3F_other_spell_related_data:
 ; =============== S U B	R O U T	I N E =======================================
 ; Seemingly the main post-battle leveling loop. Runs 4 times for 4 players
 ;
-_b0_s47:
+_b0_s47_players_next_EXP_calc:
 		LDX		#0
 loc_A35D:
 		TXA
 		PHA
-		STA		byte_CE ; store this player in a variable to be used by nested leveling logic
-		JSR		sub_A36C
+		STA		byte_CE					; store this player in a variable to be used by nested leveling logic
+		JSR		_player_next_EXP_level_represh
 		PLA
 		TAX
 		INX
@@ -4573,38 +4570,37 @@ loc_A35D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; level-up one player?
+; calculate next level EXP value for single player
 ; X: player number to levelup
 ;
-sub_A36C:
+_player_next_EXP_level_represh:
 		TXA
-; save X for later
-		PHA
+		PHA								; save X for later
 		LDA		_players_level,X
-		LDX		#0 ; select EXP stat curve
+		LDX		#0						; select EXP stat curve
 		JSR		_eval_stat_curve
-; restore A, multiply by 3 to slot it into the table at byte_6A3F
-		PLA
+		PLA								; restore A, multiply by 3 to slot it into the table at _players_next_EXP
 		STA		word_6+1
 		ASL
 		ADC		word_6+1
 		TAX
-; store u24[4] to table byte_6A3F
-		LDA		word_4
-		STA		byte_6A3F,X
+		LDA		word_4					; store u24[4] to table _players_next_EXP
+		STA		_players_next_EXP,X
 		LDA		word_4+1
-		STA		byte_6A3F+1,X
+		STA		_players_next_EXP+1,X
 		LDA		word_4+2
-		STA		byte_6A3F+2,X
+		STA		_players_next_EXP+2,X
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s46:
-; evaluating experience value (u24) setup previously at 6A3F. that's definitely the target XP for levelup
+; check if players experience exceeded the maximum for current level
+; execute levelup process for every character if test passed
+;
+_b0_s46_players_level_up_test:
 		LDX		#0
 		STX		byte_48
 		STX		byte_51
-loc_A393:
+_levelup_loop:
 		LDA		byte_51
 		ASL
 		TAX
@@ -4620,25 +4616,25 @@ loc_A393:
 		ADC		byte_51
 		TAX
 		LDA		_players_EXP+2,X
-		CMP		byte_6A41,X
+		CMP		_players_next_EXP+2,X
 		BCC		loc_A3CE
 		BEQ		loc_A3BA
-		BCS		sub_A3FB
+		BCS		_player_levelup				; jump out to levelup calc
 loc_A3BA:
 		LDA		_players_EXP+1,X
-		CMP		byte_6A40,X
+		CMP		_players_next_EXP+1,X
 		BCC		loc_A3CE
 		BEQ		loc_A3C6
-		BCS		sub_A3FB
+		BCS		_player_levelup				; jump out to levelup calc
 loc_A3C6:
 		LDA		_players_EXP,X
-		CMP		byte_6A3F,X
-		BCS		sub_A3FB
+		CMP		_players_next_EXP,X
+		BCS		_player_levelup				; jump out to levelup calc
 loc_A3CE:
 		INC		byte_51
 		LDX		byte_51
 		CPX		#4
-		BNE		loc_A393
+		BNE		_levelup_loop
 		LDA		byte_48
 		BEQ		locret_A3EF
 		JSR		_wndMINMAX_STAT
@@ -4648,15 +4644,12 @@ loc_A3CE:
 		FARX	_bE_sB
 locret_A3EF:
 		RTS
-loc_A3F0:
-; levelup player and repeat leveling process as needed?
-		LDX		byte_51
+_do_levelup:
+		LDX		byte_51						; levelup player, return to main loop to test other players
 		INC		_players_level,X
-		JSR		_b0_s47
-		JMP		loc_A393
-
-; =============== S U B	R O U T	I N E =======================================
-sub_A3FB:
+		JSR		_b0_s47_players_next_EXP_calc
+		JMP		_levelup_loop
+_player_levelup:
 		LDA		_global_flags_array.byte2
 		AND		#$20
 		BNE		loc_A410
@@ -4667,52 +4660,41 @@ sub_A3FB:
 		LDA		#$F4
 		STA		byte_48
 loc_A410:
-		MSGX	_msg_m00,$005	; "$FD,$EF"
+		MSGX	_msg_m00,$005		; "$FD,$EF"
 		LDA		#0
 		STA		byte_56
 		STA		byte_58
-		FARX	_bB_s3_apu_load	; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
+		FARX	_bB_s3_apu_load		; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
 		SYSX	_apu_load,$01
 		LDA		byte_51
 		STA		byte_D2
-		MSGX	_msg_m00,$0C0	; "<name> goes up to the next level
+		MSGX	_msg_m00,$0C0		; "<name> goes up to the next level
 		LDX		byte_51
-; player levels-up here
-		INC		_players_level,X
-; delays and jingles?
-		FARX	_bB_s7_apu_wait
+		INC		_players_level,X	; player levels-up here
+		FARX	_bB_s7_apu_wait		; delays and jingles?
 		JSR		_map_music_select_and_load
 		JSR		_wndBTL_STAT
-; take player's level back down 1?
-		LDX		byte_51
+		LDX		byte_51				; take player's level back down 1?
 		DEC		_players_level,X
 		LDA		byte_51
 		STA		byte_CE
-; initialize a loop in byte_52 across stats (STR first, etc.)
-		LDY		#0
+		LDY		#0					; initialize a loop in byte_52 across stats (STR first, etc.)
 		STY		byte_52
 loc_A448:
-; for the current stat, find the location of the players stats in ram and store in word_40
-		LDA		byte_52
+		LDA		byte_52				; for the current stat, find the location of the players stats in ram and store in word_40
 		ASL
 		TAY
 		LDA		_levelup_stat_ptr_tbl,Y
 		LDX		_levelup_stat_ptr_tbl+1,Y
 		STA		word_40
 		STX		word_40+1
-
-; push the player's level
-		LDX		byte_51
+		LDX		byte_51				; push the player's level
 		LDA		_players_level,X
 		PHA
-
-; remember which stat is being worked on. but increment it by 1 since _eval_stat_curve uses a numbering scheme rebased with EXP at 0
-		LDX		byte_52
+		LDX		byte_52				; remember which stat is being worked on. but increment it by 1 since _eval_stat_curve uses a numbering scheme rebased with EXP at 0
 		INX
 		JSR		_eval_stat_curve
-
-; reference results of _eval_stat_curve, add 10. stash into byte_42 as a holder for result
-		LDA		word_4
+		LDA		word_4				; reference results of _eval_stat_curve, add 10. stash into byte_42 as a holder for result
 		CLC
 		ADC		#10
 		STA		byte_42
@@ -4909,7 +4891,7 @@ loc_A59A:
 loc_A59E:
 		JSR		sub_A5B9
 loc_A5A1:
-		JMP		loc_A3F0
+		JMP		_do_levelup
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_A5A4:
@@ -5595,17 +5577,17 @@ _wnd3E_msg1xx_bE_s33:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s5D:
+_b0_s5D_run_command_item_use:
 		LDA		_global_flags_array.byte2
 		AND		#$40
-		BNE		_wrap_wnd3E_msg167_bE_s33
+		BNE		_wrap_wnd3E_msg167_bE_s33	; "The King bears no items"
 		SYSX	_display_window,$2C
 		LDX		#5
 		JSR		_sleep_X_sync
 		SYSX	_display_window,$69
 		FARX	_bA_sE
 		CMP		#$FF
-		BEQ		loc_AB46
+		BEQ		default_action_item_refresh_branch
 		STA		byte_45
 		STA		byte_53
 		STA		byte_D2
@@ -5613,10 +5595,10 @@ _b0_s5D:
 		STA		byte_CF
 		JSR		_b0_s28_player_inventory_item_read
 		LDA		word_4
-		BEQ		_wrap_wnd3E_msg148_bE_s33
+		BEQ		_wrap_wnd3E_msg148_bE_s33	; "<name> doesn't have an item yet."
 		SYSX	_display_window,$6B
 		CMP		#$FF
-		BEQ		loc_AB46
+		BEQ		default_action_item_refresh_branch
 		STA		byte_46
 		STA		byte_CF
 		JSR		_b0_s28_player_inventory_item_read
@@ -5628,30 +5610,30 @@ _b0_s5D:
 		LDA		word_4
 		CMP		#5
 		BNE		loc_AB3F
-		LDA		#$4C
+		LDA		#$4C						; merchant item menu (appraise)
 		BNE		loc_AB41
 loc_AB3F:
-		LDA		#$15
+		LDA		#$15						; regular item menu
 loc_AB41:
 		FARX	_bE_sC_display_window
 		CMP		#$FF
-loc_AB46:
-		BEQ		loc_AB88
+default_action_item_refresh_branch:
+		BEQ		.default_action_item_refresh
 		CMP		#3
 		BNE		loc_AB4F
-		JMP		loc_AD4F
+		JMP		.item_appraise_command
 loc_AB4F:
 		CMP		#1
 		BNE		loc_AB56
-		JMP		loc_ABE7
+		JMP		.item_transfer_command
 loc_AB56:
 		CMP		#2
-		BNE		loc_AB5D
-		JMP		loc_AC2E
-loc_AB5D:
+		BNE		.item_use_command
+		JMP		.item_discard_command
+.item_use_command:
 		JSR		sub_ADAC
 		BCC		loc_AB65
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 loc_AB65:
 		LDA		byte_48
 		AND		#$7F
@@ -5670,8 +5652,8 @@ loc_AB65:
 		JSR		_wnd2E_ex
 		TAX
 		BPL		loc_AB8B
-loc_AB88:
-		JMP		loc_ACA2
+.default_action_item_refresh:
+		JMP		_default_action_item_refresh
 loc_AB8B:
 		LDA		byte_45
 		PHA
@@ -5716,16 +5698,17 @@ loc_ABCF:
 		BEQ		loc_AC0D
 		CPX		#$6D
 		BNE		loc_ABDA
-		JMP		sub_ACA5
+		JMP		_item_refresh
 loc_ABDA:
-		JMP		loc_ACA2
+		JMP		_default_action_item_refresh
 loc_ABDD:
 		SYSX	_display_window,$3E
 loc_ABE0:
 		CPX		#$6B
 		BEQ		loc_AC0D
-		JMP		sub_AC8A
-loc_ABE7:
+		JMP		_but_nothing_happens_special_test
+		
+.item_transfer_command:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
 		JSR		_b0_s31_get_party_chars_list
@@ -5737,14 +5720,14 @@ loc_ABF8:
 		STA		byte_47
 		STA		byte_CE
 		CMP		#$FF
-		BEQ		loc_AB88
-		JSR		sub_AC74
+		BEQ		.default_action_item_refresh
+		JSR		_player_inventory_item_add
 		LDA		word_4
 		BMI		loc_AC10
 		JSR		sub_ACBE
 		JSR		sub_AC57
 loc_AC0D:
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 loc_AC10:
 		LDA		byte_47
 		CMP		byte_45
@@ -5758,10 +5741,10 @@ loc_AC10:
 		PLA
 		STA		byte_45
 		STA		byte_CE
-		JSR		sub_AC74
+		JSR		_player_inventory_item_add
 		JSR		sub_ACBE
 		JMP		loc_AC0D
-loc_AC2E:
+.item_discard_command:
 		JSR		sub_ADF4
 		BCS		loc_AC0D
 		SYSX	_display_window,$3E
@@ -5772,16 +5755,16 @@ loc_AC2E:
 		AND		#$10
 		BEQ		loc_AC48
 		MSGX	_msg_m00,$12A	; "It must not be thrown away"
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 loc_AC48:
-		JSR		sub_AD31
+		JSR		_throw_away_item
 loc_AC4B:
 		JSR		_pause_or_skip
 loc_AC4E:
 		FARX	_bC_s20_warp_bE_sB_arg0
 loc_AC51:
 		JSR		sub_AC57
-		JMP		sub_ACA9
+		JMP		_item_refresh_ex
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_AC57:
@@ -5803,7 +5786,7 @@ locret_AC73:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AC74:
+_player_inventory_item_add:
 		LDA		byte_48
 		AND		#$7F
 		STA		byte_CF
@@ -5815,46 +5798,59 @@ sub_AC7D:
 		LDA		byte_47
 		STA		byte_D2
 		MSGX	_msg_m00,$169	; "However, <name> cannot have one thing more"
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AC8A:
+_but_nothing_happens_special_test:
 		LDA		byte_48
 		AND		#$7F
-		CMP		#$68
-		BEQ		loc_ACA2
+		CMP		#ITEM_WING_OF_WYVERN
+		BEQ		_default_action_item_refresh
 		LDX		#3
 loc_AC94:
 		CMP		byte_ACB1-1,X
-		BEQ		sub_AC9F
+		BEQ		_pause_default_action_item_refresh
 		DEX
 		BNE		loc_AC94
 		MSGX	_msg_m00,$040	; "But nothing happens"
 
-; =============== S U B	R O U T	I N E =======================================
-sub_AC9F:
-		JSR		_pause_or_skip
-loc_ACA2:
-		FARX	_bC_s20_warp_bE_sB_arg0
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_ACA5:
+_pause_default_action_item_refresh:
+		JSR		_pause_or_skip
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_default_action_item_refresh:
+		FARX	_bC_s20_warp_bE_sB_arg0
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_item_refresh:
 		LDA		#0
 		STA		byte_48
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-sub_ACA9:
+_item_refresh_ex:
 		LDA		#0
 		STA		byte_8E
-		JSR		_b0_s50
+		JSR		_b0_s50_players_item_buffs_refresh
 		RTS
+		
 byte_ACB1:
-		.BYTE	$52,$57,$76
+		.BYTE	ITEM_VASE_OF_DROUGHT
+		.BYTE	ITEM_MAGIC_BALL
+		.BYTE	ITEM_RAINBOW_DROP
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ACBE:
 		SYSX	_display_window,$3E
-		JSR		sub_AD1E
+		JSR		_get_fist_non_dead_layer_idx
 		LDA		byte_45
 		CMP		byte_47
 		BEQ		loc_ACFC
@@ -5920,7 +5916,7 @@ sub_AD13:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AD1E:
+_get_fist_non_dead_layer_idx:
 		LDX		#0
 loc_AD20:
 		LDA		_players_status+1,X
@@ -5938,10 +5934,10 @@ loc_AD2C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_AD31:
-		JSR		sub_AD1E
+_throw_away_item:
+		JSR		_get_fist_non_dead_layer_idx
 		STA		byte_D4
-		LDY		#$27	; base idx $127 "Throws away the"
+		LDY		#$27	; base idx $127 "<name> throws away the <item>"
 		LDA		byte_45
 		ASL
 		TAX
@@ -5957,7 +5953,9 @@ loc_AD45:
 loc_AD4B:
 		TYA
 		JMP		_wrap_msg_m00_arg1
-loc_AD4F:
+		
+; =============== S U B	R O U T	I N E =======================================
+.item_appraise_command:
 		SYSX	_display_window,$3E
 		LDA		byte_45
 		ASL
@@ -5966,7 +5964,7 @@ loc_AD4F:
 		ASL
 		BCS		loc_AD62
 		MSGX	_msg_m00,$126	; "is dead and can't use the item"
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 loc_AD62:
 		MSGX	_msg_m00,$11B	; "takes the <> and check it out"
 		LDA		byte_48
@@ -5977,14 +5975,14 @@ loc_AD62:
 		AND		#$10
 		BEQ		loc_AD7B
 		MSGX	_msg_m00,$123	; "This is a nice piece of work"
-		MSGX	_msg_m00,$124	; "I doubt even a shopkeeper"
+		MSGX	_msg_m00,$124	; "I doubt even a shopkeeper..."
 		JMP		loc_ADA1
 loc_AD7B:
 		LDA		byte_48
 		AND		#$7F
 		JSR		_b0_s60_get_item_type
 		CLC
-		ADC		#$1D	; base "this look like a weapon" etc.
+		ADC		#$1D			; $11D base "this look like a weapon" etc.
 		JSR		_wrap_msg_m00_arg1
 		LDA		byte_48
 		AND		#$7F
@@ -5997,14 +5995,14 @@ loc_AD95:
 		STA		byte_63E,X
 		DEX
 		BNE		loc_AD95
-		MSGX	_msg_m00,$121	; "this is wort piece of gold"
+		MSGX	_msg_m00,$121	; "<name>: `This is worth <number> piece<s> of gold if sold to an item store"
 loc_ADA1:
 		PLA
 		AND		#8
 		BNE		loc_ADA9
 		MSGX	_msg_m00,$116	; "it doesn't look like special cursed"
 loc_ADA9:
-		JMP		sub_AC9F
+		JMP		_pause_default_action_item_refresh
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_ADAC:
@@ -6015,19 +6013,19 @@ sub_ADAC:
 		STA		byte_CE
 		ASL
 		TAX
-		LDY		#$26	; "is dead and can't use the item"
+		LDY		#$26	; $126 "is dead and can't use the item"
 		LDA		_players_status+1,X
 		ASL
 		BCC		loc_ADC3
 		BPL		loc_ADC6
-		DEY				; "is unable to move and can't use the item"
+		DEY				; $125 "is unable to move and can't use the item"
 loc_ADC3:
 		TYA
 		BNE		_wnd3E_msg1xx
 loc_ADC6:
 		JSR		_b0_s5E_check_if_item_can_be_used
 		BCC		_display_name_cannot_use_the_item
-		LDA		#$44
+		LDA		#ITEM_NOH_MASK
 		STA		byte_CF
 		JSR		_b0_s45_check_if_item_equipped
 		LDA		word_4
@@ -6036,7 +6034,7 @@ loc_ADC6:
 		BEQ		_return_false_in_C
 		AND		#$7F
 		STA		byte_D3
-		LDA		#$15
+		LDA		#$15	; "<name> is confused by the Noh Mask."
 
 ;; FALLTHROUGH ;;
 
@@ -6602,11 +6600,11 @@ sub_B143:
 		STA		byte_42
 		LDA		byte_45
 		FARX	_b4_s1F
-		MSGX	_msg_m00,$09F
+		MSGX	_msg_m00,$09F	; "<name> puts the <item> on."
 		SEC
 		RTS
 loc_B166:
-		MSGX	_msg_m00,$163
+		MSGX	_msg_m00,$163	; "<name> has already put the <item> on."
 		SEC
 		RTS
 

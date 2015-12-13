@@ -3329,7 +3329,7 @@ loc_3A6A8:
 		CMP		byte_3A6F9,X
 		BCC		loc_3A6D7
 loc_3A6CC:
-		FARX	_b0_s47
+		FARX	_b0_s47_players_next_EXP_calc
 		FARX	_b4_s5_do_message_speed_delay
 		PLA
 		PLA

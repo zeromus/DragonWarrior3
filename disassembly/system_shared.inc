@@ -6309,22 +6309,22 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s3D_player_detoxicate					; $7A
 		FILE_IDX	$0,_b0_s3D_player_revive					; $7B
 		FILE_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
-		FILE_IDX	$0,_b0_s46					; $A9
-		FILE_IDX	$0,_b0_s47					; $AA
-		FILE_IDX	$0,_b0_s48					; $110
-		FILE_IDX	$0,_b0_s49					; $111
+		FILE_IDX	$0,_b0_s46_players_level_up_test					; $A9
+		FILE_IDX	$0,_b0_s47_players_next_EXP_calc					; $AA
+		FILE_IDX	$0,_b0_s48_get_count_returnable_locations					; $110
+		FILE_IDX	$0,_b0_s49_set_returnable_locations_bit					; $111
 		FILE_IDX	$0,_b0_s4D					; $12C
 		FILE_IDX	$0,_b0_s4E					; $145
 		FILE_IDX	$0,_b0_s4F					; $146
-		FILE_IDX	$0,_b0_s50					; $149
+		FILE_IDX	$0,_b0_s50_players_item_buffs_refresh					; $149
 		FILE_IDX	$0,_b0_s52_battle_typeFF_launch					; $14D
 		FILE_IDX	$0,_b0_s53_random_encounter_select					; $14F
 		FILE_IDX	$0,_b0_s54					; $155
 		FILE_IDX	$0,_b0_s55					; $173
 		FILE_IDX	$0,_b0_s56					; $17B
-		FILE_IDX	$0,_b0_s5B_non_battle_mode_spell_cast					; $E4
+		FILE_IDX	$0,_b0_s5B_run_command_spell					; $E4
 		FILE_IDX	$0,_b0_s5C_player_inventory_search_for_cursed_item					; $129
-		FILE_IDX	$0,_b0_s5D					; $EC
+		FILE_IDX	$0,_b0_s5D_run_command_item_use					; $EC
 		FILE_IDX	$0,_b0_s5E_check_if_item_can_be_equipped					; $108
 		FILE_IDX	$0,_b0_s5E_check_if_item_can_be_used					; $109
 		FILE_IDX	$0,_b0_s60_get_item_type					; $10A

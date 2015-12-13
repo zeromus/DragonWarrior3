@@ -7388,7 +7388,7 @@ loc_12B0DB:
 		BNE		loc_12B0C4
 		LDA		word_3C+1
 		BEQ		locret_12B0EA
-		FARX	_b0_s46
+		FARX	_b0_s46_players_level_up_test
 locret_12B0EA:
 		RTS
 

@@ -2530,8 +2530,8 @@ loc_B2FD0:
 		INX
 		CPX		#4
 		BNE		loc_B2FC2
-		FARX	_b0_s47 ; a leveling process??? maybe it's preparing the EXP-needed-to-levelup report the king gives.
-		FARX	_b0_s50 ; refresh some status???
+		FARX	_b0_s47_players_next_EXP_calc
+		FARX	_b0_s50_players_item_buffs_refresh
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
