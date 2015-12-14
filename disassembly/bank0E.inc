@@ -268,12 +268,12 @@ _run_command_menu:
 		BNE		_spell_talk_usual
 		LDA		_players_pos_list+3
 		AND		#3
-		CMP		byte_644				; reference playerFacingDir
+		CMP		_playerFacingDir				; reference playerFacingDir
 		BEQ		_spell_talk_usual		; TAILCALL
-		STA		byte_644
+		STA		_playerFacingDir
 		JSR		_spell_talk_usual		; TAILCALL
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -285,16 +285,16 @@ _spell_talk_usual:
 		LDA		_playerMapY
 		STA		word_6+1
 		LDA		#0
-		STA		byte_8
-		JSR		sub_1582F8
+		STA		byte_8					; there will be stored distance between player and npc
+		JSR		_get_facing_tile_XY
 		LDX		word_6
 		LDY		word_6+1
 		JSR		_map_ReadTileCheckedXY
 		AND		#$1F
 		CMP		#$E
-		BNE		loc_158227
+		BNE		loc_158227				; check for particular tile: a shop desk
 		INC		byte_8
-		JSR		sub_1582F8
+		JSR		_get_facing_tile_XY		; adjust the npc location to one more tile further
 		JMP		loc_158238
 loc_158227:
 		TAX
@@ -304,18 +304,18 @@ loc_158227:
 		BNE		loc_158238
 		INC		byte_8
 		INC		byte_8
-		JSR		sub_1582F8
+		JSR		_get_facing_tile_XY		; adjust npc location to one more tile
 loc_158238:
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		LDA		#>[_npcs_pos_list]
 		STA		word_6C+1
 loc_158240:
-		LDY		#0
+		LDY		#0						; search if any of npc is at the position
 		LDA		(word_6C),Y
 		CMP		#$FF
-		BEQ		loc_158255
-		CMP		word_6
+		BEQ		.no_one_to_speak		; there are no more npc left, exit
+		CMP		word_6					; check X
 		BEQ		loc_15825E
 loc_15824C:
 		LDA		word_6C
@@ -323,22 +323,22 @@ loc_15824C:
 		ADC		#4
 		STA		word_6C
 		BCC		loc_158240
-loc_158255:
+.no_one_to_speak:
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$10E	; "There is no one in that direction."
 		JMP		_bE_s33
 loc_15825E:
-		TAX
+		TAX								; put the X in X as first arg
 		INY
 		LDA		(word_6C),Y
-		CMP		word_6+1
+		CMP		word_6+1				; check Y if X passed
 		BNE		loc_15824C
-		TAY
-		JSR		_map_ReadTileCheckedXY
+		TAY								; second arg Y in Y
+		JSR		_map_ReadTileCheckedXY	; read tile under npc one more time
 		AND		#$E0
 		CMP		byte_8C
-		BNE		loc_158255
-		JSR		sub_15830F
+		BNE		.no_one_to_speak
+		JSR		_speak_with_party_members	; special speech cases when your party is npc
 		LDA		word_6C
 		SEC
 		SBC		#$10
@@ -356,7 +356,7 @@ loc_15825E:
 		STA		word_6C
 		LDA		word_4
 		ORA		word_4+1
-		BEQ		loc_158255
+		BEQ		.no_one_to_speak
 		LDA		word_6
 		AND		#$20
 		BNE		loc_1582D6
@@ -376,7 +376,7 @@ loc_1582AE:
 		LDA		word_6C
 		CMP		#$18
 		BNE		loc_1582BF
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BNE		loc_1582D6
 		LDA		#3
 		STA		byte_8
@@ -384,7 +384,7 @@ loc_1582AE:
 loc_1582BF:
 		LDA		byte_8
 		PHA
-		LDA		byte_644
+		LDA		_playerFacingDir
 		EOR		#2
 		STA		byte_8
 		LDY		#3
@@ -417,8 +417,11 @@ loc_1582D6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1582F8:
-		LDX		byte_644
+; calculates the tile where the hero is looking, input argument is a hero
+; position in word_6, result is adjusted tile coordinates in word_6
+;
+_get_facing_tile_XY:
+		LDX		_playerFacingDir
 		BEQ		loc_158306
 		DEX
 		BEQ		loc_158309
@@ -438,28 +441,34 @@ locret_15830E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_15830F:
+; there are two particular places when you should leave your party behind and
+; go alone, this is Assaram in Fortune Teller event and in Lancel when accepting
+; the challenge. this is only two cases when you can speak with your own
+; party members, the second one in formation to be precise, because he/she is
+; blocking your way back usually.
+;
+_speak_with_party_members:
 		LDA		_mapNumber
-		CMP		#$C
+		CMP		#$C						; when in Assaram
 		BNE		loc_158349
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#$78					; at night
 		BCC		locret_15830E
-		LDA		word_6C
-		CMP		#$54
+		LDA		word_6C					; when you accept the fortune teller offer to stay alone
+		CMP		#<[_npcs_pos_list+$44]	; your party members are inserted as a regular npc at slots $44-$46
 		BNE		locret_15830E
 		LDA		#1
-		STA		byte_CE
+		STA		byte_CE					; the second character in formation is blocking the door by default
 		JSR		_sram_b0_s2F_player_gender_read
 		LDX		#1
-		STX		byte_D2
-		LDA		word_4
-		BEQ		loc_158335
-		LDA		#$9D			; $19D "Oh, no! That's ridiculous"
-		BNE		loc_158337
-loc_158335:
+		STX		byte_D2					; you may speak with it before go to the fortune teller
+		LDA		word_4					; his message depending on its gender
+		BEQ		.char_is_a_man			; when you've done with that girl, you can't speak with him anymore
+		LDA		#$9D			; $19D "Oh, no! That's ridiculous."
+		BNE		.gen_npc_window_message
+.char_is_a_man:
 		LDA		#$9C			; $19C "You liked it huh?"
-loc_158337:
+.gen_npc_window_message:
 		PHA
 		TXA
 		PHA
@@ -473,13 +482,13 @@ loc_158337:
 		PLA
 		RTS
 loc_158349:
-		CMP		#$F
+		CMP		#$F						; check for Lancel
 		BNE		locret_158373
-		LDX		#$44
+		LDX		#<[_npcs_pos_list+$34]	; the npc slot depends on the time of the day	
 		LDA		_world_map_steps_count
 		CMP		#$78
 		BCC		loc_158358
-		LDX		#$2C
+		LDX		#<[_npcs_pos_list+$1C]
 loc_158358:
 		CPX		word_6C
 		BNE		locret_158373
@@ -488,12 +497,12 @@ loc_158358:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		#1
 		STA		byte_D2
-		LDX		#6
-		LDA		#$24
-		LDY		word_4
-		BEQ		loc_158337
-		LDA		#$25
-		BNE		loc_158337
+		LDX		#6						; this message is always the same
+		LDA		#$24	; $624 "Good luck!"
+		LDY		word_4					; but if your second party member is a female
+		BEQ		.gen_npc_window_message	; there wil be additional sentimental message lol
+		LDA		#$25	; $625 "Please be careful! Come back soon!"
+		BNE		.gen_npc_window_message
 locret_158373:
 		RTS
 
@@ -6183,7 +6192,7 @@ loc_15B0F3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Getting in the boat?
+; it seems that merch town first progress trigger is to hop to the boa
 ;
 _bE_s25:
 		JSR		_spr_ram_clear_10
@@ -6610,15 +6619,15 @@ _special_maps_actions_handlers_lib:
 ; =============== S U B	R O U T	I N E =======================================
 _map73_special_action:
 		LDA		#4
-		BNE		sub_15B416 ; TAILCALL unconditional
+		BNE		.flag_array_byte18_set ; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 _map74_special_action:
 		LDA		#$10
-		BNE		sub_15B416 ; TAILCALL unconditional
+		BNE		.flag_array_byte18_set ; TAILCALL unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-;Tests a bit in the enigmatic _global_flags_array.byte18 and then disables warping
+; Tests a bit in the enigmatic _global_flags_array.byte18 and then disables warping
 ; 
 _map75_special_action:
 		BIT		_global_flags_array.byte18
@@ -6633,7 +6642,7 @@ _map75_special_action:
 ; =============== S U B	R O U T	I N E =======================================
 ; Sets a bit in the enigmatic _global_flags_array.byte18
 ;
-sub_15B416:
+.flag_array_byte18_set:
 		ORA		_global_flags_array.byte18
 		STA		_global_flags_array.byte18
 
@@ -6963,7 +6972,7 @@ _bE_s36:
 		LDA		#$6C
 		STA		byte_9C
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		RTS
 byte_15B630:
@@ -7157,7 +7166,7 @@ loc_15B711:
 loc_15B744:
 		LDY		#$26
 loc_15B746:
-		LDX		byte_644
+		LDX		_playerFacingDir
 loc_15B749:
 		BEQ		loc_15B751
 		INY
@@ -7181,7 +7190,7 @@ loc_15B75B:
 		STA		_mapNumber
 		BNE		loc_15B754
 loc_15B765:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		LSR
 		BEQ		loc_15B751
 		BNE		loc_15B750
@@ -7267,7 +7276,7 @@ loc_15B7DD:
 		BCC		loc_15B7B1
 loc_15B7F3:
 		JSR		sub_15B809
-		LDA		byte_644
+		LDA		_playerFacingDir
 		LSR
 		BCS		loc_15B800
 		DEC		_playerMapX

@@ -2061,14 +2061,14 @@ sub_174D89:
 		BEQ		loc_174DA8
 		RTS
 loc_174D9C:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		loc_174DB0
 		AND		#1
 		BEQ		loc_174DB6
 		RTS
 loc_174DA8:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#1
 		BEQ		loc_174DB6
 		RTS
@@ -2085,7 +2085,7 @@ loc_174DBD:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_174DC0:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		loc_174DC8
 locret_174DC7:
@@ -2168,7 +2168,7 @@ sub_174E25:
 		STY		_npcs_pos_list+1
 		LDA		_npcs_pos_list+3
 		AND		#$FC
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_npcs_pos_list+3
 		RTS
 loc_174E4D:
@@ -2242,7 +2242,7 @@ loc_174E9C:
 		LDA		#$13
 		STA		byte_2E
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		LDA		#$91
 		STA		_mapNumber
 		LDA		#$78
@@ -2361,7 +2361,7 @@ loc_174FA2:
 		AND		#$F0
 		BEQ		locret_174FF1
 		LDY		#0
-		STY		byte_644
+		STY		_playerFacingDir
 		TYA
 		JSR		sub_1762C3
 		LDA		#$E0
@@ -2440,7 +2440,7 @@ loc_175046:
 sub_175049:
 		LDA		#$FF
 		STA		byte_86
-		LDA		byte_644
+		LDA		_playerFacingDir
 		STA		byte_6BC
 		LDA		byte_9A
 		BEQ		_world_map_step_forward
@@ -2557,7 +2557,7 @@ loc_1750FF:
 		STA		_playerWorldX
 		LDA		#$62
 		STA		_playerWorldY
-		LDA		byte_644
+		LDA		_playerFacingDir
 		JMP		loc_175164
 loc_175123:
 		LDX		byte_8A
@@ -2617,7 +2617,7 @@ loc_17518B:
 		STA		byte_6B9
 		LDX		#2
 loc_175192:
-		STX		byte_644
+		STX		_playerFacingDir
 loc_175195:
 		JSR		loc_1756F6
 		LDA		_location_type
@@ -2873,7 +2873,7 @@ sub_175342:
 		LDA		#$16
 		STA		_playerMapY
 		LDA		#1
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
@@ -2962,7 +2962,7 @@ loc_1753E6:
 		LDA		#$DA
 		STA		_playerWorldY
 loc_1753F8:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_175409
 		CMP		#1
 		BEQ		loc_17540F
@@ -3096,7 +3096,7 @@ loc_1754D5:
 		INC		word_4+1
 		JMP		loc_1754CF
 loc_1754E0:
-		STX		byte_644
+		STX		_playerFacingDir
 		STX		byte_6BC
 		FARX	_bE_s20_decode_map_ptr_to_XY
 		STX		_playerMapX
@@ -3126,7 +3126,7 @@ sub_1754EE:
 		INY
 		LDA		(word_6C),Y
 		AND		#3
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		LDA		(word_6C),Y
 		AND		#4
@@ -3162,7 +3162,7 @@ sub_175516:
 		JSR		sub_17532D
 		FARX	_bA_sD
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		FARX	_bC_s5
 		FARX	_bD_sD
@@ -3215,7 +3215,7 @@ sub_1755AB:
 		LDA		byte_90
 		AND		#3
 		BNE		locret_1755C9
-		LDA		byte_644
+		LDA		_playerFacingDir
 		AND		#1
 		BNE		locret_1755C9
 		LDX		#3
@@ -3451,7 +3451,7 @@ loc_17576C:
 		ORA		_npcs_pos_list+3
 		STA		_npcs_pos_list+3
 loc_17577B:
-		STX		byte_644
+		STX		_playerFacingDir
 		STX		_players_pos_list+3
 		LDA		byte_6AE6
 		BPL		locret_17578D
@@ -3470,7 +3470,7 @@ sub_17578E:
 		STA		_players_pos_list+1
 		LDA		#0
 		STA		_players_pos_list+2
-		LDA		byte_644
+		LDA		_playerFacingDir
 		STA		_players_pos_list+3
 		RTS
 
@@ -3884,7 +3884,7 @@ loc_175A22:
 		LDA		(word_6C),Y
 		PHA
 		AND		#3
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		PLA
 		AND		#4
@@ -4033,7 +4033,7 @@ sub_175B17:
 		STA		byte_86
 loc_175B27:
 		JSR		sub_175F08
-		LDX		byte_644
+		LDX		_playerFacingDir
 		BEQ		loc_175B39
 		DEX
 		BEQ		loc_175B58
@@ -4239,7 +4239,7 @@ loc_175C57:
 		CLC
 		ADC		_ppu_queue_pos
 		STA		byte_74
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_175C64
 		LDA		#$1D
 loc_175C64:
@@ -4320,7 +4320,7 @@ sub_175CCB:
 		TAX
 		ASL
 		STA		word_4+1
-		LDA		byte_644
+		LDA		_playerFacingDir
 		LDY		#0
 		CMP		#3
 		BEQ		loc_175CEF
@@ -4352,7 +4352,7 @@ loc_175D10:
 		LDA		byte_7300,X
 		STA		byte_A
 		JSR		sub_1746C8
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		loc_175D2F
 		LDA		word_6
@@ -4427,7 +4427,7 @@ loc_175D7E:
 		STA		word_4+1
 		STA		byte_E
 		LDX		#$1E
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#1
 		BEQ		loc_175D9A
 		LDX		#0
@@ -4439,7 +4439,7 @@ loc_175D9A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175DA5:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		loc_175DE0
 		LDA		byte_1F
@@ -4537,7 +4537,7 @@ loc_175E3B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175E41:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		locret_175E61
 		LDA		byte_1F
@@ -4574,7 +4574,7 @@ sub_175E62:
 		INC		_ppu_queue_pos
 		INC		_ppu_queue_pos
 		LDX		_heroTileMovePixelsRemain
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#1
 		BNE		loc_175E93
 		CPX		#8
@@ -4649,7 +4649,7 @@ sub_175F08:
 		STA		byte_9
 		LDA		#0
 		STA		byte_B
-		LDA		byte_644
+		LDA		_playerFacingDir
 		AND		#1
 		BNE		sub_175F51
 		JMP		loc_175F70
@@ -4749,7 +4749,7 @@ locret_175F8F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_175F90:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BNE		loc_175FA0
 		JSR		sub_175F26
 		SEC
@@ -4972,7 +4972,7 @@ sub_1760DE:
 		PHA
 		AND		#$1F
 		STA		word_4
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_1760F8
 		LDA		#$1E
 loc_1760F8:
@@ -5013,7 +5013,7 @@ loc_17611E:
 		STA		_ppu_queue_buf,X
 		INX
 		LDY		_heroTileMovePixelsRemain
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BNE		loc_176149
 		CPY		#7
 		BCC		loc_176154
@@ -5069,7 +5069,7 @@ locret_176197:
 ; =============== S U B	R O U T	I N E =======================================
 sub_176198:
 		LDX		#8
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#1
 		BEQ		loc_1761A3
 		LDX		#$F7
@@ -6536,14 +6536,14 @@ _sys_idx_lib:
 		FILE_IDX	$D,_bD_s14					; $10D
 		FILE_IDX	$D,_bD_s15					; $10E
 		FILE_IDX	$D,_bD_s16_general_speak_with_npc					; $127
-		FILE_IDX	$D,_bD_s17					; $128
+		FILE_IDX	$D,_bD_s17_search_vault_for_item					; $128
 		FILE_IDX	$D,_bD_s18					; $132
 		FILE_IDX	$D,_bD_s1A					; $134
 		FILE_IDX	$D,_bD_s1B					; $135
 		FILE_IDX	$D,_bD_s1C					; $136
 		FILE_IDX	$D,_bD_s1D					; $137
 		FILE_IDX	$D,_bD_s1E					; $138
-		FILE_IDX	$D,_bD_s1F					; $13C
+		FILE_IDX	$D,_bD_s1F_get_vault_items_count					; $13C
 		FILE_IDX	$D,_bD_s20_npc_hndl31		; $190
 		FILE_IDX	$D,_bD_s21					; $13E
 		FILE_IDX	$D,_bD_s22_se_wait_and_map_music_start					; $144

@@ -1822,7 +1822,7 @@ _bA_sF:
 		LDA		#$80
 		JSR		sub_1762C3
 		LDA		#3
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6A58
 		JSR		sub_174CD5
 		JSR		_wrap_bE_sD_wnd3E

@@ -2995,7 +2995,7 @@ loc_B32F6:
 		LDA		byte_B332B+2,X
 		STA		_playerMapY
 		LDA		byte_B332B+3,X
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		JSR		sub_174CE2
 		JSR		sub_B333B
@@ -3348,7 +3348,7 @@ loc_B363F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B3648:
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 loc_B364D:
 		DEC		_playerWorldY
 		JSR		sub_B3666
@@ -3359,7 +3359,7 @@ loc_B364D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_B3657:
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 loc_B365C:
 		INC		_playerWorldY
 		JSR		sub_B3666

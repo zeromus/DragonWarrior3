@@ -1931,17 +1931,17 @@ loc_128D15:
 		STA		byte_94
 		STA		byte_95
 		STA		byte_96
-		LDA		byte_644
+		LDA		_playerFacingDir
 		STA		_players_pos_list+3
 		STA		byte_6BC
 		LDA		#4
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+7
 		LDA		#8
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+$B
 		LDA		#$C
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+$F
 		LDA		#0
 		STA		byte_97
@@ -1995,7 +1995,7 @@ locret_128D96:
 _bC_s4:
 		LDA		_player_vehicle
 		BNE		locret_128D96
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_128DE6
 		CMP		#1
 		BEQ		loc_128DCF
@@ -2045,13 +2045,13 @@ loc_128DFD:
 		STY		_players_pos_list+$D
 loc_128E11:
 		LDA		#4
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+7
 		LDA		#8
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+$B
 		LDA		#$C
-		ORA		byte_644
+		ORA		_playerFacingDir
 		STA		_players_pos_list+$F
 		LDA		#$F0
 		STA		byte_97
@@ -2133,7 +2133,7 @@ _bC_s34:
 		LDA		#$15
 		STA		_playerWorldY
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 		JSR		loc_1752EB
 		JSR		_bC_s1A
 		JSR		_ppu_on_and_fade_in
@@ -2541,7 +2541,7 @@ loc_129199:
 		LDA		#$17
 		STA		_mapNumber
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		LDA		#$12
 		STA		byte_92
 		LDA		#$78
@@ -3149,7 +3149,7 @@ sub_12958D:
 ; 
 sub_12958F:
 		CLC
-		ADC		byte_644		; add A to playerFacingDir
+		ADC		_playerFacingDir		; add A to playerFacingDir
 		AND		#3				; test 2 bits of it
 		BEQ		loc_1295AA		; branch if facing 0=up
 		LSR						; test rightmost bit
@@ -3488,7 +3488,7 @@ loc_12976B:
 ; wall with inscription at the pyramid
 ;
 .do_special_actor1:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BNE		.examines_the_ground_at
 		MSGX	_msg_m00,$13B	; "<name> examines the wall"
 		LDA		#$3D	; "Cursed be those..."
@@ -3499,7 +3499,7 @@ loc_12976B:
 ; door with inscription at the pyramid
 ;
 .do_special_actor2:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#2
 		BNE		.examines_the_ground_at
 		LDA		#$42	; "<name> examines the door... It is written about the curse"
@@ -3962,7 +3962,7 @@ _item_obtain_handler_exec:
 		STY		word_B7
 		LDY		_item_obtain_extra_handlers+2,X
 		STY		word_B7+1
-		FARX	_bD_s17
+		FARX	_bD_s17_search_vault_for_item
 		BCC		.return_CF_1
 		FARX	_b0_s4D
 		BCS		.return_CF_1
@@ -5642,7 +5642,7 @@ loc_12A4BE:
 		CMP		word_3C+1
 		BNE		loc_12A4D4
 		LDA		byte_12A4F8+2,Y
-		CMP		byte_644
+		CMP		_playerFacingDir
 		BEQ		loc_12A4DC
 loc_12A4D4:
 		INY
@@ -5866,7 +5866,7 @@ _bC_s19:
 		LDY		#0
 		JSR		sub_1762A8
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		_players_pos_list+3
 		LDA		#$12
 		STA		_playerMapX
@@ -5896,7 +5896,7 @@ loc_12A686:
 		LDA		#$4A
 		STA		_mapNumber
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		JMP		loc_1752EB
 
@@ -5969,7 +5969,7 @@ locret_12A70C:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s2F:
 		LDA		#0
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		LDA		#$E
 		STA		_playerMapX
@@ -6236,14 +6236,14 @@ loc_12A8B6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A8C5:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		EOR		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		LDA		#$80
 		STA		word_40+1
 		LDA		#$6F
 		STA		byte_42
-		LDA		byte_644
+		LDA		_playerFacingDir
 		AND		#1
 		BEQ		loc_12A8EE
 		JSR		sub_12A900
@@ -6268,7 +6268,7 @@ loc_12A8EE:
 sub_12A900:
 		LDX		#$10
 		ASL
-		EOR		byte_644
+		EOR		_playerFacingDir
 		AND		#2
 		BEQ		loc_12A90C
 		LDX		#$F0
@@ -6455,7 +6455,7 @@ sub_12AA18:
 		LDA		#>[_players_pos_list]
 		STA		word_6C+1
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		JSR		sub_12AA2E
 		JSR		sub_12AA2E
 		JSR		sub_12AA2E
@@ -7607,7 +7607,7 @@ sub_12B263:
 		LDA		_playerMapY
 		CMP		#$25
 		BNE		locret_12B262
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#2
 		BEQ		locret_12B262
 		LDA		byte_AC
@@ -7656,7 +7656,7 @@ locret_12B2BC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B2BD:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BNE		locret_12B2BC
 		LDA		_global_flags_array.byte18
@@ -7701,7 +7701,7 @@ locret_12B30C:
 loc_12B30D:
 		LDA		#0
 		STA		byte_6BC
-		STA		byte_644
+		STA		_playerFacingDir
 		FARX	_b0_s4F
 		LDA		_global_flags_array.byte5
 		AND		#$FC
@@ -7806,7 +7806,7 @@ locret_12B3CC:
 		RTS
 off_12B3CD:
 		.WORD	byte_12BA57
-		.WORD	byte_12BB12
+		.WORD	_assaram_player_chars_npc_list
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B3D1:
@@ -7875,7 +7875,7 @@ loc_12B453:
 		BEQ		locret_12B492
 		LDA		#0
 		STA		byte_6BC
-		STA		byte_644
+		STA		_playerFacingDir
 		FARX	_b0_s4F
 		LDA		#1
 		JSR		sub_12B353
@@ -8210,7 +8210,7 @@ loc_12B70E:
 		MSGX	_msg_m00,$17D
 		JMP		loc_12B70E
 loc_12B71C:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#2
 		BNE		locret_12B739
 		LDA		_playerMapY
@@ -8725,19 +8725,21 @@ sub_12BAC3:
 		BNE		loc_12BA67
 
 ; =============== S U B	R O U T	I N E =======================================
+; Assaram entry init handler
+;
 sub_12BAD3:
-		LDA		_global_flags_array.byte2
-		BMI		loc_12BAE1
-		LDA		_global_flags_array.byte5
+		LDA		_global_flags_array.byte2	; test if warp flag is disabled, occurs when you accept the fortune 
+		BMI		loc_12BAE1					; teller offer and leave all party members after the door
+		LDA		_global_flags_array.byte5	; 
 		AND		#$10
 		BNE		loc_12BB0C
 		BEQ		locret_12BB11
 loc_12BAE1:
-		LDA		_world_map_steps_count
+		LDA		_world_map_steps_count		; to be sure she isn't called you during day somehow lol
 		CMP		#$78
 		BCS		loc_12BAF1
-		LDA		_global_flags_array.byte2
-		AND		#$7F
+		LDA		_global_flags_array.byte2	; remove warp disable flag then, never happen, you just couldn't
+		AND		#$7F						; get there not at night
 		STA		_global_flags_array.byte2
 		RTS
 loc_12BAF1:
@@ -8748,7 +8750,7 @@ loc_12BAF9:
 		DEC		byte_6ABE
 		BEQ		loc_12BB0C
 loc_12BAFE:
-		LDA		byte_12BB12,X
+		LDA		_assaram_player_chars_npc_list,X	; insert your party members as npc to the map to block the door
 		STA		_npcs_pos_list+$44,X
 		INX
 		TXA
@@ -8757,10 +8759,10 @@ loc_12BAFE:
 		BEQ		loc_12BAF9
 loc_12BB0C:
 		LDX		#$44
-		JSR		sub_12BB5E
+		JSR		_disable_npc
 locret_12BB11:
 		RTS
-byte_12BB12:
+_assaram_player_chars_npc_list:
 		.BYTE	  7,$13,  1,$84,  7,$14,  2,$8B,  8,$14,  3,$8F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8771,7 +8773,7 @@ sub_12BB1E:
 		AND		#$10
 		BNE		locret_12BB11
 		LDX		#$14
-		JMP		sub_12BB5E
+		JMP		_disable_npc
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BB2F:
@@ -8779,9 +8781,9 @@ sub_12BB2F:
 		AND		#$10
 		BEQ		locret_12BB11
 		LDX		#$10
-		JSR		sub_12BB5E
+		JSR		_disable_npc
 		LDX		#$14
-		JMP		sub_12BB5E
+		JMP		_disable_npc
 
 ; =============== S U B	R O U T	I N E =======================================
 nullsub_16:
@@ -8805,7 +8807,7 @@ loc_12BB51:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12BB5E:
+_disable_npc:
 		LDA		#$80
 		STA		_players_pos_list,X
 		RTS

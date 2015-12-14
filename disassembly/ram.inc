@@ -786,7 +786,7 @@ byte_642:
 		.BYTE	0
 byte_643:
 		.BYTE	0
-byte_644: ;"playerFacingDir" - 0=up,1=right,2=down,3=left
+_playerFacingDir: ;"playerFacingDir" - 0=up,1=right,2=down,3=left
 		.BYTE	0
 byte_645: ;"playerAnimTimer"
 		.BYTE	0,0
@@ -1145,9 +1145,10 @@ byte_6000:
 		.BYTE	0
 byte_6001:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0
-byte_600C:
 		.BYTE	0
-byte_600D:
+
+; vault storage for items u8[78]		
+_vault_items_list:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -1156,8 +1157,10 @@ byte_600D:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0
-byte_6084:
-		.BYTE	0,0,0,0,0,0,0,0
+_vault_last_item:
+		.BYTE	0
+
+		.BYTE	0,0,0,0,0,0,0
 byte_608C:
 		.BYTE	0
 byte_608D:
@@ -1232,46 +1235,8 @@ _global_flags_array.byte4: ; 60b9
 ;	$01 - we're in the "shrine where you may try your courage". After dying you respawn there
 _global_flags_array.byte5: ; 60ba
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte6:
-		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte7:
-		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte8:
-		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte9:
-		.BYTE	0
+_merch_town_name_low_chars:
+		.BYTE	0,0,0,0
 ;	$80 - 
 ;	$40 - 
 ;	$20 - 
@@ -1406,8 +1371,8 @@ _global_flags_array.byte17:
 ;	$10 - 
 ;	$08 - 
 ;	$04 - 
-;	$02 - related to boats...
-;	$01 - related to boats...
+;	$02 - merch first step
+;	$01 - merch is starting to build a town
 _global_flags_array.byte18:
 		.BYTE	0
 ;	bitset of collected orbs, PROBABLY in this order
@@ -1443,8 +1408,9 @@ _global_flags_array.byte1A: ; $60CF
 _global_flags_array.byte1B: ; $60D0
 		.BYTE	0
 
-; unused
-		.BYTE	0,0,0,0,0
+_merch_town_name_high_chars:
+		.BYTE	0,0,0,0
+		.BYTE	0
 
 ; (end of a load-file related copy target)
 		
