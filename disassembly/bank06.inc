@@ -1214,7 +1214,7 @@ _b6_s10:
 		BEQ		locret_9B47A
 		LDX		_playerMapX
 		LDY		_playerMapY
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_9B494
 		CMP		#1
 		BEQ		loc_9B498
@@ -1361,7 +1361,7 @@ loc_9B557:
 		FARX	_bE_s1B
 		FARX	_b0_s66
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		SYSX	_apu_load,$92
 		JSR		_pal_fade_out
 		LDA		_global_flags_array.byte2
@@ -2615,7 +2615,7 @@ _b6_s1D:
 		LDA		#$41
 		STA		_mapNumber
 		LDA		#2
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		FARX	_bB_s7_apu_wait
 		LDA		#0

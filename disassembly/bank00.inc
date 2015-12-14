@@ -3714,7 +3714,7 @@ _b0_s4D:
 		JSR		_b0_s2B_is_anybody_owns_item
 		BCS		loc_9D80
 		LDA		byte_CE
-		FARX	_bD_s17
+		FARX	_bD_s17_search_vault_for_item
 		BCC		loc_9D80
 		JSR		_b0_s32_get_tavern_chars_list
 		LDA		word_4
@@ -6331,7 +6331,7 @@ _item08_water_blaster_use:
 		STA		word_4+1
 		LDA		_playerMapY
 		STA		word_6
-		LDY		byte_644
+		LDY		_playerFacingDir
 		BEQ		loc_AFB2
 		DEY
 		BEQ		loc_AFB7

@@ -1236,7 +1236,7 @@ sub_1773E9:
 		JSR		sub_1778D7
 		LDA		byte_78
 		JSR		sub_177909
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_17740D
 		CMP		#1
 		BEQ		loc_17745E
@@ -1407,7 +1407,7 @@ sub_177517:
 		STA		word_6C+1
 
 ; reference player facing and setup as a table index in off_17750F, reading pointer into word_6e
-		LDA		byte_644					
+		LDA		_playerFacingDir					
 		ASL
 		TAX
 		LDA		off_17750F,X
@@ -1596,7 +1596,7 @@ sub_177619:
 		BCS		loc_17764D							; branch if less than 9 pixels (?)
 		CMP		#8
 		BNE		loc_177650							; branch if != 8 pixels ?
-		LDA		byte_644								; test player facing dir
+		LDA		_playerFacingDir								; test player facing dir
 		CMP		#3
 		BNE		loc_177650							; branch if it isn't leftwards?
 loc_17764D:
@@ -1928,7 +1928,7 @@ sub_177832:
 loc_17783A:
 		STX		word_4
 		STY		word_4+1
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_177856
 		CMP		#1
 		BEQ		loc_177861

@@ -902,7 +902,7 @@ $311:	"`It is rumored that the elves live hidden in the forest west of Noaniels`
 $312:	"`Have you seen my husband?`<br>
 		`Oh! I must have dozed off`"
 $313:	"`For being so kind, I will give you a hint`<br>
-		`In the village of Soo, in the middle of this continent, there is a well. ,Check the area around it carefully`"
+		`In the village of Soo, in the middle of this continent, there is a well. Check the area around it carefully`"
 $314:	"`Mumble... mumble,Confounded monster! Zzz... Zzz..`"
 $315:	"`Thanks to you, we now have shops. Thank you very much!`"
 $316:	"`Mumble... mumble,Where in tarnation is that Sword of Gaia! Zzz... Zzz..`"

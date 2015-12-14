@@ -137,7 +137,7 @@ sub_20122:
 		LDA		byte_7F
 		CMP		#4
 		BEQ		loc_2012C
-		FARX	_bD_s1F
+		FARX	_bD_s1F_get_vault_items_count
 		RTS
 loc_2012C:
 		FARX	_b0_s48_get_count_returnable_locations
@@ -345,7 +345,7 @@ sub_20268:
 		CLC
 		ADC		byte_7B
 		TAX
-		LDA		byte_600D,X
+		LDA		_vault_items_list,X
 		PHA
 		JSR		sub_206FD
 		LDA		byte_77
@@ -462,7 +462,7 @@ loc_20320:
 ; =============== S U B	R O U T	I N E =======================================
 sub_20325:
 		JSR		sub_20720
-		FARX	_bD_s1F
+		FARX	_bD_s1F_get_vault_items_count
 		LDA		word_7C+1
 		ASL
 		ASL

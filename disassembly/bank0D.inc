@@ -20,7 +20,7 @@
 		PTR_IDX		_bD_s14
 		PTR_IDX		_bD_s15
 		PTR_IDX		_bD_s16_general_speak_with_npc
-		PTR_IDX		_bD_s17
+		PTR_IDX		_bD_s17_search_vault_for_item
 		PTR_IDX		_bD_s18
 		PTR_IDX		_bD_s19
 		PTR_IDX		_bD_s1A
@@ -28,7 +28,7 @@
 		PTR_IDX		_bD_s1C
 		PTR_IDX		_bD_s1D
 		PTR_IDX		_bD_s1E
-		PTR_IDX		_bD_s1F
+		PTR_IDX		_bD_s1F_get_vault_items_count
 		PTR_IDX		_bD_s20_npc_hndl31
 		PTR_IDX		_bD_s21
 		PTR_IDX		_bD_s22_se_wait_and_map_music_start
@@ -883,7 +883,7 @@ locret_1417B8:
 ;		BCS		locret_1417B8
 ;		LDA		_heroTileMovePixelsRemain
 ;		BEQ		loc_1417C9
-;		LDA		byte_644
+;		LDA		_playerFacingDir
 ;		AND		#1
 ;		BNE		loc_1417DB
 ;loc_1417C9:
@@ -898,7 +898,7 @@ locret_1417B8:
 ;		BCS		locret_1417CA
 ;		LDA		_heroTileMovePixelsRemain
 ;		BEQ		loc_1417C9
-;		LDA		byte_644
+;		LDA		_playerFacingDir
 ;		AND		#1
 ;		BNE		loc_1417C9
 ;loc_1417DB:
@@ -922,7 +922,7 @@ sub_1417DD:
 		BCS		locret_141801
 		AND		#$FE
 		STA		word_4
-		LDA		byte_644
+		LDA		_playerFacingDir
 		AND		#1
 		EOR		#1
 		ORA		word_4
@@ -1120,7 +1120,7 @@ sub_1418F4:
 sub_1418FE:
 		LDA		_heroTileMovePixelsRemain
 		BEQ		loc_1418F2
-		LDA		byte_644
+		LDA		_playerFacingDir
 		CMP		#3
 		BEQ		loc_14190F
 		CMP		#1
@@ -1272,7 +1272,7 @@ loc_1419EF:
 sub_1419FB:
 		LDA		_heroTileMovePixelsRemain
 		BEQ		loc_141A50
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_141A2E
 		CMP		#1
 		BEQ		loc_141A1D
@@ -2045,27 +2045,27 @@ loc_141EEB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_141EEE:
+_vault_item_store:
 		STA		byte_C5
-		LDY		#$77
+		LDY		#[_vault_last_item-_vault_items_list]
 loc_141EF2:
-		LDA		byte_600C,Y
-		STA		byte_600D,Y
+		LDA		_vault_items_list-1,Y
+		STA		_vault_items_list,Y
 		DEY
 		BNE		loc_141EF2
 		LDA		byte_C5
-		STA		byte_600D
+		STA		_vault_items_list
 		LDA		#0
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_141F03:
-		LDA		byte_600D,X
+_vault_item_pickup:
+		LDA		_vault_items_list,X
 		STA		byte_C5
 		INX
 loc_141F09:
-		LDA		byte_600D,X
-		STA		byte_600C,X
+		LDA		_vault_items_list,X
+		STA		_vault_items_list-1,X
 		INX
 		BPL		loc_141F09
 		LDA		#$FF
@@ -2344,10 +2344,10 @@ loc_142093:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s1F:
+_bD_s1F_get_vault_items_count:
 		LDX		#0
 loc_14209D:
-		LDA		byte_600D,X
+		LDA		_vault_items_list,X
 		BMI		loc_1420A5
 		INX
 		BPL		loc_14209D
@@ -2367,14 +2367,14 @@ sub_1420A8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s17:
+_bD_s17_search_vault_for_item:
 		PHA
-		JSR		_bD_s1F
+		JSR		_bD_s1F_get_vault_items_count
 		PLA
 		DEX
 		BMI		loc_1420C8
 loc_1420C0:
-		CMP		byte_600D,X
+		CMP		_vault_items_list,X
 		BEQ		loc_1420CA
 		DEX
 		BPL		loc_1420C0
@@ -2396,7 +2396,7 @@ loc_1420D0:
 		BEQ		locret_1420CB
 		LDA		word_4+1
 		AND		#$7F
-		JSR		sub_141EEE
+		JSR		_vault_item_store
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 		JMP		loc_1420D0
 
@@ -2419,7 +2419,7 @@ loc_1420FA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_b6_s16:
+_npc_base_nhdl2_b6_s16:
 		FARX	_b6_s16
 locret_142103:
 		RTS
@@ -2911,7 +2911,7 @@ locret_1424E3:
 sub_1424E4:
 		LDA		byte_C6
 		BMI		loc_142500
-		LDA		byte_644
+		LDA		_playerFacingDir
 		PHA
 		LDA		byte_C6
 		LSR
@@ -2919,11 +2919,11 @@ sub_1424E4:
 		LSR
 		LSR
 		LSR
-		STA		byte_644
+		STA		_playerFacingDir
 		STA		byte_6BC
 		FARX	_bC_s4
 		PLA
-		STA		byte_644
+		STA		_playerFacingDir
 loc_142500:
 		FARX	_bC_s35
 		RTS
@@ -2980,19 +2980,19 @@ loc_142545:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_142573:
+_npc_base_nhdl5:
 		LDA		_world_map_steps_count
 		CMP		#$78
 		BCS		loc_142580
-		MSGX	_msg_m00,$200
+		MSGX	_msg_m00,$200	; "At your service, my good people! How may I serve you?"
 		JMP		sub_142589
 loc_142580:
-		MSGX	_msg_m00,$201
+		MSGX	_msg_m00,$201	; "What is it that you need so late at night?"
 		JMP		sub_142589
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142586:
-		MSGX	_msg_m00,$206
+		MSGX	_msg_m00,$206	; "Welcome to the House of Healing"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142589:
@@ -3408,23 +3408,21 @@ byte_14291B:
 		.BYTE	$65,$67,$68,$6C,$9C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_142920:
-		MSGX	_msg_m00,$268
-
-; =============== S U B	R O U T	I N E =======================================
-sub_142923:
-		MSGX	_msg_m00,$269
+_npc_base_nhdl1:
+		MSGX	_msg_m00,$268	; "This is the Vault"
+.vault_main_loop:
+		MSGX	_msg_m00,$269	; "How may I help you?"
 		SYSX	_display_window,$1F
 		LDX		#$B
 		JSR		_bD_s10
 		CMP		#1
 		BCC		loc_14293A
 		BEQ		loc_142937
-		JMP		sub_142BCB
+		JMP		.vault_exit
 loc_142937:
 		JMP		loc_142A86
 loc_14293A:
-		MSGX	_msg_m00,$26A
+		MSGX	_msg_m00,$26A	; "Yes, indeed. What can I keep here for you?"
 		SYSX	_display_window,$20
 		LDX		#$D
 		JSR		_bD_s10
@@ -3432,18 +3430,18 @@ loc_14293A:
 		BCC		loc_142951
 		BEQ		loc_14294E
 loc_14294B:
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_14294E:
 		JMP		loc_1429A3
 loc_142951:
 		LDX		byte_608D
 		INX
 		BNE		loc_14295D
-		MSGX	_msg_m00,$287
-		JMP		sub_142BC0
+		MSGX	_msg_m00,$287	; "I'm sorry. The safe is full and you can't deposit any more money"
+		JMP		.vault_return_to_main_loop
 loc_14295D:
 		SYSX	_display_window,$68
-		MSGX	_msg_m00,$26B
+		MSGX	_msg_m00,$26B	; "If it's 1,000 pieces of gold or more..."
 		JSR		sub_142BF0
 		BEQ		loc_14294B
 		STA		byte_C6
@@ -3470,13 +3468,13 @@ loc_14298E:
 		LDA		byte_C6
 		ADC		byte_608D
 		STA		byte_608D
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_1429A3:
-		JSR		_bD_s1F
+		JSR		_bD_s1F_get_vault_items_count
 		CPX		#$78
 		BCC		loc_1429B0
 		MSGX	_msg_m00,$286
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_1429B0:
 		LDA		#$6E
 		JSR		_question_to_select_char_display_arg7	; $26E "Who is going to leave something"
@@ -3490,7 +3488,7 @@ loc_1429B9:
 		STA		byte_D2
 		MSGX	_msg_m00,$26F
 loc_1429C7:
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_1429CA:
 		MSGX	_msg_m00,$28B
 		LDX		#3
@@ -3549,7 +3547,7 @@ loc_142A1B:
 loc_142A41:
 		MSGX	_msg_m00,$273
 		LDA		byte_C5
-		JSR		sub_141EEE
+		JSR		_vault_item_store
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDA		byte_C5
 		AND		#$7F
@@ -3573,14 +3571,14 @@ loc_142A6B:
 		MSGX	_msg_m00,$274
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_142A76
-		JMP		sub_142BCB
+		JMP		.vault_exit
 loc_142A76:
-		LDA		byte_6084
+		LDA		_vault_last_item
 		CMP		#$7F
 		BCS		loc_142A83
 		MSGX	_msg_m00,$286
 loc_142A80:
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142A83:
 		JMP		loc_1429B9
 loc_142A86:
@@ -3596,7 +3594,7 @@ loc_142A9A:
 		LDA		byte_608D
 		BNE		loc_142AA5
 		MSGX	_msg_m00,$276
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142AA5:
 		LDA		byte_608D
 		JSR		sub_142BD2
@@ -3605,7 +3603,7 @@ loc_142AA5:
 		JSR		sub_142BF0
 		BNE		loc_142ABC
 		MSGX	_msg_m00,$271
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142ABC:
 		STA		byte_C6
 		SEC
@@ -3629,14 +3627,14 @@ loc_142ADC:
 		LDA		byte_608D
 		SBC		byte_C6
 		STA		byte_608D
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142AF1:
-		LDA		byte_600D
+		LDA		_vault_items_list
 		CMP		#$7F
 		BCC		loc_142AFE
 		MSGX	_msg_m00,$27A
 loc_142AFB:
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142AFE:
 		MSGX	_msg_m00,$27B
 		FARX	_b1_s16
@@ -3646,7 +3644,7 @@ loc_142AFE:
 		BEQ		loc_142AFB
 		STA		byte_BD
 		TAX
-		LDA		byte_600D,X
+		LDA		_vault_items_list,X
 		STA		byte_C5
 		STA		byte_D2
 		TAX
@@ -3675,7 +3673,7 @@ loc_142B45:
 		JSR		sub_141FB1
 		BCS		loc_142B50
 		MSGX	_msg_m00,$281
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142B50:
 		LDA		#$7D	; $27D "Who is getting this?"
 		JSR		_question_to_select_char_display_arg12
@@ -3692,7 +3690,7 @@ loc_142B5A:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		BNE		loc_142B74
-		JMP		sub_142BC0
+		JMP		.vault_return_to_main_loop
 loc_142B74:
 		MSGX	_msg_m00,$233
 		FARX	_bE_s1C_yes_or_no_question
@@ -3717,27 +3715,23 @@ loc_142BA1:
 		MSGX	_msg_m00,$282
 loc_142BA4:
 		LDX		byte_BD
-		JSR		sub_141F03
+		JSR		_vault_item_pickup
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
 loc_142BAE:
-		LDA		byte_600D
+		LDA		_vault_items_list
 		CMP		#$7F
-		BCS		sub_142BC0
+		BCS		.vault_return_to_main_loop
 		MSGX	_msg_m00,$283
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		sub_142BCB
+		BNE		.vault_exit
 		JMP		loc_142AFE
-
-; =============== S U B	R O U T	I N E =======================================
-sub_142BC0:
-		MSGX	_msg_m00,$284
+.vault_return_to_main_loop:
+		MSGX	_msg_m00,$284	; "Will there be anything else?"
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		sub_142BCB
-		JMP		sub_142923
-
-; =============== S U B	R O U T	I N E =======================================
-sub_142BCB:
+		BNE		.vault_exit
+		JMP		.vault_main_loop
+.vault_exit:
 		MSGX	_msg_m00,$285
 		FARX	_b0_s50_players_item_buffs_refresh
 		RTS
@@ -3783,7 +3777,7 @@ loc_142C14:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_shrine_of_dhama_prof_change:
+_npc_base_nhdl3_shrine_of_dhama_prof_change:
 		MSGX	_msg_m00,$241	; "This is srine of Dhama..."
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_142C59
@@ -3885,7 +3879,7 @@ byte_142CDE:
 		.BYTE	  4,  2,  1,  6,  5,  3
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_142CE4:
+_npc_base_nhdl0:
 		MSGX	_msg_m00,$259
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4148,7 +4142,7 @@ sub_142ECB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_sF:
+_npc_base_nhdl4:
 		LDA		#0
 		STA		byte_CE
 		STA		byte_C1
@@ -4457,6 +4451,9 @@ _bD_s16_general_speak_with_npc:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; very long and boring branch tree checking the different special cases to
+; display special messages and finally go one of the default message handlers
+;
 _general_speak_with_npc:
 		LDA		word_4
 		ORA		word_4+1
@@ -4470,7 +4467,7 @@ loc_143182:
 		BCC		loc_143195
 		CMP		#$F2
 		BCS		loc_143195
-		LDA		#$AC
+		LDA		#$AC	; flag.byte15 mask $10
 		JSR		_global_game_flag_set
 loc_143195:
 		LDA		_global_flags_array.byte10
@@ -4478,30 +4475,31 @@ loc_143195:
 		LDA		word_6
 		AND		#$20
 		BEQ		loc_1431C2
-		MSGX	_msg_m00_break,$668	; ""
+		MSGX	_msg_m00_break,$668	; "Zzz... Zzz... Something... so bright... but it's a dream"
+; ----------------------------------
 loc_1431A3:
-		LDA		_global_flags_array.byte16
+		LDA		_global_flags_array.byte16	; baramos is defeated
 		BPL		loc_1431F7
 		LDA		word_4
 		CMP		#$99
-		BNE		loc_1431B6
+		BNE		loc_1431B6					; except some particular chars
 		LDA		word_4+1
 		BNE		loc_1431B6
 		MSGX	_msg_m00_break,$34E	; $34E "Thanks to you defeating Baramos"
 loc_1431B6:
 		LDA		_mapNumber
-		BEQ		loc_1431C2
+		BEQ		loc_1431C2					; and map locations
 		CMP		#$41
 		BCC		loc_1431F7
 		CMP		#$48
 		BCS		loc_1431F7
-loc_1431C2:
-		LDY		#[byte_14333D_last-byte_14333D]
+loc_1431C2:									; the rest of chars will speak different messages
+		LDY		#[override_msg_list0_last-override_msg_list0]
 loc_1431C4:
-		LDA		byte_14333D,Y
+		LDA		override_msg_list0,Y		; find a char in list...
 		CMP		word_4
 		BNE		loc_1431D2
-		LDA		byte_14333D+1,Y
+		LDA		override_msg_list0+1,Y
 		CMP		word_4+1
 		BEQ		loc_1431D9
 loc_1431D2:
@@ -4511,7 +4509,7 @@ loc_1431D2:
 		BPL		loc_1431C4
 		BMI		loc_1431F7
 loc_1431D9:
-		LDA		byte_14333D+2,Y
+		LDA		override_msg_list0+2,Y		; ... and play it's patch message instead of usual one
 		PHA
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
@@ -4521,10 +4519,13 @@ loc_1431D9:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		LDA		#$69				; base idx $669
-		LDX		#3
+		LDA		#$69						; base idx $669
+		LDX		#6
 		JSR		_add_arg5C_to16
-		JMP		_wrap_msg_m00_b300_arg5C
+		LDA		byte_5C
+		LDX		byte_5D
+		FARX	_bE_s4_msg_m00
+		RTS
 loc_1431F7:
 		LDA		word_6
 		AND		#$1F
@@ -4540,7 +4541,7 @@ loc_143207:
 		BNE		loc_143212
 		MSGX	_msg_m00_break,$302	; "Zzzz Zzzz"
 loc_143212:
-		LDY		#0
+		LDY		#0									; other special case, when you invisible
 		LDA		byte_AC
 		AND		#$1F
 		BNE		loc_143244
@@ -4570,54 +4571,56 @@ loc_143244:
 		CLC
 		ADC		word_6
 		TAY
-		LDA		byte_1432DD,Y
-		BEQ		loc_143281
+		LDA		override_invisible_msg_list,Y	; get the particular character message to speak with you invisible
+		BEQ		loc_143281				; there are three special cases
 		CMP		#1
 		BNE		loc_143256
-		MSGX	_msg_m00_break_ex,$6D4
+		MSGX	_msg_m00_break_ex,$6D4	; "Well, if it isn't <name>! Why are you dressed that way?"
 loc_143256:
 		CMP		#2
 		BNE		loc_143262
 		JSR		sub_14315A
-		MSGX	_msg_m00,$6D5
+		MSGX	_msg_m00,$6D5	; "Even if you make yourself invisible, we'll know where you are"
 		BCS		loc_14327E
 loc_143262:
 		CMP		#3
 		BNE		loc_14326E
 		JSR		sub_14315A
-		MSGX	_msg_m00,$6D6
+		MSGX	_msg_m00,$6D6	; "Even if you change your form, we'll know who you are"
 		BCS		loc_14327E
 loc_14326E:
-		STA		byte_5C
+		STA		byte_5C			; nothing special is left, so display one of the messages from list
 		LDA		#0
 		STA		byte_5D
-		LDA		#$D3
-		LDX		#3
+		LDA		#$D3	; $6D3 base message
+		LDX		#6
 		JSR		_add_arg5C_to16
-		JMP		_wrap_msg_m00_b300_arg5C
-loc_14327E:
+		LDA		byte_5C
+		LDX		byte_5D
+		FARX	_bE_s4_msg_m00
+		RTS
+; ----------------------------------
+loc_14327E:						; special override when you becomes a king
 		JSR		sub_143166
 loc_143281:
 		BIT		_global_flags_array.byte2
 		BVC		loc_1432A7
-		LDY		#[byte_1433A3_last-byte_1433A3]
+		LDY		#[override_msg_list1_last-override_msg_list1]
 loc_143288:
 		LDA		word_4
-		CMP		byte_1433A3,Y
+		CMP		override_msg_list1,Y
 		BNE		loc_1432A2
 		LDA		word_4+1
-		CMP		byte_1433A3+1,Y
+		CMP		override_msg_list1+1,Y
 		BNE		loc_1432A2
-		LDA		byte_1433A3+2,Y
-		STA		byte_5C
-		LDA		#0
-		STA		byte_5D
-		JMP		_wrap_msg_m00_b300_arg5C
+		LDA		override_msg_list1+2,Y
+		JMP		_wrap_msg_m00_arg3
 loc_1432A2:
 		DEY
 		DEY
 		DEY
 		BPL		loc_143288
+; ----------------------------------
 loc_1432A7:
 		LDA		word_4
 		CMP		#$8D
@@ -4628,32 +4631,43 @@ loc_1432A7:
 		LDA		_global_flags_array.byte5
 		BMI		loc_1432BC
 		MSGX	_msg_m00_break,$459
+; ----------------------------------
+; finally the regular handlers
 loc_1432BC:
 		LDY		#[byte_1433BC_last-byte_1433BC]
 loc_1432BE:
-		LDA		byte_1433BC,Y
+		LDA		byte_1433BC,Y		; calc the main npc handler index
 		LDX		byte_1433BC+1,Y
 		JSR		sub_14313B
 		BCS		loc_1432D0
 		DEY
 		DEY
 		BPL		loc_1432BE
-		MSGX	_msg_m00_break,$6A9
+		MSGX	_msg_m00_break,$6A9	; "There's no one in that direction."
 loc_1432D0:
-		LDA		off_1433DF,Y
+		LDA		_npc_base_hndl_lib,Y
 		STA		word_5E
-		LDA		off_1433DF+1,Y
+		LDA		_npc_base_hndl_lib+1,Y
 		STA		word_5E+1
 		JMP		(word_5E)
-		
-byte_1432DD:
+
+; every single character in this game has its own predetermined message if
+; you speak with it invisible lol
+;
+override_invisible_msg_list:
 		.BYTE	  4,  5,  7,  8,  9, $A, $F, $B,  6, $E, $A, $C,  0, $D,$13,$14
 		.BYTE	$16,$15,  0,  0,$12,  0,  0,$10,  0, $C,  9,  2,  0,  0,$11,  0
 		.BYTE	$17,$18,$1A,$1B,$1C,$1D,$22,$1E,$19,$21,$1D,$1F,  0,$20,$25,$26
 		.BYTE	$28,$27,  0,  0,$24,  0,  0,$23,  0,$1F,$1C,  3,  0,  0,  1,  0
 		.BYTE	  0,$29,$2A,$2B,$2C,$2D,  0,$2E,$2F,  0,$30,$31,  0,$32,$33,$34
 		.BYTE	$35,$36,$2C,  0,$37,  0,  0,  0,  0,$38,$3F,$39,  0,  0,  0,  0
-byte_14333D:
+
+; list of npc and its corresponding messages in case you defeated baramos,
+; they are all replacing the normal messages before you do it
+; byte+0,+1 - npc parameters
+; byte+2 - message offset with base $669, only 0-$B and $11-$18 are used here
+;
+override_msg_list0:
 		.BYTE	$1C,  2,  0
 		.BYTE	$27,  2,  1
 		.BYTE	$28,  2,  2
@@ -4687,9 +4701,11 @@ byte_14333D:
 		.BYTE	$13,  3,$15
 		.BYTE	$DA,  3,$16
 		.BYTE	$1C,  3,$17
-byte_14333D_last:		
+override_msg_list0_last:		
 		.BYTE	$DC,  3,$18
-byte_1433A3:
+; the same for override messages when you are a King
+;
+override_msg_list1:
 		.BYTE	  5,  0,$EB
 		.BYTE	$A5,  1,$EB
 		.BYTE	$25,  1,$EC
@@ -4697,8 +4713,9 @@ byte_1433A3:
 		.BYTE	$27,  1,$EE
 		.BYTE	$28,  1,$EF
 		.BYTE	$29,  1,$F0
-byte_1433A3_last:
+override_msg_list1_last:
 		.BYTE	$2A,  1,$DB
+
 byte_1433BC:
 		.WORD	$001
 		.WORD	$002
@@ -4719,60 +4736,70 @@ byte_1433BC:
 		.WORD	$226
 byte_1433BC_last:
 		.WORD	$3C0	; 960
-off_1433DF:
-		.WORD	sub_142CE4
-		.WORD	sub_142920
-		.WORD	_wrap_b6_s16
-		.WORD	_shrine_of_dhama_prof_change
-		.WORD	_bD_sF
-		.WORD	sub_142573
-		.WORD	sub_1434AC
-		.WORD	sub_1434BB
-		.WORD	sub_1434CA
-		.WORD	sub_1434E3
-		.WORD	_wrap_msg_m00_b300_arg5C
-		.WORD	sub_143403
-		.WORD	sub_1434B0
-		.WORD	sub_1434BF
-		.WORD	sub_1434CE
-		.WORD	sub_1434ED
-		.WORD	sub_1434D9
-		.WORD	sub_143407
+
+_npc_base_hndl_lib:
+		.WORD	_npc_base_nhdl0
+		.WORD	_npc_base_nhdl1
+		.WORD	_npc_base_nhdl2_b6_s16
+		.WORD	_npc_base_nhdl3_shrine_of_dhama_prof_change
+		.WORD	_npc_base_nhdl4
+		.WORD	_npc_base_nhdl5
+		.WORD	_npc_base_nhdl6
+		.WORD	_npc_base_nhdl7
+		.WORD	_npc_base_nhdl8
+		.WORD	_npc_base_nhdl9
+		.WORD	_wrap_msg_m00_b300_arg5C	; just display a message
+		.WORD	_npc_base_nhdlB_ext_call0
+		.WORD	_npc_base_nhdlC
+		.WORD	_npc_base_nhdlD
+		.WORD	_npc_base_nhdlE
+		.WORD	_npc_base_nhdlF
+		.WORD	_npc_base_nhdl10
+		.WORD	_npc_base_nhdl11_ext_call1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143403:
+; search and exec for first half (approximately) of npc handles
+;
+_npc_base_nhdlB_ext_call0:
 		LDA		#0
-		BEQ		sub_143409
+		BEQ		_npc_ext_hndl_call
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143407:
+; search and exec for second half of npc handlers
+;
+_npc_base_nhdl11_ext_call1:
 		LDA		#$4D
 
 ; =============== S U B	R O U T	I N E =======================================
-; offset calculation!
-sub_143409:
+; calculates pointer of the NPC handler by summing the sizes of the sequentially
+; stored npc handlers in memory, sizes are in u8[] table.
+; dunno why they need to split the indexes of the handlers to two lists, maybe
+; we can get rid of it and still be able to address up to 256 handllers (currently
+; only 127 used)
+;
+_npc_ext_hndl_call:
 		CLC
-		ADC		byte_5C
+		ADC		byte_5C					; index of npc handler
 		TAX
-		ASL
-		TAY
-		LDA		#<[_npc_hndl0]
+		ASL								; look like leftover from dev stage, when offsets were 16-bit
+		TAY								; investigate and get rid of it if not needed
+		LDA		#<[_npc_hndl0]			; load base offset for the npc handlers (first handler)
 		STA		word_5E
 		LDA		#>[_npc_hndl0]
 		STA		word_5E+1
 loc_143419:
-		LDA		byte_14342D,X
+		LDA		_npc_hndl_size_list,X	; summing
 		CLC
 		ADC		word_5E
 		STA		word_5E
 		BCC		loc_143425
 		INC		word_5E+1
 loc_143425:
-		DEX
+		DEX								; from top the the very first one
 		BPL		loc_143419
-		JMP		(word_5E)
+		JMP		(word_5E)				; just to resulting ptr
 
-byte_14342D:
+_npc_hndl_size_list:
 		.BYTE	  _npc_hndl0-_npc_hndl0
 		.BYTE	  _npc_hndl1-_npc_hndl0
 		.BYTE	  _npc_hndl2-_npc_hndl1
@@ -4902,12 +4929,12 @@ byte_14342D:
 		.BYTE	  _npc_hndl6D-_npc_hndl6D
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434AC:
+_npc_base_nhdl6:
 		LDA		#0
 		BEQ		sub_1434B2
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434B0:
+_npc_base_nhdlC:
 		LDA		#$15
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4918,12 +4945,12 @@ sub_1434B2:
 		JMP		sub_142486
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434BB:
+_npc_base_nhdl7:
 		LDA		#0
 		BEQ		sub_1434C1
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434BF:
+_npc_base_nhdlD:
 		LDA		#2
 
 ;; FALLTHROUGH ;;
@@ -4941,12 +4968,12 @@ sub_1434C4:
 		JMP		sub_142135
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434CA:
+_npc_base_nhdl8:
 		LDA		#$14
 		BNE		sub_1434D0
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434CE:
+_npc_base_nhdlE:
 		LDA		#$17
 
 ;; FALLTHROUGH ;;
@@ -4964,21 +4991,21 @@ sub_1434D3:
 		JMP		loc_1421F5
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434D9:
+_npc_base_nhdl10:
 		LDA		#$F7
 		LDX		#0
 		JSR		_add_arg5C_to16
 		JMP		_wrap_msg_m00_b300_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434E3:
+_npc_base_nhdl9:
 		LDA		#$8E
 		LDX		#2
 		JSR		_add_arg5C_to16
 		JMP		sub_1434F4
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1434ED:
+_npc_base_nhdlF:
 		LDA		#$98
 		LDX		#2
 		JSR		_add_arg5C_to16
@@ -5092,13 +5119,15 @@ loc_1435A6:
 		MSGX	_msg_m00_break,$5CA
 
 ; =============== S U B	R O U T	I N E =======================================
+; an elder wanted to build a town and need a merchant
+;
 _npc_hndl3:
-		LDA		_global_flags_array.byte18
+		LDA		_global_flags_array.byte18	; test if merchant already working
 		LSR
 		BCC		loc_1435B3
-		MSGX	_msg_m00_break,$313
+		MSGX	_msg_m00_break,$313	; "For being so kind, I will give you a hint"
 loc_1435B3:
-		MSGX	_msg_m00,$5CC
+		MSGX	_msg_m00,$5CC	; "I think I'll build a town here"
 		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		CMP		#2
@@ -5122,11 +5151,11 @@ loc_1435DA:
 		CMP		#4
 		BNE		loc_1435C8
 loc_1435E2:
-		MSGX	_msg_m00_break,$5CD
+		MSGX	_msg_m00_break,$5CD	; "I'm not particular. Even if someone's level is low"
 loc_1435E5:
 		LDA		byte_CE
 		STA		byte_D2
-		MSGX	_msg_m00,$5CE
+		MSGX	_msg_m00,$5CE	; "What do you say, <name>? Will you accept the job?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143628
 		MSGX	_msg_m00,$5D0
@@ -5140,23 +5169,23 @@ loc_1435E5:
 		LDX		#7
 loc_143607:
 		LDA		word_4,X
-		STA		_global_flags_array.byte18,X
+		STA		_merch_town_name_high_chars-4,X
 		DEX
 		CPX		#4
 		BCS		loc_143607
 loc_143611:
 		LDA		word_4,X
-		STA		_global_flags_array.byte6,X
+		STA		_merch_town_name_low_chars,X
 		DEX
 		BPL		loc_143611
-		LDA		#$C0
+		LDA		#$C0	; flag.byte18 mask 01
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00,$5D2
+		MSGX	_msg_m00,$5D2	; "<name>: Well, I'm going to stay here"
 		JSR		sub_1420CC
 		FARX	_b6_s17
 		RTS
 loc_143628:
-		MSGX	_msg_m00_break,$5CF
+		MSGX	_msg_m00_break,$5CF	; "I see. That's too bad"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl4:
@@ -6533,14 +6562,14 @@ _bD_s21:
 sub_143F7B:
 		LDX		#0
 loc_143F7D:
-		LDA		_global_flags_array.byte6,X
+		LDA		_merch_town_name_low_chars,X
 		BEQ		loc_143F98
 		STA		byte_6AD1,X
 		INX
 		CPX		#4
 		BNE		loc_143F7D
 loc_143F8A:
-		LDA		_global_flags_array.byte18,X
+		LDA		_merch_town_name_high_chars-4,X	; at this point X = 4, so we at _merch_town_name_high_chars actually
 		BEQ		loc_143F98
 		STA		byte_6AD1,X
 		INX

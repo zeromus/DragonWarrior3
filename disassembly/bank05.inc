@@ -2007,7 +2007,7 @@ off_83A72:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_83A7A:
-		LDA		byte_644
+		LDA		_playerFacingDir
 		ASL
 		TAX
 		LDA		off_83A72,X
@@ -2140,7 +2140,7 @@ sub_83B51:
 		LDA		byte_182,X
 		CMP		#$F8
 		BEQ		locret_83B50
-		LDA		byte_644
+		LDA		_playerFacingDir
 		BEQ		loc_83B81
 		CMP		#1
 		BEQ		loc_83B6B
