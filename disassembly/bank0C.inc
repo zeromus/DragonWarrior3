@@ -11,14 +11,14 @@
 		PTR_IDX		_bC_s9
 		PTR_IDX		_bC_sA
 		PTR_IDX		_bC_sB
-		PTR_IDX		_bC_sC
-		PTR_IDX		_bC_sD_item_key_type0_use
-		PTR_IDX		_bC_sE_item_key_type1_use
-		PTR_IDX		_bC_sF_item_key_type3_use
-		PTR_IDX		_bC_s10_spell_return
+		PTR_IDX		_bC_sC_item_echoing_flute_use
+		PTR_IDX		_bC_sD_item_thief_key_use
+		PTR_IDX		_bC_sE_item_magic_key_use
+		PTR_IDX		_bC_sF_item_final_key_use
+		PTR_IDX		_bC_s10_spell_daynight
 		PTR_IDX		_bC_s11_item_lamp_of_darkness_use
 		PTR_IDX		_bC_s12_sleep_X_sync_50
-		PTR_IDX		_bC_s13_use_magic_ball
+		PTR_IDX		_bC_s13_item_magic_ball_use
 		PTR_IDX		_bC_s14
 		PTR_IDX		_bC_s15
 		PTR_IDX		_bC_s16
@@ -34,14 +34,14 @@
 		PTR_IDX		_bC_s20_warp_bE_sB_arg0
 		PTR_IDX		_bC_s21
 		PTR_IDX		_bC_s22
-		PTR_IDX		_bC_s23
+		PTR_IDX		_bC_s23_test_orbs_colleted_count
 		PTR_IDX		_bC_s24
 		PTR_IDX		_bC_s25
-		PTR_IDX		_bC_s26
+		PTR_IDX		_bC_s26_item_common_orbs_use
 		PTR_IDX		_bC_s27
 		PTR_IDX		_bC_s28
 		PTR_IDX		_bC_s2A
-		PTR_IDX		_bC_s2B
+		PTR_IDX		_bC_s2B_item_fairy_flute_use
 		PTR_IDX		_bC_s2C
 		PTR_IDX		_bC_s2D
 		PTR_IDX		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -2553,10 +2553,9 @@ loc_129199:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; seems may be shared by the command menu and "RETURN" spell as well as
-; "WING OF WYVERN" item
+; "DAY-NIGHT" spell usage, change day to night or night to day accordingly
 ;
-_bC_s10_spell_return:
+_bC_s10_spell_daynight:
 		JSR		_is_location_warpable			; determine whether current location can be warped from
 		BCS		.loc_return_false				; return false if 'unwarpable' was true
 		LDA		_global_flags_array.byte2
@@ -2576,7 +2575,7 @@ loc_1291F6:
 		LDA		#DAYNIGHT_CYCLE_NOON
 loc_129206:
 		STA		_world_map_steps_count			; store noon or midnight back in the clock. heh, kind of weird and befuddling but largely pointless
-		JSR		sub_12923C						; probably re-adjust the palette on account of having changed time
+		JSR		_day_night_spell_palette_effect	; run palette effect
 		SEC
 		RTS
 
@@ -2597,7 +2596,7 @@ _bC_s11_item_lamp_of_darkness_use:
 		JSR		_sleep_30
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_bC_s20_warp_bE_sB_arg0
-		JSR		sub_12923C						; probably re-adjust the palette on account of having changed t ime
+		JSR		_day_night_spell_palette_effect	; probably re-adjust the palette on account of having changed t ime
 		SEC
 		RTS
 loc_129232:
@@ -2610,11 +2609,11 @@ loc_129232:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12923C:
+_day_night_spell_palette_effect:
 		LDA		#0
 		STA		byte_AA
 		LDA		byte_9A
-		BNE		sub_1292B0
+		BNE		loc_1292B0
 		LDX		#6
 loc_129246:
 		LDA		#_b6_d9_world_map_step_daytime_list_fidx
@@ -2676,11 +2675,11 @@ loc_12929A:
 		BNE		loc_12926A
 		JSR		_bC_s20_warp_bE_sB_arg0
 		RTS
+
 byte_1292A4:
 		.BYTE	  1,  4,  7, $A,  2,  5,  8, $B,  3,  6,  9, $C
 
-; =============== S U B	R O U T	I N E =======================================
-sub_1292B0:
+loc_1292B0:
 		JSR		sub_129323
 		LDY		#0
 loc_1292B5:
@@ -2925,17 +2924,17 @@ _location_type_test:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sF_item_key_type3_use:
+_bC_sF_item_final_key_use:
 		LDA		#3
 		BNE		_item_key_use
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sE_item_key_type1_use:
+_bC_sE_item_magic_key_use:
 		LDA		#1
 		BNE		_item_key_use
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_sD_item_key_type0_use:
+_bC_sD_item_thief_key_use:
 		LDA		#0
 
 ;; FALLTHROUGH;;
@@ -3336,7 +3335,7 @@ _j.already_opened:
 		STA		byte_CE
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1	; set number param to message display
-		JSR		_sram_b0_s1B_players_gold_add	; gold from chest added
+		JSR		_sram_b0_s1B_player_gold_add	; gold from chest added
 		MSGX	_msg_m00,$026
 		JMP		.done_run_command_search
 
@@ -3364,10 +3363,10 @@ loc_1296DF:
 		JMP		.done_run_command_search
 
 .meteorite_armband_chest:
-		LDA		#$4B
+		LDA		#ITEM_METEORITE_ARMBAND
 		STA		_tmp_ptrB4
 		JSR		.item_found_ex
-		FARX	_b6_s18
+		FARX	_b6_s18_guard_of_meteorite_armband_show_hide	; show skeleton
 		JMP		.done_run_command_search
 
 _mummy_sneak_attack_from_chest:
@@ -3653,7 +3652,7 @@ loc_1298A9:
 		CMP		#$FF
 		BEQ		loc_1298CD
 		STA		byte_CF
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		TAX
@@ -3677,7 +3676,7 @@ loc_1298D1:
 loc_1298E5:
 		LDA		_tmp_varB6
 		STA		byte_CE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
@@ -3763,7 +3762,7 @@ loc_12996F:
 		BNE		loc_12996F
 		ORA		_q_OrbsCollected
 		STA		_q_OrbsCollected
-		JSR		_bC_s23
+		JSR		_bC_s23_test_orbs_colleted_count
 		RTS
 loc_12997D:
 		CMP		#$4E
@@ -3785,9 +3784,10 @@ locret_12999B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Munge orbs and newtown flags in an unfathomable way
+; Test orbs collected flags, if there are 3 orbs or more collected, set flag
+; $80 to byte18
 ;
-_bC_s23:
+_bC_s23_test_orbs_colleted_count:
 		LDY		#6
 		LDX		#0
 		LDA		_q_OrbsCollected
@@ -4108,7 +4108,7 @@ _item_orb_obtain_common_hndl:
 		SEC
 		SBC		#$76
 		TAY
-		LDA		_global_flags_array.byte1A
+		LDA		_q_OrbsPlaced
 loc_129AE6:
 		LSR
 		DEY
@@ -4797,7 +4797,7 @@ _bC_s25:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; hardcode logic looking for a specific spot on a map (Magic Ball)
-_bC_s13_use_magic_ball:
+_bC_s13_item_magic_ball_use:
 		LDA		_location_type
 		LSR
 		BCC		loc_129F9D
@@ -5187,59 +5187,49 @@ loc_12A1F6:
 ; =============== S U B	R O U T	I N E =======================================
 ; Handles playing the Echoing Flute
 ;
-_bC_sC:
+_bC_sC_item_echoing_flute_use:
 		LDA		_location_type
 		BEQ		.flute_no_echo				; branch if we're in the overworld
-		LDA		_q_OrbsCollected							; load bitset of acquired orbs, we'll shift it around to test the orb for this area
-
-		LDX		#6										; setup a six times loop through _orb_areas_tbl
+		LDA		_q_OrbsCollected			; load bitset of acquired orbs, we'll shift it around to test the orb for this area
+		LDX		#6							; setup a six times loop through _orb_areas_tbl
 loc_12A221:
 		LDY		_orb_areas_tbl-1,X
-		CPY		_mapNumber						; did we match the current map?
+		CPY		_mapNumber					; did we match the current map?
 		BEQ		.orb_area
 		LSR
 		DEX
 		BNE		loc_12A221
-
-; special: if it's house of pirates (theres two areas for this orb where the flute will echo, the building and the basement)
-		LDY		#$18 ; House of Pirates
-		CPY		_mapNumber
+		LDY		#$18 ; House of Pirates		; special: if it's house of pirates (theres two areas for this orb where
+		CPY		_mapNumber					; the flute will echo, the building and the basement)
 		BNE		.flute_no_echo
 		LDA		_q_OrbsCollected
 		AND		#2
-		BEQ		.flute_echo						; branch straight to echo if we haven't collected this orb yet
-; fall through to the dud if we have collected it
-
-; play the dud music, I would assume
+		BEQ		.flute_echo					; branch straight to echo if we haven't collected this orb yet
+											; fall through to the dud if we have collected it
 .flute_no_echo:
-		SYSX	_apu_load,$1E
+		SYSX	_apu_load,$1E				; play the dud music, I would assume
 		FARX	_bD_s22_se_wait_and_map_music_start
 		MSGX	_msg_m00,$10D
 		JSR		_pause_or_skip
 		SEC
 		RTS
-
-; matched a map in the table. see whether the orb's still here
-.orb_area:
-		LSR													; test the rotated bit from _q_OrbsCollected
+.orb_area:									; matched a map in the table. see whether the orb's still here
+		LSR									; test the rotated bit from _q_OrbsCollected
 		BCS		.flute_no_echo				; if it's set, we've collected it--theres no echo
-
-; orb's still there...
-		CPX		#4					
-		BNE		.flute_echo						; test for House of Pirates again
-		LDY		_global_flags_array.byte18							; meaning unknown
+		CPX		#4							; orb's still there...
+		BNE		.flute_echo					; test for House of Pirates again
+		LDY		_global_flags_array.byte18	; meaning unknown
 		INY
 		BNE		.flute_no_echo				; branch if _global_flags_array.byte18 was anything but #$FF
-		LDA		_global_flags_array.byte2		; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
+		LDA		_global_flags_array.byte2	; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
 		BMI		.flute_no_echo				; branch if it was set
-
 .flute_echo:
 		SYSX	_apu_load,$1D
 		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 
-_orb_areas_tbl:	; a quick list of areas with orbs
+_orb_areas_tbl:		; a quick list of areas with orbs
 		.BYTE	$15	; Tedanki
 		.BYTE	$BD ; Navel of the Earth B3
 		.BYTE	$17 ; Jipang
@@ -5248,70 +5238,72 @@ _orb_areas_tbl:	; a quick list of areas with orbs
 		.BYTE	$20 ; Silver Orb shrine (near Necrogond)
 
 ; =============== S U B	R O U T	I N E =======================================
-; Something dealing with the 6 orbs
+; puts an Orbo to a selected pedestal in particular map only, set corresponding
+; bits for placed orbs and used pedestals
 ;
-_bC_s26:
+_bC_s26_item_common_orbs_use:
 		LDA		_mapNumber
 		CMP		#$25					; Ramia's egg room
-		BNE		loc_12A281
-		LDX		#$C
+		BNE		.fail_exit
+		LDX		#$C						; look for the pedestal we use in the first place
 loc_12A26F:
-		LDA		byte_12A2CB-1,X
+		LDA		_orb_pedestal_locations_list-1,X
 		DEX
 		CMP		_playerMapY
 		BNE		loc_12A27E
-		LDA		byte_12A2CB-1,X
+		LDA		_orb_pedestal_locations_list-1,X
 		CMP		_playerMapX
 		BEQ		loc_12A283
 loc_12A27E:
 		DEX
 		BNE		loc_12A26F
-loc_12A281:
+.fail_exit:
 		CLC
 		RTS
 loc_12A283:
-		STX		word_6
+		STX		word_6					; store index
 		SEC
 		LDA		#0
 loc_12A288:
 		ROL
 		DEX
 		DEX
-		BPL		loc_12A288
-		STA		word_4
-		AND		_global_flags_array.byte1B
-		BNE		loc_12A281
-		LDA		byte_48
+		BPL		loc_12A288				; get the pedestal mask
+		STA		word_4					; store it
+		AND		_q_OrbsPedestalsUsed	; test if pedestal already used
+		BNE		.fail_exit
+		LDA		byte_48					; get orb item index
 		SEC
-		SBC		#$76
+		SBC		#$76					; orb item idx - 1
 		TAX
 		SEC
 		LDA		#0
 loc_12A29D:
 		ROL
 		DEX
-		BNE		loc_12A29D
-		STA		word_4+1
-		AND		_global_flags_array.byte1A
-		BNE		loc_12A281
-		LDA		_global_flags_array.byte1A
+		BNE		loc_12A29D				; now get the orb flag bit from item idx
+		STA		word_4+1				; store it
+		AND		_q_OrbsPlaced			; check if we already placed this orb lol
+		BNE		.fail_exit
+		LDA		_q_OrbsPlaced			; set bits
 		ORA		word_4+1
-		STA		_global_flags_array.byte1A
-		LDA		_global_flags_array.byte1B
+		STA		_q_OrbsPlaced
+		LDA		_q_OrbsPedestalsUsed
 		ORA		word_4
-		STA		_global_flags_array.byte1B
-		LDA		word_6
+		STA		_q_OrbsPedestalsUsed
+		LDA		word_6					; animation delay
 		PHA
 		JSR		_sleep_30
 		JSR		_bC_s20_warp_bE_sB_arg0
 		JSR		_sleep_30
 		PLA
-		LSR
-		FARX	_b6_s1A
+		LSR								; set pedestal fire object
+		FARX	_b6_s1A_orb_pedestal_fire_start_anim
 		SEC
 		RTS
 
-byte_12A2CB:
+; set of coordinates where the pedestals are placed
+_orb_pedestal_locations_list:
 		.BYTE	  $07,$04
 		.BYTE	  $03,$06
 		.BYTE	  $0B,$06
@@ -5320,7 +5312,7 @@ byte_12A2CB:
 		.BYTE	  $07,$0C
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s2B:
+_bC_s2B_item_fairy_flute_use:
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_warp_bE_sB_arg0
 		JSR		_bC_s3A
@@ -5328,8 +5320,8 @@ _bC_s2B:
 		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		MSGX	_msg_m00,$1B0
-		LDA		#$47
+		MSGX	_msg_m00,$1B0	; "`Ah! It's like a dream come true! You have broken the seal"
+		LDA		#ITEM_SACRED_AMULET
 		FARX	_bD_s27_give_item_to_player_msg1
 		BCC		loc_12A2FE
 		MSGX	_msg_m00,$1B1
@@ -7859,7 +7851,7 @@ loc_12B42E:
 		LDA		#0
 		STA		word_4+1
 		STA		word_6
-		JSR		_sram_b0_s1B_players_gold_subtract
+		JSR		_sram_b0_s1B_player_gold_subtract
 		JSR		_bC_s20_warp_bE_sB_arg0
 loc_12B443:
 		LDA		#$1C
@@ -8917,7 +8909,7 @@ nullsub_15:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BBFD:
 		LDX		#0
-		LDA		_global_flags_array.byte1B
+		LDA		_q_OrbsPedestalsUsed
 		STA		word_4
 loc_12BC04:
 		LSR		word_4

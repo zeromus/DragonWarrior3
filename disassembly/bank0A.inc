@@ -1438,7 +1438,7 @@ sub_F8E2D:
 		JSR		sub_F8E1D
 loc_F8E36:
 		JSR		sub_F8EEB
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1
@@ -1484,7 +1484,7 @@ loc_F8E85:
 		BNE		loc_F8E85
 loc_F8E91:
 		INC		byte_CF
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		STA		byte_580
 		LDA		word_4+1

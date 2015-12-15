@@ -1806,7 +1806,7 @@ $5FC:	"`Wowie! It's a man! Zowie!!`"
 $5FD:	"<br>
 		`At least I thought so... Sorry I yelled`"
 $5FE:	"`Are you the ones who have disturbed my slumber?`"
-$5FF:	"`Oh, not you, huh?Sorry. My mistake`"
+$5FF:	"`Oh, not you, huh? Sorry. My mistake`"
 $600:	"`Well, are you also the person who took the contents of the treasure chest?`"
 $601:	"`You're an honest person, aren't you. All right then. There is nothing more I need`<br>
 		`I'll give it to you`"

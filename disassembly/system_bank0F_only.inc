@@ -1084,8 +1084,8 @@ locret_1772F3:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1772F4:
-		LDX		byte_9B
-		LDY		byte_9C
+		LDX		_ghostShipWorldX
+		LDY		_ghostShipWorldY
 		LDA		#4
 		STA		word_3C
 		LDA		#$14

@@ -1175,8 +1175,8 @@ sub_14193F:
 		BNE		locret_14193E
 		LDA		_blockPlayerInputDuringMap
 		BNE		locret_14193E
-		LDX		byte_9B
-		LDY		byte_9C
+		LDX		_ghostShipWorldX
+		LDY		_ghostShipWorldY
 		CPX		_playerWorldX
 		BNE		loc_14195B
 		CPY		_playerWorldY
@@ -1223,31 +1223,31 @@ loc_141995:
 		JSR		sub_1419FB
 		BCS		loc_1419E8
 		LDA		byte_80
-		STA		byte_9B
+		STA		_ghostShipWorldX
 		JMP		loc_1419D7
 loc_1419B0:
 		DEC		byte_81
 		JSR		sub_1419FB
 		BCS		loc_1419E8
 		LDA		byte_81
-		STA		byte_9C
+		STA		_ghostShipWorldY
 		JMP		loc_1419D7
 loc_1419BE:
 		INC		byte_80
 		JSR		sub_1419FB
 		BCS		loc_1419E8
 		LDA		byte_80
-		STA		byte_9B
+		STA		_ghostShipWorldX
 		JMP		loc_1419D7
 loc_1419CC:
 		INC		byte_81
 		JSR		sub_1419FB
 		BCS		loc_1419E8
 		LDA		byte_81
-		STA		byte_9C
+		STA		_ghostShipWorldY
 loc_1419D7:
-		LDX		byte_9B
-		LDY		byte_9C
+		LDX		_ghostShipWorldX
+		LDY		_ghostShipWorldY
 		JSR		sub_1777B7
 		BCC		loc_1419E8
 		LDA		byte_9D
@@ -1282,10 +1282,10 @@ sub_1419FB:
 		SEC
 		SBC		#8
 		TAX
-		CMP		byte_9B
+		CMP		_ghostShipWorldX
 		BEQ		loc_141A4E
 		INX
-		CPX		byte_9B
+		CPX		_ghostShipWorldX
 		BNE		loc_141A50
 		SEC
 		RTS
@@ -1294,10 +1294,10 @@ loc_141A1D:
 		CLC
 		ADC		#6
 		TAX
-		CMP		byte_9B
+		CMP		_ghostShipWorldX
 		BEQ		loc_141A4E
 		INX
-		CPX		byte_9B
+		CPX		_ghostShipWorldX
 		BNE		loc_141A50
 		SEC
 		RTS
@@ -1306,10 +1306,10 @@ loc_141A2E:
 		SEC
 		SBC		#7
 		TAX
-		CMP		byte_9C
+		CMP		_ghostShipWorldY
 		BEQ		loc_141A4E
 		INX
-		CPX		byte_9C
+		CPX		_ghostShipWorldY
 		BNE		loc_141A50
 		SEC
 		RTS
@@ -1318,10 +1318,10 @@ loc_141A3F:
 		CLC
 		ADC		#6
 		TAX
-		CMP		byte_9C
+		CMP		_ghostShipWorldY
 		BEQ		loc_141A4E
 		INX
-		CPX		byte_9C
+		CPX		_ghostShipWorldY
 		BNE		loc_141A50
 loc_141A4E:
 		SEC
@@ -1396,8 +1396,8 @@ sub_141AB0:
 		LDA		byte_9D
 		AND		#8
 		BEQ		locret_141AAF
-		LDX		byte_9B
-		LDY		byte_9C
+		LDX		_ghostShipWorldX
+		LDY		_ghostShipWorldY
 		LDA		byte_9D
 		AND		#3
 		BEQ		loc_141AD2
@@ -2174,7 +2174,7 @@ loc_141F94:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_141FB1:
-		JSR		_sram_b0_s1B_players_gold_read
+		JSR		_sram_b0_s1B_player_gold_read
 		SEC
 		LDA		word_4
 		SBC		byte_C0
@@ -2237,7 +2237,7 @@ sub_141FF1:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_b0_s1B_players_gold_subtract
+		JSR		_sram_b0_s1B_player_gold_subtract
 		SYSX	_display_window,$68
 		PLA
 		STA		byte_D0
@@ -2255,11 +2255,11 @@ _players_gold_add_from_arrC0:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JMP		_sram_b0_s1B_players_gold_add
+		JMP		_sram_b0_s1B_player_gold_add
 
 ; =============== S U B	R O U T	I N E =======================================
 _player_gold_add_arrC0_test_overflow:
-		JSR		_sram_b0_s1B_players_gold_read
+		JSR		_sram_b0_s1B_player_gold_read
 		CLC
 		LDA		byte_C0		; add arrC0 value to current player's gold
 		ADC		word_4
@@ -2387,11 +2387,15 @@ locret_1420CB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1420CC:
+; stores items of a player to the vault from newtown!
+; why not use this function to remove a player in tavern without need to
+; remove it's items manually?
+;
+_player_items_flush_to_vault:
 		LDA		#0
 		STA		byte_CF
 loc_1420D0:
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		BEQ		locret_1420CB
 		LDA		word_4+1
@@ -2410,7 +2414,7 @@ sub_1420EE:
 		MSGX	_msg_m00,$205	; "Wery well, i will record your current..."
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1420FA
-		FARX	_b7_sD
+		FARX	_b7_sD_save_data
 		RTS
 loc_1420FA:
 		MSGX	_msg_m00,$294	; "I can't record due your position, etc.."
@@ -2419,20 +2423,20 @@ loc_1420FA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_base_nhdl2_b6_s16:
-		FARX	_b6_s16
+_npc_base_nhdl2_b6_s16_tavern_character_registration:
+		FARX	_b6_s16_tavern_character_registration
 locret_142103:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_142104:
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		STA		byte_CF
 loc_14210B:
 		DEC		byte_CF
 		BMI		locret_142103
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		CMP		byte_C5
@@ -2479,7 +2483,7 @@ loc_142177:
 		BCS		loc_14215A
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		CMP		#8
 		BCC		loc_1421AA
@@ -2594,7 +2598,7 @@ loc_142265:
 loc_14226F:
 		STA		byte_CE
 		STA		byte_D2
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142293
@@ -2654,7 +2658,7 @@ sub_1422E1:
 		STA		byte_CE
 		STA		byte_CF
 		STA		byte_D2
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		BNE		loc_142303
 		MSGX	_msg_m00,$238
@@ -2672,7 +2676,7 @@ loc_142303:
 		BCS		loc_1422DD
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -2725,7 +2729,7 @@ loc_142377:
 		STA		byte_CE
 		LDA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$80
 		BEQ		loc_1423AA
@@ -2852,7 +2856,7 @@ sub_14246C:
 		STA		byte_CF
 		LDA		byte_C2
 		STA		byte_D0
-		JSR		_sram_b0_s1B_players_gold_subtract
+		JSR		_sram_b0_s1B_player_gold_subtract
 		SYSX	_display_window,$12
 		RTS
 		
@@ -3050,7 +3054,7 @@ loc_1425AA:
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3D_player_detoxicate
+		FARX	_b0_s3D_player_remove_poison_status
 		JMP		loc_1425A4
 loc_142605:
 		LDA		byte_C3
@@ -3167,7 +3171,7 @@ loc_1426F1:
 		SYSX	_apu_load,$15
 		LDA		byte_C3
 		STA		byte_CE
-		FARX	_b0_s3D_player_revive
+		FARX	_b0_s3D_player_remove_death_status
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
@@ -3462,7 +3466,7 @@ loc_14297E:
 		JMP		loc_142951
 loc_14298E:
 		MSGX	_msg_m00,$26D
-		JSR		_sram_b0_s1B_players_gold_subtract
+		JSR		_sram_b0_s1B_player_gold_subtract
 		SYSX	_display_window,$68
 		CLC
 		LDA		byte_C6
@@ -3481,7 +3485,7 @@ loc_1429B0:
 		BCS		loc_1429C7
 		STA		byte_CE
 loc_1429B9:
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		BNE		loc_1429CA
 		LDA		byte_C3
@@ -3500,7 +3504,7 @@ loc_1429CA:
 		BCS		loc_1429C7
 		STA		byte_BD
 		STA		byte_CF
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_C5
@@ -3528,7 +3532,7 @@ loc_142A02:
 		MSGX	_msg_m00,$271
 		JMP		loc_142A6B
 loc_142A1B:
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		BPL		loc_142A41
 		AND		#$7F
@@ -3621,7 +3625,7 @@ loc_142ACC:
 		JMP		loc_142AA5
 loc_142ADC:
 		MSGX	_msg_m00,$279
-		JSR		_sram_b0_s1B_players_gold_add
+		JSR		_sram_b0_s1B_player_gold_add
 		SYSX	_display_window,$68
 		SEC
 		LDA		byte_608D
@@ -3682,7 +3686,7 @@ loc_142B50:
 loc_142B5A:
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		CMP		#8
 		BCC		loc_142B82
@@ -4342,10 +4346,10 @@ loc_1430E4:
 		JMP		_sram_b0_sE_player_STATUS_read
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_1430F2:
+_day_night_test:
 		LDA		_world_map_steps_count
 		STA		word_4
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4467,7 +4471,7 @@ loc_143182:
 		BCC		loc_143195
 		CMP		#$F2
 		BCS		loc_143195
-		LDA		#$AC	; flag.byte15 mask $10
+		LDA		#$AC	; flag.byte15 mask $20
 		JSR		_global_game_flag_set
 loc_143195:
 		LDA		_global_flags_array.byte10
@@ -4740,7 +4744,7 @@ byte_1433BC_last:
 _npc_base_hndl_lib:
 		.WORD	_npc_base_nhdl0
 		.WORD	_npc_base_nhdl1
-		.WORD	_npc_base_nhdl2_b6_s16
+		.WORD	_npc_base_nhdl2_b6_s16_tavern_character_registration
 		.WORD	_npc_base_nhdl3_shrine_of_dhama_prof_change
 		.WORD	_npc_base_nhdl4
 		.WORD	_npc_base_nhdl5
@@ -4801,8 +4805,8 @@ loc_143425:
 
 _npc_hndl_size_list:
 		.BYTE	  _npc_hndl0-_npc_hndl0
-		.BYTE	  _npc_hndl1-_npc_hndl0
-		.BYTE	  _npc_hndl2-_npc_hndl1
+		.BYTE	  _npc_hndl1_hero_mother-_npc_hndl0
+		.BYTE	  _npc_hndl2-_npc_hndl1_hero_mother
 		.BYTE	  _npc_hndl3-_npc_hndl2
 		.BYTE	  _npc_hndl4-_npc_hndl3
 		.BYTE	  _npc_hndl5-_npc_hndl4
@@ -4843,8 +4847,8 @@ _npc_hndl_size_list:
 		.BYTE	  _npc_hndl28-_npc_hndl27
 		.BYTE	  _npc_hndl29-_npc_hndl28
 		.BYTE	  _npc_hndl2A-_npc_hndl29
-		.BYTE	  _npc_hndl2B-_npc_hndl2A
-		.BYTE	  _npc_hndl2C-_npc_hndl2B
+		.BYTE	  _npc_hndl2B_meteorite_armband_guard-_npc_hndl2A
+		.BYTE	  _npc_hndl2C-_npc_hndl2B_meteorite_armband_guard
 		.BYTE	  _npc_hndl2D-_npc_hndl2C
 		.BYTE	  _npc_hndl2E-_npc_hndl2D
 		.BYTE	  _npc_hndl2F-_npc_hndl2E
@@ -5051,52 +5055,52 @@ _npc_hndl0:
 		LDA		word_4
 		AND		word_4+1
 		BPL		loc_14352E
-		MSGX	_msg_m00_break,$5B5
+		MSGX	_msg_m00_break,$5B5	; "Won't your mommy be worried if you don't go home?!"
 loc_14352E:
-		MSGX	_msg_m00_break,$5B6
+		MSGX	_msg_m00_break,$5B6	; "Oh, what has become of my <name>!"
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl1:
+_npc_hndl1_hero_mother:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
 		BMI		loc_143541
 		LDA		byte_D2
 		STA		byte_D3
-		MSGX	_msg_m00_break,$5BF
+		MSGX	_msg_m00_break,$5BF	 ; "Oh, mercy! My dear sweet <name>!"
 loc_143541:
 		LDA		_global_flags_array.byte2
 		BPL		loc_143559
-		MSGX	_msg_m00,$5BB
+		MSGX	_msg_m00,$5BB	; "What wrong, <name>? Is the life of adventure too tough?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143553
-		MSGX	_msg_m00,$5BC
+		MSGX	_msg_m00,$5BC	; "As your mother, I'd like you to stay with me always, <name>"
 		BCS		loc_143556
 loc_143553:
-		MSGX	_msg_m00,$5BE
+		MSGX	_msg_m00,$5BE	; "That's right! The blood of the great Ortega runs through your veins!"
 loc_143556:
-		MSGX	_msg_m00_break,$5BD
+		MSGX	_msg_m00_break,$5BD	; "Come on then! It's time to go! Like your fine brave father!"
 loc_143559:
-		JSR		sub_1430F2
+		JSR		_day_night_test
 		BCS		loc_143563
-		MSGX	_msg_m00,$5B7
+		MSGX	_msg_m00,$5B7	; "Welcome back, <name> my dear"
 		BCS		loc_143566
 loc_143563:
-		MSGX	_msg_m00,$5BA
+		MSGX	_msg_m00,$5BA	; "Oh! You're back late. I'm glad you're safe and sound"
 loc_143566:
 		JSR		_test_if_party_is_less_than_two
 		BCC		loc_14356E
-		MSGX	_msg_m00,$5B8
+		MSGX	_msg_m00,$5B8	; "Your friend<s> should come in and rest, too"
 loc_14356E:
 		LDX		#$3C
 		JSR		_sleep_X_sync
 		LDA		#$FF
 		STA		byte_C6
-		FARX	_b6_s1D
+		FARX	_b6_s1D_hero_rest_at_home_anim
 		JSR		_wrap_bE_sD_wnd3E
-		LDA		#$17
+		LDA		#$17	; byte01 mask $80 "_f_WarpBlock"
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00_break_ex,$5B9
+		MSGX	_msg_m00_break_ex,$5B9	; "Good morning! Time to get up and go, <name>"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2:
@@ -5158,10 +5162,10 @@ loc_1435E5:
 		MSGX	_msg_m00,$5CE	; "What do you say, <name>? Will you accept the job?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143628
-		MSGX	_msg_m00,$5D0
+		MSGX	_msg_m00,$5D0	; "Really? <name> will give up the journey and settle down in this town?..."
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143628
-		MSGX	_msg_m00,$5D1
+		MSGX	_msg_m00,$5D1	; "Oh, I'm grateful. From this day forward <name> and I shall start to build..."
 		LDA		byte_D2
 		STA		byte_D3
 		STA		byte_CE
@@ -5180,9 +5184,9 @@ loc_143611:
 		BPL		loc_143611
 		LDA		#$C0	; flag.byte18 mask 01
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00,$5D2	; "<name>: Well, I'm going to stay here"
-		JSR		sub_1420CC
-		FARX	_b6_s17
+		MSGX	_msg_m00,$5D2	; "<name>: Well, I'm going to stay here" and send all items to Vault
+		JSR		_player_items_flush_to_vault
+		FARX	_b6_s17_newtown_start_build_town_anim
 		RTS
 loc_143628:
 		MSGX	_msg_m00_break,$5CF	; "I see. That's too bad"
@@ -5193,32 +5197,32 @@ _npc_hndl4:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break_ex,$5D4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl6:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5D7
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl7:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5DE
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl8:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5DF
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl9:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5E0
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlA:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_ex,$5E1
 		LDA		_q_OrbsCollected
 		AND		#4
@@ -5229,12 +5233,12 @@ loc_14365F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlB:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5E4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndlC:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00,$5E7
 		MSGX	_msg_m00_break,$695
 
@@ -5504,7 +5508,7 @@ loc_143814:
 		BCC		locret_143826
 		LDA		#$CD
 		JSR		_global_game_flag_set
-		FARX	_bC_s23
+		FARX	_bC_s23_test_orbs_colleted_count
 locret_143826:
 		RTS
 
@@ -5579,9 +5583,9 @@ loc_14388F:
 		LDA		#$23
 		JSR		_global_game_flag_set
 		LDA		#$40
-		STA		byte_9B
+		STA		_ghostShipWorldX
 		LDA		#$6C
-		STA		byte_9C
+		STA		_ghostShipWorldY
 		LDA		#$B6
 		JSR		_global_game_flag_set
 loc_1438B6:
@@ -5598,7 +5602,7 @@ loc_1438C1:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl24:
 		MSGX	_msg_m00,$63F
-		JSR		sub_1430F2
+		JSR		_day_night_test
 		BCC		loc_1438D7
 		LDA		_npcs_pos_list
 		CMP		#$F
@@ -5630,7 +5634,7 @@ loc_1438ED:
 		BCC		locret_143905
 		LDA		#$C8
 		JSR		_global_game_flag_set
-		FARX	_bC_s23
+		FARX	_bC_s23_test_orbs_colleted_count
 locret_143905:
 		RTS
 
@@ -5645,13 +5649,13 @@ loc_143911:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl27:
-		MSGX	_msg_m00,$646
-		LDA		#$72
+		MSGX	_msg_m00,$646	; "You stand before the Dragon Queen..."
+		LDA		#ITEM_SPHERE_OF_LIGHT
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_14392A
-		MSGX	_msg_m00,$647
-		FARX	_b6_s19
-		LDA		#$AE
+		MSGX	_msg_m00,$647	; "I hope, with this Sphere of Light, that thou canst hasten..."
+		FARX	_b6_s19_dragon_queen_to_egg_transition_anim
+		LDA		#$AE	; flag.byte15 mask $40
 		JSR		_global_game_flag_set
 locret_14392A:
 		RTS
@@ -5662,7 +5666,7 @@ _npc_hndl28:
 		BVC		loc_143934
 		MSGX	_msg_m00_break,$3D4
 loc_143934:
-		LDA		_global_flags_array.byte1A
+		LDA		_q_OrbsPlaced
 		AND		#$3F
 		CMP		#$3F
 		BNE		loc_14394D
@@ -5676,16 +5680,15 @@ locret_14394C:
 		RTS
 loc_14394D:
 		MSGX	_msg_m00,$649	; "We are we are protecting the egg..."
-		LDA		_global_flags_array.byte1A
+		LDA		_q_OrbsPlaced
 		AND		#$3F
 		BEQ		locret_14394C
 		MSGX	_msg_m00,$64A	; "You have already placed the.."
-		LDA		_global_flags_array.byte1A
+		LDA		_q_OrbsPlaced
 		AND		#$3F		; mask 6 bits
 		STA		byte_5C
 		LDA		#$4B		; base msg $64B - silver, yellow, purple, blue, green, red ... orb
 		STA		byte_5D
-;		LDA		#3
 		LDA		#6
 		STA		word_5E
 loc_143969:
@@ -5696,7 +5699,6 @@ loc_143969:
 loc_143971:
 		LDA		byte_5D
 		LDX		word_5E
-;		JSR		_wrap_msg_m00_b300	; get rid of this strange routine
 		FARX	_bE_s4_msg_m00
 loc_143978:
 		INC		byte_5D
@@ -5739,23 +5741,28 @@ _npc_hndl2A:
 		JMP		_npc_hndl6C
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl2B:
-		MSGX	_msg_m00,$5FE
+; it seems there are no difference what answer you choose to meteorite armband
+; guard, he will disapper in any case and you already got your item before this
+; conversation.
+;
+_npc_hndl2B_meteorite_armband_guard:
+		MSGX	_msg_m00,$5FE	; "Are you the ones who have disturbed my slumber?"
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1439D1
 loc_1439CA:
-		MSGX	_msg_m00,$5FF
+		MSGX	_msg_m00,$5FF	; "Oh, not you, huh? Sorry. My mistake"
 loc_1439CD:
-		FARX	_b6_s18
+		FARX	_b6_s18_guard_of_meteorite_armband_show_hide	; hide it, if it already enabled
 		RTS
 loc_1439D1:
-		MSGX	_msg_m00,$600
+		MSGX	_msg_m00,$600	; "Well, are you also the person who took the contents of the treasure chest?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_1439CA
-		MSGX	_msg_m00,$601
-		BCS		loc_1439CD
+		MSGX	_msg_m00,$601	; "You're an honest person, aren't you. All right then. There is nothing more I need"
+		BCS		loc_1439CD	; unconditional jump
 
 ; =============== S U B	R O U T	I N E =======================================
+; King of Aliahan when Baramos is defeated
 _npc_hndl2C:
 		LDA		_global_flags_array.byte16
 		AND		#$10
@@ -5763,15 +5770,15 @@ _npc_hndl2C:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
 		STA		byte_D3
-		MSGX	_msg_m00,$677
-		FARX	_b6_s1B
+		MSGX	_msg_m00,$677	; "Oh, <name>! You did well in defeating the Archfiend Baramos"
+		FARX	_b6_s1B_interrupted_baramos_defeat_celebration_anim
 		JSR		_wrap_bE_sD_wnd3E
-		MSGX	_msg_m00,$678
-		FARX	_b6_s1C
+		MSGX	_msg_m00,$678	; "...from out of nowhere, an unearthly voice is heard..."
+		FARX	_b6_s1B_reinit_after_zoma_voice
 		LDA		#$B4
 		JMP		_global_game_flag_set
 loc_143A01:
-		MSGX	_msg_m00_break,$679
+		MSGX	_msg_m00_break,$679	; "What is the meaning of this? Just when we thought peace had come to our world"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl2D:
@@ -5995,7 +6002,7 @@ _npc_hndl47_exp_info_and_progress_save:
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143B96
 loc_143B80:
-		FARX	_b7_sD
+		FARX	_b7_sD_save_data
 		LDA		_global_flags_array.byteE
 		AND		#7
 		CMP		#3
@@ -6098,44 +6105,44 @@ _npc_hndl52:
 		LDA		#$1A
 		JMP		sub_1434D3
 loc_143C33:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break_ex,$5D5
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl53:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break_ex,$5D6
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl54:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00,$5D8
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$694
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl55:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5D9
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl56:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5DA
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl57:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5DB
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl58:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5E5
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl59:
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00_break,$5E6
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6551,15 +6558,15 @@ byte_143F25:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s21:
-		MSGX	_msg_m00,$5DC
+		MSGX	_msg_m00,$5DC	; "Heading back? Well I'll take the toll fee then"
 		FARX	_bE_s1C_yes_or_no_question
-		JSR		sub_143F7B
+		JSR		_get_merch_town_char_name
 		MSGX	_msg_m00,$5DD
 		FARX	_bE_s33
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143F7B:
+_get_merch_town_char_name:
 		LDX		#0
 loc_143F7D:
 		LDA		_merch_town_name_low_chars,X

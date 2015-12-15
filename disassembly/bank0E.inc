@@ -520,14 +520,14 @@ _run_command_status:
 .command_status_usual:
 		SYSX	_display_window,$1E
 		CMP		#$FF
-		BEQ		loc_158374
+		BEQ		.reject_status_show
 		CMP		#1
-		BEQ		sub_1583C2
+		BEQ		.condition_status_show
 		CMP		#2
-		BEQ		_wrap_b6_s1E
-		SYSX	_display_window,$23
+		BEQ		.formation_status_show
+		SYSX	_display_window,$23	; info menus show
 		CMP		#$FF
-		BEQ		loc_158374
+		BEQ		.reject_status_show
 		STA		byte_CE
 		SYSX	_display_window,$68
 		SYSX	_display_window,$09
@@ -541,14 +541,12 @@ _run_command_status:
 		STA		byte_D0
 		JSR		sub_1583D0
 		JSR		sub_1583D0
-loc_158374:
+.reject_status_show:
 		JMP		sub_1580A1
-_wrap_b6_s1E:
-		FARX	_b6_s1E
+.formation_status_show:
+		FARX	_b6_s1E_formation_change_handler
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_1583C2:
+.condition_status_show:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CLC
@@ -602,7 +600,7 @@ _run_command_equip:
 		JMP		sub_1580A1
 loc_158421:
 		STA		byte_CE
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		STA		byte_6AB3
 		SEC
@@ -610,7 +608,7 @@ loc_15842C:
 		JSR		sub_158516
 loc_15842F:
 		PHP
-		JSR		_sram_b0_s1F_get_weapon_from_inventory
+		JSR		_sram_b0_s1F_player_weapon_get
 		PLP
 		LDX		word_4
 		BNE		loc_15843C
@@ -628,16 +626,16 @@ loc_158449:
 		LDA		#0
 		JSR		sub_15858D
 		BCS		loc_158461
-		JSR		_sram_b0_s1F_get_weapon_from_inventory
+		JSR		_sram_b0_s1F_player_weapon_get
 		JSR		sub_15851F
 		BCC		loc_15842F
-		JSR		_sram_b0_s23_player_equip_weapon
+		JSR		_sram_b0_s23_player_weapon_equip
 		SEC
 loc_15845E:
 		JSR		sub_158516
 loc_158461:
 		PHP
-		JSR		_sram_b0_s21_get_armor_from_inventory
+		JSR		_sram_b0_s21_player_armor_get
 		PLP
 		LDX		word_4
 		BNE		loc_15846E
@@ -652,16 +650,16 @@ loc_15846E:
 		LDA		#1
 		JSR		sub_15858D
 		BCS		loc_15848E
-		JSR		_sram_b0_s21_get_armor_from_inventory
+		JSR		_sram_b0_s21_player_armor_get
 		JSR		sub_15851F
 		BCC		loc_158461
-		JSR		_sram_b0_s25_player_equip_armor
+		JSR		_sram_b0_s25_player_armor_equip
 		SEC
 loc_15848B:
 		JSR		sub_158516
 loc_15848E:
 		PHP
-		JSR		_sram_b0_s21_shield_from_inventory
+		JSR		_sram_b0_s21_player_shield_get
 		PLP
 		LDX		word_4
 		BNE		loc_15849B
@@ -676,15 +674,15 @@ loc_15849B:
 		LDA		#2
 		JSR		sub_15858D
 		BCS		loc_1584BB
-		JSR		_sram_b0_s21_shield_from_inventory
+		JSR		_sram_b0_s21_player_shield_get
 		JSR		sub_15851F
 		BCC		loc_15848E
-		JSR		_sram_b0_s24_player_equip_shield
+		JSR		_sram_b0_s24_player_shield_equip
 		SEC
 		JSR		sub_158516
 loc_1584BB:
 		PHP
-		JSR		_sram_b0_s22_helm_from_inventory
+		JSR		_sram_b0_s22_player_helm_get
 		PLP
 		LDX		word_4
 		BNE		loc_1584C8
@@ -699,10 +697,10 @@ loc_1584C8:
 		LDA		#3
 		JSR		sub_15858D
 		BCS		loc_1584E7
-		JSR		_sram_b0_s22_helm_from_inventory
+		JSR		_sram_b0_s22_player_helm_get
 		JSR		sub_15851F
 		BCC		loc_1584BB
-		JSR		_sram_b0_s24_player_equip_helm
+		JSR		_sram_b0_s24_player_helm_equip
 		JSR		sub_158516
 loc_1584E7:
 		JSR		sub_1584ED
@@ -710,7 +708,7 @@ loc_1584E7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1584ED:
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		CMP		byte_6AB3
 		BEQ		loc_158507
@@ -826,7 +824,7 @@ sub_158581:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15858D:
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		PLA
 		TAX
 		LDA		word_4,X
@@ -1045,8 +1043,8 @@ sub_1586CE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586D5:
-		LDX		byte_9B
-		LDY		byte_9C
+		LDX		_ghostShipWorldX
+		LDY		_ghostShipWorldY
 loc_1586D9:
 		TXA
 		SEC
@@ -1352,7 +1350,7 @@ _sys_idx_list0:
 		.BYTE	_b0_s15_player_LUCK_read_fidx
 		.BYTE	_b0_s16_player_ATK_read_fidx
 		.BYTE	_b0_s18_player_DEF_read_fidx
-		.BYTE	_b0_s1B_players_gold_read_fidx
+		.BYTE	_b0_s1B_player_gold_read_fidx
 		.BYTE	_b0_s19_player_EXP_read_fidx
 		.BYTE	_b0_sC_player_LV_read_fidx
 		.BYTE	_b0_sD_tavern_char_LV_read_fidx
@@ -1590,15 +1588,15 @@ _txt_non_equipped:
 		.BYTE	_N,_O,_N,0,_E,_Q,_U,_I,_P,_P,_E,_D
 
 _sys_idx_list1:
-		.BYTE	_b0_s1F_get_weapon_from_inventory_fidx
-		.BYTE	_b0_s21_get_armor_from_inventory_fidx
-		.BYTE	_b0_s21_shield_from_inventory_fidx
-		.BYTE	_b0_s22_helm_from_inventory_fidx
-		.BYTE	_b0_s28_player_inventory_item_read_fidx
-		.BYTE	_b0_s1E_player_euipped_item_read_fidx
-		.BYTE	_b0_s1E_player_euipped_item_read_fidx
-		.BYTE	_b0_s1E_player_euipped_item_read_fidx
-		.BYTE	_b0_s1E_player_euipped_item_read_fidx
+		.BYTE	_b0_s1F_player_weapon_get_fidx
+		.BYTE	_b0_s21_player_armor_get_fidx
+		.BYTE	_b0_s21_player_shield_get_fidx
+		.BYTE	_b0_s22_player_helm_get_fidx
+		.BYTE	_b0_s28_player_inventory_item_get_fidx
+		.BYTE	_b0_s1E_player_euipped_item_get_fidx
+		.BYTE	_b0_s1E_player_euipped_item_get_fidx
+		.BYTE	_b0_s1E_player_euipped_item_get_fidx
+		.BYTE	_b0_s1E_player_euipped_item_get_fidx
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -1841,7 +1839,7 @@ loc_158C01:
 		BEQ		loc_158C16
 		CMP		#$3B
 		BNE		loc_158BEE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		CMP		#5
 		BCC		loc_158BEE
@@ -2091,11 +2089,11 @@ loc_158DA7:
 		RTS
 _sys_idx_list3:
 		.BYTE	_b0_s31_get_party_chars_list_fidx
-		.BYTE	_b0_s28_player_inventory_item_read_fidx
-		.BYTE	_b0_s1F_get_weapon_from_inventory_fidx
-		.BYTE	_b0_s21_get_armor_from_inventory_fidx
-		.BYTE	_b0_s21_shield_from_inventory_fidx
-		.BYTE	_b0_s22_helm_from_inventory_fidx
+		.BYTE	_b0_s28_player_inventory_item_get_fidx
+		.BYTE	_b0_s1F_player_weapon_get_fidx
+		.BYTE	_b0_s21_player_armor_get_fidx
+		.BYTE	_b0_s21_player_shield_get_fidx
+		.BYTE	_b0_s22_player_helm_get_fidx
 		.BYTE	_b0_s31_get_party_chars_list_fidx
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3738,7 +3736,7 @@ sub_15A185:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDX		word_4
 		PLA
 		STA		word_4+1
@@ -4897,6 +4895,8 @@ loc_15A93E:
 		JMP		loc_15A8CD
 
 ; =============== S U B	R O U T	I N E =======================================
+; merchant name in newtown display
+;
 _special_code_ED_print:
 		LDY		#0
 loc_15A948:
@@ -6491,10 +6491,10 @@ loc_15B2F5:
 		AND		#2
 		BNE		loc_15B30A
 		LDA		_playerWorldX
-		CMP		byte_9B
+		CMP		_ghostShipWorldX
 		BNE		loc_15B30A
 		LDA		_playerWorldY
-		CMP		byte_9C
+		CMP		_ghostShipWorldY
 		BNE		loc_15B30A
 		LDA		#$11
 		RTS
@@ -6968,9 +6968,9 @@ _bE_s36:
 		FARX	_b6_s13
 		DEC		_playerWorldY
 		LDA		#$40
-		STA		byte_9B
+		STA		_ghostShipWorldX
 		LDA		#$6C
-		STA		byte_9C
+		STA		_ghostShipWorldY
 		LDA		#0
 		STA		_playerFacingDir
 		STA		byte_6BC
@@ -7430,7 +7430,7 @@ loc_15B957:
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		STA		byte_6ABF
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		CMP		#$AA
 		BNE		loc_15B976
@@ -7441,7 +7441,7 @@ loc_15B976:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_15B99C
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		CMP		#$B1
 		BEQ		loc_15B98A

@@ -1838,7 +1838,7 @@ loc_174BCF:
 		LDA		byte_6A36
 		CMP		#1
 		BEQ		loc_174BCF
-		FARX	_b7_s8
+		FARX	_b7_s8_ppu_screen_clear_and_init
 		FARX	_b7_sA_sram_test_and_init
 		FARX	_bB_s4_apu_set_flag0
 		LDA		_global_flags_array.byte12
@@ -2744,10 +2744,10 @@ sub_17522D:
 		JSR		sub_17592E
 		BCS		loc_1752B0
 		LDA		_playerWorldX
-		CMP		byte_9B
+		CMP		_ghostShipWorldX
 		BNE		loc_17527F
 		LDA		_playerWorldY
-		CMP		byte_9C
+		CMP		_ghostShipWorldY
 		BNE		loc_17527F
 		LDA		_location_type
 		BNE		loc_17527F
@@ -3382,7 +3382,7 @@ loc_175701:
 		BVS		locret_17570C
 		LDA		_playerWorldX
 		EOR		#$80
-		STA		byte_9B
+		STA		_ghostShipWorldX
 locret_17570C:
 		RTS
 loc_17570D:
@@ -3543,10 +3543,10 @@ loc_1757F4:
 		CLC
 		RTS
 loc_17580C:
-		LDA		byte_9B
+		LDA		_ghostShipWorldX
 		CMP		_playerWorldX
 		BNE		loc_17581B
-		LDA		byte_9C
+		LDA		_ghostShipWorldY
 		CMP		_playerWorldY
 		BEQ		loc_175824
 loc_175818:
@@ -3565,10 +3565,10 @@ loc_175826:
 		LDA		word_7C
 		BNE		loc_175838
 		LDA		_playerWorldX
-		CMP		byte_9B
+		CMP		_ghostShipWorldX
 		BNE		loc_175836
 		LDA		_playerWorldY
-		CMP		byte_9C
+		CMP		_ghostShipWorldY
 		BEQ		loc_17581D
 loc_175836:
 		CLC
@@ -6269,19 +6269,19 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s18_player_DEF_read					; $39
 		FILE_IDX	$0,_b0_s19_player_EXP_read					; $3A
 		FILE_IDX	$0,_b0_s1A_player_EXP_add					; $3B
-		FILE_IDX	$0,_b0_s1B_players_gold_read					; $3C
-		FILE_IDX	$0,_b0_s1B_players_gold_add					; $3D
-		FILE_IDX	$0,_b0_s1B_players_gold_subtract					; $3E
-		FILE_IDX	$0,_b0_s1E_player_euipped_item_read					; $3F
-		FILE_IDX	$0,_b0_s1F_get_weapon_from_inventory					; $40
-		FILE_IDX	$0,_b0_s21_shield_from_inventory					; $41
-		FILE_IDX	$0,_b0_s21_get_armor_from_inventory					; $42
-		FILE_IDX	$0,_b0_s22_helm_from_inventory					; $43
-		FILE_IDX	$0,_b0_s23_player_equip_weapon					; $44
-		FILE_IDX	$0,_b0_s24_player_equip_shield					; $45
-		FILE_IDX	$0,_b0_s25_player_equip_armor					; $46
-		FILE_IDX	$0,_b0_s24_player_equip_helm					; $47
-		FILE_IDX	$0,_b0_s28_player_inventory_item_read					; $49
+		FILE_IDX	$0,_b0_s1B_player_gold_read					; $3C
+		FILE_IDX	$0,_b0_s1B_player_gold_add					; $3D
+		FILE_IDX	$0,_b0_s1B_player_gold_subtract					; $3E
+		FILE_IDX	$0,_b0_s1E_player_euipped_item_get					; $3F
+		FILE_IDX	$0,_b0_s1F_player_weapon_get					; $40
+		FILE_IDX	$0,_b0_s21_player_shield_get					; $41
+		FILE_IDX	$0,_b0_s21_player_armor_get					; $42
+		FILE_IDX	$0,_b0_s22_player_helm_get					; $43
+		FILE_IDX	$0,_b0_s23_player_weapon_equip					; $44
+		FILE_IDX	$0,_b0_s24_player_shield_equip					; $45
+		FILE_IDX	$0,_b0_s25_player_armor_equip					; $46
+		FILE_IDX	$0,_b0_s24_player_helm_equip					; $47
+		FILE_IDX	$0,_b0_s28_player_inventory_item_get					; $49
 		FILE_IDX	$0,_b0_s29_player_inventory_item_add					; $4A
 		FILE_IDX	$0,_b0_s2A_player_inventory_item_remove					; $4B
 		FILE_IDX	$0,_b0_s2B_is_anybody_owns_item					; $4C
@@ -6306,8 +6306,8 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s0_world_map_random_enounter_test	; $67 _b0_s0_world_map_random_enounter_test
 		FILE_IDX	$0,_b0_s1_battle_typeA_launch					; $14E
 		FILE_IDX	$0,_b0_s3C_get_free_inventory_slot					; $68
-		FILE_IDX	$0,_b0_s3D_player_detoxicate					; $7A
-		FILE_IDX	$0,_b0_s3D_player_revive					; $7B
+		FILE_IDX	$0,_b0_s3D_player_remove_poison_status					; $7A
+		FILE_IDX	$0,_b0_s3D_player_remove_death_status					; $7B
 		FILE_IDX	$0,_b0_s45_check_if_item_equipped					; $9C
 		FILE_IDX	$0,_b0_s46_players_level_up_test					; $A9
 		FILE_IDX	$0,_b0_s47_players_next_EXP_calc					; $AA
@@ -6403,35 +6403,35 @@ _sys_idx_lib:
 		FILE_IDX	$5,_b5_sA					; $F2
 		FILE_IDX	$5,_b5_sB_ppu_font_load	; $15F
 
-		FILE_IDX	$6,_b6_s6					; $112
+		FILE_IDX	$6,_b6_s6_spell_return_use					; $112
 		FILE_IDX	$6,_b6_s8_world_map_pal_update	; $88
-		FILE_IDX	$6,_b6_sC					; $C4
-		FILE_IDX	$6,_b6_sD					; $C5
-		FILE_IDX	$6,_b6_sE					; $C6
-		FILE_IDX	$6,_b6_sF					; $C7
-		FILE_IDX	$6,_b6_s10					; $DE
-		FILE_IDX	$6,_b6_s11					; $E3
-		FILE_IDX	$6,_b6_s12_sleeping_willage_trigger					; $142
+		FILE_IDX	$6,_b6_sC_spell_outside_use					; $C4
+		FILE_IDX	$6,_b6_sD_spell_invisible_use					; $C5
+		FILE_IDX	$6,_b6_sE_item_invisibility_herb_use					; $C6
+		FILE_IDX	$6,_b6_sF_spell_stepguard_use					; $C7
+		FILE_IDX	$6,_b6_s10_water_blaster_npc_anim					; $DE
+		FILE_IDX	$6,_b6_s11_item_locket_of_love_use					; $E3
+		FILE_IDX	$6,_b6_s12_item_wakeup_powder_use					; $142
 		FILE_IDX	$6,_b6_s13					; $153
 		FILE_IDX	$6,_b6_s14_name_entry_screen	; $161
 		FILE_IDX	$6,_b6_s15_item_staff_of_change_use					; $16E
-		FILE_IDX	$6,_b6_s16					; $185
-		FILE_IDX	$6,_b6_s17					; $105
-		FILE_IDX	$6,_b6_s18					; $17F
-		FILE_IDX	$6,_b6_s19					; $181
-		FILE_IDX	$6,_b6_s1A					; $194
-		FILE_IDX	$6,_b6_s1B					; $189
-		FILE_IDX	$6,_b6_s1C					; $188
-		FILE_IDX	$6,_b6_s1D					; $187
-		FILE_IDX	$6,_b6_s1E					; $196
-		FILE_IDX	$6,_b6_s1F					; $BD
+		FILE_IDX	$6,_b6_s16_tavern_character_registration					; $185
+		FILE_IDX	$6,_b6_s17_newtown_start_build_town_anim					; $105
+		FILE_IDX	$6,_b6_s18_guard_of_meteorite_armband_show_hide					; $17F
+		FILE_IDX	$6,_b6_s19_dragon_queen_to_egg_transition_anim					; $181
+		FILE_IDX	$6,_b6_s1A_orb_pedestal_fire_start_anim					; $194
+		FILE_IDX	$6,_b6_s1B_interrupted_baramos_defeat_celebration_anim					; $189
+		FILE_IDX	$6,_b6_s1B_reinit_after_zoma_voice					; $188
+		FILE_IDX	$6,_b6_s1D_hero_rest_at_home_anim					; $187
+		FILE_IDX	$6,_b6_s1E_formation_change_handler					; $196
+		FILE_IDX	$6,_b6_s1F_item_rainbow_drop_use					; $BD
 		FILE_IDX	$6,_b6_s20_player_name_verify	; $19A
 
-		FILE_IDX	$7,_b7_s8					; $19
+		FILE_IDX	$7,_b7_s8_ppu_screen_clear_and_init					; $19
 		FILE_IDX	$7,_b7_sA_sram_test_and_init	; $162
-		FILE_IDX	$7,_b7_sD					; $165
+		FILE_IDX	$7,_b7_sD_save_data					; $165
 		FILE_IDX	$7,_b7_sE_player_log_list	; $166
-		FILE_IDX	$7,_b7_s10					; $168
+		FILE_IDX	$7,_b7_s10_player_data_register					; $168
 		FILE_IDX	$7,_b7_s11					; $169
 		FILE_IDX	$7,_b7_s12					; $16A
 		FILE_IDX	$7,_b7_s13					; $16B
@@ -6477,14 +6477,14 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s9					; $9B
 		FILE_IDX	$C,_bC_sA					; $9D
 		FILE_IDX	$C,_bC_sB					; $172
-		FILE_IDX	$C,_bC_sC					; $16D
-		FILE_IDX	$C,_bC_sD_item_key_type0_use					; $B8
-		FILE_IDX	$C,_bC_sE_item_key_type1_use					; $B9
-		FILE_IDX	$C,_bC_sF_item_key_type3_use					; $BA
-		FILE_IDX	$C,_bC_s10_spell_return					; $BB
+		FILE_IDX	$C,_bC_sC_item_echoing_flute_use					; $16D
+		FILE_IDX	$C,_bC_sD_item_thief_key_use					; $B8
+		FILE_IDX	$C,_bC_sE_item_magic_key_use					; $B9
+		FILE_IDX	$C,_bC_sF_item_final_key_use					; $BA
+		FILE_IDX	$C,_bC_s10_spell_daynight					; $BB
 		FILE_IDX	$C,_bC_s11_item_lamp_of_darkness_use					; $BC
 		FILE_IDX	$C,_bC_s12_sleep_X_sync_50		; $101
-		FILE_IDX	$C,_bC_s13_use_magic_ball					; $BE
+		FILE_IDX	$C,_bC_s13_item_magic_ball_use					; $BE
 		FILE_IDX	$C,_bC_s14					; $C8
 		FILE_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
 		FILE_IDX	$C,_bC_s19					; $143
@@ -6496,14 +6496,14 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s20_warp_bE_sB_arg0					; $171
 		FILE_IDX	$C,_bC_s21					; $F7
 		FILE_IDX	$C,_bC_s22					; $F8
-		FILE_IDX	$C,_bC_s23					; $192
+		FILE_IDX	$C,_bC_s23_test_orbs_colleted_count					; $192
 		FILE_IDX	$C,_bC_s24					; $139
 		FILE_IDX	$C,_bC_s25					; $FB
-		FILE_IDX	$C,_bC_s26					; $18A
+		FILE_IDX	$C,_bC_s26_item_common_orbs_use					; $18A
 		FILE_IDX	$C,_bC_s27					; $147
 		FILE_IDX	$C,_bC_s28					; $148
 		FILE_IDX	$C,_bC_s2A					; $100
-		FILE_IDX	$C,_bC_s2B					; $18E
+		FILE_IDX	$C,_bC_s2B_item_fairy_flute_use					; $18E
 		FILE_IDX	$C,_bC_s2E_sleep_X_sync_50_wait_50_or_skip	; $170
 		FILE_IDX	$C,_bC_s2F					; $14A
 		FILE_IDX	$C,_bC_s30					; $14B
@@ -6643,8 +6643,8 @@ _sys_idx_lib:
 ;		.BYTE	$6,  3						; $80 _b6_d3_ofs, not used anymore
 ;		.BYTE	$6,  4						; $1D _b6_d4, not used anymore
 ;		.BYTE	$6,  5						; $5D _b6_d5, not used anymore
-;		.BYTE	$6,  6						; $113 _b6_s6, were used as copy of $112, removed
-;		.BYTE	$6,$16						; $191 _b6_s16, unused copy of $185
+;		.BYTE	$6,  6						; $113 _b6_s6_spell_return_use, were used as copy of $112, removed
+;		.BYTE	$6,$16						; $191 _b6_s16_tavern_character_registration, unused copy of $185
 ;		.BYTE	$7,  0						; $1E _b7_d0_map_data_lib_ofs, not used anymore
 ;		.BYTE	$7,  1						; $93 _b7_d1, unused
 ;		.BYTE	$7,  2						; $96 _b7_d2_ofs, unused
@@ -6663,7 +6663,7 @@ _sys_idx_lib:
 ;		.BYTE	$A,  7						; $1A5 _bA_s7_nullsub, unused
 ;		.BYTE	$A,  9						; $18F _bA_s9_nullsub, unused
 ;		.BYTE	$A,$36						; $177 _bC_s36, never used
-;		.BYTE	$C,$26						; $10F _bC_s26, unused copy of $18A
+;		.BYTE	$C,$26						; $10F _bC_s26_item_common_orbs_use, unused copy of $18A
 ;		.BYTE	$C,$29						; $104 _bC_s29, no use here
 ;		.BYTE	$D,  1						; $FF _bD_d1_ofs, not used anymore
 ;		.BYTE	$D, $F						; $182 _bD_sF, no use here, used directly

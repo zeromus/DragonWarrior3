@@ -1,12 +1,12 @@
 
 		ORG $8000
 
-		PTR_IDX		_b7_s8
+		PTR_IDX		_b7_s8_ppu_screen_clear_and_init
 		PTR_IDX		_b7_sA_sram_test_and_init
-		PTR_IDX		_b7_sD
+		PTR_IDX		_b7_sD_save_data
 		PTR_IDX		_b7_sE_player_log_list
 		PTR_IDX		_b7_sF_player_log_read
-		PTR_IDX		_b7_s10
+		PTR_IDX		_b7_s10_player_data_register
 		PTR_IDX		_b7_s11
 		PTR_IDX		_b7_s12
 		PTR_IDX		_b7_s13
@@ -1563,33 +1563,27 @@ _MM_begin_new_quest:
 		LDX		#0
 		JSR		sub_B2BB5
 		JSR		sub_B2A9D
-
-; initialize some save slot data
-		LDX		#$7F
+		LDX		#$7F						; initialize some save slot data
 .clear_save_slot_to_ff:
 		LDA		#$FF
 		STA		byte_631F,X
 		DEX
 		BPL		.clear_save_slot_to_ff
-
 .enter_name_again:
 		SYSX	_display_window_ex,$41
-		FARX	_b6_s14_name_entry_screen				; name goes to $9
+		FARX	_b6_s14_name_entry_screen	; name goes to $9
 		FARX	_b6_s20_player_name_verify
-		BNE		.name_is_ok											; continue process if no match?
+		BNE		.name_is_ok					; continue process if no match?
 		SYSX	_display_window_ex,WND_INPUT_YOUR_NAME
 		JSR		_pause_or_skip
 		JMP		.enter_name_again
-
 .name_is_ok:
-; push the entire name on the stack
-		LDX		#7
+		LDX		#7							; push the entire name on the stack
 .push_name_on_stack:
 		LDA		byte_9,X
 		PHA
 		DEX
 		BPL		.push_name_on_stack
-
 		SYSX	_display_window_ex,WND_MM_CHOOSE_SEX 
 		STA		word_4
 		LDX		#0
@@ -1605,7 +1599,7 @@ loc_B29B0:
 		STA		byte_CE
 		LDA		#0
 		STA		byte_CF
-		JSR		_player_data_initialize
+		JSR		_hero_data_register
 		LDA		#$82
 		STA		byte_624A
 		LDA		#$A2
@@ -1639,7 +1633,7 @@ loc_B29F2:
 		INY
 		CPY		#8
 		BNE		loc_B29F2
-		JSR		_player_data_initialize
+		JSR		_hero_data_register
 		PLA
 		TAX
 		INX
@@ -1648,11 +1642,11 @@ loc_B29F2:
 		STX		byte_63E7
 		JSR		sub_B2961
 		LDA		#$FF
-		STA		byte_6310										; doesnt look like anything uses these bytes..
+		STA		byte_6310					; doesnt look like anything uses these bytes..
 		STA		byte_6311
 		STA		byte_6312
 		JSR		_b7_s1D
-		JMP		.menu_load_file							; tailcall to file load
+		JMP		.menu_load_file				; tailcall to file load
 loc_B2A1F:
 		LDX		#0
 		TXA
@@ -1943,7 +1937,7 @@ loc_B2BB2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BB5:
-		LDA		#<[_ppu_queue_buf+$15]		; check if this is a size constant, not a pointer
+		LDA		#<[_ppu_queue_buf+$15]		; check if this is a size constant, not a pointer ($315)
 		STA		word_3C
 		LDA		#>[_ppu_queue_buf+$15]
 		STA		word_3C+1
@@ -1952,7 +1946,7 @@ sub_B2BB5:
 		JSR		_mul16_to_8
 		LDA		#<[_tavern_chars_level]
 		LDY		#>[_tavern_chars_level]
-		JMP		_add16_to_16							; tailcall
+		JMP		_add16_to_16				; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B2BCE:
@@ -2185,25 +2179,27 @@ _txt_default_tavern_chars_name:
 		.BYTE	_V,_i,_r,_o,_n,0,0,0
 
 ; =============== S U B	R O U T	I N E =======================================
-_player_data_initialize:
+_hero_data_register:
 		LDA		#<[off_B322A]
 		STA		word_40
 		LDA		#>[off_B322A]
 		STA		word_40+1
 		LDA		#$FF
-		BNE		sub_B2DBE
+		BNE		_player_data_register
 
 ; =============== S U B	R O U T	I N E =======================================
-_b7_s10:
+_b7_s10_player_data_register:
 		LDA		#<[off_B3216]
 		STA		word_40
 		LDA		#>[off_B3216]
 		STA		word_40+1
 		LDA		#0
+		
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2DBE:
-		STA		byte_11
+_player_data_register:
+		STA		byte_11					; store here mode of the player register
 		LDA		byte_630D
 		STA		word_4
 		LDA		byte_630E
@@ -2293,7 +2289,7 @@ loc_B2E3C:
 		CPY		#$14
 		BCC		loc_B2E3C
 		LDA		byte_11
-		BNE		loc_B2E95
+		BNE		.hero_special_register
 		LDA		#5
 		FARX	_b4_sF
 		CLC
@@ -2321,7 +2317,7 @@ loc_B2E79:
 		DEC		byte_E
 		BNE		loc_B2E6E
 		BEQ		loc_B2EB8
-loc_B2E95:
+.hero_special_register:
 		LDX		#4
 loc_B2E97:
 		TXA
@@ -2364,7 +2360,7 @@ loc_B2EB8:
 		STA		_tavern_chars_MMP,Y
 		STA		_tavern_chars_MP,Y
 		STA		_tavern_chars_MP+1,Y
-		JSR		sub_B31E2
+		JSR		_player_CLASS_read
 		CMP		#3
 		BCS		loc_B2F01
 		LDA		byte_D0
@@ -2393,7 +2389,7 @@ loc_B2F0A:
 		BNE		loc_B2F5C
 		TXA
 		PHA
-		JSR		sub_B31E2
+		JSR		_player_CLASS_read
 		CMP		#2
 		BEQ		loc_B2F28
 		CMP		#4
@@ -2415,7 +2411,7 @@ loc_B2F32:
 		STA		byte_624A+1,X
 		TXA
 		PHA
-		JSR		sub_B31E2
+		JSR		_player_CLASS_read
 		CMP		#1
 		BEQ		loc_B2F48
 		CMP		#6
@@ -2449,7 +2445,7 @@ loc_B2F5F:
 		DEX
 		PLA
 		TAY
-		JSR		sub_B31E2
+		JSR		_player_CLASS_read
 		CMP		#3
 		BCS		loc_B2F86
 		ASL
@@ -2535,7 +2531,7 @@ loc_B2FD0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b7_sD:
+_b7_sD_save_data:
 		LDX		#3
 loc_B2FE0:
 		LDA		_party_formation,X
@@ -2575,7 +2571,7 @@ loc_B3019:
 		CMP		#$FF
 		BEQ		loc_B3027
 		AND		#$F
-		JSR		loc_B305D
+		JSR		sub_B305D
 loc_B3027:
 		PLA
 		TAX
@@ -2610,14 +2606,18 @@ sub_B304F:
 		LDX		#>[sub_B3200]
 		JSR		sub_B31FB
 		PLA
-		JMP		loc_B3068
-loc_B305D:
+		JMP		sub_B3068
+
+; =============== S U B	R O U T	I N E =======================================
+sub_B305D:
 		PHA
 		LDA		#<[sub_B3209]
 		LDX		#>[sub_B3209]
 		JSR		sub_B31FB
 		PLA
-loc_B3068:
+
+; =============== S U B	R O U T	I N E =======================================
+sub_B3068:
 		STA		byte_48
 		LDA		#0
 		STA		byte_42
@@ -2627,7 +2627,7 @@ loc_B306E:
 		LDX		byte_42
 		LDA		byte_B3299,X
 		STA		byte_43
-		LDA		byte_B329E,X
+		LDA		_chars_data_item_size_list,X
 		STA		byte_44
 
 ; turn X into pointers into _tavern_chars_data_ptr_tbl and _players_data_ptr_tbl
@@ -2782,7 +2782,7 @@ loc_B3152:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s15:
-		JSR		_b7_sD
+		JSR		_b7_sD_save_data
 		LDX		#0
 loc_B3171:
 		LDA		_party_formation,X
@@ -2844,7 +2844,7 @@ _b7_sF_player_log_read:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B31D7:
-		JSR		sub_B31E2
+		JSR		_player_CLASS_read
 		TAY
 		LDA		(word_3E),Y
 		LDY		byte_D0
@@ -2852,7 +2852,10 @@ sub_B31D7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B31E2:
+; local copy of _b0_s2C_player_CLASS_read function, uses different arguments
+; and return variables
+;
+_player_CLASS_read:
 		LDX		byte_D0
 		LDA		_tavern_chars_class_gender,X
 		AND		#7
@@ -2953,11 +2956,11 @@ _players_data_ptr_tbl:
 		.WORD	_players_spell
 byte_B3299:
 		.BYTE	  7,  5,  2,  2,  1
-byte_B329E:
-		.BYTE	  1,  2,  3,  8,  8
+_chars_data_item_size_list:
+		.BYTE	  1,  2,  3,  8,  8		; sizes of single item in arrays from _players_data_ptr_tbl and _tavern_chars_data_ptr_tbl
 
 ; =============== S U B	R O U T	I N E =======================================
-_b7_s8:
+_b7_s8_ppu_screen_clear_and_init:
 		JSR		_ppu_screen_clear
 		JSR		_location_palette_and_rand_update
 		JSR		_ppu_disable

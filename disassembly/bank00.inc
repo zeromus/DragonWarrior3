@@ -28,19 +28,19 @@
 		PTR_IDX		_b0_s18_player_DEF_read
 		PTR_IDX		_b0_s19_player_EXP_read
 		PTR_IDX		_b0_s1A_player_EXP_add
-		PTR_IDX		_b0_s1B_players_gold_read
-		PTR_IDX		_b0_s1B_players_gold_add
-		PTR_IDX		_b0_s1B_players_gold_subtract
-		PTR_IDX		_b0_s1E_player_euipped_item_read
-		PTR_IDX		_b0_s1F_get_weapon_from_inventory
-		PTR_IDX		_b0_s21_shield_from_inventory
-		PTR_IDX		_b0_s21_get_armor_from_inventory
-		PTR_IDX		_b0_s22_helm_from_inventory
-		PTR_IDX		_b0_s23_player_equip_weapon
-		PTR_IDX		_b0_s24_player_equip_shield
-		PTR_IDX		_b0_s25_player_equip_armor
-		PTR_IDX		_b0_s24_player_equip_helm
-		PTR_IDX		_b0_s28_player_inventory_item_read
+		PTR_IDX		_b0_s1B_player_gold_read
+		PTR_IDX		_b0_s1B_player_gold_add
+		PTR_IDX		_b0_s1B_player_gold_subtract
+		PTR_IDX		_b0_s1E_player_euipped_item_get
+		PTR_IDX		_b0_s1F_player_weapon_get
+		PTR_IDX		_b0_s21_player_shield_get
+		PTR_IDX		_b0_s21_player_armor_get
+		PTR_IDX		_b0_s22_player_helm_get
+		PTR_IDX		_b0_s23_player_weapon_equip
+		PTR_IDX		_b0_s24_player_shield_equip
+		PTR_IDX		_b0_s25_player_armor_equip
+		PTR_IDX		_b0_s24_player_helm_equip
+		PTR_IDX		_b0_s28_player_inventory_item_get
 		PTR_IDX		_b0_s29_player_inventory_item_add
 		PTR_IDX		_b0_s2A_player_inventory_item_remove
 		PTR_IDX		_b0_s2B_is_anybody_owns_item
@@ -59,8 +59,8 @@
 		PTR_IDX		_b0_s3A_players_data_swap
 		PTR_IDX		_b0_s3B_players_data_swap_in_battle
 		PTR_IDX		_b0_s3C_get_free_inventory_slot
-		PTR_IDX		_b0_s3D_player_detoxicate
-		PTR_IDX		_b0_s3D_player_revive
+		PTR_IDX		_b0_s3D_player_remove_poison_status
+		PTR_IDX		_b0_s3D_player_remove_death_status
 		PTR_IDX		_b0_s45_check_if_item_equipped
 		PTR_IDX		_b0_s46_players_level_up_test
 		PTR_IDX		_b0_s47_players_next_EXP_calc
@@ -2099,7 +2099,7 @@ _b0_s14_player_INT_read:
 ;
 ;"PC_calc_EffLUCK"
 _b0_s15_player_LUCK_read:
-		JSR		_b0_s1E_player_euipped_item_read	; scan inventory
+		JSR		_b0_s1E_player_euipped_item_get	; scan inventory
 		LDA		word_6+1					; load helm from inventory
 		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
@@ -2132,7 +2132,7 @@ loc_94C2:
 _b0_s16_player_ATK_read:
 		JSR		_b0_s2C_player_CLASS_read		; fetch the PCs class and stash it
 		PHA
-		JSR		_b0_s1E_player_euipped_item_read							; restore class and stash it elsewhere
+		JSR		_b0_s1E_player_euipped_item_get							; restore class and stash it elsewhere
 		PLA
 		STA		word_6+1
 		LDA		word_4							; fetch A=found weapon
@@ -2212,7 +2212,7 @@ _b0_s17_player_rATK_read:
 ;
 ;"sub_PC_CalcEffDEF"
 _b0_s18_player_DEF_read:
-		JSR		_b0_s1E_player_euipped_item_read
+		JSR		_b0_s1E_player_euipped_item_get
 		LDA		word_4+1					; push the armor type
 		PHA
 		JSR		_b0_s12_player_AGI_read 	; calculate effective AGI and divide by 2, stashing result
@@ -2314,7 +2314,7 @@ locret_95EC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s1B_players_gold_read:
+_b0_s1B_player_gold_read:
 		LDA		_players_gold
 		STA		word_4
 		LDA		_players_gold+1
@@ -2324,7 +2324,7 @@ _b0_s1B_players_gold_read:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s1B_players_gold_add:
+_b0_s1B_player_gold_add:
 		LDA		_players_gold
 		CLC
 		ADC		byte_CE
@@ -2361,7 +2361,7 @@ loc_9633:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s1B_players_gold_subtract:
+_b0_s1B_player_gold_subtract:
 		LDA		_players_gold
 		SEC
 		SBC		byte_CE
@@ -2388,7 +2388,7 @@ loc_9663:
 ; analyzes the targeted player's equipped items; reports them in word_4/word_6
 ;
 ;"sub_inv_AnalyzeEquipped"
-_b0_s1E_player_euipped_item_read:
+_b0_s1E_player_euipped_item_get:
 		LDA		byte_CE				; setup PCx8 inventory ptr:
 		ASL							; the desired player's inventory slot 0 is pointed to by X
 		ASL							; initialize itemTypeCounter:
@@ -2436,25 +2436,25 @@ loc_9693:
 ; if there are less items than desired count number (3 or above), result
 ; is "no more items"
 ;
-_b0_s1F_get_weapon_from_inventory:
+_b0_s1F_player_weapon_get:
 		LDA		#0
 		STA		byte_42
 		BEQ		_get_item_from_inventory
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s21_get_armor_from_inventory:
+_b0_s21_player_armor_get:
 		LDA		#1
 		STA		byte_42
 		BNE		_get_item_from_inventory
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s21_shield_from_inventory:
+_b0_s21_player_shield_get:
 		LDA		#2
 		STA		byte_42
 		BNE		_get_item_from_inventory
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s22_helm_from_inventory:
+_b0_s22_player_helm_get:
 		LDA		#3
 		STA		byte_42
 
@@ -2503,25 +2503,25 @@ loc_96EF:
 ; corresponding type, selected by subroutine type. unequip all items first
 ; then look for selected item.
 ;
-_b0_s23_player_equip_weapon:
+_b0_s23_player_weapon_equip:
 		LDA		#0
 		STA		byte_42
 		JMP		_player_equip_item
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s25_player_equip_armor:
+_b0_s25_player_armor_equip:
 		LDA		#1
 		STA		byte_42
 		JMP		_player_equip_item
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s24_player_equip_shield:
+_b0_s24_player_shield_equip:
 		LDA		#2
 		STA		byte_42
 		JMP		_player_equip_item
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s24_player_equip_helm:
+_b0_s24_player_helm_equip:
 		LDA		#3
 		STA		byte_42
 
@@ -2659,7 +2659,7 @@ _b0_s5E_check_if_item_can_be_used:
 ; =============== S U B	R O U T	I N E =======================================
 ; return single inventory item by its count number
 ;
-_b0_s28_player_inventory_item_read:
+_b0_s28_player_inventory_item_get:
 		JSR		_get_player_inventory_items_list
 		LDX		byte_CF
 		LDA		word_4+1,X
@@ -3168,9 +3168,9 @@ loc_99F2:
 		CLC
 		ADC		word_4
 		TAX
-		LDA		_common_spell_related_data,X
+		LDA		_common_spell_related_data_ptr_tbl,X
 		STA		byte_10
-		LDA		_common_spell_related_data+1,X
+		LDA		_common_spell_related_data_ptr_tbl+1,X
 		STA		byte_11
 		RTS
 .goofoff_class_spells:
@@ -3210,9 +3210,9 @@ loc_9A4A:
 		LSR
 		LSR
 		TAX
-		LDA		_hero_spell_related_data,X
+		LDA		_hero_spell_related_data_ptr_tbl,X
 		STA		byte_10
-		LDA		_hero_spell_related_data+1,X
+		LDA		_hero_spell_related_data_ptr_tbl+1,X
 		STA		byte_11
 		RTS
 
@@ -3514,7 +3514,7 @@ loc_9C34:
 ; =============== S U B	R O U T	I N E =======================================
 ; player poison status remove
 ;
-_b0_s3D_player_detoxicate:
+_b0_s3D_player_remove_poison_status:
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3526,7 +3526,7 @@ _b0_s3D_player_detoxicate:
 ; =============== S U B	R O U T	I N E =======================================
 ; player death status clear
 ;
-_b0_s3D_player_revive:
+_b0_s3D_player_remove_death_status:
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3590,12 +3590,12 @@ _b0_s60_get_item_type:
 		LDA		#5
 		RTS
 
-_hero_spell_related_data:
+_hero_spell_related_data_ptr_tbl:
 		.WORD	_b0_d58_hero_spell_related_data00
 		.WORD	_hero_spell_related_data01
 		.WORD	_hero_spell_related_data02
 		.WORD	_hero_spell_related_data03
-_common_spell_related_data:
+_common_spell_related_data_ptr_tbl:
 		.WORD	_b0_d59_common_spell_related_data00
 		.WORD	_common_spell_related_data01
 		.WORD	_common_spell_related_data02
@@ -4217,14 +4217,14 @@ loc_A079:
 		BNE		loc_A06C
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_remove_curse:
+_cmd_spell_curseoff:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A09B
 		JSR		_b0_s5C_player_inventory_search_for_cursed_item
 		BCC		locret_A09B
 		LDA		word_4
 		STA		byte_CF
-		JSR		_b0_s28_player_inventory_item_read
+		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		STA		byte_D3
 		JSR		_b0_s2A_player_inventory_item_remove
@@ -4234,7 +4234,7 @@ locret_A09B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_detoxicate:
+_cmd_spell_antidote:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A0B9
 		LDA		_players_status+1,X
@@ -4253,7 +4253,7 @@ loc_A0BA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_remove_numbness:
+_cmd_spell_numboff:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A0D9
 		LDA		_players_status+1,X
@@ -4276,8 +4276,8 @@ _cmd_spell_repel:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_return:
-		FARX	_bC_s10_spell_return
+_cmd_spell_daynight:
+		FARX	_bC_s10_spell_daynight
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4286,25 +4286,25 @@ _cmd_spell_x_ray:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_A0EC:
+_cmd_spell_return:
 		LDA		byte_53
 		STA		byte_CE
-		FARX	_b6_s6
+		FARX	_b6_s6_spell_return_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_b6_sC:
-		FARX	_b6_sC
+_cmd_spell_outside:
+		FARX	_b6_sC_spell_outside_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_b6_sD:
-		FARX	_b6_sD
+_cmd_spell_invisible:
+		FARX	_b6_sD_spell_invisible_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_b6_sF:
-		FARX	_b6_sF
+_cmd_spell_stepguard:
+		FARX	_b6_sF_spell_stepguard_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4386,7 +4386,7 @@ _check_if_player_exist_or_dead:
 _b0_s67:
 		PHA
 ; this ended up scanning the inventory for a player...
-		JSR		_b0_s1E_player_euipped_item_read
+		JSR		_b0_s1E_player_euipped_item_get
 ; fetch the equipped hat from the player inventory scan
 		LDA		word_6+1
 ; compare to mysterious hat
@@ -4425,17 +4425,17 @@ _command_spell_lib:
 		.WORD	_cmd_spell_heal_more
 		.WORD	_cmd_spell_revive
 		.WORD	_cmd_spell_revive
-		.WORD	_cmd_spell_remove_curse
-		.WORD	_cmd_spell_detoxicate
-		.WORD	_cmd_spell_remove_numbness
+		.WORD	_cmd_spell_curseoff
+		.WORD	_cmd_spell_antidote
+		.WORD	_cmd_spell_numboff
 		.WORD	_cmd_spell_repel
-		.WORD	_cmd_spell_return
-		.WORD	_cmd_spell_open
+		.WORD	_cmd_spell_daynight
+		.WORD	_cmd_spell_open	; the same as "Final key" item
 		.WORD	_cmd_spell_x_ray
-		.WORD	sub_A0EC
-		.WORD	_warp_b6_sC
-		.WORD	_warp_b6_sD
-		.WORD	_warp_b6_sF
+		.WORD	_cmd_spell_return
+		.WORD	_cmd_spell_outside
+		.WORD	_cmd_spell_invisible
+		.WORD	_cmd_spell_stepguard
 
 _command_spell_idx_list:
 		.BYTE	$1A,$1B,$1C,$1E,$1F,$20,$21,$36,$34,$35,$37,$38,$39,$3A,$26,$3B
@@ -5593,7 +5593,7 @@ _b0_s5D_run_command_item_use:
 		STA		byte_D2
 		STA		byte_CE
 		STA		byte_CF
-		JSR		_b0_s28_player_inventory_item_read
+		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4
 		BEQ		_wrap_wnd3E_msg148_bE_s33	; "<name> doesn't have an item yet."
 		SYSX	_display_window,$6B
@@ -5601,7 +5601,7 @@ _b0_s5D_run_command_item_use:
 		BEQ		default_action_item_refresh_branch
 		STA		byte_46
 		STA		byte_CF
-		JSR		_b0_s28_player_inventory_item_read
+		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		STA		byte_48
 		AND		#$7F
@@ -6156,7 +6156,7 @@ locret_AE8B:
 ; =============== S U B	R O U T	I N E =======================================
 ; used in particular place at the 2nd floor of the Samano castle
 ;
-_item09_mirror_of_ra_use:
+_item_mirror_of_ra_use:
 		LDA		_mapNumber
 		CMP		#$62
 		BNE		_void_event
@@ -6191,15 +6191,14 @@ _item0A_float_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; delay and "A darkness oozes out from the lamp and covers ..."
-_item0B_use:
+_item_lamp_of_darkness_use:
 		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s11_item_lamp_of_darkness_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; staff of change usage
-_item0C_staff_of_change_use:
+_item_staff_of_change_use:
 		FARX	_b6_s15_item_staff_of_change_use
 		BCC		locret_AECC
 		JSR		_sleep_30
@@ -6209,30 +6208,30 @@ locret_AECC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; become invisible, for a while (Invisibility Herb)
-_item0D_use:
+; become invisible, for a while
+_item_invisibility_herb_use:
 		JSR		_sleep_30
-		FARX	_b6_sE
+		FARX	_b6_sE_item_invisibility_herb_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_s13_item_magic_ball_use:
-		FARX	_bC_s13_use_magic_ball
+_item_magic_ball_use:
+		FARX	_bC_s13_item_magic_ball_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_sD_item_key_type0_use:
-		FARX	_bC_sD_item_key_type0_use
+_item_thief_key_use:
+		FARX	_bC_sD_item_thief_key_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_warp_bC_sE_item_key_type1_use:
-		FARX	_bC_sE_item_key_type1_use
+_item_magic_key_use:
+		FARX	_bC_sE_item_magic_key_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 _cmd_spell_open:
-		FARX	_bC_sF_item_key_type3_use
+		FARX	_bC_sF_item_final_key_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6243,8 +6242,8 @@ _item12_use:
 		JSR		_pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_b6_s12_item_wakeup_powder_use:
-		FARX	_b6_s12_sleeping_willage_trigger
+_item_wakeup_powder_use:
+		FARX	_b6_s12_item_wakeup_powder_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6290,7 +6289,7 @@ loc_AF3E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item1E_use:
+_item_wing_of_wyvern_use:
 		FARX	_b1_s15
 		CMP		#$FF
 		BEQ		loc_AF78
@@ -6298,7 +6297,7 @@ _item1E_use:
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$0AA	; "<name> flings the <item> into the air."
 		JSR		_sleep_30
-		FARX	_b6_s6
+		FARX	_b6_s6_spell_return_use
 		BCS		loc_AF3E
 		MSGX	_msg_m00,$040	; "But nothing happens."
 		JSR		_pause_or_skip
@@ -6307,10 +6306,10 @@ loc_AF78:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item21_use:
+_item_locket_of_love_use:
 		MSGX	_msg_m00,$108	; "The spirit of Errol and Olivia devotions
 		JSR		_sleep_30
-		FARX	_b6_s11
+		FARX	_b6_s11_item_locket_of_love_use
 		BCC		loc_AF92
 		MSGX	_msg_m00,$10B	; "Oh, Errol, my belowed. I've been waiting for you"
 		MSGX	_msg_m00,$109	; "The curse on Olivia is broken"
@@ -6326,7 +6325,7 @@ loc_AF92:
 ; kind of different NPCs a different kind of messages either the "huh?",
 ; "stop that" or "yikes, it's cold"... why so much care about this?
 ;
-_item08_water_blaster_use:
+_item_water_blaster_use:
 		LDA		_playerMapX
 		STA		word_4+1
 		LDA		_playerMapY
@@ -6388,7 +6387,7 @@ loc_AFF8:
 		JSR		_wrap_msg_m00_arg0
 		FARX	_bC_s12_sleep_X_sync_50
 		FARX	_bC_s20_warp_bE_sB_arg0
-		FARX	_b6_s10
+		FARX	_b6_s10_water_blaster_npc_anim
 		SEC
 		RTS
 byte_B006:
@@ -6396,50 +6395,50 @@ byte_B006:
 		.BYTE	  2,  2,  3,  3,  0,  2,  2,  2,  3,  1,  0,  3,  3,  3,  0,  2
 
 ; =============== S U B	R O U T	I N E =======================================
-_item24_use:
+_item_thigh_bone_use:
 		LDA		#0
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
-		LDA		byte_9C
+		LDA		_ghostShipWorldY
 		SEC
 		SBC		_playerWorldY
 		BMI		loc_B03C
 		STA		_msg_number_parameter_F8
-		LDA		#$12
+		LDA		#$12	; $110 "<number> to the south"
 		BNE		loc_B045
 loc_B03C:
 		EOR		#$FF
 		TAX
 		INX
 		STX		_msg_number_parameter_F8
-		LDA		#$10
+		LDA		#$10	; $110 "<number> to the north"
 loc_B045:
 		JSR		_wrap_msg_m00_arg1
-		LDA		byte_9B
+		LDA		_ghostShipWorldX
 		SEC
 		SBC		_playerWorldX
 		BMI		loc_B056
 		STA		_msg_number_parameter_F8
-		LDA		#$11
+		LDA		#$11	; $110 "<number> to the east"
 		BNE		loc_B05F
 loc_B056:
 		EOR		#$FF
 		TAX
 		INX
 		STX		_msg_number_parameter_F8
-		LDA		#$13
+		LDA		#$13	; $110 "<number> to the west"
 loc_B05F:
 		JSR		_wrap_msg_m00_arg1
-		MSGX	_msg_m00,$114
+		MSGX	_msg_m00,$114	; "is the direction indicated."
 		JSR		_pause_or_skip
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bC_sC_item25_use:
-		FARX	_bC_sC
+_item_echoing_flute_use:
+		FARX	_bC_sC_item_echoing_flute_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item26_use:
+_item_fairy_flute_use:
 		SYSX	_apu_load,$1C
 		JSR		_sleep_30
 		LDA		_mapNumber
@@ -6458,7 +6457,7 @@ _item26_use:
 		LDA		_global_flags_array.byte5
 		AND		#$20
 		BNE		loc_B097
-		FARX	_bC_s2B
+		FARX	_bC_s2B_item_fairy_flute_use
 		RTS
 loc_B097:
 		FARX	_bD_s22_se_wait_and_map_music_start
@@ -6466,7 +6465,7 @@ loc_B097:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item27_use:
+_item_silver_harp_use:
 		SYSX	_apu_load,$1B
 		FARX	_bB_s7_apu_wait
 		LDA		_global_flags_array.byte10
@@ -6484,14 +6483,14 @@ loc_B0B5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_b6_s1F_item28_use:
+_item_rainbow_drop_use:
 		JSR		_sleep_30
-		FARX	_b6_s1F
+		FARX	_b6_s1F_item_rainbow_drop_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_bC_s26_item29_use:
-		FARX	_bC_s26
+_item_common_orbs_use:
+		FARX	_bC_s26_item_common_orbs_use
 		RTS
 
 ; item use callbacks. I guess we could compress this table now that we've changed how the calls work (??)
@@ -6516,33 +6515,33 @@ _items_use_lib:
 		.BYTE	$A5				; $0A5	"<name> puts the <item> on a finger and makes a wish"
 		.WORD	_item_wizards_ring_use
 		.BYTE	$9B				; $09B	"<name> scatters the <item>"
-		.WORD	_item08_use_black_pepper
+		.WORD	_item_black_pepper_use
 		.BYTE	$C				; $10C
-		.WORD	_item09_mirror_of_ra_use
+		.WORD	_item_mirror_of_ra_use
 		.BYTE	  0
 		.WORD	_item0A_float_use
-		.BYTE	$56				; $156
-		.WORD	_item0B_use
+		.BYTE	$56				; $156	; "<name> lights the <item>"
+		.WORD	_item_lamp_of_darkness_use
 		.BYTE	$60				; $160
-		.WORD	_item0C_staff_of_change_use
+		.WORD	_item_staff_of_change_use
 		.BYTE	$57				; $157
-		.WORD	_item0D_use
+		.WORD	_item_invisibility_herb_use
 		.BYTE	  0
-		.WORD	_warp_bC_s13_item_magic_ball_use
-		.BYTE	$53				; $153
-		.WORD	_warp_bC_sD_item_key_type0_use
-		.BYTE	$53
-		.WORD	_warp_bC_sE_item_key_type1_use
-		.BYTE	$53
-		.WORD	_cmd_spell_open
-		.BYTE	$C
+		.WORD	_item_magic_ball_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_thief_key_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_magic_key_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_cmd_spell_open	; _item_final_key_use is the same as "open" spell
+		.BYTE	$C				; $10C	; "<name> peers inside the <item>."
 		.WORD	_item12_use
-		.BYTE	$62				; $162 "Puts the <item> in the palm of hand"
-		.WORD	_wrap_b6_s12_item_wakeup_powder_use
+		.BYTE	$62				; $162	; "Puts the <item> in the palm of hand"
+		.WORD	_item_wakeup_powder_use
 		.BYTE	$58				; $158
 		.WORD	_item_royal_scroll_use
-		.BYTE	$53				; $153
-		.WORD	_item_strength_seed_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_seed_of_strength_use
 		.BYTE	$53
 		.WORD	_item_seed_of_agility_use
 		.BYTE	$53
@@ -6551,38 +6550,38 @@ _items_use_lib:
 		.WORD	_item_seed_of_luck_use
 		.BYTE	$53
 		.WORD	_item_seed_of_intelligence_use
-		.BYTE	$A7				; $0A7
-		.WORD	_item1A_use
-		.BYTE	$53
-		.WORD	_item1B_use
-		.BYTE	$53
-		.WORD	_item1C_use
+		.BYTE	$A7				; $0A7	; "<name> peels the <item> and puts it in <her/his> mouth"
+		.WORD	_item_acorns_of_life_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_medical_herb_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_antidote_herb_use
 		.BYTE	$A9				; $0A9
 		.WORD	_item_fairy_water_use
 		.BYTE	  0
-		.WORD	_item1E_use
-		.BYTE	$AB				; $0AB
-		.WORD	_item1F_use
-		.BYTE	$AC				; $0AC
-		.WORD	_void_event
-		.BYTE	$53
-		.WORD	_item21_use
-		.BYTE	$53
-		.WORD	_item22_use
+		.WORD	_item_wing_of_wyvern_use
+		.BYTE	$AB				; $0AB	; "<name> grinds up the <item> and gives it to <name>"
+		.WORD	_item_leaf_of_the_world_tree
+		.BYTE	$AC				; $0AC	; ""
+		.WORD	_void_event		; dummied out item
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_locket_of_love_use
+		.BYTE	$53				; $153	; "<name> uses the <item>"
+		.WORD	_item_full_moon_herb_use
 		.BYTE	$5B
-		.WORD	_item08_water_blaster_use
+		.WORD	_item_water_blaster_use
 		.BYTE	$5C
-		.WORD	_item24_use
-		.BYTE	$59
-		.WORD	_wrap_bC_sC_item25_use
-		.BYTE	$59
-		.WORD	_item26_use
+		.WORD	_item_thigh_bone_use
+		.BYTE	$59				; $159 "<name> blows the <item>."
+		.WORD	_item_echoing_flute_use
+		.BYTE	$59				; $159 "<name> blows the <item>."
+		.WORD	_item_fairy_flute_use
 		.BYTE	$AF				; $0AF
-		.WORD	_item27_use
+		.WORD	_item_silver_harp_use
 		.BYTE	$5F				; $15F "<name> raises the <item> to the skies"
-		.WORD	_wrap_b6_s1F_item28_use ; rainbow drop
+		.WORD	_item_rainbow_drop_use
 		.BYTE	$C7				; $0C7 "<name> gives the <item> as an offering"
-		.WORD	_wrap_bC_s26_item29_use
+		.WORD	_item_common_orbs_use
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_B143:
@@ -6594,7 +6593,7 @@ sub_B143:
 		STA		byte_D2
 		LDA		byte_46
 		STA		byte_CF
-		JSR		_b0_s28_player_inventory_item_read
+		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		BMI		loc_B166
 		STA		byte_42
@@ -6633,7 +6632,7 @@ loc_B196:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item_strength_seed_use:
+_item_seed_of_strength_use:
 		LDX		byte_45				; player's index temp storage
 		LDA		_players_STR,X
 		JSR		_item_seeds_use_common
@@ -6700,8 +6699,7 @@ _item_seeds_use_common:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; opens the Spell menu ready to pick a caster
-_item1A_use:
+_item_acorns_of_life_use:
 		JSR		_rand
 		AND		#3
 		CLC
@@ -6725,9 +6723,8 @@ loc_B212:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; <wait> "<user> has recovered!" <show hp/mp info box>. For healing items I guess
-_item1B_use:
-		JSR		sub_B2B9
+_item_medical_herb_use:
+		JSR		_common_item_use_param_load
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		LDA		#$F
 		FARX	_b4_sF
@@ -6738,11 +6735,10 @@ _item1B_use:
 		JMP		_spell_heal_ex
 
 ; =============== S U B	R O U T	I N E =======================================
-; "but nothing happened..." but definitely not that simple
-_item1C_use:
-		JSR		sub_B2B9
+_item_antidote_herb_use:
+		JSR		_common_item_use_param_load
 		MSGX	_msg_m00,$005	; "$FD, $EF"
-		JSR		_cmd_spell_detoxicate
+		JSR		_cmd_spell_antidote
 		BCC		_msg_nothing_happens_sec
 		RTS
 
@@ -6754,9 +6750,8 @@ _item_fairy_water_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "but nothing happens!" but definitely not that simple
-_item1F_use:
-		JSR		sub_B2B9
+_item_leaf_of_the_world_tree:
+		JSR		_common_item_use_param_load
 		LDA		#$21
 		STA		byte_49
 		MSGX	_msg_m00,$005	; "$FD, $EF"
@@ -6765,10 +6760,10 @@ _item1F_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_item22_use:
-		JSR		sub_B2B9
+_item_full_moon_herb_use:
+		JSR		_common_item_use_param_load
 		MSGX	_msg_m00,$005	; "$FD, $EF"
-		JSR		_cmd_spell_remove_numbness
+		JSR		_cmd_spell_numboff
 		BCC		_msg_nothing_happens_sec
 		RTS
 
@@ -6782,7 +6777,7 @@ _msg_nothing_happens_sec:
 ; BLACK PEPPER item should only make all non death players to sneeze if
 ; used with item use menu
 ;
-_item08_use_black_pepper:
+_item_black_pepper_use:
 		JSR		_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		STA		byte_55
@@ -6834,7 +6829,7 @@ _write_u8_to_u24_msg_number_parameter_F8:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_B2B9:
+_common_item_use_param_load:
 		LDA		byte_47
 		STA		byte_50
 		STA		byte_CE

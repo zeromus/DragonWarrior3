@@ -369,9 +369,9 @@ byte_99: ; "contained in GlobalFileID $79"
 		.BYTE	0
 byte_9A: ; "tilesetNumber_9A" - also if i change it on the world map, majorly whack stuff happens
 		.BYTE	0
-byte_9B:
+_ghostShipWorldX:
 		.BYTE	0
-byte_9C:
+_ghostShipWorldY:
 		.BYTE	0
 byte_9D:
 		.BYTE	0
@@ -1004,7 +1004,10 @@ _players_EXP:
 ; check _returnable_areas_tbl for meanings
 ; 
 _players_returnable_locations:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
+		.BYTE	0,0,0
+		.BYTE	0,0,0
+		.BYTE	0,0,0
+		.BYTE	0,0,0
 ;----------------------------------------------
 ; u8[4][8] 8 character name for 4 players
 ;
@@ -1332,7 +1335,7 @@ _global_flags_array.byte13:
 _global_flags_array.byte14:
 		.BYTE	0
 ;	$80 - 
-;	$40 - 
+;	$40 - Dragon Queen became an Egg
 ;	$20 - 
 ;	$10 - 
 ;	$08 - 
@@ -1344,7 +1347,7 @@ _global_flags_array.byte15: ; fiddling with values here can make aliahan look li
 ;	$80 - 
 ;	$40 - 
 ;	$20 - 
-;	$10 - 
+;	$10 - Celebration interruped, Zoma speech done, pit is opened
 ;	$08 - 
 ;	$04 - 
 ;	$02 - 
@@ -1365,7 +1368,7 @@ _global_flags_array.byte17:
 ;	no, sometimes it's set bit by bit. WHAT IS THIS!!
 ;	is part of it the newtown progression conditions?
 ;	YES.... but uhhh sometimes tis checked as #$FF and this makes no sense
-;	$80 -
+;	$80 - more than 2 orbs collected test pass
 ;	$40 -
 ;	$20 - _q_SamanaoDone - Set once the Samanao quest is done (real King rescued)
 ;	$10 - 
@@ -1375,37 +1378,20 @@ _global_flags_array.byte17:
 ;	$01 - merch is starting to build a town
 _global_flags_array.byte18:
 		.BYTE	0
-;	bitset of collected orbs, PROBABLY in this order
-;	xxGBPYRS
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	bitset of collected orbs, in this order
+;	xxSRYPBG
 _q_OrbsCollected: ; $60CE
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte1A: ; $60CF
+;	bitset of orbs placed on pedestals, in this order, same as orbs
+;	xxSRYPBG
+_q_OrbsPlaced: ; $60CF
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte1B: ; $60D0
+;	bitset of pedestals used for place orbs, since we can place any
+;	orb on any pedestal, they need track it's usage for animation
+;	and placing control
+;	xxABCDEF
+_q_OrbsPedestalsUsed: ; $60D0
 		.BYTE	0
 
 _merch_town_name_high_chars:
@@ -1856,31 +1842,31 @@ _sram_b0_s19_player_EXP_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1A_player_EXP_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1B_players_gold_read:
+_sram_b0_s1B_player_gold_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1B_players_gold_add:
+_sram_b0_s1B_player_gold_add:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1B_players_gold_subtract:
+_sram_b0_s1B_player_gold_subtract:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1E_player_euipped_item_read:
+_sram_b0_s1E_player_euipped_item_get:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1F_get_weapon_from_inventory:
+_sram_b0_s1F_player_weapon_get:
 		.BYTE	0,0,0,0,0
-_sram_b0_s21_shield_from_inventory:
+_sram_b0_s21_player_shield_get:
 		.BYTE	0,0,0,0,0
-_sram_b0_s21_get_armor_from_inventory:
+_sram_b0_s21_player_armor_get:
 		.BYTE	0,0,0,0,0
-_sram_b0_s22_helm_from_inventory:
+_sram_b0_s22_player_helm_get:
 		.BYTE	0,0,0,0,0
-_sram_b0_s23_player_equip_weapon:
+_sram_b0_s23_player_weapon_equip:
 		.BYTE	0,0,0,0,0
-_sram_b0_s24_player_equip_shield:
+_sram_b0_s24_player_shield_equip:
 		.BYTE	0,0,0,0,0
-_sram_b0_s25_player_equip_armor:
+_sram_b0_s25_player_armor_equip:
 		.BYTE	0,0,0,0,0
-_sram_b0_s24_player_equip_helm:
+_sram_b0_s24_player_helm_equip:
 		.BYTE	0,0,0,0,0
-_sram_b0_s28_player_inventory_item_read:
+_sram_b0_s28_player_inventory_item_get:
 		.BYTE	0,0,0,0,0
 _sram_b0_s29_player_inventory_item_add:
 		.BYTE	0,0,0,0,0

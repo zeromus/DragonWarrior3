@@ -1,31 +1,31 @@
 
 		ORG $8000
 
-		PTR_IDX		_b6_s6
+		PTR_IDX		_b6_s6_spell_return_use
 		PTR_IDX		_b6_s8_world_map_pal_update
 		PTR_IDX		_b6_d9_world_map_step_daytime_list
 		PTR_IDX		_b6_dA_world_pal_ofs_list
 		PTR_IDX		_b6_dB_world_map_palette_lib
-		PTR_IDX		_b6_sC
-		PTR_IDX		_b6_sD
-		PTR_IDX		_b6_sE
-		PTR_IDX		_b6_sF
-		PTR_IDX		_b6_s10
-		PTR_IDX		_b6_s11
-		PTR_IDX		_b6_s12_sleeping_willage_trigger
+		PTR_IDX		_b6_sC_spell_outside_use
+		PTR_IDX		_b6_sD_spell_invisible_use
+		PTR_IDX		_b6_sE_item_invisibility_herb_use
+		PTR_IDX		_b6_sF_spell_stepguard_use
+		PTR_IDX		_b6_s10_water_blaster_npc_anim
+		PTR_IDX		_b6_s11_item_locket_of_love_use
+		PTR_IDX		_b6_s12_item_wakeup_powder_use
 		PTR_IDX		_b6_s13
 		PTR_IDX		_b6_s14_name_entry_screen
 		PTR_IDX		_b6_s15_item_staff_of_change_use
-		PTR_IDX		_b6_s16
-		PTR_IDX		_b6_s17
-		PTR_IDX		_b6_s18
-		PTR_IDX		_b6_s19
-		PTR_IDX		_b6_s1A
-		PTR_IDX		_b6_s1B
-		PTR_IDX		_b6_s1C
-		PTR_IDX		_b6_s1D
-		PTR_IDX		_b6_s1E
-		PTR_IDX		_b6_s1F
+		PTR_IDX		_b6_s16_tavern_character_registration
+		PTR_IDX		_b6_s17_newtown_start_build_town_anim
+		PTR_IDX		_b6_s18_guard_of_meteorite_armband_show_hide
+		PTR_IDX		_b6_s19_dragon_queen_to_egg_transition_anim
+		PTR_IDX		_b6_s1A_orb_pedestal_fire_start_anim
+		PTR_IDX		_b6_s1B_interrupted_baramos_defeat_celebration_anim
+		PTR_IDX		_b6_s1B_reinit_after_zoma_voice
+		PTR_IDX		_b6_s1D_hero_rest_at_home_anim
+		PTR_IDX		_b6_s1E_formation_change_handler
+		PTR_IDX		_b6_s1F_item_rainbow_drop_use
 		PTR_IDX		_b6_s20_player_name_verify
 
 _b6_d0:
@@ -1112,7 +1112,7 @@ _b6_d5:
 		.BYTE	$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_sC:
+_b6_sC_spell_outside_use:
 		LDA		byte_9A
 		CMP		#$C
 		BCC		locret_9B408
@@ -1131,17 +1131,21 @@ locret_9B408:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_sD:
+_b6_sD_spell_invisible_use:
 		JSR		sub_9B433
 		LDA		#$40
 		ORA		byte_AC
 		STA		byte_AC
-		BNE		loc_9B417
+		BNE		_common_invisibility_use	; unconditional branch
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_sE:
+_b6_sE_item_invisibility_herb_use:
 		JSR		sub_9B433
-loc_9B417:
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_common_invisibility_use:
 		LDA		#$19
 		ORA		byte_AC
 		STA		byte_AC
@@ -1149,9 +1153,9 @@ loc_9B417:
 		LDA		_player_vehicle
 		BNE		loc_9B431
 		SYSX	_apu_load,$9F
-		LDY		#$C9
+		LDY		#_bC_s15_fidx
 		STY		word_3C
-		INY
+		LDY		#_bC_s16_fidx
 		STY		word_3C+1
 		FARX	_bC_s17_sys0_spr_effects_call
 loc_9B431:
@@ -1185,7 +1189,7 @@ locret_9B457:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_sF:
+_b6_sF_spell_stepguard_use:
 		LDY		#$20
 		LDA		byte_93
 		AND		#$1F
@@ -1209,7 +1213,7 @@ locret_9B47A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s10:
+_b6_s10_water_blaster_npc_anim:
 		LDA		byte_9A
 		BEQ		locret_9B47A
 		LDX		_playerMapX
@@ -1292,7 +1296,7 @@ loc_9B4F7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s11:
+_b6_s11_item_locket_of_love_use:
 		LDA		_npc_anim_script_idx
 		CMP		#$40
 		BNE		loc_9B524
@@ -1307,13 +1311,11 @@ loc_9B510:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s6:
+_b6_s6_spell_return_use:
 		LDA		byte_9A
 		CMP		#$C
 		BCC		loc_9B529
-
-; check for a few special areas
-		LDA		_mapNumber
+		LDA		_mapNumber		; check for a few special areas
 		LDX		#2
 loc_9B51C:
 		CMP		byte_9B526,X
@@ -1435,8 +1437,8 @@ loc_9B5F6:
 		STA		_npc_anim_script_idx
 		BIT		_global_flags_array.byte16
 		BVS		locret_9B60B
-		STA		byte_9B
-		STA		byte_9C
+		STA		_ghostShipWorldX
+		STA		_ghostShipWorldY
 locret_9B60B:
 		RTS
 word_9B60C:
@@ -1462,7 +1464,7 @@ word_9B60C:
 		.WORD	$5279,$5886
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s12_sleeping_willage_trigger:
+_b6_s12_item_wakeup_powder_use:
 		LDA		_mapNumber
 		CMP		#$B
 		BEQ		loc_9B668
@@ -2062,139 +2064,119 @@ locret_9BA5A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s16:
-		MSGX	_msg_m00,$24C
+; The tavern name registration process
+; Ask you to register a new character, enter its name, veryfi if this name
+; is already registered... If you enter "Erdrick" then he tells you "Edrick?
+; Oh, you mean Erdrick! The name Erdrick demands the utmost respect.."
+; It seems to be a joke, the registrar is thinking the player mis-spoke.
+; Surely you didn't mean Erdrick!
+;
+_b6_s16_tavern_character_registration:
+		MSGX	_msg_m00,$24C	; "This is the Adventurer's Hall of Registration"
 		FARX	_bE_s1C_yes_or_no_question
-		BEQ		sub_9BA66
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BA63:
-		JMP		sub_9BB22
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BA66:
-		MSGX	_msg_m00,$296
+		BEQ		.register_loop
+.register_back_again0:
+		JMP		_register_back_again
+.register_loop:
+		MSGX	_msg_m00,$296	; "Well then, I shall register your present condition..."
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		sub_9BA63
-		FARX	_b7_sD
-		JSR		_sram_b0_s31_get_party_chars_list
+		BNE		.register_back_again0
+		FARX	_b7_sD_save_data	; save current progress
+		JSR		_sram_b0_s31_get_party_chars_list	; get number of players in party
 		LDA		word_4
 		PHA
-		JSR		_sram_b0_s32_get_tavern_chars_list
+		JSR		_sram_b0_s32_get_tavern_chars_list	; plus chars in town
 		PLA
 		CLC
 		ADC		word_4
 		CMP		#$C
-		BCS		sub_9BA85
-		JMP		sub_9BB0B
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BA85:
-		MSGX	_msg_m00,$24D
+		BCS		loc_9BA85							; verify if more than 12 chars already registered
+		JMP		.who_do_you_register
+loc_9BA85:
+		MSGX	_msg_m00,$24D	; "To register anyone else, you'll have to erase someone's name."
 		FARX	_bE_s1C_yes_or_no_question
-		BEQ		sub_9BA90
-		JMP		sub_9BB1F
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BA90:
-		MSGX	_msg_m00,$24F
+		BEQ		loc_9BA90		; okay, let's kill someone
+		JMP		.change_your_mind
+loc_9BA90:
+		MSGX	_msg_m00,$24F	; "Whose name will you erase?"
 		LDA		#7
 		STA		byte_C6
 		SYSX	_display_window,$34
 		LDX		#$10
 		FARX	_bD_s10
 		CMP		#$FF
-		BEQ		sub_9BB1F
+		BEQ		.change_your_mind
 		STA		byte_BD
 		LDA		byte_630F
 		STA		byte_C4
 		JSR		_sram_b0_s32_get_tavern_chars_list
 		LDX		byte_BD
 		LDA		word_4+1,X
-		BNE		sub_9BAB9
-		MSGX	_msg_m00,$297
-		JMP		sub_9BB22
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BAB9:
+		BNE		loc_9BAB9		; test if we try to remove a hero
+		MSGX	_msg_m00,$297	; "I'm sorry, but you can't erase a Hero's name"
+		JMP		_register_back_again
+loc_9BAB9:
 		STA		byte_630F
 		STA		byte_C6
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
-		BEQ		sub_9BADD
-		MSGX	_msg_m00,$27F
-		LDA		byte_C4
-		STA		byte_630F
+		BEQ		loc_9BADD
+		MSGX	_msg_m00,$27F	; "You can't drop a person who has an item"
+		LDA		byte_C4			; why not? merchant sends all stuff to Vault if you leave him in newtown!
+		STA		byte_630F		; use function _player_items_flush_to_vault in bank D (fylesystem or direct)
 		FARX	_b7_s14
-		MSGX	_msg_m00,$718
-		JMP		sub_9BB22
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BADD:
+		MSGX	_msg_m00,$718	; Wait
+		JMP		_register_back_again
+loc_9BADD:
 		LDA		#0
 		STA		byte_D2
-		MSGX	_msg_m00,$250
+		MSGX	_msg_m00,$250	; "You're erasing <name>?There's no undoing it, you know Shall I go ahead"
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		sub_9BB17
+		BNE		loc_9BB17
 		LDA		byte_C6
 		STA		byte_630F
 		FARX	_b7_s14
-		MSGX	_msg_m00,$251
+		MSGX	_msg_m00,$251	; "<name> is erased. You may now register a new party member"
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
 		LDA		byte_C6
 		STA		byte_CE
 		FARX	_b7_s13
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BB0B:
-		MSGX	_msg_m00,$252
+.who_do_you_register:
+		MSGX	_msg_m00,$252			; "Who will you register?"
 		SYSX	_display_window,$41
 		JSR		_b6_s14_name_entry_screen
-		JMP		sub_9BB26
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BB17:
+		JMP		.name_verify_and_apply
+loc_9BB17:
 		LDA		byte_C4
 		STA		byte_630F
 		FARX	_b7_s14
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BB1F:
-		MSGX	_msg_m00,$24E
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BB22:
-		MSGX	_msg_m00,$258
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; Seems to be the tavern name registration process
-; Something weird happens in here. If you enter "Erdrick" then he tells you "Edrick? Oh, you mean Erdrick! The name Erdrick demands the utmost respect.."
-; It seems to be a joke, the registrar is thinking the player mis-spoke. Surely you didn't mean Erdrick!
-;
-sub_9BB26:
+.change_your_mind:
+		MSGX	_msg_m00,$24E	; "Oh, you've changed your mind?That's probably just as well"
+_register_back_again:
+		MSGX	_msg_m00_break,$258	; "Well, if you ever want to register a new person, please come back again"
+.name_verify_and_apply:
 		JSR		_b6_s20_player_name_verify
-		BNE		loc_9BB34			; branch if mismatch (name permissible)
-		JSR		sub_9BBED
-		MSGX	_msg_m00,$254 ; "Edrick?"
-		JMP		loc_9BBDF
+		BNE		loc_9BB34				; branch if mismatch (name permissible)
+		JSR		_warp_bD_s10_wnd3E
+		MSGX	_msg_m00,$254 ; "Edrick?..."
+		JMP		.register_anyone_else
 loc_9BB34:
-		LDX		#7
+		LDX		#7						; backup entered character name
 loc_9BB36:
 		LDA		byte_9,X
 		STA		byte_6AB4,X
 		DEX
 		BPL		loc_9BB36
 		INX
-		LDA		byte_630D
+		LDA		byte_630D				; get bitmask of currently registered active chars
 		STA		word_4
 		LDA		byte_630E
 		STA		word_4+1
@@ -2203,7 +2185,7 @@ loc_9BB49:
 		PHA
 		LSR		word_4+1
 		ROR		word_4
-		BCC		loc_9BB73
+		BCC		loc_9BB73				; test for validity
 		LDA		#8
 		STA		word_6
 		TXA
@@ -2212,7 +2194,7 @@ loc_9BB49:
 		TAY
 		LDX		#0
 loc_9BB5B:
-		LDA		_tavern_chars_name,Y
+		LDA		_tavern_chars_name,Y	; comare entered name agains every name in tavern
 		CMP		byte_6AB4,X
 		BNE		loc_9BB73
 		INY
@@ -2220,32 +2202,32 @@ loc_9BB5B:
 		DEC		word_6
 		BNE		loc_9BB5B
 		PLA
-		JSR		sub_9BBED
+		JSR		_warp_bD_s10_wnd3E
 		MSGX	_msg_m00,$253 ; "Huh? That person is already registered"
-		JMP		loc_9BBDF
+		JMP		.register_anyone_else
 loc_9BB73:
 		PLA
 		TAX
 		INX
 		CPX		#$C
 		BNE		loc_9BB49
-		SYSX	_display_window,$43
+		SYSX	_display_window,$43		; select class
 		CMP		#$FF
 		BEQ		loc_9BBD3
 		TAX
 		LDA		byte_9BBF5,X
-		STA		byte_CF
-		SYSX	_display_window,$42
+		STA		byte_CF					; put class to CF argument
+		SYSX	_display_window,$42		; sex select
 		CMP		#$FF
-		BEQ		loc_9BBD3
-		STA		byte_CE
+		BEQ		loc_9BBD3				; if selection is canceled on any of menus, do "erdrick" joke
+		STA		byte_CE					; put sex to CE argument
 		LDX		#7
 loc_9BB92:
-		LDA		byte_6AB4,X
+		LDA		byte_6AB4,X				; put backup name into the arguments
 		STA		byte_9,X
 		DEX
 		BPL		loc_9BB92
-		FARX	_b7_s10
+		FARX	_b7_s10_player_data_register
 		LDA		byte_630F
 		PHA
 		LDA		byte_D0
@@ -2254,14 +2236,14 @@ loc_9BB92:
 		FARX	_b7_s14
 		LDA		#0
 		STA		byte_CE
-		SYSX	_display_window,$09
+		SYSX	_display_window,$09		; display generated char stats
 		JSR		_pause_or_skip
 		SYSX	_display_window,$08
 		SYSX	_display_window,$0A
 		PLA
 		STA		byte_630F
 		FARX	_b7_s14
-		SYSX	_display_window,$44
+		SYSX	_display_window,$44		; confirmations
 		SYSX	_display_window,$45
 		CMP		#0
 		BEQ		loc_9BBDC
@@ -2269,21 +2251,21 @@ loc_9BB92:
 		STA		byte_CE
 		FARX	_b7_s13
 loc_9BBD3:
-		JSR		sub_9BBED
+		JSR		_warp_bD_s10_wnd3E
 		MSGX	_msg_m00,$255 ; "Oh; you mean Erdrick!"
-		JMP		loc_9BBDF
+		JMP		.register_anyone_else
 loc_9BBDC:
-		JSR		sub_9BBED
-loc_9BBDF:
+		JSR		_warp_bD_s10_wnd3E
+.register_anyone_else:
 		MSGX	_msg_m00,$257 ; "Do you want to register anyone else?"
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		loc_9BBEA
-		JMP		sub_9BA66
-loc_9BBEA:
-		JMP		sub_9BB22
+		BNE		.register_back_again1
+		JMP		.register_loop
+.register_back_again1:
+		JMP		_register_back_again
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BBED:
+_warp_bD_s10_wnd3E:
 		LDX		#0
 		FARX	_bD_s10
 		SYSX	_display_window,$3E
@@ -2372,17 +2354,18 @@ loc_9BC61:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; Runs a pretty detailed scripted sequence and then sets _f_WarpBlock
+; Runs a pretty detailed scripted sequence after the Merchant from your party
+; accepted to stay in Newtown to build it and then sets _f_WarpBlock
 ;
-_b6_s17:
-		JSR		sub_9BC74
+_b6_s17_newtown_start_build_town_anim:
+		JSR		_newtown_start_build_town_anim
 		LDA		_global_flags_array.byte2
 		ORA		#$80
 		STA		_global_flags_array.byte2
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BC74:
+_newtown_start_build_town_anim:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_pal_fade_out
 		FARX	_b7_s15
@@ -2456,7 +2439,7 @@ loc_9BCE3:
 		JMP		_pal_fade_in
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s18:
+_b6_s18_guard_of_meteorite_armband_show_hide:
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		LDA		_npcs_pos_list+1
@@ -2477,7 +2460,7 @@ loc_9BD0B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s19:
+_b6_s19_dragon_queen_to_egg_transition_anim:
 		LDA		#<[_npcs_pos_list]
 		STA		word_6C
 		FARX	_bC_s38
@@ -2493,10 +2476,13 @@ _b6_s19:
 		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s1A:
+; fire objects are already on the map, so this code just move it to corresponding
+; position (Y-$34) and enable the handler byte (npc+3)
+;
+_b6_s1A_orb_pedestal_fire_start_anim:
 		TAX
-		LDY		byte_9BD60,X
-		LDA		_players_pos_list+1,Y
+		LDY		_orb_pedestal_fire_obj_slot_list,X
+		LDA		_players_pos_list+1,Y	; base of the beginning of the player/npc list
 		SEC
 		SBC		#$34
 		STA		_players_pos_list+1,Y
@@ -2511,11 +2497,16 @@ _b6_s1A:
 		FARX	_bD_s19
 		SYSX	_apu_load,$9B
 		RTS
-byte_9BD60:
-		.BYTE	$24,$34,$30,$20,$1C,$28
+_orb_pedestal_fire_obj_slot_list:
+		.BYTE	<[_npcs_pos_list+$14] ; $24
+		.BYTE	<[_npcs_pos_list+$24] ; $34
+		.BYTE	<[_npcs_pos_list+$20] ; $30
+		.BYTE	<[_npcs_pos_list+$10] ; $20
+		.BYTE	<[_npcs_pos_list+$0C] ; $1C
+		.BYTE	<[_npcs_pos_list+$18] ; $28
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s1B:
+_b6_s1B_interrupted_baramos_defeat_celebration_anim:
 		LDX		#$18
 		LDY		#0
 loc_9BD6A:
@@ -2567,7 +2558,8 @@ loc_9BDC7:
 		STA		_ram_pal_buf,X
 		DEX
 		BPL		loc_9BDC7
-		BMI		sub_9BE1D
+		BMI		.pal_set_no_fade
+		
 byte_9BDD2:
 		.BYTE	  3,  1,  1,  3,  3,  1
 byte_9BDD8:
@@ -2576,7 +2568,7 @@ byte_9BDDE:
 		.BYTE	 $F,$20,  1,$11,$17,$27,  5,  0,  0,  5,$19, $A,$17
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s1C:
+_b6_s1B_reinit_after_zoma_voice:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		SYSX	_apu_load,$03
 		LDA		#$FF
@@ -2599,11 +2591,11 @@ _b6_s1C:
 		JSR		_location_palette_and_rand_update
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BE1D:
+.pal_set_no_fade:
 		JMP		_pal_set_no_fade
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s1D:
+_b6_s1D_hero_rest_at_home_anim:
 		SYSX	_apu_load,$14
 		JSR		_pal_fade_out
 		FARX	_b0_s54
@@ -2612,7 +2604,7 @@ _b6_s1D:
 		LDA		#4
 		STA		_playerMapX
 		STA		_playerMapY
-		LDA		#$41
+		LDA		#$41			; hero's apartment
 		STA		_mapNumber
 		LDA		#2
 		STA		_playerFacingDir
@@ -2623,8 +2615,8 @@ _b6_s1D:
 		JMP		sub_174CD5
 
 ; =============== S U B	R O U T	I N E =======================================
-_b6_s1E:
-		JSR		sub_9BE69
+_b6_s1E_formation_change_handler:
+		JSR		_formation_change_handler
 		BCS		loc_9BE5A
 		FARX	_bE_s10
 		FARX	_b0_s47_players_next_EXP_calc
@@ -2636,17 +2628,14 @@ loc_9BE5A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BE62:
-		SYSX	_display_window,$3E
-		MSGX	_msg_m00,$143
-		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-sub_9BE69:
+_formation_change_handler:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		CMP		#1
-		BEQ		sub_9BE62
+		BNE		loc_9BE62
+		SYSX	_display_window,$3E
+		MSGX	_msg_m00_break,$143	; "<hero> has no companions"
+loc_9BE62:
 		STA		_tmp_ptrB4+1
 		CLC
 		ADC		#$47
@@ -2658,7 +2647,7 @@ loc_9BE7C:
 		DEX
 		BNE		loc_9BE7C
 		STX		_tmp_ptrB4
-		JSR		sub_9BF18
+		JSR		_formation_tmp_init
 loc_9BE8A:
 		SYSX	_display_window,$3C
 		STA		byte_CE
@@ -2666,12 +2655,12 @@ loc_9BE8A:
 		BPL		loc_9BEB2
 		LDA		_tmp_ptrB4
 		BNE		loc_9BE9B
-		JSR		sub_9BF0D
+		JSR		_formation_data_flush
 		SEC
 		RTS
 loc_9BE9B:
 		DEC		_tmp_ptrB4
-		JSR		sub_9BF21
+		JSR		_formation_new_name_init
 		LDA		#2
 		FARX	_bE_sB
 		LDX		_tmp_ptrB4
@@ -2691,7 +2680,7 @@ loc_9BEB4:
 		STY		_tmp_varB6,X
 		TYA
 		PHA
-		JSR		sub_9BF2C
+		JSR		_formation_names_enumerate
 		PLA
 		TAY
 		LDA		#$FF
@@ -2702,7 +2691,7 @@ loc_9BEB4:
 		LDA		_tmp_ptrB4
 		CMP		_tmp_ptrB4+1
 		BCC		loc_9BE8A
-		JSR		sub_9BF0D
+		JSR		_formation_data_flush
 		LDX		#0
 loc_9BEDF:
 		LDA		_tmp_varB6,X
@@ -2736,7 +2725,7 @@ loc_9BEF6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BF0D:
+_formation_data_flush:
 		LDX		#3
 loc_9BF0F:
 		LDA		byte_BA,X
@@ -2746,7 +2735,7 @@ loc_9BF0F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BF18:
+_formation_tmp_init:
 		LDX		#3
 loc_9BF1A:
 		TXA
@@ -2756,17 +2745,17 @@ loc_9BF1A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BF21:
+_formation_new_name_init:
 		LDA		#0
 		LDX		#3
 loc_9BF25:
 		STA		byte_BE,X
 		DEX
 		BPL		loc_9BF25
-		BMI		loc_9BF38
+		BMI		_formation_new_names_display
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BF2C:
+_formation_names_enumerate:
 		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDX		#3
 loc_9BF31:
@@ -2774,7 +2763,11 @@ loc_9BF31:
 		STA		byte_BE,X
 		DEX
 		BPL		loc_9BF31
-loc_9BF38:
+		
+;; FALLTHROUGH ;;
+		
+; =============== S U B	R O U T	I N E =======================================
+_formation_new_names_display:
 		LDA		_tmp_ptrB4
 		ASL
 		CLC
@@ -2797,23 +2790,23 @@ loc_9BF46:
 ; =============== S U B	R O U T	I N E =======================================
 ; Using the rainbow Drop
 ;
-_b6_s1F:
-		JSR		sub_9BFB3									; test whether we're on the right location
+_b6_s1F_item_rainbow_drop_use:
+		JSR		_test_rainbow_drop_location	; test whether we're on the right location
 		BCC		loc_9BF6D
 		FARX	_bC_s20_warp_bE_sB_arg0
-		SYSX	_apu_load,$1A							; play musical jingle
-		JSR		sub_9BF72
-		JSR		sub_9BFC3
+		SYSX	_apu_load,$1A				; play musical jingle
+		JSR		_ranbow_pal_anim
+		JSR		_ranbow_tile_set
 		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
 loc_9BF6D:
-		MSGX	_msg_m00,$101							; "But nothing happens here"
+		MSGX	_msg_m00,$101				; "But nothing happens here"
 		CLC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BF72:
+_ranbow_pal_anim:
 		LDA		_ram_pal_buf+2
 		STA		_tmp_varB6
 		LDA		_ram_pal_buf+3
@@ -2850,7 +2843,7 @@ loc_9BF8B:
 ; =============== S U B	R O U T	I N E =======================================
 ; Checks for the location in Alefgard where the Rainbow Drop is to be used
 ;
-sub_9BFB3:
+_test_rainbow_drop_location:
 		LDA		_playerWorldX
 		CMP		#$54
 		BNE		loc_9BFC1
@@ -2864,7 +2857,7 @@ loc_9BFC1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9BFC3: ;ZING
+_ranbow_tile_set: ;ZING
 		LDA		_global_flags_array.byte1
 		ORA		#$80
 		STA		_global_flags_array.byte1
