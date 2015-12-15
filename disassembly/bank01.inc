@@ -1737,7 +1737,7 @@ loc_20B87:
 		LDA		byte_47
 		STA		byte_D2
 		STA		byte_CE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_D3
@@ -1792,7 +1792,7 @@ loc_20C0C:
 		LDA		#0
 		STA		_msg_number_parameter_F8+2
 		STA		byte_D0
-		JSR		_sram_b0_s1B_players_gold_add
+		JSR		_sram_b0_s1B_player_gold_add
 		MSGX	_msg_m00,$026	; "You obrain <number> piece of gold"
 		JSR		_rand
 		AND		#3
@@ -1824,7 +1824,7 @@ loc_20C4F:
 		STA		_msg_number_parameter_F8
 		LDA		byte_CF
 		STA		_msg_number_parameter_F8+1
-		JSR		_sram_b0_s1B_players_gold_add
+		JSR		_sram_b0_s1B_player_gold_add
 		MSGX	_msg_m00,$0B6	; "you have vanquished all of your foes""
 loc_20C6F:
 		FARX	_b0_s47_players_next_EXP_calc			; calls a recalculation next level value for each player

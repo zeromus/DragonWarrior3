@@ -3307,7 +3307,7 @@ _bs_pcAction_00_attack:
 		LDA		word_4+1
 		STA		_players_rATK+1,X
 loc_695DE:
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4
 		AND		#$7F
 		CMP		#$18
@@ -4537,7 +4537,7 @@ sub_69E5B:
 		BNE		loc_69E7C
 		STA		byte_50
 		JSR		_b4_s5_do_message_speed_delay
-		FARX	_b6_s6
+		FARX	_b6_s6_spell_return_use
 		BCC		loc_69E7C
 		LDA		_global_flags_array.byte2
 		AND		#$DF
@@ -7456,7 +7456,7 @@ sub_6B0DB:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B0E5:
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDY		#7
 loc_6B0EA:
 		DEY
@@ -7509,7 +7509,7 @@ loc_6B140:
 loc_6B142:
 		JSR		sub_6B168
 loc_6B145:
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		CMP		#$AD
 		BNE		loc_6B154
@@ -7544,7 +7544,7 @@ loc_6B175:
 		STA		byte_5A
 		TYA
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		PLA
 		TAY
 		LDA		word_4+1
@@ -7612,7 +7612,7 @@ sub_6B1E8:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_read
+		JSR		_sram_b0_s1E_player_euipped_item_get
 		LDA		word_4+1
 		CMP		#$A7
 		BEQ		loc_6B209

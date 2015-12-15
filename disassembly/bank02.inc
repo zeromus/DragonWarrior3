@@ -3181,7 +3181,7 @@ loc_3A5A5:
 loc_3A5A8:
 		LDA		byte_51
 		STA		byte_CE
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4
 		BNE		loc_3A5C9
 		SYSX	_display_window_ex,$3D
@@ -3200,7 +3200,7 @@ loc_3A5D5:
 		STA		byte_CF
 		LDA		#0
 		STA		byte_46
-		JSR		_sram_b0_s28_player_inventory_item_read
+		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
 		STA		byte_CF
