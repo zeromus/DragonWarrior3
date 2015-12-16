@@ -2512,10 +2512,10 @@ _windows_lib:
 		.WORD	_wnd45_tavern_yesno
 		.WORD	_wnd46_tavern_menu
 		.WORD	_wnd47
-		.WORD	_wnd48
-		.WORD	_wnd48
-		.WORD	_wnd4A
-		.WORD	_wnd4B
+		.WORD	_wnd48_formation_number_list_2
+		.WORD	_wnd48_formation_number_list_2
+		.WORD	_wnd4A_formation_number_list_3
+		.WORD	_wnd4B_formation_number_list_4
 		.WORD	_wnd4C_merchant_command_item
 		.WORD	_wnd37
 		.WORD	_wnd4E
@@ -2530,16 +2530,16 @@ _windows_lib:
 		.WORD	_wnd57
 		.WORD	_wnd58_input_your_name
 		.WORD	_wnd59
-		.WORD	_wnd5A
-		.WORD	_wnd5B
-		.WORD	_wnd5C
-		.WORD	_wnd5D
-		.WORD	_wnd5E
-		.WORD	_wnd5F
-		.WORD	_wnd60
-		.WORD	_wnd61
-		.WORD	_wnd62
-		.WORD	_wnd63
+		.WORD	_wnd5A_choose_active_slot_1
+		.WORD	_wnd5B_choose_active_slot_2
+		.WORD	_wnd5C_choose_active_slot_12
+		.WORD	_wnd5D_choose_active_slot_3
+		.WORD	_wnd5E_choose_active_slot_13
+		.WORD	_wnd5F_choose_active_slot_23
+		.WORD	_wnd60_choose_active_slot_123
+		.WORD	_wnd61_MM_5_opt
+		.WORD	_wnd62_MM_3_opt
+		.WORD	_wnd63_MM_1_opt
 		.WORD	_wnd45_tavern_yesno
 		.WORD	_wnd65
 		.WORD	_wnd66
@@ -2740,7 +2740,7 @@ _wnd1B:
 		.BYTE	_F,_I,_G,_H,_T,$FF
 		.BYTE	_P,_A,_R,_R,_Y,$FF
 		.BYTE	_I,_T,_E,_M,$FF
-_wnd1C:
+_wnd1C: ; a list of player names
 		.BYTE	$80,$3B
 		.WORD	_wnd2A
 
@@ -2773,44 +2773,47 @@ _wnd22_sage_spell_select:
 		.BYTE	_W,_i,_z,_a,_r,_d,$FF
 		.BYTE	_P,_i,_l,_g,_r,_i,_m,$FF
 
-_wnd23:
-		.BYTE	$08,$10,$45,$00,$60,$A1,$22,$A3,$01,$02,$0
+_wnd23: ; command menu, status command, info sub-command (player target)
+		.BYTE	$08,$10,$45,$00,$60,$A1,$22,$A3,$01,$02,$00
 		.BYTE	$90,$41,$FF ; seems to be the name of a character, but not sure
-_wnd24:
+
+_wnd24: ; command menu, equip command (player target)
 		.BYTE	$0A,$10,$46,$81,$85,$A1,$22,$A3,$02,$02,$00
 		.BYTE	$90,$41,$FF ; seems to be the name of a character, but not sure
 
 ; ------ a family, one for each player ------
-_wnd25:
+_wnd25: ; command menu, equip -> weapon
 		.BYTE	$10,$12,$16,$84,$46,$E1,$22,$A3,$41,$01,$00
-		.BYTE	$9E,$B6,$B0,$FF,$96,$D0,$FF,$FF ; looks like name of 1st party member is involved
-_wnd26:
+		.BYTE	$9E,$B6,$B0,$FF,$96,$D0,$FF,$FF
+_wnd26: ; command menu, equip -> armor
 		.BYTE	$10,$13,$16,$84,$47,$E1,$22,$A3,$41,$01,$00
 		.BYTE	$9E,$B6,$B1,$FF,$96,$D1,$FF,$FF
-_wnd27:
+_wnd27: ; command menu, equip -> (probably shield)
 		.BYTE	$10,$14,$16,$84,$48,$E1,$22,$A3,$41,$01,$00
 		.BYTE	$9E,$B6,$B2,$FF,$96,$D2,$FF,$FF
-_wnd28:
+_wnd28: ; command menu, equip -> (probably helm)
 		.BYTE	$10,$15,$16,$84,$49,$E1,$22,$A3,$41,$01,$00
 		.BYTE	$9E,$B6,$B3,$FF,$96,$D3,$FF,$FF
 
-_wnd29:
+_wnd29: ; command menu, spell command (player target)
 		.BYTE	$0A,$10,$26,$81,$84,$A1,$22,$A3,$02,$02,$00
-		.BYTE	$90,$41,$FF ; seems to be the name of a character, but not sure
-_wnd2A:
+		.BYTE	$90,$41,$FF
+
+_wnd2A: ; probably for selecting target player of command menu spell
 		.BYTE	$08,$10,$33,$00,$60,$A1,$22,$A3,$01,$02,$00
 		.BYTE	$90,$41,$FF
-_wnd2C:
+
+_wnd2C: ; command menu, item command (player target)
 		.BYTE	$0A,$10,$35,$83,$42,$A1,$22,$23,$00,$00,$00
 		.BYTE	$90,$41,$FF
 
-_wnd2D:
+_wnd2D: ; command menu, item command, transfer (select target player)
 		.BYTE	$10,$11,$16,$00,$60,$E1,$22,$A3,$41,$01,$00
 		.BYTE	$9E,$B6,$B4,$FF
 		.BYTE	$96,$D4,$FF
 		.BYTE	$FF
-_wnd2E:
 
+_wnd2E: ; command menu, item command, select target player 
 		.BYTE	$0A,$10,$25,$83,$8F,$A1,$22,$A3,$02,$02,$00
 		.BYTE	$90,$41,$FF
 
@@ -2905,31 +2908,50 @@ _wnd46_tavern_menu:
 		.BYTE	_S,_E,_E,$00,_L,_I,_S,_T,$FF
 
 _wnd47:
-		.BYTE	 $C,  7,$18,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
-		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
-		.BYTE	 $E,$FF,$2A,$13,$11,$12,$1E, $F,$1C,$FF,$31, $F,$1C, $D,$12, $B
-		.BYTE	$18,$1E,$FF,$37, $B,$11, $F,$FF
-_wnd48:
-		.BYTE	 $A,  3,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF
-_wnd4A:
-		.BYTE	 $A,  4,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF,  4
-		.BYTE	$FF
-_wnd4B:
-		.BYTE	 $A,  5,$58,  0,$60,$21,$22,$23,  0,  0,  0,  2,$FF,  3,$FF,  4
-		.BYTE	$FF,  5,$FF
+		.BYTE	$0C,$07,$18,$82,$4A,$21,$22,$A3,$01,$02,$00
+		.BYTE	_S,_o,_l,_d,_i,_e,_r,$FF
+		.BYTE	_P,_i,_l,_g,_r,_i,_m,$FF
+		.BYTE	_W,_i,_z,_a,_r,_d,$FF
+		.BYTE	_F,_i,_g,_h,_t,_e,_r,$FF
+		.BYTE	_M,_e,_r,_c,_h,_a,_n,_t,$FF
+		.BYTE	_S,_a,_g,_e,$FF ; why no good off?
+
+_wnd48_formation_number_list_2:
+		.BYTE	$0A,$03,$58,$00,$60,$21,$22,$23,$00,$00,$00
+		.BYTE	_1,$FF
+		.BYTE	_2,$FF
+
+_wnd4A_formation_number_list_3:
+		.BYTE	$0A,$04,$58,$00,$60,$21,$22,$23,$00,$00,$00
+		.BYTE	_1,$FF
+		.BYTE	_2,$FF
+		.BYTE	_3,$FF
+
+_wnd4B_formation_number_list_4:
+		.BYTE	$0A,$05,$58,$00,$60,$21,$22,$23,$00,$00,$00
+		.BYTE	_1,$FF
+		.BYTE	_2,$FF
+		.BYTE	_3,$FF
+  	.BYTE	_4,$FF
+
 _wnd4C_merchant_command_item:
 		.BYTE	 $C,  5,$53,  0,$A0,$21,$22,$A3,  2,  2,  0
 		.BYTE	_U,_S,_E,$FF
 		.BYTE	_T,_R,_A,_N,_S,_F,_E,_R,$FF
 		.BYTE	_D,_I,_S,_C,_A,_R,_D,$FF
 		.BYTE	_A,_P,_P,_R,_A,_I,_S,_E,$FF
+
 _wnd4E:
-		.BYTE	  8,$10,$3B,  0,$60,$A1,$22,$A3,  1,  2,  0,$90,$51,$FF
+		.BYTE	$08,$10,$3B,$00,$60,$A1,$22,$A3,$01,$02,$00
+		.BYTE	$90,$51,$FF
+
 _wnd4F:
-		.BYTE	 $C,  6,$18,$82,$4A,$21,$22,$A3,  1,  2,  0,$37,$19,$16, $E,$13
-		.BYTE	 $F,$1C,$FF,$34,$13,$16,$11,$1C,$13,$17,$FF,$3B,$13,$24, $B,$1C
-		.BYTE	 $E,$FF,$2A,$13,$11,$12,$1E, $F,$1C,$FF,$31, $F,$1C, $D,$12, $B
-		.BYTE	$18,$1E,$FF
+		.BYTE	$0C,$06,$18,$82,$4A,$21,$22,$A3,$01,$02,$00
+		.BYTE	_S,_o,_l,_d,_i,_e,_r,$FF
+		.BYTE	_P,_i,_l,_g,_r,_i,_m,$FF
+		.BYTE	_W,_i,_z,_a,_r,_d,$FF
+		.BYTE	_F,_i,_g,_h,_t,_e,_r,$FF
+		.BYTE	_M,_e,_r,_c,_h,_a,_n,_t,$FF ; why no goof-off?
 
 _wnd50:
 		.BYTE	$14,$02,$95,$00,$60,$21,$22,$A3,$01,$02,$00
@@ -2979,65 +3001,72 @@ _wnd59:
 		.BYTE	_e,_r,_a,_s,_e,$00,_t,_h,_i,_s,$FF,$00
 		.BYTE	_q,_u,_e,_s,_t,_que,$FF
 
-_wnd5A:
+_wnd5A_choose_active_slot_1:
 		.BYTE	$18,$02,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_1,_col,$99,$40,$FF
-_wnd5B:
+_wnd5B_choose_active_slot_2:
 		.BYTE	$18,$02,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_2,_col,$B9,$40,$FF
-_wnd5C:
+_wnd5C_choose_active_slot_12:
 		.BYTE	$18,$03,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_1,_col,$99,$40,$FF
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_2,_col,$B9,$40,$FF
-_wnd5D:
+_wnd5D_choose_active_slot_3:
 		.BYTE	$18,$02,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_3,_col,$D9,$40,$FF
-_wnd5E:
+_wnd5E_choose_active_slot_13:
 		.BYTE	$18,$03,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_1,_col,$99,$40,$FF
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_3,_col,$D9,$40,$FF
-_wnd5F:
+_wnd5F_choose_active_slot_23:
 		.BYTE	$18,$03,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_2,_col,$B9,$40,$FF
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_3,_col,$D9,$40,$FF
-_wnd60:
+_wnd60_choose_active_slot_123:
 		.BYTE	$18,$04,$63,$00,$60,$21,$22,$A3,$01,$02,$00
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_1,_col,$99,$40,$FF
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_2,_col,$B9,$40,$FF
 		.BYTE	_A,_D,_V,_E,_N,_T,_U,_R,_E,$00,_L,_O,_G,$00,_3,_col,$D9,$40,$FF
 
-_wnd61:
-		.BYTE	$18,  6,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$27,$33,$32,$38,$2D
-		.BYTE	$32,$39,$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$26,$29,$2B,$2D
-		.BYTE	$32,  0,$25,  0,$32,$29,$3B,  0,$35,$39,$29,$37,$38,$FF,$27,$33
-		.BYTE	$34,$3D,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$29,$36,$25,$37,$29
-		.BYTE	  0,$25,  0,$35,$39,$29,$37,$38,$FF,$27,$2C,$25,$32,$2B,$29,  0
-		.BYTE	$31,$29,$37,$37,$25,$2B,$29,  0,$37,$34,$29,$29,$28,$FF
-_wnd62:
-		.BYTE	$18,  4,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$27,$33,$32,$38,$2D
-		.BYTE	$32,$39,$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$29,$36,$25,$37
-		.BYTE	$29,  0,$25,  0,$35,$39,$29,$37,$38,$FF,$27,$2C,$25,$32,$2B,$29
-		.BYTE	  0,$31,$29,$37,$37,$25,$2B,$29,  0,$37,$34,$29,$29,$28,$FF
-_wnd63:
-		.BYTE	$18,  2,$42,  0,$60,$21,$22,$A3,  1,  2,  0,$26,$29,$2B,$2D,$32
-		.BYTE	  0,$25,  0,$32,$29,$3B,  0,$35,$39,$29,$37,$38,$FF
+_wnd61_MM_5_opt:
+		.BYTE	$18,$06,$42,$00,$60,$21,$22,$A3,$01,$02,$00
+		.BYTE	_C,_O,_N,_T,_I,_N,_U,_E,$00,_A,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE	_B,_E,_G,_I,_N,$00,_A,$00,_N,_E,_W,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE	_C,_O,_P,_Y,$00,_A,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE _E,_R,_A,_S,_E,$00,_A,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE	_C,_H,_A,_N,_G,_E,$00,_M,_E,_S,_S,_A,_G,_E,$00,_S,_P,_E,_E,_D,$FF
+_wnd62_MM_3_opt:
+		.BYTE	$18,$04,$42,$00,$60,$21,$22,$A3,$01,$02,$00
+		.BYTE	_C,_O,_N,_T,_I,_N,_U,_E,$00,_A,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE _E,_R,_A,_S,_E,$00,_A,$00,_Q,_U,_E,_S,_T,$FF
+		.BYTE	_C,_H,_A,_N,_G,_E,$00,_M,_E,_S,_S,_A,_G,_E,$00,_S,_P,_E,_E,_D,$FF
+_wnd63_MM_1_opt:
+		.BYTE	$18,$02,$42,$00,$60,$21,$22,$A3,$01,$02,$00
+		.BYTE	_B,_E,_G,_I,_N,$00,_A,$00,_N,_E,_W,$00,_Q,_U,_E,_S,_T,$FF
+
 _wnd65:
-		.BYTE	$18,  9,$12,$87,$4E,$A1,$22,$23,  0,  0,  0,$DA,$90,$9E,$FA,$90
-		.BYTE	$FF
+		.BYTE	$18,$09,$12,$87,$4E,$A1,$22,$23,$00,$00,$00
+		.BYTE	$DA,$90,$9E,$FA,$90,$FF
 _wnd66:
-		.BYTE	$16,$19,$43,  0,$60,$E1,$22,$A3,  1,  1,  0,  0,$B8,$C0,$FF,$98
-		.BYTE	$C0,$FF,$FF
+		.BYTE	$16,$19,$43,$00,$60,$E1,$22,$A3,$01,$01,$00
+		.BYTE	0,$B8,$C0,$FF
+		.BYTE	$98,$C0,$FF
+		.BYTE	$FF
 _wnd67:
-		.BYTE	$10,  5,$96,$80,$4D,$E1,$22,$BB,$41,  1,  4,$9E,$B6,$B4,$FF,$96
-		.BYTE	$D4,$FF,$FF
+		.BYTE	$10,$05,$96,$80,$4D,$E1,$22,$BB,$41,$01,$04
+		.BYTE	$9E,$B6,$B4,$FF
+		.BYTE	$96,$D4,$FF
+		.BYTE	$FF
+
 _wnd68:
 		.BYTE	$80,$1A
 		.WORD	_wnd12_status_info_gold
+
 _wnd69:
-		.BYTE	$10,  9,$18,  0,$60,$A1,$22,$23,  0,  0,  0
+		.BYTE	$10,$09,$18,$00,$60,$A1,$22,$23,$00,$00,$00
 		.BYTE	$FF
 _wnd6A:
-		.BYTE	  8,$10,$35,$83,$42,$A1,$22,$A3,  1,  2,  0
+		.BYTE	$08,$10,$35,$83,$42,$A1,$22,$A3,$01,$02,$00
 		.BYTE	$90,$41,$FF
 _wnd6B:
 		.BYTE	$10,$09,$18,$00,$60,$E1,$22,$A3,$41,$01,$00

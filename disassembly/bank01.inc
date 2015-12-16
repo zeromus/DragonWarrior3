@@ -1729,7 +1729,7 @@ loc_20B87:
 		BEQ		loc_20B6F
 		STA		byte_CE
 		STA		byte_47
-		MSGX	_msg_m00,$068	; "Wait will you discard"
+		MSGX	_msg_m00,$068	; "What will you discard"
 		SYSX	_display_window_ex,$2D
 		CMP		#$FF
 		BEQ		loc_20B87
