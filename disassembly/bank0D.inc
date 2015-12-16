@@ -2551,7 +2551,7 @@ loc_1421FF:
 		BMI		loc_14221D
 		LDA		#$1C
 		STA		byte_CE
-		FARX	_b0_s4D
+		FARX	_b0_s4D_is_anybody_owns_item
 		BCS		loc_14221D
 		LDA		#$2D
 		STA		byte_6FF
@@ -3840,7 +3840,7 @@ loc_142C7D:
 		BEQ		loc_142CB2
 		MSGX	_msg_m00,$249
 loc_142C96:
-		FARX	_b1_sE
+		FARX	_b1_sE_player_class_change_stats_reset
 		LDA		byte_C6
 		CMP		#7
 		BEQ		loc_142CAC
@@ -4392,12 +4392,12 @@ _wrap_player_inventory_item_add_storeCE:
 		JMP		_sram_b0_s29_player_inventory_item_add
 
 ; =============== S U B	R O U T	I N E =======================================
-_wrap_is_anybody_owns_item_storeCE:
+_wrap_is_players_owns_item_storeCE:
 		STA		byte_CE
-		JMP		_sram_b0_s2B_is_anybody_owns_item
+		JMP		_sram_b0_s2B_is_players_owns_item
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143130:
+_player_item_remove_arg4:
 		LDA		word_4
 		STA		byte_CE
 		LDA		word_4+1
@@ -4405,7 +4405,7 @@ sub_143130:
 		JMP		_sram_b0_s2A_player_inventory_item_remove
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14313B:
+_get_common_npc_msg_idx:
 		STA		byte_5C
 		STX		byte_5D
 		LDA		word_4
@@ -4429,7 +4429,7 @@ _add_arg5C_to16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_14315A:
+_arg4_backup:
 		LDY		#4
 loc_14315C:
 		LDA		word_4,Y
@@ -4439,7 +4439,7 @@ loc_14315C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143166:
+_arg4_restore:
 		LDY		#4
 loc_143168:
 		LDA		word_60+1,Y
@@ -4471,7 +4471,7 @@ loc_143182:
 		BCC		loc_143195
 		CMP		#$F2
 		BCS		loc_143195
-		LDA		#$AC	; flag.byte15 mask $20
+		LDA		#$AC	; _global_flags_array.byte15 mask $10
 		JSR		_global_game_flag_set
 loc_143195:
 		LDA		_global_flags_array.byte10
@@ -4526,10 +4526,7 @@ loc_1431D9:
 		LDA		#$69						; base idx $669
 		LDX		#6
 		JSR		_add_arg5C_to16
-		LDA		byte_5C
-		LDX		byte_5D
-		FARX	_bE_s4_msg_m00
-		RTS
+		JMP		_wrap_msg_m00_arg5C
 loc_1431F7:
 		LDA		word_6
 		AND		#$1F
@@ -4583,13 +4580,13 @@ loc_143244:
 loc_143256:
 		CMP		#2
 		BNE		loc_143262
-		JSR		sub_14315A
+		JSR		_arg4_backup
 		MSGX	_msg_m00,$6D5	; "Even if you make yourself invisible, we'll know where you are"
 		BCS		loc_14327E
 loc_143262:
 		CMP		#3
 		BNE		loc_14326E
-		JSR		sub_14315A
+		JSR		_arg4_backup
 		MSGX	_msg_m00,$6D6	; "Even if you change your form, we'll know who you are"
 		BCS		loc_14327E
 loc_14326E:
@@ -4599,13 +4596,10 @@ loc_14326E:
 		LDA		#$D3	; $6D3 base message
 		LDX		#6
 		JSR		_add_arg5C_to16
-		LDA		byte_5C
-		LDX		byte_5D
-		FARX	_bE_s4_msg_m00
-		RTS
+		JMP		_wrap_msg_m00_arg5C
 ; ----------------------------------
 loc_14327E:						; special override when you becomes a king
-		JSR		sub_143166
+		JSR		_arg4_restore
 loc_143281:
 		BIT		_global_flags_array.byte2
 		BVC		loc_1432A7
@@ -4638,11 +4632,11 @@ loc_1432A7:
 ; ----------------------------------
 ; finally the regular handlers
 loc_1432BC:
-		LDY		#[byte_1433BC_last-byte_1433BC]
+		LDY		#[_common_npc_idx_delta_table_last-_common_npc_idx_delta_table]
 loc_1432BE:
-		LDA		byte_1433BC,Y		; calc the main npc handler index
-		LDX		byte_1433BC+1,Y
-		JSR		sub_14313B
+		LDA		_common_npc_idx_delta_table,Y		; calc the main npc handler index
+		LDX		_common_npc_idx_delta_table+1,Y
+		JSR		_get_common_npc_msg_idx				; and the message index
 		BCS		loc_1432D0
 		DEY
 		DEY
@@ -4720,7 +4714,7 @@ override_msg_list1:
 override_msg_list1_last:
 		.BYTE	$2A,  1,$DB
 
-byte_1433BC:
+_common_npc_idx_delta_table:
 		.WORD	$001
 		.WORD	$002
 		.WORD	$003
@@ -4738,7 +4732,7 @@ byte_1433BC:
 		.WORD	$1FE
 		.WORD	$21C
 		.WORD	$226
-byte_1433BC_last:
+_common_npc_idx_delta_table_last:
 		.WORD	$3C0	; 960
 
 _npc_base_hndl_lib:
@@ -4826,11 +4820,11 @@ _npc_hndl_size_list:
 		.BYTE	  _npc_hndl13-_npc_hndl12
 		.BYTE	  _npc_hndl14-_npc_hndl13
 		.BYTE	  _npc_hndl15-_npc_hndl14
-		.BYTE	  _npc_hndl16-_npc_hndl15
-		.BYTE	  _npc_hndl17-_npc_hndl16
-		.BYTE	  _npc_hndl18-_npc_hndl17
-		.BYTE	  _npc_hndl19-_npc_hndl18
-		.BYTE	  _npc_hndl1A-_npc_hndl19
+		.BYTE	  _npc_hndl16_elf_village_queen-_npc_hndl15
+		.BYTE	  _npc_hndl17_elf_village_old_father-_npc_hndl16_elf_village_queen
+		.BYTE	  _npc_hndl18_baharata_granddad-_npc_hndl17_elf_village_old_father
+		.BYTE	  _npc_hndl19_baharata_pepper_shop-_npc_hndl18_baharata_granddad
+		.BYTE	  _npc_hndl1A-_npc_hndl19_baharata_pepper_shop
 		.BYTE	  _npc_hndl1B-_npc_hndl1A
 		.BYTE	  _npc_hndl1C-_npc_hndl1B
 		.BYTE	  _npc_hndl1D-_npc_hndl1C
@@ -4838,20 +4832,20 @@ _npc_hndl_size_list:
 		.BYTE	  _npc_hndl1F-_npc_hndl1E
 		.BYTE	  _npc_hndl20-_npc_hndl1F
 		.BYTE	  _npc_hndl21-_npc_hndl20
-		.BYTE	  _npc_hndl22-_npc_hndl21
-		.BYTE	  _npc_hndl23-_npc_hndl22
+		.BYTE	  _npc_hndl22_greenland_man-_npc_hndl21
+		.BYTE	  _npc_hndl23-_npc_hndl22_greenland_man
 		.BYTE	  _npc_hndl24-_npc_hndl23
 		.BYTE	  _npc_hndl25-_npc_hndl24
 		.BYTE	  _npc_hndl26-_npc_hndl25
 		.BYTE	  _npc_hndl27-_npc_hndl26
 		.BYTE	  _npc_hndl28-_npc_hndl27
-		.BYTE	  _npc_hndl29-_npc_hndl28
-		.BYTE	  _npc_hndl2A-_npc_hndl29
+		.BYTE	  _npc_hndl29_baramos-_npc_hndl28
+		.BYTE	  _npc_hndl2A-_npc_hndl29_baramos
 		.BYTE	  _npc_hndl2B_meteorite_armband_guard-_npc_hndl2A
 		.BYTE	  _npc_hndl2C-_npc_hndl2B_meteorite_armband_guard
 		.BYTE	  _npc_hndl2D-_npc_hndl2C
-		.BYTE	  _npc_hndl2E-_npc_hndl2D
-		.BYTE	  _npc_hndl2F-_npc_hndl2E
+		.BYTE	  _npc_hndl2E_wounded_himiko-_npc_hndl2D
+		.BYTE	  _npc_hndl2F-_npc_hndl2E_wounded_himiko
 		.BYTE	  _npc_hndl30-_npc_hndl2F
 		.BYTE	  _bD_s20_npc_hndl31-_npc_hndl30
 		.BYTE	  _bD_s20_npc_hndl32-_bD_s20_npc_hndl31
@@ -4870,18 +4864,18 @@ _npc_hndl_size_list:
 		.BYTE	  _npc_hndl3F-_npc_hndl3E
 		.BYTE	  _npc_hndl40-_npc_hndl3F
 		.BYTE	  _npc_hndl41-_npc_hndl40
-		.BYTE	  _npc_hndl42-_npc_hndl41
-		.BYTE	  _npc_hndl43-_npc_hndl42
-		.BYTE	  _npc_hndl44-_npc_hndl43
+		.BYTE	  _npc_hndl42_king_of_romaly_in_castle-_npc_hndl41
+		.BYTE	  _npc_hndl43_former_king_of_romaly-_npc_hndl42_king_of_romaly_in_castle
+		.BYTE	  _npc_hndl44-_npc_hndl43_former_king_of_romaly
 		.BYTE	  _npc_hndl45-_npc_hndl44
 		.BYTE	  _npc_hndl46-_npc_hndl45
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl46
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl47_exp_info_and_progress_save
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl47_exp_info_and_progress_save
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl47_exp_info_and_progress_save
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl47_exp_info_and_progress_save
-		.BYTE	  _npc_hndl47_exp_info_and_progress_save-_npc_hndl47_exp_info_and_progress_save
-		.BYTE	  _npc_hndl4D-_npc_hndl47_exp_info_and_progress_save
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl46
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl47_regular_king_info_and_save
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl47_regular_king_info_and_save
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl47_regular_king_info_and_save
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl47_regular_king_info_and_save
+		.BYTE	  _npc_hndl47_regular_king_info_and_save-_npc_hndl47_regular_king_info_and_save
+		.BYTE	  _npc_hndl4D-_npc_hndl47_regular_king_info_and_save
 		.BYTE	  _npc_hndl4E-_npc_hndl4D
 		.BYTE	  _npc_hndl4F-_npc_hndl4E
 		.BYTE	  _npc_hndl50-_npc_hndl4F
@@ -4896,8 +4890,8 @@ _npc_hndl_size_list:
 		.BYTE	  _npc_hndl59-_npc_hndl58
 		.BYTE	  _npc_hndl5A-_npc_hndl59
 		.BYTE	  _npc_hndl5B-_npc_hndl5A
-		.BYTE	  _npc_hndl5C-_npc_hndl5B
-		.BYTE	  _npc_hndl5D-_npc_hndl5C
+		.BYTE	  _npc_hndl5C_portoga_king-_npc_hndl5B
+		.BYTE	  _npc_hndl5D-_npc_hndl5C_portoga_king
 		.BYTE	  _npc_hndl5E-_npc_hndl5D
 		.BYTE	  _npc_hndl5F-_npc_hndl5E
 		.BYTE	  _npc_hndl60-_npc_hndl5F
@@ -4997,42 +4991,47 @@ sub_1434D3:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_base_nhdl10:
 		LDA		#$F7
-		LDX		#0
+		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		_wrap_msg_m00_b300_arg5C
+		JMP		_wrap_msg_m00_arg5C
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_base_nhdl9:
 		LDA		#$8E
-		LDX		#2
+		LDX		#5
 		JSR		_add_arg5C_to16
 		JMP		sub_1434F4
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_base_nhdlF:
 		LDA		#$98
-		LDX		#2
+		LDX		#5
 		JSR		_add_arg5C_to16
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1434F4:
-		JSR		_wrap_msg_m00_b300_arg5C
+		JSR		_wrap_msg_m00_arg5C
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		sub_143503
+		BNE		loc_143503
 		LDA		#$D
-		LDX		#0
+		LDX		#3
 		JSR		_add_arg5C_to16
-		JMP		_wrap_msg_m00_b300_arg5C
-
-; =============== S U B	R O U T	I N E =======================================
-sub_143503:
+		JMP		_wrap_msg_m00_arg5C
+loc_143503:
 		LDA		#$1A
-		LDX		#0
+		LDX		#3
 		JSR		_add_arg5C_to16
 
 ;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+_wrap_msg_m00_arg5C:
+		LDA		byte_5C
+		LDX		byte_5D
+		FARX	_bE_s4_msg_m00
+		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; get's the full 16-bit index of the message instead of 8-bit and increase
@@ -5098,7 +5097,7 @@ loc_14356E:
 		STA		byte_C6
 		FARX	_b6_s1D_hero_rest_at_home_anim
 		JSR		_wrap_bE_sD_wnd3E
-		LDA		#$17	; byte01 mask $80 "_f_WarpBlock"
+		LDA		#$17	; _global_flags_array.byte1 mask $80 "_f_WarpBlock"
 		JSR		_global_game_flag_set
 		MSGX	_msg_m00_break_ex,$5B9	; "Good morning! Time to get up and go, <name>"
 
@@ -5112,10 +5111,10 @@ _npc_hndl2:
 		BNE		loc_1435A6
 		BCS		loc_1435A6
 		MSGX	_msg_m00,$5C9
-		LDA		#$57
+		LDA		#ITEM_MAGIC_BALL
 		JSR		_give_item_to_player_msg2
 		BCC		locret_1435A5
-		LDA		#$55
+		LDA		#$55	; _global_flags_array.byteA mask $20
 		JSR		_global_game_flag_set
 locret_1435A5:
 		RTS
@@ -5182,7 +5181,7 @@ loc_143611:
 		STA		_merch_town_name_low_chars,X
 		DEX
 		BPL		loc_143611
-		LDA		#$C0	; flag.byte18 mask 01
+		LDA		#$C0	; _global_flags_array.byte18 mask $01
 		JSR		_global_game_flag_set
 		MSGX	_msg_m00,$5D2	; "<name>: Well, I'm going to stay here" and send all items to Vault
 		JSR		_player_items_flush_to_vault
@@ -5376,84 +5375,88 @@ locret_143744:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl16:
-		JSR		loc_14377F
-		BCS		loc_14374C
-		BEQ		loc_14374F
-loc_14374C:
-		MSGX	_msg_m00_break,$60A
-loc_14374F:
-		LDA		#$5B
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		BCS		loc_14375F
-loc_143756:
-		MSGX	_msg_m00,$607
-		LDA		#$21
+_npc_hndl16_elf_village_queen:
+		JSR		_check_if_sleeping_quest_is_over
+		BCS		.dream_ruby_quest_is_over	; if we have wakeup powder or already used it, then generic message
+		BEQ		.dream_ruby_quest_check		; if we haven't wakeup power, non-zero will be only if we used it
+.dream_ruby_quest_is_over:					; so in both cases we have the same message
+		MSGX	_msg_m00_break,$60A	; "That doesn't mean I like humans now. Go now!"
+.dream_ruby_quest_check:
+		LDA		#ITEM_DREAM_RUBY
+		JSR		_wrap_is_players_owns_item_storeCE
+		BCS		.dream_ruby_obtained
+.begin_the_dream_ruby_quest:
+		MSGX	_msg_m00,$607	; "Long ago my daughter, Anne, fell in love with a human"
+		LDA		#$21	; _global_flags_array.byte4 mask $02
 		JMP		_global_game_flag_set
-loc_14375F:
+.dream_ruby_obtained:
 		LDA		_global_flags_array.byte4
 		AND		#2
-		BNE		loc_143772
-		JSR		sub_14315A
-		JSR		loc_143756
-		MSGX	_msg_m00,$608
-		JSR		sub_143166
-loc_143772:
-		JSR		sub_143130
-		LDA		#$5C
+		BNE		.return_dream_ruby
+		JSR		_arg4_backup					; got here if we already got the Dream Ruby, but hasn't speak with Elf yet
+		JSR		.begin_the_dream_ruby_quest		; first speak the main line, then go directly to the next scenario part
+		MSGX	_msg_m00,$608	; "Please wait"
+		JSR		_arg4_restore
+.return_dream_ruby:
+		JSR		_player_item_remove_arg4		; remove the dream ruby
+		LDA		#ITEM_WAKE_UP_POWDER			; gives the WakeUp powder
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		MSGX	_msg_m00_break,$609
-loc_14377F:
-		LDA		#$5C
+		MSGX	_msg_m00_break,$609	; "Is that which you carry, the Dream Ruby, by any chance?"
+
+; =============== S U B	R O U T	I N E =======================================
+_check_if_sleeping_quest_is_over:
+		LDA		#ITEM_WAKE_UP_POWDER
 		STA		byte_CE
-		FARX	_b0_s4D
+		FARX	_b0_s4D_is_anybody_owns_item	; get the wakeup powder posession flag
 		LDA		_global_flags_array.byte2
 		AND		#4
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl17:
-		JSR		loc_14377F
+_npc_hndl17_elf_village_old_father:
+		JSR		_check_if_sleeping_quest_is_over
 		BCS		loc_143793
 		BEQ		loc_143796
 loc_143793:
-		MSGX	_msg_m00_break,$60C
+		MSGX	_msg_m00_break,$60C	; "This can't be! My son? Dead?!"
 loc_143796:
-		MSGX	_msg_m00_break,$60B
+		MSGX	_msg_m00_break,$60B	; "That the village was put to sleep is my son's fault"
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl18:
+_npc_hndl18_baharata_granddad:
 		LDA		_global_flags_array.byte4
 		AND		#4
 		BNE		loc_1437B1
-		LDA		#$22
+		LDA		#$22	; _global_flags_array.byte4 mask $04
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00,$612
-		MSGX	_msg_m00,$6CF
+		MSGX	_msg_m00,$612	; "Hear ye, wayfarers all. My dear granddaughter, Tania was kidnapped by vile folk"
+		MSGX	_msg_m00,$6CF	; "Galen: `I'll go!`"
 		LDA		#1
 		FARX	_bC_s0_npc_anim_script_init
 		RTS
 loc_1437B1:
-		MSGX	_msg_m00_break,$613
+		MSGX	_msg_m00_break,$613	; "If for some reason Galen, too, should be captured.."
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl19:
+; appears only after you save Tania and Galen
+;
+_npc_hndl19_baharata_pepper_shop:
 		LDA		_global_flags_array.byteA
-		BMI		loc_1437D1
-		MSGX	_msg_m00,$614
+		BMI		.pepper_quest_is_not_copleted
+		MSGX	_msg_m00,$614	; "Come in! Welcome! This is a pepper store"
 		FARX	_bE_s1C_yes_or_no_question
-		BNE		loc_1437D1
-		MSGX	_msg_m00,$615
-		LDA		#$4F
+		BNE		.pepper_quest_is_not_copleted
+		MSGX	_msg_m00,$615	; "Here you are! It's on the house"
+		LDA		#ITEM_BLACK_PEPPER
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_1437D0
-		LDA		#$57
+		LDA		#$57	; _global_flags_array.byteA mask $80
 		JSR		_global_game_flag_set
 locret_1437D0:
 		RTS
-loc_1437D1:
-		MSGX	_msg_m00_break,$616
+.pepper_quest_is_not_copleted:
+		MSGX	_msg_m00_break,$616	; "Take care. They say the Shrine of Dhama is deep in the mountains of the north"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1A:
@@ -5472,7 +5475,7 @@ _npc_hndl1B:
 _npc_hndl1C:
 		MSGX	_msg_m00,$61C
 		LDA		#$6D
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCC		loc_1437EA
 		RTS
 loc_1437EA:
@@ -5500,15 +5503,15 @@ _npc_hndl1E:
 		LDA		_q_OrbsCollected
 		AND		#$20
 		BEQ		loc_143814
-		MSGX	_msg_m00_break,$6D1
+		MSGX	_msg_m00_break,$6D1	; "Place the Orb on the altar of Liamland in the distant south"
 loc_143814:
-		MSGX	_msg_m00,$620
-		LDA		#$7C
+		MSGX	_msg_m00,$620	; "I have waited long for this day to come"
+		LDA		#ITEM_GREEN_ORB
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143826
-		LDA		#$CD
+		LDA		#$CD	; _q_OrbsCollected mask $20
 		JSR		_global_game_flag_set
-		FARX	_bC_s23_test_orbs_colleted_count
+		FARX	_bC_s23_test_orbs_collected_count
 locret_143826:
 		RTS
 
@@ -5548,48 +5551,49 @@ _npc_hndl21:
 		MSGX	_msg_m00_break,$62F
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl22:
+; excgange the staff of change to the sailor's tight bone
+_npc_hndl22_greenland_man:
 		LDA		_global_flags_array.byte4
 		AND		#8
 		BEQ		loc_14386C
 		LDA		_global_flags_array.byte2
 		BMI		loc_1438B6
-		MSGX	_msg_m00_break,$638
+		MSGX	_msg_m00_break,$638	; "It's me! It's me! Heh, heh, heh!"
 loc_14386C:
-		LDA		#$54
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		BCS		loc_143881
-		MSGX	_msg_m00,$631
+		LDA		#ITEM_STAFF_OF_CHANGE
+		JSR		_wrap_is_players_owns_item_storeCE
+		BCS		.has_staff_of_change
+		MSGX	_msg_m00,$631	; "It's been many years since I've met another person"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_14387E
-		MSGX	_msg_m00_break,$632
+		MSGX	_msg_m00_break,$632	; "Really!? Is that true!? Well, that's what I want. Ha, ha, ha"
 loc_14387E:
-		MSGX	_msg_m00_break,$633
-loc_143881:
-		JSR		sub_14315A
-		MSGX	_msg_m00,$634
+		MSGX	_msg_m00_break,$633	; "With that staff you can change your shape into anything you like."
+.has_staff_of_change:
+		JSR		_arg4_backup
+		MSGX	_msg_m00,$634	; "Ah! That's the Staff of Change! I've been wanting that too"
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_14388F
-		MSGX	_msg_m00_break,$637
+		MSGX	_msg_m00_break,$637	; "Oh, not interested, huh? I thought as much"
 loc_14388F:
-		MSGX	_msg_m00,$635
-		JSR		sub_143166
-		JSR		sub_143130
-		LDA		#$6E
+		MSGX	_msg_m00,$635	; "Really! Are you serious? Ask and ye shall receive, they say!"
+		JSR		_arg4_restore
+		JSR		_player_item_remove_arg4
+		LDA		#ITEM_SAILORS_THIGH_BONE
 		STA		byte_CF
 		JSR		_sram_b0_s29_player_inventory_item_add
-		LDA		#$17
+		LDA		#$17	; _global_flags_array.byte2 mask $80 "_f_WarpBlock"
 		JSR		_global_game_flag_set
-		LDA		#$23
+		LDA		#$23	; _global_flags_array.byte4 mask $08
 		JSR		_global_game_flag_set
 		LDA		#$40
 		STA		_ghostShipWorldX
 		LDA		#$6C
 		STA		_ghostShipWorldY
-		LDA		#$B6
+		LDA		#$B6	; _global_flags_array.byte16 mask $40
 		JSR		_global_game_flag_set
 loc_1438B6:
-		MSGX	_msg_m00_break,$636
+		MSGX	_msg_m00_break,$636	; "Oh, thanks! Heh, heh, heh!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl23:
@@ -5624,17 +5628,17 @@ _npc_hndl25:
 		LDA		_q_OrbsCollected
 		LSR
 		BCC		loc_1438ED
-		MSGX	_msg_m00_break,$641
+		MSGX	_msg_m00_break,$641	; "You can surely defeat the Archfiend!"
 loc_1438ED:
-		MSGX	_msg_m00,$640
-		MSGX	_msg_m00,$641
-		MSGX	_msg_m00,$642
-		LDA		#$77
+		MSGX	_msg_m00,$640	; "I'm amazed you've made it this far!"
+		MSGX	_msg_m00,$641	; "You can surely defeat the Archfiend!"
+		MSGX	_msg_m00,$642	; "Here! Take with you this Silver Orb!"
+		LDA		#ITEM_SILVER_ORB
 		JSR		_give_item_to_player_msg2
 		BCC		locret_143905
-		LDA		#$C8
+		LDA		#$C8	; _q_OrbsCollected mask $01
 		JSR		_global_game_flag_set
-		FARX	_bC_s23_test_orbs_colleted_count
+		FARX	_bC_s23_test_orbs_collected_count
 locret_143905:
 		RTS
 
@@ -5655,7 +5659,7 @@ _npc_hndl27:
 		BCC		locret_14392A
 		MSGX	_msg_m00,$647	; "I hope, with this Sphere of Light, that thou canst hasten..."
 		FARX	_b6_s19_dragon_queen_to_egg_transition_anim
-		LDA		#$AE	; flag.byte15 mask $40
+		LDA		#$AE	; _global_flags_array.byte15 mask $40
 		JSR		_global_game_flag_set
 locret_14392A:
 		RTS
@@ -5709,12 +5713,12 @@ loc_143980:
 		MSGX	_msg_m00_break,$651
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl29:
-		MSGX	_msg_m00_ex,$652
+_npc_hndl29_baramos:
+		MSGX	_msg_m00_ex,$652	; "So thou hast finally made it here, eh <name>?"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$11
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		#$B7
+		LDA		#$B7	; _global_flags_array.byte16 mask $80
 		JSR		_global_game_flag_set
 		LDA		#$80
 		STA		_npcs_pos_list
@@ -5723,12 +5727,12 @@ _npc_hndl29:
 		STX		byte_9E
 		STX		byte_2D
 		INX
-		STX		_players_returnable_locations+1
+		STX		_players_returnable_locations+1		; disable all returnable locations
 		STX		_players_returnable_locations+4
 		STX		_players_returnable_locations+7
 		STX		_players_returnable_locations+$A
 		INX
-		STX		_players_returnable_locations
+		STX		_players_returnable_locations		; except the first one
 		STX		_players_returnable_locations+3
 		STX		_players_returnable_locations+6
 		STX		_players_returnable_locations+9
@@ -5775,7 +5779,7 @@ _npc_hndl2C:
 		JSR		_wrap_bE_sD_wnd3E
 		MSGX	_msg_m00,$678	; "...from out of nowhere, an unearthly voice is heard..."
 		FARX	_b6_s1B_reinit_after_zoma_voice
-		LDA		#$B4
+		LDA		#$B4	; _global_flags_array.byte16 mask $10
 		JMP		_global_game_flag_set
 loc_143A01:
 		MSGX	_msg_m00_break,$679	; "What is the meaning of this? Just when we thought peace had come to our world"
@@ -5789,7 +5793,7 @@ _npc_hndl2D:
 loc_143A0E:
 		MSGX	_msg_m00,$63E	; gives the sword of illusion
 		MSGX	_msg_m00,$70D	; explain how to use it
-		LDA		#$16
+		LDA		#ITEM_SWORD_OF_ILLUSION
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143A20
 		LDA		#$54	; _global_flags_array.byteA or $10
@@ -5798,17 +5802,19 @@ locret_143A20:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl2E:
-		MSGX	_msg_m00,$70E
+; after battle with Orochi in Jipang Cave
+;
+_npc_hndl2E_wounded_himiko:
+		MSGX	_msg_m00,$70E	; "You are the only ones who have seen my true form"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143A2C
-		MSGX	_msg_m00_break,$70F
+		MSGX	_msg_m00_break,$70F	; "Ho, ho! Good for you!"
 loc_143A2C:
-		MSGX	_msg_m00,$710
+		MSGX	_msg_m00,$710	; "Heh, heh, heh. I see. Now you'll never get out alive. I'll see how you taste on a skewer!"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#1
 		FARX	_b0_s1_battle_typeA_launch
-		LDA		#$27
+		LDA		#$27	; _global_flags_array.byte4 mask $80
 		JSR		_global_game_flag_set
 		JSR		sub_177CFC
 		LDA		#$F
@@ -5893,14 +5899,17 @@ _npc_hndl41:
 		MSGX	_msg_m00_break_ex,$68A
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl42:
-		LDA		#$3F
-		JSR		_wrap_is_anybody_owns_item_storeCE
+; regular king or Romaly, may save your progress or turn to the King if you
+; take him his golden crown
+;
+_npc_hndl42_king_of_romaly_in_castle:
+		LDA		#ITEM_GOLDEN_CROWN
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCS		loc_143AC9
 		LDY		#$8E
-		JMP		_npc_hndl47_exp_info_and_progress_save
+		JMP		_npc_hndl47_regular_king_info_and_save
 loc_143AC9:
-		JSR		sub_143130
+		JSR		_player_item_remove_arg4
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
@@ -5908,16 +5917,14 @@ loc_143AC9:
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143ADA:
-		MSGX	_msg_m00,$68B
-loc_143ADD:
-		MSGX	_msg_m00,$68C
+		MSGX	_msg_m00,$68B	; "Oh! You have returned the Golden Crown. How splendid!"
+.ask_to_be_a_king_first_time:
+		MSGX	_msg_m00,$68C	; "What say ye? Wilt thou not rule this land in my place?"
 		FARX	_bE_s1C_yes_or_no_question
-		BEQ		sub_143AEA
-		MSGX	_msg_m00,$68D
-		BCS		loc_143ADD
-
-; =============== S U B	R O U T	I N E =======================================
-sub_143AEA:
+		BEQ		_turn_to_a_king_of_romaly
+		MSGX	_msg_m00,$68D	; "Speak ye not thusly. Accept instead, if for the sake of experience alone"
+		BCS		.ask_to_be_a_king_first_time	; loop here until you agree
+_turn_to_a_king_of_romaly:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_4
 		AND		word_4+1
@@ -5925,32 +5932,34 @@ sub_143AEA:
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
 loc_143AF8:
-		MSGX	_msg_m00,$68E
+		MSGX	_msg_m00,$68E	; "It is done! Henceforth <name> shall rule as king of this castle!"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		LDA		#$2A
-		JSR		_global_game_flag_set
-		FARX	_bC_s19
+		LDA		#$2A	; _global_flags_array.byte5 mask $04
+		JSR		_global_game_flag_set			; this flag is never removed, just to flag it done once at least
+		FARX	_bC_s19_turn_king_of_romaly_on_off	; this toggles the king on or off every time it's called
 		PLA
 		PLA
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl43:
-		MSGX	_msg_m00,$68F
+; toggles to the hero back
+;
+_npc_hndl43_former_king_of_romaly:
+		MSGX	_msg_m00,$68F	; "Ho, ho, ho! It is I. The former king"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143B14
 loc_143B11:
-		MSGX	_msg_m00_break,$690
+		MSGX	_msg_m00_break,$690	; "Well, until we meet again! Ho, ho, ho!"
 loc_143B14:
-		MSGX	_msg_m00,$691
+		MSGX	_msg_m00,$691	; "What's this? You tire already of being king?"
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143B21
-		MSGX	_msg_m00,$692
+		MSGX	_msg_m00,$692	; "Whew! That's a relief!"
 		BCS		loc_143B11
 loc_143B21:
-		MSGX	_msg_m00_ex,$693
+		MSGX	_msg_m00_ex,$693	; "I see. I shall not make ye continue in something ye dislike"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		FARX	_bC_s19
+		FARX	_bC_s19_turn_king_of_romaly_on_off
 		PLA
 		PLA
 		RTS
@@ -5974,16 +5983,16 @@ _npc_hndl46:
 		LDA		_global_flags_array.byte16
 		BPL		loc_143B4E
 		AND		#$10
-		BNE		_npc_hndl47_exp_info_and_progress_save
+		BNE		_npc_hndl47_regular_king_info_and_save
 		MSGX	_msg_m00_break,$50C
 loc_143B4E:
 		LDA		_global_flags_array.byte2
-		BPL		_npc_hndl47_exp_info_and_progress_save
+		BPL		_npc_hndl47_regular_king_info_and_save
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		MSGX	_msg_m00_break,$189
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl47_exp_info_and_progress_save:
+_npc_hndl47_regular_king_info_and_save:
 		TYA
 		LSR
 		SEC
@@ -5995,10 +6004,10 @@ _npc_hndl47_exp_info_and_progress_save:
 		STA		_global_flags_array.byteE
 		JSR		sub_143E48
 		LDA		#0
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		JSR		sub_143E67
 		LDA		#2
-		JSR		sub_143EBD
+		JSR		_special_king_message_select
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143B96
 loc_143B80:
@@ -6013,11 +6022,11 @@ loc_143B93:
 		MSGX	_msg_m00,$6A3
 loc_143B96:
 		LDA		#3
-		JSR		sub_143EBD
+		JSR		_special_king_message_select
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_143BCB
 		LDA		#5
-		JSR		sub_143EBD
+		JSR		_special_king_message_select
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
@@ -6037,7 +6046,7 @@ loc_143BC0:
 		JMP		loc_143BC0
 loc_143BCB:
 		LDA		#4
-		JMP		sub_143EB8
+		JMP		_special_king_message_select_gendered
 
 ; =============== S U B	R O U T	I N E =======================================
 ; a man by the left hand of Aliahan king in the king's hall
@@ -6052,13 +6061,13 @@ loc_143BD8:
 		JSR		_bD_s26_get_first_live_player_with_no_NM_status
 		BCS		loc_143BF9
 		LDA		#$58
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCS		loc_143BF9
 		LDA		#$59
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCS		loc_143BF9
 		LDA		#$5A
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCS		loc_143BF9
 		MSGX	_msg_m00_break,$5C1	; "First, find a key..."
 loc_143BF9:
@@ -6156,15 +6165,15 @@ _npc_hndl5B:
 		JMP		sub_1434D3
 
 ; =============== S U B	R O U T	I N E =======================================
-_npc_hndl5C:
+_npc_hndl5C_portoga_king:
 		LDA		_global_flags_array.byte3
 		BPL		loc_143C7D
-		MSGX	_msg_m00_break,$611
+		MSGX	_msg_m00_break,$611	; "It is indeed good, this pepper. I verily must have partaken in excess, for I am sleepy"
 loc_143C7D:
-		LDA		#$4F
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		BCC		loc_143C9B
-		JSR		sub_143130
+		LDA		#ITEM_BLACK_PEPPER
+		JSR		_wrap_is_players_owns_item_storeCE
+		BCC		.no_black_pepper_in_posession		; this may mean you don't get it...
+		JSR		_player_item_remove_arg4
 		LDA		_global_flags_array.byte3
 		ORA		#$C0
 		STA		_global_flags_array.byte3
@@ -6172,22 +6181,22 @@ loc_143C7D:
 		STA		byte_2D
 		LDA		#8
 		STA		byte_2E
-		MSGX	_msg_m00_break_ex,$610
-loc_143C9B:
+		MSGX	_msg_m00_break_ex,$610	; "I hail thee, <name>. Thou hast done well and returned with black pepper"
+.no_black_pepper_in_posession:
 		LDA		_global_flags_array.byteA
 		AND		#$40
-		BEQ		loc_143CA5
-		MSGX	_msg_m00_break,$60F
-loc_143CA5:
-		MSGX	_msg_m00,$60D
-		LDA		#$5D
+		BEQ		.get_royal_scroll							; or already give it to the king
+		MSGX	_msg_m00_break,$60F	; "What's the matter? I shalt await thy return with black pepper"
+.get_royal_scroll:
+		MSGX	_msg_m00,$60D	; "It is said that in a country in the far east, black pepper may be had in plenty"
+		LDA		#ITEM_ROYAL_SCROLL
 		JSR		_give_item_to_player_msg2
 		BCS		loc_143CB0
 		RTS
 loc_143CB0:
-		LDA		#$56
+		LDA		#$56	; _global_flags_array.byteA mask $40
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00_break_ex,$60E
+		MSGX	_msg_m00_break_ex,$60E	; "<name> takes the scroll from the king. `Then, be off with you!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5D:
@@ -6281,50 +6290,50 @@ _npc_hndl66:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl67:
-		MSGX	_msg_m00,$657
+		MSGX	_msg_m00,$657	; "This is a Shrine of Honor"
 		LDA		_global_flags_array.byteA
 		AND		#8
 		BEQ		loc_143D49
-		MSGX	_msg_m00_break,$6D0
+		MSGX	_msg_m00_break,$6D0	; "Your business is finished here! Be on your way!"
 loc_143D49:
-		LDA		#$47
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		LDA		#ITEM_SACRED_AMULET
+		JSR		_wrap_is_players_owns_item_storeCE		; first you must have a sacred amulet
 		BCS		loc_143D53
-		MSGX	_msg_m00_break,$65A
+		MSGX	_msg_m00_break,$65A	; "If thou were a hero true, the Sacred Amulet thou wouldst carry, therefore, as proof"
 loc_143D53:
-		LDA		#$10
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		BCC		loc_143D7C
-		LDA		#$75
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		BCC		loc_143D7C
-		JSR		sub_143130
-		LDA		#$10
-		JSR		_wrap_is_anybody_owns_item_storeCE
-		JSR		sub_143130
-		MSGX	_msg_m00,$658
-		LDA		#$76
-		JSR		_give_item_to_player_msg0
+		LDA		#ITEM_STAFF_OF_RAIN
+		JSR		_wrap_is_players_owns_item_storeCE		; check for staff of rain and stone of sunlight
+		BCC		.not_fulfill_rainbow_drop_quest
+		LDA		#ITEM_STONES_OF_SUNLIGHT
+		JSR		_wrap_is_players_owns_item_storeCE
+		BCC		.not_fulfill_rainbow_drop_quest
+		JSR		_player_item_remove_arg4				; remove stone of sunlight and staff of rain
+		LDA		#ITEM_STAFF_OF_RAIN
+		JSR		_wrap_is_players_owns_item_storeCE
+		JSR		_player_item_remove_arg4
+		MSGX	_msg_m00,$658	; "Welcome! Welcome! Now it is the time that sunshine and rain do meet"
+		LDA		#ITEM_RAINBOW_DROP
+		JSR		_give_item_to_player_msg0				; obtain a rainbow drop
 		BCC		locret_143D7B
-		LDA		#$53
+		LDA		#$53	; _global_flags_array.byteA mask $08
 		JSR		_global_game_flag_set
 locret_143D7B:
 		RTS
-loc_143D7C:
-		MSGX	_msg_m00_break,$659
+.not_fulfill_rainbow_drop_quest:
+		MSGX	_msg_m00_break,$659	; "When sunshine and rain do meet, a Rainbow Bridge is made"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl68:
 		LDA		_global_flags_array.byteA
 		AND		#4
 		BEQ		loc_143D89
-		MSGX	_msg_m00_break,$6D3
+		MSGX	_msg_m00_break,$6D3	; "Please save this world for Rubiss's sake too"
 loc_143D89:
-		MSGX	_msg_m00,$65B
-		LDA		#$10
+		MSGX	_msg_m00,$65B	; "I'm the fairy spirit that once served Rubiss"
+		LDA		#ITEM_STAFF_OF_RAIN
 		JSR		_bD_s27_give_item_to_player_msg1
 		BCC		locret_143D98
-		LDA		#$52
+		LDA		#$52	; _global_flags_array.byteA mask $04
 		JSR		_global_game_flag_set
 locret_143D98:
 		RTS
@@ -6332,7 +6341,7 @@ locret_143D98:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl69:
 		LDA		#$59
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCC		loc_143DA3
 		MSGX	_msg_m00_break,$65C
 loc_143DA3:
@@ -6342,7 +6351,7 @@ loc_143DA3:
 _npc_hndl6A:
 		MSGX	_msg_m00,$65E
 		LDA		#$72
-		JSR		_wrap_is_anybody_owns_item_storeCE
+		JSR		_wrap_is_players_owns_item_storeCE
 		BCC		loc_143DB1
 		RTS
 loc_143DB1:
@@ -6362,24 +6371,24 @@ _npc_hndl6C:
 		LDA		_global_flags_array.byteA
 		AND		#2
 		BEQ		loc_143DD7
-		MSGX	_msg_m00_ex,$665
+		MSGX	_msg_m00_ex,$665	; "Welcome <name>. Did the key come in handy?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143DD4
-		MSGX	_msg_m00_break,$666
+		MSGX	_msg_m00_break,$666	; "See! My dreams often do come true!"
 loc_143DD4:
-		MSGX	_msg_m00_break,$667
+		MSGX	_msg_m00_break,$667	; "Even my dreams sometimes don't come true.."
 loc_143DD7:
-		MSGX	_msg_m00_ex,$662
+		MSGX	_msg_m00_ex,$662	; "So, you have come, <name>! I dreamed that I gave you this key"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143DF0
-		LDA		#$58
+		LDA		#ITEM_THIEFS_KEY
 		JSR		_give_item_to_player_msg2
 		BCC		locret_143DF3
-		LDA		#$51
+		LDA		#$51	; _global_flags_array.byteA mode $02
 		JSR		_global_game_flag_set
-		MSGX	_msg_m00_break_ex,$663
+		MSGX	_msg_m00_break_ex,$663	; "Well then, be off with you <name>! I'll go back to my dreaming"
 loc_143DF0:
-		MSGX	_msg_m00_break,$664
+		MSGX	_msg_m00_break,$664	; "I see. Even my dreams sometimes don't come true.."
 locret_143DF3:
 		RTS
 
@@ -6395,10 +6404,10 @@ _bD_s24:
 		AND		#7
 		JSR		sub_143E48
 		LDA		#6
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		JSR		sub_143E67
 		LDA		#4
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		FARX	_b0_s50_players_item_buffs_refresh
 		FARX	_bE_s33
 		RTS
@@ -6409,19 +6418,19 @@ _bD_s23:
 		AND		#7
 		JSR		sub_143E48
 		LDA		#7
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		LDA		#8
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		JSR		sub_143E67
 		LDA		#2
-		JSR		sub_143EB8
+		JSR		_special_king_message_select_gendered
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143E3F
 		JSR		loc_143B80
 		JMP		loc_143E44
 loc_143E3F:
 		LDA		#9
-		JSR		sub_143EBD
+		JSR		_special_king_message_select
 loc_143E44:
 		FARX	_bE_s33
 		RTS
@@ -6476,7 +6485,7 @@ loc_143E88:
 		SBC		_players_EXP+2,Y
 		STA		_msg_number_parameter_F8+2
 		LDA		#1
-		JSR		sub_143EBD
+		JSR		_special_king_message_select
 loc_143EAF:
 		INC		byte_D2
 		LDA		byte_64
@@ -6485,67 +6494,89 @@ loc_143EAF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_143EB8:
+; select and display one of the king messages according to selected character gender
+;
+_special_king_message_select_gendered:
 		PHA
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		PLA
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
-sub_143EBD:
+; elect and display one of the king messages
+;
+_special_king_message_select:
 		TAY
 		LDA		(byte_66),Y
 		BNE		loc_143ECC
+;----------------------------------
+; king of Aliahan after beating Baramos and Zoma appears
 		LDA		_global_flags_array.byte16
 		AND		#$10
 		BEQ		loc_143ECC
 		MSGX	_msg_m00_break,$675	; "The king seems to have lost all his power"
+;----------------------------------
 loc_143ECC:
 		CMP		#$A
 		BNE		loc_143EDF
+;----------------------------------
+; king of romaly special messages 1
 		LDA		_global_flags_array.byte5
 		AND		#4
 		BNE		loc_143EDB
-		LDA		#$A
-		BNE		loc_143F13
+		LDA		#$A	; $6B6 "I welcome you! We've heard tell of the brave hero, Ortega"
+		BNE		.msg6AC_base_display
 loc_143EDB:
-		LDA		#$C
-		BNE		loc_143F13
+		LDA		#$C	; $6B8 "I would have offered you my kingdom... Alas.."
+		BNE		.msg6AC_base_display	; unconditional
+;----------------------------------
 loc_143EDF:
 		CMP		#$B
 		BNE		loc_143EFD
+;----------------------------------
+; king of romaly special messages 2
 		LDA		_global_flags_array.byte5
 		AND		#4
 		BNE		loc_143EEE
-		LDA		#$B
-		BNE		loc_143F13
+		LDA		#$B	; $6B7 "Well now, I have something to ask of you. Someone named Kandar has stolen the Golden Crown"
+		BNE		.msg6AC_base_display
 loc_143EEE:
-		MSGX	_msg_m00,$6B9
+		MSGX	_msg_m00,$6B9	; "By the way, what dost thou say? Do ye want to take my place again?"
 		FARX	_bE_s1C_yes_or_no_question
 		BNE		loc_143EF9
-		JMP		sub_143AEA
+		JMP		_turn_to_a_king_of_romaly
 loc_143EF9:
-		LDA		#$E
-		BNE		loc_143F13
+		LDA		#$E	; $6BA "Oh, I see... Well, be on your way then!"
+		BNE		.msg6AC_base_display	; unconditional
+;----------------------------------
 loc_143EFD:
 		CMP		#$1E
-		BNE		loc_143F13
+		BNE		.msg6AC_base_display
+;----------------------------------
+; king of Tantegel special messages
 		LDA		_global_flags_array.byte5
 		AND		#8
 		BNE		loc_143F11
-		LDA		#$2B
+		LDA		#$2B	; _global_flags_array.byte5 mask $08
 		JSR		_global_game_flag_set
-		LDA		#$1E
-		BNE		loc_143F13
+		LDA		#$1E	; $6CA "Yes? You're here from the upper world to defeat the Archfiend? Welcome, I am the king of this country"
+		BNE		.msg6AC_base_display	; unconditional
 loc_143F11:
-		LDA		#$1F
-loc_143F13:
+		LDA		#$1F	; $6CB "<name>! I am glad to see you're back safely!"
+		
+;; FALTHROUGH ;;
+
+;----------------------------------
+; common display backend
+.msg6AC_base_display:
 		STA		byte_5C
 		LDA		#0
 		STA		byte_5D
-		LDA		#$AC
-		LDX		#3
+		LDA		#$AC	; base msg $6AC
+		LDX		#6
 		JSR		_add_arg5C_to16
-		JMP		_wrap_msg_m00_b300_arg5C
+		JMP		_wrap_msg_m00_arg5C
 
 byte_143F25:
 		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9

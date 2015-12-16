@@ -1162,240 +1162,253 @@ _vault_items_list:
 		.BYTE	0,0,0,0,0,0,0
 _vault_last_item:
 		.BYTE	0
-
+; seems unused
 		.BYTE	0,0,0,0,0,0,0
 byte_608C:
 		.BYTE	0
 byte_608D:
 		.BYTE	0
+; global chest opened binary flags u8[26]
 _chest_open_flags:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0
+; tmp var for storing the current global chest flag index
 _chest_tmp_idx:
 		.BYTE	0
 _tmp_spr_pal_buf:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 
 _global_flags_array:
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte0: ; 60b5
+; 60b5 unused
 		.BYTE	0
-;	$80 -
-;	$40 -
-;	$20 - _q_NorudPassageOpened - Set once Norud's been shown the royal scroll and opened the psage
-;	$10 -
-;	$08 -
-;	$04 -
-;	$02 - _q_MagicBallUsed - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
-;	$01 -
+
+;	$80 - $0F - Rainbow Bridge is set, rainbow Drop is used
+;	$40 - $0E - Locket of Love successfully used
+;	$20 - _q_NorudPassageOpened = $0D - Set once Norud's been shown the royal scroll and opened the psage
+;	$10 - $0C - seems unused
+;	$08 - $0B - seems unused
+;	$04 - $0A - seems unused
+;	$02 - _q_MagicBallUsed = $09 - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
+;	$01 - $08 - seems unused
 _global_flags_array.byte1: ; 60b6
 		.BYTE	0
-;	$80 - _f_WarpBlock - Wing of Wyvern / Return is blocked.
-;	$40 - _f_IsKingOfRomaly - This flag is set while you actually ARE king
-;	$20 - set if in battle mode (does not clear after death in battle!)
-;	$10 - one of the switches in Pyramid 3F
-;	$08 - one of the switches in Pyramid 3F
-;	$04 - Sleeping Village is awake
-;	$02 - set after you accept the Golden King's Crown and become a King (is this a once-only bit? see $40 bit for the repeated toggle)
-;	$01 - _f_Erdrick - In a certain sense, the Is Game Over flag, isn't it?
+
+;	$80 - _f_WarpBlock = $17 - Wing of Wyvern / Return is blocked.
+;	$40 - _f_IsKingOfRomaly = $16 - toggled when you become a King of Romaly and back
+;	$20 - _f_IsBattleMode = $15 - Set if in battle mode (does not clear after death in battle!)
+;	$10 - $14 one of the switches in Pyramid 3F
+;	$08 - $13 one of the switches in Pyramid 3F
+;	$04 - _q_IsSleepVillageAwake = $12 - Sleeping Village is awake
+;	$02 - $11 - Set once you enter Samanao, used in special tiles handling routine
+;	$01 - _f_Erdrick = $10 - In a certain sense, the Is Game Over flag, isn't it?
 _global_flags_array.byte2: ; 60b7
 		.BYTE	0
-;	$80 -
-;	$40 - 
-;	$20 -
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $1F - Lock the Portoga king from checking your Black Pepper, quest is done
+;	$40 - $1E - set at the same time as $80
+;	$20 -+
+;	$10  |
+;	$08  |
+;	$04  +- when staff of change used, this is index of character to turn your party into
+;	$02  |
+;	$01 -+
 _global_flags_array.byte3: ; 60b8
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $27 - Himiko defeated in Jipang
+;	$40 - $26 - seems unused
+;	$20 - $25 - seems unused
+;	$10 - $24 - seems unused
+;	$08 - $23 - Greenland man obtained Staff of Change
+;	$04 - $22 - Speak with Granddad in Baharata about Tania is Kidnapped
+;	$02 - $21 - Dream Ruby quest begins (already spoke with Elf Queen about the dream ruby)
+;	$01 - $20 - seems unused
 _global_flags_array.byte4: ; 60b9
 		.BYTE	0
+
 ;	somehow related to special location entry position logic for lancel
-;	$80 -
-;	$40 -
-;	$20 -
-;	$10 -
-;	$08 -
-;	$04 -
-;	$02 -
-;	$01 - we're in the "shrine where you may try your courage". After dying you respawn there
+;	$80 - $2F - seems unused
+;	$40 - $2E - seems unused
+;	$20 - $2D - seems unused
+;	$10 - $2C - seems unused
+;	$08 - _q_IsKingOfTantegelVisited = $2B - Kinf of Tantegel visited once
+;	$04 - _q_IsKingOfRomalyAvailable = $2A - Set after you choose to return the Golden King's Crown once
+;	$02 - $29 - *
+;	$01 - _f_IsInNavelOfTheEarth = $28 - we're in the "shrine where you may try your courage". After dying you respawn there
 _global_flags_array.byte5: ; 60ba
 		.BYTE	0
+
 _merch_town_name_low_chars:
 		.BYTE	0,0,0,0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - obtain sword of illusion
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $57 - Pepper obtained in Baharata
+;	$40 - $56 - Got Royal Scroll from King of Portoga, got the Black Pepper quest
+;	$20 - $55 - Magic Ball obtained
+;	$10 - _q_HasSwordOfIllusion = $54 - Sword of Illusion obtained
+;	$08 - $53 - Rainbow Drop obtained
+;	$04 - $52 - Staff of Rain obtained
+;	$02 - $51 - Thief's Key obtained
+;	$01 - $50 - seems unused
 _global_flags_array.byteA: ; 60bf
 		.BYTE	0
+
 _backup_y: ; 60c0
 		.BYTE	0
 _backup_x:
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byteD:
+; 60c0 unused
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $77 - seems unused
+;	$40 - $76 - seems unused
+;	$20 - $75 - seems unused
+;	$10 - $74 - seems unused
+;	$08 - $73 - seems unused
+;	$04 -+
+;	$02  +- index of the last king visited to respawn logic
+;	$01 -+
 _global_flags_array.byteE:
 		.BYTE	0
-;	$80 - Zoma's Castle Quest: if set, the statue sneak attack event is finished and the statues and doors are cleared
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $7F - Zoma's Castle Quest: if set, the statue sneak attack event is finished and the statues and doors are cleared
+;	$40 - $7E - seems unused
+;	$20 - $7D - seems unused
+;	$10 - $7C - seems unused
+;	$08 - $7B - seems unused
+;	$04 - $7A - seems unused
+;	$02 - $79 - seems unused
+;	$01 - $78 - seems unused
 _global_flags_array.byteF:
 		.BYTE	0
-;	$80 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+		
+;	$80 - $87 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
+;	$40 - $86 - seems unused
+;	$20 - $85 - seems unused
+;	$10 - $84 - seems unused
+;	$08 - $83 - seems unused
+;	$04 - $82 - seems unused
+;	$02 - $81 - seems unused
+;	$01 - $80 - seems unused
 _global_flags_array.byte10:
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+		
+;	$80 - $8F - *
+;	$40 - $8E - *
+;	$20 - $8D - *
+;	$10 - $8C - *
+;	$08 - $8B - seems unused
+;	$04 - $8A - seems unused
+;	$02 - $89 - seems unused
+;	$01 - $88 - seems unused
 _global_flags_array.byte11:
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+		
+;	$80 - $97 - *
+;	$40 - $96 - Orichi Sword obtained as an item drop
+;	$20 - $95 - seems unused
+;	$10 - $94 - seems unused
+;	$08 - $93 - seems unused
+;	$04 - $92 - seems unused
+;	$02 - $91 - seems unused
+;	$01 - $90 - seems unused
 _global_flags_array.byte12:
 		.BYTE	0
-;	$80 - _q_game_begin - set once the game is begun (used to determine whether to start a save file in the hero's house_
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+		
+;	$80 - _q_GameBegins = $9F - set once the game is begun (used to determine whether to start a save file in the hero's house)
+;	$40 - $9E - seems unused
+;	$20 - $9D - seems unused
+;	$10 - $9C - seems unused
+;	$08 - $9B - seems unused
+;	$04 - $9A - seems unused
+;	$02 - $99 - seems unused
+;	$01 - $98 - seems unused
 _global_flags_array.byte13:
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+		
+;	$80 - $A7 - seems unused
+;	$40 - $A6 - seems unused
+;	$20 -+
+;	$10  |
+;	$08  |
+;	$04  +- staff of change timer counter
+;	$02  |
+;	$01 -+
 _global_flags_array.byte14:
 		.BYTE	0
-;	$80 - 
-;	$40 - Dragon Queen became an Egg
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $AF - seems unused
+;	$40 - $AE - Dragon Queen became an Egg
+;	$20 - $AD - seems unused
+;	$10 - $AC - *
+;	$08 - $AB - seems unused
+;	$04 - $AA - seems unused
+;	$02 - $A9 - seems unused
+;	$01 - $A8 - seems unused
 _global_flags_array.byte15: ; fiddling with values here can make aliahan look like baramos is dead
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - Celebration interruped, Zoma speech done, pit is opened
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
-_global_flags_array.byte16: ; fiddling with values here can make aliahan look like baramos is dead
+
+;	$80 - _q_IsBaramosDefeated $B7 - Baramos is defeated
+;	$40 - _q_IsGhostShipAppears = $B6 - Ghost ship enable (appears only when got the tight bone)
+;	$20 - $B5 *sound in sky if something is closed* related
+;	$10 - _q_IsCelebrationIsInterrupted = $B4 - Celebration interruped, Zoma speech done, pit is opened
+;	$08 - $B3 unused
+;	$04 - $B2 unused
+;	$02 - $B1 unused
+;	$01 - $B0 unused
+_global_flags_array.byte16:
 		.BYTE	0
-;	$80 - 
-;	$40 - 
-;	$20 - 
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - 
-;	$01 - 
+
+;	$80 - $BF - seems unused
+;	$40 - $BE - set in sub_1280A6, seems never read directly
+;	$20 - $BD - seems unused
+;	$10 - $BC - seems unused
+;	$08 - $BB - seems unused
+;	$04 - $BA - seems unused
+;	$02 - $B9 - seems unused
+;	$01 - $B8 - seems unused
 _global_flags_array.byte17:
 		.BYTE	0
-;	seems to contain only #$FF, indicating something related to orbs. or leaf of the world tree? or lots of things, WTF.
-;	no, sometimes it's set bit by bit. WHAT IS THIS!!
-;	is part of it the newtown progression conditions?
-;	YES.... but uhhh sometimes tis checked as #$FF and this makes no sense
-;	$80 - more than 2 orbs collected test pass
-;	$40 -
-;	$20 - _q_SamanaoDone - Set once the Samanao quest is done (real King rescued)
-;	$10 - 
-;	$08 - 
-;	$04 - 
-;	$02 - merch first step
-;	$01 - merch is starting to build a town
+		
+;	all flags related to various orb quests (mostly Newtown)
+;	if all bits set ($FF), then all the orbs quests are completed
+;	some branches of the game check for this state to determine
+;	what should they do
+;
+;	$80 - $C7 - more than 2 orbs collected test pass (called after every orb is collected)
+;	$40 - $C6 - *
+;	$20 - _q_SamanaoDone = $C5 - Set once the Samanao quest is done (real King rescued)
+;	$10 - $C4 - *
+;	$08 - $C3 - *
+;	$04 - $C2 - *
+;	$02 - $C1 - merch first step (set if sail after set a merchant, he won't progress further until this)
+;	$01 - $C0 - merch is starting to build a town (when set a merchant to town)
 _global_flags_array.byte18:
 		.BYTE	0
 
-;	bitset of collected orbs, in this order
-;	xxSRYPBG
+;	bitset of collected orbs, orbs placed on pedestals and pedestals used in this order
+;	$80 - $CF - unused
+;	$40 - $CE - unused
+;	$20 - $CD - Green Orb
+;	$10 - $CC - Blue Orb
+;	$08 - $CB - Purple Orb
+;	$04 - $CA - Yellow Orb
+;	$02 - $C9 - Red Orb
+;	$01 - $C8 - Silver Orb
 _q_OrbsCollected: ; $60CE
 		.BYTE	0
-;	bitset of orbs placed on pedestals, in this order, same as orbs
-;	xxSRYPBG
+		
+;	global indexes of bit flags ($D0-$DF) from here isn't used
 _q_OrbsPlaced: ; $60CF
 		.BYTE	0
-;	bitset of pedestals used for place orbs, since we can place any
-;	orb on any pedestal, they need track it's usage for animation
-;	and placing control
-;	xxABCDEF
+		
+;	order is not related to orbs bits order, only for object position list xxABCDEF
 _q_OrbsPedestalsUsed: ; $60D0
 		.BYTE	0
 
 _merch_town_name_high_chars:
 		.BYTE	0,0,0,0
+
+; $60D5 unused
 		.BYTE	0
 
 ; (end of a load-file related copy target)
@@ -1872,7 +1885,7 @@ _sram_b0_s29_player_inventory_item_add:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2A_player_inventory_item_remove:
 		.BYTE	0,0,0,0,0
-_sram_b0_s2B_is_anybody_owns_item:
+_sram_b0_s2B_is_players_owns_item:
 		.BYTE	0,0,0,0,0
 _sram_b0_s2C_player_CLASS_read:
 		.BYTE	0,0,0,0,0

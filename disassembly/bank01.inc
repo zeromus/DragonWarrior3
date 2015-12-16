@@ -5,8 +5,8 @@
 		PTR_IDX		_b1_sA
 		PTR_IDX		_b1_sB
 		PTR_IDX		_b1_sC
-		PTR_IDX		_b1_sD
-		PTR_IDX		_b1_sE
+		PTR_IDX		_b1_sD_post_win_battle_handler
+		PTR_IDX		_b1_sE_player_class_change_stats_reset
 		PTR_IDX		_b1_s14
 		PTR_IDX		_b1_s15
 		PTR_IDX		_b1_s16
@@ -1498,23 +1498,12 @@ _b1_sC:
 		FARX	_b4_s1B
 		LDA		#0
 		STA		byte_D2
-; --
-;		LDX		#$27	; "<name> is dead"
-;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; very hacky way to select message (not counting
-;		TAX													; the X usage here instead of A directly lol)
-;		CPX		#$27										; using the generic routine, but not using it's result.
-;		BEQ		loc_209E6									; why not check for party here instantly then?
-;		LDX		#$2B	; "<hero>'s party is wiped out"
-;loc_209E6:
-;		TXA
-; --
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		#$27	; "<name> is dead"
 		DEC		word_4
 		BEQ		loc_209E6
 		LDA		#$2B	; "<hero>'s party is wiped out"
 loc_209E6:
-; --
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
 		SYSX	_apu_load,$13
@@ -1560,7 +1549,11 @@ loc_6B412:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b1_sD:
+; displays a messages if battle won or fleed, calc and display expirience
+; gained, loot or gold obtained, do more special flags test and set depending
+; on foe type
+;
+_b1_sD_post_win_battle_handler:
 		FARX	_b4_sA
 		LDA		#$A0
 		STA		byte_D2
@@ -1569,7 +1562,7 @@ _b1_sD:
 		BVC		loc_20A4C
 		SYSX	_apu_load,$16
 		JSR		sub_20CAA
-		LDX		#$E	; select between "You have defeated" and "You have vanquished all your foes"
+		LDX		#$E	; select between "You have defeated <name>" and "You have vanquished all your foes"
 		JSR		_incX_if_568_not_has_bit_20
 		JSR		_wrap_msg_m00_arg0
 		FARX	_b4_s5_do_message_speed_delay
@@ -1583,7 +1576,7 @@ loc_20A4C:
 loc_20A5A:
 		SYSX	_apu_load,$16
 		JSR		sub_20CAA
-		LDX		#$5D ; select between "<name> eparts" and "All your foes depart"
+		LDX		#$5D ; select between "<name> departs" and "All your foes depart"
 		JSR		_incX_if_568_not_has_bit_20
 		JSR		_wrap_msg_m00_arg0
 loc_20A68:
@@ -1611,7 +1604,7 @@ loc_20A76:
 		LDA		word_4
 		LDX		#byte_5D
 		JSR		_add_16_to_24
-		JSR		sub_20CB4
+		JSR		_get_non_death_players_count
 		LDY		#$21	; "<name> gains experience points"
 		LDA		word_4
 		CMP		#1
@@ -1659,17 +1652,19 @@ loc_20ADF:
 loc_20AED:
 		LDA		_battle_type_fight
 		CMP		#$FF
-		BNE		loc_20AF6
-		JMP		loc_20BE7
-loc_20AF6:
+		BNE		.loot_drop_test
+		JMP		.obtain_money_after_battle
+; ----------------------------------------
+; loot obtain
+;
+.loot_drop_test:
 		STA		byte_64
-; runs loot drop calculator
-		FARX	_b4_s17
+		FARX	_b4_s17			; runs loot drop calculator
 		LDA		byte_59
 		CMP		#$FF
-		BNE		loc_20B04
-		JMP		loc_20BE7
-loc_20B04:
+		BNE		.obtain_loot_after_battle
+		JMP		.obtain_money_after_battle
+.obtain_loot_after_battle:
 		PHA
 		LDA		byte_64
 		STA		byte_6A73
@@ -1689,11 +1684,11 @@ loc_20B04:
 		PLA
 		STA		byte_D3
 		STA		byte_48
-		CMP		#$1D
+		CMP		#ITEM_OROCHI_SWORD
 		BNE		loc_20B48
 		BIT		_global_flags_array.byte12
 		BVC		loc_20B40
-		JMP		loc_20BE7
+		JMP		.obtain_money_after_battle
 loc_20B40:
 		LDA		_global_flags_array.byte12
 		ORA		#$40
@@ -1721,7 +1716,7 @@ loc_20B75:
 loc_20B7D:
 		STA		byte_D3
 		MSGX	_msg_m00,$069	; "<name> gives up the item"
-		JMP		loc_20BE7
+		JMP		.obtain_money_after_battle
 loc_20B87:
 		MSGX	_msg_m00,$06A	; "Who will discard something?"
 		SYSX	_display_window_ex,$1C
@@ -1761,7 +1756,10 @@ loc_20BDC:
 		LDA		byte_47
 		STA		byte_CE
 		JSR		_sram_b0_s29_player_inventory_item_add
-loc_20BE7:
+; ----------------------------------------
+; mney obtain
+;
+.obtain_money_after_battle:
 		LDA		word_60
 		STA		word_4
 		LDA		word_60+1
@@ -1805,7 +1803,7 @@ loc_20C36:
 		LDA		_players_status,Y
 		AND		_players_status+1,Y
 		BPL		loc_20C4A
-		LDA		_players_class_gender,X					; fetch player's class. setting up money multiplier for merchant?
+		LDA		_players_class_gender,X			; fetch player's class. setting up money multiplier for merchant?
 		AND		#7
 		CMP		#CLASS_MERCHANT
 		BEQ		loc_20C4F
@@ -1827,27 +1825,27 @@ loc_20C4F:
 		JSR		_sram_b0_s1B_player_gold_add
 		MSGX	_msg_m00,$0B6	; "you have vanquished all of your foes""
 loc_20C6F:
-		FARX	_b0_s47_players_next_EXP_calc			; calls a recalculation next level value for each player
-		FARX	_b0_s46_players_level_up_test			; test if players are leveling up
+		FARX	_b0_s47_players_next_EXP_calc	; calls a recalculation next level value for each player
+		FARX	_b0_s46_players_level_up_test	; test if players are leveling up
 		LDA		byte_6A6B
 		CMP		#2
 		BEQ		loc_20C8B
 		LDA		byte_6A6B
 		CMP		#$11
-		BEQ		loc_20CA2
-loc_20C83:
+		BEQ		.false_king_message
+.delay_pause_and_break:
 		SYSX	_display_window_ex,$13
 		JMP		_pause_or_skip
 loc_20C8B:
 		LDA		_global_flags_array.byte15
-		BPL		loc_20C83
+		BPL		.delay_pause_and_break
 		MSGX	_msg_m00,$00B	; "Himiko is the orochi!"
 loc_20C95:
 		MSGX	_msg_m00,$029	; "And so the day breaks"
 		LDA		#$3C
 		STA		_world_map_steps_count
-		JMP		loc_20C83
-loc_20CA2:
+		JMP		.delay_pause_and_break
+.false_king_message:
 		MSGX	_msg_m00,$02A	; "The false King is no more!"
 		JMP		loc_20C95
 
@@ -1860,7 +1858,10 @@ sub_20CAA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_20CB4:
+; store first non-death player index in byte_D2 and X, store non-death players
+; count in byte_4
+;
+_get_non_death_players_count:
 		LDX		#0
 loc_20CB6:
 		TXA
@@ -1962,7 +1963,11 @@ loc_20D41:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b1_sE:
+; resets the parameters of the char when changing its class, half all stats,
+; HP/MP, reset level and exp, clear spells if previous class is goof-off,
+; unequip all items
+;
+_b1_sE_player_class_change_stats_reset:
 		LDX		byte_CE
 		LDA		_players_class_gender,X
 		AND		#7
@@ -2367,27 +2372,48 @@ loc_294210:
 		TAY
 		TXA
 		RTS
+
 byte_294217:
-		.BYTE	  0,  1,  2,$FF,  4,  4,  2,  1,  5,  4,  6,$FF,  2, $A,  3,  1
-		.BYTE	  7, $B,  7,$FF,  3,  4,  3,  1,  7, $E,$10,$FF,$14,  3,  3,  1
-		.BYTE	 $B, $B, $B, $B,  5,  5,  5,  5, $A,  3,  3,  3,  3,  5,  5,  5
-		.BYTE	  4,  8,  4,$FF,  4,  2,  4,  1,  5,  3,  8,$FF,  3,  4,  3,  1
-		.BYTE	  2,  1,  6,$FF,  5,  5,  1,  1, $B, $C, $D,  7,$15,$1B,  2,$13
-		.BYTE	 $E,$12,$13,$FF,  2,  6,  3,  1, $D,$15,$15,$FF,$1E,  3,  3,  1
-		.BYTE	$11,$14,$16,$FF,  2, $D,  4,  1,$1B,$19,$FF,$FF,  1,  4,  1,  1
-		.BYTE	$17,$1A,$20,$1E, $B, $A,  2,  3,$20,$24,$20,$FF,  3,  2,  3,  1
-		.BYTE	$23,$1B,$19,$FF,  5,  2,  3,  1,  9,$1A,$1E,$FF,$64,  3,  2,  1
-		.BYTE	$1F,$15,$1C,$1D,$20,  2,$13,  3,$6C,$31,$22,$FF,  1,  4,  4,  1
-		.BYTE	$28,$25,$38,$FF,  4,  4,  3,  1,$33,$2F,$30,$FF,  4,  6,  2,  1
-		.BYTE	$3A,$47,$47,$47,  2,  8,  8,  8,  9,$31,$31,  9,$C8,  7,  7,$C8
-		.BYTE	$3F,$40,$41,$FF,  2,  5,  5,  1,$60,$60,$60,$FF,  3,  3,  3,  1
-		.BYTE	$50,$45,$4F,$FF,  1,$1E, $A,  1,  0,$31,$39,$3F,$DF,$53, $A,$31
-		.BYTE	$45,$60,$FF,$FF,  8,  1,  1,  1,$4E,$5F,$46,$FF, $A,  2,  2,  1
-		.BYTE	$57,$36,$FF,$FF,$F0,  2,  1,  1,$3B,$4A,$48,$FF,  3,  3,  3,  1
-		.BYTE	$52,$4D,$4C,$FF,  4,  3,  3,  1,$64,$63,$64,$FF,  3,  4,  3,  1
-		.BYTE	$6E,$2E,$FF,$FF,  2,  2,  1,  1,$5F,$61,$5B,$FF, $F,  2,  4,  1
-		.BYTE	$36,$62,$FF,$FF,  4,  4,  1,  1,$18,$18,$18,$FF,  7,  7,  7,  1
-		.BYTE	$7C,$7C,$7C,$7C,  5,  5,  5,  5,$FF
+		.BYTE	  0,  1,  2,$FF,  4,  4,  2,  1
+		.BYTE	  5,  4,  6,$FF,  2, $A,  3,  1
+		.BYTE	  7, $B,  7,$FF,  3,  4,  3,  1
+		.BYTE	  7, $E,$10,$FF,$14,  3,  3,  1
+		.BYTE	 $B, $B, $B, $B,  5,  5,  5,  5
+		.BYTE	 $A,  3,  3,  3,  3,  5,  5,  5
+		.BYTE	  4,  8,  4,$FF,  4,  2,  4,  1
+		.BYTE	  5,  3,  8,$FF,  3,  4,  3,  1
+		.BYTE	  2,  1,  6,$FF,  5,  5,  1,  1
+		.BYTE	 $B, $C, $D,  7,$15,$1B,  2,$13
+		.BYTE	 $E,$12,$13,$FF,  2,  6,  3,  1
+		.BYTE	 $D,$15,$15,$FF,$1E,  3,  3,  1
+		.BYTE	$11,$14,$16,$FF,  2, $D,  4,  1
+		.BYTE	$1B,$19,$FF,$FF,  1,  4,  1,  1
+		.BYTE	$17,$1A,$20,$1E, $B, $A,  2,  3
+		.BYTE	$20,$24,$20,$FF,  3,  2,  3,  1
+		.BYTE	$23,$1B,$19,$FF,  5,  2,  3,  1
+		.BYTE	  9,$1A,$1E,$FF,$64,  3,  2,  1
+		.BYTE	$1F,$15,$1C,$1D,$20,  2,$13,  3
+		.BYTE	$6C,$31,$22,$FF,  1,  4,  4,  1
+		.BYTE	$28,$25,$38,$FF,  4,  4,  3,  1
+		.BYTE	$33,$2F,$30,$FF,  4,  6,  2,  1
+		.BYTE	$3A,$47,$47,$47,  2,  8,  8,  8
+		.BYTE	  9,$31,$31,  9,$C8,  7,  7,$C8
+		.BYTE	$3F,$40,$41,$FF,  2,  5,  5,  1
+		.BYTE	$60,$60,$60,$FF,  3,  3,  3,  1
+		.BYTE	$50,$45,$4F,$FF,  1,$1E, $A,  1
+		.BYTE	  0,$31,$39,$3F,$DF,$53, $A,$31
+		.BYTE	$45,$60,$FF,$FF,  8,  1,  1,  1
+		.BYTE	$4E,$5F,$46,$FF, $A,  2,  2,  1
+		.BYTE	$57,$36,$FF,$FF,$F0,  2,  1,  1
+		.BYTE	$3B,$4A,$48,$FF,  3,  3,  3,  1
+		.BYTE	$52,$4D,$4C,$FF,  4,  3,  3,  1
+		.BYTE	$64,$63,$64,$FF,  3,  4,  3,  1
+		.BYTE	$6E,$2E,$FF,$FF,  2,  2,  1,  1
+		.BYTE	$5F,$61,$5B,$FF, $F,  2,  4,  1
+		.BYTE	$36,$62,$FF,$FF,  4,  4,  1,  1
+		.BYTE	$18,$18,$18,$FF,  7,  7,  7,  1
+		.BYTE	$7C,$7C,$7C,$7C,  5,  5,  5,  5
+		.BYTE	$FF
 
 		ECHO "bank 01 free space", [SAFE_STUB_ORG-.]
 

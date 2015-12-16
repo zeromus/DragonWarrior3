@@ -3299,19 +3299,11 @@ loc_3A689:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
 		STA		byte_D2
-; --
-;		LDX		#$50	; "<name> starts to flee"
-;		FARX	_b4_s1D_incX_if_more_than_one_char_in_party	; one more hacky way to select a message, but this time
-;		CMP		#$50										; at least A reg is used directly
-;		BEQ		loc_3A6A8
-;		LDA		#8		; "<hero>'s party starts to flee"
-; --
 		JSR		_sram_b0_s31_get_party_chars_list			; the same 11 bytes, but at least one FARX less
 		LDA		#$50	; "<name> starts to flee"
 		DEC		word_4
 		BEQ		loc_3A6A8
 		LDA		#8		; "<hero>'s party starts to flee"
-; --
 loc_3A6A8:
 		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		LDA		byte_6A6B

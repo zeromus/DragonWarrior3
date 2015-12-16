@@ -24,7 +24,7 @@
 		PTR_IDX		_bC_s16
 		PTR_IDX		_bC_s17_sys0_spr_effects_call
 		PTR_IDX		_bC_s18
-		PTR_IDX		_bC_s19
+		PTR_IDX		_bC_s19_turn_king_of_romaly_on_off
 		PTR_IDX		_bC_s1A
 		PTR_IDX		_bC_s1B
 		PTR_IDX		_bC_s1C
@@ -34,7 +34,7 @@
 		PTR_IDX		_bC_s20_warp_bE_sB_arg0
 		PTR_IDX		_bC_s21
 		PTR_IDX		_bC_s22
-		PTR_IDX		_bC_s23_test_orbs_colleted_count
+		PTR_IDX		_bC_s23_test_orbs_collected_count
 		PTR_IDX		_bC_s24
 		PTR_IDX		_bC_s25
 		PTR_IDX		_bC_s26_item_common_orbs_use
@@ -3429,14 +3429,14 @@ _mummy_sneak_attack_from_chest:
 		MSGX	_msg_m00,$147				; "<name> examines the ground at <her/his> feet"
 		PLA
 		STA		word_6+1					; stash it again
-		JSR		_get_tile_collision_type_under_players_feet					; read some kind of... tileset flags byte and search for special values
+		JSR		_get_tile_collision_type_under_players_feet	; read some kind of... tileset flags byte and search for special values
 		CMP		#1
 		BEQ		.but_nothing_could_be_found
 		CMP		#$A
 		BEQ		.but_nothing_could_be_found
 		LDA		word_6+1					; unstash that thing we just stashed
 		BPL		loc_12976B					; branch down if it was <$80 (used for samanao only probably)
-		LDA		_global_flags_array.byte2	; test whether we're the king
+		LDA		_global_flags_array.byte2	; test if we visited samanao already
 		AND		#2
 		BEQ		.but_nothing_could_be_found	; nothing can be found.. if we're king.. emergency stopgap?
 		LDA		word_6+1					; unstash that thing we just stashed
@@ -3762,7 +3762,7 @@ loc_12996F:
 		BNE		loc_12996F
 		ORA		_q_OrbsCollected
 		STA		_q_OrbsCollected
-		JSR		_bC_s23_test_orbs_colleted_count
+		JSR		_bC_s23_test_orbs_collected_count
 		RTS
 loc_12997D:
 		CMP		#$4E
@@ -3787,7 +3787,7 @@ locret_12999B:
 ; Test orbs collected flags, if there are 3 orbs or more collected, set flag
 ; $80 to byte18
 ;
-_bC_s23_test_orbs_colleted_count:
+_bC_s23_test_orbs_collected_count:
 		LDY		#6
 		LDX		#0
 		LDA		_q_OrbsCollected
@@ -3964,7 +3964,7 @@ _item_obtain_handler_exec:
 		STY		word_B7+1
 		FARX	_bD_s17_search_vault_for_item
 		BCC		.return_CF_1
-		FARX	_b0_s4D
+		FARX	_b0_s4D_is_anybody_owns_item
 		BCS		.return_CF_1
 		JMP		(word_B7)
 
@@ -5218,11 +5218,11 @@ loc_12A221:
 		BCS		.flute_no_echo				; if it's set, we've collected it--theres no echo
 		CPX		#4							; orb's still there...
 		BNE		.flute_echo					; test for House of Pirates again
-		LDY		_global_flags_array.byte18	; meaning unknown
+		LDY		_global_flags_array.byte18	; if all orbs quests are done
 		INY
 		BNE		.flute_no_echo				; branch if _global_flags_array.byte18 was anything but #$FF
 		LDA		_global_flags_array.byte2	; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
-		BMI		.flute_no_echo				; branch if it was set
+		BMI		.flute_no_echo				; branch if warping is forbidden
 .flute_echo:
 		SYSX	_apu_load,$1D
 		FARX	_bD_s22_se_wait_and_map_music_start
@@ -5841,7 +5841,7 @@ sub_12A621:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s19:
+_bC_s19_turn_king_of_romaly_on_off:
 		BIT		_global_flags_array.byte2
 		BVS		loc_12A686
 		FARX	_bB_s4_apu_set_flag0
@@ -8599,7 +8599,7 @@ off_12B9DE:
 		.WORD	sub_CBF80	; sub_174D1B
 		.WORD	sub_CBF97 ; sub_174D26
 		.WORD	sub_CBFAE ; sub_174D31
-		.WORD	sub_12BC2A
+		.WORD	_clear_WarpBlock_flag
 		.WORD	sub_12BC33
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8932,9 +8932,6 @@ locret_12BC23:
 byte_12BC24:
 		.BYTE	$24,$34,$30,$20,$1C,$28
 
-; much interesting, this routines are from bank C, they doesn't take place there,
-; were moved to bank 08, but need to be called through system bank obviously
-;
 ; =============== S U B	R O U T	I N E =======================================
 sub_CBF80:
 		LDA		_global_flags_array.byte16
@@ -8994,7 +8991,7 @@ loc_CBFCC:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12BC2A:
+_clear_WarpBlock_flag:
 		LDA		_global_flags_array.byte2
 		AND		#$7F
 		STA		_global_flags_array.byte2
