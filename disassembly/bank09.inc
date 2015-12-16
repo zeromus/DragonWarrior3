@@ -1101,7 +1101,7 @@ sub_E3C80:
 		LDA		_mapNumber
 		STA		word_3E
 		BIT		_global_flags_array.byte2
-		BVS		loc_E3C93						; test _f_IsKingOfRomaly? really?
+		BVS		loc_E3C93						; test _f_IsKingOfRomaly
 		LDX		_global_flags_array.byte18
 		CMP		#$72
 		BNE		loc_E3C9C

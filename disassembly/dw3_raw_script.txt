@@ -1818,7 +1818,7 @@ $606:	"<br>
 		`My mother will be mad if I talk to a human!`"
 $607:	"`Long ago my daughter, Anne, fell in love with a human`<br>
 		`She took the Dream Ruby and went to him, never to return`<br>
-		`After all, what hope do an elf and a human have?Anne must have been fooling herself`<br>
+		`After all, what hope do an elf and a human have? Anne must have been fooling herself`<br>
 		`I can't stand the sight of humans! Get away from me!`"
 $608:	"<br>
 		`Please wait`<wait>"
@@ -1840,7 +1840,7 @@ $60D:	"`It is said that in a country in the far east, black pepper may be had in
 		`If thou wouldst show Norud this, my scroll, he wilt serve thee as thine guide`"
 $60E:	"<br>
 		 <name> takes the scroll from the king. `Then, be off with you!`"
-$60F:	"`What's the matter?I shalt await thy return with black pepper`"
+$60F:	"`What's the matter? I shalt await thy return with black pepper`"
 $610:	"`I hail thee, <name>. Thou hast done well and returned with black pepper`<br>
 		`As promised, I shall give unto thee a ship! Go thee out in front and behold!`"
 $611:	"`It is indeed good, this pepper. I verily must have partaken in excess, for I am sleepy`"
@@ -1896,13 +1896,13 @@ $62E:	"`Brave <name>! You are indeed strong!`"
 $62F:	"`I hear that you may find the Invisibility Herb on an island to the distant south of the town where the sacred river flows`"
 $630:	"`Thank you very much!`"
 $631:	"`It's been many years since I've met another person`<br>
-		`Let me see. When was the last time?It was that time the pirates came and left a strange bone`<br>
+		`Let me see. When was the last time? It was that time the pirates came and left a strange bone`<br>
 		`Well, never mind. By the way, do you know anything about the Staff of Change?`"
 $632:	"`Really!? Is that true!?Well, that's what I want. Ha, ha, ha`"
 $633:	"`With that staff you can change your shape into anything you like. I hear tell that the king of Samanao has it`"
 $634:	"`Ah! That's the Staff of Change! I've been wanting that too`<br>
 		`How about this. What if I trade you this Sailor's Thigh Bone for that Staff of Change?`"
-$635:	"`Really! Are you serious?Ask and ye shall receive, they say!`<wait>"
+$635:	"`Really! Are you serious? Ask and ye shall receive, they say!`<wait>"
 $636:	"`Oh, thanks! Heh, heh, heh!`"
 $637:	"`Oh, not interested, huh? I thought as much`"
 $638:	"`It's me! It's me! Heh, heh, heh!`"

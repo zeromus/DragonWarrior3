@@ -43,7 +43,7 @@
 		PTR_IDX		_b0_s28_player_inventory_item_get
 		PTR_IDX		_b0_s29_player_inventory_item_add
 		PTR_IDX		_b0_s2A_player_inventory_item_remove
-		PTR_IDX		_b0_s2B_is_anybody_owns_item
+		PTR_IDX		_b0_s2B_is_players_owns_item
 		PTR_IDX		_b0_s2C_player_CLASS_read
 		PTR_IDX		_b0_s2E_tavern_char_CLASS_read
 		PTR_IDX		_b0_s2F_player_gender_read
@@ -66,7 +66,7 @@
 		PTR_IDX		_b0_s47_players_next_EXP_calc
 		PTR_IDX		_b0_s48_get_count_returnable_locations
 		PTR_IDX		_b0_s49_set_returnable_locations_bit
-		PTR_IDX		_b0_s4D
+		PTR_IDX		_b0_s4D_is_anybody_owns_item
 		PTR_IDX		_b0_s4E
 		PTR_IDX		_b0_s4F
 		PTR_IDX		_b0_s50_players_item_buffs_refresh
@@ -641,7 +641,7 @@ loc_83C9:
 		JSR		_mul16_to_8
 		LDA		#ITEM_GOLDEN_CLAW			; for 4d, use special case of #$64 when player has golden claw 
 		STA		byte_CE
-		JSR		_b0_s2B_is_anybody_owns_item
+		JSR		_b0_s2B_is_players_owns_item
 		BCC		loc_83DD
 		LDA		#$64
 		STA		byte_4D
@@ -2763,7 +2763,7 @@ loc_9833:
 ; return party member index and found item number in inventory and CF=1
 ; or CF=0
 ;
-_b0_s2B_is_anybody_owns_item:
+_b0_s2B_is_players_owns_item:
 		JSR		_b0_s31_get_party_chars_list
 		ASL		word_4
 		ASL		word_4
@@ -3710,13 +3710,16 @@ loc_9D44:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s4D:
-		JSR		_b0_s2B_is_anybody_owns_item
+; A powerful global routine for search an item in posession, will look into
+; party's inventory, as well as inventory of the tavern characters and Vault.
+;
+_b0_s4D_is_anybody_owns_item:
+		JSR		_b0_s2B_is_players_owns_item		; first look for item in player's inventory
 		BCS		loc_9D80
 		LDA		byte_CE
-		FARX	_bD_s17_search_vault_for_item
+		FARX	_bD_s17_search_vault_for_item		; then check vault (if you store it there)
 		BCC		loc_9D80
-		JSR		_b0_s32_get_tavern_chars_list
+		JSR		_b0_s32_get_tavern_chars_list		; then check all chars in tavern that may have it
 		LDA		word_4
 		BEQ		loc_9D7E
 		LDX		#0
@@ -6166,7 +6169,7 @@ _item_mirror_of_ra_use:
 		LDA		_playerMapY
 		CMP		#6
 		BNE		_void_event
-		LDA		_global_flags_array.byte18 ; probably some quest flags
+		LDA		_global_flags_array.byte18	; never used twice, but you may keep it
 		AND		#$20
 		BNE		_void_event
 		FARX	_b5_s5_mirror_of_ra_trigger_on

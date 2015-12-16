@@ -6284,7 +6284,7 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s28_player_inventory_item_get					; $49
 		FILE_IDX	$0,_b0_s29_player_inventory_item_add					; $4A
 		FILE_IDX	$0,_b0_s2A_player_inventory_item_remove					; $4B
-		FILE_IDX	$0,_b0_s2B_is_anybody_owns_item					; $4C
+		FILE_IDX	$0,_b0_s2B_is_players_owns_item					; $4C
 		FILE_IDX	$0,_b0_s2C_player_CLASS_read	; $4D
 		FILE_IDX	$0,_b0_s2E_tavern_char_CLASS_read					; $4F
 		FILE_IDX	$0,_b0_s2F_player_gender_read					; $50
@@ -6313,7 +6313,7 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s47_players_next_EXP_calc					; $AA
 		FILE_IDX	$0,_b0_s48_get_count_returnable_locations					; $110
 		FILE_IDX	$0,_b0_s49_set_returnable_locations_bit					; $111
-		FILE_IDX	$0,_b0_s4D					; $12C
+		FILE_IDX	$0,_b0_s4D_is_anybody_owns_item					; $12C
 		FILE_IDX	$0,_b0_s4E					; $145
 		FILE_IDX	$0,_b0_s4F					; $146
 		FILE_IDX	$0,_b0_s50_players_item_buffs_refresh					; $149
@@ -6340,8 +6340,8 @@ _sys_idx_lib:
 		FILE_IDX	$1,_b1_sA					; $D9
 		FILE_IDX	$1,_b1_sB					; $DA
 		FILE_IDX	$1,_b1_sC					; $DB
-		FILE_IDX	$1,_b1_sD					; $DC
-		FILE_IDX	$1,_b1_sE					; $13F
+		FILE_IDX	$1,_b1_sD_post_win_battle_handler					; $DC
+		FILE_IDX	$1,_b1_sE_player_class_change_stats_reset					; $13F
 		FILE_IDX	$1,_b1_s14					; $114
 		FILE_IDX	$1,_b1_s15					; $115
 		FILE_IDX	$1,_b1_s16					; $116
@@ -6487,7 +6487,7 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s13_item_magic_ball_use					; $BE
 		FILE_IDX	$C,_bC_s14					; $C8
 		FILE_IDX	$C,_bC_s17_sys0_spr_effects_call	; $CE
-		FILE_IDX	$C,_bC_s19					; $143
+		FILE_IDX	$C,_bC_s19_turn_king_of_romaly_on_off					; $143
 		FILE_IDX	$C,_bC_s1A					; $15B
 		FILE_IDX	$C,_bC_s1B					; $15E
 		FILE_IDX	$C,_bC_s1D_run_command_search					; $16
@@ -6496,7 +6496,7 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s20_warp_bE_sB_arg0					; $171
 		FILE_IDX	$C,_bC_s21					; $F7
 		FILE_IDX	$C,_bC_s22					; $F8
-		FILE_IDX	$C,_bC_s23_test_orbs_colleted_count					; $192
+		FILE_IDX	$C,_bC_s23_test_orbs_collected_count					; $192
 		FILE_IDX	$C,_bC_s24					; $139
 		FILE_IDX	$C,_bC_s25					; $FB
 		FILE_IDX	$C,_bC_s26_item_common_orbs_use					; $18A
@@ -6617,7 +6617,7 @@ _sys_idx_lib:
 ;		.BYTE	$0,$41						; $8F _b0_d41_equip_list, no use here
 ;		.BYTE	$0,$43						; $6A _b0_d43_enemies_lib, not used anymore
 ;		.BYTE	$0,$4C						; $CC, bank 00, idx 4c, empty
-;		.BYTE	$0,$4D						; $CD _b0_s4D, unused copy of $12C
+;		.BYTE	$0,$4D						; $CD _b0_s4D_is_anybody_owns_item, unused copy of $12C
 ;		.BYTE	$0,$51						; $14C _b0_s51_wrapper_for_b1B_s0, not used anymore wrapper
 ;		.BYTE	$0,$5A						; $E1 _b0_d5A_common_spell_related_data04, no use here
 ;		.BYTE	$1,  1						; $9E, bank 01, idx 01, empty

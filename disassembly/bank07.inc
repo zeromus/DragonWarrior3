@@ -1214,7 +1214,7 @@ loc_B2711:
 		DEC		word_3C
 		BNE		loc_B2711
 		JSR		_wrap_bE_sD_wnd3E
-		MSGX	_msg_m00,$1A8
+		MSGX	_msg_m00,$1A8	; "A sound like something closing is heard from up in the sky"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20_warp_bE_sB_arg0
 		SYSX	_apu_load,$18
@@ -1268,7 +1268,7 @@ loc_B275E:
 		JSR		_wrap_bE_sD_wnd3E
 		INC		word_40+1
 loc_B2785:
-		MSGX	_msg_m00,$1A6
+		MSGX	_msg_m00,$1A6	; "Look! <name> has come back to life!"
 		PLA
 		TAX
 loc_B278A:
@@ -1485,7 +1485,7 @@ _MM_continue_quest:
 		JSR		_ppu_screen_clear
 		LDA		#0
 		STA		byte_6A58											; We think this is cleared, when entering the game from the menu, otherwise set. Don't fully understand yet
-		LDA		_global_flags_array.byte12		; test _q_game_begin
+		LDA		_global_flags_array.byte12		; test _q_GameBegins
 		BMI		loc_B2914											; branch down if the game's already begun
 		LDA		#$41													; area: hero's apartment, upstairs
 		STA		_mapNumber

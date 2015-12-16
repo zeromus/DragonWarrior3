@@ -151,7 +151,7 @@ _hero = $F9
 	ENDM
 
 	; to make sure that you won't use different types of indexes in wrong macroses
-	; every different macros shuold use a different type of indexes now
+	; every different macros should use a different type of indexes now
 	; _pidx - is for index of routine in particular bank ($8000 base)
 	; _fidx - index of the filesystem entry
 	; _sidx - index of the system routine offset (already >>1 to simplify calculations)
@@ -172,12 +172,12 @@ _hero = $F9
 	ENDM
 
 	; BRK opcodes are all the same, handled identically in all cases
-	; every BRK opcode is an system routine index + 8-bit argument passed to it
+	; every BRK opcode has a system routine index + 8-bit argument passed to it
 	; but with some assumptions we could use the same BRK opcodes for different
 	; purposes, so:
 	;
-	; SYSX is a general purpose macros, used to call any defined system routine
-	; (_sys_ prefix) and pass the 8-bit parameter to it
+	; SYSX is a general purpose macro, used to call any defined system routine
+	; (_sys prefix) and pass the 8-bit parameter to it
 	;
 	MAC SYSX
 		BRK
@@ -185,13 +185,14 @@ _hero = $F9
 		.BYTE	[{1}_sidx & $FE]
 	ENDM
 
-	; FARX macros calls is a _sys routine which takes the 8-bit number
+	; FARX macros calls is a _sys routine which takes the 8-bit argument
 	; as an index of the file in filesystem and call the corresponding subroutine
 	; parameters to the subroutines passed with registers A and X directly
 	; althoug one such _sys routine can handle only 256 filesystem entries
 	; but we not limited in a number of similar routines to be used, every
-	; single routine may handle its own filesystem indexes range, so literally we
-	; can have any amount of filesystem entries
+	; single routine may handle its own filesystem indexes range, so technically we
+	; may have any amount of filesystem entries (currently only two with
+	; _sidx == 0, 1)
 	;
 	MAC FARX
 		BRK
@@ -200,10 +201,11 @@ _hero = $F9
 	ENDM
 	
 	; MSGX macros correspond to the set of special _sys routines that displays
-	; a messages in game. there are more than $700 different messages in this game
-	; but we can pass only $100 at once in one such function, so we neet at least
+	; a messages in game. there are more than $700 different messages
+	; but we can pass only 256 at once in one such function, so we neet at least
 	; 8 of each kind, that is no problem since maximum amount of _sys routines
-	; here is 128
+	; here is 128 (now we have 16 regular msg00 routines breakable and non breakable
+	; and 16 copies with genter request parameter, where the only 6 used)
 	;
 	MAC	MSGX
 		BRK

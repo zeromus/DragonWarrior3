@@ -88,7 +88,6 @@ ITEM_METEORITE_ARMBAND = $4B
 ITEM_BOOK_OF_SATORI = $4C
 ITEM_BLANK_4D = $4D
 ITEM_WIZARDS_RING = $4E
-;a weird item that can't ever be used or equipped under any circumstances
 ITEM_BLACK_PEPPER = $4F
 ;items (always usable)
 ITEM_SAGES_STONE = $50

@@ -115,7 +115,7 @@ loc_68080:
 loc_680AA:
 		CMP		#$FE
 		BNE		loc_680B4
-		FARX	_b1_sD ; seems to be some kind of battle system high level logic or loop, but not sure
+		FARX	_b1_sD_post_win_battle_handler ; seems to be some kind of battle system high level logic or loop, but not sure
 		JMP		.common_battle_won
 loc_680B4:
 		BIT		_curent_battle_type_flags
@@ -7790,39 +7790,17 @@ sub_6B310:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B324:
-;		LDX		#$52	; select between "<name> is ironized" and "<hero>'s party is ironized"
-;		JSR		_b4_s1D_incX_if_more_than_one_char_in_party
-; --
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		#$52	; "<name> is ironized"
 		DEC		word_4
 		BEQ		loc_6B420
 		LDA		#$53	; "<hero>'s party is ironized"
 loc_6B420:
-; --
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		PLA
 		PLA
 locret_6B32E:
 		RTS
-
-; =============== S U B	R O U T	I N E =======================================
-; check for party members number, and increase the input X parameter if
-; there are more than one member in your party.
-; used to adjust the party specific messages during the game.
-;
-;_b4_s1D_incX_if_more_than_one_char_in_party:
-;		TXA
-;		PHA
-;		JSR		_sram_b0_s31_get_party_chars_list
-;		PLA
-;		TAX
-;		DEC		word_4
-;		BEQ		loc_6B420
-;		INX
-;loc_6B420:
-;		TXA
-;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B32F:
