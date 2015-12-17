@@ -1097,50 +1097,53 @@ byte_E3C4C:
 		.BYTE	$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
+; converts the default location number according to current game state
+; input a mapnumber of current location, return the modified different
+; location number
+;
 sub_E3C80:
 		LDA		_mapNumber
 		STA		word_3E
 		BIT		_global_flags_array.byte2
-		BVS		loc_E3C93						; test _f_IsKingOfRomaly
-		LDX		_global_flags_array.byte18
-		CMP		#$72
-		BNE		loc_E3C9C
-		JMP		loc_E3D37
+		BVC		loc_E3C93
+		JMP		._maps_king_of_romaly
 loc_E3C93:
-		JMP		loc_E3D17
-loc_E3C96:
-		JMP		loc_E3D2A
-loc_E3C99:
-		JMP		loc_E3D48
+		LDX		_global_flags_array.byte18
+		CMP		#$72	; test location "New Town Ver.1 (empty, just the old man) ; 7,A"
+		BNE		loc_E3C9C
+		JMP		.map_72
 loc_E3C9C:
-		CMP		#$75
-		BEQ		loc_E3C96
+		CMP		#$75	; test location "New Town Ver.4 (run into the ground by merchant) ;7,A"
+		BNE		loc_E3C96
+		JMP		.map_75
+loc_E3C96:
 		LDX		_playerWorldX
 		CPX		#$D7
 		BNE		loc_E3CAC
 		LDY		_playerWorldY
 		CPY		#$9A
-		BEQ		loc_E3C99
+		BNE		loc_E3CAC
+		JMP		.map_samanao
 loc_E3CAC:
-		CMP		#$E
+		CMP		#$E	; test location "Baharata"
 		BNE		loc_E3CC4
 		LDX		_global_flags_array.byte5
 		BPL		loc_E3CB9
-		LDA		#$C2
-		BNE		loc_E3D14
+		LDA		#$C2	; return location "$C2 dummied" huh?
+		BNE		.return_val
 loc_E3CB9:
 		LDA		_global_flags_array.byte15
 		AND		#4
 		BEQ		locret_E3D16
 		LDA		#$C0
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3CC4:
 		CMP		#$7D
 		BNE		loc_E3CD1
 		LDX		_global_flags_array.byte5
-		BPL		loc_E3D14
+		BPL		.return_val
 		LDA		#$C1
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3CD1:
 		CMP		#$23
 		BNE		loc_E3CE0
@@ -1148,69 +1151,68 @@ loc_E3CD1:
 		AND		#$20
 		BEQ		locret_E3D16
 		LDA		#$95
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3CE0:
 		CMP		#$47
 		BNE		loc_E3CED
 		LDX		_global_flags_array.byte16
 		BPL		locret_E3D16
 		LDA		#$AC
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3CED:
 		CMP		#$6B
 		BNE		loc_E3CFA
 		LDX		_global_flags_array.byte10
 		BPL		locret_E3D16
 		LDA		#$AB
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3CFA:
 		CMP		#$17
 		BNE		loc_E3D07
 		LDX		_global_flags_array.byte4
 		BPL		locret_E3D16
 		LDA		#$B7
-		BNE		loc_E3D14
+		BNE		.return_val
 loc_E3D07:
 		CMP		#$8A
-		BNE		loc_E3D14
+		BNE		.return_val
 		LDX		_global_flags_array.byte4
 		BPL		locret_E3D16
 		LDA		#$B8
-		BNE		loc_E3D14
-loc_E3D14:
+.return_val:
 		STA		word_3E
 locret_E3D16:
 		RTS
-loc_E3D17:
+._maps_king_of_romaly:
 		LDX		#0
 loc_E3D19:
-		LDY		byte_E3D66,X
+		LDY		.king_romaly_map_num_lookup,X
 		BEQ		locret_E3D16
 		CPY		word_3E
 		BEQ		loc_E3D25
 		INX
 		BNE		loc_E3D19
 loc_E3D25:
-		LDA		byte_E3D74,X
-		BNE		loc_E3D14
-loc_E3D2A:
+		LDA		.king_romaly_map_num_replace,X
+		BNE		.return_val
+.map_75:
 		CPX		#$FF
-		BNE		loc_E3D14
+		BNE		.return_val
 		LDA		_global_flags_array.byte2
 		BMI		locret_E3D16
 		LDA		#$CE
-		BNE		loc_E3D14
-loc_E3D37:
+		BNE		.return_val
+.map_72:
 		CPX		#0
-		BEQ		loc_E3D14
+		BEQ		.return_val
 		BIT		_global_flags_array.byte2
-		BMI		loc_E3D14
+		BMI		.return_val
 		TXA
 		LSR
 		LDA		#$CD
-		BCS		loc_E3D14
+		BCS		.return_val
 		BCC		locret_E3D16
-loc_E3D48:
+.map_samanao:
 		LDA		_global_flags_array.byte18
 		AND		#$20
 		BEQ		loc_E3D55					; test _q_SamanaoDone
@@ -1225,11 +1227,13 @@ loc_E3D55:
 		CMP		#6
 		BNE		locret_E3D16
 		LDA		#$F3
-		BNE		loc_E3D14
-byte_E3D66:
+		BNE		.return_val	; unconditional jump
+		
+.king_romaly_map_num_lookup:
 		.BYTE	  1,$4A,$4C,$4D,$49,$48,  0,$61,$62,$5D,$60,$5F,  6,  0
-byte_E3D74:
+.king_romaly_map_num_replace:
 		.BYTE	$AD,$AE,$AF,$B0,$B1,$B3,  0,$F4,$F5,$F6,$F7,$F8,$F9,  0
+		
 _chr_data_unk5:
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  4,  3,  1
 		.BYTE	  0,  0,  0,  0,  0,  0,  0,$40,  0,  0,  0,  4,  8,  0,$50,$B8

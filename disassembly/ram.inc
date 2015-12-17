@@ -1185,11 +1185,11 @@ _global_flags_array:
 ;	$80 - $0F - Rainbow Bridge is set, rainbow Drop is used
 ;	$40 - $0E - Locket of Love successfully used
 ;	$20 - _q_NorudPassageOpened = $0D - Set once Norud's been shown the royal scroll and opened the psage
-;	$10 - $0C - seems unused
-;	$08 - $0B - seems unused
-;	$04 - $0A - seems unused
+;	$10 - $0C - unused
+;	$08 - $0B - * read/write
+;	$04 - $0A - * read/write
 ;	$02 - _q_MagicBallUsed = $09 - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
-;	$01 - $08 - seems unused
+;	$01 - $08 - * read
 _global_flags_array.byte1: ; 60b6
 		.BYTE	0
 
@@ -1216,24 +1216,24 @@ _global_flags_array.byte3: ; 60b8
 		.BYTE	0
 
 ;	$80 - $27 - Himiko defeated in Jipang
-;	$40 - $26 - seems unused
-;	$20 - $25 - seems unused
-;	$10 - $24 - seems unused
+;	$40 - $26 - * read/write
+;	$20 - $25 - * read/write
+;	$10 - $24 - * read/write
 ;	$08 - $23 - Greenland man obtained Staff of Change
 ;	$04 - $22 - Speak with Granddad in Baharata about Tania is Kidnapped
 ;	$02 - $21 - Dream Ruby quest begins (already spoke with Elf Queen about the dream ruby)
-;	$01 - $20 - seems unused
+;	$01 - $20 - * read/write
 _global_flags_array.byte4: ; 60b9
 		.BYTE	0
 
 ;	somehow related to special location entry position logic for lancel
-;	$80 - $2F - seems unused
-;	$40 - $2E - seems unused
-;	$20 - $2D - seems unused
-;	$10 - $2C - seems unused
+;	$80 - $2F - * read/write
+;	$40 - $2E - * read/write
+;	$20 - $2D - * read/write
+;	$10 - $2C - * read/write
 ;	$08 - _q_IsKingOfTantegelVisited = $2B - Kinf of Tantegel visited once
 ;	$04 - _q_IsKingOfRomalyAvailable = $2A - Set after you choose to return the Golden King's Crown once
-;	$02 - $29 - *
+;	$02 - $29 - * read/write
 ;	$01 - _f_IsInNavelOfTheEarth = $28 - we're in the "shrine where you may try your courage". After dying you respawn there
 _global_flags_array.byte5: ; 60ba
 		.BYTE	0
@@ -1248,7 +1248,7 @@ _merch_town_name_low_chars:
 ;	$08 - $53 - Rainbow Drop obtained
 ;	$04 - $52 - Staff of Rain obtained
 ;	$02 - $51 - Thief's Key obtained
-;	$01 - $50 - seems unused
+;	$01 - $50 - unused
 _global_flags_array.byteA: ; 60bf
 		.BYTE	0
 
@@ -1256,14 +1256,14 @@ _backup_y: ; 60c0
 		.BYTE	0
 _backup_x:
 		.BYTE	0
-; 60c0 unused
+; 60c2 unused
 		.BYTE	0
 
-;	$80 - $77 - seems unused
-;	$40 - $76 - seems unused
-;	$20 - $75 - seems unused
-;	$10 - $74 - seems unused
-;	$08 - $73 - seems unused
+;	$80 - $77 - unused
+;	$40 - $76 - unused
+;	$20 - $75 - unused
+;	$10 - $74 - unused
+;	$08 - $73 - unused
 ;	$04 -+
 ;	$02  +- index of the last king visited to respawn logic
 ;	$01 -+
@@ -1271,62 +1271,62 @@ _global_flags_array.byteE:
 		.BYTE	0
 
 ;	$80 - $7F - Zoma's Castle Quest: if set, the statue sneak attack event is finished and the statues and doors are cleared
-;	$40 - $7E - seems unused
-;	$20 - $7D - seems unused
-;	$10 - $7C - seems unused
-;	$08 - $7B - seems unused
-;	$04 - $7A - seems unused
-;	$02 - $79 - seems unused
-;	$01 - $78 - seems unused
+;	$40 -+
+;	$20 -+- incremental counter 1
+;	$10 -+
+;	$08  |
+;	$04  +- incremental counter 0
+;	$02  |
+;	$01 -+
 _global_flags_array.byteF:
 		.BYTE	0
 		
 ;	$80 - $87 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
-;	$40 - $86 - seems unused
-;	$20 - $85 - seems unused
-;	$10 - $84 - seems unused
-;	$08 - $83 - seems unused
-;	$04 - $82 - seems unused
-;	$02 - $81 - seems unused
-;	$01 - $80 - seems unused
+;	$40 - $86 - * read/write
+;	$20 - $85 - * read/write
+;	$10 - $84 - unused
+;	$08 - $83 - unused
+;	$04 - $82 - * read/write
+;	$02 - $81 - * read/write
+;	$01 - $80 - * read/write
 _global_flags_array.byte10:
 		.BYTE	0
 		
-;	$80 - $8F - *
-;	$40 - $8E - *
-;	$20 - $8D - *
-;	$10 - $8C - *
-;	$08 - $8B - seems unused
-;	$04 - $8A - seems unused
-;	$02 - $89 - seems unused
-;	$01 - $88 - seems unused
+;	$80 - $8F - * read/write
+;	$40 - $8E - * read/write
+;	$20 - $8D - * read/write
+;	$10 - $8C - * read/write
+;	$08 - $8B - unused
+;	$04 - $8A - unused
+;	$02 - $89 - unused
+;	$01 - $88 - unused
 _global_flags_array.byte11:
 		.BYTE	0
 		
 ;	$80 - $97 - *
 ;	$40 - $96 - Orichi Sword obtained as an item drop
-;	$20 - $95 - seems unused
-;	$10 - $94 - seems unused
-;	$08 - $93 - seems unused
-;	$04 - $92 - seems unused
-;	$02 - $91 - seems unused
-;	$01 - $90 - seems unused
+;	$20 - $95 - unused
+;	$10 - $94 - unused
+;	$08 - $93 - unused
+;	$04 - $92 - unused
+;	$02 - $91 - unused
+;	$01 - $90 - unused
 _global_flags_array.byte12:
 		.BYTE	0
 		
 ;	$80 - _q_GameBegins = $9F - set once the game is begun (used to determine whether to start a save file in the hero's house)
-;	$40 - $9E - seems unused
-;	$20 - $9D - seems unused
-;	$10 - $9C - seems unused
-;	$08 - $9B - seems unused
-;	$04 - $9A - seems unused
-;	$02 - $99 - seems unused
-;	$01 - $98 - seems unused
+;	$40 - $9E - unused
+;	$20 - $9D - unused
+;	$10 - $9C - unused
+;	$08 - $9B - unused
+;	$04 - $9A - * read/write
+;	$02 - $99 - * read/write
+;	$01 - $98 - * read/write
 _global_flags_array.byte13:
 		.BYTE	0
 		
-;	$80 - $A7 - seems unused
-;	$40 - $A6 - seems unused
+;	$80 - $A7 - unused
+;	$40 - $A6 - unused
 ;	$20 -+
 ;	$10  |
 ;	$08  |
@@ -1336,14 +1336,14 @@ _global_flags_array.byte13:
 _global_flags_array.byte14:
 		.BYTE	0
 
-;	$80 - $AF - seems unused
+;	$80 - $AF - * read/write
 ;	$40 - $AE - Dragon Queen became an Egg
-;	$20 - $AD - seems unused
-;	$10 - $AC - *
-;	$08 - $AB - seems unused
-;	$04 - $AA - seems unused
-;	$02 - $A9 - seems unused
-;	$01 - $A8 - seems unused
+;	$20 - $AD - * read/write
+;	$10 - $AC - * read/write
+;	$08 - $AB - * read/write
+;	$04 - $AA - * read/write
+;	$02 - $A9 - * read/write
+;	$01 - $A8 - * read/write
 _global_flags_array.byte15: ; fiddling with values here can make aliahan look like baramos is dead
 		.BYTE	0
 
@@ -1358,14 +1358,14 @@ _global_flags_array.byte15: ; fiddling with values here can make aliahan look li
 _global_flags_array.byte16:
 		.BYTE	0
 
-;	$80 - $BF - seems unused
+;	$80 - $BF - unused
 ;	$40 - $BE - set in sub_1280A6, seems never read directly
-;	$20 - $BD - seems unused
-;	$10 - $BC - seems unused
-;	$08 - $BB - seems unused
-;	$04 - $BA - seems unused
-;	$02 - $B9 - seems unused
-;	$01 - $B8 - seems unused
+;	$20 - $BD - unused
+;	$10 - $BC - unused
+;	$08 - $BB - unused
+;	$04 - $BA - unused
+;	$02 - $B9 - unused
+;	$01 - $B8 - unused
 _global_flags_array.byte17:
 		.BYTE	0
 		
@@ -1375,11 +1375,11 @@ _global_flags_array.byte17:
 ;	what should they do
 ;
 ;	$80 - $C7 - more than 2 orbs collected test pass (called after every orb is collected)
-;	$40 - $C6 - *
+;	$40 - $C6 - * read/write
 ;	$20 - _q_SamanaoDone = $C5 - Set once the Samanao quest is done (real King rescued)
-;	$10 - $C4 - *
-;	$08 - $C3 - *
-;	$04 - $C2 - *
+;	$10 - $C4 - * read/write
+;	$08 - $C3 - * read/write
+;	$04 - $C2 - * read/write
 ;	$02 - $C1 - merch first step (set if sail after set a merchant, he won't progress further until this)
 ;	$01 - $C0 - merch is starting to build a town (when set a merchant to town)
 _global_flags_array.byte18:
@@ -1396,7 +1396,6 @@ _global_flags_array.byte18:
 ;	$01 - $C8 - Silver Orb
 _q_OrbsCollected: ; $60CE
 		.BYTE	0
-		
 ;	global indexes of bit flags ($D0-$DF) from here isn't used
 _q_OrbsPlaced: ; $60CF
 		.BYTE	0
