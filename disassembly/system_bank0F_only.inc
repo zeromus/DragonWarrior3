@@ -504,9 +504,9 @@ _map_ReadTileChecked_At_74_77:
 ; check the tileset number
 		LDA		byte_9A
 		CMP		#9
-		BCS		.oobNormal		; tileset >= $#9 : is normal
+		BCS		.oobNormal			; tileset >= $#9 : is normal
 		LDA		byte_8A				; reference the map's current OOB tile
-		CMP		#$19					; but one value is special
+		CMP		#$19				; but one value is special
 		BEQ		.oob19special
 
 ; check for Portoga Town. It's OOB tile differs on the south side of town (it's water there, otherwise grass)
@@ -3006,7 +3006,7 @@ loc_177D7F:
 		INX
 		INX
 loc_177D83:
-		JSR		sub_177E87
+		JSR		_loc_npc_entry_ptr_skip
 		JMP		loc_177D68
 loc_177D89:
 		INY
@@ -3092,25 +3092,25 @@ loc_177E0F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_177E1D:
-		JSR		sub_177E23
+		JSR		_get_loc_npc_list_ptr
 		JMP		sub_177E5E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177E23:
+_get_loc_npc_list_ptr:
 		LDA		#9
 		JSR		_mmc1_prg_set
-		JSR		sub_E3C80
+		JSR		_get_adjusted_location_number
 		LDA		#$D
 		JSR		_mmc1_prg_set
-		LDA		#<[_bD_d1]
+		LDA		#<[_bD_d1_location_npc_lists_lib]
 		STA		word_6C
-		LDA		#>[_bD_d1]
+		LDA		#>[_bD_d1_location_npc_lists_lib]
 		STA		word_6C+1
 		LDA		_mapNumber
 		BEQ		locret_177E5D
 		LDA		word_3E
 loc_177E44:
-		JSR		sub_177E87
+		JSR		_loc_npc_entry_ptr_skip
 		LDY		#0
 		LDA		(word_6C),Y
 		BNE		loc_177E44
@@ -3152,7 +3152,7 @@ loc_177E6E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_177E87:
+_loc_npc_entry_ptr_skip:
 		LDY		#0
 		LDA		(word_6C),Y
 		AND		#7
@@ -3165,8 +3165,10 @@ sub_177E87:
 		INC		word_6C+1
 locret_177E9A:
 		RTS
+		
 byte_177E9B:
 		.BYTE	  5,  6,  6,  7,  7,  8,  8,  9
+		
 byte_177EA3:
 		.BYTE	  1,  5
 byte_177EA5:
@@ -3228,7 +3230,7 @@ loc_177EF9:
 sub_177EFC:
 		LDA		_mmc_cur_prg_bank
 		PHA
-		JSR		sub_177E23
+		JSR		_get_loc_npc_list_ptr
 		LDA		#$10
 		STA		word_4+1
 		LDA		_world_map_steps_count
@@ -3245,7 +3247,7 @@ loc_177F12:
 		DEC		word_4
 		BEQ		loc_177F24
 loc_177F1E:
-		JSR		sub_177E87
+		JSR		_loc_npc_entry_ptr_skip
 		JMP		loc_177F12
 loc_177F24:
 		LDY		#0

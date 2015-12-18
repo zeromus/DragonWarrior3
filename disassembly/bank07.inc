@@ -19,6 +19,18 @@
 		PTR_IDX		_b7_s1D
 		PTR_IDX		_b16_s0_location_palette_setup
 
+; library of the map pointers and its tileset idx. maps with tileset
+; number greater or equal to $C are from bank 7, the rest is in bank 6
+; by default
+; some map records has dummied out map pointers, but sill has a parameter
+; of the tileset. this is mostly used when during the game map changes
+; to different states without changing the map layot itself, but has only
+; different npc types or its locations
+; so every map index, even dummied out, has its corresponding record in
+; the npc location lists library with non dummied content
+; for example, Baharata location ($0E) has additional location index ($C2)
+; with dummied out map pointer, but different set of npcs.
+;
 _map_data_lib:
 		.WORD	_map0
 		.BYTE	  1
