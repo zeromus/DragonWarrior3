@@ -9,7 +9,7 @@ if "%computername%" == "HELL" (
 	  if "%computername%" == "FUJITSU" (
 	    rem do nothing	
 	  ) else (
-	    start "" "..\..\..\tools\TextPad 5\TextPad.exe" bank00.inc bank01.inc bank02.inc bank03.inc bank04.inc bank05.inc bank06.inc bank07.inc bank08.inc bank09.inc bank0A.inc bank0B.inc bank0C.inc bank0D.inc bank0E.inc ram.inc bank10.inc bank11.inc bank12.inc bank13.inc bank14.inc bank15.inc bank16.inc bank17.inc bank18.inc bank19.inc bank1A.inc bank1B.inc bank1C.inc bank1D.inc bank1E.inc system_bank0F_only.inc system_footer.inc system_shared.inc macros.inc notes.txt
+	    start "" "..\..\..\tools\TextPad 5\TextPad.exe" bank00.inc bank01.inc bank02.inc bank03.inc bank04.inc bank05.inc bank06.inc bank07.inc bank08.inc bank09.inc bank0A.inc bank0B.inc bank0C.inc bank0D.inc bank0E.inc ram.inc bank10.inc bank11.inc bank12.inc bank13.inc bank14.inc bank15.inc bank16.inc bank17.inc bank18.inc bank19.inc bank1A.inc bank1B.inc bank1C.inc bank1D.inc bank1E.inc system_bank0F_only.inc system_footer.inc system_shared.inc macros.inc notes.txt dw3_faq.txt dw3_raw_script.txt item_ids.inc locations.txt
 	  )
 	)
 ) 

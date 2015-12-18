@@ -6665,7 +6665,7 @@ _sys_idx_lib:
 ;		.BYTE	$A,$36						; $177 _bC_s36, never used
 ;		.BYTE	$C,$26						; $10F _bC_s26_item_common_orbs_use, unused copy of $18A
 ;		.BYTE	$C,$29						; $104 _bC_s29, no use here
-;		.BYTE	$D,  1						; $FF _bD_d1_ofs, not used anymore
+;		.BYTE	$D,  1						; $FF _bD_d1_location_npc_lists_lib_ofs, not used anymore
 ;		.BYTE	$D, $F						; $182 _bD_sF, no use here, used directly
 ;		.BYTE	$D,$19						; $133 _bD_s19 were used as copy of $FD
 ;		.BYTE	$E,  4						; $08 _bE_s4_msg_m00, were used as dupe of _bE_s4_msg_m00, removed

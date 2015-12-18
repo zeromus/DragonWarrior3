@@ -1097,11 +1097,13 @@ byte_E3C4C:
 		.BYTE	$FF,$FF,$FF,$FF
 
 ; =============== S U B	R O U T	I N E =======================================
-; converts the default location number according to current game state
-; input a mapnumber of current location, return the modified different
-; location number
+; some locations has different npc lists, they assigned to different locations
+; indexes with dummied out map pointers, which is unused, but the corresponding
+; index used for looking up the npc list in the npc location library _bD_d1_location_npc_lists_lib
+; so we here convert the current location number to the number of the npc list
+; record
 ;
-sub_E3C80:
+_get_adjusted_location_number:
 		LDA		_mapNumber
 		STA		word_3E
 		BIT		_global_flags_array.byte2
@@ -1129,7 +1131,7 @@ loc_E3CAC:
 		BNE		loc_E3CC4
 		LDX		_global_flags_array.byte5
 		BPL		loc_E3CB9
-		LDA		#$C2	; return location "$C2 dummied" huh?
+		LDA		#$C2	; return location "$C2" with dummied map ptr, but non zero npc list
 		BNE		.return_val
 loc_E3CB9:
 		LDA		_global_flags_array.byte15
