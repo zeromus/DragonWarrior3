@@ -1214,7 +1214,7 @@ loc_207B8:
 		TAX
 		LDA		byte_207EF-1,X
 		STX		_backup_x
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		LDX		_backup_x
 		ADC		byte_207EF-2,X
 		STA		byte_65
@@ -1523,7 +1523,7 @@ loc_209FA:
 		STA		_players_HP
 		LDA		word_4+1
 		STA		_players_HP+1
-		FARX	_b0_s4F
+		FARX	_b0_s4F_return_party_members
 		FARX	_bC_s2F
 		RTS
 
@@ -2066,7 +2066,7 @@ loc_29400F:
 loc_29401C:
 		INY
 		TYA
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		STA		byte_6A6D
 		FARX	_b4_s26
 		RTS
@@ -2107,7 +2107,7 @@ loc_29405C:
 loc_294065:
 		LDA		byte_294070
 loc_294068:
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		RTS
 		
 byte_29406C:
@@ -2194,7 +2194,7 @@ sub_2940D5:
 		CMP		#$65
 		BCC		loc_294160
 		LDA		#$65
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -2223,7 +2223,7 @@ loc_29411D:
 		RTS
 loc_294121:
 		LDA		#4
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -2264,7 +2264,7 @@ loc_294160:
 		JMP		loc_2941C3
 loc_294163:
 		LDA		#8
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -2289,7 +2289,7 @@ loc_294183:
 		RTS
 loc_29418C:
 		LDA		#$15
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -2318,7 +2318,7 @@ loc_2941BF:
 		RTS
 loc_2941C3:
 		LDA		#$33
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		PHA
 		JSR		sub_2941FA
 		PLA
@@ -2349,7 +2349,7 @@ loc_2941F6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_2941FA:
 		LDA		#2
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		TAX
 		BNE		loc_294204
 		CLC

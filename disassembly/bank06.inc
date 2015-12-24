@@ -1361,7 +1361,7 @@ loc_9B557:
 		FARX	_b0_s48_get_count_returnable_locations
 		JSR		_b6_s13
 		FARX	_bE_s1B
-		FARX	_b0_s66
+		FARX	_b0_s66_byte_6D40_clear
 		LDA		#2
 		STA		_playerFacingDir
 		SYSX	_apu_load,$92
@@ -2598,7 +2598,7 @@ _b6_s1B_reinit_after_zoma_voice:
 _b6_s1D_hero_rest_at_home_anim:
 		SYSX	_apu_load,$14
 		JSR		_pal_fade_out
-		FARX	_b0_s54
+		FARX	_b0_s54_heal_us_all_max
 		FARX	_bD_s11
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#4

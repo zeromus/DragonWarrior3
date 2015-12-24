@@ -5847,7 +5847,7 @@ _bC_s19_turn_king_of_romaly_on_off:
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
 		SYSX	_apu_load,$01
-		FARX	_b0_s56
+		FARX	_b0_s56_get_hero_alone_temporary
 		LDA		_global_flags_array.byte2
 		ORA		#$40
 		STA		_global_flags_array.byte2
@@ -5876,7 +5876,7 @@ _bC_s19_turn_king_of_romaly_on_off:
 		JMP		_ppu_on_and_fade_in
 loc_12A686:
 		JSR		_pal_fade_out
-		FARX	_b0_s4F
+		FARX	_b0_s4F_return_party_members
 		LDA		_global_flags_array.byte2
 		AND		#$BF
 		STA		_global_flags_array.byte2
@@ -5909,7 +5909,7 @@ loc_12A6C4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12A6C8:
-		FARX	_b0_s4E
+		FARX	_b0_s4E_get_anybody_alone_temporary
 		JSR		sub_12A6FD
 		LDY		#4
 loc_12A6D0:
@@ -7694,7 +7694,7 @@ loc_12B30D:
 		LDA		#0
 		STA		byte_6BC
 		STA		_playerFacingDir
-		FARX	_b0_s4F
+		FARX	_b0_s4F_return_party_members
 		LDA		_global_flags_array.byte5
 		AND		#$FC
 		STA		_global_flags_array.byte5
@@ -7817,7 +7817,7 @@ sub_12B3D1:
 		BMI		locret_12B42D
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
-		STA		byte_6A62
+		STA		_party_chars_count_tmp
 		CMP		#1
 		BEQ		loc_12B443
 		FARX	_bE_sD
@@ -7862,13 +7862,13 @@ loc_12B448:
 		LDX		#$A
 		JMP		_sleep_X_sync
 loc_12B453:
-		LDA		byte_6A62
+		LDA		_party_chars_count_tmp
 		CMP		#1
 		BEQ		locret_12B492
 		LDA		#0
 		STA		byte_6BC
 		STA		_playerFacingDir
-		FARX	_b0_s4F
+		FARX	_b0_s4F_return_party_members
 		LDA		#1
 		JSR		sub_12B353
 		JSR		_wrap_bE_sD_wnd3E
@@ -8289,6 +8289,8 @@ locret_12B7C7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; looks like the heal shrine in the cave of at the beginning of the game
+;
 sub_12B7C8:
 		LDA		_playerMapX
 		CMP		#$19
@@ -8297,7 +8299,7 @@ sub_12B7C8:
 		CMP		#$25
 		BNE		locret_12B7C7
 		FARX	_b2_s7_screen_spell_blink
-		FARX	_b0_s54
+		FARX	_b0_s54_heal_us_all_max
 		FARX	_bD_s11
 		FARX	_b4_s1A_status_pal_adjust_and_update
 locret_12B7E0:
@@ -8627,7 +8629,7 @@ loc_12BA23:
 		STA		_players_pos_list+3,X
 		JSR		sub_12A6FD
 		LDY		#0
-		LDA		byte_6A62
+		LDA		_party_chars_count_tmp
 		STA		byte_6ABE
 loc_12BA42:
 		DEC		byte_6ABE
@@ -8735,7 +8737,7 @@ loc_12BAE1:
 		STA		_global_flags_array.byte2
 		RTS
 loc_12BAF1:
-		LDA		byte_6A62
+		LDA		_party_chars_count_tmp
 		STA		byte_6ABE
 		LDX		#0
 loc_12BAF9:

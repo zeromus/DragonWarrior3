@@ -1290,7 +1290,7 @@ loc_B278A:
 		INX
 		CPX		word_40
 		BNE		loc_B275E
-		FARX	_b0_s54
+		FARX	_b0_s54_heal_us_all_max
 		FARX	_bD_s11
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -2303,13 +2303,13 @@ loc_B2E3C:
 		LDA		byte_11
 		BNE		.hero_special_register
 		LDA		#5
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		CLC
 		ADC		#2
 		STA		byte_E
 loc_B2E6E:
 		LDA		#5
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		CMP		#5
 		BCC		loc_B2E79
 		LDA		#0

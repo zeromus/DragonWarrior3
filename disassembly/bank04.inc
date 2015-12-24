@@ -18,7 +18,7 @@
 		PTR_IDX		_b4_sC
 		PTR_IDX		_b4_dD_spells_list
 		PTR_IDX		_b4_sE
-		PTR_IDX		_b4_sF
+		PTR_IDX		_b4_sF_rand_mul_A
 		PTR_IDX		_b4_s10
 		PTR_IDX		_b4_s12
 		PTR_IDX		_b4_s13
@@ -312,7 +312,7 @@ sub_68201:
 		LDA		word_4
 		SEC
 		SBC		word_4+1
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		word_4+1
 		STA		word_3C
@@ -337,7 +337,7 @@ loc_68230:
 		BNE		loc_68230
 		LDA		#$FF
 		STA		_battle_type_fight
-		FARX	_b0_s55
+		FARX	_b0_s55_test_spell_allow_location
 		BCS		loc_68245
 		LDA		#$10
 		STA		byte_568
@@ -525,7 +525,7 @@ loc_6836E:
 		STA		byte_43
 		LDA		#$FF
 		STA		byte_47
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		STA		byte_45
 		LDY		#0
 		STY		byte_42
@@ -811,7 +811,7 @@ loc_68549:
 		SEC
 		RTS
 loc_68550:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		(word_3E),Y
 		BEQ		loc_6855C
 		BCC		loc_6855C
@@ -1378,7 +1378,7 @@ loc_6886E:
 		TYA
 		LDX		#byte_11
 		JSR		_div16_to_8
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		STA		byte_10
 		LDX		#0
 loc_68883:
@@ -1556,7 +1556,7 @@ loc_68999:
 		LDA		byte_568
 		AND		#8
 		BEQ		loc_689BC
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$C0
 		BCS		locret_68998
 loc_689BC:
@@ -1580,7 +1580,7 @@ loc_689BC:
 		BEQ		loc_689F3
 		CPX		#3
 		BEQ		loc_689F3
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CMP		#0
 		BNE		loc_689F3
 		LDA		#2
@@ -1738,7 +1738,7 @@ sub_68B00:
 		TAY
 		LDA		byte_6B44E,Y
 		STA		word_4
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		word_4
 		BEQ		loc_68B24
 		BCC		loc_68B24
@@ -1783,7 +1783,7 @@ loc_68B49:
 		BPL		locret_68AFB
 		JSR		sub_6B1E8
 		BCS		loc_68B75
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#4
 		BCC		loc_68B75
 loc_68B5D:
@@ -1793,7 +1793,7 @@ loc_68B5D:
 		LDA		byte_530,X
 		AND		#$10
 		BEQ		loc_68B84
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$A0
 		BCS		loc_68B84
 		JSR		sub_68BB6
@@ -1850,7 +1850,7 @@ loc_68BC6:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_03_attack_maybe_crit:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$20
 		BCC		loc_68BD3
 		JMP		_bs_emove_02_regular_attack
@@ -2487,7 +2487,7 @@ loc_6902C:
 		JSR		sub_6B3D8
 		JMP		sub_69053
 loc_69032:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$80
 		BCS		sub_69050
 		LDA		byte_CE
@@ -2980,7 +2980,7 @@ loc_69383:
 		LDA		byte_49
 		CMP		#$21
 		BEQ		loc_6939C
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		BPL		loc_693ED
 loc_6939C:
 		JSR		sub_6B91D
@@ -3269,7 +3269,7 @@ sub_69589:
 		TAY
 		LDA		byte_6B44A,Y
 		STA		word_4
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		word_4
 		BEQ		loc_695B4
 		BCC		loc_695B4
@@ -3357,7 +3357,7 @@ loc_6962A:
 		LDA		_players_status,X
 		AND		#$10
 		BEQ		loc_69647
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$A0
 		BCS		loc_69647
 loc_6963E:
@@ -3368,7 +3368,7 @@ loc_69647:
 		LDA		byte_575
 		AND		#8
 		BEQ		loc_69655
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$20
 		BCC		loc_6963E
 loc_69655:
@@ -3396,7 +3396,7 @@ loc_69660:
 		LDA		byte_530+1,X
 		AND		#$20
 		BNE		loc_6968F
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		byte_59
 		BCC		loc_696DF
 loc_6968F:
@@ -3405,7 +3405,7 @@ loc_6968F:
 		AND		#7
 		CMP		#6
 		BNE		loc_696A2
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		_players_level,X
 		BCC		loc_696B6
 loc_696A2:
@@ -3416,7 +3416,7 @@ loc_696A2:
 		LDX		#$20
 loc_696AD:
 		STX		word_6+1
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		word_6+1
 		BCS		loc_696C9
 loc_696B6:
@@ -3431,7 +3431,7 @@ loc_696C9:
 		LDA		byte_575
 		AND		#$10
 		BEQ		loc_696DC
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#$F
 		ADC		#$10
 		LDX		#word_4
@@ -3473,7 +3473,7 @@ loc_69709:
 		BEQ		locret_69735
 		JSR		sub_68C42
 		BNE		locret_69735
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$20
 		BCS		locret_69735
 		LDA		_players_status+1,X
@@ -3487,7 +3487,7 @@ loc_69736:
 		BNE		loc_69709
 		JSR		sub_6975F
 		BCC		locret_69735
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#7
 		CMP		#7
 		BCC		loc_6974C
@@ -3538,7 +3538,7 @@ _bs_pcAction_01_chant:
 		LDA		_b4_dD_spells_list,X
 ; these entries have two parts, get the bottom 6 bits (must be the MP cost)
 		AND		#$3F
-		FARX	_b0_s67
+		FARX	_b0_s67_mysterious_hat_mp_modifier
 		JSR		_sram_b0_sB_player_MP_consume
 		BCC		loc_697C5
 		JSR		_sram_b0_s9_player_MP_subtract
@@ -3603,7 +3603,7 @@ loc_697F9:
 		PHA
 		JSR		_b4_sB
 		LDA		byte_55
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		byte_56
 		STA		word_4
 		LDA		#0
@@ -4156,7 +4156,7 @@ loc_69BAD:
 		SBC		#$1A
 		TAY
 		LDA		byte_69BDD,Y
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		byte_69BDA,Y
 		STA		word_4
@@ -4785,7 +4785,7 @@ sub_6A017:
 		LDA		byte_6A6B
 		BNE		loc_6A038
 		LDA		#$11
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ASL
 		TAX
 		LDA		off_6A241,X
@@ -4794,7 +4794,7 @@ sub_6A017:
 		STA		word_3C+1
 		JMP		(word_3C)
 loc_6A038:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#$F
 		CMP		#$C
 		BCS		sub_6A079
@@ -5250,7 +5250,7 @@ loc_6A345:
 		LDA		byte_59
 		CMP		#$FF
 		BEQ		loc_6A356
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		byte_59
 		RTS
 loc_6A356:
@@ -5416,7 +5416,7 @@ loc_6A42E:
 		JSR		sub_6B5B7
 		LDA		byte_575
 		BPL		loc_6A467
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		#$20
 		BCS		loc_6A45F
 		LDA		byte_6A6B
@@ -5695,7 +5695,7 @@ sub_6A61F:
 		BNE		loc_6A685
 loc_6A633:
 		LDA		#6
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		#5
 		STA		byte_CF
 		JSR		sub_6B2CF
@@ -5742,7 +5742,7 @@ loc_6A685:
 		BCC		loc_6A6BD
 loc_6A68C:
 		LDA		#6
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		#5
 loc_6A693:
 		STA		byte_65
@@ -6058,7 +6058,7 @@ sub_6A86B:
 		AND		#$10
 		BNE		loc_6A8B1
 loc_6A8AB:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		CMP		word_4
 		RTS
 loc_6A8B1:
@@ -6695,7 +6695,7 @@ loc_6AC17:
 		ROR		byte_59
 		DEX
 		BNE		loc_6AC17
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#3
 		CLC
 		ADC		byte_59
@@ -6729,7 +6729,7 @@ sub_6AC36:
 		LDA		#$FF
 		SEC
 		SBC		_players_INT,X
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		LSR
 		LSR
 		LDX		#word_4
@@ -6769,9 +6769,12 @@ loc_6AC97:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_sF:
+; get the random number, muls it with argument and returns the highter 8-bit
+; nibble of result
+;
+_b4_sF_rand_mul_A:
 		PHA
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		STA		word_3C
 		LDA		#0
 		STA		word_3C+1
@@ -6786,12 +6789,15 @@ _b4_sF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6ACBE:
+; get the random number after some more additional generating, seems makes
+; the number more random
+;
+_rand_ex:
 		TXA
 		PHA
 		TYA
 		PHA
-		LDA		byte_6A68
+		LDA		_tmp_rand_adjust
 		AND		#$F
 		TAX
 		INX
@@ -6855,7 +6861,7 @@ loc_6AD13:
 		JMP		_div16_to_8
 
 loc_6AD1F:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#1
 		STA		word_4
 		LDA		#0
@@ -6918,11 +6924,11 @@ loc_6AD79:
 		BEQ		loc_6AD87
 		CMP		#1
 		BEQ		loc_6AD87
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		STA		word_4
 		RTS
 loc_6AD87:
-		JSR		sub_6ACBE
+		JSR		_rand_ex
 		AND		#1
 		STA		word_4
 		RTS
@@ -6943,7 +6949,7 @@ sub_6AD8F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADA4:
 		LDA		#$B
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		#$36
 		LDX		#word_4
@@ -7169,7 +7175,7 @@ sub_6AF04:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF0E:
 		LDA		#$19
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		#$A
 		STA		byte_CF
 		LDA		#0
@@ -7307,7 +7313,7 @@ loc_6AFEF:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFF7:
 		LDA		#$F
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		#$23
 		STA		word_4
 		LDA		#0
@@ -7358,7 +7364,7 @@ sub_6B04B:
 		BPL		loc_6B071
 		JSR		sub_6AABA
 		LDA		#$14
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		ADC		#$E
 		STA		word_4
 		LDA		#0
@@ -9145,7 +9151,7 @@ sub_6BACB:
 		ROR		byte_5B
 		INC		byte_5B
 		LDA		byte_5B
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		LDX		#byte_59
 		JSR		_sub8_from_16
 		LDA		byte_43
@@ -9718,7 +9724,7 @@ sub_6BEA4:
 		ASL
 		TAY
 		LDA		word_6B4A1+1,Y
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		word_6B4A1,Y
 		STA		word_4
@@ -9739,7 +9745,7 @@ loc_6BEC4:
 		ASL
 		TAY
 		LDA		word_6B4C5+1,Y
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		word_6B4C5,Y
 		STA		word_4
@@ -9777,7 +9783,7 @@ _b4_s1E:
 		CMP		#$FF
 		BEQ		loc_6BF1B
 		LDA		_b4_d15+1,Y
-		JSR		_b4_sF
+		JSR		_b4_sF_rand_mul_A
 		CLC
 		ADC		_b4_d15,Y
 		STA		word_4

@@ -67,14 +67,14 @@
 		PTR_IDX		_b0_s48_get_count_returnable_locations
 		PTR_IDX		_b0_s49_set_returnable_locations_bit
 		PTR_IDX		_b0_s4D_is_anybody_owns_item
-		PTR_IDX		_b0_s4E
-		PTR_IDX		_b0_s4F
+		PTR_IDX		_b0_s4E_get_anybody_alone_temporary
+		PTR_IDX		_b0_s4F_return_party_members
 		PTR_IDX		_b0_s50_players_item_buffs_refresh
 		PTR_IDX		_b0_s52_battle_typeFF_launch
 		PTR_IDX		_b0_s53_random_encounter_select
-		PTR_IDX		_b0_s54
-		PTR_IDX		_b0_s55
-		PTR_IDX		_b0_s56
+		PTR_IDX		_b0_s54_heal_us_all_max
+		PTR_IDX		_b0_s55_test_spell_allow_location
+		PTR_IDX		_b0_s56_get_hero_alone_temporary
 		PTR_IDX		_b0_s5B_run_command_spell
 		PTR_IDX		_b0_s5C_player_inventory_search_for_cursed_item
 		PTR_IDX		_b0_s5D_run_command_item_use
@@ -85,9 +85,9 @@
 		PTR_IDX		_b0_s62 ; spell related
 		PTR_IDX		_b0_s63_player_unequip_all_type_items
 		PTR_IDX		_b0_s64_respawn_at_the_king
-		PTR_IDX		_b0_s65
-		PTR_IDX		_b0_s66
-		PTR_IDX		_b0_s67
+		PTR_IDX		_b0_s65_ram_clear_game_vars_init
+		PTR_IDX		_b0_s66_byte_6D40_clear
+		PTR_IDX		_b0_s67_mysterious_hat_mp_modifier
 
 		PTR_IDX		_b0_d3F_other_spell_related_data
 		PTR_IDX		_b0_d42_item_use_effects_list
@@ -3030,6 +3030,8 @@ _b0_s30_tavern_char_gender_read:
 		JMP		_extract_gender_bit
 
 ; =============== S U B	R O U T	I N E =======================================
+; return the list of characters in formation, and it's number
+;
 _b0_s31_get_party_chars_list:
 		LDY		#0
 		LDX		#0
@@ -3752,48 +3754,63 @@ loc_9D80:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s56:
+; get the hero party member, put it into the first formation slot, then
+; remove all other players from party and store them in temporary array
+; along with it's statuses. in case there are no live heroes, put first
+; undead and non-numb player.
+; following is a set of routines for some places in game where you must
+; leave your party and go alone (fortune telled in Assaram, or Navel of
+; the Earth srine)
+;
+_b0_s56_get_hero_alone_temporary:
 		LDX		#3
 loc_9D84:
 		TXA
 		ASL
 		TAY
-		LDA		_players_status,Y
+		LDA		_players_status,Y			; look for non-dead player
 		AND		_players_status+1,Y
 		BPL		loc_9D98
-		LDA		_players_class_gender,X
+		LDA		_players_class_gender,X		; we need hero class
 		STX		word_4
 		AND		#7
-		BEQ		loc_9D9E
+		BEQ		_get_player_alone_temporary
 loc_9D98:
 		DEX
-		BPL		loc_9D84
+		BPL		loc_9D84					; if there is no alive hero, let's find someone else
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s4E:
+; get first non-dead and non-numb party player and put it to the head of
+; party, remove the rest of the players and store them into temp list
+; not counting a glitch, when all players may be dead, there should be at
+; least one last live player in party
+;
+_b0_s4E_get_anybody_alone_temporary:
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
-loc_9D9E:
-		LDA		word_4
-		STA		byte_6A6C
-		JSR		loc_9DF8
+
+; =============== S U B	R O U T	I N E =======================================
+_get_player_alone_temporary:
+		LDA		word_4							; ok, here we got non dead player and it may be
+		STA		_formation_char_index_tmp		; hero or not (if it's dead), and even can be not first in formation.
+		JSR		_swap_to_first_in_formation		; here we put it first in formation anyway
 		JSR		_b0_s31_get_party_chars_list
 		LDA		word_4
-		STA		byte_6A62
+		STA		_party_chars_count_tmp			; save the total party chars count (even dead ones)
 		LDX		#0
 loc_9DB0:
-		LDA		_party_formation+1,X
-		STA		byte_6A59,X
+		LDA		_party_formation+1,X			; remove players from party formation and put
+		STA		_tmp_party_formation,X			; into temp array
 		LDA		#$FF
 		STA		_party_formation+1,X
 		TXA
 		ASL
 		TAY
-		LDA		_players_status+2,Y
-		STA		byte_6A5C,Y
+		LDA		_players_status+2,Y				; also the same with statuses
+		STA		_tmp_party_formation_status,Y
 		LDA		_players_status+3,Y
-		STA		byte_6A5D,Y
+		STA		_tmp_party_formation_status+1,Y
 		LDA		#0
 		STA		_players_status+2,Y
 		STA		_players_status+3,Y
@@ -3803,27 +3820,36 @@ loc_9DB0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s4F:
+; restore party members, removed with previous routine from the temp storage,
+; swaps the first player back to it's place
+;
+_b0_s4F_return_party_members:
 		LDX		#0
 loc_9DDA:
 		TXA
-		LDA		byte_6A59,X
+		LDA		_tmp_party_formation,X
 		STA		_party_formation+1,X
 		TXA
 		ASL
 		TAY
-		LDA		byte_6A5C,Y
+		LDA		_tmp_party_formation_status,Y
 		STA		_players_status+2,Y
-		LDA		byte_6A5D,Y
+		LDA		_tmp_party_formation_status+1,Y
 		STA		_players_status+3,Y
 		INX
 		CPX		#3
 		BNE		loc_9DDA
-		JMP		loc_9DF8
-loc_9DF8:
+
+;; FALLTHROUGH ;;
+
+; =============== S U B	R O U T	I N E =======================================
+; swaps the first formation character with selected one from the temp var
+; if both are the same, do nothing
+;
+_swap_to_first_in_formation:
 		LDA		#0
 		STA		byte_CF
-		LDA		byte_6A6C
+		LDA		_formation_char_index_tmp
 		AND		#3
 		BEQ		locret_9E08
 		STA		byte_D0
@@ -4010,7 +4036,7 @@ loc_9EF3:
 		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$3F
-		JSR		_b0_s67
+		JSR		_b0_s67_mysterious_hat_mp_modifier
 		JSR		_b0_sB_player_MP_consume
 		BCS		loc_9F13
 		LDA		#$20	; "MP is not high enough"
@@ -4042,7 +4068,7 @@ loc_9F34:
 		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
 		AND		#$3F
-		JSR		_b0_s67
+		JSR		_b0_s67_mysterious_hat_mp_modifier
 		JSR		_b0_s9_player_MP_subtract
 		JSR		_wnd3E_bE_s5
 		MSGX	_msg_m00,$002	; "<name> attacks"
@@ -4053,7 +4079,7 @@ loc_9F34:
 		STA		byte_D2
 		LDX		#$F
 		JSR		_sleep_X_sync
-		JSR		_b0_s55
+		JSR		_b0_s55_test_spell_allow_location
 		BCS		loc_9F75
 		MSGX	_msg_m00,$081	; "However, the spell is broken"
 		JMP		_wait_for_key
@@ -4127,38 +4153,38 @@ locret_9FE9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s54:
+_b0_s54_heal_us_all_max:
 		LDA		#$1F
-		STA		byte_49
+		STA		byte_49			; use the maximum of heal value
 		LDA		#$FF
-		STA		byte_46
-		BNE		sub_9FF8
+		STA		byte_46			; disables the display of heal result
+		BNE		_heal_us_all	; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
-_cmd_spell_heal_more:
+_cmd_spell_heal_us_all:
 		LDA		#0
-		STA		byte_46
+		STA		byte_46			; enables the display of heal result
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_9FF8:
+_heal_us_all:
 		LDX		#$FF
-		STX		byte_CF
+		STX		byte_CF			; set the arg to heal to max
 		STX		byte_D0
 		INX
 loc_9FFF:
 		TXA
 		PHA
-		STA		byte_CE
+		STA		byte_CE			; heal only non-dead players
 		STA		byte_D2
 		JSR		_check_if_player_is_dead_ex
 		BCC		loc_A031
 		LDA		byte_49
 		CMP		#$1F
-		BEQ		loc_A01D
-		LDA		#$C
-		FARX	_b4_sF
+		BEQ		loc_A01D		; check if we need to randomize hp to add
+		LDA		#$C				; do it
+		FARX	_b4_sF_rand_mul_A
 		ADC		#$2C
 		STA		byte_CF
 		LDA		#0
@@ -4166,7 +4192,7 @@ loc_9FFF:
 loc_A01D:
 		JSR		_b0_s4_player_HP_add
 		LDA		byte_46
-		BNE		loc_A031
+		BNE		loc_A031		; if we need to display a message, do it
 		LDA		#$14	; "<name> has recovered"
 		JSR		_msg005_msg0xx
 		JSR		_wndMINMAX_STAT_pal_adjust
@@ -4311,7 +4337,7 @@ _cmd_spell_stepguard:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s55:
+_b0_s55_test_spell_allow_location:
 		LDA		_location_type
 		AND		#1
 		BEQ		loc_A167
@@ -4384,23 +4410,18 @@ _check_if_player_exist_or_dead:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; "applyMpCostModifiers" - this might be a little bit of a misnomer, not sure
+; this might be a little bit of a misnomer, not sure
 ; Seems to only be mysterious hat mp = mp*3/4+1
-_b0_s67:
-		PHA
-; this ended up scanning the inventory for a player...
+; "applyMpCostModifiers"
+_b0_s67_mysterious_hat_mp_modifier:
+		PHA											; this ended up scanning the inventory for a player...
 		JSR		_b0_s1E_player_euipped_item_get
-; fetch the equipped hat from the player inventory scan
-		LDA		word_6+1
-; compare to mysterious hat
-		CMP		#ITEM_EMYSTERIOUS_HAT
+		LDA		word_6+1							; fetch the equipped hat from the player inventory scan
+		CMP		#ITEM_EMYSTERIOUS_HAT				; compare to mysterious hat
 		BNE		.no_mp_cost_modifier
-; somehow we got here with A=mpCost
-		PLA
-; store result 0 if original cost was 0
-		BEQ		_store_mp_cost
-; stash the original cost for math (apply mysterious hat MP adjustment)
-		JSR		_store_mp_cost
+		PLA											; somehow we got here with A=mpCost
+		BEQ		_store_mp_cost						; store result 0 if original cost was 0
+		JSR		_store_mp_cost						; stash the original cost for math (apply mysterious hat MP adjustment)
 		LDA		#3
 		LDX		#byte_CF
 		JSR		_mul16_to_8
@@ -4421,11 +4442,11 @@ _store_mp_cost:
 		RTS
 
 _command_spell_lib:
-		.WORD	_cmd_spell_heal
-		.WORD	_cmd_spell_heal
-		.WORD	_cmd_spell_heal
-		.WORD	_cmd_spell_heal_more
-		.WORD	_cmd_spell_heal_more
+		.WORD	_cmd_spell_heal	; heal
+		.WORD	_cmd_spell_heal	; healmore
+		.WORD	_cmd_spell_heal	; healall
+		.WORD	_cmd_spell_heal_us_all
+		.WORD	_cmd_spell_heal_us_all
 		.WORD	_cmd_spell_revive
 		.WORD	_cmd_spell_revive
 		.WORD	_cmd_spell_curseoff
@@ -4816,7 +4837,7 @@ loc_A4FA:
 		ASL		byte_56
 		BEQ		loc_A52C
 		LDA		#5
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		CLC
 		ADC		#$FE
 		CLC
@@ -4862,7 +4883,7 @@ loc_A55B:
 		ASL		byte_58
 		BEQ		loc_A58D
 		LDA		#5
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		CLC
 		ADC		#$FE
 		CLC
@@ -6615,7 +6636,7 @@ _item_wizards_ring_use:
 		LDA		byte_45
 		STA		byte_CE
 		LDA		#$19
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		ADC		#$A
 		STA		byte_CF
 		LDA		#0
@@ -6730,7 +6751,7 @@ _item_medical_herb_use:
 		JSR		_common_item_use_param_load
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 		LDA		#$F
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 		ADC		#$23
 		STA		word_4
 		LDA		#0
@@ -7022,22 +7043,22 @@ _b0_d43_enemies_lib:
 		.BYTE	$3F,$50,  0,$14,  0,$37,$1F,$3C,  0,$80,  2,  2,  2,  2,  2,  2,  2,  2,$40,$3C,$74,$7C,$F7 ; (equipped?) cypress stick! (checks out on wikis)
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s65:
+_b0_s65_ram_clear_game_vars_init:
 		LDA		#0
-		STA		0
-		STA		1
+		STA		byte_0
+		STA		byte_1
 		TAY
 loc_BF57:
-		STA		(0),Y
+		STA		(byte_0),Y
 		INY
 		BNE		loc_BF57
-		INC		1
-		LDX		1
+		INC		byte_1
+		LDX		byte_1
 		CPX		#7
 		BEQ		loc_BF74
 		CPX		#1
 		BNE		loc_BF57
-		INC		1
+		INC		byte_1
 		BNE		loc_BF57
 		LDX		#1
 loc_BF6E:
@@ -7070,7 +7091,7 @@ loc_BF9D:
 		BNE		loc_BF9D
 
 ; =============== S U B	R O U T	I N E =======================================
-_b0_s66:
+_b0_s66_byte_6D40_clear:
 		LDA		#$FF
 		LDX		#0
 loc_BFA9:

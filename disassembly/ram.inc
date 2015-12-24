@@ -1665,13 +1665,11 @@ byte_6A4B:
 byte_6A58:
 		.BYTE	0
 ;----------------------------------------------
-byte_6A59:
+_tmp_party_formation:
 		.BYTE	0,0,0
-byte_6A5C:
-		.BYTE	0
-byte_6A5D:
-		.BYTE	0,0,0,0,0
-byte_6A62:
+_tmp_party_formation_status:
+		.WORD	0,0,0
+_party_chars_count_tmp:
 		.BYTE	0
 ;----------------------------------------------
 ; setting this nonzero makes enemies go nuts and fight each other and the battle to run oddly
@@ -1687,7 +1685,11 @@ byte_6A66:
 		.BYTE	0
 byte_6A67:
 		.BYTE	0
-byte_6A68:
+;----------------------------------------------
+; additional parameter, set randomly sometimes from 0 to 15, requires every time the game
+; request u16 random value to roll _rand additional number of times
+;
+_tmp_rand_adjust:
 		.BYTE	0
 ;----------------------------------------------
 ; contains 3 LSBits indicating which save slots are created, but this isn't actually save data.
@@ -1699,7 +1701,7 @@ byte_6A6A:
 		.BYTE	0
 byte_6A6B:
 		.BYTE	0
-byte_6A6C:
+_formation_char_index_tmp:
 		.BYTE	0
 byte_6A6D:
 		.BYTE	0

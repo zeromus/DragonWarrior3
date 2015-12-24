@@ -1460,7 +1460,7 @@ loc_141631:
 		CMP		#$82
 		BCC		loc_141650
 		LDA		#$82
-		FARX	_b4_sF
+		FARX	_b4_sF_rand_mul_A
 loc_141650:
 		STA		word_4
 		PLA
@@ -2833,7 +2833,7 @@ sub_141EBA:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; looking for the first non-dead player with NM status flag clear
-; returns it's index or the first char in formation if no others are left.
+; returns its index or the first char in formation if no others are left.
 ;
 _bD_s26_get_first_live_player_with_no_NM_status:
 		LDX		#0
