@@ -5380,7 +5380,7 @@ _bE_s2:
 		LDX		#0
 		STX		byte_6ACB
 		LDY		#2
-		BNE		sub_15ABED
+		BNE		sub_15ABED	; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s3:

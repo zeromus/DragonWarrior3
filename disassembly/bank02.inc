@@ -2892,7 +2892,7 @@ loc_3A39B:
 		BNE		loc_3A364
 		JSR		_rand
 		AND		#$F
-		STA		byte_6A68
+		STA		_tmp_rand_adjust
 		TXA
 		RTS
 loc_3A3AC:

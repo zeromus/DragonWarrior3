@@ -1798,7 +1798,7 @@ loc_17683B:
 		STA		_PPU_DATA
 		DEX
 		BNE		loc_17683B
-		FARX	_b0_s65
+		FARX	_b0_s65_ram_clear_game_vars_init
 		JSR		_disp_regs_init
 		LDA		#$F
 		LDX		#$19
@@ -1911,9 +1911,9 @@ sub_174C62:
 		LDA		_global_flags_array.byte5
 		AND		#1
 		BEQ		loc_174C84
-		FARX	_b0_s4F
+		FARX	_b0_s4F_return_party_members
 		FARX	_bE_s18
-		FARX	_b0_s4E
+		FARX	_b0_s4E_get_anybody_alone_temporary
 		JMP		loc_174C87
 loc_174C84:
 		FARX	_bE_s18
@@ -2665,7 +2665,7 @@ loc_1751F7:
 		JSR		_ppu_on_and_fade_in
 		LDA		#6
 		JSR		_mmc1_prg_set
-		FARX	_b0_s66
+		FARX	_b0_s66_byte_6D40_clear
 		LDA		_global_flags_array.byte10
 		BPL		locret_175211
 		LDA		_global_flags_array.byte16
@@ -6314,14 +6314,14 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s48_get_count_returnable_locations					; $110
 		FILE_IDX	$0,_b0_s49_set_returnable_locations_bit					; $111
 		FILE_IDX	$0,_b0_s4D_is_anybody_owns_item					; $12C
-		FILE_IDX	$0,_b0_s4E					; $145
-		FILE_IDX	$0,_b0_s4F					; $146
+		FILE_IDX	$0,_b0_s4E_get_anybody_alone_temporary					; $145
+		FILE_IDX	$0,_b0_s4F_return_party_members					; $146
 		FILE_IDX	$0,_b0_s50_players_item_buffs_refresh					; $149
 		FILE_IDX	$0,_b0_s52_battle_typeFF_launch					; $14D
 		FILE_IDX	$0,_b0_s53_random_encounter_select					; $14F
-		FILE_IDX	$0,_b0_s54					; $155
-		FILE_IDX	$0,_b0_s55					; $173
-		FILE_IDX	$0,_b0_s56					; $17B
+		FILE_IDX	$0,_b0_s54_heal_us_all_max					; $155
+		FILE_IDX	$0,_b0_s55_test_spell_allow_location					; $173
+		FILE_IDX	$0,_b0_s56_get_hero_alone_temporary					; $17B
 		FILE_IDX	$0,_b0_s5B_run_command_spell					; $E4
 		FILE_IDX	$0,_b0_s5C_player_inventory_search_for_cursed_item					; $129
 		FILE_IDX	$0,_b0_s5D_run_command_item_use					; $EC
@@ -6332,9 +6332,9 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s62					; $12A
 		FILE_IDX	$0,_b0_s63_player_unequip_all_type_items					; $130
 		FILE_IDX	$0,_b0_s64_respawn_at_the_king					; $12E
-		FILE_IDX	$0,_b0_s65					; $163
-		FILE_IDX	$0,_b0_s66					; $164
-		FILE_IDX	$0,_b0_s67					; $199
+		FILE_IDX	$0,_b0_s65_ram_clear_game_vars_init					; $163
+		FILE_IDX	$0,_b0_s66_byte_6D40_clear					; $164
+		FILE_IDX	$0,_b0_s67_mysterious_hat_mp_modifier					; $199
 
 		FILE_IDX	$1,_b1_s9					; $D8
 		FILE_IDX	$1,_b1_sA					; $D9
@@ -6369,7 +6369,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_sA					; $75
 		FILE_IDX	$4,_b4_sC					; $77
 		FILE_IDX	$4,_b4_sE					; $A7
-		FILE_IDX	$4,_b4_sF					; $7C
+		FILE_IDX	$4,_b4_sF_rand_mul_A					; $7C
 		FILE_IDX	$4,_b4_s10					; $B0
 		FILE_IDX	$4,_b4_s12					; $B1
 		FILE_IDX	$4,_b4_s13					; $B3
