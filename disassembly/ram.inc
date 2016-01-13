@@ -1729,11 +1729,11 @@ byte_6A7B:
 ; battle formation order (most of time is 0 1 2 3, but there are at least two cases during the game,
 ; when you may change the battle formation as well, see _b0_s3B_players_data_swap_in_battle usage)
 ; and status flags: confused ($10), sleep ($08), parry? ($04)
-_player_battle_order_and_flags:
+_player_battle_order_and_flags: ; 6A9B
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u8[4] - AGI realtime value cached for 4 players (modified realtime by spells and effects)
-_players_rAGI:
+_players_rAGI: ; 6A9F
 		.BYTE	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - DEF realtime value cached for 4 players (modified realtime by spells and effects)
