@@ -609,6 +609,29 @@ _wait_for_nmi_is_over:
 .nmi_wait_loop:
 		CMP		_nmi_counter
 		BEQ		.nmi_wait_loop
+
+; hack for improved randomness
+; munge entropy with pads 1&2
+; (disabled until the time is right)
+;		PHA
+;		TXA
+;		PHA
+;		TYA
+;		PHA
+;		LDX		#$01               ; setup a 2-times loop across pads
+;.random_hack_loop:
+;		JSR		_read_pad          ; (to _pads_tmp)
+;		LDA		_pads_tmp
+;		EOR		_rand_seed,X       ; EOR with entropy (Xth byte)
+;		STA		_rand_seed,X       ; store back to entropy (Xth byte)
+;		DEX
+;		BPL		.random_hack_loop  ; branch unless we hit FF
+;		PLA
+;		TAY
+;		PLA
+;		TAX
+;		PLA
+
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -618,7 +641,7 @@ _wait_for_nmi_is_over:
 ;"sub_msg_WaitTick"
 _wait_for_nmi_is_over_sync:
 		JSR		_wait_for_nmi_is_over
-		JMP		_spr_shuffle_safe
+		JMP		_spr_shuffle_safe ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 ; the same as Sleep_X, but with to shuffle sync
