@@ -319,6 +319,8 @@ loc_F8220:
 		BNE		loc_F8220
 		LDX		#4
 		STX		byte_51
+
+; loop from 4-B (across the enemies in the 540 table)
 loc_F8238:
 		LDX		byte_51
 		LDA		byte_540,X

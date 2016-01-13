@@ -3254,13 +3254,13 @@ loc_3A642:
 		JSR		_sys0_byte_read_x
 		STA		byte_46
 		BIT		byte_46
-		BVS		loc_3A660
+		BVS		loc_3A660 ; branch if bit #$40 of item use effect is set
 		LDX		#$80
 		AND		#$20
 		BNE		loc_3A66F
 		LDX		byte_51
 		LDA		byte_540,X
-		AND		#3
+		AND		#3 ; fetch player number from table 540
 		TAX
 		JMP		loc_3A66F
 loc_3A660:

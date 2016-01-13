@@ -6259,14 +6259,14 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_sE_player_STATUS_read					; $2F
 		FILE_IDX	$0,_b0_sF_unassigned_formation_char_name_read					; $30
 		FILE_IDX	$0,_b0_s10_tavern_char_name_read					; $31
-		FILE_IDX	$0,_b0_s11_player_STR_read					; $32
-		FILE_IDX	$0,_b0_s12_player_AGI_read					; $33
-		FILE_IDX	$0,_b0_s13_player_VIT_read					; $34
-		FILE_IDX	$0,_b0_s14_player_INT_read					; $35
-		FILE_IDX	$0,_b0_s15_player_LUCK_read					; $36
-		FILE_IDX	$0,_b0_s16_player_ATK_read					; $37
+		FILE_IDX	$0,_b0_s11_player_EffSTR_calc					; $32
+		FILE_IDX	$0,_b0_s12_player_EffAGI_calc					; $33
+		FILE_IDX	$0,_b0_s13_player_EffVIT_calc					; $34
+		FILE_IDX	$0,_b0_s14_player_EffINT_calc					; $35
+		FILE_IDX	$0,_b0_s15_player_EffLUCK_calc					; $36
+		FILE_IDX	$0,_b0_s16_player_EffATK_calc					; $37
 		FILE_IDX	$0,_b0_s17_player_rATK_read					; $38
-		FILE_IDX	$0,_b0_s18_player_DEF_read					; $39
+		FILE_IDX	$0,_b0_s18_player_EffDEF_calc					; $39
 		FILE_IDX	$0,_b0_s19_player_EXP_read					; $3A
 		FILE_IDX	$0,_b0_s1A_player_EXP_add					; $3B
 		FILE_IDX	$0,_b0_s1B_player_gold_read					; $3C
