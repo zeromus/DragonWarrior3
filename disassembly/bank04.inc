@@ -82,7 +82,7 @@ _common_battle_handler:
 		FARX	_b1_s9
 loc_68080:
 		FARX	_b1_sB
-		JSR		sub_6814E
+		JSR		sub_6814E ; speed-related table setup
 		FARX	_b2_sB
 		CMP		#$FD
 		BEQ		.common_battle_won
@@ -195,6 +195,8 @@ loc_68143:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6814E:
 		JSR		sub_68183
+
+; 8-times loop: table 540 gets the contents of table 558, multiplied by 8 (leaving room for later marking)
 		LDX		#0
 loc_68153:
 		LDA		byte_558,X
@@ -205,6 +207,8 @@ loc_68153:
 		INX
 		CPX		#$C
 		BNE		loc_68153
+
+; oddly, mark first 4 entries of table 540 with numbers 0,1,2,3
 		LDX		#0
 loc_68163:
 		TXA
@@ -213,6 +217,8 @@ loc_68163:
 		INX
 		CPX		#4
 		BNE		loc_68163
+
+; mark next 4 entries (enemies) ORING with #$80 as well as numbers 0,1,2,3,4,5,6,7
 		LDX		#0
 		LDY		#4
 loc_68173:
@@ -227,22 +233,28 @@ loc_68173:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Main purpose seems to be to setup a 12-entry table at u8[558] containing the turn # for each actor
+;
 sub_68183:
 		LDY		#0
+
+; loop 4 times for each player
 loc_68185:
 		STY		byte_CE
-		TYA
-		PHA
+		TYA ; stash Y
+		PHA	
 		LDA		_players_rAGI,Y
 		STA		word_4
-		JSR		sub_68201
+		JSR		_randomize_25_percent
 		PLA
-		TAY
-		LDA		word_3C
-		STA		byte_54C,Y
+		TAY ; unstash Y
+		LDA		word_3C ; load randomized AGI
+		STA		byte_54C,Y ; store
 		INY
-		CPY		#4
+		CPY		#4 
 		BNE		loc_68185
+
+; setup loop across 8 enemies, probably
 		LDX		#0
 		LDY		#4
 loc_681A1:
@@ -251,20 +263,22 @@ loc_681A1:
 		PHA
 		TYA
 		PHA
-		JSR		sub_6B73E
+		JSR		sub_6B73E ; load enemy's agility
 		LDA		byte_59
 		STA		word_4
-		JSR		sub_68201
+		JSR		_randomize_25_percent
 		PLA
 		TAY
 		PLA
 		TAX
 		LDA		word_3C
-		STA		byte_54C,Y
+		STA		byte_54C,Y ; store to actor speed table
 		INY
 		INX
 		CPX		#8
 		BNE		loc_681A1
+
+; initialize u8[$42] and the 12-entry table at u8[$540] to FF
 		LDA		#$FF
 		LDX		#0
 		STX		byte_42
@@ -273,38 +287,45 @@ loc_681C6:
 		INX
 		CPX		#$C
 		BNE		loc_681C6
+
+;repeat 12 times:
+;look for maximum unused agility in table at byte_54C
 loc_681CE:
 		LDA		#0
 		STA		byte_43
 		LDX		#0
 loc_681D4:
 		LDA		byte_540,X
-		BEQ		loc_681E6
-		LDA		byte_54C,X
+		BEQ		loc_681E6 ; branch down (next iteration) if we find 0 in table 540
+		LDA		byte_54C,X ; read speed
 		CMP		byte_43
-		BEQ		loc_681E2
-		BCC		loc_681E6
+		BEQ		loc_681E2 ; branch down in case of tie
+		BCC		loc_681E6 ; BCC->JB branch down (next iteration) if speed table entry is < byte_43
 loc_681E2:
-		STA		byte_43
-		STX		byte_44
+		STA		byte_43 ; store that table entry in byte_43
+		STX		byte_44 ; store that index in byte_44
 loc_681E6:
 		INX
-		CPX		#$C
+		CPX		#$C ; no more than 12 entries to look through
 		BNE		loc_681D4
-		LDX		byte_44
+
+		LDX		byte_44 ; load the index with the maximum unused agility
 		LDA		#0
-		STA		byte_540,X
-		LDA		byte_42
-		STA		byte_558,X
+		STA		byte_540,X ; mark as used
+		LDA		byte_42 ; unstash current actor counter
+		STA		byte_558,X ; 
 		CLC
 		ADC		#1
-		STA		byte_42
+		STA		byte_42 ; actor counter is incremented
 		CMP		#$C
-		BNE		loc_681CE
+		BNE		loc_681CE ; run again if we havent run 12 times
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68201:
+; u8[$3C] gets randomized roughly to a [75%,99%] range (doubtful that 100% is possible)
+; returns also in A
+; 
+_randomize_25_percent:
 		LDA		word_4
 		LSR
 		LSR
@@ -319,6 +340,7 @@ sub_68201:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; initializes battle status type stuff
 _b4_s22:
 		LDA		#0
 		STA		byte_566
@@ -337,10 +359,10 @@ loc_68230:
 		BNE		loc_68230
 		LDA		#$FF
 		STA		_battle_type_fight
-		FARX	_b0_s55_test_spell_allow_location
+		FARX	_b0_s55_test_spell_allow_location		; test whether spells are allowed here
 		BCS		loc_68245
 		LDA		#$10
-		STA		byte_568
+		STA		byte_568		; set flag indicating spells are broken here
 loc_68245:
 		LDX		#0
 		LDY		#0
@@ -355,17 +377,23 @@ loc_68252:
 		CPX		#8
 		BNE		loc_68249
 		STY		byte_4C
+
+; setup a 4-times loop across each player
 		LDX		#0
-loc_6825C:
+.bs_init_player:
 		STX		byte_51
 		TXA
 		STA		_player_battle_order_and_flags,X
 		STA		byte_CE
-		JSR		_sram_b0_s12_player_AGI_read
+
+; calculate EffAGI as default rAGI
+		JSR		_sram_b0_s12_player_EffAGI_calc
 		LDX		byte_51
-		LDA		word_4
+		LDA		word_4 ; load the EffAGI calculated above
 		STA		_players_rAGI,X
-		JSR		_sram_b0_s18_player_DEF_read
+
+; calculate EffDEF as default rDEF
+		JSR		_sram_b0_s18_player_EffDEF_calc
 		LDA		byte_51
 		ASL
 		TAX
@@ -373,6 +401,7 @@ loc_6825C:
 		STA		_players_rDEF,X
 		LDA		word_4+1
 		STA		_players_rDEF+1,X
+
 		LDA		byte_51
 		ASL
 		TAX
@@ -382,7 +411,9 @@ loc_6825C:
 		LDA		_players_status+1,X
 		AND		#$E0
 		STA		_players_status+1,X
-		JSR		_sram_b0_s16_player_ATK_read
+
+; calculate EffATK as default rATK
+		JSR		_sram_b0_s16_player_EffATK_calc
 		LDA		byte_51
 		ASL
 		TAX
@@ -393,7 +424,9 @@ loc_6825C:
 		LDX		byte_51
 		INX
 		CPX		#4
-		BNE		loc_6825C
+		BNE		.bs_init_player ; branch up if we're not done for all 4 characters
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s26:
@@ -2724,6 +2757,7 @@ _bs_emove_29_chant_slow:
 		JMP		sub_694B8
 
 ; =============== S U B	R O U T	I N E =======================================
+; related to debuffing party's rAGI
 sub_691D9:
 		JSR		sub_691DF
 		JMP		loc_694D2
@@ -2737,15 +2771,15 @@ sub_691DF:
 loc_691E9:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
-		BPL		locret_69219
+		BPL		locret_69219 ; branch if dead (I think)
 		LDA		#$C0
 		JSR		sub_6A84F
 		BCS		loc_6921A
-		JSR		_sram_b0_s12_player_AGI_read
+		JSR		_sram_b0_s12_player_EffAGI_calc	; EffAGI calculated to word_4
 		LDA		_players_rAGI,X
-		CMP		word_4
-		BCC		loc_69204
-		LDA		word_4
+		CMP		word_4		; compare current rAGI against unmodified EffAGI
+		BCC		loc_69204 ; BCC->JB branch down if effective AGI is less than rAGI (do I have this right?)
+		LDA		word_4		; reload EffAGI
 loc_69204:
 		PHA
 		LDA		_players_rAGI,X
@@ -2756,8 +2790,8 @@ loc_69204:
 loc_6920F:
 		STA		_players_rAGI,X
 		PLA
-		JSR		sub_6B2CF
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3E
+		JSR		_set_msg_number_parameter_F8_equ_A
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3E ; Agility goes down <number> points
 locret_69219:
 		RTS
 loc_6921A:
@@ -2885,7 +2919,7 @@ _bs_emove_2B_zoma_freeze_beam:
 		PHA
 		LDA		byte_566
 		PHA
-		JSR		_b4_s22
+		JSR		_b4_s22 ; related to initializing of battle status
 		PLA
 		STA		byte_566
 		AND		#$C0
@@ -3144,6 +3178,9 @@ sub_694B8:
 		JSR		sub_6B32F
 
 ; =============== S U B	R O U T	I N E =======================================
+; I think this is probably a foreach-player loop used by multiple spell handlers
+; (a callback is put in word_3E)
+;
 sub_694C1:
 		LDY		#0
 loc_694C3:
@@ -3242,9 +3279,9 @@ loc_69562:
 		LSR
 		LSR
 		TAX
-		LDA		off_6BE2A,X
+		LDA		_bs_pc_action_fptr_tbl,X
 		STA		word_3C
-		LDA		off_6BE2A+1,X
+		LDA		_bs_pc_action_fptr_tbl+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
 loc_6957D:
@@ -3295,7 +3332,7 @@ loc_695B4:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_pcAction_00_attack:
-		JSR		_sram_b0_s16_player_ATK_read
+		JSR		_sram_b0_s16_player_EffATK_calc
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3547,7 +3584,7 @@ _bs_pcAction_01_chant:
 		JSR		sub_68FEB
 		JSR		sub_6A39F
 loc_697AA:
-; the table begins at entry #$12; spells less than that use entry 0
+; the table begins at entry #$12 (or is it #$11?); spells less than that use entry 0
 		LDA		byte_49
 		CMP		#$12
 		BCS		loc_697B4
@@ -4024,7 +4061,7 @@ sub_69ABF:
 loc_69AD1:
 		STA		byte_CE
 		JSR		sub_6B2DB
-		JMP		sub_691DF
+		JMP		sub_691DF	; tailcall
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69ADB:
@@ -4058,19 +4095,19 @@ loc_69B03:
 loc_69B0E:
 		STA		byte_518,X
 		PLA
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E
 loc_69B18:
 		JMP		sub_6B3D8
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69B1B:
+_bs_spell_speedup:
 		JSR		_bs_extract_target_from_move
 		BMI		sub_69B5F
 		LDA		#<[sub_69B2E]
 		LDX		#>[sub_69B2E]
 		JSR		sub_6BBD0
-		JMP		sub_694C1
+		JMP		sub_694C1	; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B2E:
@@ -4085,7 +4122,7 @@ sub_69B34:
 		JMP		loc_69B7E
 loc_69B3E:
 		JSR		sub_6B3D2
-		JSR		_sram_b0_s12_player_AGI_read
+		JSR		_sram_b0_s12_player_EffAGI_calc
 		LDA		_players_rAGI,X
 		ADC		word_4
 		BCC		loc_69B54
@@ -4096,7 +4133,7 @@ loc_69B3E:
 loc_69B54:
 		STA		_players_rAGI,X
 		LDA		word_4
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4132,11 +4169,15 @@ loc_69B7E:
 loc_69B95:
 		STA		byte_518,X
 		LDA		byte_59
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69BA0:
+; HEAL: restore 10*random + 25 ?
+; HEALMORE: restore 20*random + 70 ?
+; HEALALL: restore 40*random + 140 ?
+;
+_bs_spell_heal_various_single:
 		JSR		sub_6BF22
 loc_69BA3:
 		JSR		_bs_extract_target_from_move
@@ -4151,23 +4192,23 @@ loc_69BAD:
 		JSR		_b4_s14
 		AND		#7
 		STA		byte_64
-		LDA		byte_49
+		LDA		byte_49				; reload spell number
 		SEC
-		SBC		#$1A
+		SBC		#$1A					; subtract #$1A to rebase spells 1A, 1B, 1C down to a 3-entry table
 		TAY
-		LDA		byte_69BDD,Y
+		LDA		_heal_multiplier_tbl,Y
 		JSR		_b4_sF_rand_mul_A
 		CLC
-		ADC		byte_69BDA,Y
+		ADC		_heal_base_tbl,Y
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
-		JMP		loc_6A42E
+		JMP		loc_6A42E			; TAILCALL
 loc_69BD7:
-		JMP		sub_69443
-byte_69BDA:
+		JMP		sub_69443			; TAILCALL
+_heal_base_tbl:
 		.BYTE	$19,$46,$8C
-byte_69BDD:
+_heal_multiplier_tbl:
 		.BYTE	 $A,$14,$28
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4363,7 +4404,7 @@ sub_69D20:
 		STA		word_3E
 		LDA		#>[sub_69D2F]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		sub_694C1	; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69D2F:
@@ -4592,7 +4633,11 @@ sub_69EC5:
 		JMP		loc_6917E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69ECB:
+; Stats for bedragon'd players:
+; ATK: #$12C
+; DEF: #$C8
+; AGI: #$64
+_bs_spell_bedragon:
 		JSR		sub_6B2B3
 		STA		byte_D2
 		TAX
@@ -4684,7 +4729,7 @@ sub_69F64:
 		STA		word_3E
 		LDA		#>[sub_69F7F]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		sub_694C1 ; TAILCALL
 loc_69F7A:
 		JMP		loc_6932C
 
@@ -4879,7 +4924,7 @@ sub_6A0B4:
 		STA		byte_54C,X
 		LDA		#$1F
 		STA		byte_558,X
-		JMP		sub_69BA0
+		JMP		_bs_spell_heal_various_single
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0C9:
@@ -4893,7 +4938,7 @@ sub_6A0C9:
 		STA		word_3E
 		LDA		#>[sub_6A0EF]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		sub_694C1 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0E9:
@@ -4960,7 +5005,7 @@ sub_6A13C:
 		STA		word_3E
 		LDA		#>[sub_690A3]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		sub_694C1 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A158:
@@ -5122,7 +5167,7 @@ off_6A241:
 		.WORD	sub_6A23B
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A263:
+_bs_spell_transform:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6A2C5
 		STA		byte_D3
@@ -5148,15 +5193,17 @@ loc_6A282:
 		ORA		word_4
 		ORA		#$10
 		STA		_player_battle_order_and_flags,X
-		LDA		_players_AGI,Y
-		STA		_players_rAGI,X
+		LDA		_players_AGI,Y ; read SOURCE AGI (not EffAGI) (status effects arent carried over, naturally)
+		STA		_players_rAGI,X ; copy to rAGI 
 		LDA		#5
 		STA		byte_6A4B,X
 		STY		byte_CE
+
+; calculate EffDEF into rDEF
 		TXA
 		ASL
 		PHA
-		JSR		_sram_b0_s18_player_DEF_read
+		JSR		_sram_b0_s18_player_EffDEF_calc
 		PLA
 		TAX
 		LDA		word_4
@@ -5164,8 +5211,10 @@ loc_6A282:
 		LDA		word_4+1
 		STA		_players_rDEF+1,X
 		TXA
+
+; calculate EffATK into rATK
 		PHA
-		JSR		_sram_b0_s16_player_ATK_read
+		JSR		_sram_b0_s16_player_EffATK_calc
 		PLA
 		TAX
 		LDA		word_4
@@ -5173,6 +5222,7 @@ loc_6A282:
 		LDA		word_4+1
 		STA		_players_rATK+1,X
 		RTS
+
 loc_6A2C5:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
 loc_6A2C8:
@@ -5698,7 +5748,7 @@ loc_6A633:
 		JSR		_b4_sF_rand_mul_A
 		ADC		#5
 		STA		byte_CF
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		STA		byte_D0
 		JSR		_sram_b0_sB_player_MP_consume
 		BCS		loc_6A650
@@ -5796,7 +5846,7 @@ loc_6A6E9:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A747
-		JSR		_sram_b0_s18_player_DEF_read
+		JSR		_sram_b0_s18_player_EffDEF_calc
 		LDA		byte_CE
 		ASL
 		TAX
@@ -5894,7 +5944,7 @@ loc_6A797:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A7BB
-		JSR		_sram_b0_s18_player_DEF_read
+		JSR		_sram_b0_s18_player_EffDEF_calc
 		LDA		byte_47
 		BEQ		loc_6A7AA
 		LSR		word_4+1
@@ -6030,7 +6080,7 @@ sub_6A86B:
 		CMP		#$FF
 		BEQ		loc_6A8B1
 		PHA
-		JSR		_sram_b0_s15_player_LUCK_read
+		JSR		_sram_b0_s15_player_EffLUCK_calc
 		LDA		word_4
 		PHA
 		LDA		#$80
@@ -6769,8 +6819,9 @@ loc_6AC97:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; get the random number, muls it with argument and returns the highter 8-bit
-; nibble of result
+; get a random number, muls it with argument and returns the higher byte
+; (stored in word_3C with high byte cleared also)
+; in other word, randomizes the argument completely from [0,arg-1]
 ;
 _b4_sF_rand_mul_A:
 		PHA
@@ -7274,12 +7325,12 @@ sub_6AFB3:
 		JSR		_rand
 		AND		#1
 		ADC		#1
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		PLA
 		CLC
 		ADC		_msg_number_parameter_F8
 		BCC		loc_6AFC7
-		LDA		#$FF
+		LDA		#$FF ; clamp at #$FF
 loc_6AFC7:
 		PHA
 		LDA		byte_49
@@ -7307,7 +7358,7 @@ sub_6AFD2:
 		INC		_players_MHP+1,X
 loc_6AFEF:
 		LDA		word_4
-		JSR		sub_6B2CF
+		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$A8
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7723,7 +7774,8 @@ sub_6B2C4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B2CF:
+; Stores A into _msg_number_parameter_F8 and clears out the more significant bytes
+_set_msg_number_parameter_F8_equ_A:
 		STA		_msg_number_parameter_F8
 		LDA		#0
 		STA		_msg_number_parameter_F8+1
@@ -7982,10 +8034,13 @@ byte_6B49C:
 		.BYTE	$1A,$1B,$1C
 byte_6B49F:
 		.BYTE	$1E,$1F
+; =============== T A B	L E =================================================
+; base and multiplier pairs
 word_6B4A1:
 		.WORD	 $608,$1446,$28A0, $810, $C1E,$1858, $810,$1034
 		.WORD	$2878, $A19,$102A,$1858,$143C,$1008,$1E19,$3C3C
 		.WORD	$1446,$32AF
+
 word_6B4C5:
 		.WORD	 $507, $A34,$245C, $810, $80A, $C16,$143C, $A20
 		.WORD	 $C37, $C06,$140E,$201E, $406, $A1E,$1450, $C09
@@ -8401,6 +8456,8 @@ sub_6B72F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; fetches an enemy's agility
+;
 sub_6B73E:
 		LDX		byte_64
 		LDA		byte_518,X
@@ -9649,7 +9706,7 @@ _bs_emove_fptr_tbl:
 
 ; =============== T A B L E =================================================
 ; a table of function pointers for each major PC action
-off_6BE2A:
+_bs_pc_action_fptr_tbl:
 		.WORD	_bs_pcAction_00_attack
 		.WORD	_bs_pcAction_01_chant
 		.WORD	_bs_pcAction_02_parry
@@ -9672,10 +9729,10 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	sub_69A2E
 		.WORD	sub_69A80
 		.WORD	sub_69ABF
-		.WORD	sub_69B1B
-		.WORD	sub_69BA0 ; Heal
-		.WORD	sub_69BA0
-		.WORD	sub_69BA0
+		.WORD	_bs_spell_speedup
+		.WORD	_bs_spell_heal_various_single ; Heal
+		.WORD	_bs_spell_heal_various_single ; Healmore probably
+		.WORD	_bs_spell_heal_various_single ; Healall, I guess?
 		.WORD	sub_69BE0 ; ?
 		.WORD	sub_69BE0 ; Healus
 		.WORD	sub_69BE0 ; Healusall
@@ -9687,8 +9744,8 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	sub_69DDF
 		.WORD	sub_69E5B
 		.WORD	sub_69E7F
-		.WORD	sub_6A263
-		.WORD	sub_69ECB ; BeDragon
+		.WORD	_bs_spell_transform
+		.WORD	_bs_spell_bedragon
 		.WORD	sub_69EF8
 		.WORD	sub_69F05
 		.WORD	sub_69F23

@@ -632,6 +632,8 @@ byte_500:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 byte_510:
 		.BYTE	0,0,0,0,0,0,0,0
+;----------------------------------------------
+; enemy agilities
 byte_518:
 		.BYTE	0,0,0,0,0,0,0,0
 byte_520:
@@ -664,15 +666,18 @@ byte_540:
 ; 90 - chant bang
 ; A0 - protect myself
 ; B0 - use item
+; 20 - Parry
 ; so, I think the top nybble is basically the general action, and maybe the low nybble is a parameter?
 ; 0x - attack party, 1x - cast on party?, etc.
 ; 8x - attack, 9x - cast, Ax - parry, Bx - item, Cx - nonsense, Dx - nonsense, Ex - equip+attack, Fx - bypassed
 ; (0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed)
+; ALSO: speeds go here when preparing the action order (4 player, followed by 8 enemies)
 ; u8[12]
 byte_54C:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; "this is a movetable which maps to exact enemy actions. Dont completely understand how the previous one is used, then."
+; ALSO: some kind of speed order sorting writes into 12 entries here. like, the turn # of each of the actors
 ; u8[12]
 byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0 ; one too many?
@@ -688,8 +693,11 @@ byte_566:
 ;----------------------------------------------
 byte_567:
 		.BYTE	0
+;----------------------------------------------
+; #$10 bit is set if spells are broken by the location
 byte_568:
 		.BYTE	0
+;----------------------------------------------
 byte_569:
 		.BYTE	0
 byte_56A:
@@ -1024,7 +1032,7 @@ _players_inventory_list: ; $77C
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; u8[4][8] spells list, 4 for battle, 4 for command
+; u8[4][8] spells list (bits set), 4 for battle, 4 for command
 _players_spell: ; $79C
 		.BYTE	0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0
@@ -1836,21 +1844,21 @@ _sram_b0_sF_unassigned_formation_char_name_read:
 		.BYTE	0,0,0,0,0
 _sram_b0_s10_tavern_char_name_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s11_player_STR_read:
+_sram_b0_s11_player_EffSTR_calc:
 		.BYTE	0,0,0,0,0
-_sram_b0_s12_player_AGI_read:
+_sram_b0_s12_player_EffAGI_calc:
 		.BYTE	0,0,0,0,0
-_sram_b0_s13_player_VIT_read:
+_sram_b0_s13_player_EffVIT_calc:
 		.BYTE	0,0,0,0,0
-_sram_b0_s14_player_INT_read:
+_sram_b0_s14_player_EffINT_calc:
 		.BYTE	0,0,0,0,0
-_sram_b0_s15_player_LUCK_read:
+_sram_b0_s15_player_EffLUCK_calc:
 		.BYTE	0,0,0,0,0
-_sram_b0_s16_player_ATK_read:
+_sram_b0_s16_player_EffATK_calc:
 		.BYTE	0,0,0,0,0
 _sram_b0_s17_player_rATK_read:
 		.BYTE	0,0,0,0,0
-_sram_b0_s18_player_DEF_read:
+_sram_b0_s18_player_EffDEF_calc:
 		.BYTE	0,0,0,0,0
 _sram_b0_s19_player_EXP_read:
 		.BYTE	0,0,0,0,0

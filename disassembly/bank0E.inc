@@ -1343,13 +1343,13 @@ _sys_idx_list0:
 		.BYTE	_b0_s6_player_MP_read_fidx
 		.BYTE	_b0_s3_player_MHP_read_fidx
 		.BYTE	_b0_s7_player_MMP_read_fidx
-		.BYTE	_b0_s11_player_STR_read_fidx
-		.BYTE	_b0_s12_player_AGI_read_fidx
-		.BYTE	_b0_s13_player_VIT_read_fidx
-		.BYTE	_b0_s14_player_INT_read_fidx
-		.BYTE	_b0_s15_player_LUCK_read_fidx
-		.BYTE	_b0_s16_player_ATK_read_fidx
-		.BYTE	_b0_s18_player_DEF_read_fidx
+		.BYTE	_b0_s11_player_EffSTR_calc_fidx
+		.BYTE	_b0_s12_player_EffAGI_calc_fidx
+		.BYTE	_b0_s13_player_EffVIT_calc_fidx
+		.BYTE	_b0_s14_player_EffINT_calc_fidx
+		.BYTE	_b0_s15_player_EffLUCK_calc_fidx
+		.BYTE	_b0_s16_player_EffATK_calc_fidx
+		.BYTE	_b0_s18_player_EffDEF_calc_fidx
 		.BYTE	_b0_s1B_player_gold_read_fidx
 		.BYTE	_b0_s19_player_EXP_read_fidx
 		.BYTE	_b0_sC_player_LV_read_fidx

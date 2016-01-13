@@ -18,14 +18,14 @@
 		PTR_IDX		_b0_sE_player_STATUS_read
 		PTR_IDX		_b0_sF_unassigned_formation_char_name_read
 		PTR_IDX		_b0_s10_tavern_char_name_read
-		PTR_IDX		_b0_s11_player_STR_read
-		PTR_IDX		_b0_s12_player_AGI_read
-		PTR_IDX		_b0_s13_player_VIT_read
-		PTR_IDX		_b0_s14_player_INT_read
-		PTR_IDX		_b0_s15_player_LUCK_read
-		PTR_IDX		_b0_s16_player_ATK_read
+		PTR_IDX		_b0_s11_player_EffSTR_calc
+		PTR_IDX		_b0_s12_player_EffAGI_calc
+		PTR_IDX		_b0_s13_player_EffVIT_calc
+		PTR_IDX		_b0_s14_player_EffINT_calc
+		PTR_IDX		_b0_s15_player_EffLUCK_calc
+		PTR_IDX		_b0_s16_player_EffATK_calc
 		PTR_IDX		_b0_s17_player_rATK_read
-		PTR_IDX		_b0_s18_player_DEF_read
+		PTR_IDX		_b0_s18_player_EffDEF_calc
 		PTR_IDX		_b0_s19_player_EXP_read
 		PTR_IDX		_b0_s1A_player_EXP_add
 		PTR_IDX		_b0_s1B_player_gold_read
@@ -1654,6 +1654,7 @@ _b0_d41_item_use_list:
 ; ITEM_WIZARDS_WAND $E2 (casts spells, yep)
 ; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
 ;
+; bit $40 is referenced by the battlesystem for some reason
 ; bit $10 means that item cannot be thrown away from inventory
 ; bit $08 means that item is cursed
 ;
@@ -2042,7 +2043,7 @@ loc_9479:
 ; returns player's STR parameter to word_4 and A
 ;
 ;"sub_calc_EffSTR"
-_b0_s11_player_STR_read:
+_b0_s11_player_EffSTR_calc:
 		LDX		byte_CE
 		LDA		_players_STR,X 	; reference STR stat
 		STA		word_4
@@ -2052,8 +2053,7 @@ _b0_s11_player_STR_read:
 ; calculates effective player's AGI parameter to word_4 and A
 ; factors in whether the meteorite armband is equipped
 ;
-;"PC_calc_EffAGI"
-_b0_s12_player_AGI_read:
+_b0_s12_player_EffAGI_calc:
 		LDA		#ITEM_METEORITE_ARMBAND		; check whether meteorite armband is equipped
 		STA		byte_CF 					; stash parameter in byte_CF
 		JSR		_b0_s45_check_if_item_equipped
@@ -2076,8 +2076,7 @@ locret_9498:
 ; =============== S U B	R O U T	I N E =======================================
 ; returns player's VIT parameter to word_4 and A
 ;
-;"PC_calc_EffVIT"
-_b0_s13_player_VIT_read:
+_b0_s13_player_EffVIT_calc:
 		LDX		byte_CE
 		LDA		_players_VIT,X				; reference VIT stat
 		STA		word_4
@@ -2086,8 +2085,7 @@ _b0_s13_player_VIT_read:
 ; =============== S U B	R O U T	I N E =======================================
 ; returns player's INT parameter to word_4 and A
 ;
-;"PC_calc_EffINT"
-_b0_s14_player_INT_read:
+_b0_s14_player_EffINT_calc:
 		LDX		byte_CE						; load "target"
 		LDA		_players_INT,X
 		STA		word_4
@@ -2097,8 +2095,7 @@ _b0_s14_player_INT_read:
 ; calculates effective player's LUCK parameter to word_4 with word_5 and word_6 cleared out
 ; (setting up for a luck-based calculation?)
 ;
-;"PC_calc_EffLUCK"
-_b0_s15_player_LUCK_read:
+_b0_s15_player_EffLUCK_calc:
 		JSR		_b0_s1E_player_euipped_item_get	; scan inventory
 		LDA		word_6+1					; load helm from inventory
 		CMP		#ITEM_EUNLUCKY_HELMET
@@ -2128,8 +2125,7 @@ loc_94C2:
 ;
 ; TODO - rename to something like calculate
 ;
-;"PC_calc_EffATK"
-_b0_s16_player_ATK_read:
+_b0_s16_player_EffATK_calc:
 		JSR		_b0_s2C_player_CLASS_read		; fetch the PCs class and stash it
 		PHA
 		JSR		_b0_s1E_player_euipped_item_get							; restore class and stash it elsewhere
@@ -2140,7 +2136,7 @@ _b0_s16_player_ATK_read:
 		CMP		#ITEM_EMPTY						; check whether it's vacant
 		BNE		.weapon_equipped
 .no_weapon_equipped:
-		JSR		_b0_s11_player_STR_read			; just return the PC's strength
+		JSR		_b0_s11_player_EffSTR_calc			; just return the PC's strength
 		LDA		#0
 		STA		word_4+1 ; clear out high
 		STA		word_6
@@ -2148,7 +2144,7 @@ _b0_s16_player_ATK_read:
 .weapon_equipped:
 		AND		#ITEM_TYPE_MASK
 		TAY
-		JSR		_b0_s11_player_STR_read			; begin accumulating attack power in u24 at word_4 by storing Effective STR
+		JSR		_b0_s11_player_EffSTR_calc			; begin accumulating attack power in u24 at word_4 by storing Effective STR
 		LDA		#0
 		STA		word_4+1
 		LDX		word_6+1						; load the stashed player class, check whether its fighter. fighter ATK is
@@ -2186,7 +2182,7 @@ loc_9503:
 		BEQ		loc_9503
 
 ; =============== S U B	R O U T	I N E =======================================
-; gets current rATK parameter for a selected player in batte mode
+; gets current rATK parameter for a selected player in battle mode
 ;
 _b0_s17_player_rATK_read:
 		TXA
@@ -2210,12 +2206,11 @@ _b0_s17_player_rATK_read:
 ; EffDEF = EffAGI/2 + (armor.def + shield.def + helm.def)
 ; returns it as u24 in word_4
 ;
-;"sub_PC_CalcEffDEF"
-_b0_s18_player_DEF_read:
+_b0_s18_player_EffDEF_calc:
 		JSR		_b0_s1E_player_euipped_item_get
 		LDA		word_4+1					; push the armor type
 		PHA
-		JSR		_b0_s12_player_AGI_read 	; calculate effective AGI and divide by 2, stashing result
+		JSR		_b0_s12_player_EffAGI_calc 	; calculate effective AGI and divide by 2, stashing result
 		LSR		word_4
 		LDA		#0
 		STA		word_4+1
@@ -4337,6 +4332,7 @@ _cmd_spell_stepguard:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; sets CF=1 if 
 _b0_s55_test_spell_allow_location:
 		LDA		_location_type
 		AND		#1

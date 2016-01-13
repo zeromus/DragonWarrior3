@@ -1,0 +1,96 @@
+as encoded via bits in _players_spell:
+
+Wizard:
+Byte 0 - Wizard
+$01 - Blaze
+$02 - Upper
+$04 - IceBolt
+$08 - Increase
+$10 - Firebal
+$20 - Return
+$40 - Bang
+$80 - Slow
+Byte 1 - Wizard
+$01 - Blazemore
+$02 - RobMagic
+$04 - Snowblast
+$08 - IceSpears
+$10 - Firebane
+$20 - Bikill
+$40 - Boom
+$80 - Bounce
+Byte 2 - Wizard
+$01 - Blazemost
+$02 - Chaos
+$04 - Snowstorm
+$08 - BeDragon
+$10 - Firevolt
+$20 - Transform
+$40 - Explodet
+$80 - Chance
+Byte 3 - Wizard (field)
+$01 - Outside
+$02 - Return
+$04 - X-Ray
+$08 - StepGuard
+$10 - Day-Night
+$20 - CurseOff
+$40 - Invisible
+$80 - Open
+Byte 4 - Pilgrim
+$01 - Sap
+$02 - Heal
+$04 - Expel
+$08 - Antidote
+$10 - Infernos
+$20 - SpeedUP
+$40 - Surround
+$80 - Sleep
+Byte 5 - Pilgrim
+$01 - Defence
+$02 - Healmore
+$04 - Beat
+$08 - NumbOff
+$10 - Infermore
+$20 - StopSpell
+$40 - Limbo
+$80 - Awake
+Byte 6 - Pilgrim
+$01 - Barrier
+$02 - Healall
+$04 - Defeat
+$08 - Healus
+$10 - Infermost
+$20 - Vivify
+$40 - Sacrifice
+$80 - Revive
+Byte 7 - Pilgrim (field)
+$01 - Heal
+$02 - Antidote
+$04 - Healmore
+$08 - NumbOff
+$10 - Vivify
+$20 - Healall
+$40 - Healus
+$80 - Revivte
+-----------------
+alternate for the hero:
+Byte 0
+$01 - Blaze
+$02 - Heal
+$04 - Expel
+$08 - Ironize
+$10 - Firebal
+$20 - Return
+$40 - StopSpell
+$80 - Sleep
+Byte 1
+$01 - Zap
+$02 - Healmore
+$04 - Firebane
+$08 - Healall
+$10 - Boom
+$20 - Vivify
+$40 - Lightning
+$80 - Healusall
+
