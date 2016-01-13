@@ -245,7 +245,7 @@ loc_68185:
 		PHA	
 		LDA		_players_rAGI,Y
 		STA		word_4
-		JSR		_randomize_25_percent
+		JSR		_randomize_75_percent
 		PLA
 		TAY ; unstash Y
 		LDA		word_3C ; load randomized AGI
@@ -266,7 +266,7 @@ loc_681A1:
 		JSR		sub_6B73E ; load enemy's agility
 		LDA		byte_59
 		STA		word_4
-		JSR		_randomize_25_percent
+		JSR		_randomize_75_percent
 		PLA
 		TAY
 		PLA
@@ -322,10 +322,11 @@ loc_681E6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; u8[$3C] gets randomized roughly to a [75%,99%] range (doubtful that 100% is possible)
+; u8[$3C] gets randomized roughly to a [25%,99%] range (doubtful that 100% is possible)
+; basically, 75% is passed into the randomizing function, and 25% is added back as a base
 ; returns also in A
 ; 
-_randomize_25_percent:
+_randomize_75_percent:
 		LDA		word_4
 		LSR
 		LSR
