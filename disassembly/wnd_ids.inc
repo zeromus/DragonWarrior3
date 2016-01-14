@@ -34,6 +34,9 @@ WND_COMMAND_STATUS = $1E
 
 WND_SAGE_SPELL_SELECT = $22
 
+; used for battle text logs, maybe for regular conversations too?
+WND_CHATBOX = $3D
+
 ; these are reused in the tavern too
 WND_MM_NAME_ENTRY = $40
 WND_MM_NAME_FIELD = $41

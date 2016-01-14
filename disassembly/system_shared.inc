@@ -1757,6 +1757,9 @@ loc_174B99:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; CPU clock-only delay, doing approximately 1.84^5 cycles, something about 1 sec.
+; <zeromus> 1789883 CPU cycles per second
+; <zeromus>  184000 CPU cycles per call here
+; <zeromus>         therefore, it's 1/10th of a second. please check my reasoning.
 ;
 _delay1sec:
 		PHA
@@ -6233,7 +6236,7 @@ _sys_idx_lib:
 ; keep this records within first 256 indexes!
 ; data entries goes first
 ;
-		FILE_IDX	$0,_b0_d3F_other_spell_related_data					; $B2
+		FILE_IDX	$0,_b0_d3F_antics_index					; $B2
 		FILE_IDX	$0,_b0_d42_item_use_effects_list	; $90
 		FILE_IDX	$0,_b0_d44_item_effects_list					; $92
 		FILE_IDX	$0,_b0_d58_hero_spell_related_data00					; $DF
@@ -6389,7 +6392,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_s5_do_message_speed_delay	; $70
 		FILE_IDX	$4,_b4_s6_wndBTL_STAT					; $71
 		FILE_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
-		FILE_IDX	$4,_b4_sA					; $75
+		FILE_IDX	$4,_b4_sA_clear_chatbox					; $75
 		FILE_IDX	$4,_b4_sC					; $77
 		FILE_IDX	$4,_b4_sE					; $A7
 		FILE_IDX	$4,_b4_sF_rand_mul_A					; $7C

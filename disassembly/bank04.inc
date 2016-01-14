@@ -14,7 +14,7 @@
 		PTR_IDX		_b4_s2
 		PTR_IDX		_b4_s3
 		PTR_IDX		_b4_s6_wndBTL_STAT
-		PTR_IDX		_b4_sA
+		PTR_IDX		_b4_sA_clear_chatbox
 		PTR_IDX		_b4_sC
 		PTR_IDX		_b4_dD_spells_list
 		PTR_IDX		_b4_sE
@@ -82,7 +82,7 @@ _common_battle_handler:
 		FARX	_b1_s9
 loc_68080:
 		FARX	_b1_sB
-		JSR		sub_6814E ; speed-related table setup
+		JSR		sub_6814E ; actor-order table setup
 		FARX	_b2_sB
 		CMP		#$FD
 		BEQ		.common_battle_won
@@ -234,6 +234,7 @@ loc_68173:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Main purpose seems to be to setup a 12-entry table at u8[558] containing the turn # for each actor
+; (beginning at turn number 0, who goes first). This happens before command entry occurs!
 ;
 sub_68183:
 		LDY		#0
@@ -296,7 +297,7 @@ loc_681CE:
 		LDX		#0
 loc_681D4:
 		LDA		byte_540,X
-		BEQ		loc_681E6 ; branch down (next iteration) if we find 0 in table 540
+		BEQ		loc_681E6 ; branch down (next iteration) if we find 0 in table 540 (it's already been used)
 		LDA		byte_54C,X ; read speed
 		CMP		byte_43
 		BEQ		loc_681E2 ; branch down in case of tie
@@ -309,7 +310,7 @@ loc_681E6:
 		CPX		#$C ; no more than 12 entries to look through
 		BNE		loc_681D4
 
-		LDX		byte_44 ; load the index with the maximum unused agility
+		LDX		byte_44 ; load the index with the maximum unused speed
 		LDA		#0
 		STA		byte_540,X ; mark as used
 		LDA		byte_42 ; unstash current actor counter
@@ -1435,84 +1436,109 @@ loc_68896:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; The main battle action sequence loop. All actors play their actions in here before control returns
+;
 sub_6889C:
-		SYSX	_display_window_ex,$3D
+		SYSX	_display_window_ex,WND_CHATBOX
+
+; start a 4-times loop across players
 		LDY		#0
-loc_688A3:
+.bs_loop_scan_players:
 		JSR		_player_idx_to_X_and_status_check
-		BMI		loc_688AF
-loc_688A8:
+		BMI		.bs_loop_player_live
+.bs_loop_next_player:
 		INY
 		CPY		#4
-		BNE		loc_688A3
-		BEQ		loc_688E7
-loc_688AF:
-		LDA		byte_54C,Y
+		BNE		.bs_loop_scan_players
+		BEQ		.bs_loop_round_begin ; unconditional branch - we've run out of players. none met the condition.
+
+; the following unknown logic happens before the round begins if any players meet the given criteria
+
+.bs_loop_player_live:
+		LDA		byte_54C,Y ; read that player's move and check for some special value
 		AND		#$70
 		CMP		#$10
-		BNE		loc_688A8
+		BNE		.bs_loop_next_player
 		LDA		byte_558,Y
 		CMP		#$2A
-		BNE		loc_688A8
-		LDA		byte_540,Y
+		BNE		.bs_loop_next_player
+
+; crack the byte_540 table entry for the player into word_4 and word_4+1
+		LDA		byte_540,Y ; investigate actor order table
 		PHA
-		AND		#$78
+		AND		#$78 ; this masks off $80 (enemy flag) and the bottom 3 bits (player number) leaving only the action order
 		STA		word_4
 		PLA
-		AND		#$87
+		AND		#$87 ; this fetches only the enemy flag and the player number
 		STA		word_4+1
+
+; start a loop across the entire byte_540 table, including enemies
 		LDX		#0
 loc_688CE:
-		LDA		byte_540,X
-		AND		#$78
-		BEQ		loc_688D8
-		INX
-		BNE		loc_688CE
+		LDA		byte_540,X ; investigate actor order table
+		AND		#$78 ; fetches only the action order
+		BEQ		loc_688D8 ; branch if it was 0.. odd
+		INX ; try next entry
+		BNE		loc_688CE ; unconditional
+
+; found the 0th turn actor for the round
 loc_688D8:
-		LDA		byte_540,X
-		AND		#$87
+		LDA		byte_540,X ; investigate actor order table
+		AND		#$87 ; fetch enemy flag and player number
+; X contains an actor index and Y contains a player index.
+; munge it all together somehow. really weird.
 		ORA		word_4
 		STA		byte_540,X
 		LDA		word_4+1
 		STA		byte_540,Y
-loc_688E7:
+
+; ; ; ; ; The actual main turn loop
+; initialize a couple of loops in byte_51 and byte_52
+.bs_loop_round_begin:
 		LDX		#0
-		STX		byte_52
-loc_688EB:
+		STX		byte_52 ; main loop across turn numbers here?
+.bs_loop_turn_begin:
 		LDX		#0
-		STX		byte_51
-loc_688EF:
+		STX		byte_51 ; loop across candidate actors
+
+.bs_loop_find_actor_for_turn:
 		LDX		byte_51
-		LDA		byte_540,X
-		AND		#$78
+		LDA		byte_540,X ; read byte_51st entry from byte_540 table
+		AND		#$78 ; fetch action order
 		LSR
 		LSR
-		LSR
-		CMP		byte_52
-		BNE		loc_68921
-		JSR		sub_68931
+		LSR ; and shift it down to a turn number
+		CMP		byte_52 ; check against current turn number
+		BNE		.bs_loop_not_this_actor
+
+; we found the actor for this turn
+		JSR		sub_68931 ; probably the main action dispatch
 		LDA		_curent_battle_type_flags
 		BEQ		loc_6890E
 		LDX		byte_4D
 		BEQ		loc_6892E
 		DEX
 		BEQ		loc_6892B
-		BNE		loc_68916
+		BNE		.bs_loop_next_turn
 loc_6890E:
 		LDA		byte_4C
 		BEQ		loc_68925
 		LDA		byte_4D
 		BEQ		loc_68928
-loc_68916:
+
+; test whether we're done with turns (theres #$C turns) and return if we are
+.bs_loop_next_turn:
 		INC		byte_52
 		LDA		byte_52
 		CMP		#$C
-		BNE		loc_688EB
+		BNE		.bs_loop_turn_begin
 		LDA		#0
 		RTS
-loc_68921:
-		INC		byte_51
-		BNE		loc_688EF
+
+.bs_loop_not_this_actor:
+		INC		byte_51 ; increment actor candidate counter
+		BNE		.bs_loop_find_actor_for_turn ; unconditional
+
 loc_68925:
 		LDA		#$FF
 		RTS
@@ -1529,9 +1555,9 @@ loc_6892E:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68931:
 		BIT		_curent_battle_type_flags
-		BPL		loc_6897F
+		BPL		loc_6897F ; branch for the normal battle scenario
 		BVS		loc_6897F
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BPL		loc_6897F
 		JSR		_calc_pads
 		LDA		_pads
@@ -1560,24 +1586,26 @@ loc_6896F:
 		LDA		#$FC
 		RTS
 loc_68974:
-		MSGX	_msg_m00,$0CD	; "Oh, paking it in, What a shame"
+		MSGX	_msg_m00,$0CD	; "Oh, packing it in, What a shame"
 		JMP		loc_6896F
 loc_6897C:
 		FARX	_bE_s5
+
+; land here when processing a battle turn
 loc_6897F:
 		LDA		#$10
-		JSR		sub_6B2C4
+		JSR		sub_6B2C4 ; affects byte_566
 		LDA		#$EF
-		JSR		sub_6B300
+		JSR		sub_6B300 ; affects byte_567
 		LDA		#0
 		STA		byte_575
-		LDX		byte_51
-		LDA		byte_540,X
-		BMI		loc_68999
-		JMP		sub_694DA
+		LDX		byte_51 ; load actor number for this turn
+		LDA		byte_540,X ; read his action order table for enemy flag
+		BMI		.bs_enemy_turn
+		JMP		_bs_player_turn ; TAILCALL
 locret_68998:
 		RTS
-loc_68999:
+.bs_enemy_turn:
 		JSR		sub_68AC6
 		BEQ		locret_68998
 		LDX		byte_51
@@ -1598,7 +1626,7 @@ loc_689BC:
 		AND		#$70
 		CMP		#$70
 		BEQ		locret_68998
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		LDA		byte_567
 		AND		#$C
@@ -1681,7 +1709,7 @@ sub_68A52:
 		LDA		byte_530,X
 		AND		byte_530+1,X
 		BPL		locret_68AC5
-		JSR		_b4_sA
+		JSR		_b4_sA_clear_chatbox
 		LDA		byte_64
 		ASL
 		TAX
@@ -1696,7 +1724,7 @@ loc_68A7D:
 		AND		#$10
 		BEQ		loc_68A92
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
-		JSR		_b4_sA
+		JSR		_b4_sA_clear_chatbox
 loc_68A8F:
 		JSR		sub_6870D
 loc_68A92:
@@ -1949,7 +1977,7 @@ sub_68C42:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_07_try_flee:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		SYSX	_apu_load,$83
 		LDA		#$50
@@ -1965,7 +1993,7 @@ _bs_emove_07_try_flee:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_08_reinforce_own_type:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		JSR		sub_6B91D
 		LDX		byte_59
@@ -2346,6 +2374,8 @@ loc_68F09:
 		JMP		loc_698B4
 
 ; =============== S U B	R O U T	I N E =======================================
+; Y: a player number
+;
 _player_idx_to_X_and_status_check:
 		TYA
 		ASL
@@ -2384,20 +2414,20 @@ loc_68F41:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68F6C
-		JSR		sub_68F7E
+		JSR		_bs_check_sacred_amulet_equpped
 		BEQ		loc_68F6D
-		LDA		#$37
-		JSR		sub_6B0B9
-		CMP		#$B7
+		LDA		#ITEM_ANGELS_ROBE ; check for angel's robe equipped
+		JSR		_bs_check_inventory
+		CMP		#ITEM_EANGELS_ROBE
 		BNE		loc_68F59
 		LSR		byte_47
 loc_68F59:
 		LDA		byte_47
 		JSR		sub_6A84F
 		BCS		loc_68F6D
-		LDA		#$55
-		JSR		sub_6B0B9
-		CMP		#$55
+		LDA		#ITEM_STONE_OF_LIGHT ; check for stone of light possessed
+		JSR		_bs_check_inventory
+		CMP		#ITEM_STONE_OF_LIGHT
 		BEQ		sub_68F73
 		JMP		sub_68F86
 locret_68F6C:
@@ -2415,10 +2445,11 @@ sub_68F73:
 		JMP		_sram_b0_s2A_player_inventory_item_remove
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68F7E:
-		LDA		#$47
-		JSR		sub_6B0B9
-		CMP		#$C7
+; 
+_bs_check_sacred_amulet_equpped:
+		LDA		#ITEM_SACRED_AMULET
+		JSR		_bs_check_inventory
+		CMP		#ITEM_ESACRED_AMULET
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2509,11 +2540,11 @@ loc_6900A:
 		TYA
 		PHA
 		JSR		_b4_sB
-		JSR		sub_68F7E
+		JSR		_bs_check_sacred_amulet_equpped
 		BEQ		loc_6902C
-		LDA		#$55
-		JSR		sub_6B0B9
-		CMP		#$55
+		LDA		#ITEM_STONE_OF_LIGHT ; check for stone of life equipped
+		JSR		_bs_check_inventory
+		CMP		#ITEM_STONE_OF_LIGHT
 		BNE		loc_69032
 		JSR		sub_68F73
 		JMP		sub_69053
@@ -2552,7 +2583,7 @@ sub_69058:
 		BNE		loc_6900A
 loc_6905D:
 		JSR		_b4_sB
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		ASL
 		TAX
@@ -2697,7 +2728,7 @@ loc_69158:
 locret_6915D:
 		RTS
 loc_6915E:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		JMP		sub_6B6EB
 loc_69166:
@@ -2892,7 +2923,7 @@ _bs_emove_2C_chant_bounce:
 		LDA		#$30
 		JSR		sub_68FEB
 		JSR		sub_6A35F
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		ASL
 		TAX
@@ -3202,28 +3233,29 @@ loc_694D4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_694DA:
+_bs_player_turn:
 		LDA		_curent_battle_type_flags
-		BNE		locret_694FC
+		BNE		locret_694FC ; special handling for weird battles (players dont make sense during arena battles
 		JSR		sub_68AC6
 		BEQ		locret_694FC
 		LDA		byte_566
 		AND		#$C4
 		BNE		locret_694FC
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_D2
 		STA		byte_CE
 		ASL
 		TAX
 		LDA		_players_status,X
 		AND		_players_status+1,X
-		BMI		loc_694FD
+		BMI		.bs_player_turn_alive
 locret_694FC:
 		RTS
-loc_694FD:
+
+.bs_player_turn_alive:
 		TXA
 		PHA
-		JSR		_b4_sA
+		JSR		_b4_sA_clear_chatbox
 		PLA
 		TAX
 		LDA		_players_status+1,X
@@ -3235,11 +3267,11 @@ loc_694FD:
 		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		sub_69589
-		LDA		#$44
-		JSR		sub_6B0B9
-		CMP		#$C4
+		LDA		#ITEM_NOH_MASK ; check for Noh Mask equipped (NOH mask relates to confusion)
+		JSR		_bs_check_inventory
+		CMP		#ITEM_ENOH_MASK
 		BEQ		loc_6952A
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ASL
 		TAX
 		LDA		_players_status+1,X
@@ -3247,22 +3279,25 @@ loc_694FD:
 		BEQ		loc_69536
 loc_6952A:
 		FARX	_bA_sA
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
-		JSR		_b4_sA
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73 ; "player is confused"?
+		JSR		_b4_sA_clear_chatbox
 		JMP		loc_6953C
+
+; try running goof-off antic instead of selected action and return if we did the antic
 loc_69536:
-		FARX	_b2_sD
+		FARX	_b2_sD 
 		BCC		loc_6953C
 		RTS
+
 loc_6953C:
-		JSR		sub_6B2FE
+		JSR		sub_6B2FE ; do something to byte_567
 		LDA		byte_567
 		AND		#$C
 		BEQ		loc_69562
 		LDA		byte_567
 		AND		#3
 		STA		word_4
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		CMP		word_4
 		BNE		locret_694FC
 		LDA		byte_567
@@ -3273,18 +3308,18 @@ loc_6953C:
 		JSR		sub_6B2BB
 loc_69562:
 		JSR		sub_69580
-		LDX		byte_51
+		LDX		byte_51 ; reference current actor and his move entry
 		LDA		byte_54C,X
 		AND		#$70
 		LSR
 		LSR
-		LSR
+		LSR ; shift only 3 times because we need to turn it into a pointer offset
 		TAX
 		LDA		_bs_pc_action_fptr_tbl,X
 		STA		word_3C
 		LDA		_bs_pc_action_fptr_tbl+1,X
 		STA		word_3C+1
-		JMP		(word_3C)
+		JMP		(word_3C) ; dispatch to main action handler
 loc_6957D:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$38
 
@@ -3360,7 +3395,7 @@ loc_695DE:
 		BEQ		locret_69603
 		LDA		byte_4D
 		BEQ		locret_69603
-		JSR		_b4_sA
+		JSR		_b4_sA_clear_chatbox
 loc_69600:
 		JSR		sub_69604
 locret_69603:
@@ -3557,7 +3592,7 @@ sub_6975F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69777:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 loc_6977A:
 		ASL
 		TAX
@@ -3633,7 +3668,7 @@ loc_697E0:
 		BPL		loc_69831
 		LDA		_curent_battle_type_flags
 		BEQ		loc_697F9
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		CMP		byte_64
 		BEQ		loc_69831
 loc_697F9:
@@ -3774,7 +3809,7 @@ loc_698D8:
 		BNE		loc_698BD
 		RTS
 loc_698E0:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ASL
 		TAX
 		LDA		_players_status+1,X
@@ -3874,7 +3909,7 @@ sub_69973:
 		LDA		#0
 		JSR		sub_699A0
 		JSR		_b4_sB
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		PHA
 		STA		byte_D2
 		STA		byte_CE
@@ -3913,7 +3948,7 @@ loc_699A4:
 loc_699C0:
 		LDA		byte_55
 		BEQ		loc_699CB
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		CMP		byte_64
 		BEQ		loc_699E9
 loc_699CB:
@@ -4026,7 +4061,7 @@ sub_69A80:
 		BVC		loc_69A8E
 		RTS
 loc_69A8E:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_CE
 		JSR		_sram_b0_s8_player_MP_add
 		JMP		_b4_s6_wndBTL_STAT
@@ -4639,7 +4674,7 @@ sub_69EC5:
 ; DEF: #$C8
 ; AGI: #$64
 _bs_spell_bedragon:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_D2
 		TAX
 		LDA		#$64
@@ -4741,7 +4776,7 @@ sub_69F7F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F85:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_D2
 		ASL
 		TAX
@@ -5011,7 +5046,7 @@ sub_6A13C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A158:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5A
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ORA		#$C
 		STA		word_4
 		LDA		byte_567
@@ -5322,7 +5357,7 @@ sub_6A35A:
 ; "sub_eAction_UtilTryCast"
 ; Checks MP, stopspell, and "spellbroken" status
 sub_6A35F:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 ; load action
 		LDY		byte_558,X ; moveTable2
@@ -5340,7 +5375,7 @@ sub_6A35F:
 .sufficientMP: ;ZOOM
 		JSR		_bs_deduct_acting_enemy_MP
 ;confused about below
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -5366,7 +5401,7 @@ locret_6A39E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A39F:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ASL
 		TAX
 		LDA		_players_status,X
@@ -5536,7 +5571,7 @@ locret_6A4C8:
 loc_6A4C9:
 		SYSX	_apu_load,$8C
 		LDY		#$22
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BPL		loc_6A4D5
 		LDY		#$7A
 loc_6A4D5:
@@ -5589,7 +5624,7 @@ loc_6A4EE:
 		JSR		_b4_sB
 		JMP		loc_6A58C
 loc_6A529:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		JSR		sub_6A56E
 		LSR		word_4+1
@@ -5767,7 +5802,7 @@ loc_6A659:
 		AND		#3
 		BEQ		loc_6A66B
 		LDY		#$39
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BMI		loc_6A66B
 		LDY		#$84
 loc_6A66B:
@@ -6314,7 +6349,9 @@ _b4_sB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_sA:
+; Clears the chatbox inbetween turns (and other times) in a battle
+;
+_b4_sA_clear_chatbox:
 		PHA
 		TXA
 		PHA
@@ -6776,7 +6813,7 @@ sub_6AC36:
 		STA		byte_667,X
 		LDA		word_4+1
 		STA		byte_668,X
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		LDA		#$FF
 		SEC
 		SBC		_players_INT,X
@@ -6870,7 +6907,7 @@ sub_6ACD6:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ACD9:
 		LDX		byte_51
-		LDA		byte_540,X
+		LDA		byte_540,X ; investigate actor order table
 		AND		#3
 		STA		byte_CE
 		JSR		_sram_b0_s17_player_rATK_read
@@ -7277,7 +7314,7 @@ sub_6AF65:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF6D:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_STR,X
 		JSR		sub_6AFB3
@@ -7286,7 +7323,7 @@ sub_6AF6D:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF7B:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_AGI,X
 		JSR		sub_6AFB3
@@ -7295,7 +7332,7 @@ sub_6AF7B:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF89:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_INT,X
 		JSR		sub_6AFB3
@@ -7304,7 +7341,7 @@ sub_6AF89:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF97:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_LUCK,X
 		JSR		sub_6AFB3
@@ -7313,7 +7350,7 @@ sub_6AF97:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AFA5:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_VIT,X
 		JSR		sub_6AFB3
@@ -7348,7 +7385,7 @@ sub_6AFD2:
 		CLC
 		ADC		#2
 		STA		word_4
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		ASL
 		TAX
 		CLC
@@ -7437,7 +7474,7 @@ loc_6B073:
 sub_6B076:
 		LDA		byte_42
 		STA		byte_D3
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1F:
@@ -7486,7 +7523,9 @@ loc_6B0B6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B0B9:
+; A: item to check for
+;
+_bs_check_inventory:
 		STA		byte_CF
 		FARX	_b0_s45_check_if_item_equipped
 		LDA		word_4
@@ -7502,7 +7541,7 @@ _bs_pcAction_06_equip_attack:
 		STA		byte_42
 		JSR		sub_6B076
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$06
-		JSR		_b4_sA
+		JSR		_b4_sA_clear_chatbox
 		JMP		_bs_pcAction_00_attack
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7692,7 +7731,7 @@ loc_6B209:
 		CMP		#$CC
 		JMP		loc_6B202
 loc_6B211:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BPL		loc_6B201
 		STA		byte_10
 		LDA		byte_64
@@ -7740,7 +7779,10 @@ _bs_extract_target_from_move:
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B2A8:
+; A: An entry from the turn order table. the #$80 enemy bit is inspected and then the bottom 2 or 3 bits are read to determine 
+; The player or enemy actor number
+;
+_bs_get_actor_number:
 		PHP
 		AND		#$87
 		BMI		loc_6B2AF
@@ -7751,11 +7793,12 @@ loc_6B2AF:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; references "someBattleActionTable"
-sub_6B2B3:
+; read the current actor's entry from the turn order table and return the 'actor' number
+;
+_bs_get_current_actor_number:
 		LDX		byte_51
 		LDA		byte_540,X
-		JMP		sub_6B2A8
+		JMP		_bs_get_actor_number ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B2BB:
@@ -7818,6 +7861,8 @@ sub_6B2F7:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B2FE:
 		LDA		#$7F
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B300:
@@ -7892,7 +7937,7 @@ sub_6B347:
 		BPL		loc_6B3C5
 		LDA		byte_CE
 		STA		byte_42
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BMI		loc_6B35E
 		CMP		byte_42
 		BEQ		loc_6B3C5
@@ -7913,7 +7958,7 @@ loc_6B372:
 		FARX	_bB_s3_apu_load
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$56
 		JSR		_b4_sB
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BMI		loc_6B38F
 		STA		byte_CE
 		STA		byte_D2
@@ -7936,7 +7981,7 @@ sub_6B398:
 		JSR		sub_6B5B7
 		LDA		byte_64
 		STA		byte_42
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		BPL		loc_6B3B2
 		CMP		byte_42
 		BEQ		loc_6B3C5
@@ -7956,7 +8001,7 @@ loc_6B3C5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B3C7:
-		JSR		sub_6B2B3
+		JSR		_bs_get_current_actor_number
 		PHA
 		STA		byte_64
 		JSR		sub_6B5B7

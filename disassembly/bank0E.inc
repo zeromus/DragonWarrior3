@@ -2852,6 +2852,7 @@ _wnd3C:
 		.BYTE	$08,$10,$54,$00,$60,$A1,$22,$A3,$01,$02,$00
 		.BYTE	$90,$41,$FF
 
+; used for battle text logs, maybe for regular conversations too?
 _wnd3D:
 		.BYTE	$18,$05,$92,$00,$60,$A1,$22,$23,$00,$00,$00
 		.BYTE	$FF
