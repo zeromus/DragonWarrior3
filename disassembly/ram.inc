@@ -180,13 +180,14 @@ byte_4F:
 byte_50:
 		.BYTE	0
 ;----------------------------------------------
-; this controls what the enemy does, but it could be a variety of irrational things.
-; or, seems to be the current character taking an action? 0..3 is PC and 4+ is enemy
+; during battle, seems to be the current actor taking an action? 0..3 is player and 4..b is enemy
 byte_51:
 		.BYTE	0
 ;----------------------------------------------
+; during battle, this is the counter for the current turn number. it counts up from 0, and the player with that turn number acts
 byte_52:
 		.BYTE	0
+;----------------------------------------------
 byte_53:
 		.BYTE	0
 byte_54: ; "numTilesInTileGroup"
@@ -671,7 +672,7 @@ byte_540:
 ; 0x - attack party, 1x - cast on party?, etc.
 ; 8x - attack, 9x - cast, Ax - parry, Bx - item, Cx - nonsense, Dx - nonsense, Ex - equip+attack, Fx - bypassed
 ; (0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed)
-; ALSO: speeds go here when preparing the action order (4 player, followed by 8 enemies)
+; ALSO: speeds go here TEMPORARILY when preparing the action order (4 player, followed by 8 enemies). it's later overwritten with the selected action
 ; u8[12]
 byte_54C:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
@@ -997,7 +998,7 @@ _players_MMP: ; $ 728
 ; N - "NM" status flag
 ; D - Death flag. Character is dead if clear
 ;
-_players_status: ;  ; $ 72C
+_players_status: ; $ 72C
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u24[4] - EXP stat for 4 players

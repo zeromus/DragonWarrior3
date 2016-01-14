@@ -3293,7 +3293,7 @@ loc_3A677:
 		RTS
 loc_3A689:
 		SYSX	_display_window_ex,$3D
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDA		#$83
 		FARX	_bB_s3_apu_load
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
@@ -3386,31 +3386,34 @@ byte_3A733:
 		.BYTE	  0,  1,  7,  3,  0,  1,  2,  3,  0,  7,  2,  3,  0,  2,  3
 
 ; =============== S U B	R O U T	I N E =======================================
+; called from _bs_player_turn in bank 4. appears to randomly run antics
+; seems to return CF=1 if an antic was run
+;
 _b2_sD:
 		JSR		_sram_b0_s2C_player_CLASS_read
-		CMP		#7
+		CMP		#CLASS_GOOFOFF
 		BNE		loc_3A750
 		JSR		_rand
 		CMP		#$41
-		BCC		loc_3A752
+		BCC		loc_3A752 ; BCC->JB branch down if we rolled under 25%
 loc_3A750:
 		CLC
 		RTS
 loc_3A752:
 		JSR		_b2_sE
-		LDA		#<[byte_3A948]
+		LDA		#<[byte_3A948] ; store a table pointer for following FARX call 
 		STA		word_3E
 		LDA		#>[byte_3A948]
 		STA		word_3E+1
 		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#_b0_d3F_other_spell_related_data_fidx
+		LDA		#_b0_d3F_antics_index_fidx
 		JSR		_sys0_byte_read_x
 		TAX
-		STA		byte_47
+		STA		byte_47 ; selected antic?
 		CMP		#$F
-		BCC		sub_3A7E9
+		BCC		sub_3A7E9 ; TAILCALL
 		CMP		#$15
 		BCC		loc_3A79E
 		CMP		#$1E
@@ -3421,14 +3424,14 @@ loc_3A752:
 		BEQ		loc_3A7A7
 		CMP		#$24
 		BCC		loc_3A787
-		CLC
+		CLC ; return false
 		RTS
 loc_3A787:
 		JSR		sub_3A7E9
-		LDA		byte_47
+		LDA		byte_47 ; some kind of antic selection?
 		SEC
 		SBC		#$20
-		ASL
+		ASL ; index to pointer
 		TAX
 		LDA		off_3A985,X
 		STA		word_3C
@@ -3491,50 +3494,57 @@ sub_3A7DB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; seems to be the most generic antic handler, other antic handlers will call into this one
+;
 sub_3A7E9:
 		LDA		byte_CE
 		STA		byte_D2
 		LDX		byte_47
-		CPX		#$D
-		BEQ		loc_3A854
-		LDA		byte_3A950,X
-		JMP		_wrap_msg_mFF_arg0_and_delay
+		CPX		#$D ; test for "pokes at the dead monster"
+		BEQ		.bs_poke_antic
+		LDA		_antics_text_idle_tbl,X ; load a message index?
+		JMP		_wrap_msg_mFF_arg0_and_delay ; TAILCALL
+
 loc_3A7F9:
-		CMP		#$10
+		CMP		#$10 ; special antic check?
 		BNE		loc_3A805
-		LDA		#$8E
+		LDA		#$8E ; "raises the item overhead"
 		FARX	_bB_s3_apu_load
 		JSR		_b2_s7_screen_spell_blink
 loc_3A805:
 		JSR		sub_3A7E9
 		LDX		byte_47
-		LDA		byte_3A965,X
-		JMP		_wrap_msg_mFF_arg0_and_delay
+		LDA		_antics_text_tbl,X
+		JMP		_wrap_msg_mFF_arg0_and_delay ; TAILCALL
+
 loc_3A810:
-		CMP		#$1D
+		CMP		#$1D ; special antic check
 		BNE		loc_3A81D
 		LDX		byte_CE
 		LDA		_players_class_gender,X
-		AND		#8
-		BEQ		loc_3A852
+		AND		#8 ; check player's gender
+		BEQ		.bs_antic_return_false ; abort if female criteria unmet
+
+; female-only antic
 loc_3A81D:
 		LDA		byte_CE
 		STA		byte_D3
 		LDA		byte_47
 		CMP		#$17
-		BEQ		loc_3A831
+		BEQ		loc_3A831  ; test for a special antic.. "remarks smugly?
 		JSR		sub_3A88D
-		BCC		loc_3A852
+		BCC		.bs_antic_return_false
 		FARX	_b4_s12
 		STA		byte_D3
-loc_3A831:
+
+loc_3A831: ; a special antic
 		LDX		byte_47
-		LDA		byte_3A950,X
+		LDA		_antics_text_idle_tbl,X
 		JSR		sub_3A7E9
 		FARX	_b4_s12
 		STA		byte_D2
 		LDX		byte_47
-		LDA		byte_3A965,X
+		LDA		_antics_text_tbl,X
 		JSR		_wrap_msg_mFF_arg0_and_delay
 		LDA		byte_47
 		CMP		#$1D
@@ -3542,15 +3552,15 @@ loc_3A831:
 		BNE		locret_3A853
 		LDA		#$FC
 		JMP		_wrap_msg_mFF_arg0_and_delay
-loc_3A852:
-		CLC
+.bs_antic_return_false:
+		CLC ; return false
 locret_3A853:
 		RTS
-loc_3A854:
-		JSR		sub_3A8A4
-		BCC		loc_3A852
-		LDA		#$E2
-		JMP		_wrap_msg_mFF_arg0_and_delay
+.bs_poke_antic:
+		JSR		_bs_check_for_dead_monster_probably
+		BCC		.bs_antic_return_false ; dont do the antic if theres no dead monster
+		LDA		#$E2 ; "pokes the dead monster"
+		JMP		_wrap_msg_mFF_arg0_and_delay ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_3A85E:
@@ -3584,6 +3594,10 @@ loc_3A88B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Looks for a target live monister for an antic? 
+; CF=found?
+; byte_64: found monster?
+;
 sub_3A88D:
 		LDX		#0
 loc_3A88F:
@@ -3603,7 +3617,10 @@ loc_3A8A0:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_3A8A4:
+; used by the poke dead monster antic, probably checks for a dead monster
+; CF=found a dead monster?
+;
+_bs_check_for_dead_monster_probably:
 		LDX		#7
 loc_3A8A6:
 		TXA
@@ -3710,7 +3727,7 @@ _b2_sE:
 		ASL
 		ASL
 		LDX		#word_3C
-		JMP		_add8_to_16	; A = value
+		JMP		_add8_to_16	; A = value  .... TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_msg_mFF_arg0_and_delay:
@@ -3721,12 +3738,71 @@ _wrap_msg_mFF_arg0_and_delay:
 
 byte_3A948:
 		.BYTE	$FF,$FF,$FF,$FF, $F,  0,  0,  0
-byte_3A950:
-		.BYTE	$DE,$DD,$DF,$E6,$E7,$E8,$E9,$EE,$EF,$F7,$3A,$FD,$E1,$E2,  0,$D7
-		.BYTE	$D9,$F2,$D6,$4B,$F4
-byte_3A965:
-		.BYTE	$DA,$E0,$E3,$F3,$F6,$F9,$FE,$D8,$FA,$EA,$F0,  4,$ED,$E5,$E4,$F8
-		.BYTE	$40,$40,$17,$4D,$F5,$DB,$DB,$12,$12,$12,$12,$FF,$FF,$FB,$EB,$F1
+
+; =============== T A B L E =================================================
+; goof-off antic text lookup table, probably for the ineffectual ones
+; 
+_antics_text_idle_tbl:
+		.BYTE	$DE ; "Starts doing jazzercise"
+		.BYTE	$DD ; "is honing his body to be ready for anything"
+		.BYTE	$DF ; "suddenly becomes enlightened"
+		.BYTE	$E6 ; "spruces himself up"
+		.BYTE	$E7 ; "is lost in thought"
+		.BYTE	$E8 ; "is taking a break"
+		.BYTE	$E9 ; "recoils"
+		.BYTE	$EE ; "beckons the heavens"
+		.BYTE	$EF ; "breaks out in a smile"
+		.BYTE	$F7 ; "is chewing onion flavored gum"
+		.BYTE	$3A ; "dances a curious dance"
+		.BYTE	$FD ; "sings a song"
+		.BYTE	$E1 ; "gets tangled up in his own legs and falls down"
+		.BYTE	$E2 ; "pokes at the dead monster" ; $D
+		.BYTE	$00 ; "is assessing the situation"
+		.BYTE	$D7 ; "catches a whiff of the socks"
+		.BYTE	$D9 ; "casts the spell explodet"
+		.BYTE	$F2 ; "blusters"
+		.BYTE	$D6 ; "suddenly starts to flee"
+		.BYTE	$4B ; "calls for reinforcements"
+		.BYTE	$F4 ; "pretends to be dead" ; $14
+
+; =============== T A B L E =================================================
+; text for some goof-off antics that actually do something
+;
+_antics_text_tbl:
+		.BYTE	$DA ; "speaks ill of"
+		.BYTE	$E0 ; "points his finger at <x> and guffaws"
+		.BYTE	$E3 ; "remarks smugly ..."
+		.BYTE	$F3 ; "gives a kind glance" 
+		.BYTE	$F6 ; "soft soaps"
+		.BYTE	$F9 ; "blows a kiss"
+		.BYTE	$FE ; "makes an awful pun"
+		.BYTE	$D8 ; "begins to mimic the arms shopkeeper"
+		.BYTE	$FA ; "suddenly turns around and rolls up a sleeve"
+		.BYTE	$EA ; "cheers on his companions"
+		.BYTE	$F0 ; "suddenly pinches"
+		.BYTE	$04 ; "protects itself"
+		.BYTE	$ED ; "suddenly found he couldn't move a single muscle"
+		.BYTE	$E5 ; "lies down for a nap"
+		.BYTE	$E4 ; "is confused for some reason"
+		.BYTE	$F8 ; "the strong smell is drifting everywhere"
+; 2nd parts, apparently
+		.BYTE	$40 ; "but nothing happens"
+		.BYTE	$40 ; "but nothing happens"
+		.BYTE	$17 ; "but all escape paths are blocked"
+		.BYTE	$4D ; "but no help arrives"
+		.BYTE	$F5 ; "but fools no one"
+		.BYTE	$DB ; "X becomes enraged"
+		.BYTE	$DB ; "X becomes enraged"
+		.BYTE	$12 ; "it has no effect on X"
+		.BYTE	$12
+		.BYTE	$12
+		.BYTE	$12
+		.BYTE	$FF ; "is momentarily transfixed"
+		.BYTE	$FF
+		.BYTE	$FB ; "exposing a small tattoo"
+		.BYTE	$EB ; "but his companions are not there"
+		.BYTE	$F1 ; "hey, what do you think you're doing?"
+
 off_3A985:
 		.WORD	sub_3A7AA
 		.WORD	sub_3A7B6

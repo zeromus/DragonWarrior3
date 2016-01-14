@@ -89,7 +89,7 @@
 		PTR_IDX		_b0_s66_byte_6D40_clear
 		PTR_IDX		_b0_s67_mysterious_hat_mp_modifier
 
-		PTR_IDX		_b0_d3F_other_spell_related_data
+		PTR_IDX		_b0_d3F_antics_index
 		PTR_IDX		_b0_d42_item_use_effects_list
 		PTR_IDX		_b0_d44_item_effects_list
 		PTR_IDX		_b0_d58_hero_spell_related_data00
@@ -2788,11 +2788,11 @@ loc_985B:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; check target inventory for an equpped item (specified by byte_CF)
-; returns: C flag (set if item was equipped)
-; returns: word_4 (the value found in the inventory)
-; returns: A (the value found in the inventory)
+; returns: C flag (set if a found item was equipped)
+; returns: word_4 (the value found in the inventory (equipped or otherwise) if the item was found in the inventory)
+; returns: A (same as word_4)
+; TODO: this should just be checking to see if it's in the inventory _at all_. please rename me
 ;
-;"sub_checkIfItemEquipped"
 _b0_s45_check_if_item_equipped:
 		LDA		#$FF
 		STA		word_4
@@ -4567,7 +4567,10 @@ _common_spell_related_data06:
 		.BYTE	$31,$1C,$13,$1E, $F,$20,$14,$21
 _common_spell_related_data07:
 		.BYTE	$1A,$34,$1B,$35,$20,$1C,$1E,$21
-_b0_d3F_other_spell_related_data:
+; =============== T A B L E =================================================
+; what a useless table. I guess it would control the selection of antics somehow, but it's non-functional
+;
+_b0_d3F_antics_index:
 		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A, $B, $C, $D, $E, $F
 		.BYTE	$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1A,$1B,$1C,$1D,$1E,$1F
 		.BYTE	$20,$21,$22,$23
@@ -5103,13 +5106,13 @@ off_A6EE:
 		.WORD	_common_spell_related_data08
 		.WORD	_common_spell_related_data09
 		.WORD	_common_spell_related_data0A
-		.WORD	_other_spell_related_data
+		.WORD	_antics_index
 off_A6F8:
 		.WORD	_b0_d58_hero_spell_related_data00
 		.WORD	_b0_d59_common_spell_related_data00
 		.WORD	_b0_d5A_common_spell_related_data04
 		.WORD	_b0_d59_common_spell_related_data00
-		.WORD	_b0_d3F_other_spell_related_data
+		.WORD	_b0_d3F_antics_index
 off_A702:
 		.WORD	_players_spell
 		.WORD	_players_spell
@@ -5574,7 +5577,7 @@ _common_spell_related_data0A:
 		.BYTE	$3F,$3F,$96,$1C,$A9,  2,$94,$8F, $C,$85,  1, $E,$1E,$3F,$22,$3F
 		.BYTE	$18,$26,  9,$90, $D,$87, $D,$9B,$A5,$A2,$3F,$88,$12,$84,$89,$3F
 		.BYTE	$98,$20,$95,$A8, $B, $F,$1E,$3F,$19,$23,$12, $A,$21,$13,$FF
-_other_spell_related_data:
+_antics_index:
 		.BYTE	$1C,$14,$28,$10, $A,  5,$18,$13,  7,$22,$1D,  3, $F,$20,  2,$5F
 		.BYTE	$1F,$2D, $E,$1E,$25,$27,$1A,$15, $B,$32,$46,$55,$21,$3C, $C,$1B
 		.BYTE	$12,$23,$FF

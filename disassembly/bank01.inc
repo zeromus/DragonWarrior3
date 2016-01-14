@@ -1174,7 +1174,7 @@ sub_20775:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sA:
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDA		byte_566
 		AND		#$F3
 		STA		byte_566
@@ -1295,7 +1295,7 @@ _b1_s9:
 		LDA		#0
 		STA		byte_576
 		SYSX	_display_window_ex,$3D
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDX		#0
 		STX		byte_51
 		STX		byte_52
@@ -1332,7 +1332,7 @@ loc_208A4:
 		CMP		#8
 		BCS		loc_208C8
 loc_208AB:
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDA		#$A0
 		STA		byte_D2
 		LDX		#$6D	; select between "Suddenly mount an attack" and "Your foes mount an attack"
@@ -1355,7 +1355,7 @@ loc_208D5:
 		CMP		#8
 		BCS		loc_208F6
 loc_208DC:
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDA		#$A0
 		STA		byte_D2
 		LDX		#$71	; select between "<name> is taking off guard" and "your foes taking off guard"
@@ -1366,7 +1366,7 @@ loc_208DC:
 		ORA		#8
 		STA		byte_566
 loc_208F6:
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		RTS
 loc_208FA:
 		LDA		_enemy_group_count,X
@@ -1494,7 +1494,7 @@ _b1_sC:
 		AND		#$DF
 		STA		_global_flags_array.byte2
 		SYSX	_display_window_ex,$3D
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		FARX	_b4_s1B
 		LDA		#0
 		STA		byte_D2
@@ -1554,7 +1554,7 @@ loc_6B412:
 ; on foe type
 ;
 _b1_sD_post_win_battle_handler:
-		FARX	_b4_sA
+		FARX	_b4_sA_clear_chatbox
 		LDA		#$A0
 		STA		byte_D2
 		BIT		byte_568

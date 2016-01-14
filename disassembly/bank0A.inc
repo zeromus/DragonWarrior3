@@ -323,7 +323,7 @@ loc_F8220:
 ; loop from 4-B (across the enemies in the 540 table)
 loc_F8238:
 		LDX		byte_51
-		LDA		byte_540,X
+		LDA		byte_540,X ; investigate actor order table
 		AND		#$87
 		BPL		loc_F8244
 		JSR		sub_F824D
@@ -538,6 +538,8 @@ loc_F8398:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; references a table at (word_3C) and (word_3E)
+;
 _bA_sB:
 		LDA		#0
 		STA		byte_10
