@@ -909,6 +909,7 @@ loc_17445B:
 ; effective address of read in _tmp21 .. dont know whether this is important
 ; output in A
 ; output in _tmp21+2 .. dont know whether this is important
+;
 _far_byte_read_by_ptr:
 		STA		_irq_a_saved
 		LDA		_mmc_cur_prg_bank
@@ -6418,7 +6419,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_s28					; $19E
 		FILE_IDX	$4,_b4_s29					; $19F
 		FILE_IDX	$4,_b4_s2A					; $1A0
-		FILE_IDX	$4,_b4_s2B					; $1A1
+		FILE_IDX	$4,_b4_s2B_emove_stage2_02_through_06_attacks					; $1A1
 
 		FILE_IDX	$5,_b5_s3					; $99
 		FILE_IDX	$5,_b5_s4					; $13
