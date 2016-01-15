@@ -629,13 +629,16 @@ _attr_ram_buf:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-byte_500:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-byte_510: ; probably an enemy stat
+;----------------------------------------------
+; enemy current HP during battle
+_enemy_HP:
+		.WORD	0,0,0,0,0,0,0,0
+;----------------------------------------------
+_enemy_MP: ; probably an enemy stat
 		.BYTE	0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; enemy agilities
-byte_518:
+; enemy agilities during battle
+_enemy_AGI:
 		.BYTE	0,0,0,0,0,0,0,0
 byte_520:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -1722,6 +1725,11 @@ byte_6A73: ; "unk_EnemyStatusPXFieldLookup" - the PX field of enemy status is us
 		.BYTE	0,0,0,0
 byte_6A77:
 		.BYTE	0,0,0,0
+;----------------------------------------------
+; seems related to the constitution of enemy groups. for example:
+; 80 81 82 00 00 00 00 00
+; 83 84 85 00 00 00 00 00
+; was 3 anteaters, and 3 slimes
 byte_6A7B:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
