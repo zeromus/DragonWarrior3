@@ -193,6 +193,8 @@ loc_68143:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; table at $540 gets EAAAAMMM - E for enemy, A for actor number (1100 at most), and M for marking.
+;
 sub_6814E:
 		JSR		sub_68183
 
@@ -218,7 +220,7 @@ loc_68163:
 		CPX		#4
 		BNE		loc_68163
 
-; mark next 4 entries (enemies) ORING with #$80 as well as numbers 0,1,2,3,4,5,6,7
+; mark next 8 entries (enemies) ORING with #$80 as well as numbers 0,1,2,3,4,5,6,7
 		LDX		#0
 		LDY		#4
 loc_68173:
@@ -1631,10 +1633,10 @@ locret_68998:
 		CMP		#$C0
 		BCS		locret_68998
 loc_689BC: ; <- normal codepath
-		LDA		byte_54C,X ; read turn order table, retrieve monster number for #X
+		LDA		byte_54C,X ; read enemy move table, retrieve basic move type
 		AND		#$70
 		CMP		#$70
-		BEQ		locret_68998 ; test for zero? that's weird
+		BEQ		locret_68998 ; test for 'no action'
 		JSR		_bs_get_current_actor_number ; read the current actor's number
 		STA		byte_64
 		LDA		byte_567
@@ -2090,13 +2092,13 @@ loc_68CED:
 		STA		byte_64
 		JSR		_bs_read_enemy_prop_HP
 		JSR		sub_68D7F
-		STA		byte_500,X
+		STA		_enemy_HP,X
 		TYA
-		STA		byte_500+1,X
+		STA		_enemy_HP+1,X
 		JSR		_bs_load_enemy_prop_MP
 		LDA		byte_59
 		LDX		byte_64
-		STA		byte_510,X
+		STA		_enemy_MP,X
 		JSR		_bs_load_enemy_prop_DEF
 		JSR		sub_68D7F
 		STA		byte_520,X
@@ -2104,12 +2106,12 @@ loc_68CED:
 		STA		byte_530+1,X
 		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
-		STA		byte_518,X
+		STA		_enemy_AGI,X
 		TXA
 		CLC
-		ADC		#4
+		ADC		#4 ; adjust from enemy number to actor number
 		TAX
-		LDA		#$70
+		LDA		#$70 ; store 'no move' into enemy action table
 		STA		byte_54C,X
 		JSR		sub_6B5B7
 		INC		byte_4D
@@ -2963,14 +2965,17 @@ _bs_emove_stage1_2B_zoma_freeze_beam:
 		FARX	_b2_s8_screen_hit_blink
 		FARX	_b2_s8_screen_hit_blink
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$76
-		LDA		byte_500
+
+; stash zoma's HP and some other value
+		LDA		_enemy_HP
 		PHA
-		LDA		byte_500+1
+		LDA		_enemy_HP+1
 		PHA
 		LDA		byte_51
 		PHA
 		LDA		byte_52
 		PHA
+
 		LDA		byte_566
 		PHA
 		JSR		_b4_s22 ; related to initializing of battle status
@@ -2981,14 +2986,17 @@ _bs_emove_stage1_2B_zoma_freeze_beam:
 		LDA		#4
 		STA		byte_566
 loc_69309:
+; unstash zoma's HP (and some other value) (it was reset by the above, I guess)
 		PLA
 		STA		byte_52
 		PLA
 		STA		byte_51
 		PLA
-		STA		byte_500+1
+		STA		_enemy_HP+1
 		PLA
-		STA		byte_500
+		STA		_enemy_HP
+
+; see "reset 3 bytes at byte_6A4B to #$5? Weird."
 		LDA		#5
 		LDX		#3
 loc_6931B:
@@ -4139,19 +4147,19 @@ loc_69AEB:
 		BCC		loc_69B18
 		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
-		LDA		byte_518,X
+		LDA		_enemy_AGI,X
 		CMP		byte_59
 		BCC		loc_69B03
 		LDA		byte_59
 loc_69B03:
 		PHA
-		LDA		byte_518,X
+		LDA		_enemy_AGI,X
 		SEC
 		SBC		byte_59
 		BCS		loc_69B0E
 		LDA		#0
 loc_69B0E:
-		STA		byte_518,X
+		STA		_enemy_AGI,X
 		PLA
 		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E
@@ -4218,14 +4226,14 @@ loc_69B7E:
 		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
 		CLC
-		ADC		byte_518,X
+		ADC		_enemy_AGI,X
 		BCC		loc_69B95
 		LDA		#$FF
-		SBC		byte_518,X
+		SBC		_enemy_AGI,X
 		STA		byte_59
 		LDA		#$FF
 loc_69B95:
-		STA		byte_518,X
+		STA		_enemy_AGI,X
 		LDA		byte_59
 		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
@@ -6855,10 +6863,10 @@ sub_6AC36:
 		ADC		#0
 		STA		word_3C+1
 		SEC
-		LDA		byte_500,X
+		LDA		_enemy_HP,X
 		SBC		word_3C
 		STA		word_3C
-		LDA		byte_500+1,X
+		LDA		_enemy_HP+1,X
 		SBC		word_3C+1
 		STA		word_3C+1
 		BCS		loc_6AC8F
@@ -8353,9 +8361,9 @@ sub_6B645:
 		LDA		byte_64
 		ASL
 		TAX
-		LDA		byte_500,X
+		LDA		_enemy_HP,X
 		STA		byte_59
-		LDA		byte_500+1,X
+		LDA		_enemy_HP+1,X
 		STA		byte_5A
 		RTS
 
@@ -8386,9 +8394,9 @@ loc_6B679:
 		BCS		loc_6B68C
 loc_6B681:
 		LDA		byte_59
-		STA		byte_500,X
+		STA		_enemy_HP,X
 		LDA		byte_5A
-		STA		byte_500+1,X
+		STA		_enemy_HP+1,X
 		RTS
 loc_6B68C:
 		LDA		byte_5B
@@ -8419,6 +8427,7 @@ loc_6B6AF:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop HP (requires reading 2 prop bytes)
+; 
 _bs_read_enemy_prop_HP:
 		JSR		_bs_prepare_read_enemies_lib
 		LDY		#7
@@ -8432,6 +8441,7 @@ _bs_read_enemy_prop_HP:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u8[59] = enemy prop level, preserving registers (i guess because it's called externally)
+;
 _bs_read_enemy_prop_LV:
 		PHA
 		TXA
@@ -8453,7 +8463,7 @@ _bs_read_enemy_prop_LV:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_load_acting_enemy_MP:
 		LDX		byte_64 ; actingEnemy
-		LDA		byte_510,X ; must be an enemy table here
+		LDA		_enemy_MP,X ; must be an enemy table here
 		STA		byte_59 ; enemyMiscStats_59
 		RTS
 
@@ -8470,7 +8480,7 @@ sub_6B6EB:
 		CMP		byte_5A
 		BCS		loc_6B704
 loc_6B700:
-		STA		byte_510,X
+		STA		_enemy_MP,X
 locret_6B703:
 		RTS
 loc_6B704:
@@ -8491,7 +8501,7 @@ _bs_deduct_acting_enemy_MP:
 		BCC		.mpclamp0
 		LDX		byte_64 ; actingEnemy
 ; store remaining MP to stats
-		STA		byte_510,X
+		STA		_enemy_MP,X
 		PHA
 		PLA
 		RTS
@@ -8508,7 +8518,7 @@ _bs_deduct_acting_enemy_MP:
 sub_6B725:
 		LDX		byte_64
 		LDA		#0
-		STA		byte_510,X
+		STA		_enemy_MP,X
 		STA		byte_59
 		RTS
 
@@ -8529,7 +8539,7 @@ _bs_load_enemy_prop_MP:
 ;
 sub_6B73E:
 		LDX		byte_64
-		LDA		byte_518,X
+		LDA		_enemy_AGI,X
 		STA		byte_59
 		RTS
 
@@ -8554,7 +8564,7 @@ _bs_load_enemy_prop_AGI:
 ;		LDA		#$FF
 ;loc_6B75D:
 ;		STA		byte_59
-;		STA		byte_518,X
+;		STA		_enemy_AGI,X
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -9264,8 +9274,11 @@ loc_6BAC4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Loads enemy's stats at the beginning of battle (how about when reinforcements come?
+; Y - enemy index
+;
 sub_6BACB:
-		LDA		byte_6A7B,Y
+		LDA		byte_6A7B,Y ; meaning unknown
 		AND		#7
 		STA		byte_43
 		STA		byte_64
@@ -9288,23 +9301,23 @@ sub_6BACB:
 		INC		byte_5B
 		LDA		byte_5B
 		JSR		_b4_sF_rand_mul_A
-		LDX		#byte_59
+		LDX		#byte_59 ; setup pointer for _sub8_from_16
 		JSR		_sub8_from_16
 		LDA		byte_43
 		ASL
 		TAY
 		LDA		byte_59
-		STA		byte_500,Y
+		STA		_enemy_HP,Y
 		LDA		byte_5A
-		STA		byte_500+1,Y
+		STA		_enemy_HP+1,Y
 		JSR		_bs_load_enemy_prop_MP
 		LDY		byte_43
 		LDA		byte_59
-		STA		byte_510,Y
+		STA		_enemy_MP,Y
 		JSR		_bs_load_enemy_prop_AGI
 		LDY		byte_43
 		LDA		byte_59
-		STA		byte_518,Y
+		STA		_enemy_AGI,Y
 		JSR		_bs_load_enemy_prop_DEF
 		LDA		byte_43
 		ASL
@@ -9542,13 +9555,13 @@ loc_6BC6A:
 		LDA		byte_64
 		ASL
 		TAY
-		LDA		byte_500+1,Y
+		LDA		_enemy_HP+1,Y
 		CMP		byte_5A
 		BEQ		loc_6BC7D
 		BCC		loc_6BC42
 		BCS		loc_6BC3F
 loc_6BC7D:
-		LDA		byte_500,Y
+		LDA		_enemy_HP,Y
 		CMP		byte_59
 		BCC		loc_6BC42
 		BCS		loc_6BC3F

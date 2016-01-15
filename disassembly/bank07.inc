@@ -2511,6 +2511,7 @@ loc_B2FA5:
 		BNE		loc_B2FA5
 
 ; reset 3 bytes at byte_6A4B to #$5? Weird.
+; related to zoma's freeze beam
 		LDX		#3
 loc_B2FB2:
 		LDA		#5
