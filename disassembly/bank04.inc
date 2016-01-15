@@ -37,7 +37,7 @@
 		PTR_IDX		_b4_s28
 		PTR_IDX		_b4_s29
 		PTR_IDX		_b4_s2A
-		PTR_IDX		_b4_s2B
+		PTR_IDX		_b4_s2B_emove_stage2_02_through_06_attacks
 
 ; =============== S U B	R O U T	I N E =======================================
 ; sets up a battle for _battle_type_fight=01
@@ -542,12 +542,14 @@ loc_68356:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; called from _bA_s3...
+;
 _b4_s27:
-		JSR		sub_6B960
+		JSR		sub_6B960 ; read info from enemy moveset into byte_59
 		LDA		byte_59
 		CMP		#3
-		BNE		loc_6836E
-		JMP		loc_683BC
+		BNE		loc_6836E ; branch for values 0,1,2
+		JMP		loc_683BC ; handle value 3
 loc_6836E:
 		ASL
 		TAX
@@ -717,7 +719,7 @@ loc_6845B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s28:
-		JSR		_b4_s29
+		JSR		_b4_s29 ; read from enemy moveset
 		BNE		loc_684B2
 		LDA		byte_4F
 		CMP		#$2C
@@ -786,24 +788,27 @@ loc_684EB:
 		BNE		loc_684F5
 		JSR		sub_6B901
 		BCS		loc_684E9
+; run stage2 part of enemy action
 loc_684F5:
 		LDA		byte_4F
 		ASL
 		TAY
-		LDA		off_6BD02,Y
-		LDX		off_6BD02+1,Y
-		JSR		sub_6BBCB
+		LDA		_bs_emove_fptr_stage2_tbl,Y
+		LDX		_bs_emove_fptr_stage2_tbl+1,Y
+		JSR		_store_AX_in_3C
 		JMP		(word_3C)
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68505:
+_bs_emove_stage2_nothing:
 		LDA		#0
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68509:
-		LDA		byte_64
+; sets a bit in the status of the acting enemy. parrying?
+;
+_bs_emove_stage2_01_parry:
+		LDA		byte_64 ; acting enemy
 		ASL
 		TAX
 		LDA		#$40
@@ -813,7 +818,9 @@ sub_68509:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s2B:
+; checking for target for an enemy's regular attack?
+;
+_b4_s2B_emove_stage2_02_through_06_attacks:
 		JSR		sub_6BA04
 		BEQ		loc_6852A
 		JSR		sub_6843E
@@ -863,8 +870,8 @@ off_6855F:
 		.WORD	byte_6B446
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68567:
-		JSR		_b4_s4
+_bs_emove_stage2_07_try_flee:
+		JSR		_bs_read_enemy_prop_LV
 		LDA		#5
 		CLC
 		ADC		byte_59
@@ -888,7 +895,7 @@ loc_68588:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6858A:
+_bs_emove_stage2_reinforce_specific:
 		LDA		byte_4D
 		CMP		#8
 		BCS		loc_68588
@@ -896,7 +903,7 @@ sub_6858A:
 		SEC
 		SBC		#$3B
 		TAX
-		LDA		byte_68D88,X
+		LDA		_bs_reinforce_specific_tbl,X
 		FARX	_b2_sA
 		BCS		loc_68588
 loc_6859E:
@@ -910,17 +917,17 @@ sub_685A0:
 		JMP		_b4_s13
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685A8:
+_bs_emove_stage2_sleep_and_sweet_breath:
 		LDA		#0
 		JMP		sub_68638
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685AD:
+_bs_emove_stage2_toxic_breath:
 		LDA		#$D
 		JMP		sub_68638
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685B2:
+_bs_emove_stage2_spell_single:
 		JSR		sub_686E1
 		BEQ		loc_685BA
 		JMP		sub_686F9
@@ -929,7 +936,7 @@ loc_685BA:
 		JMP		_b4_s13
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685C0:
+_bs_emove_stage2_spell_party:
 		JSR		sub_686E1
 		BEQ		loc_685C8
 		JMP		sub_686F9
@@ -1015,7 +1022,7 @@ sub_6861E:
 		JMP		sub_68675
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68625:
+sub_68625: ; stage2 multi
 		LDA		#1
 		LDX		#$FF
 		JMP		sub_6868C
@@ -1026,7 +1033,7 @@ sub_6862C:
 		JMP		sub_686BB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68631:
+sub_68631: ; stage2 multi
 		LDA		#1
 		LDX		#0
 		JMP		sub_6868C
@@ -1091,6 +1098,8 @@ sub_68675:
 		JMP		_b4_s14
 
 ; =============== S U B	R O U T	I N E =======================================
+; Common handler for stage2 heal multi
+;
 sub_6868C:
 		STX		byte_42
 		STA		byte_43
@@ -1606,7 +1615,7 @@ loc_6897F:
 locret_68998:
 		RTS
 .bs_enemy_turn:
-		JSR		sub_68AC6
+		JSR		sub_68AC6 ; ZING
 		BEQ		locret_68998
 		LDX		byte_51
 		LDA		byte_566
@@ -1618,15 +1627,15 @@ locret_68998:
 		LDA		byte_568
 		AND		#8
 		BEQ		loc_689BC
-		JSR		_rand_ex
+		JSR		_rand_ex ; <-- not used during battle normally
 		CMP		#$C0
 		BCS		locret_68998
-loc_689BC:
-		LDA		byte_54C,X
+loc_689BC: ; <- normal codepath
+		LDA		byte_54C,X ; read turn order table, retrieve monster number for #X
 		AND		#$70
 		CMP		#$70
-		BEQ		locret_68998
-		JSR		_bs_get_current_actor_number
+		BEQ		locret_68998 ; test for zero? that's weird
+		JSR		_bs_get_current_actor_number ; read the current actor's number
 		STA		byte_64
 		LDA		byte_567
 		AND		#$C
@@ -1636,18 +1645,18 @@ loc_689BC:
 		CMP		#2
 		BNE		loc_68A1E
 		JSR		_b4_s2A
-		LDX		byte_59
-		LDA		byte_68AFC,X
+		LDX		byte_59 ; analyze result of above call
+		LDA		byte_68AFC,X ; 
 		CPX		#0
-		BEQ		loc_689F3
+		BEQ		loc_689F3 ; special case for value==0
 		CPX		#3
-		BEQ		loc_689F3
-		JSR		_b4_sF_rand_mul_A
+		BEQ		loc_689F3 ; special case for value==3
+		JSR		_b4_sF_rand_mul_A ; peculiar. A is a small value (one of 1,2,3) and we randomize it.
 		CMP		#0
-		BNE		loc_689F3
-		LDA		#2
+		BNE		loc_689F3 ; handle nonzero result
+		LDA		#2 ; treat zero result as 2
 loc_689F3:
-		AND		#3
+		AND		#3 ; make sure result is small
 		TAX
 loc_689F6:
 		TXA
@@ -1746,9 +1755,9 @@ loc_68AAB:
 		LDA		byte_558,X
 		ASL
 		TAX
-		LDA		_bs_emove_fptr_tbl,X
+		LDA		_bs_emove_fptr_stage1_tbl,X
 		STA		word_3C
-		LDA		_bs_emove_fptr_tbl+1,X
+		LDA		_bs_emove_fptr_stage1_tbl+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
 locret_68AC5:
@@ -1790,6 +1799,9 @@ loc_68AF9:
 		LDA		byte_4C
 locret_68AFB:
 		RTS
+; =============== T A B	L E =================================================
+; Related to enemy movesets
+;
 byte_68AFC:
 		.BYTE	  1,  3,  3,  2
 
@@ -1818,16 +1830,16 @@ loc_68B24:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_00_assessing:
+_bs_emove_stage1_00_assessing:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$00
 
 ; =============== S U B	R O U T	I N E =======================================
 ; interesting that it just seems to print a message. same for the player's parry command. where does the parry flag get set?
-_bs_emove_01_protects_itself:
+_bs_emove_stage1_01_protects_itself:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_02_regular_attack:
+_bs_emove_stage1_02_regular_attack:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 
@@ -1911,11 +1923,13 @@ loc_68BC6:
 		JMP		sub_6B5B7
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_03_attack_maybe_crit:
+; Is this going to tweak a 'result' value to pick which "effect" to run depending on whether the crit passed or failed?
+;
+_bs_emove_stage1_03_attack_maybe_crit:
 		JSR		_rand_ex
 		CMP		#$20
 		BCC		loc_68BD3
-		JMP		_bs_emove_02_regular_attack
+		JMP		_bs_emove_stage1_02_regular_attack
 loc_68BD3:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
@@ -1930,7 +1944,7 @@ loc_68BD3:
 		JMP		loc_68B94
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_04_attack_maybe_sleep:
+_bs_emove_stage1_04_attack_maybe_sleep:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
@@ -1944,7 +1958,7 @@ locret_68C09:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_05_attack_maybe_poison:
+_bs_emove_stage1_05_attack_maybe_poison:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
@@ -1957,7 +1971,7 @@ _bs_emove_05_attack_maybe_poison:
 		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_06_attack_maybe_numb:
+_bs_emove_stage1_06_attack_maybe_numb:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		JSR		sub_68B3B
@@ -1976,7 +1990,7 @@ sub_68C42:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_07_try_flee:
+_bs_emove_stage1_07_try_flee:
 		JSR		_bs_get_current_actor_number
 		STA		byte_64
 		SYSX	_apu_load,$83
@@ -1991,7 +2005,7 @@ _bs_emove_07_try_flee:
 		JMP		_b4_s21_message_half_delay_or_wait_for_keypress
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_08_reinforce_own_type:
+_bs_emove_stage1_08_reinforce_own_type:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
 		JSR		_bs_get_current_actor_number
 		STA		byte_64
@@ -2074,21 +2088,21 @@ loc_68CED:
 		STA		byte_6A7B,X
 		LDA		byte_46
 		STA		byte_64
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 		JSR		sub_68D7F
 		STA		byte_500,X
 		TYA
 		STA		byte_500+1,X
-		JSR		sub_6B72F
+		JSR		_bs_load_enemy_prop_MP
 		LDA		byte_59
 		LDX		byte_64
 		STA		byte_510,X
-		JSR		sub_6B786
+		JSR		_bs_load_enemy_prop_DEF
 		JSR		sub_68D7F
 		STA		byte_520,X
 		TYA
 		STA		byte_530+1,X
-		JSR		sub_6B746
+		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
 		STA		byte_518,X
 		TXA
@@ -2103,7 +2117,7 @@ loc_68CED:
 		JMP		sub_6AA34
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_reinforce_specific:
+_bs_emove_stage1_reinforce_specific:
 		JSR		sub_68D3F
 		JMP		sub_6B3DB
 
@@ -2115,7 +2129,7 @@ sub_68D3F:
 		SEC
 		SBC		#$3B
 		TAX
-		LDA		byte_68D88,X
+		LDA		_bs_reinforce_specific_tbl,X
 		JSR		sub_68D59
 		BCC		loc_68D56
 		JMP		loc_68C7C
@@ -2159,11 +2173,19 @@ sub_68D7F:
 		LDA		byte_59
 		LDY		byte_5A
 		RTS
-byte_68D88:
-		.BYTE	  9,$75,$47,$56,$59
+
+; =============== T A B	L E =================================================
+; Enemy arguments for the 'reinforce specific' enemy actions
+;
+_bs_reinforce_specific_tbl:
+		.BYTE	  #ENEMY_HEALER
+		.BYTE	  #ENEMY_GRANITE_TITAN
+		.BYTE	  #ENEMY_HORK
+		.BYTE	  #ENEMY_ELYSIUM_BIRD
+		.BYTE	  #ENEMY_VOODOO_SHAMAN
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_09_curious_dance:
+_bs_emove_stage1_09_curious_dance:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3A
 		LDA		#1
 		JSR		sub_6B307
@@ -2184,7 +2206,7 @@ locret_68DB0:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; several breath attacks are handled by this one
-_bs_emove_0A_through_0F_breath_attacks:
+_bs_emove_stage1_0A_through_0F_breath_attacks:
 		SYSX	_apu_load,$91
 		LDA		#$36
 		STA		word_4
@@ -2215,7 +2237,7 @@ loc_68DD5:
 		JMP		sub_697DE
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_10_sweet_breath:
+_bs_emove_stage1_10_sweet_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$30
 		JSR		sub_6B32F
 		JSR		_bs_extract_target_from_move
@@ -2226,7 +2248,7 @@ loc_68DFD:
 		JMP		sub_69C86
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_11_toxic_breath:
+_bs_emove_stage1_11_toxic_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$31
 		JSR		sub_6B32F
 		LDA		#<[sub_68E18]
@@ -2267,7 +2289,7 @@ loc_68E43:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$32
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_12_scorching_breath:
+_bs_emove_stage1_12_scorching_breath:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$33
 		JSR		sub_6B32F
 		LDA		#<[sub_68E63]
@@ -2309,7 +2331,7 @@ loc_68E8E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on a single party member
-_bs_emove_spell_single:
+_bs_emove_stage1_spell_single:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
@@ -2335,7 +2357,7 @@ loc_68EC4:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on the entire party
-_bs_emove_spell_party:
+_bs_emove_stage1_spell_party:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDX		byte_51
@@ -2394,7 +2416,7 @@ sub_68F16:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_1F_chant_beat:
+_bs_emove_stage1_1F_chant_beat:
 		LDA		#$12
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2485,7 +2507,7 @@ sub_68F98:
 		JMP		loc_6A582
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_20_chant_beat:
+_bs_emove_stage1_20_chant_beat:
 		JSR		_bs_extract_target_from_move
 		BMI		sub_68FE0
 		JSR		sub_68FD5
@@ -2524,7 +2546,7 @@ sub_68FEB:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_21_chant_sacrifice:
+_bs_emove_stage1_21_chant_sacrifice:
 		LDA		#$14
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2601,7 +2623,7 @@ loc_69079:
 		JMP		loc_6905D
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_22_chant_sleep:
+_bs_emove_stage1_22_chant_sleep:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6908E
 		JSR		sub_69096
@@ -2626,7 +2648,7 @@ sub_690A3:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_23_chant_stopspell:
+_bs_emove_stage1_23_chant_stopspell:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_690BD
 		LDA		#<[sub_690C7]
@@ -2646,7 +2668,7 @@ sub_690C7:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_24_chant_sap:
+_bs_emove_stage1_24_chant_sap:
 		LDA		#$2B
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2664,7 +2686,7 @@ loc_690E6:
 		JMP		loc_69F16
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_25_chant_defence:
+_bs_emove_stage1_25_chant_defence:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_690FD
 		LDA		#<[sub_69107]
@@ -2686,7 +2708,7 @@ sub_69107:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_26_chant_surround:
+_bs_emove_stage1_26_chant_surround:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_69125
 		LDA		#<[sub_6912F]
@@ -2706,7 +2728,7 @@ sub_6912F:
 		JMP		loc_694D2
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_27_chant_robmagic:
+_bs_emove_stage1_27_chant_robmagic:
 		LDA		#$17
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2739,7 +2761,7 @@ loc_69166:
 		JMP		loc_69158
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_28_chant_chaos:
+_bs_emove_stage1_28_chant_chaos:
 		LDA		#$27
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2778,7 +2800,7 @@ loc_691C0:
 		JMP		sub_69E7F
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_29_chant_slow:
+_bs_emove_stage1_29_chant_slow:
 		JSR		_bs_extract_target_from_move
 		BMI		sub_6921D
 		LDA		#<[sub_691D9]
@@ -2836,7 +2858,7 @@ sub_6921D:
 		JMP		sub_69ABF
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2A_chant_limbo:
+_bs_emove_stage1_2A_chant_limbo:
 		LDA		#$16
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2919,7 +2941,7 @@ locret_692B6:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2C_chant_bounce:
+_bs_emove_stage1_2C_chant_bounce:
 		LDA		#$30
 		JSR		sub_68FEB
 		JSR		sub_6A35F
@@ -2934,7 +2956,7 @@ _bs_emove_2C_chant_bounce:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2B_zoma_freeze_beam:
+_bs_emove_stage1_2B_zoma_freeze_beam:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$AD
 		LDA		#$9C
 		FARX	_bB_s3_apu_load
@@ -2976,7 +2998,7 @@ loc_6931B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2D_chant_increase:
+_bs_emove_stage1_2D_chant_increase:
 		LDA		#$2E
 		STA		byte_47
 		JSR		sub_68FEB
@@ -3001,7 +3023,7 @@ sub_69346:
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2E_chant_increase2:
+_bs_emove_stage1_2E_chant_increase2:
 		LDA		#$2F
 		STA		byte_47
 		JSR		sub_68FEB
@@ -3016,12 +3038,12 @@ _bs_emove_2E_chant_increase2:
 		JMP		sub_6A3B1
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_30_chant_revive:
+_bs_emove_stage1_30_chant_revive:
 		LDA		#$21
 		BNE		sub_69370
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_2F_chant_vivify:
+_bs_emove_stage1_2F_chant_vivify:
 		LDA		#$20
 
 ;; FALLTHROUGH ;;
@@ -3064,7 +3086,7 @@ loc_6939C:
 		LDA		byte_530+1,X
 		ORA		#$80
 		STA		byte_530+1,X
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 		LDA		byte_49
 		CMP		#$21
 		BEQ		loc_693CB
@@ -3112,7 +3134,7 @@ loc_6940A:
 		JMP		sub_69C0B
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_heal_various_single:
+_bs_emove_stage1_heal_various_single:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$36
@@ -3147,7 +3169,7 @@ loc_69450:
 		JMP		loc_69BA3
 
 ; =============== S U B	R O U T	I N E =======================================
-_bs_emove_heal_various_multi:
+_bs_emove_stage1_heal_various_multi:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$34
@@ -4115,7 +4137,7 @@ loc_69AEB:
 		LDA		#$C
 		JSR		sub_6A337
 		BCC		loc_69B18
-		JSR		sub_6B746
+		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
 		LDA		byte_518,X
 		CMP		byte_59
@@ -4193,7 +4215,7 @@ sub_69B74:
 		JMP		loc_69B3E
 loc_69B7E:
 		JSR		sub_6B5B7
-		JSR		sub_6B746
+		JSR		_bs_load_enemy_prop_AGI
 		LDX		byte_64
 		CLC
 		ADC		byte_518,X
@@ -5944,7 +5966,7 @@ loc_6A755:
 		JSR		sub_6B5B7
 		JSR		sub_68F16
 		BPL		locret_6A747
-		JSR		sub_6B786
+		JSR		_bs_load_enemy_prop_DEF
 		LDA		byte_47
 		BEQ		loc_6A76B
 		JSR		sub_6B777
@@ -6004,7 +6026,7 @@ sub_6A7BC:
 		BEQ		loc_6A797
 loc_6A7C3:
 		JSR		sub_6B5B7
-		JSR		sub_6B786
+		JSR		_bs_load_enemy_prop_DEF
 		LDA		byte_59
 		STA		word_4
 		LDA		byte_5A
@@ -8339,7 +8361,7 @@ sub_6B645:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s19:
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 		LDA		byte_59
 		STA		byte_5B
 		LDA		byte_5A
@@ -8397,28 +8419,28 @@ loc_6B6AF:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop HP (requires reading 2 prop bytes)
-sub_6B6B8:
-		JSR		sub_6B888
+_bs_read_enemy_prop_HP:
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#7
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_59
 		LDY		#$15
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#3
 		STA		byte_5A
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u8[59] = enemy prop level, preserving registers (i guess because it's called externally)
-_b4_s4:
+_bs_read_enemy_prop_LV:
 		PHA
 		TXA
 		PHA
 		TYA
 		PHA
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#0
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#$3F
 		STA		byte_59
 		PLA
@@ -8437,7 +8459,7 @@ _bs_load_acting_enemy_MP:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B6EB:
-		JSR		sub_6B72F
+		JSR		_bs_load_enemy_prop_MP
 		LDA		byte_59
 		STA		byte_5A
 		JSR		_bs_load_acting_enemy_MP
@@ -8492,17 +8514,18 @@ sub_6B725:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop MP, MSB safely cleared even though MP is only one byte
-sub_6B72F:
-		JSR		sub_6B888
+;
+_bs_load_enemy_prop_MP:
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#8
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_59
 		LDA		#0
 		STA		byte_5A
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; fetches an enemy's agility
+; fetches an enemy's (realtime?) agility into u8[59]
 ;
 sub_6B73E:
 		LDX		byte_64
@@ -8512,10 +8535,11 @@ sub_6B73E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u8[59] = enemy prop AGI
-sub_6B746:
-		JSR		sub_6B888
+;
+_bs_load_enemy_prop_AGI:
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#3
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_59
 		RTS
 
@@ -8536,12 +8560,12 @@ sub_6B746:
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop ATK (requires reading 2 prop bytes)
 _bs_load_enemy_prop_ATK:
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#5
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_59
 		LDY		#$13
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#3
 		STA		byte_5A
 		RTS
@@ -8559,13 +8583,14 @@ sub_6B777:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop DEF (requires reading 2 prop bytes)
-sub_6B786:
-		JSR		sub_6B888
+;
+_bs_load_enemy_prop_DEF:
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#6
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_59
 		LDY		#$14
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#3
 		STA		byte_5A
 		RTS
@@ -8629,9 +8654,9 @@ sub_6B7F2:
 		JSR		sub_6B8F3
 		BCS		locret_6B81C ; if carry set (overflow adding GP?) then abort ?!
 ; reading XP
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#1
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 ; accumulate into u24 _bs_reward_XP
 		CLC
 		ADC		byte_5D
@@ -8639,7 +8664,7 @@ sub_6B7F2:
 		INY ; next enemy prop byte
 		PHP
 ; read next byte of enemy prop (MSB of XP)
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		PLP
 ; continue accumulation
 		ADC		word_5E
@@ -8658,18 +8683,19 @@ locret_6B81C:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; _bs_reward_GP += enemy prop GP note the accumulation
+;
 sub_6B81D:
 		JSR		sub_6B8F3
 		BCS		locret_6B83C
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#4
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		CLC
 		ADC		word_60
 		STA		word_60
 		LDY		#$12
 		PHP
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#3
 		PLP
 		ADC		word_60+1
@@ -8682,11 +8708,12 @@ locret_6B83C:
 ; u8[59] = enemy prop item_dropped
 ; u8[5A] = ememy prop drop_odds (actually, the user doesnt care about this, it's just used as temp)
 ; some related stuff here but its about the GBC version: http://www.gamefaqs.com/boards/450388-dragon-warrior-iii/67292816
+;
 _b4_s17:
 		LDY		byte_64
 		JSR		loc_6B892
 		LDY		#9
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 ; ignore the equip bit, why would this even be set in the first place?
 		AND		#ITEM_TYPE_MASK
 ; if it was this, it was really meant to mean no item
@@ -8695,7 +8722,7 @@ _b4_s17:
 ; OK, the item passes. store it in u8[59]
 		STA		byte_59
 		LDY		#$16
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 ; only use bottom 3 bits of drop odds. interesting
 		AND		#7
 ; drop odds 0 causes an immediate return, without storing or clearing the drop odds. that means always drop
@@ -8755,8 +8782,11 @@ loc_6B879:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; prepares pointers for reading from enemies_lib
-; sets up pointer in X (and has X pointing at that pointer) for use by _far_byte_read_by_ptr
-sub_6B888:
+; X: enemy to read
+; Y: byte to read
+; sets up pointer in X (and has X pointing at that pointer [in zp?]) for use by _far_byte_read_by_ptr
+;
+_bs_prepare_read_enemies_lib:
 		JSR		sub_6B91D
 		TAX
 		LDY		byte_6A73,X ; value to multiply by 17
@@ -8935,49 +8965,52 @@ sub_6B95A:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B960:
 		LDY		#$C
-		JMP		sub_6B974
+		JMP		sub_6B974 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s29:
 		LDY		#$A
-		JMP		sub_6B974
+		JMP		sub_6B974 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s2A:
 		LDY		#$E
-		JMP		sub_6B974
+		JMP		sub_6B974 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s18:
 		LDY		#$10
-		JMP		sub_6B974
+		JMP		sub_6B974 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
+; Y - this takes one of several arguments #$C, #$A, #$E, #$10
+; Reading from the moveset. Analyzes and stores in byte_59
+;
 sub_6B974:
 		TYA
 		PHA
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		PLA
 		TAY
-		JSR		_get_bank0_ptr_byte_safe
-		AND		#$80
+		JSR		_bs_prepare_read_enemy_prop_byte ; actually read from enemies lib
+		AND		#$80 ; test for MSB, store as LSB in byte_59
 		ROL
 		ROL
 		STA		byte_59
 		INY
-		JSR		_get_bank0_ptr_byte_safe
-		AND		#$80
+		JSR		_bs_prepare_read_enemy_prop_byte ; read next byte
+		AND		#$80 ; test for MSB, OR into byte_59.1
 		ROL
 		ROL
 		ROL
 		ORA		byte_59
-		AND		#3
+		AND		#3 ; ensure result has no garbage
 		STA		byte_59
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B994:
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDA		byte_65
 		LDY		#$12
 loc_6B99B:
@@ -8992,7 +9025,7 @@ loc_6B99B:
 		LDA		byte_6B9CB,X
 		PHA
 		LDX		#word_4A
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		STA		byte_5A
 		PLA
 		AND		byte_5A
@@ -9018,16 +9051,16 @@ byte_6B9CE:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B9D2:
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#0
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#$C0
 		LSR
 		LSR
 		LSR
 		STA		byte_59
 		LDY		#9
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#$80
 		LSR
 		LSR
@@ -9044,19 +9077,19 @@ sub_6B9F2:
 		CLC
 		ADC		#$A
 		PHA
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		PLA
 		TAY
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#$7F
 		STA		byte_59
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BA04:
-		JSR		sub_6B888
+		JSR		_bs_prepare_read_enemies_lib
 		LDY		#$16
-		JSR		_get_bank0_ptr_byte_safe
+		JSR		_bs_prepare_read_enemy_prop_byte
 		AND		#8
 		STA		byte_59
 		RTS
@@ -9243,7 +9276,7 @@ sub_6BACB:
 		ASL
 		ORA		#$80
 		STA		byte_530,Y
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 		LDA		byte_59
 		STA		byte_5B
 		LDA		byte_5A
@@ -9264,15 +9297,15 @@ sub_6BACB:
 		STA		byte_500,Y
 		LDA		byte_5A
 		STA		byte_500+1,Y
-		JSR		sub_6B72F
+		JSR		_bs_load_enemy_prop_MP
 		LDY		byte_43
 		LDA		byte_59
 		STA		byte_510,Y
-		JSR		sub_6B746
+		JSR		_bs_load_enemy_prop_AGI
 		LDY		byte_43
 		LDA		byte_59
 		STA		byte_518,Y
-		JSR		sub_6B786
+		JSR		_bs_load_enemy_prop_DEF
 		LDA		byte_43
 		ASL
 		TAY
@@ -9285,12 +9318,13 @@ sub_6BACB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; this is used to read an "enemy prop"  TODO rename me, I'm only usd for enemy props
-; X and Y must be setup appropriately already
-; result stored in A
-_get_bank0_ptr_byte_safe:
+; this is used to read a value from the enemies lib
+; X&Y - pointers suitable for _far_byte_read_by_ptr
+; A - resulting byte
+;
+_bs_prepare_read_enemy_prop_byte:
 		LDA		#0 ; specify bank 0
-		JMP		_far_byte_read_by_ptr
+		JMP		_far_byte_read_by_ptr ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s23:
@@ -9314,7 +9348,7 @@ sub_6BB4D:
 		BCS		loc_6BB5E
 		LDA		#<[_player_battle_order_and_flags]
 		LDX		#>[_player_battle_order_and_flags]
-		JSR		sub_6BBCB
+		JSR		_store_AX_in_3C
 		LDA		#8
 		BNE		loc_6BB85
 loc_6BB5E:
@@ -9325,7 +9359,7 @@ loc_6BB5E:
 		TAY
 		LDA		off_6BC11,Y
 		LDX		off_6BC11+1,Y
-		JSR		sub_6BBCB
+		JSR		_store_AX_in_3C
 		JMP		loc_6BB85
 loc_6BB72:
 		LSR
@@ -9335,7 +9369,7 @@ loc_6BB72:
 		TAY
 		LDA		off_6BC0D,Y
 		LDX		off_6BC0D+1,Y
-		JSR		sub_6BBCB
+		JSR		_store_AX_in_3C
 		LDX		word_4
 		LDA		byte_6BBFD-2,X
 loc_6BB85:
@@ -9387,7 +9421,9 @@ loc_6BBC6:
 		BNE		loc_6BB98
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBCB:
+; Just stores the A,X registers in word_3c, most likely for indirect jumps
+;
+_store_AX_in_3C:
 		STA		word_3C
 		STX		word_3C+1
 		RTS
@@ -9461,7 +9497,7 @@ sub_6BC27:
 		TAY
 		LDA		off_6BCA2,Y
 		LDX		off_6BCA2+1,Y
-		JSR		sub_6BBCB
+		JSR		_store_AX_in_3C
 		JSR		sub_6BBD5
 loc_6BC35:
 		STX		byte_64
@@ -9499,7 +9535,7 @@ sub_6BC60:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC67:
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 loc_6BC6A:
 		LSR		byte_5A
 		ROR		byte_59
@@ -9519,7 +9555,7 @@ loc_6BC7D:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC86:
-		JSR		sub_6B6B8
+		JSR		_bs_read_enemy_prop_HP
 		LSR		byte_5A
 		ROR		byte_59
 		JMP		loc_6BC6A
@@ -9611,42 +9647,46 @@ sub_6BCDE:
 ;		TAX
 ;		RTS
 
-off_6BD02:
-		.WORD	sub_68505
-		.WORD	sub_68509
-		.WORD	_b4_s2B
-		.WORD	_b4_s2B
-		.WORD	_b4_s2B
-		.WORD	_b4_s2B
-		.WORD	_b4_s2B
-		.WORD	sub_68567
+; =============== T A B L E =================================================
+; it looks like these maye be some of the actual logic for the enemy commands, which takes place after the message is set, in some cases
+; index for this table comes from byte_4F (it can be modified during stage1)
+;
+_bs_emove_fptr_stage2_tbl:
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_01_parry
+		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks
+		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks
+		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks
+		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks 
+		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks
+		.WORD	_bs_emove_stage2_07_try_flee 
 		.WORD	sub_68576
 		.WORD	sub_685A0
-		.WORD	sub_68505
-		.WORD	sub_68505
-		.WORD	sub_68505
-		.WORD	sub_68505
-		.WORD	sub_68505
-		.WORD	sub_68505
-		.WORD	sub_685A8
-		.WORD	sub_685AD
-		.WORD	sub_68505
-		.WORD	sub_685B2
-		.WORD	sub_685B2
-		.WORD	sub_685B2
-		.WORD	sub_685B2
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685C0
-		.WORD	sub_685B2
-		.WORD	sub_685C0
-		.WORD	sub_685CB
-		.WORD	sub_685A8
+		.WORD	_bs_emove_stage2_nothing ; breath attacks
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_nothing
+		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; sweet breath
+		.WORD	_bs_emove_stage2_toxic_breath
+		.WORD	_bs_emove_stage2_nothing ; scorching breath.. that's weord
+		.WORD	_bs_emove_stage2_spell_single
+		.WORD	_bs_emove_stage2_spell_single
+		.WORD	_bs_emove_stage2_spell_single
+		.WORD	_bs_emove_stage2_spell_single
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_party
+		.WORD	_bs_emove_stage2_spell_single ; beat 1F
+		.WORD	_bs_emove_stage2_spell_party ; beat 20 (maybe it's defeat)
+		.WORD	sub_685CB ; sacrifice
+		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; sleep
 		.WORD	sub_685D5
 		.WORD	sub_685DA
 		.WORD	sub_685DF
@@ -9655,27 +9695,27 @@ off_6BD02:
 		.WORD	sub_685E9
 		.WORD	sub_685EE
 		.WORD	sub_685F3
-		.WORD	sub_68505
+		.WORD	_bs_emove_stage2_nothing
 		.WORD	sub_685FF
 		.WORD	sub_68606
 		.WORD	sub_6860D
 		.WORD	sub_68619
 		.WORD	sub_68619
-		.WORD	sub_6861E
-		.WORD	sub_6861E
-		.WORD	sub_6861E
-		.WORD	sub_68625
-		.WORD	sub_68625
-		.WORD	sub_6862C
-		.WORD	sub_6862C
-		.WORD	sub_6862C
-		.WORD	sub_68631
-		.WORD	sub_68631
-		.WORD	sub_6858A
-		.WORD	sub_6858A
-		.WORD	sub_6858A
-		.WORD	sub_6858A
-		.WORD	sub_6858A
+		.WORD	sub_6861E ; heal single
+		.WORD	sub_6861E ; heal single
+		.WORD	sub_6861E ; heal single
+		.WORD	sub_68625 ; heal multi
+		.WORD	sub_68625 ; heal multi
+		.WORD	sub_6862C ; heal single
+		.WORD	sub_6862C ; heal single
+		.WORD	sub_6862C ; heal single
+		.WORD	sub_68631 ; heal multi
+		.WORD	sub_68631 ; heal multi
+		.WORD	_bs_emove_stage2_reinforce_specific
+		.WORD	_bs_emove_stage2_reinforce_specific
+		.WORD	_bs_emove_stage2_reinforce_specific
+		.WORD	_bs_emove_stage2_reinforce_specific
+		.WORD	_bs_emove_stage2_reinforce_specific
 byte_6BD82:
 		.BYTE	  2,  6, $C,  3,  4,  6,$12,  6, $C,  4,  6,  9,  5,  8,  1,  3
 		.BYTE	  4,  3,  4,  4,  0,  5,  3,  7,  0,  8,  4,  5, $A,$14,  3,  6
@@ -9683,72 +9723,74 @@ byte_6BD82:
 
 ; =============== T A B L E =================================================
 ; a table of function pointers for each type of enemy move
+; NOTE: they may be the 1st stage logic for the move (when it prints what the move is and does some special effects
+; the resolution logic is... just above!
 ;
-_bs_emove_fptr_tbl:
-		.WORD	_bs_emove_00_assessing
-		.WORD	_bs_emove_01_protects_itself
-		.WORD	_bs_emove_02_regular_attack
-		.WORD	_bs_emove_03_attack_maybe_crit
-		.WORD	_bs_emove_04_attack_maybe_sleep
-		.WORD	_bs_emove_05_attack_maybe_poison
-		.WORD	_bs_emove_06_attack_maybe_numb
-		.WORD	_bs_emove_07_try_flee
-		.WORD	_bs_emove_08_reinforce_own_type
-		.WORD	_bs_emove_09_curious_dance
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_0A_through_0F_breath_attacks
-		.WORD	_bs_emove_10_sweet_breath
-		.WORD	_bs_emove_11_toxic_breath
-		.WORD	_bs_emove_12_scorching_breath
-		.WORD	_bs_emove_spell_single
-		.WORD	_bs_emove_spell_single
-		.WORD	_bs_emove_spell_single
-		.WORD	_bs_emove_spell_single
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_spell_party
-		.WORD	_bs_emove_1F_chant_beat
-		.WORD	_bs_emove_20_chant_beat
-		.WORD	_bs_emove_21_chant_sacrifice
-		.WORD	_bs_emove_22_chant_sleep
-		.WORD	_bs_emove_23_chant_stopspell
-		.WORD	_bs_emove_24_chant_sap
-		.WORD	_bs_emove_25_chant_defence
-		.WORD	_bs_emove_26_chant_surround
-		.WORD	_bs_emove_27_chant_robmagic
-		.WORD	_bs_emove_28_chant_chaos
-		.WORD	_bs_emove_29_chant_slow
-		.WORD	_bs_emove_2A_chant_limbo
-		.WORD	_bs_emove_2B_zoma_freeze_beam
-		.WORD	_bs_emove_2C_chant_bounce
-		.WORD	_bs_emove_2D_chant_increase
-		.WORD	_bs_emove_2E_chant_increase2
-		.WORD	_bs_emove_2F_chant_vivify
-		.WORD	_bs_emove_30_chant_revive
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_multi
-		.WORD	_bs_emove_heal_various_multi
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_single
-		.WORD	_bs_emove_heal_various_multi
-		.WORD	_bs_emove_heal_various_multi
-		.WORD	_bs_emove_reinforce_specific
-		.WORD	_bs_emove_reinforce_specific
-		.WORD	_bs_emove_reinforce_specific
-		.WORD	_bs_emove_reinforce_specific
-		.WORD	_bs_emove_reinforce_specific
+_bs_emove_fptr_stage1_tbl:
+		.WORD	_bs_emove_stage1_00_assessing
+		.WORD	_bs_emove_stage1_01_protects_itself
+		.WORD	_bs_emove_stage1_02_regular_attack
+		.WORD	_bs_emove_stage1_03_attack_maybe_crit
+		.WORD	_bs_emove_stage1_04_attack_maybe_sleep
+		.WORD	_bs_emove_stage1_05_attack_maybe_poison
+		.WORD	_bs_emove_stage1_06_attack_maybe_numb
+		.WORD	_bs_emove_stage1_07_try_flee
+		.WORD	_bs_emove_stage1_08_reinforce_own_type
+		.WORD	_bs_emove_stage1_09_curious_dance
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_0A_through_0F_breath_attacks
+		.WORD	_bs_emove_stage1_10_sweet_breath
+		.WORD	_bs_emove_stage1_11_toxic_breath
+		.WORD	_bs_emove_stage1_12_scorching_breath
+		.WORD	_bs_emove_stage1_spell_single
+		.WORD	_bs_emove_stage1_spell_single
+		.WORD	_bs_emove_stage1_spell_single
+		.WORD	_bs_emove_stage1_spell_single
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_1F_chant_beat
+		.WORD	_bs_emove_stage1_20_chant_beat
+		.WORD	_bs_emove_stage1_21_chant_sacrifice
+		.WORD	_bs_emove_stage1_22_chant_sleep
+		.WORD	_bs_emove_stage1_23_chant_stopspell
+		.WORD	_bs_emove_stage1_24_chant_sap
+		.WORD	_bs_emove_stage1_25_chant_defence
+		.WORD	_bs_emove_stage1_26_chant_surround
+		.WORD	_bs_emove_stage1_27_chant_robmagic
+		.WORD	_bs_emove_stage1_28_chant_chaos
+		.WORD	_bs_emove_stage1_29_chant_slow
+		.WORD	_bs_emove_stage1_2A_chant_limbo
+		.WORD	_bs_emove_stage1_2B_zoma_freeze_beam
+		.WORD	_bs_emove_stage1_2C_chant_bounce
+		.WORD	_bs_emove_stage1_2D_chant_increase
+		.WORD	_bs_emove_stage1_2E_chant_increase2
+		.WORD	_bs_emove_stage1_2F_chant_vivify
+		.WORD	_bs_emove_stage1_30_chant_revive
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_multi
+		.WORD	_bs_emove_stage1_heal_various_multi
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_single
+		.WORD	_bs_emove_stage1_heal_various_multi
+		.WORD	_bs_emove_stage1_heal_various_multi
+		.WORD	_bs_emove_stage1_reinforce_specific
+		.WORD	_bs_emove_stage1_reinforce_specific
+		.WORD	_bs_emove_stage1_reinforce_specific
+		.WORD	_bs_emove_stage1_reinforce_specific
+		.WORD	_bs_emove_stage1_reinforce_specific
 
 ; =============== T A B L E =================================================
 ; a table of function pointers for each major PC action

@@ -408,22 +408,24 @@ loc_F82B2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Called from battle enemy action handler
+;
 _bA_s3:
 		LDA		#0
-		STA		byte_49
+		STA		byte_49 ; clear byte_49
 loc_F82CC:
 		FARX	_b4_s27
-		STA		byte_4F
+		STA		byte_4F ; determines enemy action stage2?
 		FARX	_b4_s28
 		STA		byte_50
 		BCS		locret_F82E7
 		LDA		byte_49
 		CMP		#$FF
 		BNE		loc_F82CC
-		LDA		#2
-		STA		byte_4F
-		FARX	_b4_s2B
-		STA		byte_50
+		LDA		#2 ; probably means a regular attack
+		STA		byte_4F ; determines enemy action stage2?
+		FARX	_b4_s2B_emove_stage2_02_through_06_attacks ; run regular attack
+		STA		byte_50 ; store result?
 locret_F82E7:
 		RTS
 

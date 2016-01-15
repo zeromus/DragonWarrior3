@@ -6900,7 +6900,8 @@ _common_item_use_param_load:
 ; it might also be nice to reprogram the table to be less dumb, that would be good practice programming. could
 ; move it to a spare bank
 _b0_d43_enemies_lib:
-;		         LV|XP     |AGI| GP|ATK|DEF| HP| MP|ITM|            MOVES              |  A|  B|  C|  D|ODDS
+;           0 | 1   2 | 3 | 4 | 5 | 6 | 7 | 8 |0  |A    B   C   D   E   F 10   11| 12| 13|14 |15 |16
+;		        LV|XP     |AGI| GP|ATK|DEF| HP| MP|ITM|            MOVES             |  A|  B|  C|  D|ODDS
 		.BYTE	  1,  4,  0,  4,  2,  9,  5,  8,  0,$E5,$82,  2,$82,  2,  7,  2,  7,  2,  0,  0,$30,$30,$16
 		.BYTE	  1,  5,  0,  6,  2, $A,  6,  9,  0,$E5,$82,  2,  2,  2,  2,  2,  2,  2,  0,  0,$30,$30,$25 ; black raven
 		.BYTE	  2,  7,  0,  5,  2, $C,  8, $A,  0,$E5,$82,  7,  2,  2,  2,  7,  2,  2,  0,  0,$30,$30,$22 ; pretty good drop odds, lets check it: that's a horned rabbit with 1/16 odds of dropping a medical herb
