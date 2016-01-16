@@ -3205,7 +3205,7 @@ loc_3A5D5:
 		AND		#$7F
 		STA		byte_CF
 		STA		byte_45
-		STA		byte_D3
+		STA		_msg_directobject_param
 		FARX	_b0_s60_get_item_type
 		BNE		loc_3A5F4
 		FARX	_b0_s5E_check_if_item_can_be_equipped
@@ -3294,7 +3294,7 @@ loc_3A677:
 loc_3A689:
 		SYSX	_display_window_ex,$3D
 		FARX	_b4_sA_clear_chatbox
-		LDA		#$83
+		LDA		#SFX_RUNAWAY
 		FARX	_bB_s3_apu_load
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		LDA		word_4
@@ -3508,7 +3508,7 @@ sub_3A7E9:
 loc_3A7F9:
 		CMP		#$10 ; special antic check?
 		BNE		loc_3A805
-		LDA		#$8E ; "raises the item overhead"
+		LDA		#SFX_ENEMY_CASTING ; "raises the item overhead"
 		FARX	_bB_s3_apu_load
 		JSR		_b2_s7_screen_spell_blink
 loc_3A805:
@@ -3528,14 +3528,14 @@ loc_3A810:
 ; female-only antic
 loc_3A81D:
 		LDA		byte_CE
-		STA		byte_D3
+		STA		_msg_directobject_param
 		LDA		byte_47
 		CMP		#$17
 		BEQ		loc_3A831  ; test for a special antic.. "remarks smugly?
 		JSR		sub_3A88D
 		BCC		.bs_antic_return_false
 		FARX	_b4_s12
-		STA		byte_D3
+		STA		_msg_directobject_param
 
 loc_3A831: ; a special antic
 		LDX		byte_47
@@ -3583,9 +3583,9 @@ sub_3A876:
 		JSR		sub_3A901
 		BCC		loc_3A88B
 		LDA		word_4
-		STA		byte_D3
+		STA		_msg_directobject_param
 		JSR		sub_3A7E9
-		LDA		byte_D3
+		LDA		_msg_directobject_param
 		STA		byte_D2
 		LDA		#$F1 ; "hey what do you think youre doing" .... maybe?
 		JMP		_wrap_msg_mFF_arg0_and_delay
@@ -3966,7 +3966,7 @@ _str_lib4_spells:
 		.BYTE	_I,_n,_f,_e,_r,_n,_o,_s,$FF
 		.BYTE	_I,_n,_f,_e,_r,_m,_o,_r,_e,$FF
 		.BYTE	_I,_n,_f,_e,_r,_m,_o,_s,_t,$FF
-		.BYTE	_Z,_a,_p,$FF
+		.BYTE	_Z,_a,_p,$FF ; -- $10
 		.BYTE	_L,_i,_g,_h,_t,_n,_i,_n,_g,$FF
 		.BYTE	_B,_e,_a,_t,$FF
 		.BYTE	_D,_e,_f,_e,_a,_t,$FF
@@ -3982,7 +3982,7 @@ _str_lib4_spells:
 		.BYTE	  0,$FF
 		.BYTE	_H,_e,_a,_l,_u,_s,$FF
 		.BYTE	_H,_e,_a,_l,_u,_s,_a,_l,_l,$FF
-		.BYTE	_V,_i,_v,_i,_f,_y,$FF
+		.BYTE	_V,_i,_v,_i,_f,_y,$FF ; -- $20
 		.BYTE	_R,_e,_v,_i,_v,_e,$FF
 		.BYTE	_S,_l,_e,_e,_p,$FF
 		.BYTE	_A,_w,_a,_k,_e,$FF
@@ -3998,7 +3998,7 @@ _str_lib4_spells:
 		.BYTE	_U,_p,_p,_e,_r,$FF
 		.BYTE	_I,_n,_c,_r,_e,_a,_s,_e,$FF
 		.BYTE	_I,_n,_c,_r,_e,_a,_s,_e,$FF
-		.BYTE	_B,_o,_u,_n,_c,_e,$FF
+		.BYTE	_B,_o,_u,_n,_c,_e,$FF ; -- $30
 		.BYTE	_B,_a,_r,_r,_i,_e,_r,$FF
 		.BYTE	_B,_i,_k,_i,_l,_l,$FF
 		.BYTE	_C,_h,_a,_n,_c,_e,$FF

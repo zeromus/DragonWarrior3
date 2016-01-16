@@ -748,7 +748,7 @@ sub_15851F:
 		CMP		#$7F
 		BEQ		loc_15854E
 		STA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		TAX
 		PHA
 		LDA		byte_CF
@@ -6432,11 +6432,11 @@ loc_15B257:
 ; other for "trap"
 ;
 _pal_blink_effect_sound_start:
-		LDX		#$84
+		LDX		#SFX_POISON_TILE
 		LDA		byte_63
 		CMP		#$16
 		BEQ		loc_15B26F
-		LDX		#$81
+		LDX		#SFX_TRAP_TILE
 loc_15B26F:
 		TXA
 		STA		_battle_type_fight
@@ -6508,7 +6508,7 @@ _bE_s31_get_map_music_number:
 		LDA		_global_flags_array.byte10
 		BPL		loc_15B2F5
 		LDA		_mapNumber
-		CMP		#$6B
+		CMP		#$6B ; tantegal throne room? is this for some ending sequence stuff?
 		BNE		loc_15B2F5
 		LDA		#$32							; special case for particular location
 		FARX	_bC_s0_npc_anim_script_init		; start the npc automation script
@@ -6516,6 +6516,9 @@ _bE_s31_get_map_music_number:
 		STA		byte_6EF
 		LDA		#0
 		STA		byte_6EB
+; fallthrough to more general handling
+
+; if youre in the ghost ship, get special music
 loc_15B2F5:
 		LDA		_location_type
 		AND		#2
@@ -6526,38 +6529,44 @@ loc_15B2F5:
 		LDA		_playerWorldY
 		CMP		_ghostShipWorldY
 		BNE		loc_15B30A
-		LDA		#$11
+		LDA		#BGM_EVIL_11
 		RTS
+
+; select flying or sailing music
 loc_15B30A:
 		LDA		_player_vehicle
-		BEQ		loc_15B318
-		LDX		#$B
+		BEQ		loc_15B318 ; branch if on foot
+		LDX		#BGM_SAILING
 		CMP		#1
-		BEQ		loc_15B316
-		LDX		#$E
-loc_15B316:
+		BEQ		.return_X_in_A ; branch if on ship
+		LDX		#BGM_FLYING
+.return_X_in_A:
 		TXA
 		RTS
+
 loc_15B318:
 		LDA		byte_9A
 		BNE		loc_15B327
 		LDA		_location_type
-		LDX		#4
+		LDX		#BGM_OVERWORLD
 		AND		#2
-		BEQ		loc_15B316
-		LDA		#5
+		BEQ		.return_X_in_A ; branch if _location_type not alefgard
+		LDA		#BGM_ALEFGARD
 		RTS
+
 loc_15B327:
 		LDA		_mapNumber
 		LDY		#0
 loc_15B32B:
 		LDX		_map_mus_list0,Y			; short music lookup list
-		BEQ		loc_15B338
+		BEQ		.try_second_list ; if zero, at end of this list
+
 		CMP		_map_lookup_table0,Y		; faster music select for common locations
-		BEQ		loc_15B316
+		BEQ		.return_X_in_A
 		INY
 		BNE		loc_15B32B
-loc_15B338:
+
+.try_second_list:
 		LDX		#0							; if nothing found in the first list
 loc_15B33A:
 		CMP		_map_lookup_table1,X		; check a larger one
@@ -6568,22 +6577,102 @@ loc_15B342:
 		LDA		_map_mus_list1,X			; don't know, why they need so weird behaviour
 		RTS
 
+; =============== T A B L E =================================================
+; list of special locations
 _map_lookup_table0:
-		.BYTE	  4,  8,$17,$71,$87,$8A,$33,  3,$5C,$6D,$6E,  9
+		.BYTE	 $04 ; final key shrine
+		.BYTE	 $08 ; Castle of Zoma 1F
+		.BYTE	 $17 ; Jipang
+		.BYTE	 $71 ; Portoga Castle
+		.BYTE	 $87 ; Isis Town, Casino
+		.BYTE	 $8A ; Jipang, basement with jars ; 1,3
+		.BYTE	 $33 ; Shrine of Dhama
+		.BYTE	 $03 ; Castle of Baramos
+		.BYTE	 $5C ; Shrine of Dhama 2F; 1,1
+		.BYTE	 $6D ; Reeve, Inn upstairs ; 1,1
+		.BYTE	 $6E ; Reeve, upstairs, Magic Ball -giver ; 1,1
+		.BYTE	 $09 ; Reeve
+; list of corresponding music
 _map_mus_list0:
-		.BYTE	 $A,  7,  6,  3, $F,  6,  3,  7,  3, $D, $D, $D,  0
+		.BYTE	 BGM_SHRINE
+		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_ORIENTAL
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_ORIENTAL
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_VILLAGE
+		.BYTE	 BGM_VILLAGE
+		.BYTE	 BGM_VILLAGE
+		.BYTE	 0 ; sentinel for end of table
 
+; =============== T A B L E =================================================
 ; note, that at least two locations sits in both lists with different music assigned for them
 ; is there are some special cases or just dead links?
 ; map $04 - A or 3
 ; map $6D - D or 3
 ;
 _map_lookup_table1:
-		.BYTE	  1,  4,$13,$1B,$2D,$3B,$3C,$41,$45,$50,$53,$58,$5D,$5F,$65,$68
-		.BYTE	$6D,$82,$8F,$96,$97,$99,$9B,$9F,$CD,$D6,$FF
+		.BYTE	  $01 ; Romaly
+		.BYTE	  $04 ; Final Key Shrine
+		.BYTE	  $13 ; Luzami
+		.BYTE	  $1B ; Reeve interior room (man wants a magic ball)
+		.BYTE	  $2D ; Cave on Promontory B1
+		.BYTE	  $3B ; Pyramid 1F
+		.BYTE	  $3C ; Tower of Najima 1F
+		.BYTE	  $41 ; Aliahan upstairs, Hero's apartment
+		.BYTE	  $45 ; Aliahan Castle's jail basement
+		.BYTE	  $50 ; Isis Town
+		.BYTE	  $53 ; Isis Castle B2 (Meteorite Armband treasure room)
+		.BYTE	  $58 ; Baramos's Lair
+		.BYTE	  $5D ; Samanao Town upstairs, graveyard shack
+		.BYTE	  $5F ; Samanao Town hidden graveyard path
+		.BYTE	  $65 ; Samanao Town, hidden church upstairs (Kandar's apartment)
+		.BYTE	  $68 ; Tantegal Castle B1, stones of sunlight man in hidden basement southeast
+; $10
+		.BYTE	  $6D ; Reeve, Inn upstairs
+		.BYTE	  $82 ; Luzami, upstairs, telescope
+		.BYTE	  $8F ; Warp Shrine $1C basement with clue-giver
+		.BYTE	  $96 ; Oasis (Contains Isis Town) 
+		.BYTE	  $97 ; Location with stairs to Tower of Najima B1 and a warp gate to shrin
+		.BYTE	  $99 ; Samanao Castle Fight Ring
+		.BYTE	  $9B ; Romaly Castle 3F (east tower)
+		.BYTE	  $9F ; Tower of Najima B1
+		.BYTE	  $CD ; dummied
+		.BYTE	  $D6 ; Tower of Najima 2F
+		.BYTE	  $FF ; end of list?
+
 _map_mus_list1:
-		.BYTE	 $F,  3, $F, $D, $A,  7,  9,  8, $F,  3, $F,  3,  7, $F,  3, $F
-		.BYTE	  3, $F, $D, $A, $F,  7, $F,  3,  7,  9,  8
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_VILLAGE
+		.BYTE	 BGM_SHRINE
+		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_DUNGEON_ORIENTAL_09
+		.BYTE	 BGM_TOWER
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_TOWN
+; $10
+		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_TOWN
+		.BYTE	 BGM_VILLAGE
+		.BYTE	 BGM_SHRINE
+		.BYTE	 BGM_TOWN
+ 		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_TOWN
+ 		.BYTE	 BGM_NOCHANGE_03
+		.BYTE	 BGM_DUNGEON
+		.BYTE	 BGM_DUNGEON_ORIENTAL_09
+		.BYTE	 BGM_TOWER
 
 ; =============== S U B	R O U T	I N E =======================================
 ; unused
@@ -6621,8 +6710,27 @@ loc_15B3B2:
 		JMP		(word_6C)
 		
 _special_maps_actions_list:
-		.BYTE	$A0,$2F,$30,$06,$73,$74,$75,$D2,$08,$EF,$CC,$C3,$BB,$48,$87,$99
-		.BYTE	$9A,$62,$EB,$17,$FF
+		.BYTE	$A0 ; Cave of Enticement B1
+		.BYTE	$2F ; Cave by Assaram (west side)
+		.BYTE	$30 ; Cave by Assaram (east side)
+		.BYTE	$06 ; Samanao
+		.BYTE	$73 ; New Town Ver.2 (with merchant)
+		.BYTE	$74 ; New Town Ver.3 (old man has house now)
+		.BYTE	$75 ; New Town Ver.4 (run into the ground by merchant)
+		.BYTE	$D2 ; Pyramid 3F
+		.BYTE	$08 ; Castle of Zoma 1F
+		.BYTE	$EF ; Tower West of Kol 5F
+		.BYTE	$CC ; Castle of Zoma B5
+		.BYTE	$C3 ; Cave Northwest of Tantegal B2
+		.BYTE	$BB ; Cave of Jipang B2
+		.BYTE	$48 ; Romaly Fight Ring basement
+		.BYTE	$87 ; Isis Town, Casino
+		.BYTE	$99 ; Samanao Castle Fight Ring
+		.BYTE	$9A ; Cantlin Fight Ring
+		.BYTE	$62 ; Samanao Castle 2F (Incl. roof walk) ; 1,1
+		.BYTE	$EB ; Tower of Shanpane 4F
+		.BYTE	$17 ; Jipang
+		.BYTE	$FF ; Terminator?
 		
 _special_maps_actions_handlers_lib:
 		.WORD	_mapA0_special_action

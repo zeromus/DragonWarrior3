@@ -105,7 +105,7 @@ $61 - Samanao Castle ; 1,1
 $62 - Samanao Castle 2F (Incl. roof walk) ; 1,1
 $63 - Samanao Castle 3F (East tower) ; 1,1
 $64 - Samanao Castle 4F (East tower, jump out the window)
-$65 - Samano Town, hidden church upstairs (Kandar's apartment)
+$65 - Samanao Town, hidden church upstairs (Kandar's apartment)
 $66 - Brecconaly upstairs, clue-giving old man ; 1,1
 $67 - Brecconaly upstairs, outskirts southeast, lady with clue about ring of life ; 1,1
 $68 - Tantegal Castle B1, stones of sunlight man in hidden basement southeast ; 1,1

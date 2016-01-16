@@ -2337,8 +2337,9 @@ loc_68E8E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on a single party member
+;
 _bs_emove_stage1_spell_single:
-		JSR		sub_6983C
+		JSR		_bs_sfx_enemy_casting
 		FARX	_b2_s7_screen_spell_blink
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
@@ -2346,7 +2347,7 @@ _bs_emove_stage1_spell_single:
 		SBC		#$13
 		TAX
 		LDA		byte_6B490,X
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_49
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
 		JSR		sub_6A35F
@@ -2364,7 +2365,7 @@ loc_68EC4:
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on the entire party
 _bs_emove_stage1_spell_party:
-		JSR		sub_6983C
+		JSR		_bs_sfx_enemy_casting
 		FARX	_b2_s7_screen_spell_blink
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
@@ -2373,7 +2374,7 @@ _bs_emove_stage1_spell_party:
 		TAX
 		LDA		byte_6B494,X
 		STA		byte_49
-		STA		byte_D3
+		STA		_msg_directobject_param ; store spell name dialog argument
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
 		JSR		sub_6A35F
 		JSR		sub_6B32F
@@ -2424,8 +2425,8 @@ sub_68F16:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_1F_chant_beat:
-		LDA		#$12
-		JSR		sub_68FEB
+		LDA		#SPELL_BEAT
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_68F2C:
@@ -2538,24 +2539,27 @@ sub_68FD5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FE0:
-		LDA		#$13
-		JSR		sub_68FEB
+		LDA		#SPELL_DEFEAT
+		JSR		_bs_enemy_chant_msg
 		JSR		_bs_extract_target_from_move
 		JMP		sub_6995B
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68FEB:
-		PHA
-		JSR		sub_6983C
+; Prints "monster-N chants <spell>"!
+; A: index of spell name 
+;
+_bs_enemy_chant_msg:
+		PHA ; save spell #
+		JSR		_bs_sfx_enemy_casting
 		FARX	_b2_s7_screen_spell_blink
 		PLA
-		STA		byte_D3
+		STA		_msg_directobject_param
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02 ; "chants <spell>
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_21_chant_sacrifice:
-		LDA		#$14
-		JSR		sub_68FEB
+		LDA		#SPELL_SACRIFICE
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 		JSR		_bs_extract_target_from_move
@@ -2637,9 +2641,9 @@ _bs_emove_stage1_22_chant_sleep:
 		LDA		#$22
 		JMP		sub_694B8
 loc_6908E:
-		LDA		#$22
-		JSR		sub_68FEB
-		JMP		sub_69C86
+		LDA		#SPELL_SLEEP
+		JSR		_bs_enemy_chant_msg
+		JMP		sub_69C86 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69096:
@@ -2665,8 +2669,8 @@ _bs_emove_stage1_23_chant_stopspell:
 		LDA		#$24
 		JMP		sub_694B8
 loc_690BD:
-		LDA		#$24
-		JSR		sub_68FEB
+		LDA		#SPELL_STOPSPELL
+		JSR		_bs_enemy_chant_msg
 		JMP		sub_69D60
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2676,8 +2680,8 @@ sub_690C7:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_24_chant_sap:
-		LDA		#$2B
-		JSR		sub_68FEB
+		LDA		#SPELL_SAP
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 
@@ -2703,8 +2707,8 @@ _bs_emove_stage1_25_chant_defence:
 		LDA		#$2C
 		JMP		sub_694B8
 loc_690FD:
-		LDA		#$2C
-		JSR		sub_68FEB
+		LDA		#SPELL_DEFENCE
+		JSR		_bs_enemy_chant_msg
 		JMP		sub_69F23
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2725,8 +2729,8 @@ _bs_emove_stage1_26_chant_surround:
 		LDA		#$25
 		JMP		sub_694B8
 loc_69125:
-		LDA		#$25
-		JSR		sub_68FEB
+		LDA		#SPELL_SURROUND
+		JSR		_bs_enemy_chant_msg
 		JMP		sub_69DDF
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2736,8 +2740,8 @@ sub_6912F:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_27_chant_robmagic:
-		LDA		#$17
-		JSR		sub_68FEB
+		LDA		#SPELL_ROBMAGIC
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		_bs_extract_target_from_move
@@ -2769,8 +2773,8 @@ loc_69166:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_28_chant_chaos:
-		LDA		#$27
-		JSR		sub_68FEB
+		LDA		#SPELL_CHAOS
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_6917E:
@@ -2860,14 +2864,14 @@ loc_6921A:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6921D:
-		LDA		#$18
-		JSR		sub_68FEB
+		LDA		#SPELL_SLOW
+		JSR		_bs_enemy_chant_msg
 		JMP		sub_69ABF
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2A_chant_limbo:
-		LDA		#$16
-		JSR		sub_68FEB
+		LDA		#SPELL_LIMBO
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 loc_69230:
@@ -2949,8 +2953,8 @@ locret_692B6:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2C_chant_bounce:
-		LDA		#$30
-		JSR		sub_68FEB
+		LDA		#SPELL_BOUNCE
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		_bs_get_current_actor_number
 		STA		_acting_enemy
@@ -2965,7 +2969,7 @@ _bs_emove_stage1_2C_chant_bounce:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2B_zoma_freeze_beam:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$AD ; "a freeze beam shoots out from zoma's fingertip"
-		LDA		#$9C
+		LDA		#SFX_ZOMA_FREEZE_BEAM
 		FARX	_bB_s3_apu_load
 		FARX	_b2_s8_screen_hit_blink
 		FARX	_b2_s8_screen_hit_blink
@@ -3012,18 +3016,18 @@ loc_6931B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2D_chant_increase:
-		LDA		#$2E
+		LDA		#SPELL_INCREASE
 		STA		byte_47
-		JSR		sub_68FEB
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 loc_6932C:
 		JSR		_bs_extract_target_from_move
 		BPL		sub_6933E
-		LDA		#<[sub_69346]
+		LDA		#<[_bs_emove_increases_foreach_cb]
 		STA		word_40
-		LDA		#>[sub_69346]
+		LDA		#>[_bs_emove_increases_foreach_cb]
 		STA		word_40+1
-		JMP		sub_6A3AB
+		JMP		sub_6A3AB ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6933E:
@@ -3031,24 +3035,25 @@ sub_6933E:
 		JMP		sub_69F64
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69346:
-		JSR		sub_6A7BC
-		JMP		sub_6A3CB
+_bs_emove_increases_foreach_cb:
+		JSR		sub_6A7BC ; 
+		JMP		sub_6A3CB ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2E_chant_increase2:
-		LDA		#$2F
+		LDA		#SPELL_INCREASE2
 		STA		byte_47
-		JSR		sub_68FEB
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
+
 		JSR		_bs_extract_target_from_move
 		BPL		sub_6933E
-		LDA		#<[sub_69346]
+		LDA		#<[_bs_emove_increases_foreach_cb]
 		STA		word_40
-		LDA		#>[sub_69346]
+		LDA		#>[_bs_emove_increases_foreach_cb]
 		STA		word_40+1
-		LDA		#0
-		JMP		sub_6A3B1
+		LDA		#0 ; some important flag (not used by regular increase) used by following code
+		JMP		sub_6A3B1 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Loads special value #$21 and falls through to enemy's revive/vivify handler
@@ -3068,7 +3073,7 @@ _bs_emove_stage1_2F_chant_vivify:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_vivify_and_revive:
 		STA		byte_49 ; stash argument
-		JSR		sub_68FEB
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		_bs_extract_target_from_move
@@ -3152,7 +3157,7 @@ loc_6940A:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_heal_various_single:
-		JSR		sub_6983C
+		JSR		_bs_sfx_enemy_casting
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$36
 		STA		word_4
@@ -3169,7 +3174,7 @@ loc_6942E:
 		SBC		word_4
 		TAX
 		LDA		byte_6B49C,X
-		STA		byte_D3
+		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
 		JSR		sub_6B30E
@@ -3187,7 +3192,7 @@ loc_69450:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_heal_various_multi:
-		JSR		sub_6983C
+		JSR		_bs_sfx_enemy_casting
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$34
 		STA		word_4
@@ -3204,7 +3209,7 @@ loc_6946C:
 		SBC		word_4
 		TAX
 		LDA		byte_6B49F,X
-		STA		byte_D3
+		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
 		JSR		sub_6B32F
@@ -3244,7 +3249,7 @@ loc_694B5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_694B8:
-		JSR		sub_68FEB
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 
@@ -3621,11 +3626,11 @@ loc_6974C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6975F:
 		LDA		word_6
-		AND		#3
+		AND		#3 ; make sure player number is safely small
 		STA		byte_CE
-		STA		byte_D3
+		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$23 ; "name attacks his/her party"
-		LDA		byte_D3
+		LDA		_msg_directobject_param
 		STA		byte_D2
 		JSR		sub_6A4D9
 		PHP
@@ -3649,7 +3654,7 @@ _bs_pcAction_01_chant:
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_49
-		STA		byte_D3
+		STA		_msg_directobject_param
 		TAX
 		LDA		_b4_dD_spells_list,X
 ; these entries have two parts, get the bottom 6 bits (must be the MP cost)
@@ -3659,8 +3664,8 @@ _bs_pcAction_01_chant:
 		BCC		loc_697C5
 		JSR		_sram_b0_s9_player_MP_subtract
 		JSR		_b4_s6_wndBTL_STAT
-		LDA		byte_D3
-		JSR		sub_68FEB
+		LDA		_msg_directobject_param
+		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A39F
 loc_697AA:
 ; the table begins at entry #$12 (or is it #$11?); spells less than that use entry 0
@@ -3681,8 +3686,8 @@ loc_697B6:
 		STA		word_3C+1
 		JMP		(word_3C)
 loc_697C5:
-		LDA		byte_D3
-		JSR		sub_68FEB
+		LDA		_msg_directobject_param
+		JSR		_bs_enemy_chant_msg ; "enemy-N casts <spell>!
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$20 ; "MP is not high enough!"
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3756,8 +3761,8 @@ nullsub_11:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6983C:
-		SYSX	_apu_load,$8E
+_bs_sfx_enemy_casting:
+		SYSX	_apu_load,#SFX_ENEMY_CASTING
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4907,7 +4912,7 @@ loc_6A009:
 _bs_spell_chance:
 		JSR		sub_6B2FE
 		LDA		#$10
-		JSR		sub_6B2F7
+		JSR		_bs_set_battleflag_567
 		LDA		byte_6A6B
 		BNE		loc_6A038
 		LDA		#$11
@@ -5072,7 +5077,7 @@ sub_6A121:
 sub_6A134:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$59 ; "hero's party gains additional attack power" 
 		LDA		#$20
-		JMP		sub_6B2F7 ; TAILCALL
+		JMP		_bs_set_battleflag_567 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A13C:
@@ -5255,7 +5260,7 @@ _bs_chance_handler_fptr_tbl:
 _bs_spell_transform:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6A2C5
-		STA		byte_D3
+		STA		_msg_directobject_param
 		TAY
 		LDX		byte_CE
 		LDA		_player_battle_order_and_flags,X
@@ -5462,10 +5467,17 @@ sub_6A3AB:
 		JSR		_bs_extract_target_from_move
 		JSR		sub_6A8B3
 
+;; FALLTHROUGH ;;;
+
 ; =============== S U B	R O U T	I N E =======================================
+; While it seems this receives A as a parameter, the parameter is always 0
+; So sometimes A must be set by the subroutine above
+;
 sub_6A3B1:
 		STA		byte_47
 		LDY		#0
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A3B5:
@@ -6047,6 +6059,7 @@ locret_6A7BB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+;
 sub_6A7BC:
 		JSR		sub_6B398
 		BCC		loc_6A7C3
@@ -7237,7 +7250,7 @@ _bs_pcAction_03_item:
 loc_6AE7D:
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		word_4
 		CMP		#$70
 		BEQ		loc_6AE97
@@ -7247,7 +7260,7 @@ loc_6AE7D:
 		BNE		loc_6AEA2
 loc_6AE92:
 		LDA		#$10
-		JSR		sub_6B2F7
+		JSR		_bs_set_battleflag_567
 loc_6AE97:
 		LDA		word_4
 		CMP		#$70
@@ -7528,7 +7541,7 @@ loc_6B073:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B076:
 		LDA		byte_42
-		STA		byte_D3
+		STA		_msg_directobject_param
 		JSR		_bs_get_current_actor_number
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7908,7 +7921,9 @@ sub_6B2F5:
 		LDA		#$80
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B2F7:
+; Incorporates A into battle flags
+;
+_bs_set_battleflag_567:
 		ORA		byte_567
 		STA		byte_567
 		RTS
@@ -8007,11 +8022,11 @@ loc_6B35E:
 		AND		_players_status+1,X
 		BPL		loc_6B3C5
 loc_6B372:
-		LDA		#$40
-		JSR		sub_6B2F7
-		LDA		#$9A
+		LDA		#$40 ; set Bounce flag on battle flags
+		JSR		_bs_set_battleflag_567
+		LDA		#SFX_BOUNCE
 		FARX	_bB_s3_apu_load
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$56
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$56 ; "The wall of light reflects the spell back"
 		JSR		_b4_sB
 		JSR		_bs_get_current_actor_number
 		BMI		loc_6B38F
@@ -9834,9 +9849,9 @@ _bs_emove_fptr_stage1_tbl:
 		.WORD	_bs_emove_stage1_spell_party
 		.WORD	_bs_emove_stage1_spell_party
 		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_1F_chant_beat
-		.WORD	_bs_emove_stage1_20_chant_beat
-		.WORD	_bs_emove_stage1_21_chant_sacrifice
+		.WORD	_bs_emove_stage1_1F_chant_beat ; $12
+		.WORD	_bs_emove_stage1_20_chant_beat ; $13
+		.WORD	_bs_emove_stage1_21_chant_sacrifice ; $14
 		.WORD	_bs_emove_stage1_22_chant_sleep
 		.WORD	_bs_emove_stage1_23_chant_stopspell
 		.WORD	_bs_emove_stage1_24_chant_sap
