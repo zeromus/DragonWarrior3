@@ -2761,9 +2761,9 @@ _bB_s2_apu_init:
 		LDA		#$FF
 		STA		byte_47C
 		LDA		#0
-		STA		_apu_data3+4
+		STA		_apu_data3+4 ; are we resuming old music from a jingle, perhaps?
 		JSR		_bB_s3_apu_load
-		LDA		#$80
+		LDA		#SFX_NOCHANGE_80
 		JSR		_bB_s3_apu_load
 		RTS
 

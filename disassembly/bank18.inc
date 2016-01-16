@@ -48,7 +48,7 @@ loc_24C042:
 sub_24C055:
 		LDA		#0
 		FARX	_bB_s5_apu_flag1
-		LDA		#0
+		LDA		#BGM_SILENCE ; I think
 		FARX	_bB_s3_apu_load
 		LDX		#0
 		LDA		#$F
@@ -999,7 +999,7 @@ loc_24E74D:
 		BNE		loc_24E761
 		JMP		loc_24E7E8
 loc_24E761:
-		LDA		#$10
+		LDA		#BGM_BATTLE
 		FARX	_bB_s3_apu_load
 		LDA		#0
 		FARX	_bB_s5_apu_flag1

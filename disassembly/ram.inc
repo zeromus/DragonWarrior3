@@ -153,7 +153,9 @@ byte_47:
 		.BYTE	0
 byte_48:
 		.BYTE	0
-byte_49: ; a dialog box parameter?
+;----------------------------------------------
+; a dialog box parameter?
+byte_49: 
 		.BYTE	0
 ;----------------------------------------------
 word_4A:
@@ -450,7 +452,10 @@ byte_C9:
 		.BYTE	0
 _pads_tmp: ;ca
 		.BYTE	0,0,0,0
-byte_CE: ; "target" - current target for many AI and inventory functions
+;----------------------------------------------
+; "target" - current target for many AI and inventory functions
+; also used as dialog param, perhaps?
+byte_CE: 
 		.BYTE	0
 ;----------------------------------------------
 ; "u16 tempdamage" stores temporary damage values, including MP costs; and many, many other things
@@ -463,8 +468,15 @@ byte_D1:
 		.BYTE	0
 byte_D2: ; contains the target of a move in battle
 		.BYTE	0
-byte_D3: ; a dialog box parameter?
+;----------------------------------------------
+; The index of of a 'direct object' grammar part. Is satisfied by reading from a string lib in bank 2.
+; Used for: F3 - Spells (_str_lib4_spells)
+; Used for: F4 - Items (_str_lib0_items_low0, etc.)
+; Maybe others, not direct objects?
+;
+_msg_directobject_param:
 		.BYTE	0
+;----------------------------------------------
 byte_D4:
 		.BYTE	0
 byte_D5:
@@ -649,7 +661,8 @@ _enemy_DEF:
 ;----------------------------------------------
 ; struct { u8 one, two } enemystat[8]
 ; contains what seems to be enemy status, two bytes per enemy? one copy seems to be the round starting state and another is the current state, or something like that
-; hazy notes about meanings: LASCXP??
+; hazy notes about meanings: BBBB???? LASCXP??
+; B - Bounce flags (various resistances?)
 ; S - sleep
 ; L - alive? clear this bit and it will be kind of like enemies are dead.
 ; P - "protecting itself". interferes with counting live enemies
@@ -702,7 +715,9 @@ byte_566:
 		.BYTE	0
 ;----------------------------------------------
 ; battle flags
-; xxxxAAPP  
+; xBSxAAPP  
+; B - Bounce(?) wall of light that blocks spells is in effect
+; S - Party gains additional attack power
 ; A - %11 = player PP gets 3 free turns (result of chance), the logic to support this is sprawled all over
 ;
 byte_567:

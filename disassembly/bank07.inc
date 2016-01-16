@@ -2103,7 +2103,7 @@ loc_B2C93:
 		STA		byte_6A3E
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
-		LDA		#$17
+		LDA		#BGM_CURSE_JINGLE
 		FARX	_bB_s3_apu_load
 		SYSX	_display_window_ex,$3E
 		MSGX	_msg_m00,$061

@@ -216,7 +216,7 @@ loc_12819A:
 		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00,$181
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#$F
@@ -337,7 +337,7 @@ loc_12828A:
 		MSGX	_msg_m00,$16F
 loc_128296:
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		LDA		#$95
+		LDA		#SFX_BLAST_95
 		FARX	_bB_s3_apu_load
 		JSR		_bC_s20_warp_bE_sB_arg0
 		PLA
@@ -534,7 +534,7 @@ locret_1283C2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1283C3:
-		LDA		#$95
+		LDA		#SFX_BLAST_95
 		FARX	_bB_s3_apu_load
 		LDX		#$1C
 loc_1283CA:
@@ -3020,7 +3020,7 @@ loc_1294C9:
 sub_1294D0:
 		JSR		_sleep_30
 		JSR		_warp_bE_sB_arg0
-		LDA		#$90
+		LDA		#SFX_OPEN_DOOR
 		FARX	_bB_s3_apu_load
 		JSR		sub_129526
 		JSR		sub_1295B8
@@ -3293,7 +3293,7 @@ loc_129647:
 		PLP
 		BCS		_j.already_opened			; if chest already opened
 		JSR		_chest_open_flag_set		; mark chest as opened
-		LDA		#$8F
+		LDA		#SFX_OPEN_CHEST
 		FARX	_bB_s3_apu_load				; open sound
 		LDA		#$1F
 		JSR		_set_tile_at_player_position
@@ -3615,7 +3615,7 @@ loc_129868:
 		LDA		_tmp_ptrB4
 		BMI		._but_nothing_could_be_found
 .item_found_ex:
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00,$065		; "<name> finds the <item>"
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDY		word_4
@@ -3670,7 +3670,7 @@ loc_1298D1:
 		LDA		#0
 		STA		byte_D2
 		LDA		_tmp_ptrB4
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00,$069	; "<name> gives up the <item>"
 		JMP		loc_129943
 loc_1298E5:
@@ -3679,7 +3679,7 @@ loc_1298E5:
 		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_D4
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 		LDY		#$3F
@@ -3702,7 +3702,7 @@ loc_129913:
 loc_129914:
 		TXA
 		LSR
-		STA		byte_D3
+		STA		_msg_directobject_param
 		LDA		_tmp_ptrB4
 		STA		byte_D5
 		LDX		#0

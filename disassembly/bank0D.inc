@@ -3317,7 +3317,7 @@ loc_1421A6:
 loc_1421AA:
 		LDA		byte_C5
 		STA		byte_CF
-		STA		byte_D3
+		STA		_msg_directobject_param
 		FARX	_b0_s5E_check_if_item_can_be_equipped
 		BCS		loc_1421C0
 		MSGX	_msg_m00,$226	; "Cannot equip with that"
@@ -4617,7 +4617,7 @@ loc_142C37:
 		JMP		loc_142C5C
 loc_142C44:
 		STA		byte_C6
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_CF
 		JSR		_sram_b0_sC_player_LV_read
 		LDA		word_4
@@ -4636,7 +4636,7 @@ loc_142C60:
 		JSR		_bD_s10
 		CMP		#$FF
 		BEQ		loc_142C59
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_CF
 		CMP		byte_C6
 		BNE		loc_142C7D
@@ -4756,7 +4756,7 @@ loc_142D50:
 		STA		byte_CE
 		FARX	_b7_s11
 		STA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_D4
 		ASL
 		ASL
@@ -4822,7 +4822,7 @@ loc_142DD0:
 loc_142DE7:
 		LDA		byte_C3
 		STA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		PHA
 		MSGX	_msg_m00,$265
 		LDA		byte_C3
@@ -5331,7 +5331,7 @@ loc_1431D9:
 		PHA
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_D4
 		PLA
 		STA		byte_5C
@@ -5879,7 +5879,7 @@ _npc_hndl1_hero_mother:
 		AND		word_4+1
 		BMI		loc_143541
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00_break,$5BF	 ; "Oh, mercy! My dear sweet <name>!"
 loc_143541:
 		LDA		_global_flags_array.byte2
@@ -5980,7 +5980,7 @@ loc_1435E5:
 		BNE		loc_143628
 		MSGX	_msg_m00,$5D1	; "Oh, I'm grateful. From this day forward <name> and I shall start to build..."
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_CE
 		JSR		_sram_b0_sF_unassigned_formation_char_name_read
 		LDX		#7
@@ -6361,7 +6361,7 @@ _npc_hndl20:
 _npc_hndl21:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00_break,$62F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6587,7 +6587,7 @@ _npc_hndl2C:
 		BNE		loc_143A01
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00,$677	; "Oh, <name>! You did well in defeating the Archfiend Baramos"
 		FARX	_b6_s1B_interrupted_baramos_defeat_celebration_anim
 		JSR		_wrap_bE_sD_wnd3E
@@ -7098,7 +7098,7 @@ loc_143D2B:
 _npc_hndl66:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		byte_D2
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_D4
 		MSGX	_msg_m00_break,$656
 

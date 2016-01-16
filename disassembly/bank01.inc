@@ -1686,7 +1686,7 @@ loc_20AED:
 		SYSX	_apu_load,$8F
 		MSGX	_msg_m00,$064	; "<name> opens the treasure chest"
 		PLA
-		STA		byte_D3
+		STA		_msg_directobject_param
 		STA		byte_48
 		CMP		#ITEM_OROCHI_SWORD
 		BNE		loc_20B48
@@ -1718,7 +1718,7 @@ loc_20B75:
 		MSGX	_msg_m00,$060	; "Wait, you better not give up now"
 		JMP		loc_20B5E
 loc_20B7D:
-		STA		byte_D3
+		STA		_msg_directobject_param
 		MSGX	_msg_m00,$069	; "<name> gives up the item"
 		JMP		.obtain_money_after_battle
 loc_20B87:
@@ -1739,7 +1739,7 @@ loc_20B87:
 		JSR		_sram_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		AND		#$7F
-		STA		byte_D3
+		STA		_msg_directobject_param
 		TAX
 		LDA		#_b0_d42_item_use_effects_list_fidx
 		JSR		_sys0_byte_read_x

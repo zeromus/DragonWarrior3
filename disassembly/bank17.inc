@@ -45,7 +45,7 @@ loc_234049:
 		CPX		#$19
 		BCC		loc_234049
 		JSR		_pal_fade_in
-		LDA		#$27
+		LDA		#BGM_DQ3_THEME
 		FARX	_bB_s3_apu_load
 		RTS
 

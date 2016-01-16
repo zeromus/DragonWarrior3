@@ -1071,11 +1071,11 @@ loc_868D:
 		DEX
 		BPL		.iterate_patch_fight
 .dont_patch_fight:
-		LDA		#$10				; SEQ_BATTLE
+		LDA		#BGM_BATTLE
 		LDX		_battle_type_fight
 		CPX		#9
 		BNE		loc_86AE			; choose the battle music depending on the value of _battle_type_fight
-		LDA		#$12				; SEQ_EVIL_LOCATION (someone needs to get the real names for these songs)
+		LDA		#BGM_EVIL_12
 loc_86AE:
 		FARX	_bB_s3_apu_load		; play the battle music
 		JSR		sub_8841			; runs the pre-battle screen wipe, largely
@@ -4040,8 +4040,8 @@ loc_9EF3:
 		JMP		_wnd3E_msg0xx_wait_key
 loc_9F13:
 		LDX		byte_49
-		STX		byte_D3
-		CPX		#$26
+		STX		_msg_directobject_param
+		CPX		#SPELL_RETURN
 		BEQ		loc_9F2A
 		LDA		#_b4_dD_spells_list_fidx
 		JSR		_sys0_byte_read_x
@@ -4252,7 +4252,7 @@ _cmd_spell_curseoff:
 		STA		byte_CF
 		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4+1
-		STA		byte_D3
+		STA		_msg_directobject_param
 		JSR		_b0_s2A_player_inventory_item_remove
 		MSGX	_msg_m00,$0C3	; "The curse on <name> is gone"
 		SEC
@@ -5629,8 +5629,8 @@ _b0_s5D_run_command_item_use:
 		JSR		_b0_s28_player_inventory_item_get
 		LDA		word_4+1
 		STA		byte_48
-		AND		#$7F
-		STA		byte_D3
+		AND		#$7F ; mask off equip bit; store as direct object
+		STA		_msg_directobject_param
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
 		CMP		#5
@@ -6058,7 +6058,7 @@ loc_ADC6:
 		CMP		#$FF
 		BEQ		_return_false_in_C
 		AND		#$7F
-		STA		byte_D3
+		STA		_msg_directobject_param
 		LDA		#$15	; "<name> is confused by the Noh Mask."
 
 ;; FALLTHROUGH ;;
@@ -6612,7 +6612,7 @@ _items_use_lib:
 sub_B143:
 		LDA		byte_48
 		AND		#$7F
-		STA		byte_D3
+		STA		_msg_directobject_param
 		LDA		byte_45
 		STA		byte_CE
 		STA		byte_D2

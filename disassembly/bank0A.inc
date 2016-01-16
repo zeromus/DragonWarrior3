@@ -681,7 +681,7 @@ _bA_sC:
 		FARX	_b5_sA
 		JSR		sub_F8682
 		JSR		sub_F864D
-		LDA		#$94
+		LDA		#SFX_TRAVEL_GATE
 		FARX	_bB_s3_apu_load
 		JSR		sub_F84CE
 		LDA		#0

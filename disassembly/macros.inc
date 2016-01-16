@@ -219,3 +219,5 @@ _hero = $F9
 	INCLUDE "class_ids.inc"
 	INCLUDE "enemy_ids.inc"
 	INCLUDE "wnd_ids.inc"
+	INCLUDE "spell_ids.inc"
+	INCLUDE "sound_ids.inc"
