@@ -1,0 +1,82 @@
+here's a concept (an outline) for documenting all possible actions and much of the pseudocode/algorithms in one place. The logic would be as complete as possible; this file would be very, very large.
+<p>
+It's unclear how to encode things like passive effects of equipment, but it could be done.
+
+<ul>
+
+	<li>Field<ul>
+	<!--- field --->
+	
+		<li>Talk
+
+		<li>Spell<ul>
+			<!--- field spells --->
+			<li>Heal (HR,PI)<br />
+			Does things
+			<li>Antidote (PI)<br />
+			Does things
+		</ul> <!--- field spells --->
+	
+		<li>Status
+		<li>Item<ul>
+			<!--- battle - player items -->
+			<li>00 - ITEM_CYPRESS_STICK: (no effect)
+			<li>4F - ITEM_BLACK_PEPPER: All living players sneeze (no practical effect)
+			<li>65 - ITEM_MEDICAL_HERB: Restores [0,15] + 35 HP to target player
+			<li>66 - ITEM_ANTIDOTE_HERB: Calls the same logic as the Antidote spell; if it was ineffective, prints "But nothing happens"
+			<li>67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' timer
+		</ul> <!--- battle - player items -->
+
+		<li>Search:
+		Write a lot of pseudocode and such here
+
+		<li>Equip
+	</ul> <!--- field --->
+	
+	<li>Battle<ul>
+		<!--- battle --->
+		<li>Player<ul>
+			<!--- battle - player --->
+
+			<li>Fight
+
+			<li>Spell<ul>
+				<!--- battle - player spells -->
+				<li>Heal (HR,PI)<br />
+				Does things
+				<li>Antidote (PI)<br />
+				Does things
+			</ul><!--- battle - player spells -->
+
+			<li>Parry
+			<li>Item<ul>
+				<!--- battle - player items -->
+				<li>00 - ITEM_CYPRESS_STICK: (no effect)
+				<li>4F - ITEM_BLACK_PEPPER: All living players and enemies sneeze (no practical effect)
+				<li>65 - ITEM_MEDICAL_HERB: (see Field::Item entry)
+			</ul> <!--- battle - player items -->
+
+			<li>Antic<ul>
+				<!--- battle::player::antic --->
+				<li>Take off clothes
+				<li>Dance around
+			</ul><!--- battle::player::antic --->
+
+		</ul><!--- battle - player --->
+
+
+		<li>Enemy<ul>
+			<!--- battle - enemy --->
+			<li>00 - Assessing the situation: Simply prints a message
+			<li>01 - Protects itsself: Sets a flag indicating parry status
+			<li>02 - Attack
+			<li>03 - Attack (maybe crit)
+			<li>04 - Attack (maybe sleep)
+			<li>05 - Attack (maybe poison)
+			<li>06 - Attack (maybe numb)
+			<li>07 - Try to flee: performs unknown stage1 logic. Computes enemy.level + 5 and compares to player's level.
+		</ul><!--- battle - enemy --->
+
+	</ul><!--- battle --->
+
+</ul>

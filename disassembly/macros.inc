@@ -9,6 +9,8 @@ DAYNIGHT_CYCLE_BEGIN_NIGHT = $78
 DAYNIGHT_CYCLE_MIDNIGHT = $97
 DAYNIGHT_CYCLE_TOTAL = $CC ; never exceeds CB
 
+ENEMY_FLAG_PARRY = $40 ; in byte_530+1
+
 ; == FONTS ==
 
 _nulltile = $00
@@ -212,7 +214,7 @@ _hero = $F9
 		.BYTE	[[{2}] & $FF]
 		.BYTE	[[{1}_sidx + [[{2}] >> 7]] & $FE]
 	ENDM
-	
+
 	INCLUDE "item_ids.inc"
 	INCLUDE "class_ids.inc"
 	INCLUDE "enemy_ids.inc"

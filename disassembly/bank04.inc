@@ -25,7 +25,7 @@
 		PTR_IDX		_b4_s14
 		PTR_IDX		_b4_s17
 		PTR_IDX		_b4_s18
-		PTR_IDX		_b4_s19
+		PTR_IDX		_b4_s19_heal_enemy
 		PTR_IDX		_b4_s1A_status_pal_adjust_and_update
 		PTR_IDX		_b4_s1B
 		PTR_IDX		_b4_s1E
@@ -261,7 +261,7 @@ loc_68185:
 		LDX		#0
 		LDY		#4
 loc_681A1:
-		STX		byte_64
+		STX		_acting_enemy
 		TXA
 		PHA
 		TYA
@@ -351,10 +351,10 @@ _b4_s22:
 		STA		byte_567
 		STA		byte_568
 		STA		byte_565
-		STA		byte_569
-		STA		byte_56A
-		STA		byte_56B
-		STA		byte_56C
+		STA		byte_569 ; fill
+		STA		byte_56A ; an
+		STA		byte_56B ; array
+		STA		byte_56C ; with 0
 		TAX
 loc_68230:
 		STA		byte_5D,X
@@ -385,20 +385,20 @@ loc_68252:
 ; setup a 4-times loop across each player
 		LDX		#0
 .bs_init_player:
-		STX		byte_51
+		STX		_bs_curr_actor
 		TXA
 		STA		_player_battle_order_and_flags,X
 		STA		byte_CE
 
 ; calculate EffAGI as default rAGI
 		JSR		_sram_b0_s12_player_EffAGI_calc
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		word_4 ; load the EffAGI calculated above
 		STA		_players_rAGI,X
 
 ; calculate EffDEF as default rDEF
 		JSR		_sram_b0_s18_player_EffDEF_calc
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		ASL
 		TAX
 		LDA		word_4
@@ -406,7 +406,7 @@ loc_68252:
 		LDA		word_4+1
 		STA		_players_rDEF+1,X
 
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		ASL
 		TAX
 		LDA		_players_status,X
@@ -418,14 +418,14 @@ loc_68252:
 
 ; calculate EffATK as default rATK
 		JSR		_sram_b0_s16_player_EffATK_calc
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		ASL
 		TAX
 		LDA		word_4
 		STA		_players_rATK,X
 		LDA		word_4+1
 		STA		_players_rATK+1,X
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		INX
 		CPX		#4
 		BNE		.bs_init_player ; branch up if we're not done for all 4 characters
@@ -450,7 +450,7 @@ loc_682BA:
 		BNE		loc_682BA
 		LDX		#0
 loc_682C4:
-		STX		byte_51
+		STX		_bs_curr_actor
 		LDA		#0
 		STA		byte_6A77,X
 		LDA		_enemy_roster_index_list,X
@@ -476,7 +476,7 @@ loc_682EB:
 		DEY
 		BNE		loc_682EB
 loc_682F5:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		INX
 		CPX		#4
 		BNE		loc_682C4
@@ -493,7 +493,7 @@ loc_68312:
 		LDX		#0
 		LDY		#0
 loc_68316:
-		STX		byte_64
+		STX		_acting_enemy
 		JSR		sub_6B8E7
 		BCS		loc_6833A
 loc_6831D:
@@ -519,9 +519,9 @@ loc_6833A:
 		RTS
 loc_6833E:
 		LDA		#7
-		STA		byte_64
+		STA		_acting_enemy
 loc_68342:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -529,12 +529,12 @@ loc_68342:
 		BPL		loc_68351
 		JSR		sub_68453
 loc_68351:
-		DEC		byte_64
+		DEC		_acting_enemy
 		BPL		loc_68342
 		RTS
 loc_68356:
 		STY		word_4
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		ASL
 		ASL
 		ASL
@@ -597,7 +597,7 @@ loc_683B3:
 		AND		#$3F
 		RTS
 loc_683BC:
-		LDA		byte_64
+		LDA		_acting_enemy
 		LSR
 		PHP
 		TAX
@@ -772,7 +772,7 @@ loc_684B2:
 		BCC		loc_684EB
 		JSR		sub_686E1
 		BEQ		loc_684E9
-		LDA		byte_64
+		LDA		_acting_enemy
 		JSR		_b4_s10
 		STA		byte_42
 		AND		byte_576
@@ -810,10 +810,10 @@ _bs_emove_stage2_nothing:
 ; sets a bit in the status of the acting enemy. parrying?
 ;
 _bs_emove_stage2_01_parry:
-		LDA		byte_64 ; acting enemy
+		LDA		_acting_enemy ; acting enemy
 		ASL
 		TAX
-		LDA		#$40
+		LDA		#ENEMY_FLAG_PARRY
 		ORA		byte_530+1,X
 		STA		byte_530+1,X
 		SEC
@@ -835,12 +835,12 @@ _b4_s2B_emove_stage2_02_through_06_attacks:
 loc_6852A:
 		JSR		_sram_b0_s33_count_non_dead_party_chars
 		DEC		word_4
-		LDA		word_4
+		LDA		word_4 ; A = maximum live player number (one minus # live players)
 		ASL
 		TAY
-		LDA		off_6855F,Y
+		LDA		off_6855F,Y ; load A and X with a pointer based on # of live players
 		LDX		off_6855F+1,Y
-		JSR		sub_6BBD0
+		JSR		_store_AX_in_3E
 		JSR		sub_686F4
 		STA		byte_43
 		LDX		#0
@@ -878,7 +878,7 @@ _bs_emove_stage2_07_try_flee:
 		CLC
 		ADC		byte_59
 		CMP		_players_level
-		BCC		loc_6859E
+		BCC		loc_6859E ; BCC->JB - if enemy.level + 5 < player level, set CF=1 and return. does that mean the player gets some kind of bonus attack against it?
 		CLC
 		RTS
 
@@ -921,12 +921,12 @@ sub_685A0:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage2_sleep_and_sweet_breath:
 		LDA		#0
-		JMP		sub_68638
+		JMP		sub_68638 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage2_toxic_breath:
 		LDA		#$D
-		JMP		sub_68638
+		JMP		sub_68638 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage2_spell_single:
@@ -1024,25 +1024,27 @@ sub_6861E:
 		JMP		sub_68675
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68625: ; stage2 multi
+sub_68625: ; stage2 heal multi
 		LDA		#1
 		LDX		#$FF
-		JMP		sub_6868C
+		JMP		sub_6868C ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6862C:
 		LDA		#1
-		JMP		sub_686BB
+		JMP		sub_686BB ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68631: ; stage2 multi
 		LDA		#1
 		LDX		#0
-		JMP		sub_6868C
+		JMP		sub_6868C ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68638:
 		JSR		_b4_s23
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6863B:
@@ -1089,7 +1091,7 @@ loc_6866A:
 sub_68675:
 		STA		byte_43
 		STX		byte_42
-		LDA		byte_64
+		LDA		_acting_enemy
 		JSR		_b4_s10
 		EOR		byte_42
 		PHA
@@ -1175,17 +1177,17 @@ sub_686EC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_686F4:
 		LDA		#$F
-		JMP		_b4_s23
+		JMP		_b4_s23 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_686F9:
 		LDA		#$F
-		BNE		sub_68701
+		BNE		sub_68701 ; UNCONDITIONAL TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_686FD:
 		LDA		#8
-		BNE		sub_68701
+		BNE		sub_68701 ; UNCONDITIONAL TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68701:
@@ -1201,7 +1203,7 @@ sub_68707:
 sub_6870D:
 		JSR		sub_6881F
 		BCC		locret_6875E
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		PHA
 		LSR
@@ -1219,7 +1221,7 @@ loc_68726:
 		DEX
 		BNE		loc_68726
 loc_6872B:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDY		byte_558,X
 		AND		#3
 		BEQ		loc_68747
@@ -1229,7 +1231,7 @@ loc_6872B:
 		BNE		loc_6873F
 		JMP		loc_687D3
 loc_6873F:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		#2
 		STA		byte_558,X
 		TAY
@@ -1240,7 +1242,7 @@ loc_68747:
 		BCC		locret_6875E
 loc_68750:
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#$F8
 		ORA		word_4
@@ -1257,7 +1259,7 @@ loc_6876B:
 		JSR		_b4_s13
 		JMP		loc_68750
 loc_68771:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ORA		#$80
 		BNE		loc_68750
 loc_68777:
@@ -1293,7 +1295,7 @@ loc_687A2:
 		BCC		locret_6875E
 		ORA		#$80
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#$F8
 		ORA		word_4
@@ -1302,7 +1304,7 @@ loc_687A2:
 loc_687BC:
 		LDA		_curent_battle_type_flags
 		BNE		loc_687CC
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#$7F
 loc_687C8:
@@ -1315,7 +1317,7 @@ loc_687CC:
 loc_687D3:
 		JSR		sub_6881F
 		BCC		locret_6875E
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		#$80
 		ORA		byte_54C,X
 		STA		byte_54C,X
@@ -1349,7 +1351,7 @@ sub_68808:
 		BCC		locret_6881E
 		JSR		sub_6A8B3
 		PHA
-		LDA		byte_64
+		LDA		_acting_enemy
 		JSR		_b4_s10
 		STA		word_4
 		PLA
@@ -1504,17 +1506,17 @@ loc_688D8:
 		STA		byte_540,Y
 
 ; ; ; ; ; The actual main turn loop
-; initialize a couple of loops in byte_51 and byte_52
+; initialize a couple of loops in _bs_curr_actor and byte_52
 .bs_loop_round_begin:
 		LDX		#0
 		STX		byte_52 ; main loop across turn numbers here?
 .bs_loop_turn_begin:
 		LDX		#0
-		STX		byte_51 ; loop across candidate actors
+		STX		_bs_curr_actor ; loop across candidate actors
 
 .bs_loop_find_actor_for_turn:
-		LDX		byte_51
-		LDA		byte_540,X ; read byte_51st entry from byte_540 table
+		LDX		_bs_curr_actor
+		LDA		byte_540,X ; read _bs_curr_actorst entry from byte_540 table
 		AND		#$78 ; fetch action order
 		LSR
 		LSR
@@ -1547,7 +1549,7 @@ loc_6890E:
 		RTS
 
 .bs_loop_not_this_actor:
-		INC		byte_51 ; increment actor candidate counter
+		INC		_bs_curr_actor ; increment actor candidate counter
 		BNE		.bs_loop_find_actor_for_turn ; unconditional
 
 loc_68925:
@@ -1610,7 +1612,7 @@ loc_6897F:
 		JSR		sub_6B300 ; affects byte_567
 		LDA		#0
 		STA		byte_575
-		LDX		byte_51 ; load actor number for this turn
+		LDX		_bs_curr_actor ; load actor number for this turn
 		LDA		byte_540,X ; read his action order table for enemy flag
 		BMI		.bs_enemy_turn
 		JMP		_bs_player_turn ; TAILCALL
@@ -1619,7 +1621,7 @@ locret_68998:
 .bs_enemy_turn:
 		JSR		sub_68AC6 ; ZING
 		BEQ		locret_68998
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_566
 		AND		#8
 		BNE		locret_68998
@@ -1638,7 +1640,7 @@ loc_689BC: ; <- normal codepath
 		CMP		#$70
 		BEQ		locret_68998 ; test for 'no action'
 		JSR		_bs_get_current_actor_number ; read the current actor's number
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		byte_567
 		AND		#$C
 		BNE		locret_68998
@@ -1664,7 +1666,7 @@ loc_689F6:
 		TXA
 		PHA
 		FARX	_bA_s3
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_50
 		STA		byte_54C,X
 		LDA		byte_4F
@@ -1673,7 +1675,7 @@ loc_689F6:
 		JSR		sub_6B3C7
 		PLA
 		TAX
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAY
 		LDA		byte_530+1,Y
@@ -1688,7 +1690,7 @@ loc_68A1E:
 		JSR		sub_6B3C7
 		JSR		sub_6B95A
 		BNE		locret_68A1D
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_643,X
 		STA		byte_54C,X
 		LDA		byte_653,X
@@ -1700,7 +1702,7 @@ loc_68A1E:
 		CMP		#1
 		BEQ		locret_68A1D
 loc_68A42:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_64B,X
 		STA		byte_54C,X
 		LDA		byte_65B,X
@@ -1721,7 +1723,7 @@ sub_68A52:
 		AND		byte_530+1,X
 		BPL		locret_68AC5
 		JSR		_b4_sA_clear_chatbox
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -1734,13 +1736,13 @@ loc_68A7D:
 		LDA		byte_530+1,X
 		AND		#$10
 		BEQ		loc_68A92
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$73 ; "is confused"
 		JSR		_b4_sA_clear_chatbox
 loc_68A8F:
 		JSR		sub_6870D
 loc_68A92:
 		JSR		sub_6B2F5
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$3B
 		BCC		loc_68AA4
@@ -1824,21 +1826,21 @@ sub_68B00:
 		AND		#$FC
 		ORA		word_4
 		STA		byte_530,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B ; "is asleep"
 loc_68B24:
 		LDA		byte_530+1,X
 		AND		#$DF
 		STA		byte_530+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C ; "has awakened"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_00_assessing:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$00
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$00 ; "is assessing the situation"
 
 ; =============== S U B	R O U T	I N E =======================================
 ; interesting that it just seems to print a message. same for the player's parry command. where does the parry flag get set?
 _bs_emove_stage1_01_protects_itself:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04 ; "protects itself"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_02_regular_attack:
@@ -1863,7 +1865,7 @@ loc_68B49:
 		CMP		#4
 		BCC		loc_68B75
 loc_68B5D:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -1873,17 +1875,17 @@ loc_68B5D:
 		CMP		#$A0
 		BCS		loc_68B84
 		JSR		sub_68BB6
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22 ; "missed! no damage to enemy"
 loc_68B75:
 		LDX		byte_CE
 		LDA		_player_battle_order_and_flags,X
 		AND		#8
 		BNE		loc_68B5D
 		JSR		sub_68BB6
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07 ; "dodges nimbly"
 loc_68B84:
 		LDA		byte_565
-		LDX		byte_64
+		LDX		_acting_enemy
 		INX
 loc_68B8A:
 		LSR
@@ -1905,13 +1907,13 @@ loc_68B94:
 loc_68BA8:
 		JMP		loc_6A58C
 loc_68BAB:
-		STA		byte_64
+		STA		_acting_enemy
 		JMP		loc_6A42E
 
 ; =============== S U B	R O U T	I N E =======================================
 _attacks_msg_and_sound:
 		SYSX	_apu_load,$8B
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01 ; "attacks!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB6:
@@ -1936,7 +1938,7 @@ loc_68BD3:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
 		SYSX	_apu_load,$88
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11 ; "a terrible blow!"
 		JSR		_bs_load_enemy_prop_ATK
 		LDA		byte_59
 		STA		word_4
@@ -1994,23 +1996,23 @@ sub_68C42:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_07_try_flee:
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		SYSX	_apu_load,$83
-		LDA		#$50
+		LDA		#$50 ; "<enemy> starts to flee
 		JSR		_wrap_bE_s6_msg_mFF_arg0_safe
 		JSR		sub_6ADBF
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		#0
-		STA		byte_530,X
+		STA		byte_530,X ; clear out enemy status?
 		JMP		_b4_s21_message_half_delay_or_wait_for_keypress
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_08_reinforce_own_type:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B ; "calls for reinforcements"
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B91D
 		LDX		byte_59
 		LDA		byte_6A6F,X
@@ -2089,23 +2091,23 @@ loc_68CED:
 		ORA		byte_46
 		STA		byte_6A7B,X
 		LDA		byte_46
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		_bs_read_enemy_prop_HP
-		JSR		sub_68D7F
+		JSR		_bs_enemy_prop_prepare_u16
 		STA		_enemy_HP,X
 		TYA
 		STA		_enemy_HP+1,X
 		JSR		_bs_load_enemy_prop_MP
 		LDA		byte_59
-		LDX		byte_64
+		LDX		_acting_enemy
 		STA		_enemy_MP,X
 		JSR		_bs_load_enemy_prop_DEF
-		JSR		sub_68D7F
-		STA		byte_520,X
+		JSR		_bs_enemy_prop_prepare_u16
+		STA		_enemy_DEF,X
 		TYA
-		STA		byte_530+1,X
+		STA		byte_530+1,X ; weird, was that really DEF?
 		JSR		_bs_load_enemy_prop_AGI
-		LDX		byte_64
+		LDX		_acting_enemy
 		STA		_enemy_AGI,X
 		TXA
 		CLC
@@ -2115,7 +2117,7 @@ loc_68CED:
 		STA		byte_54C,X
 		JSR		sub_6B5B7
 		INC		byte_4D
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4C ; "another one of me appears"
 		JMP		sub_6AA34
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2125,8 +2127,8 @@ _bs_emove_stage1_reinforce_specific:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D3F:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B
-		LDX		byte_51
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4B ; "calls for reinforcements"
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		SEC
 		SBC		#$3B
@@ -2136,7 +2138,7 @@ sub_68D3F:
 		BCC		loc_68D56
 		JMP		loc_68C7C
 loc_68D56:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4D
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4D ; "but no help arrives!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68D59:
@@ -2168,8 +2170,10 @@ loc_68D7B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68D7F:
-		LDA		byte_64
+; A utility used while loading enemy props, loads A and Y with word[59] and X with a pointer suitable for storing it
+;
+_bs_enemy_prop_prepare_u16:
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_59
@@ -2188,7 +2192,7 @@ _bs_reinforce_specific_tbl:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_09_curious_dance:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3A
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3A ; "dances a curious dance"
 		LDA		#1
 		JSR		sub_6B307
 		JSR		sub_6B30E
@@ -2200,7 +2204,7 @@ _bs_emove_stage1_09_curious_dance:
 		BPL		locret_68DB0
 		JMP		sub_6A61F
 loc_68DA8:
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		locret_68DB0
 		JMP		sub_6A6D9
 locret_68DB0:
@@ -2210,13 +2214,13 @@ locret_68DB0:
 ; several breath attacks are handled by this one
 _bs_emove_stage1_0A_through_0F_breath_attacks:
 		SYSX	_apu_load,$91
-		LDA		#$36
+		LDA		#$36 ; "emits gales of blazing breath"
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
-		CMP		#$D
+		CMP		#$D ; a key reference point in the middle of the breath attacks, dividing them in 2 probably
 		BCC		loc_68DC5
-		LDA		#$37
+		LDA		#$37 ; "emits gales of blizzard breath"
 		STA		word_4
 loc_68DC5:
 		LDA		word_4
@@ -2226,7 +2230,7 @@ loc_68DC5:
 		BMI		loc_68DD5
 		JMP		loc_68EE6
 loc_68DD5:
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		LDA		byte_558,X
 		CLC
 		ADC		#2
@@ -2240,30 +2244,30 @@ loc_68DD5:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_10_sweet_breath:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$30
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$30 ; "emits gales of sweet breath"
 		JSR		sub_6B32F
 		JSR		_bs_extract_target_from_move
 		BMI		loc_68DFD
 		JSR		sub_69096
-		JMP		sub_694C1
+		JMP		_bs_action_foreach_live_player
 loc_68DFD:
 		JMP		sub_69C86
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_11_toxic_breath:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$31
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$31 ; "emits gales of toxic breath:
 		JSR		sub_6B32F
 		LDA		#<[sub_68E18]
 		STA		word_3E
 		LDA		#>[sub_68E18]
 		STA		word_3E+1
-		JSR		sub_694C1
+		JSR		_bs_action_foreach_live_player
 		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E18:
 		JSR		sub_68E1E
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E1E:
@@ -2282,29 +2286,29 @@ sub_68E1E:
 		LDA		_players_status+1,X
 		ORA		#$20
 		STA		_players_status+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D ; "the poison has effected"
 locret_68E42:
 		RTS
 loc_68E43:
 		JSR		sub_6B2EF
 		BNE		locret_68E42
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$32
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$32 ; "repels the poison"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_12_scorching_breath:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$33
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$33 ; "emits gales of scorching breath"
 		JSR		sub_6B32F
 		LDA		#<[sub_68E63]
 		STA		word_3E
 		LDA		#>[sub_68E63]
 		STA		word_3E+1
-		JSR		sub_694C1
+		JSR		_bs_action_foreach_live_player
 		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
 		JSR		sub_68E69
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E69:
@@ -2323,20 +2327,20 @@ sub_68E69:
 		LDA		_players_status+1,X
 		ORA		#$40
 		STA		_players_status+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$34
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$34 ; "is numb and unable to move"
 locret_68E8D:
 		RTS
 loc_68E8E:
 		JSR		sub_6B2EF
 		BNE		locret_68E8D
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$35
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$35 ; "dodges the gale of breath"
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on a single party member
 _bs_emove_stage1_spell_single:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		SEC
 		SBC		#$13
@@ -2344,7 +2348,7 @@ _bs_emove_stage1_spell_single:
 		LDA		byte_6B490,X
 		STA		byte_D3
 		STA		byte_49
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		sub_6BEB9
@@ -2362,7 +2366,7 @@ loc_68EC4:
 _bs_emove_stage1_spell_party:
 		JSR		sub_6983C
 		FARX	_b2_s7_screen_spell_blink
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		SEC
 		SBC		#$17
@@ -2370,7 +2374,7 @@ _bs_emove_stage1_spell_party:
 		LDA		byte_6B494,X
 		STA		byte_49
 		STA		byte_D3
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_68EE6:
@@ -2399,6 +2403,7 @@ loc_68F09:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Y: a player number
+; N flag set so BPL branches for player dead
 ;
 _player_idx_to_X_and_status_check:
 		TYA
@@ -2410,7 +2415,7 @@ _player_idx_to_X_and_status_check:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F16:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -2457,16 +2462,16 @@ loc_68F59:
 locret_68F6C:
 		RTS
 loc_68F6D:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83 ; "did not die"
 loc_68F70:
 		JMP		loc_6991A
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F73:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7E
-		LDA		#$55
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7E ; "the stone of life shatters in -names- hands"
+		LDA		#ITEM_STONE_OF_LIGHT
 		JSR		_b4_s20
-		JMP		_sram_b0_s2A_player_inventory_item_remove
+		JMP		_sram_b0_s2A_player_inventory_item_remove ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 ; 
@@ -2521,7 +2526,7 @@ _bs_emove_stage1_20_chant_beat:
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FCF:
 		JSR		loc_68F37
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68FD5:
@@ -2545,7 +2550,7 @@ sub_68FEB:
 		FARX	_b2_s7_screen_spell_blink
 		PLA
 		STA		byte_D3
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$02 ; "chants <spell>
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_21_chant_sacrifice:
@@ -2587,7 +2592,7 @@ loc_69032:
 		JSR		sub_68F8C
 		JSR		_b4_s1A_status_pal_adjust_and_update
 		DEC		byte_4C
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C ; "shatters into pieces"
 		JMP		sub_69053
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2608,13 +2613,13 @@ sub_69058:
 loc_6905D:
 		JSR		_b4_sB
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
 		BPL		locret_69078
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D ; "X's power wanes and its life comes to an end"
 		JSR		sub_6ADBF
 		JSR		_b4_s5_do_message_speed_delay
 locret_69078:
@@ -2647,7 +2652,7 @@ sub_69096:
 ; =============== S U B	R O U T	I N E =======================================
 sub_690A3:
 		JSR		sub_69C9D
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_23_chant_stopspell:
@@ -2667,7 +2672,7 @@ loc_690BD:
 ; =============== S U B	R O U T	I N E =======================================
 sub_690C7:
 		JSR		sub_69D77
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_24_chant_sap:
@@ -2707,7 +2712,7 @@ sub_69107:
 		LDA		#$FF
 		STA		byte_47
 		JSR		sub_6A6DF
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_26_chant_surround:
@@ -2727,7 +2732,7 @@ loc_69125:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6912F:
 		JSR		sub_69DF6
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_27_chant_robmagic:
@@ -2753,10 +2758,10 @@ locret_6915D:
 		RTS
 loc_6915E:
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		JMP		sub_6B6EB
 loc_69166:
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_68F16
 		BPL		locret_6915D
 		JSR		sub_6A676
@@ -2792,12 +2797,12 @@ loc_6918F:
 		LDA		_players_status+1,X
 		ORA		#$10
 		STA		_players_status+1,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46 ; "is confused"
 		JMP		_b4_s6_wndBTL_STAT
 loc_691BA:
 		JMP		sub_6B3D8
 loc_691BD:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$85
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$85 ; "becomes even more confused"
 loc_691C0:
 		JMP		sub_69E7F
 
@@ -2816,7 +2821,7 @@ _bs_emove_stage1_29_chant_slow:
 ; related to debuffing party's rAGI
 sub_691D9:
 		JSR		sub_691DF
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_691DF:
@@ -2896,7 +2901,7 @@ loc_69251:
 loc_69264:
 		JMP		sub_6B3D8
 loc_69267:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4F
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4F ; "is sent flying far away"
 		LDA		byte_CE
 		STA		byte_CF
 		TAX
@@ -2948,30 +2953,30 @@ _bs_emove_stage1_2C_chant_bounce:
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
 		ORA		#$F
 		STA		byte_530+1,X
 		JSR		sub_6B5B7
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48 ; "a wall of light appears before"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2B_zoma_freeze_beam:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$AD
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$AD ; "a freeze beam shoots out from zoma's fingertip"
 		LDA		#$9C
 		FARX	_bB_s3_apu_load
 		FARX	_b2_s8_screen_hit_blink
 		FARX	_b2_s8_screen_hit_blink
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$76
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$76 ; "Zoma nullifies the power of all the spells of <hero>'s party"
 
 ; stash zoma's HP and some other value
 		LDA		_enemy_HP
 		PHA
 		LDA		_enemy_HP+1
 		PHA
-		LDA		byte_51
+		LDA		_bs_curr_actor
 		PHA
 		LDA		byte_52
 		PHA
@@ -2990,7 +2995,7 @@ loc_69309:
 		PLA
 		STA		byte_52
 		PLA
-		STA		byte_51
+		STA		_bs_curr_actor
 		PLA
 		STA		_enemy_HP+1
 		PLA
@@ -3046,19 +3051,23 @@ _bs_emove_stage1_2E_chant_increase2:
 		JMP		sub_6A3B1
 
 ; =============== S U B	R O U T	I N E =======================================
+; Loads special value #$21 and falls through to enemy's revive/vivify handler
+;
 _bs_emove_stage1_30_chant_revive:
 		LDA		#$21
-		BNE		sub_69370
+		BNE		_bs_emove_stage1_vivify_and_revive ; unconditional
 
 ; =============== S U B	R O U T	I N E =======================================
+; Loads special value #$20 and falls through to enemy's revive/vivify handler
+;
 _bs_emove_stage1_2F_chant_vivify:
 		LDA		#$20
 
 ;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69370:
-		STA		byte_49
+_bs_emove_stage1_vivify_and_revive:
+		STA		byte_49 ; stash argument
 		JSR		sub_68FEB
 		JSR		sub_6A35F
 		JSR		sub_6B30E
@@ -3066,7 +3075,7 @@ sub_69370:
 		BMI		loc_69383
 		JMP		loc_6940A
 loc_69383:
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -3084,7 +3093,7 @@ loc_6939C:
 		LDA		byte_6A6F,X
 		FARX	_b2_sA
 		BCS		loc_693EA
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -3101,21 +3110,21 @@ loc_6939C:
 		LSR		byte_5A
 		ROR		byte_59
 loc_693CB:
-		LDA		byte_59
+		LDA		byte_59 ; copy value to heal to u16[65] for the healing function
 		STA		byte_65
 		LDA		byte_5A
 		STA		byte_66
-		JSR		_b4_s19
+		JSR		_b4_s19_heal_enemy
 		JSR		sub_6B91D
 		TAX
 		LDA		#$80
 		STA		byte_6A77,X
 		INC		byte_4D
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3C ; "comes back to life"
 		JMP		sub_6AA34
 loc_693EA:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens!"
 loc_693ED:
 		JSR		sub_6B91D
 		LDX		byte_59
@@ -3126,7 +3135,7 @@ loc_693ED:
 		LDA		#$80
 		STA		byte_6A77,X
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3D ; "does not come back to life"
 		PLA
 		TAX
 		PLA
@@ -3147,7 +3156,7 @@ _bs_emove_stage1_heal_various_single:
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$36
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$36
 		BCS		loc_6942E
@@ -3161,7 +3170,7 @@ loc_6942E:
 		TAX
 		LDA		byte_6B49C,X
 		STA		byte_D3
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
 		JSR		sub_6B30E
 		JSR		sub_6BEF5
@@ -3170,7 +3179,7 @@ loc_6942E:
 sub_69443:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69450
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6BEF5
 		JMP		sub_6A5D6
 loc_69450:
@@ -3182,7 +3191,7 @@ _bs_emove_stage1_heal_various_multi:
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$34
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$39
 		BCC		loc_6946C
@@ -3196,7 +3205,7 @@ loc_6946C:
 		TAX
 		LDA		byte_6B49F,X
 		STA		byte_D3
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
 		JSR		sub_6B32F
 loc_6947E:
@@ -3208,7 +3217,7 @@ loc_6947E:
 loc_6948A:
 		TYA
 		PHA
-		STA		byte_64
+		STA		_acting_enemy
 		LSR		byte_46
 		BCS		loc_694AD
 		JSR		sub_68F16
@@ -3240,20 +3249,24 @@ sub_694B8:
 		JSR		sub_6B32F
 
 ; =============== S U B	R O U T	I N E =======================================
-; I think this is probably a foreach-player loop used by multiple spell handlers
-; (a callback is put in word_3E)
+; For use during all-party effects
+; For each live player, calls the callback in word_3E
+; The player index will be stored in byte_CE for use by the callback;
+; Moreover, delays are introduced for timing purposes.
+; For some damn reason, we dont actually CALL the callback, we jmp to it,
+; and users must JMP back to the middle of this. WTF.
 ;
-sub_694C1:
+_bs_action_foreach_live_player:
 		LDY		#0
 loc_694C3:
 		JSR		_player_idx_to_X_and_status_check
-		BPL		loc_694D4
+		BPL		loc_694D4 ; skip dead players
 		STY		byte_CE
 		TYA
 		PHA
 		JSR		_b4_sB
 		JMP		(word_3E)
-loc_694D2:
+.bs_action_foreach_live_player_continue:
 		PLA
 		TAY
 loc_694D4:
@@ -3338,7 +3351,7 @@ loc_6953C:
 		JSR		sub_6B2BB
 loc_69562:
 		JSR		sub_69580
-		LDX		byte_51 ; reference current actor and his move entry
+		LDX		_bs_curr_actor ; reference current actor and his move entry
 		LDA		byte_54C,X
 		AND		#$70
 		LSR
@@ -3351,7 +3364,7 @@ loc_69562:
 		STA		word_3C+1
 		JMP		(word_3C) ; dispatch to main action handler
 loc_6957D:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$38
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$38 ; "is numb and unable to move"
 
 ;; FALLTHROUGH ;;
 
@@ -3384,7 +3397,7 @@ sub_69589:
 		STA		_players_status,X
 		LDA		byte_CE
 		STA		byte_D2
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1B ; "is asleep"
 loc_695B4:
 		TXA
 		LSR
@@ -3394,7 +3407,7 @@ loc_695B4:
 		STA		_player_battle_order_and_flags,X
 		LDA		byte_CE
 		STA		byte_D2
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C ; "has awakened!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_pcAction_00_attack:
@@ -3438,10 +3451,10 @@ sub_69604:
 		JMP		sub_696E8
 loc_6960C:
 		SYSX	_apu_load,$89
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01 ; "attacks!"
 		JSR		sub_6B0E5
 		BCC		loc_6961A
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$7C
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$7C ; "can't move because of a curse!"
 loc_6961A:
 		LDA		byte_CE
 		PHA
@@ -3453,7 +3466,7 @@ loc_6961A:
 		BNE		loc_6962A
 		RTS
 loc_6962A:
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		byte_CE
 		ASL
 		TAX
@@ -3466,7 +3479,7 @@ loc_6962A:
 loc_6963E:
 		SYSX	_apu_load,$8C
 		JSR		sub_6B5B7
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22 ; "missed! no damage to name"
 loc_69647:
 		LDA		byte_575
 		AND		#8
@@ -3493,7 +3506,7 @@ loc_69660:
 		LDA		byte_566
 		AND		#8
 		BNE		loc_6968F
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -3524,7 +3537,7 @@ loc_696AD:
 		BCS		loc_696C9
 loc_696B6:
 		SYSX	_apu_load,$88
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10 ; "a tremendous hit!"
 		JSR		_sram_b0_s17_player_rATK_read
 		JSR		sub_6ADA4
 		LDX		#word_4
@@ -3544,7 +3557,7 @@ loc_696DC:
 loc_696DF:
 		JSR		sub_6B5B7
 		SYSX	_apu_load,$8C
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07 ; "dodges nimbly"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_696E8:
@@ -3552,7 +3565,7 @@ sub_696E8:
 		LDA		word_6
 		CMP		#$FF
 		BNE		loc_696F4
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01 ; "attacks!"
 loc_696F4:
 		AND		#$18
 		BEQ		loc_69709
@@ -3562,9 +3575,9 @@ loc_696F4:
 		BNE		loc_69709
 		JSR		sub_6975F
 		BCC		locret_69735
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24 ; "but name is awake!"
 loc_69709:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01 ; "attacks!"
 		LDA		word_6
 		AND		#3
 		STA		byte_CE
@@ -3582,7 +3595,7 @@ loc_69709:
 		LDA		_players_status+1,X
 		AND		#$EF
 		STA		_players_status+1,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$74
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$74 ; "X has come to its senses"
 locret_69735:
 		RTS
 loc_69736:
@@ -3594,9 +3607,9 @@ loc_69736:
 		AND		#7
 		CMP		#7
 		BCC		loc_6974C
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$25
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$25 ; "but name is not awake"
 loc_6974C:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1C ; "has awakened"
 		LDX		byte_CE
 		LDA		_player_battle_order_and_flags,X
 		AND		#$F7
@@ -3611,7 +3624,7 @@ sub_6975F:
 		AND		#3
 		STA		byte_CE
 		STA		byte_D3
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$23
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$23 ; "name attacks his/her party"
 		LDA		byte_D3
 		STA		byte_D2
 		JSR		sub_6A4D9
@@ -3633,7 +3646,7 @@ loc_6977A:
 ; =============== S U B	R O U T	I N E =======================================
 _bs_pcAction_01_chant:
 		JSR		sub_6B2F5
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_49
 		STA		byte_D3
@@ -3670,16 +3683,16 @@ loc_697B6:
 loc_697C5:
 		LDA		byte_D3
 		JSR		sub_68FEB
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$20
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$20 ; "MP is not high enough!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_pcAction_02_parry:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$04 ; "protects itself"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697D0:
 		SYSX	_apu_load,$91
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36 ; "emits gales of flaming breath"
 		LDA		#$14
 		STA		byte_55
 		LDA		#$AA
@@ -3689,7 +3702,7 @@ sub_697D0:
 sub_697DE:
 		LDY		#0
 loc_697E0:
-		STY		byte_64
+		STY		_acting_enemy
 		TYA
 		ASL
 		TAX
@@ -3699,7 +3712,7 @@ loc_697E0:
 		LDA		_curent_battle_type_flags
 		BEQ		loc_697F9
 		JSR		_bs_get_current_actor_number
-		CMP		byte_64
+		CMP		_acting_enemy
 		BEQ		loc_69831
 loc_697F9:
 		TYA
@@ -3774,7 +3787,7 @@ loc_6986A:
 		LDY		#0
 loc_6986C:
 		TYA
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -3803,7 +3816,7 @@ loc_69892:
 		BCC		locret_698B3
 loc_6989F:
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -3821,7 +3834,7 @@ loc_698B4:
 loc_698BD:
 		TYA
 		PHA
-		STY		byte_64
+		STY		_acting_enemy
 		JSR		sub_6B91D
 		LDA		byte_59
 		CMP		byte_47
@@ -3876,7 +3889,7 @@ sub_6990D:
 		BCC		locret_6990C
 loc_6991A:
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_68F16
 		BPL		locret_6994E
 		LDA		#$80
@@ -3905,7 +3918,7 @@ loc_6993E:
 		JSR		sub_6A337
 		BCS		loc_6993B
 loc_6994B:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83 ; "did not die"
 locret_6994E:
 		RTS
 
@@ -3943,7 +3956,7 @@ sub_69973:
 		PHA
 		STA		byte_D2
 		STA		byte_CE
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2D ; "power wanes and its life comes to an end"
 		LDA		#$FF
 		STA		byte_CF
 		STA		byte_D0
@@ -3965,7 +3978,7 @@ sub_699A0:
 loc_699A4:
 		TYA
 		PHA
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_68F16
 		BPL		loc_699E9
 		LDA		#5
@@ -3979,12 +3992,12 @@ loc_699C0:
 		LDA		byte_55
 		BEQ		loc_699CB
 		JSR		_bs_get_current_actor_number
-		CMP		byte_64
+		CMP		_acting_enemy
 		BEQ		loc_699E9
 loc_699CB:
 		JSR		_b4_sB
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C ; "shatters into pieces"
 		LDA		#$FF
 		STA		byte_65
 		STA		byte_CF
@@ -4043,7 +4056,7 @@ sub_69A2E:
 		BCC		locret_69A79
 loc_69A3B:
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B398
 		BCC		loc_69A49
 		BNE		loc_69A49
@@ -4064,7 +4077,7 @@ loc_69A5E:
 		PLA
 		RTS
 loc_69A63:
-		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress ; a variable text message
 		LDA		#$FF
 		STA		byte_65
 		STA		byte_66
@@ -4101,7 +4114,7 @@ loc_69A99:
 		BCC		locret_69ABE
 		AND		#7
 		STA		word_4
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#$F8
 		ORA		word_4
@@ -4146,7 +4159,7 @@ loc_69AEB:
 		JSR		sub_6A337
 		BCC		loc_69B18
 		JSR		_bs_load_enemy_prop_AGI
-		LDX		byte_64
+		LDX		_acting_enemy
 		LDA		_enemy_AGI,X
 		CMP		byte_59
 		BCC		loc_69B03
@@ -4162,7 +4175,7 @@ loc_69B0E:
 		STA		_enemy_AGI,X
 		PLA
 		JSR		_set_msg_number_parameter_F8_equ_A
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E ; "'s agility goes down"
 loc_69B18:
 		JMP		sub_6B3D8
 
@@ -4172,13 +4185,13 @@ _bs_spell_speedup:
 		BMI		sub_69B5F
 		LDA		#<[sub_69B2E]
 		LDX		#>[sub_69B2E]
-		JSR		sub_6BBD0
-		JMP		sub_694C1	; TAILCALL
+		JSR		_store_AX_in_3E
+		JMP		_bs_action_foreach_live_player	; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B2E:
 		JSR		sub_69B34
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B34:
@@ -4200,7 +4213,7 @@ loc_69B54:
 		STA		_players_rAGI,X
 		LDA		word_4
 		JSR		_set_msg_number_parameter_F8_equ_A
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45 ; "'s agility goes up"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69B5F:
@@ -4224,7 +4237,7 @@ sub_69B74:
 loc_69B7E:
 		JSR		sub_6B5B7
 		JSR		_bs_load_enemy_prop_AGI
-		LDX		byte_64
+		LDX		_acting_enemy
 		CLC
 		ADC		_enemy_AGI,X
 		BCC		loc_69B95
@@ -4236,7 +4249,7 @@ loc_69B95:
 		STA		_enemy_AGI,X
 		LDA		byte_59
 		JSR		_set_msg_number_parameter_F8_equ_A
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45 ; "'s agility goes up"
 
 ; =============== S U B	R O U T	I N E =======================================
 ; HEAL: restore 10*random + 25 ?
@@ -4257,7 +4270,7 @@ loc_69BAD:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		byte_49				; reload spell number
 		SEC
 		SBC		#$1A					; subtract #$1A to rebase spells 1A, 1B, 1C down to a 3-entry table
@@ -4370,11 +4383,11 @@ sub_69C62:
 		AND		#$F7
 		STA		_player_battle_order_and_flags,X
 		INC		byte_4C
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C ; "comes back to life"
 loc_69C7A:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens!"
 loc_69C7E:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3D
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3D ; "does not come back to life"
 locret_69C7D:
 		RTS
 
@@ -4426,12 +4439,12 @@ sub_69CA7:
 		LDA		_players_status,X
 		ORA		#3
 		STA		_players_status,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19 ; "is put to sleep"
 		JMP		_b4_s6_wndBTL_STAT
 loc_69CDD:
 		JSR		sub_6B2EF
 		BNE		locret_69D1C
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A ; "is not asleep!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69CE7:
@@ -4451,7 +4464,7 @@ loc_69CF7:
 		LDA		#6
 		JSR		sub_6A337
 		BCC		loc_69D1D
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19 ; "is put to sleep"
 		JSR		sub_6A35A
 		LDA		byte_530+1,X
 		ORA		#$20
@@ -4462,23 +4475,25 @@ loc_69CF7:
 locret_69D1C:
 		RTS
 loc_69D1D:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1A ; "is not asleep"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69D20:
-		LDA		#<[sub_69D2F]
+; Runs logic for 'awaken' spell
+;
+_bs_spell_awaken:
+		LDA		#<[_bs_spell_awaken_foreach_cb]
 		STA		word_3E
-		LDA		#>[sub_69D2F]
+		LDA		#>[_bs_spell_awaken_foreach_cb]
 		STA		word_3E+1
-		JMP		sub_694C1	; TAILCALL
+		JMP		_bs_action_foreach_live_player	; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69D2F:
-		JSR		sub_69D35
-		JMP		loc_694D2
+_bs_spell_awaken_foreach_cb:
+		JSR		_bs_spell_awaken_one
+		JMP		.bs_action_foreach_live_player_continue ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69D35:
+_bs_spell_awaken_one:
 		JSR		sub_6B347
 		BCC		loc_69D3D
 		BEQ		loc_69D3D
@@ -4486,18 +4501,18 @@ sub_69D35:
 loc_69D3D:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
-		BPL		locret_69D5F
+		BPL		locret_69D5F ; branch if player dead?
 		LDA		_player_battle_order_and_flags,Y
 		AND		#8
-		BEQ		loc_69D5C
+		BEQ		loc_69D5C ; branch down and do nothing if player's sleep flag is clear
 		LDA		_player_battle_order_and_flags,Y
 		AND		#$F7
-		STA		_player_battle_order_and_flags,Y
+		STA		_player_battle_order_and_flags,Y ; store sleep flag cleared
 		LDA		#$70
-		STA		byte_54C,Y
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C
+		STA		byte_54C,Y ; set special value indicating no move that player (they didnt have a move entered during the round)
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1C ; "has awakened!"
 loc_69D5C:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$24 ; "but X is awake!"
 locret_69D5F:
 		RTS
 
@@ -4538,7 +4553,7 @@ loc_69D81:
 		LDA		_players_status,X
 		ORA		#$20
 		STA		_players_status,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41 ; "name's spell is deflected"
 locret_69DAB:
 		RTS
 loc_69DAC:
@@ -4557,7 +4572,7 @@ loc_69DB9:
 		LDA		#7
 		JSR		sub_6A337
 		BCC		loc_69DAC
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$41 ; "name's spell is deflected"
 		JSR		sub_6A35A
 		LDA		byte_530,X
 		ORA		#$20
@@ -4604,7 +4619,7 @@ loc_69E00:
 		LDA		_players_status,X
 		ORA		#$10
 		STA		_players_status,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F ; "is surrounded by a cloud of mirages"
 locret_69E24:
 		RTS
 loc_69E25:
@@ -4628,7 +4643,7 @@ loc_69E38:
 		LDA		#9
 		JSR		sub_6A337
 		BCC		loc_69E56
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2F ; "is surrounded by a cloud of mirages"
 		JSR		sub_6A35A
 		LDA		byte_530,X
 		ORA		#$10
@@ -4655,7 +4670,7 @@ sub_69E5B:
 		TXS
 		JMP		loc_174E92
 loc_69E7C:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E7F:
@@ -4664,7 +4679,7 @@ sub_69E7F:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B398
 		BCC		sub_69E98
 		BNE		sub_69E98
@@ -4685,11 +4700,11 @@ sub_69E98:
 		LDA		byte_530+1,X
 		ORA		#$10
 		STA		byte_530+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$46
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$46 ; "is confused"
 loc_69EBE:
 		JMP		sub_6B3D8
 loc_69EC1:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$85
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$85 ; "becomes even more confused"
 locret_69EC4:
 		RTS
 
@@ -4744,7 +4759,7 @@ sub_69F05:
 		BCC		locret_69F63
 loc_69F16:
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JMP		sub_6A74B
 loc_69F1D:
 		JSR		sub_6B2DB
@@ -4778,7 +4793,7 @@ loc_69F51:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_68F16
 		BPL		locret_69F63
 		JMP		sub_6A7BC
@@ -4795,14 +4810,14 @@ sub_69F64:
 		STA		word_3E
 		LDA		#>[sub_69F7F]
 		STA		word_3E+1
-		JMP		sub_694C1 ; TAILCALL
+		JMP		_bs_action_foreach_live_player ; TAILCALL
 loc_69F7A:
 		JMP		loc_6932C
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F7F:
 		JSR		sub_6A790
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F85:
@@ -4813,14 +4828,14 @@ sub_69F85:
 		LDA		_players_status+1,X
 		ORA		#$F
 		STA		_players_status+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48 ; "a wall of light appears before"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69F97:
 		LDA		#0
 		STA		byte_D2
 		JSR		_b4_sB
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$49
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$49 ; "a garment of light, like unto silk, surrounds the hero"
 		LDY		#0
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4861,12 +4876,12 @@ loc_69FD3:
 		LDA		_players_status,X
 		ORA		#8
 		STA		_players_status,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A ; "'s attack power increases!"
 loc_69FE6:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B398
 		BCC		loc_69FF7
 		BEQ		loc_69FD3
@@ -4875,7 +4890,7 @@ loc_69FF7:
 		JSR		sub_68F16
 		BPL		locret_69FC4
 		LDA		#1
-		LDX		byte_64
+		LDX		_acting_enemy
 		BEQ		loc_6A009
 loc_6A005:
 		ASL
@@ -4889,31 +4904,31 @@ loc_6A009:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A017:
+_bs_spell_chance:
 		JSR		sub_6B2FE
 		LDA		#$10
 		JSR		sub_6B2F7
 		LDA		byte_6A6B
 		BNE		loc_6A038
 		LDA		#$11
-		JSR		_b4_sF_rand_mul_A
+		JSR		_b4_sF_rand_mul_A ; select a random value [0,$10]
 		ASL
 		TAX
-		LDA		off_6A241,X
+		LDA		_bs_chance_handler_fptr_tbl,X
 		STA		word_3C
-		LDA		off_6A241+1,X
+		LDA		_bs_chance_handler_fptr_tbl+1,X
 		STA		word_3C+1
 		JMP		(word_3C)
 loc_6A038:
 		JSR		_rand_ex
-		AND		#$F
+		AND		#$F ; mask random value to small number
 		CMP		#$C
-		BCS		sub_6A079
-		JMP		sub_6A23B
+		BCS		sub_6A079 ; BCS->JAE branch down if we rolld a value >= #$C
+		JMP		sub_6A23B ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A044:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$57
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$57 ; "calls for something unbelievably frightening"
 		LDY		#0
 loc_6A049:
 		TYA
@@ -4922,7 +4937,7 @@ loc_6A049:
 		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_6A058
 		JSR		_b4_sB
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$89
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$89 ; "faints"
 loc_6A058:
 		PLA
 		TAY
@@ -4938,16 +4953,16 @@ loc_6A058:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A070:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$50
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$50 ; "starts to flee"
 		JSR		sub_6ADBF
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A079:
 		LDA		#$1F
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		STA		byte_558,X
-		JMP		sub_69BE5
+		JMP		sub_69BE5 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A083:
@@ -4969,7 +4984,7 @@ loc_6A093:
 		BPL		loc_6A0AC
 		LDA		_players_status+1,X
 		BMI		loc_6A0AC
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		TYA
 		STA		byte_54C,X
 		JSR		sub_69C81
@@ -4986,7 +5001,7 @@ sub_6A0B4:
 		LDA		#$F
 		JSR		_b4_s23
 		JSR		_b4_s13
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		STA		byte_54C,X
 		LDA		#$1F
 		STA		byte_558,X
@@ -5004,7 +5019,7 @@ sub_6A0C9:
 		STA		word_3E
 		LDA		#>[sub_6A0EF]
 		STA		word_3E+1
-		JMP		sub_694C1 ; TAILCALL
+		JMP		_bs_action_foreach_live_player ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0E9:
@@ -5014,7 +5029,7 @@ sub_6A0E9:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0EF:
 		JSR		loc_6918F
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0F5:
@@ -5032,7 +5047,7 @@ sub_6A106:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A10C:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C ; "shatters into pieces"
 		LDA		#$FF
 		STA		byte_65
 		STA		byte_66
@@ -5047,7 +5062,7 @@ sub_6A121:
 		LDA		byte_568
 		AND		#$10
 		BNE		sub_6A134
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$58
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$58 ; "the area is engulfed in a fierce darkness"
 		LDA		byte_568
 		ORA		#$10
 		STA		byte_568
@@ -5055,9 +5070,9 @@ sub_6A121:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A134:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$59
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$59 ; "hero's party gains additional attack power" 
 		LDA		#$20
-		JMP		sub_6B2F7
+		JMP		sub_6B2F7 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A13C:
@@ -5071,11 +5086,11 @@ sub_6A13C:
 		STA		word_3E
 		LDA		#>[sub_690A3]
 		STA		word_3E+1
-		JMP		sub_694C1 ; TAILCALL
+		JMP		_bs_action_foreach_live_player ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A158:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5A
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5A ; "time ceases!"
 		JSR		_bs_get_current_actor_number
 		ORA		#$C
 		STA		word_4
@@ -5087,7 +5102,7 @@ sub_6A158:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A16D:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8B
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8B ; "hero's party changes its formation"
 		LDA		#0
 		STA		byte_42
 loc_6A174:
@@ -5202,19 +5217,23 @@ sub_6A226:
 		STA		word_3E
 		LDA		#>[sub_6A235]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		_bs_action_foreach_live_player
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A235:
 		JSR		sub_6A30D
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A23B:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8C
-		JMP		_b4_s5_do_message_speed_delay
-off_6A241:
-		.WORD	sub_6A044
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$8C ; "...Chance... chance... chance"
+		JMP		_b4_s5_do_message_speed_delay ; TAILCALL
+
+; =============== T A B	L E =================================================
+; handlers for random `chance` spell actions
+;
+_bs_chance_handler_fptr_tbl:
+		.WORD	sub_6A044 ; "calls for something unbelievably frightening"
 		.WORD	sub_6A079
 		.WORD	sub_6A083
 		.WORD	sub_6A0B4
@@ -5224,7 +5243,7 @@ off_6A241:
 		.WORD	sub_6A121
 		.WORD	sub_6A134
 		.WORD	sub_6A13C
-		.WORD	sub_6A158
+		.WORD	sub_6A158 ; "time ceases"
 		.WORD	sub_6A16D
 		.WORD	sub_6A1C9
 		.WORD	sub_6A1EE
@@ -5317,7 +5336,7 @@ loc_6A2D9:
 locret_6A2F6:
 		RTS
 loc_6A2F7:
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B398
 		JMP		loc_6A333
 
@@ -5378,7 +5397,7 @@ loc_6A358:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A35A:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		RTS
@@ -5388,7 +5407,7 @@ sub_6A35A:
 ; Checks MP, stopspell, and "spellbroken" status
 sub_6A35F:
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 ; load action
 		LDY		byte_558,X ; moveTable2
 		LDA		byte_6BD82-$13,Y ; tblEnemyAttackCostsAndMisc
@@ -5399,7 +5418,7 @@ sub_6A35F:
 		CMP		byte_65
 		BCS		.sufficientMP
 ; print "MP is not high enough" and bail out
-		STA		byte_64
+		STA		_acting_enemy
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$20
 		JMP		loc_6A38F
 .sufficientMP: ;ZOOM
@@ -5454,7 +5473,7 @@ sub_6A3B5:
 		PHA
 		LSR		byte_47
 		BCS		sub_6A3CB
-		STY		byte_64
+		STY		_acting_enemy
 		JSR		sub_68F16
 		BPL		sub_6A3CB
 		JSR		sub_6B5B7
@@ -5522,7 +5541,7 @@ loc_6A423:
 		JSR		sub_6B5B7
 		JMP		sub_6B3D8
 loc_6A42E:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -5538,22 +5557,22 @@ loc_6A42E:
 		LDA		byte_6A6B
 		BNE		loc_6A45F
 		SYSX	_apu_load,$99
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D ; "The Poison Needle penetrates..."
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E ; "You have defeated..."
 		JSR		sub_6ADB6
-		JMP		_b4_s5_do_message_speed_delay
+		JMP		_b4_s5_do_message_speed_delay ; TAILCALL
 loc_6A45F:
 		LDA		#1
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
 loc_6A467:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
-		AND		#$40
-		BEQ		loc_6A478
+		AND		#ENEMY_FLAG_PARRY
+		BEQ		loc_6A478 ; branch if not parrying
 		LSR		word_4+1
 		ROR		word_4
 		INC		word_4
@@ -5655,7 +5674,7 @@ loc_6A4EE:
 		JMP		loc_6A58C
 loc_6A529:
 		JSR		_bs_get_current_actor_number
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6A56E
 		LSR		word_4+1
 		ROR		word_4
@@ -5769,11 +5788,11 @@ sub_6A5D6:
 loc_6A5E0:
 		JSR		sub_68F16
 		BPL		locret_6A5F6
-		LDA		word_4
+		LDA		word_4 ; copy value to heal to byte_65 for healing function
 		STA		byte_65
 		LDA		word_4+1
 		STA		byte_66
-		JSR		_b4_s19
+		JSR		_b4_s19_heal_enemy
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$14
 locret_6A5F6:
@@ -5894,7 +5913,7 @@ sub_6A6C7:
 		STA		_msg_number_parameter_F8+1
 		STA		_msg_number_parameter_F8+2
 		JSR		_bs_extract_target_from_move
-		STA		byte_64
+		STA		_acting_enemy
 		JMP		sub_6B5B7
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5988,13 +6007,13 @@ loc_6A76B:
 		LDA		#8
 		JSR		sub_6A337
 		BCC		sub_6A748
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		JSR		sub_6A839
 		JSR		sub_6A71B
 		JSR		sub_6A844
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$15
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$15 ; "defense power is lowered N points"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A78A:
@@ -6023,7 +6042,7 @@ loc_6A7AA:
 		JSR		sub_6A823
 		JSR		sub_6A7E9
 		JSR		sub_6A82E
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B ; "defense power goes up N points"
 locret_6A7BB:
 		RTS
 
@@ -6034,23 +6053,26 @@ sub_6A7BC:
 		BEQ		loc_6A797
 loc_6A7C3:
 		JSR		sub_6B5B7
+
+; load enemy's DEF into u16[4]
 		JSR		_bs_load_enemy_prop_DEF
 		LDA		byte_59
 		STA		word_4
 		LDA		byte_5A
 		STA		word_4+1
+
 		LDA		byte_47
-		BEQ		loc_6A7D9
-		LSR		word_4+1
+		BEQ		.dont_divide_by_2 ; maybe divide by 2
+		LSR		word_4+1 ; multiple precision divide by 2
 		ROR		word_4
-loc_6A7D9:
-		LDA		byte_64
+.dont_divide_by_2:
+		LDA		_acting_enemy
 		ASL
 		TAX
 		JSR		sub_6A839
 		JSR		sub_6A7E9
 		JSR		sub_6A844
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3B ; "defense power goes up N points"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A7E9:
@@ -6104,7 +6126,7 @@ sub_6A82E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A839:
-		LDA		byte_520,X
+		LDA		_enemy_DEF,X
 		STA		word_6
 		LDA		byte_530+1,X
 		STA		word_6+1
@@ -6113,7 +6135,7 @@ sub_6A839:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A844:
 		LDA		byte_8
-		STA		byte_520,X
+		STA		_enemy_DEF,X
 		LDA		byte_9
 		STA		byte_530+1,X
 		RTS
@@ -6201,14 +6223,14 @@ sub_6A8B7:
 		PHA
 		TYA
 		PHA
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
 		LDA		#1
 		STA		byte_43
 		LDX		#0
 		STX		byte_44
 loc_6A8C8:
-		STX		byte_64
+		STX		_acting_enemy
 		TXA
 		ASL
 		TAX
@@ -6229,13 +6251,13 @@ loc_6A8E7:
 		ORA		byte_44
 		STA		byte_44
 loc_6A8ED:
-		LDX		byte_64
+		LDX		_acting_enemy
 		ASL		byte_43
 		INX
 		CPX		#8
 		BNE		loc_6A8C8
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		PLA
 		TAY
 		PLA
@@ -6285,7 +6307,7 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		PHA
 		LDA		word_6
 		PHA
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
 		LDA		byte_CE
 		PHA
@@ -6296,7 +6318,7 @@ _b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress:
 		PLA
 		STA		byte_CE		; restore all vars and regs back
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		PLA
 		STA		word_6
 		PLA
@@ -6339,13 +6361,13 @@ _wrap_bE_s6_msg_mFF_arg0_safe:
 		PHA
 		LDA		word_6
 		PHA
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
 		LDX		#0
 		LDA		_tmp12+1
 		FARX	_bE_s6_msg_mFF
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		PLA
 		STA		word_6
 		PLA
@@ -6493,12 +6515,12 @@ _pads_copy_to_tmp:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA34:
 		LDA		#_b2_s3_fidx
-		BNE		sub_6AA3E
+		BNE		sub_6AA3E ; UNCONDITIONAL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA38:
 		LDA		#_b2_s4_fidx
-		BNE		sub_6AA3E
+		BNE		sub_6AA3E ; UNCONDITIONAL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AA3C:
@@ -6613,7 +6635,7 @@ loc_6AABE:
 		INX
 		CPX		#8
 		BNE		loc_6AABE
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		BMI		loc_6AAD0
 		JMP		loc_6ABAE
@@ -6705,8 +6727,8 @@ loc_6AB58:
 		BNE		loc_6AB80
 		TXA
 		PHA
-		STA		byte_64
-		JSR		sub_6B645
+		STA		_acting_enemy
+		JSR		_bs_read_acting_enemy_hp
 		PLA
 		TAX
 		LDA		byte_5A
@@ -6752,7 +6774,7 @@ loc_6ABA7:
 		BNE		loc_6AB98
 		BEQ		loc_6AB85
 loc_6ABAE:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#3
 		STA		byte_CE
@@ -6789,7 +6811,7 @@ loc_6ABC3:
 		STA		word_4
 		LDA		byte_5A
 		STA		word_4+1
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#3
 		STA		word_6
@@ -6821,7 +6843,7 @@ loc_6AC17:
 		LDA		byte_5A
 		ADC		#0
 		STA		word_4+1
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 		AND		#3
 		RTS
@@ -6830,13 +6852,13 @@ loc_6AC17:
 sub_6AC36:
 		LDA		byte_6A7B,Y
 		AND		#7
-		STA		byte_64
+		STA		_acting_enemy
 		TYA
 		PHA
 		JSR		sub_6ACD6
 		PLA
 		TAY
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		word_4
@@ -6852,7 +6874,7 @@ sub_6AC36:
 		LSR
 		LDX		#word_4
 		JSR		_mul16_to_8
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		CLC
@@ -6936,7 +6958,7 @@ sub_6ACD6:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ACD9:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_540,X ; investigate actor order table
 		AND		#3
 		STA		byte_CE
@@ -6976,7 +6998,7 @@ loc_6AD13:
 ; _AtkAdv*=roll/4:
 		JSR		_mul16_to_8
 		LDA		#$40
-; threaded call. after this, something like a damage is left in $4
+; tailcall. after this, something like a damage is left in $4
 		JMP		_div16_to_8
 
 loc_6AD1F:
@@ -6991,7 +7013,7 @@ loc_6AD1F:
 ; "sub_CalcEattackDmg"
 sub_6AD2B:
 ; movetable must contain the PC target as bottom 2 bits of entry from movetable
-		LDX		byte_51 ; "curractor"
+		LDX		_bs_curr_actor ; "curractor"
 		LDA		byte_54C,X ; "movetable"
 		AND		#3
 		PHA
@@ -7060,12 +7082,14 @@ sub_6AD8F:
 		PLA
 		ASL
 		TAX
-		LDA		byte_520,X
+		LDA		_enemy_DEF,X
 		STA		word_4
 		LDA		byte_530+1,X
 		JMP		loc_6AD41
 
 ; =============== S U B	R O U T	I N E =======================================
+; Random logic involving attack power / attack damage
+;
 sub_6ADA4:
 		LDA		#$B
 		JSR		_b4_sF_rand_mul_A
@@ -7074,41 +7098,42 @@ sub_6ADA4:
 		LDX		#word_4
 		JSR		_mul16_to_8
 		LDA		#$40
-		JMP		_div16_to_8
+		JMP		_div16_to_8 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADB6:
 		JSR		sub_6AA38
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
-		JMP		sub_6ADE4
+		JMP		sub_6ADE4 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADBF:
 		JSR		sub_6AA38
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
-		JMP		sub_6ADF9
+		JMP		sub_6ADF9 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADC8:
 		JSR		sub_6AA38
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
-		JMP		sub_6ADEC
+		JMP		sub_6ADEC ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADD1:
-		JSR		sub_6B645
+		JSR		_bs_read_acting_enemy_hp
 		LDA		byte_59
 		ORA		byte_5A
 		BEQ		loc_6ADDB
 		RTS
+
 loc_6ADDB:
 		JSR		sub_6AA38
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0D ; "is defeated"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADE4:
@@ -7126,7 +7151,7 @@ sub_6ADEC:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADF9:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		#0
@@ -7140,14 +7165,14 @@ sub_6ADF9:
 		STA		byte_59
 		JSR		sub_6B927
 		LDA		byte_5A
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		_b4_s2
 		LDA		byte_5A
 		BEQ		loc_6AE20
 		SEC
 		BCS		loc_6AE32
 loc_6AE20:
-		LDA		byte_64
+		LDA		_acting_enemy
 		STA		byte_59
 		JSR		_b4_s3
 		LDX		byte_5A
@@ -7159,7 +7184,7 @@ loc_6AE31:
 		CLC
 loc_6AE32:
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7206,11 +7231,11 @@ _bs_pcAction_03_item:
 		JSR		_bs_extract_target_from_move
 		STA		byte_D4
 		BPL		loc_6AE7D
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		_b4_s12
 		STA		byte_D4
 loc_6AE7D:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_D3
 		STA		word_4
@@ -7277,16 +7302,16 @@ sub_6AEEF:
 		STA		word_3E
 		LDA		#>[sub_6AEFE]
 		STA		word_3E+1
-		JMP		sub_694C1
+		JMP		_bs_action_foreach_live_player
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AEFE:
 		JSR		loc_69D3D
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF04:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_42
 		JMP		sub_6B076
@@ -7315,8 +7340,8 @@ locret_6AF33:
 sub_6AF34:
 		LDA		#<[sub_6AF53]
 		LDX		#>[sub_6AF53]
-		JSR		sub_6BBD0
-		JSR		sub_694C1
+		JSR		_store_AX_in_3E
+		JSR		_bs_action_foreach_live_player
 		LDA		#<[sub_6AF5C]
 		STA		word_40
 		LDA		#>[sub_6AF5C]
@@ -7328,7 +7353,7 @@ sub_6AF34:
 sub_6AF53:
 		JSR		sub_6B3D2
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C
-		JMP		loc_694D2
+		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF5C:
@@ -7489,7 +7514,7 @@ sub_6B04B:
 		LDA		#0
 		STA		word_4+1
 		LDA		word_6
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B5B7
 		LDA		#$D
 		JSR		sub_6A337
@@ -7566,7 +7591,7 @@ _bs_pcAction_06_equip_attack:
 		LDA		#0
 		STA		byte_42
 		FARX	_b0_s63_player_unequip_all_type_items
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_42
 		JSR		sub_6B076
@@ -7616,7 +7641,7 @@ loc_6B118:
 		BPL		loc_6B145
 		CPY		#4
 		BNE		loc_6B132
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		#$D
 		JSR		sub_6A337
 		CMP		#$4E
@@ -7662,7 +7687,7 @@ sub_6B168:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B170:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDY		byte_558,X
 loc_6B175:
 		LDA		word_4
@@ -7764,14 +7789,14 @@ loc_6B211:
 		JSR		_bs_get_current_actor_number
 		BPL		loc_6B201
 		STA		byte_10
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
 		LDA		byte_10
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		#$D
 		JSR		sub_6A337
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		byte_59
 		CMP		#$FF
 		BEQ		loc_6B201
@@ -7803,7 +7828,7 @@ _b4_s1A_status_pal_adjust_and_update:
 ; =============== S U B	R O U T	I N E =======================================
 ; I don't remember 100% what this does, but it gets used a lot
 _bs_extract_target_from_move:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_54C,X
 
 ;; FALLTHROUGH ;;
@@ -7826,7 +7851,7 @@ loc_6B2AF:
 ; read the current actor's entry from the turn order table and return the 'actor' number
 ;
 _bs_get_current_actor_number:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_540,X
 		JMP		_bs_get_actor_number ; TAILCALL
 
@@ -7996,7 +8021,7 @@ loc_6B372:
 		LDA		#0
 		RTS
 loc_6B38F:
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B5B7
 		SEC
 		LDA		#1
@@ -8009,14 +8034,14 @@ sub_6B398:
 		LDA		byte_567
 		BPL		loc_6B3C5
 		JSR		sub_6B5B7
-		LDA		byte_64
+		LDA		_acting_enemy
 		STA		byte_42
 		JSR		_bs_get_current_actor_number
 		BPL		loc_6B3B2
 		CMP		byte_42
 		BEQ		loc_6B3C5
 loc_6B3B2:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530+1,X
@@ -8033,7 +8058,7 @@ loc_6B3C5:
 sub_6B3C7:
 		JSR		_bs_get_current_actor_number
 		PHA
-		STA		byte_64
+		STA		_acting_enemy
 		JSR		sub_6B5B7
 		PLA
 		RTS
@@ -8166,7 +8191,7 @@ loc_6B52C:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s2:
-		LDY		byte_64
+		LDY		_acting_enemy
 		INY
 		LDX		#0
 loc_6B537:
@@ -8248,7 +8273,7 @@ loc_6B5A0:
 		LDA		byte_6A7B,X
 		BPL		loc_6B5AC
 		AND		#7
-		CMP		byte_64
+		CMP		_acting_enemy
 		BEQ		loc_6B5B0
 		INY
 loc_6B5AC:
@@ -8294,7 +8319,7 @@ loc_6B5DD:
 		BNE		loc_6B5F1
 		LDA		byte_6A7B,X
 		AND		#7
-		CMP		byte_64
+		CMP		_acting_enemy
 		BEQ		loc_6B5FE
 loc_6B5F1:
 		INY
@@ -8357,8 +8382,10 @@ loc_6B641:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B645:
-		LDA		byte_64
+; reads _acting_enemy's HP into u16[59]
+;
+_bs_read_acting_enemy_hp:
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		_enemy_HP,X
@@ -8368,14 +8395,17 @@ sub_6B645:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s19:
-		JSR		_bs_read_enemy_prop_HP
+; Heals an enemy (which one?) by u16[65]
+;
+_b4_s19_heal_enemy:
+		JSR		_bs_read_enemy_prop_HP ; load enemy's MHP into u16[5B]
 		LDA		byte_59
 		STA		byte_5B
 		LDA		byte_5A
 		STA		byte_5C
-		JSR		sub_6B645
+		JSR		_bs_read_acting_enemy_hp
 		CLC
+; add byte_65 (HP restoration) to current HP
 		LDA		byte_65
 		ADC		byte_59
 		STA		byte_59
@@ -8407,7 +8437,7 @@ loc_6B68C:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B697:
-		JSR		sub_6B645
+		JSR		_bs_read_acting_enemy_hp
 		SEC
 		LDA		byte_59
 		SBC		byte_65
@@ -8462,7 +8492,7 @@ _bs_read_enemy_prop_LV:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_load_acting_enemy_MP:
-		LDX		byte_64 ; actingEnemy
+		LDX		_acting_enemy ; actingEnemy
 		LDA		_enemy_MP,X ; must be an enemy table here
 		STA		byte_59 ; enemyMiscStats_59
 		RTS
@@ -8499,7 +8529,7 @@ _bs_deduct_acting_enemy_MP:
 		SEC
 		SBC		byte_65 ; actionCost
 		BCC		.mpclamp0
-		LDX		byte_64 ; actingEnemy
+		LDX		_acting_enemy ; actingEnemy
 ; store remaining MP to stats
 		STA		_enemy_MP,X
 		PHA
@@ -8516,7 +8546,7 @@ _bs_deduct_acting_enemy_MP:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B725:
-		LDX		byte_64
+		LDX		_acting_enemy
 		LDA		#0
 		STA		_enemy_MP,X
 		STA		byte_59
@@ -8538,7 +8568,7 @@ _bs_load_enemy_prop_MP:
 ; fetches an enemy's (realtime?) agility into u8[59]
 ;
 sub_6B73E:
-		LDX		byte_64
+		LDX		_acting_enemy
 		LDA		_enemy_AGI,X
 		STA		byte_59
 		RTS
@@ -8582,10 +8612,10 @@ _bs_load_enemy_prop_ATK:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B777:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
-		LDA		byte_520,X
+		LDA		_enemy_DEF,X
 		STA		byte_59
 		LDA		byte_530+1,X
 		STA		byte_5A
@@ -8593,6 +8623,7 @@ sub_6B777:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[59] = enemy prop DEF (requires reading 2 prop bytes)
+; but uhhh is byte #$14 really def?
 ;
 _bs_load_enemy_prop_DEF:
 		JSR		_bs_prepare_read_enemies_lib
@@ -8627,7 +8658,7 @@ _bs_load_enemy_prop_DEF:
 ;		STA		byte_59
 ;loc_6B7BA:
 ;		LDA		byte_59
-;		STA		byte_520,X
+;		STA		_enemy_DEF,X
 ;		LDA		byte_5A
 ;		STA		byte_530+1,X
 ;		RTS
@@ -8647,7 +8678,7 @@ _bs_load_enemy_prop_DEF:
 ;		BCC		loc_6B7EA
 ;loc_6B7DF:
 ;		LDA		byte_59
-;		STA		byte_520,X
+;		STA		_enemy_DEF,X
 ;		LDA		byte_5A
 ;		STA		byte_530+1,X
 ;		RTS
@@ -8720,7 +8751,7 @@ locret_6B83C:
 ; some related stuff here but its about the GBC version: http://www.gamefaqs.com/boards/450388-dragon-warrior-iii/67292816
 ;
 _b4_s17:
-		LDY		byte_64
+		LDY		_acting_enemy
 		JSR		loc_6B892
 		LDY		#9
 		JSR		_bs_prepare_read_enemy_prop_byte
@@ -9106,7 +9137,7 @@ sub_6BA04:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BA11:
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAX
 		LDA		byte_530,X
@@ -9281,7 +9312,7 @@ sub_6BACB:
 		LDA		byte_6A7B,Y ; meaning unknown
 		AND		#7
 		STA		byte_43
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAY
 		TXA
@@ -9289,7 +9320,7 @@ sub_6BACB:
 		ASL
 		ORA		#$80
 		STA		byte_530,Y
-		JSR		_bs_read_enemy_prop_HP
+		JSR		_bs_read_enemy_prop_HP ; slightly randomize enemy's starting HP
 		LDA		byte_59
 		STA		byte_5B
 		LDA		byte_5A
@@ -9323,7 +9354,7 @@ sub_6BACB:
 		ASL
 		TAY
 		LDA		byte_59
-		STA		byte_520,Y
+		STA		_enemy_DEF,Y
 		LDA		byte_5A
 		STA		byte_530+1,Y
 		LDA		#$80
@@ -9340,6 +9371,8 @@ _bs_prepare_read_enemy_prop_byte:
 		JMP		_far_byte_read_by_ptr ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
+; References A
+;
 _b4_s23:
 		STA		word_4
 		TXA
@@ -9358,12 +9391,12 @@ _b4_s23:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BB4D:
 		CMP		#2
-		BCS		loc_6BB5E
+		BCS		loc_6BB5E ; BCS->JAE branch down if it's 2 or 3 (not 100% sure)
 		LDA		#<[_player_battle_order_and_flags]
 		LDX		#>[_player_battle_order_and_flags]
 		JSR		_store_AX_in_3C
 		LDA		#8
-		BNE		loc_6BB85
+		BNE		loc_6BB85 ; UNCONDITIONAL
 loc_6BB5E:
 		CMP		#$10
 		BCC		loc_6BB72
@@ -9374,6 +9407,7 @@ loc_6BB5E:
 		LDX		off_6BC11+1,Y
 		JSR		_store_AX_in_3C
 		JMP		loc_6BB85
+
 loc_6BB72:
 		LSR
 		LSR
@@ -9387,7 +9421,7 @@ loc_6BB72:
 		LDA		byte_6BBFD-2,X
 loc_6BB85:
 		STA		word_4+1
-		JSR		sub_6BBD5
+		JSR		_bs_init_bitmasks_in_6_and_7
 loc_6BB8A:
 		TXA
 		ASL
@@ -9396,7 +9430,7 @@ loc_6BB8A:
 		AND		_players_status+1,Y
 		BMI		loc_6BBA2
 loc_6BB95:
-		JSR		sub_6BBDD
+		JSR		_bs_or_bitmasks_in_6_and_7
 loc_6BB98:
 		ASL		word_6
 		INX
@@ -9442,13 +9476,18 @@ _store_AX_in_3C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBD0:
+; Just stores the A,X registers in word_3e, most likely for indirect jumps 
+;
+_store_AX_in_3E:
 		STA		word_3E
 		STX		word_3E+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBD5:
+; Initializes a bitmask in u8[6] and a target bitmask for accumulation in u8[7]
+; The fact that this leaves 0 in X is important
+;
+_bs_init_bitmasks_in_6_and_7:
 		LDX		#1
 		STX		word_6
 		DEX
@@ -9456,51 +9495,64 @@ sub_6BBD5:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBDD:
+; u8[7] |= u8[6] -- incorporate bitmask
+;
+_bs_or_bitmasks_in_6_and_7:
 		LDA		word_6
 		ORA		word_6+1
 		STA		word_6+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBE4:
+; tests whether player's rDEF is 0?
+;
+_bs_test_rDEF_0:
 		LDA		_players_rDEF,Y
 		ORA		_players_rDEF+1,Y
-		JMP		sub_6BBF9
+		JMP		.test_stat ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBED:
+; tests whether player's rAGI is 0
+_bs_test_rAGI_0:
 		LDA		_players_rAGI,X
-		JMP		sub_6BBF9
+		JMP		.test_stat ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BBF3:
+; tests whether player's MP is 0
+_bs_test_MP_0:
 		LDA		_players_MP,Y
 		ORA		_players_MP+1,Y
 
-; =============== S U B	R O U T	I N E =======================================
-sub_6BBF9:
+;; FALLTHROUGH ;;
+
+; used above to test results of MP, rAGI, rDEF tests
+.test_stat:
 		BEQ		loc_6BB95
-		BNE		loc_6BB98
+		BNE		loc_6BB98 ; unconditional
+
 byte_6BBFD:
 		.BYTE	  4,  8,$10,$20,$40,$80, $F, $F, $F, $F,$10,$20,$40,$80
 off_6BC0D:
 		.WORD	_players_status
 		.WORD	_players_status+1
+
+; =============== T A B L E =================================================
+; handlers for testing various player conditions
+; 
 off_6BC11:
-		.WORD	sub_6BBE4
-		.WORD	sub_6BBED
-		.WORD	sub_6BBF3
+		.WORD	_bs_test_rDEF_0
+		.WORD	_bs_test_rAGI_0
+		.WORD	_bs_test_MP_0
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC17:
 		STA		word_4
-		LDA		byte_64
+		LDA		_acting_enemy
 		PHA
 		LDA		word_4
 		JSR		sub_6BC27
 		PLA
-		STA		byte_64
+		STA		_acting_enemy
 		LDA		word_6+1
 		RTS
 
@@ -9511,23 +9563,26 @@ sub_6BC27:
 		LDA		off_6BCA2,Y
 		LDX		off_6BCA2+1,Y
 		JSR		_store_AX_in_3C
-		JSR		sub_6BBD5
+		JSR		_bs_init_bitmasks_in_6_and_7 ; X will equal 0 now
+
+; loop across 8 enemies
 loc_6BC35:
-		STX		byte_64
+		STX		_acting_enemy ; seems kind of nuts to overwrite this here
 		TXA
 		ASL
 		TAY
-		LDA		byte_530,Y
+		LDA		byte_530,Y ; read stat value for current Xth entry (dead flag?)
 		BMI		loc_6BC4E
-loc_6BC3F:
-		JSR		sub_6BBDD
-loc_6BC42:
-		ASL		word_6
-		LDX		byte_64
+loc_6BC3F: ; <- target HP >= current
+		JSR		_bs_or_bitmasks_in_6_and_7
+loc_6BC42: ; <- target HP < current
+		ASL		word_6 ; next bit for bitmask
+		LDX		_acting_enemy
 		INX
 		CPX		#8
 		BNE		loc_6BC35
-		LDA		word_6+1
+
+		LDA		word_6+1 ; read result of above bitmask checks
 		RTS
 loc_6BC4E:
 		LDA		word_4
@@ -9544,34 +9599,38 @@ loc_6BC5D:
 sub_6BC60:
 		LDA		byte_530+1,Y
 		BPL		loc_6BC42
-		BMI		loc_6BC3F
+		BMI		loc_6BC3F ; unconditional 
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BC67:
+; tests an enemy's current HP against a fraction (half or quarter) of its MHP
+;
+_bs_test_enemy_HP:
 		JSR		_bs_read_enemy_prop_HP
-loc_6BC6A:
-		LSR		byte_5A
+.enemy_hp_cmp_quarter: ; branch here after dividing MHP by 2 to divide by 2 again and run comparison
+		LSR		byte_5A ; multilpe precision rightshift of HP in 59. this will be a target HP value
 		ROR		byte_59
-		LDA		byte_64
+		LDA		_acting_enemy
 		ASL
 		TAY
-		LDA		_enemy_HP+1,Y
+		LDA		_enemy_HP+1,Y ; reference current HP
 		CMP		byte_5A
-		BEQ		loc_6BC7D
+		BEQ		.hp_cmp_tiebreaker ; branch down for tiebreaker
 		BCC		loc_6BC42
-		BCS		loc_6BC3F
-loc_6BC7D:
-		LDA		_enemy_HP,Y
+		BCS		loc_6BC3F ; BCS->JAE branch if target HP >= current
+.hp_cmp_tiebreaker:
+		LDA		_enemy_HP,Y ; reference current HP (low byte)
 		CMP		byte_59
 		BCC		loc_6BC42
-		BCS		loc_6BC3F
+		BCS		loc_6BC3F ; BCS->JAE branch if target HP >= current
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BC86:
+; tests an enemy's current HP against a quarter of its MHP
+;
+_bs_test_enemy_HP_quarter:
 		JSR		_bs_read_enemy_prop_HP
-		LSR		byte_5A
+		LSR		byte_5A ; multiple precision rightshift of HP in 59
 		ROR		byte_59
-		JMP		loc_6BC6A
+		JMP		.enemy_hp_cmp_quarter ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BC90:
@@ -9586,10 +9645,14 @@ sub_6BC99:
 		AND		#$F
 		BEQ		loc_6BC42
 		BNE		loc_6BC3F
+
+; =============== T A B L E =================================================
+; handlers for checking various AI conditions
+;
 off_6BCA2:
 		.WORD	sub_6BC60
-		.WORD	sub_6BC67
-		.WORD	sub_6BC86
+		.WORD	_bs_test_enemy_HP
+		.WORD	_bs_test_enemy_HP_quarter
 		.WORD	sub_6BC90
 		.WORD	sub_6BC99
 
@@ -9613,7 +9676,7 @@ loc_6BCBC:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BCBF:
 		STA		word_4
-		JSR		sub_6BBD5
+		JSR		_bs_init_bitmasks_in_6_and_7
 loc_6BCC4:
 		TXA
 		PHA
@@ -9621,7 +9684,7 @@ loc_6BCC4:
 		ORA		word_4
 		CMP		#$FF
 		BNE		loc_6BCD2
-		JSR		sub_6BBDD
+		JSR		_bs_or_bitmasks_in_6_and_7
 loc_6BCD2:
 		ASL		word_6
 		PLA
@@ -9683,7 +9746,7 @@ _bs_emove_fptr_stage2_tbl:
 		.WORD	_bs_emove_stage2_nothing
 		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; sweet breath
 		.WORD	_bs_emove_stage2_toxic_breath
-		.WORD	_bs_emove_stage2_nothing ; scorching breath.. that's weord
+		.WORD	_bs_emove_stage2_nothing ; scorching breath.. that's weird
 		.WORD	_bs_emove_stage2_spell_single
 		.WORD	_bs_emove_stage2_spell_single
 		.WORD	_bs_emove_stage2_spell_single
@@ -9840,7 +9903,7 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	sub_69C09
 		.WORD	sub_69C81
 		.WORD	sub_69C86 ; Sleep
-		.WORD	sub_69D20
+		.WORD	_bs_spell_awaken
 		.WORD	sub_69D60
 		.WORD	sub_69DDF
 		.WORD	sub_69E5B
@@ -9856,7 +9919,7 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	sub_69F85
 		.WORD	sub_69F97
 		.WORD	sub_69FC5
-		.WORD	sub_6A017
+		.WORD	_bs_spell_chance ; chance
 		.WORD	sub_6A2CB
 		.WORD	sub_6A2FF
 		.WORD	sub_6AEEF
@@ -9892,7 +9955,7 @@ sub_6BEA4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEB9:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$10
 		BCS		loc_6BEC4
@@ -9909,7 +9972,7 @@ loc_6BEC4:
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$10
 		BCS		locret_6BEF4
@@ -9926,7 +9989,7 @@ locret_6BEF4:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEF5:
-		LDX		byte_51
+		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		SEC
 		SBC		#$31

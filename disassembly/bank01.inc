@@ -64,12 +64,14 @@ locret_200BC:
 _b1_s16:
 		LDA		#6
 		STA		byte_7F
-		BNE		sub_200C7
+		BNE		sub_200C7 ; UNCONDITIONAL
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_s15:
 		LDA		#4
 		STA		byte_7F
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_200C7:
@@ -1191,7 +1193,7 @@ _b1_sA:
 		STA		byte_566
 		AND		#$C0
 		BNE		locret_207B5
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55 ; "Ironize is no longer effective."
 locret_207B5:
 		RTS
 
@@ -1201,7 +1203,7 @@ sub_207B6:
 loc_207B8:
 		TYA
 		PHA
-		STA		byte_64
+		STA		_acting_enemy
 		ASL
 		TAY
 		LDA		byte_530,Y
@@ -1220,7 +1222,7 @@ loc_207B8:
 		STA		byte_65
 		LDA		#0
 		STA		byte_66
-		FARX	_b4_s19
+		FARX	_b4_s19_heal_enemy
 loc_207E7:
 		PLA
 		TAY
@@ -1228,8 +1230,10 @@ loc_207E7:
 		CPY		#8
 		BNE		loc_207B8
 		RTS
-byte_207EF:
-		.BYTE	$10,  8,$2C, $C,$5A,$14
+byte_207EF: ; 
+		.BYTE	$10,  8
+		.BYTE	$2C, $C
+		.BYTE	$5A,$14
 
 ; =============== S U B	R O U T	I N E =======================================
 _b1_sB:

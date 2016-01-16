@@ -181,6 +181,7 @@ byte_50:
 		.BYTE	0
 ;----------------------------------------------
 ; during battle, seems to be the current actor taking an action? 0..3 is player and 4..b is enemy
+_bs_curr_actor:
 byte_51:
 		.BYTE	0
 ;----------------------------------------------
@@ -240,6 +241,7 @@ byte_63:
 ; used by bank0A (why?)
 ; used by bank0D (why?)
 ; used by bank0E (why?)
+_acting_enemy:
 byte_64:
 		.BYTE	0
 ;----------------------------------------------
@@ -640,8 +642,10 @@ _enemy_MP: ; probably an enemy stat
 ; enemy agilities during battle
 _enemy_AGI:
 		.BYTE	0,0,0,0,0,0,0,0
-byte_520:
-		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+;----------------------------------------------
+; enemy DEFs during battle
+_enemy_DEF: 
+		.WORD	0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; struct { u8 one, two } enemystat[8]
 ; contains what seems to be enemy status, two bytes per enemy? one copy seems to be the round starting state and another is the current state, or something like that
@@ -686,22 +690,30 @@ byte_54C:
 byte_558: ;"moveTable2" - "the actually selected action"
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0,0 ; one too many?
 ;----------------------------------------------
+; battle flags
 byte_565:
 		.BYTE	0
 ;----------------------------------------------
+; battle flags
 ; $566: IIS??????
 ; I - Ironized. why two bits?
 ; S - something that can be removed by receiving an attack??
 byte_566:
 		.BYTE	0
 ;----------------------------------------------
+; battle flags
+; xxxxAAPP  
+; A - %11 = player PP gets 3 free turns (result of chance), the logic to support this is sprawled all over
+;
 byte_567:
 		.BYTE	0
 ;----------------------------------------------
+; battle flags
 ; #$10 bit is set if spells are broken by the location
 byte_568:
 		.BYTE	0
 ;----------------------------------------------
+; battle flags seem to be accessed by array from byte_569
 byte_569:
 		.BYTE	0
 byte_56A:
@@ -994,7 +1006,8 @@ _players_MMP: ; $ 728
 ; first byte is a control bytes, to check is player
 ; actually existst and track status changes
 ;
-; ........ DNP..R..
+; ........ DNP.IR..
+; I - attack power increased? (from magic spell)
 ; R - Affects enemy spell/breath damage reductions. if set, reductions don't
 ;     apply (for spells)? Maybe this prevents double reductions from protection spells.
 ; P - Player is poisoned

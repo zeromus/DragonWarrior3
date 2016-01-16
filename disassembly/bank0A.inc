@@ -416,9 +416,9 @@ _bA_s3:
 loc_F82CC:
 		FARX	_b4_s27
 		STA		byte_4F ; determines enemy action stage2?
-		FARX	_b4_s28
+		FARX	_b4_s28 ; calls enemy action stage2
 		STA		byte_50
-		BCS		locret_F82E7
+		BCS		locret_F82E7 ; analyze return value of stage2
 		LDA		byte_49
 		CMP		#$FF
 		BNE		loc_F82CC

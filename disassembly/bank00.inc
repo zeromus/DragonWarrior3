@@ -2712,7 +2712,8 @@ loc_9803:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; removes item with particular count number from inventory
+; removes item at particular index (byte_CF) from a player's (in byte_CE) inventory
+; not 100% sure of details
 ;
 _b0_s2A_player_inventory_item_remove:
 		JSR		_get_player_inventory_items_list
@@ -3044,6 +3045,7 @@ loc_9982:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; counts a number of players in current party, that is non dead
+; stores result in word_4
 ;
 _b0_s33_count_non_dead_party_chars:
 		TXA
@@ -6798,7 +6800,8 @@ _msg_nothing_happens_sec:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; BLACK PEPPER item should only make all non death players to sneeze if
-; used with item use menu
+; used with item use menu. 
+; Slightly weird logic to create line breaks between each player sneeze.
 ;
 _item_black_pepper_use:
 		JSR		_b0_s33_count_non_dead_party_chars
@@ -6813,10 +6816,10 @@ loc_B272:
 		TAX
 		LDA		_players_status,X
 		AND		_players_status+1,X
-		BPL		loc_B28C
+		BPL		loc_B28C ; branch for dead player
 		MSGX	_msg_m00,$09C	; "<name><b> sneezes"
 		DEC		byte_55
-		BEQ		loc_B28C
+		BEQ		loc_B28C ; if we're done
 		MSGX	_msg_m00,$005	; "$FD, $EF"
 loc_B28C:
 		PLA
