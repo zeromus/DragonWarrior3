@@ -6404,7 +6404,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_s16_do_half_message_speed_delay	; $D0
 		FILE_IDX	$4,_b4_s17					; $D1
 		FILE_IDX	$4,_b4_s18					; $D2
-		FILE_IDX	$4,_b4_s19					; $D3
+		FILE_IDX	$4,_b4_s19_heal_enemy					; $D3
 		FILE_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
 		FILE_IDX	$4,_b4_s1B					; $D5
 		FILE_IDX	$4,_b4_s1E					; $ED

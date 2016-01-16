@@ -3550,7 +3550,7 @@ loc_3A831: ; a special antic
 		CMP		#$1D
 		SEC
 		BNE		locret_3A853
-		LDA		#$FC
+		LDA		#$FC ; "is momentarily transfixed" ... maybe?
 		JMP		_wrap_msg_mFF_arg0_and_delay
 .bs_antic_return_false:
 		CLC ; return false
@@ -3569,10 +3569,10 @@ sub_3A85E:
 		BCC		loc_3A86F
 		LDA		word_4
 		BNE		loc_3A874
-		LDA		#$EC
+		LDA		#$EC ; "but no one is listening" .... maybe?
 		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A86F:
-		LDA		#$EB
+		LDA		#$EB ; "but his/her companions are not there" ... maybe?
 		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A874:
 		SEC
@@ -3587,7 +3587,7 @@ sub_3A876:
 		JSR		sub_3A7E9
 		LDA		byte_D3
 		STA		byte_D2
-		LDA		#$F1
+		LDA		#$F1 ; "hey what do you think youre doing" .... maybe?
 		JMP		_wrap_msg_mFF_arg0_and_delay
 loc_3A88B:
 		CLC
