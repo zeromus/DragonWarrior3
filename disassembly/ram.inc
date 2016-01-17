@@ -336,26 +336,12 @@ byte_90: ; "EntityUpdateCycle_90" - used to only allow player DPad once per 16 f
 byte_91:
 		.BYTE	0
 ;----------------------------------------------
-; the actual overworld tile youre standing in. these may be different for different locations, not sure (probably). The first tile is at tile ppu tile#8D and they kind of lay out frmo there in an odd order
-; 00 - wood flooring (in location)
-; 01 - sand (or chair in location)
-; 02 - plains
-; 03 - shrubs
-; 04 - trees
-; 05 - hills
-; 08 - topleft of castle (or cobblestones in location)
-; 09 - topright of castle (or stairs down in location)
-; 0A - left of town
-; 0B - right of town
-; 0C - bottomleft of castle
-; 0D - bottomright of castle
-; 0F - stairs up (in location)
-; 13 - dungeon floor tile
-; 16 - flowers (in location)
-; 1A - hills (in location)
-; 1B - bridge
-; 20 - interior flag
-byte_92:
+; the actual tile youre standing in (overworld or location)
+; these differ by locations, probably (certainly depending on location or overworld). Has to do with tileset I guess
+; The first tile is at tile ppu tile#8D and they kind of lay out from there in an odd order
+;
+;
+_standing_tile: ; $92
 		.BYTE	0
 ;----------------------------------------------
 byte_93:

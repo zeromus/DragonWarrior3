@@ -1375,7 +1375,7 @@ loc_9B557:
 		JSR		_location_palette_and_rand_update
 		FARX	_bE_sF
 		FARX	_b5_s9
-		FARX	_bC_s3
+		FARX	_bC_s3_refresh_standing_tile
 		JSR		_map_music_select_and_load
 		JSR		_ppu_on_and_fade_in
 		LDA		#0

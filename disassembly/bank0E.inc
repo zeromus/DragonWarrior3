@@ -6476,7 +6476,7 @@ sub_15B288:
 		JSR		_bE_sD
 		JSR		_bE_s10
 		JSR		_bE_s34
-		SYSX	_display_window,WND_LOCATION_LIST ; huh? weird so near dead stuff
+		SYSX	_display_window,$3E ; huh? weird so near dead stuff
 		LDA		byte_48
 		BNE		loc_15B2D0
 		SYSX	_apu_load,BGM_DEAD_13
