@@ -1351,8 +1351,8 @@ loc_9B545:
 		CMP		#$60 ; Samanao Town prison basement
 		BEQ		loc_9B524
 		LDA		_player_vehicle
-		BEQ		loc_9B557
-		LDA		_global_flags_array.byte3
+		BEQ		loc_9B557 ; branch if on foot
+		LDA		_global_flags_array.byte3 ; uhhhh.. steal the ship? that's weird.
 		AND		#$BF
 		STA		_global_flags_array.byte3
 loc_9B557:
@@ -1385,38 +1385,38 @@ loc_9B557:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s13:
-		LDX		#0
-		LDY		#0
+		LDX		#LOCATION_TYPE_OVERWORLD
+		LDY		#DAYNIGHT_CYCLE_DAWN
 		LDA		word_4+1
-		CMP		#$F
+		CMP		#RETURN_TYPE_FIRST_IN_ALEFGARD
 		BCC		loc_9B5B2
-		LDX		#2
-		LDY		#$3C
+		LDX		#LOCATION_TYPE_ALEFGARD
+		LDY		#DAYNIGHT_CYCLE_JUST_BEFORE_NOON
 		BIT		_global_flags_array.byte10
-		BMI		loc_9B5B2
-		LDY		#$78
+		BMI		loc_9B5B2 ; branch on some unknown condition (rift between worlds is closed, so its always night?)
+		LDY		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 loc_9B5B2:
 		STY		_world_map_steps_count
 		STX		_location_type
 		ASL
 		ASL
 		TAX
-		LDA		word_9B60C,X
+		LDA		_return_point_tbl,X
 		STA		_playerWorldX
-		LDA		word_9B60C+1,X
+		LDA		_return_point_tbl+1,X
 		STA		_playerWorldY
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; test whether ship is acquired
 		AND		#$C0
 		CMP		#$80
-		BNE		loc_9B5E0
+		BNE		loc_9B5E0 ; skip spawning of ship
 		LDA		_global_flags_array.byte16
 		AND		#$90
 		CMP		#$80
-		BEQ		loc_9B5E0
-		LDA		word_9B60C+2,X
-		STA		byte_2D
-		LDA		word_9B60C+3,X
-		STA		byte_2E
+		BEQ		loc_9B5E0 ; skip spawning of the ship if in the middle of some post-baramos stuff
+		LDA		_return_point_tbl+2,X ; location of ship?
+		STA		_playerShipX
+		LDA		_return_point_tbl+3,X
+		STA		_playerShipY
 loc_9B5E0:
 		LDX		#1
 		LDA		#0
@@ -1441,27 +1441,31 @@ loc_9B5F6:
 		STA		_ghostShipWorldY
 locret_9B60B:
 		RTS
-word_9B60C:
-		.WORD	$DBAC,$DCA8
-		.WORD	$C19F,$BB9F
-		.WORD	$5934,$5732
-		.WORD	$2741,$193F
-		.WORD	$1538,$173C
-		.WORD	$6F56,$7056
-		.WORD	$8A23,$6D29
-		.WORD	$621A,$6218
-		.WORD	$9A71,$9E76
-		.WORD	$827A,$847E
-		.WORD	$D76D,$D574
-		.WORD	$929D,$919C
-		.WORD	$2C12,$2B11
-		.WORD	$9BD7,$ABE0
-		.WORD	$4DD6,$4CD7
-		.WORD	$353F,$332F
-		.WORD	$632C,$661A
-		.WORD	$705C,$6F46
-		.WORD	$147B,$146A
-		.WORD	$5279,$5886
+
+; =============== T A B L E =================================================
+; struct return_point { u8 player_x, player_y; u8 ship_x, ship_y }
+;
+_return_point_tbl:
+		.BYTE $AC,$DB,  $A8,$DC
+		.BYTE	$9F,$C1,  $9F,$BB
+		.BYTE $34,$59,  $32,$57
+		.BYTE $41,$27,  $3F,$19
+		.BYTE $38,$15,  $3C,$17
+		.BYTE $56,$6F,  $56,$70
+		.BYTE $23,$8A,  $29,$6D
+		.BYTE $1A,$62,  $18,$62
+		.BYTE $71,$9A,  $76,$9E
+		.BYTE $7A,$82,  $7E,$84
+		.BYTE $6D,$D7,  $74,$D5
+		.BYTE $9D,$92,  $9C,$91
+		.BYTE $12,$2C,  $11,$2B
+		.BYTE $D7,$9B,  $E0,$AB
+		.BYTE $D6,$4D,  $D7,$4C
+		.BYTE $3F,$35,  $2F,$33
+		.BYTE $2C,$63,  $1A,$66
+		.BYTE $5C,$70,  $46,$6F
+		.BYTE $7B,$14,  $6A,$14
+		.BYTE $79,$52,  $86,$58
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s12_item_wakeup_powder_use:
@@ -1489,25 +1493,25 @@ _b6_s15_item_staff_of_change_use:
 		LDA		byte_AC
 		AND		#$1F
 		BNE		loc_9B666
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; clear some staff of change related flags (not related to ship at all, just leaving those bits)
 		AND		#$C0
 		STA		_global_flags_array.byte3
-		JSR		_rand
+		JSR		_rand ; pick a random 'personality'
 ; 1C free
 ; --
 		AND		#$1F				; random 00..1F
 		CMP		#$F
-		BCC		.change_personalyty	; 0,1,2,3,4,5,6,7,8,9,A,B,D,E,F	- indexes as is
-		BEQ		.change_personalyty
+		BCC		.change_personality	; 0,1,2,3,4,5,6,7,8,9,A,B,D,E,F	- indexes as is
+		BEQ		.change_personality
 		CMP		#$14
 		BCC		loc_9B6B1			; 10,11,12,13 replace to 17,18,1E,20
 		AND		#$F					; 14,15,16,17,18,19,1A,1B,1C,1D,1E,1F to 4,5,6,7,8,9,A,B,20,D,E,F
-.change_personalyty:
+.change_personality:
 		CMP		#$C
 		BNE		loc_9B6A1			; C replace to 20
 		LDA		#$20
 loc_9B6A1:
-		ORA		_global_flags_array.byte3
+		ORA		_global_flags_array.byte3 ; store selected personality alongside ship flags
 		STA		_global_flags_array.byte3
 loc_9B6A7:
 		LDA		#$14
@@ -1518,7 +1522,7 @@ loc_9B6A7:
 loc_9B6B1:
 		TAX
 		LDA		byte_9B6B7-$10,X
-		BNE		.change_personalyty
+		BNE		.change_personality
 byte_9B6B7:
 		.BYTE	$17,$18,$1E,$20
 ; --
@@ -2585,9 +2589,9 @@ _b6_s1B_reinit_after_zoma_voice:
 		STA		byte_9E
 		LDA		#$DB
 		STA		byte_9F
-		STA		byte_2E
+		STA		_playerShipY
 		LDA		#$A8
-		STA		byte_2D
+		STA		_playerShipX
 		JSR		_location_palette_and_rand_update
 
 ; =============== S U B	R O U T	I N E =======================================

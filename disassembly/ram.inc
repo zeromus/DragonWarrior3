@@ -96,9 +96,9 @@ _player_vehicle: ; $2C
 		.BYTE	0
 ;----------------------------------------------
 ; location of the ship. it changes along with _playerWorldX and _playerWorldY as long as you're in the ship
-byte_2D:
+_playerShipX:
 		.BYTE	0
-byte_2E:
+_playerShipY:
 		.BYTE	0
 ;----------------------------------------------
 ; 0 - Overworld
@@ -920,9 +920,9 @@ byte_6DA:
 ; 00 is fast, 06 is slow. 07 is slowest, but messages will prompt you to wait between each print
 _cur_message_speed: ;6DD
 		.BYTE	0
-_world_map_step_rand:				; never used in any part of the game, just randomly changes
+_world_map_step_rand:	; 6DE			never used in any part of the game, just randomly changes
 		.BYTE	0
-_world_map_steps_count:				; every step on the map increases this counter
+_world_map_steps_count:	; 6DF			 every step on the map increases this counter
 		.BYTE	0					; as well as change the rand value above.
 									; steps count up to $CB, then wrap around
 									; the day is in range $00..$78, the rest is a night.
@@ -1043,13 +1043,13 @@ _players_status: ; $ 72C
 _players_EXP:
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
-; u8 returnable_locations[4][3] - a bit vector of locations visited, returnable targets.
+; u8 returnable_locations[4][3] - a bit vector of locations visited, returnable targets (final few bits are unused)
 ; for some reason, ,every player has its separate returnable locations list, so, if some
 ; player were dead if you visit some locations, it can't return to it.
 ; but all locations are synced sometimes, investigate
 ; check _returnable_areas_tbl for meanings
 ; 
-_players_returnable_locations:
+_players_returnable_locations: ; $750
 		.BYTE	0,0,0
 		.BYTE	0,0,0
 		.BYTE	0,0,0
@@ -1250,12 +1250,12 @@ _global_flags_array.byte1: ; 60b6
 _global_flags_array.byte2: ; 60b7
 		.BYTE	0
 
-;	$80 - $1F - Lock the Portoga king from checking your Black Pepper, quest is done
-;	$40 - $1E - set at the same time as $80
+;	$80 - _q_ShipGranted = $1F - Lock the Portoga king from checking your Black Pepper, quest is done
+;	$40 - _q_ShipUnfound = $1E - set at the same time as $80. Means: player has yet to pick up ship. Once it's cleared (actually once value is $80 instead of $00 or $C0), you have the ship
 ;	$20 -+
 ;	$10  |
 ;	$08  |
-;	$04  +- when staff of change used, this is index of character to turn your party into
+;	$04  +- _f_TransformPersonality - when staff of change used, this is index of character to turn your party into
 ;	$02  |
 ;	$01 -+
 _global_flags_array.byte3: ; 60b8
@@ -1300,9 +1300,9 @@ _global_flags_array.byteA: ; 60bf
 
 _backup_y: ; 60c0
 		.BYTE	0
-_backup_x:
+_backup_x: ; 60c1
 		.BYTE	0
-; 60c2 unused
+; 60c2 unused 
 		.BYTE	0
 
 ;	$80 - $77 - unused
@@ -1313,7 +1313,7 @@ _backup_x:
 ;	$04 -+
 ;	$02  +- index of the last king visited to respawn logic
 ;	$01 -+
-_global_flags_array.byteE:
+_global_flags_array.byteE:; 60c3
 		.BYTE	0
 
 ;	$80 - $7F - Zoma's Castle Quest: if set, the statue sneak attack event is finished and the statues and doors are cleared
@@ -1324,10 +1324,10 @@ _global_flags_array.byteE:
 ;	$04  +- incremental counter 0
 ;	$02  |
 ;	$01 -+
-_global_flags_array.byteF:
+_global_flags_array.byteF:; 60c4
 		.BYTE	0
 		
-;	$80 - $87 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky"
+;	$80 - $87 - if set, we can't enter aliahan. When exiting another location to the world map, a text appears "A sound like something closing is heard from up in the sky". Does it mean the rift between worlds is closed?
 ;	$40 - $86 - * read/write
 ;	$20 - $85 - * read/write
 ;	$10 - $84 - unused
@@ -1335,7 +1335,7 @@ _global_flags_array.byteF:
 ;	$04 - $82 - * read/write
 ;	$02 - $81 - * read/write
 ;	$01 - $80 - * read/write
-_global_flags_array.byte10:
+_global_flags_array.byte10:; 60c5
 		.BYTE	0
 		
 ;	$80 - $8F - * read/write
@@ -1346,7 +1346,7 @@ _global_flags_array.byte10:
 ;	$04 - $8A - unused
 ;	$02 - $89 - unused
 ;	$01 - $88 - unused
-_global_flags_array.byte11:
+_global_flags_array.byte11:; 60c6
 		.BYTE	0
 		
 ;	$80 - $97 - *
@@ -1357,7 +1357,7 @@ _global_flags_array.byte11:
 ;	$04 - $92 - unused
 ;	$02 - $91 - unused
 ;	$01 - $90 - unused
-_global_flags_array.byte12:
+_global_flags_array.byte12:; 60c7
 		.BYTE	0
 		
 ;	$80 - _q_GameBegins = $9F - set once the game is begun (used to determine whether to start a save file in the hero's house)
@@ -1368,7 +1368,7 @@ _global_flags_array.byte12:
 ;	$04 - $9A - * read/write
 ;	$02 - $99 - * read/write
 ;	$01 - $98 - * read/write
-_global_flags_array.byte13:
+_global_flags_array.byte13: ; 60c8
 		.BYTE	0
 		
 ;	$80 - $A7 - unused
@@ -1379,7 +1379,7 @@ _global_flags_array.byte13:
 ;	$04  +- staff of change timer counter
 ;	$02  |
 ;	$01 -+
-_global_flags_array.byte14:
+_global_flags_array.byte14: ; 60c9
 		.BYTE	0
 
 ;	$80 - $AF - * read/write
@@ -1390,7 +1390,7 @@ _global_flags_array.byte14:
 ;	$04 - $AA - * read/write
 ;	$02 - $A9 - * read/write
 ;	$01 - $A8 - * read/write
-_global_flags_array.byte15: ; fiddling with values here can make aliahan look like baramos is dead
+_global_flags_array.byte15: ; 60CA fiddling with values here can make aliahan look like baramos is dead
 		.BYTE	0
 
 ;	$80 - _q_IsBaramosDefeated $B7 - Baramos is defeated
@@ -1401,7 +1401,7 @@ _global_flags_array.byte15: ; fiddling with values here can make aliahan look li
 ;	$04 - $B2 unused
 ;	$02 - $B1 unused
 ;	$01 - $B0 unused
-_global_flags_array.byte16:
+_global_flags_array.byte16: ; 60CB
 		.BYTE	0
 
 ;	$80 - $BF - unused

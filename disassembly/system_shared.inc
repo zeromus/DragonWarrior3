@@ -1890,12 +1890,12 @@ loc_174BFC:
 		JSR		_ppu_disable
 		FARX	_bE_sF
 		JSR		_ppu_and_dequeue_enable
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; clear _q_ShipUnfound
 		AND		#$BF
 		STA		_global_flags_array.byte3
 		LDA		_global_flags_array.byte5
 		AND		#1
-		BEQ		loc_174C2F
+		BEQ		loc_174C2F ; branch if !_f_IsInNavelOfTheEarth
 		LDA		_global_flags_array.byte5
 		AND		#$FC
 		STA		_global_flags_array.byte5
@@ -2187,8 +2187,8 @@ sub_174E25:
 		LDY		_players_pos_list+1
 		CMP		#1
 		BNE		loc_174E4D
-		STX		byte_2D
-		STY		byte_2E
+		STX		_playerShipX
+		STY		_playerShipY
 		LDA		byte_9A
 		BEQ		locret_174E51
 		STX		_npcs_pos_list
@@ -2265,9 +2265,9 @@ loc_174E9C:
 		LDA		#0
 		STA		_player_vehicle
 		LDA		#$A
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		#$13
-		STA		byte_2E
+		STA		_playerShipY
 		LDA		#2
 		STA		_playerFacingDir
 		LDA		#$91 ; Alefgard landing
@@ -2593,8 +2593,8 @@ loc_175123:
 		CMP		#7
 		BNE		loc_175185
 		LDA		_mapNumber
-		CMP		#$41
-		BCC		loc_175185
+		CMP		#$41 ; Aliahan upstairs, Hero's apartment (first sub-location)
+		BCC		loc_175185 ; BCC->JB - branch if we're in a main location (not a sub-location)
 		FARX	_bE_s22
 		JMP		loc_175185
 loc_17513A:
@@ -2673,10 +2673,10 @@ loc_1751AA:
 		BEQ		loc_1751E5
 		LDA		_playerWorldX
 		STA		_players_pos_list
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		_playerWorldY
 		STA		_players_pos_list+1
-		STA		byte_2E
+		STA		_playerShipY
 		FARX	_bD_s1B
 		JMP		loc_1751F7
 loc_1751E5:
@@ -2752,7 +2752,7 @@ sub_17522D:
 		LDX		#$F
 		CMP		#$A								; piece of town?
 		BEQ		loc_175292
-		CMP		#$B								; piece of towne?
+		CMP		#$B								; piece of town?
 		BEQ		loc_175292
 		CMP		#$C								; piece of castle?
 		BEQ		loc_1752A1
@@ -3560,10 +3560,10 @@ loc_1757E2:
 loc_1757F4:
 		LDX		#0
 		STX		_blockPlayerInputDuringMap
-		LDA		byte_2D
+		LDA		_playerShipX
 		CMP		_playerWorldX
 		BNE		loc_17580C
-		LDA		byte_2E
+		LDA		_playerShipY
 		CMP		_playerWorldY
 		BNE		loc_17580C
 		STX		byte_6B9
@@ -3671,10 +3671,10 @@ loc_1758A1:
 		BNE		loc_17589F
 loc_1758B1:
 		LDA		_playerMapX
-		CMP		byte_2D
+		CMP		_playerShipX
 		BNE		loc_17589F
 		LDA		_playerMapY
-		CMP		byte_2E
+		CMP		_playerShipY
 		BNE		loc_17589F
 		LDA		#1
 		STA		_blockPlayerInputDuringMap
@@ -3905,9 +3905,9 @@ loc_1759FA:
 		CMP		#1
 		BNE		loc_175A22
 		LDA		_playerMapX
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		_playerMapY
-		STA		byte_2E
+		STA		_playerShipY
 
 loc_175A22:
 ; read facing direction from bottom 2 bits of _worldmap_trigger_tbl
