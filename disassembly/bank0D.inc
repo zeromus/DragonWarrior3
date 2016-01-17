@@ -14,7 +14,7 @@
 		PTR_IDX		_bD_sD
 		PTR_IDX		_bD_sE
 		PTR_IDX		_bD_s10
-		PTR_IDX		_bD_s11
+		PTR_IDX		_bD_s11_restore_party_MP
 		PTR_IDX		_bD_s12
 		PTR_IDX		_bD_s13
 		PTR_IDX		_bD_s14
@@ -4067,10 +4067,12 @@ sub_142780:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bD_s11:
+; Restores entire party's MP to max. Does it include dead characters? Not sure.
+;
+_bD_s11_restore_party_MP:
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDX		word_4
-		LDA		#$FF
+		LDA		#$FF ; store #$FFFF for value of MP to add
 		STA		byte_CF
 		STA		byte_D0
 loc_14279B:
