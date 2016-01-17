@@ -593,7 +593,7 @@ loc_20410:
 loc_20427:
 		LDX		#$73
 		JSR		sub_20441
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		LDA		byte_78
 		RTS
 
@@ -1510,7 +1510,7 @@ _b1_sC:
 loc_209E6:
 		LDX		#0
 		FARX	_bE_s6_msg_mFF
-		SYSX	_apu_load,$13
+		SYSX	_apu_load,BGM_DEAD_13
 		FARX	_b0_s50_players_item_buffs_refresh
 		LDA		_global_flags_array.byte5
 		AND		#1
@@ -1564,7 +1564,7 @@ _b1_sD_post_win_battle_handler:
 		BIT		byte_568
 		BMI		loc_20A5A
 		BVC		loc_20A4C
-		SYSX	_apu_load,$16
+		SYSX	_apu_load,BGM_VICTORY_JINGLE
 		JSR		sub_20CAA
 		LDX		#$E	; select between "You have defeated <name>" and "You have vanquished all your foes"
 		JSR		_incX_if_568_not_has_bit_20
@@ -1578,7 +1578,7 @@ loc_20A4C:
 		JSR		_wrap_msg_m00_arg0
 		JMP		loc_20A76
 loc_20A5A:
-		SYSX	_apu_load,$16
+		SYSX	_apu_load,BGM_VICTORY_JINGLE
 		JSR		sub_20CAA
 		LDX		#$5D ; select between "<name> departs" and "All your foes depart"
 		JSR		_incX_if_568_not_has_bit_20
@@ -1683,7 +1683,7 @@ loc_20AED:
 		JSR		_wrap_msg_m00_arg0
 		JSR		sub_20D11
 		STA		byte_D2
-		SYSX	_apu_load,$8F
+		SYSX	_apu_load,SFX_OPEN_CHEST
 		MSGX	_msg_m00,$064	; "<name> opens the treasure chest"
 		PLA
 		STA		_msg_directobject_param
@@ -1706,7 +1706,7 @@ loc_20B48:
 		MSGX	_msg_m00,$066	; "However the <hero>'s party cannot carry any more items"
 loc_20B5E:
 		MSGX	_msg_m00,$145	; "Do you want to discard something?"
-		SYSX	_apu_load,$86
+		SYSX	_apu_load,SFX_MENU_PROMPT
 		SYSX	_display_window_ex,$1D
 		CMP		#0
 		BEQ		loc_20B87
@@ -1846,7 +1846,7 @@ loc_20C8B:
 		MSGX	_msg_m00,$00B	; "Himiko is the orochi!"
 loc_20C95:
 		MSGX	_msg_m00,$029	; "And so the day breaks"
-		LDA		#$3C
+		LDA		#DAYNIGHT_CYCLE_JUST_BEFORE_NOON
 		STA		_world_map_steps_count
 		JMP		.delay_pause_and_break
 .false_king_message:

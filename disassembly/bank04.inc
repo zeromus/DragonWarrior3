@@ -177,7 +177,7 @@ loc_68122:
 		JSR		_pause_or_skip
 		JMP		.common_battle_won
 loc_68138:
-		SYSX	_apu_load,$29
+		SYSX	_apu_load,BGM_BATTLE_INTRO_SLOW_29
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JMP		.common_battle_won_ex
 
@@ -1586,8 +1586,8 @@ loc_6894A:
 		LDA		byte_6A77,X
 		BPL		loc_68974
 		MSGX	_msg_m00,$0CB	; "Oh, calling it quits, it's okay to loose your bet?"
-		SYSX	_apu_load,$86
-		SYSX	_display_window_ex,$45
+		SYSX	_apu_load,SFX_MENU_PROMPT
+		SYSX	_display_window_ex,WND_TAVERN_YESNO
 		PHA
 		JSR		sub_6AA51
 		PLA
@@ -1912,14 +1912,14 @@ loc_68BAB:
 
 ; =============== S U B	R O U T	I N E =======================================
 _attacks_msg_and_sound:
-		SYSX	_apu_load,$8B
+		SYSX	_apu_load,SFX_ENEMY_ATTACKING
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$01 ; "attacks!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68BB6:
 		LDA		#$20
 		JSR		sub_6B2BB
-		SYSX	_apu_load,$8D
+		SYSX	_apu_load,SFX_ENEMY_ATTACK_MISS
 		JSR		_bs_extract_target_from_move
 		BMI		loc_68BC6
 		JMP		sub_6B3D2
@@ -1937,7 +1937,7 @@ _bs_emove_stage1_03_attack_maybe_crit:
 loc_68BD3:
 		JSR		_attacks_msg_and_sound
 		JSR		sub_6B30E
-		SYSX	_apu_load,$88
+		SYSX	_apu_load,SFX_ENEMY_CRIT
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$11 ; "a terrible blow!"
 		JSR		_bs_load_enemy_prop_ATK
 		LDA		byte_59
@@ -1997,7 +1997,7 @@ sub_68C42:
 _bs_emove_stage1_07_try_flee:
 		JSR		_bs_get_current_actor_number
 		STA		_acting_enemy
-		SYSX	_apu_load,$83
+		SYSX	_apu_load,SFX_RUNAWAY
 		LDA		#$50 ; "<enemy> starts to flee
 		JSR		_wrap_bE_s6_msg_mFF_arg0_safe
 		JSR		sub_6ADBF
@@ -2213,7 +2213,7 @@ locret_68DB0:
 ; =============== S U B	R O U T	I N E =======================================
 ; several breath attacks are handled by this one
 _bs_emove_stage1_0A_through_0F_breath_attacks:
-		SYSX	_apu_load,$91
+		SYSX	_apu_load,SFX_BREATH_ATTACK
 		LDA		#$36 ; "emits gales of blazing breath"
 		STA		word_4
 		LDX		_bs_curr_actor
@@ -3455,7 +3455,7 @@ sub_69604:
 		BMI		loc_6960C
 		JMP		sub_696E8
 loc_6960C:
-		SYSX	_apu_load,$89
+		SYSX	_apu_load,SFX_PLAYER_ATTACKING
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01 ; "attacks!"
 		JSR		sub_6B0E5
 		BCC		loc_6961A
@@ -3482,7 +3482,7 @@ loc_6962A:
 		CMP		#$A0
 		BCS		loc_69647
 loc_6963E:
-		SYSX	_apu_load,$8C
+		SYSX	_apu_load,SFX_PLAYER_ATTACK_MISS
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22 ; "missed! no damage to name"
 loc_69647:
@@ -3541,7 +3541,7 @@ loc_696AD:
 		CMP		word_6+1
 		BCS		loc_696C9
 loc_696B6:
-		SYSX	_apu_load,$88
+		SYSX	_apu_load,SFX_ENEMY_CRIT
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10 ; "a tremendous hit!"
 		JSR		_sram_b0_s17_player_rATK_read
 		JSR		sub_6ADA4
@@ -3561,7 +3561,7 @@ loc_696DC:
 		JMP		loc_6A42E
 loc_696DF:
 		JSR		sub_6B5B7
-		SYSX	_apu_load,$8C
+		SYSX	_apu_load,SFX_PLAYER_ATTACK_MISS
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$07 ; "dodges nimbly"
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3696,7 +3696,7 @@ _bs_pcAction_02_parry:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_697D0:
-		SYSX	_apu_load,$91
+		SYSX	_apu_load,SFX_BREATH_ATTACK
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$36 ; "emits gales of flaming breath"
 		LDA		#$14
 		STA		byte_55
@@ -5568,7 +5568,7 @@ loc_6A42E:
 		BCS		loc_6A45F
 		LDA		byte_6A6B
 		BNE		loc_6A45F
-		SYSX	_apu_load,$99
+		SYSX	_apu_load,SFX_POISON_NEEDLE
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D ; "The Poison Needle penetrates..."
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E ; "You have defeated..."
 		JSR		sub_6ADB6
@@ -5605,7 +5605,7 @@ loc_6A478:
 		LDA		word_4+1
 		PHA
 		JSR		sub_6B697
-		SYSX	_apu_load,$87
+		SYSX	_apu_load,SFX_SWEEPING_DOWN_HIT_87
 		LDA		#$C
 ; printing damage for counterattack
 		JSR		_wrap_bE_s6_msg_mFF_arg0_safe
@@ -5630,11 +5630,11 @@ loc_6A478:
 locret_6A4C8:
 		RTS
 loc_6A4C9:
-		SYSX	_apu_load,$8C
-		LDY		#$22
+		SYSX	_apu_load,SFX_PLAYER_ATTACK_MISS
+		LDY		#$22 ; "Missed! No damage to <name><-N>!"
 		JSR		_bs_get_current_actor_number
 		BPL		loc_6A4D5
-		LDY		#$7A
+		LDY		#$7A ; "Missed! <name><-N> is unhurt."
 loc_6A4D5:
 		TYA
 		JMP		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
@@ -5718,7 +5718,7 @@ sub_6A544:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A560:
-		SYSX	_apu_load,$8D
+		SYSX	_apu_load,SFX_ENEMY_ATTACK_MISS
 		JSR		sub_6A569
 		JMP		loc_6A4C9
 
@@ -5777,6 +5777,7 @@ loc_6A58C:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; applies damage to PC. plays a SFX. branches far away to do other related processing
+;
 _bs_run_PC_Damage:
 		LDA		word_4							; copy word_4 to u16[CF] and u24[63F]
 		STA		byte_CF
@@ -5787,8 +5788,8 @@ _bs_run_PC_Damage:
 		LDA		#0								; make sure MSB is cleared
 		STA		_msg_number_parameter_F8+2
 		JSR		_sram_b0_s5_player_HP_subtract	; reduce HP
-		SYSX	_apu_load,$8A 					; play sfx hit!
-		LDA		#$13
+		SYSX	_apu_load,SFX_PLAYER_GETS_HIT
+		LDA		#$13 ; "<number> damage point<s> for <name>."
 		JMP		_wrap_bE_s6_msg_mFF_arg0_safe
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7495,7 +7496,7 @@ sub_6B008:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B01E:
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B0
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B0 ; "<name><-N> is delighted."
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7503,17 +7504,17 @@ sub_6B027:
 		LDA		byte_6A6F
 		CMP		#$85
 		BNE		loc_6B048
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B1
-		FARX	_bA_s8
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B1 ; "The ball glows even more brightly."
+		FARX	_bA_s8_ball_of_light_fx
 		JSR		_b4_sB
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B2
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$B2 ; "The thread of light twines around the Archfiend and removes his robe of darkness."
 		JSR		_b4_s5_do_message_speed_delay
 		JSR		_b4_s5_do_message_speed_delay
 		LDA		#$86
 		STA		_enemy_roster_index_list
 		JMP		_b4_s26
 loc_6B048:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "But nothing happens!"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B04B:
@@ -7616,7 +7617,7 @@ _bs_pcAction_06_equip_attack:
 sub_6B0DB:
 		FARX	_bB_s3_apu_load
 		FARX	_bB_s7_apu_wait
-		SYSX	_apu_load,$10
+		SYSX	_apu_load,BGM_BATTLE
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================

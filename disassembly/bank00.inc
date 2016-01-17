@@ -4068,8 +4068,8 @@ loc_9F34:
 		JSR		_b0_s67_mysterious_hat_mp_modifier
 		JSR		_b0_s9_player_MP_subtract
 		JSR		_wnd3E_bE_s5
-		MSGX	_msg_m00,$002	; "<name> attacks"
-		SYSX	_apu_load,$8E
+		MSGX	_msg_m00,$002	; "<name> chants <spell>"
+		SYSX	_apu_load,SFX_ENEMY_CASTING
 		FARX	_b2_s7_screen_spell_blink
 		LDA		byte_50
 		STA		byte_CE
@@ -4540,7 +4540,7 @@ loc_A2A0:
 		ROR		_players_gold+1
 		ROR		_players_gold					; set the proper palette
 		FARX	_bD_s28_frame_palette_by_status_adjust
-		LDA		#0
+		LDA		#DAYNIGHT_CYCLE_DAWN
 		STA		_world_map_steps_count
 		JMP		_location_palette_and_rand_update
 
@@ -4690,7 +4690,7 @@ loc_A410:
 		STA		byte_56
 		STA		byte_58
 		FARX	_bB_s3_apu_load		; some kind of optimization, A is 0 in any case, so use FARX instead of SYSX
-		SYSX	_apu_load,$01
+		SYSX	_apu_load,BGM_LEVELUP
 		LDA		byte_51
 		STA		byte_D2
 		MSGX	_msg_m00,$0C0		; "<name> goes up to the next level
@@ -6094,7 +6094,7 @@ sub_ADF4:
 		AND		#8
 		BEQ		_return_false_in_C
 		STX		byte_D2
-		SYSX	_apu_load,$17
+		SYSX	_apu_load,BGM_CURSE_JINGLE
 		SYSX	_display_window,$3E
 		MSGX	_msg_m00,$152	; "the <> is stuck to the body"
 		FARX	_bD_s22_se_wait_and_map_music_start
@@ -6103,12 +6103,13 @@ sub_ADF4:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; triggered when *USE is picked on an item in the field
+;
 sub_AE12:
 		LDA		byte_48
-		AND		#$7F						; remove equip bit?
-		CMP		#$68						; compare to wing of wyvern
+		AND		#$7F						; remove equip bit
+		CMP		#ITEM_WING_OF_WYVERN
 		BEQ		loc_AE1D
-		SYSX	_display_window,$3E			; that one's special, we need to launch a "where" places list.
+		SYSX	_display_window,WND_LOCATION_LIST			; that one's special, we need to launch a "where" places list.
 loc_AE1D:
 		LDY		#$FD						; pre-roll loop one step early
 		LDA		byte_48						; reload target item in case above jsr whacked it..
@@ -6140,10 +6141,10 @@ loc_AE4C:
 loc_AE4F:
 		JMP		(word_3C)					; dispatch to script callback
 loc_AE52:
-		LDA		_location_type				; test if fairy water is works
-		CMP		#2
+		LDA		_location_type				; test if fairy water is working. Uhhhhhhhhhhhh from what I can tell, this should be 0,1,2 but we're testing for other things down here.
+		CMP		#2 
 		BCC		loc_AE68
-		BEQ		loc_AE62
+		BEQ		loc_AE62 ; UNCONDITIONAL, PROBABLY
 		CMP		#3
 		BEQ		loc_AE62
 		CMP		#7
@@ -6153,19 +6154,21 @@ loc_AE62:
 		JSR		_pause_or_skip
 loc_AE68:
 		LDA		#$5C						; idx $15C "Holds <item> by the thread... and Sailor..."
-		BNE		loc_AE4C
+		BNE		loc_AE4C ; UNCONDITIONAL
 
 ; =============== S U B	R O U T	I N E =======================================
-_item00_use:
+; Sword of gaia, in volcano
+;
+_item_gaias_sword_use:
 		LDA		_playerWorldX
-		CMP		#$4A
+		CMP		#$4A ; check for position at volcano
 		BNE		_msg_name_uses_item_clc
 		LDA		_playerWorldY
 		CMP		#$90
 		BNE		_msg_name_uses_item_clc
 		MSGX	_msg_m00,$13C	; "<> throws the <> in the crater"
 		JSR		_sleep_30
-		FARX	_bC_s24
+		FARX	_bC_s24_volcano_event
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6293,7 +6296,7 @@ _item_royal_scroll_use:
 		CMP		#$27
 		BNE		loc_AF38
 		MSGX	_msg_m00,$1A1			; "Ahem! So thou wouldst go east"
-		SYSX	_apu_load,$86
+		SYSX	_apu_load,SFX_MENU_PROMPT
 		SYSX	_display_window,$1D
 		TAX
 		BNE		loc_AF32
@@ -6464,7 +6467,7 @@ _item_echoing_flute_use:
 
 ; =============== S U B	R O U T	I N E =======================================
 _item_fairy_flute_use:
-		SYSX	_apu_load,$1C
+		SYSX	_apu_load,BGM_JINGLE_FAIRY_FLUTE
 		JSR		_sleep_30
 		LDA		_mapNumber
 		CMP		#$EF
@@ -6491,7 +6494,7 @@ loc_B097:
 
 ; =============== S U B	R O U T	I N E =======================================
 _item_silver_harp_use:
-		SYSX	_apu_load,$1B
+		SYSX	_apu_load,BGM_JINGLE_SILVER_HARP
 		FARX	_bB_s7_apu_wait
 		LDA		_global_flags_array.byte10
 		BMI		loc_B0B5
@@ -6524,7 +6527,7 @@ _item_common_orbs_use:
 ;
 _items_use_lib:
 		.BYTE	  0
-		.WORD	_item00_use
+		.WORD	_item_gaias_sword_use
 		.BYTE	  0
 		.WORD	_item01_use
 		.BYTE	  0

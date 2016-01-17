@@ -37,6 +37,8 @@ WND_SAGE_SPELL_SELECT = $22
 ; used for battle text logs, maybe for regular conversations too?
 WND_CHATBOX = $3D
 
+WND_LOCATION_LIST = $3E
+
 ; these are reused in the tavern too
 WND_MM_NAME_ENTRY = $40
 WND_MM_NAME_FIELD = $41
@@ -72,3 +74,5 @@ WND_CHOOSE_ACTIVE_SLOT_123 = $60
 WND_MM_5_OPT = $61
 WND_MM_3_OPT = $62
 WND_MM_1_OPT = $63
+
+; $68 - related to priest commands (and others) (select party member?)

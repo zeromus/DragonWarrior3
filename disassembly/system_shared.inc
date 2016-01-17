@@ -2238,8 +2238,8 @@ loc_174E78:
 		LDA		_blockPlayerInputDuringMap
 		BNE		locret_174E77
 		LDA		_player_vehicle
-		CMP		#2
-		BEQ		loc_174E92
+		CMP		#VEHICLE_FLYING
+		BEQ		loc_174E92 ; branch if we're flying
 		FARX	_b0_s0_world_map_random_enounter_test
 loc_174E92:
 		JMP		loc_174E99
@@ -2270,9 +2270,9 @@ loc_174E9C:
 		STA		byte_2E
 		LDA		#2
 		STA		_playerFacingDir
-		LDA		#$91
+		LDA		#$91 ; Alefgard landing
 		STA		_mapNumber
-		LDA		#$78
+		LDA		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		STA		_world_map_steps_count
 		LDA		#4
 		JMP		loc_1752EB
@@ -2445,8 +2445,8 @@ sub_17501F:
 ; =============== S U B	R O U T	I N E =======================================
 _world_map_step_forward:
 		LDA		_location_type
-		AND		#2
-		BNE		loc_175046
+		AND		#VEHICLE_FLYING
+		BNE		loc_175046 ; branch if flying
 		LDA		_rand_seed
 		AND		#$1F
 		CLC
@@ -2456,7 +2456,7 @@ _world_map_step_forward:
 		BCC		loc_175046
 		INC		_world_map_steps_count
 		LDA		_world_map_steps_count
-		CMP		#$CC
+		CMP		#DAYNIGHT_CYCLE_TOTAL
 		BCC		loc_175046
 		LDA		#0
 		STA		_world_map_steps_count
@@ -2481,10 +2481,10 @@ sub_175049:
 		BEQ		loc_17509F
  ; checks for special maps
 		LDA		_mapNumber
-		CMP		#$A9
+		CMP		#$A9 ; Cave of Necrogond B3
 		BNE		loc_175084
 		LDA		_playerMapX
-		CMP		#$3A
+		CMP		#$3A ; Tunnel to Rimuldar..
 		BNE		loc_17509A
 		LDA		#$16
 		STA		_playerMapX
@@ -2496,7 +2496,7 @@ sub_175049:
 		STA		byte_92
 		BNE		loc_17509A
 loc_175084:
-		CMP		#$36
+		CMP		#$36 ; Navel of the Earth
 		BNE		loc_17509A
 		LDA		_playerMapX
 		BNE		loc_175092
@@ -2504,7 +2504,7 @@ loc_175084:
 		STA		_playerMapX
 		BNE		loc_17509A
 loc_175092:
-		CMP		#$27
+		CMP		#$27 ; 3-way warp shrine (where?)
 		BNE		loc_17509A
 		LDA		#1
 		STA		_playerMapX
@@ -2786,7 +2786,7 @@ loc_17527F:
 		LDA		byte_6F0
 		CMP		#$23
 		BNE		locret_175291
-		SYSX	_apu_load,$04
+		SYSX	_apu_load,BGM_OVERWORLD
 locret_175291:
 		RTS
 loc_175292:
@@ -2834,7 +2834,7 @@ loc_1752D9:
 		ORA		#1
 		STA		_location_type
 		FARX	_bB_s4_apu_set_flag0
-		SYSX	_apu_load,$82
+		SYSX	_apu_load,SFX_STAIRSTEPS
 		JSR		_pal_fade_out
 		JSR		sub_1759B8
 loc_1752EB:
@@ -2886,11 +2886,13 @@ sub_17532D:
 		JMP		_location_palette_and_rand_update
 
 ; =============== S U B	R O U T	I N E =======================================
+; When sailing onto the phantom ship?
+;
 sub_175342:
 		FARX	_bE_s32
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
-		LDA		#$9C
+		LDA		#$9C ; Phantom Ship 1F 
 		STA		_mapNumber
 		LDA		_location_type
 		ORA		#1
@@ -2904,7 +2906,7 @@ sub_175342:
 		STA		byte_6BC
 		LDA		#$FF
 		JSR		loc_1752EB
-		SYSX	_apu_load,$11
+		SYSX	_apu_load,BGM_EVIL_11
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3221,11 +3223,11 @@ sub_175569:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175596:
 		FARX	_bE_s31_get_map_music_number
-		CMP		#$11
+		CMP		#BGM_EVIL_11
 		BEQ		loc_1755A0
 		FARX	_bB_s4_apu_set_flag0
 loc_1755A0:
-		SYSX	_apu_load,$82
+		SYSX	_apu_load,SFX_STAIRSTEPS
 		JSR		_pal_fade_out
 		PLA
 		PLA
@@ -3577,12 +3579,12 @@ loc_17580C:
 		CMP		_playerWorldY
 		BEQ		loc_175824
 loc_175818:
-		SYSX	_apu_load,$A2
+		SYSX	_apu_load,SFX_BUMP_WALL
 loc_17581B:
 		SEC
 		RTS
 loc_17581D:
-		LDA		#0
+		LDA		#VEHICLE_ON_FOOT
 		STA		_player_vehicle
 		FARX	_bC_s6
 loc_175824:
@@ -3653,18 +3655,19 @@ loc_17588B:
 		AND		#$F
 		CMP		#4
 		BEQ		loc_1758A1
-		SYSX	_apu_load,$A2
+		SYSX	_apu_load,SFX_BUMP_WALL
 loc_17589F:
 		SEC
 		RTS
 loc_1758A1:
+; check for sailing out of town
 		LDA		_player_vehicle
-		CMP		#1
+		CMP		#VEHICLE_SHIP
 		BEQ		loc_1758C1
 		LDA		_mapNumber
-		CMP		#$A
+		CMP		#$A ; Portoga Town
 		BEQ		loc_1758B1
-		CMP		#$91
+		CMP		#$91 ; Alefgard landing
 		BNE		loc_17589F
 loc_1758B1:
 		LDA		_playerMapX
@@ -3734,7 +3737,7 @@ sub_17590B:
 ; =============== S U B	R O U T	I N E =======================================
 sub_175917:
 		PHA
-		SYSX	_apu_load,$82
+		SYSX	_apu_load,SFX_STAIRSTEPS
 		JSR		_pal_fade_out
 		FARX	_bE_s1B
 		PLA
@@ -6474,7 +6477,7 @@ _sys_idx_lib:
 		FILE_IDX	$A,_bA_s3					; $19C
 		FILE_IDX	$A,_bA_s4_div24_to_8		; $1A2
 		FILE_IDX	$A,_bA_s6					; $1A4
-		FILE_IDX	$A,_bA_s8					; $178
+		FILE_IDX	$A,_bA_s8_ball_of_light_fx					; $178
 		FILE_IDX	$A,_bA_sA					; $E5
 		FILE_IDX	$A,_bA_sB					; $197
 		FILE_IDX	$A,_bA_sC					; $8C
@@ -6524,7 +6527,7 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s21					; $F7
 		FILE_IDX	$C,_bC_s22					; $F8
 		FILE_IDX	$C,_bC_s23_test_orbs_collected_count					; $192
-		FILE_IDX	$C,_bC_s24					; $139
+		FILE_IDX	$C,_bC_s24_volcano_event					; $139
 		FILE_IDX	$C,_bC_s25					; $FB
 		FILE_IDX	$C,_bC_s26_item_common_orbs_use					; $18A
 		FILE_IDX	$C,_bC_s27					; $147

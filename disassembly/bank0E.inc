@@ -134,11 +134,11 @@ loc_1580EB:
 		JSR		sub_174204
 		INY
 		JSR		sub_174204
-		LDA		#0
+		LDA		#VEHICLE_ON_FOOT
 		STA		_player_vehicle
 		FARX	_bC_s32
 		FARX	_bD_s18
-		SYSX	_apu_load,$04
+		SYSX	_apu_load,BGM_OVERWORLD
 locret_15811A:
 		RTS
 
@@ -216,9 +216,9 @@ loc_158181:
 		INY
 		CPY		#$10
 		BNE		loc_158181
-		LDA		#2
+		LDA		#VEHICLE_FLYING
 		STA		_player_vehicle
-		SYSX	_apu_load,$0E
+		SYSX	_apu_load,BGM_FLYING
 		LDA		#0
 		STA		byte_6C9
 		RTS
@@ -229,8 +229,8 @@ _run_command_menu:
 		STA		byte_8E
 		JSR		_bE_sD
 		JSR		sub_15856C
-		SYSX	_apu_load,$85
-		SYSX	_display_window,$14
+		SYSX	_apu_load,SFX_MENU_TINK
+		SYSX	_display_window,WND_COMMAND_MENU
 		CMP		#$FF
 		BNE		.check_command_selection
 		LDA		#3							; close the menu?
@@ -452,7 +452,7 @@ _speak_with_party_members:
 		CMP		#$C						; when in Assaram
 		BNE		loc_158349
 		LDA		_world_map_steps_count
-		CMP		#$78					; at night
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT					; at night
 		BCC		locret_15830E
 		LDA		word_6C					; when you accept the fortune teller offer to stay alone
 		CMP		#<[_npcs_pos_list+$44]	; your party members are inserted as a regular npc at slots $44-$46
@@ -486,7 +486,7 @@ loc_158349:
 		BNE		locret_158373
 		LDX		#<[_npcs_pos_list+$34]	; the npc slot depends on the time of the day	
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_158358
 		LDX		#<[_npcs_pos_list+$1C]
 loc_158358:
@@ -530,13 +530,13 @@ _run_command_status:
 		BEQ		.reject_status_show
 		STA		byte_CE
 		SYSX	_display_window,$68
-		SYSX	_display_window,$09
+		SYSX	_display_window,WND_STATUS_INFO_STATS
 		JSR		_pause_or_skip
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		SYSX	_display_window,$08
-		SYSX	_display_window,$0A
+		SYSX	_display_window,WND_STATUS_INFO_EQUIPMENT
 		JSR		_pause_or_skip
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		LDA		#1
 		STA		byte_D0
 		JSR		sub_1583D0
@@ -571,10 +571,10 @@ loc_1583EA:
 		SYSX	_display_window,$65
 loc_1583ED:
 		JSR		_pause_or_skip
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		SYSX	_display_window,$0C
 		JSR		_pause_or_skip
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 loc_1583FC:
 		INC		byte_D0
 		RTS
@@ -846,7 +846,7 @@ loc_1585A5:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1585B0:
-		SYSX	_apu_load,$17
+		SYSX	_apu_load,BGM_CURSE_JINGLE
 		FARX	_bD_s22_se_wait_and_map_music_start
 		CLC
 		RTS
@@ -1152,8 +1152,8 @@ loc_158786:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s1C_yes_or_no_question:
-		SYSX	_apu_load,$86			; bik bik
-		SYSX	_display_window,$1D		; yes or no
+		SYSX	_apu_load,SFX_MENU_PROMPT
+		SYSX	_display_window,WND_YESNO
 		PHA
 		LDA		byte_80
 		PHA
@@ -3591,7 +3591,7 @@ sub_15A068:
 locret_15A074:
 		RTS
 loc_15A075:
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		JSR		_print_73_char_force_dequeue
 		PLA
 		PLA
@@ -4888,7 +4888,7 @@ sub_15A8F0:
 		RTS
 loc_15A8FA:
 		JSR		_print_00_char_force_dequeue
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		LDX		#2
 		JSR		_sleep_X_sync
 		LDA		byte_580
@@ -5027,7 +5027,7 @@ loc_15A9C3:
 		JSR		_bE_s38_print_char_force_dequeue
 		LDA		byte_6AD0
 		BEQ		loc_15A9CF
-		SYSX	_apu_load,$96
+		SYSX	_apu_load,SFX_BLIP_96
 loc_15A9CF:
 		PLP
 		BCC		locret_15A9D5
@@ -6087,7 +6087,7 @@ loc_15B007:
 ; =============== S U B	R O U T	I N E =======================================
 _bE_s22:
 		FARX	_bD_s5
-		SYSX	_apu_load,$93
+		SYSX	_apu_load,SFX_FALL
 		JSR		_spr_ram_clear_10					; there is a function for this already
 		LDA		#2
 		STA		_blockPlayerInputDuringMap
@@ -6176,9 +6176,9 @@ loc_15B0A9:
 		LDA		#0
 		STA		_blockPlayerInputDuringMap
 		LDA		_player_vehicle
-		CMP		#1
+		CMP		#VEHICLE_SHIP
 		BNE		locret_15B0D4
-		SYSX	_apu_load,$0B
+		SYSX	_apu_load,BGM_SAILING
 		LDA		_playerWorldX
 		CMP		#$A2
 		BNE		locret_15B0D4
@@ -6476,10 +6476,10 @@ sub_15B288:
 		JSR		_bE_sD
 		JSR		_bE_s10
 		JSR		_bE_s34
-		SYSX	_display_window,$3E
+		SYSX	_display_window,WND_LOCATION_LIST ; huh? weird so near dead stuff
 		LDA		byte_48
 		BNE		loc_15B2D0
-		SYSX	_apu_load,$13
+		SYSX	_apu_load,BGM_DEAD_13
 		LDA		#0
 		STA		byte_D2
 		LDX		#$27		; "<name><b> is dead."
@@ -6825,7 +6825,7 @@ _mapA0_special_action:
 		LDA		_global_flags_array.byte1
 		AND		#2
 		BEQ		locret_15B46C
-		LDA		#$D
+		LDA		#$D ; TODO - once tilesets are understood, make symbolic constants for tilesets
 ; hardcoded 2x2 tile area to fill with blast tiles
 		STA		byte_75C8
 		STA		byte_75C9

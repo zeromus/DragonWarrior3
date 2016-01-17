@@ -6,7 +6,7 @@
 		PTR_IDX		_bA_s3
 		PTR_IDX		_bA_s4_div24_to_8
 		PTR_IDX		_bA_s6
-		PTR_IDX		_bA_s8
+		PTR_IDX		_bA_s8_ball_of_light_fx
 		PTR_IDX		_bA_sA
 		PTR_IDX		_bA_sB
 		PTR_IDX		_bA_sC
@@ -478,25 +478,28 @@ loc_F8309:
 ;		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bA_s8:
-		SYSX	_apu_load,$81
+; 
+_bA_s8_ball_of_light_fx:
+		SYSX	_apu_load,SFX_TRAP_TILE
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
-		SYSX	_apu_load,$91
+		SYSX	_apu_load,SFX_BREATH_ATTACK
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
-		JSR		sub_F834B
+		JSR		_ball_of_light_palette_fx_loop
 		FARX	_b4_s1A_status_pal_adjust_and_update
-		SYSX	_apu_load,$91
+		SYSX	_apu_load,SFX_BREATH_ATTACK
 		FARX	_b2_s6_screen_damage_shake
 		FARX	_b2_s6_screen_damage_shake
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_F834B:
-		SYSX	_apu_load,$A1
+; Final stage of visual effects for ball of light, loops through palette 
+;
+_ball_of_light_palette_fx_loop:
+		SYSX	_apu_load,SFX_BALL_OF_LIGHT_LASERS
 		LDA		#$78
 		STA		word_4
 loc_F8352:
@@ -504,7 +507,7 @@ loc_F8352:
 		LDA		word_4
 		CMP		#$1E
 		BCS		loc_F8361
-		SYSX	_apu_load,$9D
+		SYSX	_apu_load,SFX_BALL_OF_LIGHT_HIT
 		FARX	_b2_s7_screen_spell_blink
 loc_F8361:
 		JSR		_pal_set_no_fade
@@ -1278,7 +1281,7 @@ loc_F8CC7:
 		JSR		_print_char
 		JSR		_ppu_set_dequeue_flag
 		JSR		_wait_for_nmi_is_over_sync
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		LDA		byte_588
 		RTS
 loc_F8CEC:
