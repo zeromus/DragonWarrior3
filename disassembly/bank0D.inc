@@ -90,9 +90,9 @@ _bD_s1B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bD_s1E:
-		LDX		byte_2D
+		LDX		_playerShipX
 		STX		byte_80
-		LDY		byte_2E
+		LDY		_playerShipY
 		STY		byte_81
 		LDA		_location_type
 		AND		#1
@@ -2150,9 +2150,9 @@ loc_141A50:
 		CPY		_playerWorldY
 		BEQ		loc_141A4E
 loc_141A61:
-		CPX		byte_2D
+		CPX		_playerShipX
 		BNE		loc_141A69
-		CPY		byte_2E
+		CPY		_playerShipY
 		BEQ		loc_141A4E
 loc_141A69:
 		JSR		sub_1777B7
@@ -5375,14 +5375,16 @@ loc_143212:
 		BNE		loc_143244
 loc_143231:
 		LDY		#$20
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; read and mask to _f_TransformPersonality
 		AND		#$3F
+; special handling for a few personalities $17,$18,$20
 		CMP		#$17
-		BEQ		loc_143244
+		BEQ		loc_143244 ; special handling for personality $17
 		CMP		#$18
-		BEQ		loc_143244
+		BEQ		loc_143244  ; special handling for personality $18
 		CMP		#$20
-		BNE		loc_143281
+		BNE		loc_143281 ; default handling for most personalities
+; special handling for personalities $17,$18,$20
 loc_143244:
 		TYA
 		CLC
@@ -5589,7 +5591,8 @@ _npc_base_nhdl11_ext_call1:
 ; stored npc handlers in memory, sizes are in u8[] table.
 ; dunno why they need to split the indexes of the handlers to two lists, maybe
 ; we can get rid of it and still be able to address up to 256 handllers (currently
-; only 127 used)
+; only 127 used).
+; Man, how freaking inconvenient.
 ;
 _npc_ext_hndl_call:
 		CLC
@@ -6541,7 +6544,7 @@ _npc_hndl29_baramos:
 		JSR		sub_174CBD
 		LDX		#$FF
 		STX		byte_9E
-		STX		byte_2D
+		STX		_playerShipX
 		INX
 		STX		_players_returnable_locations+1		; disable all returnable locations
 		STX		_players_returnable_locations+4
@@ -6982,21 +6985,21 @@ _npc_hndl5B:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl5C_portoga_king:
-		LDA		_global_flags_array.byte3
-		BPL		loc_143C7D
+		LDA		_global_flags_array.byte3 ; test _q_ShipGranted
+		BPL		loc_143C7D ; branch if _q_ShipGranted isnt set
 		MSGX	_msg_m00_break,$611	; "It is indeed good, this pepper. I verily must have partaken in excess, for I am sleepy"
 loc_143C7D:
 		LDA		#ITEM_BLACK_PEPPER
 		JSR		_wrap_is_players_owns_item_storeCE
 		BCC		.no_black_pepper_in_posession		; this may mean you don't get it...
 		JSR		_player_item_remove_arg4
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; set _q_ShipGranted and _q_ShipUnfound, indicating ship is acquired but not yet found
 		ORA		#$C0
 		STA		_global_flags_array.byte3
 		LDA		#3
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		#8
-		STA		byte_2E
+		STA		_playerShipY
 		MSGX	_msg_m00_break_ex,$610	; "I hail thee, <name>. Thou hast done well and returned with black pepper"
 .no_black_pepper_in_posession:
 		LDA		_global_flags_array.byteA

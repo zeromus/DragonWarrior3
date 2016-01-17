@@ -1025,8 +1025,8 @@ loc_1586C2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1586C5:
-		LDX		byte_2D
-		LDY		byte_2E
+		LDX		_playerShipX
+		LDY		_playerShipY
 		JMP		loc_1586D9
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -7554,7 +7554,7 @@ loc_15B933:
 		LDA		_global_flags_array.byte14
 		AND		#$3F
 		BEQ		loc_15B957
-		LDA		_global_flags_array.byte3
+		LDA		_global_flags_array.byte3 ; retrieve _f_TransformPersonality
 		AND		#$3F
 		CLC
 		ADC		#$F

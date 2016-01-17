@@ -1036,9 +1036,9 @@ sub_177295:
 		LDA		_player_vehicle
 		CMP		#1
 		BEQ		loc_1772A8
-		LDX		byte_2D
+		LDX		_playerShipX
 		STX		byte_80
-		LDY		byte_2E
+		LDY		_playerShipY
 		STY		byte_81
 		JSR		sub_1777B7
 		BCC		loc_1772C3
@@ -1214,9 +1214,9 @@ sub_1773B8:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1773CE:
-		LDX		byte_2D
+		LDX		_playerShipX
 		STX		byte_80
-		LDY		byte_2E
+		LDY		_playerShipY
 		STY		byte_81
 		LDA		byte_6BA
 		STA		byte_78

@@ -1824,8 +1824,8 @@ _bC_s5:
 ; =============== S U B	R O U T	I N E =======================================
 _bC_s6:
 		JSR		sub_128CAB
-		LDX		byte_2D
-		LDY		byte_2E
+		LDX		_playerShipX
+		LDY		_playerShipY
 		JMP		sub_128C77
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1853,9 +1853,9 @@ _bC_s31:
 		PHA
 		LDA		_playerMapY
 		PHA
-		LDX		byte_2D
+		LDX		_playerShipX
 		STX		_playerMapX
-		LDY		byte_2E
+		LDY		_playerShipY
 		STY		_playerMapY
 		JSR		sub_128CC1
 		PLA
@@ -2556,7 +2556,7 @@ loc_129199:
 ; "DAY-NIGHT" spell usage, change day to night or night to day accordingly
 ;
 _bC_s10_spell_daynight:
-		JSR		_is_location_warpable			; determine whether current location can be warped from
+		JSR		_is_location_warp_blocked			; determine whether current location can be warped from
 		BCS		.loc_return_false				; return false if 'unwarpable' was true
 		LDA		_global_flags_array.byte2
 		BPL		loc_1291F6						; branch if _f_WarpBlock is clear
@@ -2584,7 +2584,7 @@ loc_129206:
 ; to use it at night, nothing won't happer by obvious reason
 ;
 _bC_s11_item_lamp_of_darkness_use:
-		JSR		_is_location_warpable
+		JSR		_is_location_warp_blocked
 		BCS		.loc_return_false
 		LDA		_world_map_steps_count
 		STA		byte_C5
@@ -2855,19 +2855,19 @@ loc_1293D2:
 		BNE		loc_1293C6
 
 ; =============== S U B	R O U T	I N E =======================================
-; Classifies the current location according to whether you can warp out of it (Wing of Wyvern, Return)
+; Classifies the current location (considering the current game state) according to whether you can warp out of it (Wing of Wyvern, Return)
 ; Also affects whether the Lamp of Darkness works, oddly. Doesn't that eject you from the location? Yeah....
 ;
-_is_location_warpable:
+_is_location_warp_blocked:
 		LDA		_location_type
-		AND		#2
+		AND		#LOCATION_TYPE_ALEFGARD
 		BNE		.loc_return_true0			; returns true if we're in alefgard
 		LDA		_player_vehicle
-		CMP		#1
+		CMP		#VEHICLE_SHIP
 		BNE		loc_1293ED					; branch if we're not in the ship
-		BIT		_global_flags_array.byte3	; test a quest flag
-		BVC		loc_1293ED					; branch if quest flag isn't set
-		SEC
+		BIT		_global_flags_array.byte3	; test _q_ShipGranted and _q_ShipUnfound
+		BVC		loc_1293ED					; branch if _q_ShipUnfound is clear (and continue checks)
+		SEC ; I guess we shouldnt be able to warp right now because we wouldnt 'find' the ship.
 		RTS									; return true
 loc_1293ED:
 		LDA		_mapNumber
@@ -2886,7 +2886,7 @@ loc_1293ED:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; seems to classify areas as CF=1 if the area's a cave-like area
-; uses annoying logic comparable in size to a plain 256 byte table
+; uses annoying logic far longer than a 16 byte bit vector of 256 locations
 ; rejects towers, pyramids
 ;
 _location_type_test:
@@ -3971,7 +3971,7 @@ _item_obtain_handler_exec:
 ; =============== S U B	R O U T	I N E =======================================
 ; tests bit $08 of quest flag _global_flags_array.byte1
 ;
-_item11_obtain_hndl:
+_item11_sword_of_gaia_obtain_hndl:
 		LDA		_global_flags_array.byte1
 		AND		#8
 		BNE		.return_CF_1
@@ -3982,9 +3982,9 @@ _item_obtain_dummy_hndl:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; tests bit $80 of quest flag _global_flags_array.byte3
+; tests _q_ShipGranted to determine whether the black pepper's already been given
 ;
-_item4F_obtain_hndl:
+_item4F_black_pepper_obtain_hndl:
 		LDA		_global_flags_array.byte3
 		ASL
 		RTS
@@ -4234,11 +4234,11 @@ _item_obtain_extra_handlers:
 		.BYTE	$10
 		.WORD	_item10_47_75_obtain_hndl
 		.BYTE	$11
-		.WORD	_item11_obtain_hndl
+		.WORD	_item11_sword_of_gaia_obtain_hndl
 		.BYTE	$47
 		.WORD	_item10_47_75_obtain_hndl
 		.BYTE	$4F
-		.WORD	_item4F_obtain_hndl
+		.WORD	_item4F_black_pepper_obtain_hndl
 		.BYTE	$51
 		.WORD	_item51_obtain_hndl
 		.BYTE	$52
@@ -8701,24 +8701,25 @@ loc_12BA69:
 		CPX		#4
 		BNE		loc_12BA69
 		LDA		_mapNumber
-		CMP		#$91
-		BEQ		sub_12BA9A
+		CMP		#$91 ; Alefgard landing
+		BEQ		sub_12BA9A ; branch if we're in alefgard landing
 		LDA		_global_flags_array.byte3
-		BPL		sub_12BAA5
-		AND		#$40
-		BEQ		sub_12BAA5
+		BPL		sub_12BAA5 ; branch if we dont have the ship?
+		AND		#$40 ; test _q_ShipUnfound
+		BEQ		sub_12BAA5 ; branch if _q_ShipUnfound clear (and we have the ship)
+; spawn ship at 3,8
 		LDA		#3
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		#8
-		STA		byte_2E
+		STA		_playerShipY
 		JSR		sub_12BA9A
 		JMP		sub_12BAA5
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_12BA9A:
-		LDA		byte_2D
+		LDA		_playerShipX
 		STA		_npcs_pos_list
-		LDA		byte_2E
+		LDA		_playerShipY
 		STA		_npcs_pos_list+1
 		RTS
 
@@ -8748,9 +8749,9 @@ sub_12BAC3:
 		LDA		_player_vehicle
 		BNE		loc_12BA67
 		LDA		#$A
-		STA		byte_2D
+		STA		_playerShipX
 		LDA		#$13
-		STA		byte_2E
+		STA		_playerShipY
 		BNE		loc_12BA67
 
 ; =============== S U B	R O U T	I N E =======================================

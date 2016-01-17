@@ -3924,7 +3924,7 @@ _CE_mul3:
 		RTS
 
 ; =============== T A B L E =================================================
-; The sorted list of returnable areas
+; The sorted list of returnable areas. see RETURN_TYPE_FIRST_IN_ALEFGARD
 ;
 _returnable_areas_tbl:
 		.BYTE	 $00 ; Aliahan Town
@@ -3942,7 +3942,7 @@ _returnable_areas_tbl:
 		.BYTE	 $02 ; Eginbear
 		.BYTE	 $06 ; Samanao
 		.BYTE	 $19 ; Soo
-		.BYTE	 $07 ; Brecconaly
+		.BYTE	 $07 ; Brecconaly ; $F: note: RETURN_TYPE_FIRST_IN_ALEFGARD
 		.BYTE	 $12 ; Haukness
 		.BYTE	 $10 ; Cantlin
 		.BYTE	 $1A ; Kol
@@ -7086,8 +7086,8 @@ loc_BF74:
 		LDA		#$30
 		STA		_current_pc_status_pal_value
 		LDA		#$FF
-		STA		byte_2D
-		STA		byte_2E
+		STA		_playerShipX
+		STA		_playerShipY
 		LDX		#0
 loc_BF9D:
 		STA		_players_pos_list,X
