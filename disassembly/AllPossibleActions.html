@@ -11,8 +11,8 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 
 		<li>Spell<ul>
 			<!--- field spells --->
-			<li>Heal (HR,PI)<br />
-			Does things
+			<li>$1A - Heal (HR,PI) [25,34]
+<li>$1A - Heal (HR,PI) [25,34]
 			<li>Antidote (PI)<br />
 			Does things
 		</ul> <!--- field spells --->
@@ -20,15 +20,15 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 		<li>Status
 		<li>Item<ul>
 			<!--- battle - player items -->
-			<li>00 - ITEM_CYPRESS_STICK: (no effect)
-			<li>4F - ITEM_BLACK_PEPPER: All living players sneeze (no practical effect)
-			<li>65 - ITEM_MEDICAL_HERB: Restores [0,15] + 35 HP to target player
-			<li>66 - ITEM_ANTIDOTE_HERB: Calls the same logic as the Antidote spell; if it was ineffective, prints "But nothing happens"
-			<li>67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' timer
+			<li>$00 - ITEM_CYPRESS_STICK: (no effect)
+			<li>$4F - ITEM_BLACK_PEPPER: All living players sneeze (no practical effect)
+			<li>$65 - ITEM_MEDICAL_HERB: Restores [0,15] + 35 HP to target player
+			<li>$66 - ITEM_ANTIDOTE_HERB: Calls the same logic as the Antidote spell; if it was ineffective, prints "But nothing happens"
+			<li>$67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' timer
 		</ul> <!--- battle - player items -->
 
 		<li>Search:
-		Write a lot of pseudocode and such here
+		Write a lot of pseudocode and such here. But really, at a logical level, it's just, is there anything there? So maybe not.
 
 		<li>Equip
 	</ul> <!--- field --->
@@ -40,20 +40,73 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 
 			<li>Fight
 
-			<li>Spell<ul>
+			<li>Spell: If the ITEM_MYSTERIOUS_HAT is equipped, MP cost is adjusted to (mp*3/4+1) unless it's 0, in which case it stays 0. (TODO write about blocking logic) If MP is adequate, cost is deducted.
+			<ul>
 				<!--- battle - player spells -->
-				<li>Heal (HR,PI)<br />
+				<li>$00 - SPELL_BLAZE
+				<li>$01 - SPELL_BLAZEMORE
+				<li>$02 - SPELL_BLAZEMOST
+				<li>$03 - SPELL_FIREBAL
+				<li>$04 - SPELL_FIREBANE
+				<li>$05 - SPELL_FIREVOLT
+				<li>$06 - SPELL_BANG
+				<li>$07 - SPELL_BOOM
+				<li>$08 - SPELL_EXPLODET
+				<li>$09 - SPELL_ICEBOLT
+				<li>$0A - SPELL_SNOWBLAST
+				<li>$0B - SPELL_SNOWSTORM
+				<li>$0C - SPELL_ICESPEARS
+				<li>$0D - SPELL_INFERNOS
+				<li>$0E - SPELL_INFERMORE
+				<li>$0F - SPELL_INFERMOST
+				<li>$10 - SPELL_ZAP
+				<li>$11 - SPELL_LIGHTNING
+				<li>$12 - SPELL_BEAT
+				<li>$13 - SPELL_DEFEAT
+				<li>$14 - SPELL_SACRIFICE
+				<li>$15 - SPELL_EXPEL
+				<li>$16 - SPELL_LIMBO
+				<li>$17 - SPELL_ROBMAGIC
+				<li>$18 - SPELL_SLOW
+				<li>$19 - SPELL_SPEEDUP
+				<li>$1A - SPELL_HEAL (HR,PR)<br />
 				Does things
-				<li>Antidote (PI)<br />
-				Does things
+				<li>$1B - SPELL_HEALMORE (HR,PR)
+				<li>$1C - SPELL_HEALALL
+				<li>$1D - DUMMY
+				<li>$1E - SPELL_HEALUS
+				<li>$1F - SPELL_HEALUSALL
+				<li>$20 - SPELL_VIVIFY
+				<li>$21 - SPELL_REVIVE
+				<li>$22 - SPELL_SLEEP
+				<li>$23 - SPELL_AWAKE
+				<li>$24 - SPELL_STOPSPELL
+				<li>$25 - SPELL_SURROUND
+				<li>$26 - SPELL_RETURN
+				<li>$27 - SPELL_CHAOS
+				<li>$28 - SPELL_TRANSFORM
+				<li>$29 - SPELL_BEDRAGON: Caster becomes a dragon (for how long?), losing control but having these stats: ATK:300, DEF:200, AGI:200. Other stats remain the same.
+				<li>$2A - SPELL_IRONIZE
+				<li>$2B - SPELL_SAP
+				<li>$2C - SPELL_DEFENCE
+				<li>$2D - SPELL_UPPER
+				<li>$2E - SPELL_INCREASE
+				<li>$2F - SPELL_INCREASE2
+				<li>$30 - SPELL_BOUNCE
+				<li>$31 - SPELL_BARRIER
+				<li>$32 - SPELL_BIKILL
+				<li>$33 - SPELL_CHANCE
+				<li>$34 - SPELL_ANTIDOTE
+				<li>$35 - SPELL_NUMBOFF
+
 			</ul><!--- battle - player spells -->
 
 			<li>Parry
 			<li>Item<ul>
 				<!--- battle - player items -->
-				<li>00 - ITEM_CYPRESS_STICK: (no effect)
-				<li>4F - ITEM_BLACK_PEPPER: All living players and enemies sneeze (no practical effect)
-				<li>65 - ITEM_MEDICAL_HERB: (see Field::Item entry)
+				<li>$00 - ITEM_CYPRESS_STICK: (no effect)
+				<li>$4F - ITEM_BLACK_PEPPER: All living players and enemies sneeze (no practical effect)
+				<li>$65 - ITEM_MEDICAL_HERB: (see Field::Item entry)
 			</ul> <!--- battle - player items -->
 
 			<li>Antic<ul>
@@ -67,16 +120,25 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 
 		<li>Enemy<ul>
 			<!--- battle - enemy --->
-			<li>00 - Assessing the situation: Simply prints a message
-			<li>01 - Protects itsself: Sets a flag indicating parry status
-			<li>02 - Attack
-			<li>03 - Attack (maybe crit)
-			<li>04 - Attack (maybe sleep)
-			<li>05 - Attack (maybe poison)
-			<li>06 - Attack (maybe numb)
-			<li>07 - Try to flee: performs unknown stage1 logic. Computes enemy.level + 5 and compares to player's level.
+			<li>$00 - Assessing the situation: Simply prints a message
+			<li>$01 - Protects itsself: Sets a flag indicating parry status
+			<li>$02 - Attack
+			<li>$03 - Attack (maybe crit)
+			<li>$04 - Attack (maybe sleep)
+			<li>$05 - Attack (maybe poison): Seemingly a normal attack (not 100% sure) with added effect on target identical to Toxic Breath (under what conditions does toxic effect apply?)
+			<li>$06 - Attack (maybe numb)
+			<li>$07 - Try to flee: performs unknown stage1 logic. Computes enemy.level + 5 and compares to player's level.
+			<li>$11 - Toxic Breath: Affects Living players who arent poisoned. They can evade with PLAYER_LUCK_TEST($60). Logic not fully studied yet.
+			<li>$12 - Scorching Breath: Affects Living players who aren't numb. They can evade with PLAYER_LUCK_TEST($20). Logic not complete yet.
+			<li>$1F - Beat: Living players can evade with PLAYER_LUCK_TEST($20). Sacred amulet guarantees evasion. Angel's robe changes chance to $10.
+					<br /> If the player doesn't evade, but has a Stone of Light, it will shatter in place of the player dying.
 		</ul><!--- battle - enemy --->
 
 	</ul><!--- battle --->
 
+</ul>
+
+APPENDIX:
+<ul>
+<li>PLAYER_LUCK_TEST: (write about _bs_player_luck_test)
 </ul>

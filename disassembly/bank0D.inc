@@ -1452,9 +1452,9 @@ loc_141631:
 		FARX	_b4_sE
 		LDA		_players_level
 		LDX		#word_3C
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#$64
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		INC		word_3C
 		LDA		word_3C
 		CMP		#$82
@@ -3705,7 +3705,7 @@ loc_142496:
 		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDA		word_4
 		LDX		#byte_C0
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		byte_C0
 		STA		_msg_number_parameter_F8
 		MSGX	_msg_m00,$219
@@ -3907,7 +3907,7 @@ loc_142629:
 		STA		_msg_number_parameter_F8+2
 		LDA		#$1E
 		LDX		#byte_C0
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		byte_C0
 		STA		_msg_number_parameter_F8
 		LDA		byte_C1
@@ -3954,7 +3954,7 @@ loc_1426AC:
 		LDA		word_4
 		STA		byte_C0
 		LDX		#byte_C0
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		JSR		sub_14203D
 		CLC
 		LDA		byte_C0
@@ -4031,7 +4031,7 @@ loc_142722:
 ;loc_14275C:
 ;		LDX		#byte_C0
 ;		LDA		#3
-;		JSR		_mul16_to_8
+;		JSR		_mul16_by_8
 ;		LDA		byte_C0
 ;		STA		_msg_number_parameter_F8
 ;		LDA		byte_C1
@@ -7261,7 +7261,7 @@ sub_143E48:
 		STA		byte_5D
 		LDX		#byte_5C
 		LDA		#$A
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[byte_143F25]
 		LDX		#>[byte_143F25]
 		JSR		_add_arg5C_to16

@@ -1816,7 +1816,7 @@ loc_9B8C6:
 		STA		word_6+1
 		LDA		#$B
 		LDX		#word_6
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		byte_8
 		LDX		#word_6
 		JSR		_add8_to_16

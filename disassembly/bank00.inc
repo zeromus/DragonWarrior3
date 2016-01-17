@@ -12,7 +12,7 @@
 		PTR_IDX		_b0_s8_player_MP_add
 		PTR_IDX		_b0_s9_player_MP_subtract
 		PTR_IDX		_b0_sA_player_MP_set_sero
-		PTR_IDX		_b0_sB_player_MP_consume
+		PTR_IDX		_b0_sB_player_MP_test
 		PTR_IDX		_b0_sC_player_LV_read
 		PTR_IDX		_b0_sD_tavern_char_LV_read
 		PTR_IDX		_b0_sE_player_STATUS_read
@@ -235,7 +235,7 @@ _msg005_msg0xx:
 ;		CLC
 ;		ADC		#1
 ;		LDX		#byte_52
-;		JSR		_div16_to_8
+;		JSR		_div16_by_8
 ;		LDX		word_4A
 ;		LDA		byte_52
 ;		BNE		loc_8162
@@ -331,7 +331,7 @@ _get_enemy_info_ptr:
 		STA		word_60+1
 		LDA		#$17
 		LDX		#word_60
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_b0_d43_enemies_lib]
 		LDY		#>[_b0_d43_enemies_lib]
 		JMP		_add16_to_16
@@ -582,7 +582,7 @@ sub_835A:
 		BEQ		locret_8376
 		LDA		#$F							; create a pointer u16[4b] * 15 into _random_encounter_overworld_tbl and
 		LDX		#word_4A+1					; read a byte from it
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_random_encounter_overworld_tbl]
 		LDY		#>[_random_encounter_overworld_tbl]
 		JSR		_add16_to_16
@@ -638,7 +638,7 @@ loc_83C6:
 		LDA		_random_encounter_overworld_probability_nighttime_tbl,X
 loc_83C9:
 		LDX		#byte_4D					; u16[4d] *= the value we just loaded
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#ITEM_GOLDEN_CLAW			; for 4d, use special case of #$64 when player has golden claw 
 		STA		byte_CE
 		JSR		_b0_s2B_is_players_owns_item
@@ -674,7 +674,7 @@ loc_83F3:
 		STA		byte_4E
 		LDA		#17
 		LDX		#byte_4D
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[byte_90F3]
 		LDY		#>[byte_90F3]
 		JSR		_add16_to_16
@@ -714,7 +714,7 @@ loc_8437:
 		STA		byte_50
 		LDA		#6
 		LDX		#byte_4F					; u16[4F] *= 6
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[byte_907B]
 		LDY		#>[byte_907B]
 		JSR		_add16_to_16
@@ -1654,9 +1654,12 @@ _b0_d41_item_use_list:
 ; ITEM_WIZARDS_WAND $E2 (casts spells, yep)
 ; THORS AND SNOWBLAST SWORDS: $E3 both. that's odd. Theyre definitely different effects.
 ;
+; bit $80 means the item has a special use in battle, other than 'but nothing happens'
 ; bit $40 is referenced by the battlesystem for some reason
 ; bit $10 means that item cannot be thrown away from inventory
 ; bit $08 means that item is cursed
+; bit $04 means something... whether it's automatically consumable
+; It would be nice to break this down into 128 macro lines to build the values
 ;
 _b0_d42_item_use_effects_list:
 		.BYTE	  0,  1,  2,  2,  1,  2,  2,$E2,  1,  1,  1,  2,  1,$E3,$E3,  2
@@ -1807,7 +1810,7 @@ _b0_s7_player_MMP_read:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; adds to the player's MP value stored in u8[CF], clamps at MMP
+; adds u8[CE] to the player's MP value stored in u8[CF], clamps at MMP
 ;
 _b0_s8_player_MP_add:
 		LDA		byte_CE
@@ -1843,12 +1846,11 @@ loc_937D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; subtract to the player's HP value stored in byte_CF/byte_D0, clamps at 0
+; subtract u8[$CE] points from the player's HP value stored in u16[$CF], clamps at 0
 ; returns indication of whether HP was 0
 ; return with C=0 if insufficient MP. also word_4 has curr MP
 ; return with C=1 if suffient MP, and MP is deducted
 ;
-;"sub_PC_SubtractMP"
 _b0_s9_player_MP_subtract:
 		LDA		byte_CE
 		ASL
@@ -1897,8 +1899,7 @@ _b0_sA_player_MP_set_sero:
 ; consume MP while casting, attepmting to subtract the desired amount of
 ; MP, if success, return CF=0, or else return subtracted back and return C=1
 ;
-;"sub_PC_TestMP"
-_b0_sB_player_MP_consume:
+_b0_sB_player_MP_test:
 		JSR		_b0_s9_player_MP_subtract
 		BCC		locret_93CF
 		JSR		_b0_s8_player_MP_add
@@ -2091,8 +2092,8 @@ _b0_s14_player_EffINT_calc:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; calculates effective player's LUCK parameter to word_4 with word_5 and word_6 cleared out
-; (setting up for a luck-based calculation?)
+; calculates effective player's LUCK parameter to u24[4]
+; (setting up for a luck-based calculation)
 ;
 _b0_s15_player_EffLUCK_calc:
 		JSR		_b0_s1E_player_euipped_item_get	; scan inventory
@@ -3375,7 +3376,7 @@ loc_9B47:
 		STA		word_4+1
 		LDA		byte_A
 		LDX		#word_4+1
-		JSR		_mul16_to_8			; data_size*array_size may be replaced with _mulA_to_tmp4
+		JSR		_mul16_by_8			; data_size*array_size may be replaced with _mulA_to_tmp4
 		LDX		#word_3C
 		LDA		word_4+1
 		JSR		_add8_to_16			; adjust offset to the new record
@@ -3392,7 +3393,7 @@ _mulA_to_tmp4:
 		STA		word_6
 		LDX		#word_4+1
 		LDA		word_4
-		JMP		_mul16_to_8
+		JMP		_mul16_by_8
 
 ; shortcuts to PC stats tables and other unknown things
 _status_params_ptr_tbl:
@@ -4033,7 +4034,7 @@ loc_9EF3:
 		JSR		_sys0_byte_read_x
 		AND		#$3F
 		JSR		_b0_s67_mysterious_hat_mp_modifier
-		JSR		_b0_sB_player_MP_consume
+		JSR		_b0_sB_player_MP_test
 		BCS		loc_9F13
 		LDA		#$20	; "MP is not high enough"
 		JMP		_wnd3E_msg0xx_wait_key
@@ -4407,9 +4408,8 @@ _check_if_player_exist_or_dead:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; this might be a little bit of a misnomer, not sure
-; Seems to only be mysterious hat mp = mp*3/4+1
-; "applyMpCostModifiers"
+; u16[CF] = (mp==0)?(0):(mp*3/4+1)
+;
 _b0_s67_mysterious_hat_mp_modifier:
 		PHA											; this ended up scanning the inventory for a player...
 		JSR		_b0_s1E_player_euipped_item_get
@@ -4421,11 +4421,11 @@ _b0_s67_mysterious_hat_mp_modifier:
 		JSR		_store_mp_cost						; stash the original cost for math (apply mysterious hat MP adjustment)
 		LDA		#3
 		LDX		#byte_CF
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#4
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		LDA		#1
-		JMP		_add8_to_16	; A = value
+		JMP		_add8_to_16	; A = value ; TAILCALL
 .no_mp_cost_modifier:
 		PLA
 
@@ -4766,10 +4766,10 @@ loc_A448:
 		FARX	_b4_sE
 		LDA		word_4
 		LDX		#word_3C
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 ; divide that back down for reasons unknown, probably just renormalizing
 		LDA		#$6E
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 
 ; take result of random*scaling work
 ; I'm not real confident about what comes next, it uses some values from lower in the callstack
@@ -4923,7 +4923,7 @@ sub_A5A4:
 		JSR		_eval_stat_curve
 		LDA		#4
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#$A
 		JSR		_add8_to_16
 		PLA

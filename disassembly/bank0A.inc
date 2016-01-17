@@ -565,7 +565,7 @@ loc_F83AC:
 		LDX		#0
 		STX		byte_11
 		LDX		#byte_10
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		LDA		byte_10
 		STA		byte_11
 		JSR		_rand

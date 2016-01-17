@@ -2726,7 +2726,7 @@ loc_3A27B:
 		LDX		byte_8
 		LDA		_enemy_roster_index_list,X
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_b0_d43_enemies_lib]
 		LDY		#>[_b0_d43_enemies_lib]
 		LDX		#word_4
@@ -3125,7 +3125,7 @@ loc_3A536:
 		PHA
 		LDA		byte_51
 		STA		byte_CE
-		JSR		_sram_b0_sB_player_MP_consume
+		JSR		_sram_b0_sB_player_MP_test
 		PLA
 		STA		byte_CE
 		PLA

@@ -3420,7 +3420,7 @@ _bE_s38_print_char_force_dequeue:
 ;		INX
 ;		TXA
 ;		LDX		#_tmp12
-;		JSR		_mul16_to_8
+;		JSR		_mul16_by_8
 ;		LDY		#0
 ;		LDA		_tmp12
 ;		LDY		_tmp12+1
@@ -3604,7 +3604,7 @@ loc_15A075:
 		STX		word_4
 		LDX		#word_4
 		LDA		byte_75
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_4
 		CLC
 		ADC		byte_74
@@ -5102,7 +5102,7 @@ sub_15AA2A:
 		LDA		byte_81
 		PHA
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		byte_80
 		PHA
 		LDX		#word_4
@@ -5948,7 +5948,7 @@ _bE_s1D_get_map_buf_end_ptr:
 		STA		word_6C
 		LDA		_mapHeight
 		LDX		#word_6C
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_area_tilemap-1]
 		LDY		#>[_area_tilemap-1]
 		JSR		_add16_to_16
@@ -5974,7 +5974,7 @@ _bE_s20_decode_map_ptr_to_XY:
 		LDA		#<[_area_tilemap]
 		JSR		_sub16_from_16		; remove buffer base #$7400
 		LDA		_mapWidth
-		JSR		_div16_to_8			; divide by width
+		JSR		_div16_by_8			; divide by width
 		TAX							; setup result in X and Y
 		LDA		word_6C
 		TAY

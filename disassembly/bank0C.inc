@@ -8132,7 +8132,7 @@ loc_12B61D:
 		STA		word_4+1
 		LDX		#word_4
 		LDA		_mapWidth
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#$16
 		LDY		#byte_74
 		JSR		_add16_to_16

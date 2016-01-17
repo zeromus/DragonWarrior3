@@ -1770,7 +1770,7 @@ loc_20BDC:
 		STA		word_4+1
 		LDX		#word_60
 		LDA		#5
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		CMP		#1
 		LDA		word_4
 		ADC		word_60
@@ -1819,7 +1819,7 @@ loc_20C4F:
 		STX		byte_D2
 		LDX		#byte_CE
 		LDA		#8
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		LDA		#1
 		JSR		_add8_to_16	; A = value
 		LDA		byte_CE
