@@ -2347,7 +2347,7 @@ _bs_emove_stage1_spell_single:
 		SEC
 		SBC		#$13
 		TAX
-		LDA		byte_6B490,X
+		LDA		_bs_labels_attackspell_single_tbl,X
 		STA		_msg_directobject_param
 		STA		byte_49
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
@@ -2373,7 +2373,7 @@ _bs_emove_stage1_spell_party:
 		SEC
 		SBC		#$17
 		TAX
-		LDA		byte_6B494,X
+		LDA		_bs_labels_attackspell_multiple_tbl,X
 		STA		byte_49
 		STA		_msg_directobject_param ; store spell name dialog argument
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
@@ -3174,7 +3174,7 @@ loc_6942E:
 		SEC
 		SBC		word_4
 		TAX
-		LDA		byte_6B49C,X
+		LDA		_bs_labels_heal_single_tbl,X
 		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
@@ -3209,7 +3209,7 @@ loc_6946C:
 		SEC
 		SBC		word_4
 		TAX
-		LDA		byte_6B49F,X
+		LDA		_bs_labels_heal_multiple_tbl,X
 		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
@@ -8269,19 +8269,97 @@ byte_6B44A:
 		.BYTE	$FF,$80,$55,$20
 byte_6B44E:
 		.BYTE	$FF,$C0,$80,$40
+
+; =============== T A B	L E =================================================
+; Some information about spells
+; EEmmmmmm
+; E - elemental data
+;    %01 - Ice
+;    %11 - Fire
+; m - MP cost
+;
+_SPELL_FLAGS_00 = $00
+_SPELL_FLAGS_40 = $40
+_SPELL_FLAGS_50 = $50
+_SPELL_FLAGS_80 = $80
+_SPELL_FLAGS_C0 = $C0
 _b4_dD_spells_list:
-		.BYTE	$C2,$C6,$CC,$C4,$C6,$CC,$45,$49,$52,$C3,$C6,$CC,$49,$C4,$C6,$C9
-		.BYTE	$C8,$5E,$C7,$C7,$41,$C2,$C7,$C0,$C3,  3,$83,$85,$87,  0,$12,$3E
-		.BYTE	$8A,$94,$C3,  3,$C3,$C4,  8,$C5,$8C,$18,  6,$C3,$C4,$83,  4,  4
-		.BYTE	  8,  6,$86,$14,$82,$86,$D2,  4, $C,  0,  3,  8, $F,  2
-byte_6B490:
-		.BYTE	  0,  1,  2,  9
-byte_6B494:
-		.BYTE	  3,  4,  8, $A, $B, $D, $E, $F
-byte_6B49C:
-		.BYTE	$1A,$1B,$1C
-byte_6B49F:
-		.BYTE	$1E,$1F
+		.BYTE	(_SPELL_FLAGS_C0|2)  ; SPELL_BLAZE
+		.BYTE	(_SPELL_FLAGS_C0|6)  ; SPELL_BLAZEMORE
+		.BYTE	(_SPELL_FLAGS_C0|12) ; SPELL_BLAZEMOST
+		.BYTE	(_SPELL_FLAGS_C0|4)  ; SPELL_FIREBAL
+		.BYTE	(_SPELL_FLAGS_C0|6)  ; SPELL_FIREBANE
+		.BYTE (_SPELL_FLAGS_C0|12) ; SPELL_FIREVOLT
+		.BYTE (_SPELL_FLAGS_40|5)  ; SPELL_BANG
+		.BYTE (_SPELL_FLAGS_40|9)  ; SPELL_BOOM
+		.BYTE (_SPELL_FLAGS_40|18) ; SPELL_EXPLODET
+		.BYTE (_SPELL_FLAGS_C0|3)  ; SPELL_ICEBOLT
+		.BYTE (_SPELL_FLAGS_C0|6)  ; SPELL_SNOWBLAST
+		.BYTE (_SPELL_FLAGS_C0|12) ; SPELL_SNOWSTORM
+		.BYTE (_SPELL_FLAGS_40|9)  ; SPELL_ICESPEARS
+		.BYTE (_SPELL_FLAGS_C0|4)  ; SPELL_INFERNOS
+		.BYTE (_SPELL_FLAGS_C0|6)  ; SPELL_INFERMORE
+		.BYTE (_SPELL_FLAGS_C0|9)  ; SPELL_INFERMOST
+		.BYTE	(_SPELL_FLAGS_C0|8)  ; SPELL_ZAP
+		.BYTE	(_SPELL_FLAGS_50|14) ; SPELL_LIGHTNING
+		.BYTE	(_SPELL_FLAGS_C0|7)  ; SPELL_BEAT
+		.BYTE	(_SPELL_FLAGS_C0|7)  ; SPELL_DEFEAT
+		.BYTE	(_SPELL_FLAGS_40|1)  ; SPELL_SACRIFICE
+		.BYTE	(_SPELL_FLAGS_C0|2)  ; SPELL_EXPEL
+		.BYTE	(_SPELL_FLAGS_C0|7)  ; SPELL_LIMBO
+		.BYTE	(_SPELL_FLAGS_C0|0)  ; SPELL_ROBMAGIC
+		.BYTE	(_SPELL_FLAGS_C0|3)  ; SPELL_SLOW
+		.BYTE	(_SPELL_FLAGS_00|3)  ; SPELL_SPEEDUP
+		.BYTE	(_SPELL_FLAGS_80|3)  ; SPELL_HEAL
+		.BYTE	(_SPELL_FLAGS_80|5)  ; SPELL_HEALMORE
+		.BYTE	(_SPELL_FLAGS_80|7)  ; SPELL_HEALALL
+		.BYTE	$00                  ; SPELL_DUMMY_1D
+		.BYTE	(_SPELL_FLAGS_00|18) ; SPELL_HEALUS
+		.BYTE	(_SPELL_FLAGS_00|62) ; SPELL_HEALUSALL
+		.BYTE	(_SPELL_FLAGS_80|10) ; SPELL_VIVIFY
+		.BYTE	(_SPELL_FLAGS_80|20) ; SPELL_REVIVE
+		.BYTE	(_SPELL_FLAGS_C0|3)  ; SPELL_SLEEP
+		.BYTE	(_SPELL_FLAGS_00|3)  ; SPELL_AWAKE
+		.BYTE	(_SPELL_FLAGS_C0|3)  ; SPELL_STOPSPELL
+		.BYTE	(_SPELL_FLAGS_C0|4)  ; SPELL_SURROUND
+		.BYTE	(_SPELL_FLAGS_00|8)  ; SPELL_RETURN
+		.BYTE	(_SPELL_FLAGS_C0|5)  ; SPELL_CHAOS
+		.BYTE	(_SPELL_FLAGS_80|12) ; SPELL_TRANSFORM
+		.BYTE	(_SPELL_FLAGS_00|24) ; SPELL_BEDRAGON
+		.BYTE	(_SPELL_FLAGS_00|6)  ; SPELL_IRONIZE
+		.BYTE	(_SPELL_FLAGS_C0|3)  ; SPELL_SAP
+		.BYTE	(_SPELL_FLAGS_C0|4)  ; SPELL_DEFENCE
+		.BYTE	(_SPELL_FLAGS_80|3)  ; SPELL_UPPER
+		.BYTE	(_SPELL_FLAGS_00|4)  ; SPELL_INCREASE
+		.BYTE	(_SPELL_FLAGS_00|4)  ; SPELL_INCREASE2
+		.BYTE	(_SPELL_FLAGS_00|8)  ; SPELL_BOUNCE
+		.BYTE	(_SPELL_FLAGS_00|6)  ; SPELL_BARRIER
+		.BYTE	(_SPELL_FLAGS_80|6)  ; SPELL_BIKILL
+		.BYTE	(_SPELL_FLAGS_00|20) ; SPELL_CHANCE
+		.BYTE	(_SPELL_FLAGS_80|2)  ; SPELL_ANTIDOTE
+		.BYTE	(_SPELL_FLAGS_80|6)  ; SPELL_NUMBOFF
+		.BYTE	(_SPELL_FLAGS_C0|18) ; SPELL_CURSEOFF
+		.BYTE	(_SPELL_FLAGS_00|4)  ; SPELL_REPEL
+		.BYTE	(_SPELL_FLAGS_00|12) ; SPELL_DAYNIGHT
+		.BYTE	(_SPELL_FLAGS_00|0)  ; SPELL_OPEN
+		.BYTE	(_SPELL_FLAGS_00|3)  ; SPELL_XRAY
+		.BYTE	(_SPELL_FLAGS_00|8)  ; SPELL_OUTSIDE
+		.BYTE	(_SPELL_FLAGS_00|15) ; SPELL_INVISIBLE
+		.BYTE	(_SPELL_FLAGS_00|2)  ; SPELL_STEPGUARD		
+
+; =============== T A B	L E =================================================
+; labels for common spell handling
+;
+_bs_labels_attackspell_single_tbl:
+		.BYTE #SPELL_BLAZE, #SPELL_BLAZEMORE, #SPELL_BLAZEMOST, #SPELL_ICEBOLT
+_bs_labels_attackspell_multiple_tbl:
+		.BYTE	 #SPELL_FIREBAL, #SPELL_FIREBANE, #SPELL_EXPLODET
+		.BYTE	 #SPELL_SNOWBLAST, #SPELL_SNOWSTORM
+		.BYTE	 #SPELL_INFERNOS, #SPELL_INFERMORE, #SPELL_INFERMOST
+_bs_labels_heal_single_tbl:
+		.BYTE	#SPELL_HEAL, #SPELL_HEALMORE, #SPELL_HEALALL
+_bs_labels_heal_multiple_tbl:
+		.BYTE	#SPELL_HEALUS, #SPELL_HEALUSALL
 
 ; =============== T A B	L E =================================================
 ; base and multiplier pairs
