@@ -1218,7 +1218,7 @@ _mapF0:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s19:
-		SYSX	_apu_load,$22
+		SYSX	_apu_load,BGM_QUAKE_22
 		LDA		#5
 		STA		word_3C
 loc_B2711:
@@ -1229,7 +1229,7 @@ loc_B2711:
 		MSGX	_msg_m00,$1A8	; "A sound like something closing is heard from up in the sky"
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20_warp_bE_sB_arg0
-		SYSX	_apu_load,$18
+		SYSX	_apu_load,BGM_INSTRUMENT_JINGLE_18
 		LDA		#0
 		STA		word_3C
 loc_B272B:
@@ -1295,12 +1295,16 @@ loc_B278A:
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20_warp_bE_sB_arg0
-		LDA		#$40
+		LDA		#DAYNIGHT_CYCLE_40
 		STA		_world_map_steps_count
 locret_B27A9:
 		RTS
+
+; a small table used for tweening the ambient light state
 byte_B27AA:
-		.BYTE	  0,$1E,$3C
+		.BYTE	  DAYNIGHT_CYCLE_DAWN
+		.BYTE	  $1E
+		.BYTE	  DAYNIGHT_CYCLE_JUST_BEFORE_NOON
 
 ; =============== S U B	R O U T	I N E =======================================
 _b7_s1A:
@@ -1330,7 +1334,7 @@ loc_B27D7:
 		CPX		#$38
 		BCC		loc_B27D7
 		FARX	_bC_s20_warp_bE_sB_arg0
-		SYSX	_apu_load,$02
+		SYSX	_apu_load,BGM_DQ_THEME
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		LDA		#2
 		FARX	_bC_s0_npc_anim_script_init
@@ -1340,7 +1344,7 @@ loc_B27D7:
 _b7_s1B:
 		FARX	_bB_s7_apu_wait
 		JSR		sub_B2806
-		SYSX	_apu_load,$1F
+		SYSX	_apu_load,BGM_ENDING_1F
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
@@ -1457,7 +1461,7 @@ loc_B28B5:
 		JSR		sub_B2C66
 		LDA		#$FF
 		STA		byte_6A3E
-		SYSX	_apu_load,$28
+		SYSX	_apu_load,BGM_MENU
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Main menu main loop
@@ -3111,7 +3115,7 @@ _b7_s1E:
 		JSR		sub_B36C8
 		LDX		#$3C
 		JSR		_sleep_X_sync
-		SYSX	_apu_load,$19
+		SYSX	_apu_load,BGM_ENDTHEME_19
 		JSR		_pal_fade_in
 		LDX		#$64
 		JSR		_sleep_X_sync
@@ -3756,7 +3760,7 @@ _location_palette_setup:
 		STA		_tmp_ptrB4+1
 		LDX		#0
 		LDA		_world_map_steps_count		; check wether the current daytime
-		CMP		#$78						; day or night
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT						; day or night
 		BCC		loc_21C14F
 		INX
 loc_21C14F:

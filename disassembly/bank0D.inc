@@ -1415,7 +1415,7 @@ loc_1415FC:
 		AND		#$20
 		BNE		loc_14160A
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_14160E
 loc_14160A:
 		LDA		#$30
@@ -2434,7 +2434,7 @@ sub_141C10:
 ; =============== S U B	R O U T	I N E =======================================
 sub_141C1C:
 		LDA		_mapNumber
-		CMP		#$4E
+		CMP		#$4E ; Eginbear Boulder Puzzle Basement
 		BNE		locret_141C0F
 		LDA		#5
 		CMP		_npcs_pos_list+1
@@ -2477,7 +2477,7 @@ loc_141C46:
 		LDA		#$1B
 		STA		byte_7470
 		FARX	_bC_sA
-		SYSX	_apu_load,$95
+		SYSX	_apu_load,#SFX_BLAST_95
 		JMP		_ppu_set_dequeue_flag
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -3552,17 +3552,17 @@ loc_142377:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_1423AA
-		SYSX	_apu_load,$17
+		SYSX	_apu_load,BGM_CURSE_JINGLE
 		JSR		_bD_s22_se_wait_and_map_music_start
 		LDA		byte_C5
 		STA		byte_D2
-		MSGX	_msg_m00,$152
-		MSGX	_msg_m00,$23D
+		MSGX	_msg_m00,$152 ; "<tab>The <item> is stuck to the body because of the curse."
+		MSGX	_msg_m00,$23D ; "I see. what a pity"
 		JMP		loc_14235E
 loc_1423AA:
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 		JSR		_players_gold_add_from_arrC0
-		SYSX	_display_window,$12
+		SYSX	_display_window,WND_STATUS_INFO_GOLD
 		LDA		byte_C5
 		CMP		#$5E
 		BNE		loc_1423C9
@@ -3581,7 +3581,7 @@ sub_1423CC:
 loc_1423CF:
 		FARX	_bE_s1C_yes_or_no_question
 		BEQ		loc_1423DA
-		MSGX	_msg_m00,$5E9
+		MSGX	_msg_m00,$5E9 ; "`Don't be that way! Take a look!`"
 		JMP		loc_1423CF
 loc_1423DA:
 		LDA		#0
@@ -3589,7 +3589,7 @@ loc_1423DA:
 		SYSX	_display_window,$36
 		CMP		#8
 		BCC		loc_1423E9
-		MSGX	_msg_m00_break,$5EA
+		MSGX	_msg_m00_break,$5EA ; "`How's that? Nothing to your liking?That's too bad. ,Please come again`"
 loc_1423E9:
 		TAX
 		JSR		_bD_s15
@@ -3685,7 +3685,7 @@ sub_142482:
 ; =============== S U B	R O U T	I N E =======================================
 sub_142486:
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_142493
 		MSGX	_msg_m00,$217	; "Good afternoon, welcome to inn"
 		JMP		loc_142496
@@ -3773,11 +3773,11 @@ loc_142531:
 		LDX		byte_CE
 		CPX		#0
 		BNE		loc_142515
-		SYSX	_apu_load,$14
+		SYSX	_apu_load,BGM_SLEEP_JINGLE
 		LDA		_location_type
 		AND		#2
 		BNE		loc_142545
-		LDA		#0
+		LDA		#DAYNIGHT_CYCLE_DAWN
 		STA		_world_map_steps_count
 loc_142545:
 		JSR		_location_palette_and_rand_update
@@ -3800,7 +3800,7 @@ loc_142545:
 ; =============== S U B	R O U T	I N E =======================================
 _npc_base_nhdl5:
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_142580
 		MSGX	_msg_m00,$200	; "At your service, my good people! How may I serve you?"
 		JMP		sub_142589
@@ -3864,8 +3864,8 @@ loc_1425AA:
 		FARX	_bB_s4_apu_set_flag0
 		LDA		byte_C3
 		STA		byte_D2
-		MSGX	_msg_m00,$20A
-		SYSX	_apu_load,$15
+		MSGX	_msg_m00,$20A ; "`Now I shall administer the antidote to <name>!`"
+		SYSX	_apu_load,BGM_PRIEST_WORK_JINGLE
 		LDA		byte_C3
 		STA		byte_CE
 		FARX	_b0_s3D_player_remove_poison_status
@@ -3920,8 +3920,8 @@ loc_142629:
 		JSR		sub_141FF1
 		SYSX	_display_window,$68
 		FARX	_bB_s4_apu_set_flag0
-		MSGX	_msg_m00,$20D
-		SYSX	_apu_load,$15
+		MSGX	_msg_m00,$20D ; ""`Powers above, grant us thy help! Remove this abominable curse from <name>`""
+		SYSX	_apu_load,BGM_PRIEST_WORK_JINGLE
 		LDA		byte_BD
 		STA		byte_CF
 		JSR		_sram_b0_s2A_player_inventory_item_remove
@@ -3979,10 +3979,10 @@ loc_1426E9:
 loc_1426F1:
 		JSR		sub_141FF1
 		SYSX	_display_window,$68
-		MSGX	_msg_m00,$202
+		MSGX	_msg_m00,$202 ; ""`Oh, powers that reside above! I invoke thee!`<wait>""
 		FARX	_bB_s4_apu_set_flag0
-		MSGX	_msg_m00,$210
-		SYSX	_apu_load,$15
+		MSGX	_msg_m00,$210 ; ""`I beckon the spirit of thy faithful servant, <name>, return from its wanderings to again reside here!`""
+		SYSX	_apu_load,BGM_PRIEST_WORK_JINGLE
 		LDA		byte_C3
 		STA		byte_CE
 		FARX	_b0_s3D_player_remove_death_status
@@ -4355,15 +4355,15 @@ loc_142A1B:
 		JSR		_sys0_byte_read_x
 		AND		#8
 		BEQ		loc_142A41
-		SYSX	_apu_load,$17
+		SYSX	_apu_load,BGM_CURSE_JINGLE
 		JSR		_bD_s22_se_wait_and_map_music_start
 		LDA		byte_C5
 		STA		byte_D2
-		MSGX	_msg_m00,$152
-		MSGX	_msg_m00,$272
+		MSGX	_msg_m00,$152 ; "<tab>The <item> is stuck to the body because of the curse."
+		MSGX	_msg_m00,$272 ; `Sorry, but there's no way in the world I can keep that!`"
 		JMP		loc_142A6B
 loc_142A41:
-		MSGX	_msg_m00,$273
+		MSGX	_msg_m00,$273 ; "`All right then. I'll take good care of it!`"
 		LDA		byte_C5
 		JSR		_vault_item_store
 		JSR		_sram_b0_s2A_player_inventory_item_remove

@@ -1005,7 +1005,7 @@ loc_24E761:
 		FARX	_bB_s5_apu_flag1
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_apu_load,$A6
+		SYSX	_apu_load,SFX_THEEEOOOOWWWW_A6
 		LDX		#$96
 		JSR		sub_24C0F3
 		LDA		word_6
@@ -1017,11 +1017,11 @@ loc_24E761:
 		JSR		sub_24C0F3
 		LDA		word_6
 		BEQ		loc_24E7DB
-		SYSX	_apu_load,$A6
+		SYSX	_apu_load,SFX_THEEEOOOOWWWW_A6
 		JSR		sub_24E8DA
 		JSR		sub_24E8B1
 		JSR		sub_24E89C
-		SYSX	_apu_load,$A6
+		SYSX	_apu_load,SFX_THEEEOOOOWWWW_A6
 		LDY		#0
 loc_24E7A0:
 		TYA

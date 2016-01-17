@@ -1151,8 +1151,8 @@ _common_invisibility_use:
 		STA		byte_AC
 		FARX	_bC_s20_warp_bE_sB_arg0
 		LDA		_player_vehicle
-		BNE		loc_9B431
-		SYSX	_apu_load,$9F
+		BNE		loc_9B431 ; branch if we're in some kind of vehicle (return false)
+		SYSX	_apu_load,SFX_INVISIBILITY
 		LDY		#_bC_s15_fidx
 		STY		word_3C
 		LDY		#_bC_s16_fidx
@@ -1172,15 +1172,15 @@ sub_9B433:
 		LDA		_global_flags_array.byte2
 		BPL		loc_9B44E
 		LDA		_mapNumber
-		CMP		#$C
-		BEQ		loc_9B454
-		CMP		#$7A
-		BEQ		loc_9B454
+		CMP		#$C ; Assaram
+		BEQ		loc_9B454 ; branch for special logic for assaram  (return false!)
+		CMP		#$7A ; Assaram, basement, "this is a nice town, especially at night!" ; 1,1
+		BEQ		loc_9B454 ; branch also for special logic for assaram (return false!)
 loc_9B44E:
 		LDA		byte_AC
 		AND		#$1F
 		BEQ		locret_9B457
-loc_9B454:
+loc_9B454: ; return false in this case!
 		PLA
 		PLA
 loc_9B456:
@@ -1305,7 +1305,7 @@ _b6_s11_item_locket_of_love_use:
 		LDA		_global_flags_array.byte1
 		ORA		#$40
 		STA		_global_flags_array.byte1
-		SYSX	_apu_load,$26
+		SYSX	_apu_load,BGM_LOCKET_OF_LOVE
 loc_9B510:
 		SEC
 		RTS
@@ -1364,7 +1364,7 @@ loc_9B557:
 		FARX	_b0_s66_byte_6D40_clear
 		LDA		#2
 		STA		_playerFacingDir
-		SYSX	_apu_load,$92
+		SYSX	_apu_load,SFX_WARP_92
 		JSR		_pal_fade_out
 		LDA		_global_flags_array.byte2
 		AND		#$7F
@@ -1574,7 +1574,7 @@ loc_9B6E3:
 		BEQ		loc_9B736
 		STA		_tmp21
 		LDA		_world_map_steps_count
-		CMP		#$3C
+		CMP		#DAYNIGHT_CYCLE_JUST_BEFORE_NOON
 		BCS		loc_9B6FA
 		LDA		#$C
 		SBC		_tmp21
@@ -1782,7 +1782,7 @@ loc_9B8A2:
 
 ; =============== S U B	R O U T	I N E =======================================
 _name_entry_screen_data_enter:
-		SYSX	_apu_load,$85
+		SYSX	_apu_load,SFX_MENU_TINK
 		LDA		_pads+2
 		ORA		#1
 		STA		_pads+2
@@ -2495,7 +2495,7 @@ _b6_s1A_orb_pedestal_fire_start_anim:
 		LDA		byte_6BB
 		FARX	_b5_s4
 		FARX	_bD_s19
-		SYSX	_apu_load,$9B
+		SYSX	_apu_load,SFX_LIGHT_FIRE
 		RTS
 _orb_pedestal_fire_obj_slot_list:
 		.BYTE	<[_npcs_pos_list+$14] ; $24
@@ -2524,7 +2524,7 @@ loc_9BD6A:
 		CPX		#$30
 		BNE		loc_9BD6A
 		JSR		sub_174D4F
-		SYSX	_apu_load,$22
+		SYSX	_apu_load,BGM_QUAKE_22
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b2_s7_screen_spell_blink
 		LDA		#$A
@@ -2543,7 +2543,7 @@ loc_9BDA0:
 		LDA		#$80
 		STA		_players_pos_list,X
 		FARX	_bC_s38
-		SYSX	_apu_load,$95
+		SYSX	_apu_load,SFX_BLAST_95
 		LDX		#$1E
 		JSR		_sleep_X_sync
 		INC		word_3C
@@ -2570,7 +2570,7 @@ byte_9BDDE:
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1B_reinit_after_zoma_voice:
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
-		SYSX	_apu_load,$03
+		SYSX	_apu_load,BGM_NOCHANGE_03
 		LDA		#$FF
 		STA		_players_returnable_locations
 		STA		_players_returnable_locations+3
@@ -2596,7 +2596,7 @@ _b6_s1B_reinit_after_zoma_voice:
 
 ; =============== S U B	R O U T	I N E =======================================
 _b6_s1D_hero_rest_at_home_anim:
-		SYSX	_apu_load,$14
+		SYSX	_apu_load,BGM_SLEEP_JINGLE
 		JSR		_pal_fade_out
 		FARX	_b0_s54_heal_us_all_max
 		FARX	_bD_s11
@@ -2610,7 +2610,7 @@ _b6_s1D_hero_rest_at_home_anim:
 		STA		_playerFacingDir
 		STA		byte_6BC
 		FARX	_bB_s7_apu_wait
-		LDA		#0
+		LDA		#DAYNIGHT_CYCLE_DAWN
 		STA		_world_map_steps_count
 		JMP		sub_174CD5
 
@@ -2794,7 +2794,7 @@ _b6_s1F_item_rainbow_drop_use:
 		JSR		_test_rainbow_drop_location	; test whether we're on the right location
 		BCC		loc_9BF6D
 		FARX	_bC_s20_warp_bE_sB_arg0
-		SYSX	_apu_load,$1A				; play musical jingle
+		SYSX	_apu_load,BGM_JINGLE_RAINBOW_DROP
 		JSR		_ranbow_pal_anim
 		JSR		_ranbow_tile_set
 		FARX	_bD_s22_se_wait_and_map_music_start

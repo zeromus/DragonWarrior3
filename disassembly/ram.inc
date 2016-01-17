@@ -104,7 +104,7 @@ byte_2E:
 ; 0 - Overworld
 ; 1 - Location
 ; 2 - Alefgard
-_location_type:
+_location_type: ; $2F
 		.BYTE	0
 ;----------------------------------------------
 ; (location?)
@@ -396,8 +396,14 @@ byte_AA:
 		.BYTE	0
 byte_AB:
 		.BYTE	0
+;----------------------------------------------
+; field engine flags
+; ?I??????
+; I - invisible (from spell or herb)
+;
 byte_AC:
 		.BYTE	0
+;----------------------------------------------
 _repel_or_fairy_water_timer:
 		.BYTE	0,0,0
 ;----------------------------------------------
@@ -1226,7 +1232,7 @@ _global_flags_array:
 ;	$40 - $0E - Locket of Love successfully used
 ;	$20 - _q_NorudPassageOpened = $0D - Set once Norud's been shown the royal scroll and opened the psage
 ;	$10 - $0C - unused
-;	$08 - $0B - * read/write
+;	$08 - _q_VolcanoErupted = $0B - Set once the volcano's had an eruption due to throwing in gaia's sword
 ;	$04 - $0A - * read/write
 ;	$02 - _q_MagicBallUsed = $09 - Set once the Magic Ball's been used to blow down the wall in the cave of enticement
 ;	$01 - $08 - * read

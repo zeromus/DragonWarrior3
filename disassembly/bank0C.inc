@@ -35,7 +35,7 @@
 		PTR_IDX		_bC_s21
 		PTR_IDX		_bC_s22
 		PTR_IDX		_bC_s23_test_orbs_collected_count
-		PTR_IDX		_bC_s24
+		PTR_IDX		_bC_s24_volcano_event
 		PTR_IDX		_bC_s25
 		PTR_IDX		_bC_s26_item_common_orbs_use
 		PTR_IDX		_bC_s27
@@ -2116,7 +2116,7 @@ _bC_s34:
 		BNE		locret_128F02
 		BIT		_global_flags_array.byte10
 		BVC		locret_128F02
-		SYSX	_apu_load,$21
+		SYSX	_apu_load,BGM_QUAKE_21
 		JSR		sub_128F03
 		JSR		sub_128F24
 		JSR		sub_128F4F
@@ -2202,7 +2202,7 @@ sub_128F30:
 		ASL
 		STA		word_4+1
 		JSR		sub_129074
-		SYSX	_apu_load,$95
+		SYSX	_apu_load,SFX_BLAST_95
 locret_128F49:
 		RTS
 
@@ -2317,7 +2317,7 @@ sub_129007:
 		EOR		#1
 		ASL
 		STA		word_3C+1
-		LDA		#$78
+		LDA		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		STA		_world_map_steps_count
 		LDA		#0
 		STA		word_4
@@ -2346,7 +2346,7 @@ loc_129032:
 		JSR		sub_129060
 loc_129057:
 		JSR		_ppu_set_dequeue_flag
-		SYSX	_apu_load,$95
+		SYSX	_apu_load,SFX_BLAST_95
 		JMP		sub_128F4A
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2544,7 +2544,7 @@ loc_129199:
 		STA		_playerFacingDir
 		LDA		#$12
 		STA		byte_92
-		LDA		#$78
+		LDA		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		STA		_world_map_steps_count
 		JSR		loc_1752EB
 		JSR		_wrap_bE_sD_wnd3E
@@ -4329,7 +4329,7 @@ loc_129C16:
 		ORA		#4
 		STA		_global_flags_array.byte1
 		JSR		sub_129E5D
-		SYSX	_apu_load,$24
+		SYSX	_apu_load,BGM_WIND_24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4348,7 +4348,7 @@ loc_129C16:
 		LDX		#$20
 		JSR		sub_12A1F1
 		JSR		sub_129D1B
-		SYSX	_apu_load,$25
+		SYSX	_apu_load,BGM_WIND_25
 		JSR		sub_129EBC
 		JSR		sub_129EEB
 loc_129C72:
@@ -4781,7 +4781,7 @@ _bC_s25:
 		PHA
 		FARX	_bB_s4_apu_set_flag0
 		JSR		sub_129E5D
-		SYSX	_apu_load,$24
+		SYSX	_apu_load,BGM_WIND_24
 		JSR		sub_129C94
 		JSR		sub_129F07
 		LDY		#$10
@@ -4791,7 +4791,7 @@ _bC_s25:
 		JSR		sub_129CA1
 		LDX		#4
 		JSR		sub_129E07
-		SYSX	_apu_load,$25
+		SYSX	_apu_load,BGM_WIND_25
 		JSR		sub_129EBC
 		JMP		loc_129C72
 
@@ -4821,7 +4821,7 @@ loc_129FA2:
 		JSR		_sleep_30
 		JSR		_warp_bE_sB_arg0
 		JSR		sub_129FC3
-		SYSX	_apu_load,$97
+		SYSX	_apu_load,SFX_MAGICBALL_EXPLODE
 		FARX	_b2_s8_screen_hit_blink
 		JSR		sub_129FE2
 		LDA		_global_flags_array.byte1
@@ -5207,7 +5207,7 @@ loc_12A221:
 		BEQ		.flute_echo					; branch straight to echo if we haven't collected this orb yet
 											; fall through to the dud if we have collected it
 .flute_no_echo:
-		SYSX	_apu_load,$1E				; play the dud music, I would assume
+		SYSX	_apu_load,BGM_JINGLE_ECHOING_FLUTE_DUD				; play the dud music, I would assume
 		FARX	_bD_s22_se_wait_and_map_music_start
 		MSGX	_msg_m00,$10D
 		JSR		_pause_or_skip
@@ -5224,7 +5224,7 @@ loc_12A221:
 		LDA		_global_flags_array.byte2	; load THAT DAMN FLAG. seriously, it's overused, what does it mean?
 		BMI		.flute_no_echo				; branch if warping is forbidden
 .flute_echo:
-		SYSX	_apu_load,$1D
+		SYSX	_apu_load,BGM_JINGLE_ECHOING_FLUTE
 		FARX	_bD_s22_se_wait_and_map_music_start
 		SEC
 		RTS
@@ -5341,15 +5341,17 @@ loc_12A308:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Some special effect sequence where the player splits into 4 pieces and flies away
+;
 sub_12A312:
 		FARX	_bE_sD
 		LDA		_player_vehicle
-		BNE		loc_12A326
+		BNE		loc_12A326 ; branch if not on foot
 		LDX		#_bC_s16_fidx
 		STX		word_3C
 		LDX		#_bC_s15_fidx
 		STX		word_3C+1
-		SYSX	_apu_load,$9F
+		SYSX	_apu_load,SFX_INVISIBILITY
 		JSR		_bC_s17_sys0_spr_effects_call
 loc_12A326:
 		LDA		#$3E
@@ -5681,11 +5683,11 @@ _bC_s33:
 		ORA		_npcs_pos_list+$1F
 		AND		#$FC
 		STA		_npcs_pos_list+$1F
-		SYSX	_apu_load,$9E
+		SYSX	_apu_load,SFX_SKITTER_SKITTER_9E
 		JSR		sub_12A55D
 		JSR		sub_12A58F
 		JSR		sub_12A59F
-		SYSX	_apu_load,$A0
+		SYSX	_apu_load,SFX_KWEHKWEHKWEH_A0
 		JSR		sub_12A5CA
 		JSR		sub_12A5DB
 		LDA		#$B
@@ -5846,7 +5848,7 @@ _bC_s19_turn_king_of_romaly_on_off:
 		BVS		loc_12A686
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
-		SYSX	_apu_load,$01
+		SYSX	_apu_load,BGM_LEVELUP
 		FARX	_b0_s56_get_hero_alone_temporary
 		LDA		_global_flags_array.byte2
 		ORA		#$40
@@ -5872,7 +5874,7 @@ _bC_s19_turn_king_of_romaly_on_off:
 		STA		byte_8E
 		STA		word_6C
 		FARX	_bD_s19
-		SYSX	_apu_load,$03
+		SYSX	_apu_load,BGM_NOCHANGE_03
 		JMP		_ppu_on_and_fade_in
 loc_12A686:
 		JSR		_pal_fade_out
@@ -5900,7 +5902,7 @@ _bC_s28:
 		JSR		sub_12A6C8
 		LDY		#$19
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_12A6C4
 		LDY		#$39
 loc_12A6C4:
@@ -5992,8 +5994,11 @@ _bC_s21:
 		FARX	_bE_s22
 
 ; =============== S U B	R O U T	I N E =======================================
+; Long volcano sounds, then party members seem to fly out of the ground, like a well or a volcano. 
+; then the music changes to dungeon
+;
 sub_12A743:
-		SYSX	_apu_load,$22
+		SYSX	_apu_load,BGM_QUAKE_22
 		LDA		byte_AC
 		AND		#$E0
 		STA		byte_AC
@@ -6015,9 +6020,9 @@ sub_12A743:
 		JSR		sub_12A9CA
 		JSR		sub_12A9C1
 		JSR		_bC_s5
-		SYSX	_apu_load,$21
+		SYSX	_apu_load,BGM_QUAKE_21
 		JSR		sub_12AA57
-		SYSX	_apu_load,$07
+		SYSX	_apu_load,BGM_DUNGEON
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6505,9 +6510,11 @@ loc_12AA6B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s24:
+; Sword of gaia thrown into volcano. Eruption! Lava flows over path
+;
+_bC_s24_volcano_event:
 		LDA		_playerWorldX
-		CMP		#$4A
+		CMP		#$4A ; check for special world location (near volcano). this has already been checked, but I guess this is a double check
 		BNE		loc_12AA8C
 		LDA		_playerWorldY
 		CMP		#$90
@@ -6519,14 +6526,14 @@ loc_12AA8E:
 		JSR		_bC_s20_warp_bE_sB_arg0
 		JSR		sub_12AE73
 		JSR		sub_12AB1E
-		JSR		sub_12AAD4
-		SYSX	_apu_load,$22
+		JSR		_volcano_rumble
+		SYSX	_apu_load,BGM_QUAKE_22
 		JSR		sub_12AB31
-		JSR		sub_12AB90
+		JSR		_volcano_eruption_spew
 		JSR		sub_12AC5C
 		JSR		sub_12ADB1
 		JSR		sub_12AD96
-		SYSX	_apu_load,$23
+		SYSX	_apu_load,BGM_VOLCANO_HISSING
 		JSR		sub_12AC79
 		JSR		sub_12ADD7
 		JSR		sub_12AC69
@@ -6534,21 +6541,23 @@ loc_12AA8E:
 		JSR		_sleep_X_sync
 		JSR		sub_12AE80
 		JSR		sub_12AF78
-		SYSX	_apu_load,$04
-		LDA		_global_flags_array.byte1
+		SYSX	_apu_load,#BGM_OVERWORLD ; resume overworld music
+		LDA		_global_flags_array.byte1 ; set _q_VolcanoErupted
 		ORA		#8
 		STA		_global_flags_array.byte1
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12AAD4:
+;
+;
+_volcano_rumble:
 		LDX		#$28
 		STX		word_3C
-		SYSX	_apu_load,$20
+		SYSX	_apu_load,BGM_QUAKE_20
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
-		SYSX	_apu_load,$21
+		SYSX	_apu_load,BGM_QUAKE_21
 		JSR		sub_12AAEA
 		JSR		sub_12AAEA
 
@@ -6663,11 +6672,11 @@ loc_12AB85:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_12AB90:
+_volcano_eruption_spew:
 		LDA		#0
 		STA		word_3E+1
 loc_12AB94:
-		SYSX	_apu_load,$98
+		SYSX	_apu_load,SFX_VOLCANO_ERUPTION_SPEW
 		JSR		sub_12ABC3
 		INC		word_3E+1
 		LDA		word_3E+1
@@ -7198,6 +7207,8 @@ loc_12AF88:
 		JMP		_wait_for_nmi_is_over_sync
 
 ; =============== S U B	R O U T	I N E =======================================
+; handling for taking steps?
+;
 _bC_s14:
 		LDA		_npc_anim_script_idx
 		BNE		loc_12AFA9
@@ -7209,13 +7220,13 @@ _bC_s14:
 loc_12AFA9:
 		LDA		byte_9A
 		BNE		loc_12AFB3
-		JSR		_bC_s29
+		JSR		_bC_s29 ; some special event
 		JMP		locret_12AFC6
 loc_12AFB3:
 		LDX		#0
 		LDA		_mapNumber
 loc_12AFB7:
-		CMP		byte_12AFC7,X
+		CMP		byte_12AFC7,X ; check for special map numbers
 		BEQ		loc_12AFC3
 		INX
 		CPX		#$17
@@ -7225,11 +7236,35 @@ loc_12AFC3:
 		JSR		sub_12AFDE
 locret_12AFC6:
 		RTS
+
 byte_12AFC7:
-		.BYTE	$BD,$D2,$61,$4F,  2,  1,$75, $F, $C,$7A,$CB,  8,$B2,$A3,$CC,$C3
-		.BYTE	$41,$47,$EB,$EC,$EE,$BB,$6B
+		.BYTE	$BD ; Navel of the Earth B3
+		.BYTE	$D2 ; Pyramid 3F
+		.BYTE	$61 ; Samanao Castle
+		.BYTE	$4F ; Romaly Castle 4F
+		.BYTE	$02 ; Eginbear
+		.BYTE	$01 ; Romaly
+		.BYTE	$75 ; New Town Ver.4 (run into the ground by merchant)
+		.BYTE	$0F ; Lancel
+		.BYTE	$0C ; Assaram
+		.BYTE	$7A ; Assaram, basement, "this is a nice town, especially at night!"
+		.BYTE	$CB ; Castle of Zoma B4
+		.BYTE	$08 ; Castle of Zoma 1F
+		.BYTE	$B2 ; Isis Castle B2 (Meteorite Armband treasure room)
+		.BYTE	$A3 ; Cave West of Noaniels B2 
+		.BYTE	$CC ; Castle of Zoma B5 ; ultimately goes to some eruption from the ground effect sequence
+		.BYTE	$C3 ; Cave Northwest of Tantegal B2 
+		.BYTE	$41 ; Aliahan upstairs, Hero's apartment
+		.BYTE	$47 ; Aliahan Castle throne room
+		.BYTE	$EB ; Tower of Shanpane 4F
+		.BYTE	$EC ; Tower of Shanpane 5F
+		.BYTE	$EE ; Tower of Shanpane 6F
+		.BYTE	$BB ; Cave of Jipang B2
+		.BYTE	$6B ; Tantegal Castle 2F, throne room
 
 ; =============== S U B	R O U T	I N E =======================================
+; X: an index into function pointer table off_12AFEE
+;
 sub_12AFDE:
 		TXA
 		ASL
@@ -7254,7 +7289,7 @@ off_12AFEE:
 		.WORD	sub_12B5AD
 		.WORD	sub_12B6AF
 		.WORD	sub_12B7C8
-		.WORD	sub_12B7E1
+		.WORD	sub_12B7E1 ; ultimately goes to some eruption from the ground effect sequence
 		.WORD	sub_12B97E
 		.WORD	sub_12B999
 		.WORD	sub_12B99D
@@ -7286,7 +7321,7 @@ locret_12B040:
 ; =============== S U B	R O U T	I N E =======================================
 sub_12B041:
 		LDA		_player_vehicle
-		BNE		locret_12B040
+		BNE		locret_12B040 ; branch if not on foot
 		LDA		byte_AC
 		AND		#$1F
 		BEQ		locret_12B040
@@ -7302,7 +7337,7 @@ sub_12B041:
 		CMP		#$D
 		BNE		loc_12B070
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT ; probably
 		BCS		loc_12B070
 		LDA		byte_AC
 		AND		#$E0
@@ -7426,19 +7461,19 @@ _bC_s29:
 		LDA		_global_flags_array.byte1
 		AND		#$40
 		BNE		locret_12B163
-		LDA		_playerWorldX
+		LDA		_playerWorldX ; check for special world location, east of romaly. are shoals or wreckage there?
 		CMP		#$56
 		BNE		locret_12B163
 		LDA		_playerWorldY
 		CMP		#$48
 		BNE		locret_12B163
 		LDA		_player_vehicle
-		CMP		#1
-		BNE		locret_12B163
+		CMP		#VEHICLE_SHIP
+		BNE		locret_12B163 ; branch if we're not in the ship
 		JSR		_wrap_bE_sD_wnd3E
-		MSGX	_msg_m00,$10A
-		SYSX	_apu_load,$00
-		SYSX	_apu_load,$0C
+		MSGX	_msg_m00,$10A ; "From out of nowhere, a plaintive voice is heard..."
+		SYSX	_apu_load,BGM_SILENCE
+		SYSX	_apu_load,BGM_OLIVIA
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_bC_s20_warp_bE_sB_arg0
 		LDA		#0
@@ -7524,10 +7559,10 @@ loc_12B1CB:
 		TXA
 		ORA		#$10
 		STA		_global_flags_array.byte2
-		SYSX	_apu_load,$A3
+		SYSX	_apu_load,SFX_PYRAMID_BOULDER_MOVE
 		FARX	_bD_s26_get_first_live_player_with_no_NM_status
 		STA		byte_D2
-		MSGX	_msg_m00,$180
+		MSGX	_msg_m00,$180 ; "<name> pushes the button<br>"
 		LDA		#$13
 		STA		byte_753A
 		STA		byte_753B
@@ -7535,7 +7570,7 @@ loc_12B1CB:
 		STA		byte_7559
 		BNE		loc_12B1FC
 loc_12B1F9:
-		MSGX	_msg_m00,$040
+		MSGX	_msg_m00,$040 ; "But nothing happens!"
 loc_12B1FC:
 		FARX	_bE_s33
 		RTS
@@ -7552,7 +7587,7 @@ sub_12B200:
 		AND		#$20
 		BNE		locret_12B21A						; test _q_SamanaoDone
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_12B21B
 locret_12B21A:
 		RTS
@@ -7587,7 +7622,7 @@ sub_12B241:
 		CMP		#7
 		BNE		locret_12B262
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		locret_12B262
 		LDA		#$13
 		JSR		_bC_s0_npc_anim_script_init
@@ -7608,7 +7643,7 @@ sub_12B263:
 		LDX		#$14
 		LDY		#$14
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_12B285
 		LDX		#$14
 		LDY		#$35
@@ -7665,7 +7700,7 @@ loc_12B2D0:
 		BNE		locret_12B2BC
 		LDY		#$17
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_12B2E7
 		LDY		#$37
 loc_12B2E7:
@@ -8012,7 +8047,7 @@ loc_12B564:
 		ORA		#$10
 		STA		_global_flags_array.byte4
 		FARX	_bE_s33
-		SYSX	_apu_load,$07
+		SYSX	_apu_load,BGM_DUNGEON
 locret_12B5AC:
 		RTS
 
@@ -8043,7 +8078,7 @@ sub_12B5AD:
 		STX		byte_7A27
 		LDA		#1
 		STA		_global_flags_array.byteF
-		SYSX	_apu_load,$95
+		SYSX	_apu_load,SFX_BLAST_95
 		JMP		loc_12B6A2
 loc_12B5EA:
 		LDA		_global_flags_array.byteF
@@ -8060,7 +8095,7 @@ loc_12B5F3:
 		CMP		#$1B
 		BNE		loc_12B615
 		JSR		_wrap_bE_sD_wnd3E
-		MSGX	_msg_m00,$17F
+		MSGX	_msg_m00,$17F ; "From out of nowhere, ominous voices are heard...<br>"
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JMP		loc_12B61D
 byte_12B612:
@@ -8400,7 +8435,7 @@ sub_12B877:
 		JSR		_bC_s12_sleep_X_sync_50
 loc_12B88A:
 		FARX	_bD_s19
-		SYSX	_apu_load,$9B
+		SYSX	_apu_load,SFX_LIGHT_FIRE
 		JSR		_bC_s12_sleep_X_sync_50
 		LDA		word_6C
 		CLC
@@ -8615,7 +8650,7 @@ sub_12BA11:
 		BEQ		nullsub_14
 		LDX		#$10
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_12BA23
 		LDX		#$10
 loc_12BA23:
@@ -8730,7 +8765,7 @@ sub_12BAD3:
 		BEQ		locret_12BB11
 loc_12BAE1:
 		LDA		_world_map_steps_count		; to be sure she isn't called you during day somehow lol
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_12BAF1
 		LDA		_global_flags_array.byte2	; remove warp disable flag then, never happen, you just couldn't
 		AND		#$7F						; get there not at night
@@ -8959,7 +8994,7 @@ sub_CBF97:
 		BNE		locret_CBFAD
 		LDX		#$14
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_CBFA8
 		LDX		#$14
 loc_CBFA8:
@@ -8976,7 +9011,7 @@ sub_CBFAE:
 		BPL		locret_CBFCB
 		LDX		#6
 		LDA		_world_map_steps_count
-		CMP		#$78
+		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCC		loc_CBFCC
 		ROR		_npcs_pos_list+$21
 		STX		_npcs_pos_list+$11
