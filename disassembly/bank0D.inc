@@ -2806,7 +2806,7 @@ _bD_s5:
 		STA		byte_95
 		LDA		byte_93
 		STA		byte_94
-		LDA		byte_92
+		LDA		_standing_tile
 		STA		byte_93
 		SEC
 		ROR		byte_97

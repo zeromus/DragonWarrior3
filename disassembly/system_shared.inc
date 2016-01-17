@@ -2471,8 +2471,8 @@ sub_175049:
 		STA		byte_6BC
 		LDA		byte_9A
 		BEQ		_world_map_step_forward
-		LDA		byte_92
-		AND		#$1F
+		LDA		_standing_tile
+		AND		#$1F ; remove TILE_TOWN_INTERIOR_FLAG
 		TAX
 		LDA		_tile_type_and_collision_flags,X
 		AND		#$F
@@ -2492,8 +2492,8 @@ sub_175049:
 		SEC
 		SBC		#$12
 		STA		_playerMapY
-		LDA		#$73
-		STA		byte_92
+		LDA		#$73 ; TILE_????
+		STA		_standing_tile
 		BNE		loc_17509A
 loc_175084:
 		CMP		#$36 ; Navel of the Earth
@@ -2530,8 +2530,8 @@ loc_17509F:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1750BC:
-		LDA		byte_92
-		AND		#$E0
+		LDA		_standing_tile
+		AND		#$E0 ; fetch some top bits out of _standing_tile
 		CMP		byte_8C
 		BEQ		locret_1750CF
 		JSR		sub_17590B
@@ -2680,7 +2680,7 @@ loc_1751AA:
 		FARX	_bD_s1B
 		JMP		loc_1751F7
 loc_1751E5:
-		FARX	_bC_s3
+		FARX	_bC_s3_refresh_standing_tile
 		LDA		_global_flags_array.byte10
 		BPL		loc_1751F4
 		LDA		_global_flags_array.byte16
@@ -2748,28 +2748,30 @@ sub_17522D:
 		STA		byte_74
 		LDA		_playerWorldY
 		STA		byte_75
-		LDA		byte_92						; analyze current standing-on tile
+		LDA		_standing_tile						; analyze current standing-on tile
 		LDX		#$F
-		CMP		#$A								; piece of town?
+		CMP		#TILE_OVERWORLD_TOWN_LEFT
 		BEQ		loc_175292
-		CMP		#$B								; piece of town?
+		CMP		#TILE_OVERWORLD_TOWN_RIGHT
 		BEQ		loc_175292
-		CMP		#$C								; piece of castle?
+		CMP		#TILE_OVERWORLD_CASTLE_BOTTOMLEFT
 		BEQ		loc_1752A1
-		CMP		#$D								; piece of castle?
+		CMP		#TILE_OVERWORLD_CASTLE_BOTTOMRIGHT
 		BEQ		loc_1752A1
 		CMP		#$11
 		BEQ		loc_1752BE
 		CMP		#$15
 		BEQ		loc_1752BE
-		CMP		#$E
+		CMP		#TILE_OVERWORLD_TOWER_BOTTOM
 		BEQ		loc_1752C7
-		CMP		#$F
+		CMP		#TILE_OVERWORLD_SMALL_CAVE
 		BEQ		loc_1752C7
 		CMP		#$13
 		BEQ		loc_1752C7
 		JSR		sub_17592E
 		BCS		loc_1752B0
+
+; test whether we just stepped onto the phantom ship
 		LDA		_playerWorldX
 		CMP		_ghostShipWorldX
 		BNE		loc_17527F
@@ -2778,7 +2780,8 @@ sub_17522D:
 		BNE		loc_17527F
 		LDA		_location_type
 		BNE		loc_17527F
-		JMP		sub_175342
+		JMP		_sailed_onto_phantom_ship
+
 loc_17527F:
 		FARX	_bE_s23
 		LDA		#0
@@ -2879,8 +2882,8 @@ sub_17532D:
 		LDY		_playerMapY
 		JSR		_map_ReadTileCheckedXY
 		LDA		word_7C
-		STA		byte_92
-		AND		#$E0
+		STA		_standing_tile
+		AND		#$E0 ; fetch some top bit flags out of _standing_tile
 		STA		byte_8C
 		FARX	_b5_s9
 		JMP		_location_palette_and_rand_update
@@ -2888,7 +2891,7 @@ sub_17532D:
 ; =============== S U B	R O U T	I N E =======================================
 ; When sailing onto the phantom ship?
 ;
-sub_175342:
+_sailed_onto_phantom_ship:
 		FARX	_bE_s32
 		FARX	_bB_s4_apu_set_flag0
 		JSR		_pal_fade_out
@@ -2916,8 +2919,8 @@ sub_17536E:
 		FARX	_bE_s25
 		RTS
 loc_175376:
-		LDA		byte_92
-		FARX	_bE_s1A
+		LDA		_standing_tile
+		FARX	_bE_s1A ; classify _standing_tile
 		BCS		loc_175397
 		CMP		#2
 		BEQ		loc_17538D
@@ -3235,7 +3238,7 @@ loc_1755A0:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1755AB:
-		LDA		byte_92
+		LDA		_standing_tile
 		AND		#$1F
 		TAX
 		LDA		_tile_type_and_collision_flags,X
@@ -3530,7 +3533,7 @@ sub_1757C0:
 		LDX		_playerWorldX
 		LDY		_playerWorldY
 		JSR		sub_176D3A
-		STA		byte_92
+		STA		_standing_tile
 		LDX		_player_vehicle
 		BEQ		loc_1757D2
 		DEX
@@ -3643,13 +3646,13 @@ loc_175877:
 		AND		#2
 		BEQ		loc_17588B
 		LDA		word_7C
-		STA		byte_92
+		STA		_standing_tile
 		CLC
 		RTS
 loc_17588B:
 		LDA		word_7C
-		STA		byte_92
-		AND		#$1F
+		STA		_standing_tile
+		AND		#$1F ; mask flags out of _standing_tile
 		FARX	_bD_s3
 		BCC		loc_1758C3
 		AND		#$F
@@ -6500,7 +6503,7 @@ _sys_idx_lib:
 		FILE_IDX	$C,_bC_s0_npc_anim_script_init	; $97
 		FILE_IDX	$C,_bC_s1					; $157
 		FILE_IDX	$C,_bC_s2					; $5E
-		FILE_IDX	$C,_bC_s3					; $82
+		FILE_IDX	$C,_bC_s3_refresh_standing_tile					; $82
 		FILE_IDX	$C,_bC_s4					; $83
 		FILE_IDX	$C,_bC_s5					; $84
 		FILE_IDX	$C,_bC_s6					; $85

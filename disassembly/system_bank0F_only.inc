@@ -127,13 +127,17 @@ loc_176D34:
 ; =============== S U B	R O U T	I N E =======================================
 sub_176D3A:
 		LDA		#5
-		JSR		_mmc1_prg_set
+		JSR		_mmc1_prg_set ; set bank 5
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
+; Involved in reading a tile from the current overworld. probably should be called worldmap_gettile or somesuch
+;
 sub_176D3F:
 		JSR		_map_ClearReadTiles
 		LDA		_location_type
-		CMP		#2
+		CMP		#LOCATION_TYPE_ALEFGARD
 		BEQ		sub_176D12	;	tailcall if alefgard
 
 ; stash X and Y to their usual place in $74,$77

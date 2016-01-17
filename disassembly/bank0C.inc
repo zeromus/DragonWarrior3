@@ -4,7 +4,7 @@
 		PTR_IDX		_bC_s0_npc_anim_script_init
 		PTR_IDX		_bC_s1
 		PTR_IDX		_bC_s2
-		PTR_IDX		_bC_s3
+		PTR_IDX		_bC_s3_refresh_standing_tile
 		PTR_IDX		_bC_s4
 		PTR_IDX		_bC_s5
 		PTR_IDX		_bC_s6
@@ -1875,11 +1875,13 @@ sub_128CAB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_bC_s3:
+; Refreshes _standing_tile
+;
+_bC_s3_refresh_standing_tile:
 		LDX		_playerWorldX
 		LDY		_playerWorldY
 		JSR		sub_176CA4
-		STA		byte_92
+		STA		_standing_tile
 		LDX		_playerWorldX
 		LDY		_playerWorldY
 
@@ -1926,8 +1928,8 @@ loc_128D09:
 		EOR		#$80
 		STA		_players_pos_list+$D
 loc_128D15:
-		LDA		byte_92
-		STA		byte_93
+		LDA		_standing_tile
+		STA		byte_93 ; copy to 4 directions to test whether we can walk onto them ?
 		STA		byte_94
 		STA		byte_95
 		STA		byte_96
@@ -2122,7 +2124,7 @@ _bC_s34:
 		JSR		sub_128F4F
 		FARX	_bE_s22
 		JSR		_pal_fade_out
-		LDA		#$C5
+		LDA		#$C5 ; Cave Northwest of Tantegal B3
 		STA		_mapNumber
 		LDA		#7
 		STA		_playerMapX
@@ -2139,8 +2141,8 @@ _bC_s34:
 		JSR		_ppu_on_and_fade_in
 		LDA		#$80
 		STA		_global_flags_array.byte10
-		LDA		#$A
-		STA		byte_92
+		LDA		#$A ; TILE_???????
+		STA		_standing_tile
 		LDX		#$B
 loc_128EEB:
 		LDA		#$F
@@ -2474,8 +2476,8 @@ sub_129120:
 		MSGX	_msg_m00,$190
 		JSR		_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		JSR		_warp_bE_sB_arg0
-		LDA		#$1E
-		STA		byte_92
+		LDA		#$1E ; TILE_????? OPEN_CHEST?
+		STA		_standing_tile
 		LDX		#$10
 		STX		word_4
 		LDY		#$E
@@ -2538,12 +2540,12 @@ loc_129199:
 		STA		_playerMapX
 		LDA		#8
 		STA		_playerMapY
-		LDA		#$17
+		LDA		#$17 ; Jipang
 		STA		_mapNumber
 		LDA		#2
 		STA		_playerFacingDir
-		LDA		#$12
-		STA		byte_92
+		LDA		#$12 ; TILE_????
+		STA		_standing_tile
 		LDA		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		STA		_world_map_steps_count
 		JSR		loc_1752EB

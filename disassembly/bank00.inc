@@ -514,10 +514,10 @@ loc_82DC:
 		ADC		word_4A
 		JMP		sub_835A
 .check_encounter_foot:
-		LDA		byte_92						; no random encounters in non-terrain tiles (after 8, theyre non-terrain tiles (castles and such)
-		CMP		#8 
+		LDA		_standing_tile						; no random encounters in non-terrain tiles (>=8, theyre non-terrain tiles (castles and such)
+		CMP		#TILE_OVERWORLD_FIRST_NONTERRAIN
 		BCC		loc_8307
-		CMP		#$1E						; glacier terrain type was patched in here. it counts as terrain
+		CMP		#TILE_OVERWORLD_GLACIER						; glacier terrain type was patched in here. it counts as terrain
 		BEQ		loc_8305
 		RTS
 loc_8305:
@@ -6108,7 +6108,7 @@ sub_AE12:
 		AND		#$7F						; remove equip bit
 		CMP		#ITEM_WING_OF_WYVERN
 		BEQ		loc_AE1D
-		SYSX	_display_window,WND_LOCATION_LIST			; that one's special, we need to launch a "where" places list.
+		SYSX	_display_window,$3E			; that one's special, we need to launch a "where" places list.
 loc_AE1D:
 		LDY		#$FD						; pre-roll loop one step early
 		LDA		byte_48						; reload target item in case above jsr whacked it..
