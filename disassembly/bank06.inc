@@ -2599,7 +2599,7 @@ _b6_s1D_hero_rest_at_home_anim:
 		SYSX	_apu_load,BGM_SLEEP_JINGLE
 		JSR		_pal_fade_out
 		FARX	_b0_s54_heal_us_all_max
-		FARX	_bD_s11
+		FARX	_bD_s11_restore_party_MP
 		FARX	_bD_s28_frame_palette_by_status_adjust
 		LDA		#4
 		STA		_playerMapX

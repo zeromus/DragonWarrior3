@@ -1238,7 +1238,7 @@ loc_B272B:
 		LSR
 		LSR
 		TAX
-		LDA		byte_B27AA,X
+		LDA		_sunlight_tween_tbl,X
 		STA		_world_map_steps_count
 		FARX	_b6_s8_world_map_pal_update
 		JSR		_ppu_set_dequeue_flag
@@ -1291,7 +1291,7 @@ loc_B278A:
 		CPX		word_40
 		BNE		loc_B275E
 		FARX	_b0_s54_heal_us_all_max
-		FARX	_bD_s11
+		FARX	_bD_s11_restore_party_MP
 		FARX	_b4_s1A_status_pal_adjust_and_update
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip
 		FARX	_bC_s20_warp_bE_sB_arg0
@@ -1301,7 +1301,7 @@ locret_B27A9:
 		RTS
 
 ; a small table used for tweening the ambient light state
-byte_B27AA:
+_sunlight_tween_tbl:
 		.BYTE	  DAYNIGHT_CYCLE_DAWN
 		.BYTE	  $1E
 		.BYTE	  DAYNIGHT_CYCLE_JUST_BEFORE_NOON

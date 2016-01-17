@@ -1807,9 +1807,8 @@ _b0_s7_player_MMP_read:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; adds to the player's MP value stored in byte_CF/byte_D0, clamps at MMP
+; adds to the player's MP value stored in u8[CF], clamps at MMP
 ;
-;"sub_PC_AddMP"
 _b0_s8_player_MP_add:
 		LDA		byte_CE
 		ASL

@@ -8335,7 +8335,7 @@ sub_12B7C8:
 		BNE		locret_12B7C7
 		FARX	_b2_s7_screen_spell_blink
 		FARX	_b0_s54_heal_us_all_max
-		FARX	_bD_s11
+		FARX	_bD_s11_restore_party_MP
 		FARX	_b4_s1A_status_pal_adjust_and_update
 locret_12B7E0:
 		RTS

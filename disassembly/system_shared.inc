@@ -6560,7 +6560,7 @@ _sys_idx_lib:
 		FILE_IDX	$D,_bD_sD					; $DD
 		FILE_IDX	$D,_bD_sE					; $106
 		FILE_IDX	$D,_bD_s10					; $184
-		FILE_IDX	$D,_bD_s11					; $18B
+		FILE_IDX	$D,_bD_s11_restore_party_MP					; $18B
 		FILE_IDX	$D,_bD_s12					; $102
 		FILE_IDX	$D,_bD_s13					; $103
 		FILE_IDX	$D,_bD_s14					; $10D
