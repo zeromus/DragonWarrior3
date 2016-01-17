@@ -570,7 +570,7 @@ _oob_diamond_y_tbl:
 		LDY		byte_77				; load Y coordinate
 		INY									; increment? that's a surprise
 		TYA
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDX		#byte_24
 		LDA		_mapWidth
 		JSR		_sub8_from_16	; now subtracting the map width back off? undoing the increment above?
@@ -2386,14 +2386,14 @@ _mdec_Command1_FillBox:
 ; in the end, we have coords at ($7,8) and ($9,A)
 		LDA		_mapWidth
 		LDX		#word_4
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		STA		word_6+1
 		LDA		word_4
 		STA		byte_8
 		JSR		_mdec_ReadPtr     ; read bottom right corner
 		LDA		_mapWidth
 		LDX		#word_4
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		STA		byte_9
 		LDA		word_4
 		STA		byte_A
@@ -2914,7 +2914,7 @@ _areamap_ReadTileXY:
 		STA		word_6+1
 		TYA
 		LDX		#word_6
-		JSR		_mul16_to_8		; using word_6, multiply Y by map width
+		JSR		_mul16_by_8		; using word_6, multiply Y by map width
 		LDA		#0
 		LDY		#byte_74
 		LDX		#word_6

@@ -1959,7 +1959,7 @@ sub_B2BB5:
 		STA		word_3C+1
 		TXA
 		LDX		#word_3C
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_tavern_chars_level]
 		LDY		#>[_tavern_chars_level]
 		JMP		_add16_to_16				; tailcall
@@ -2888,7 +2888,7 @@ sub_B31EA:
 		STA		word_40+1
 		LDA		byte_44
 		LDX		#word_40
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_40
 		CLC
 		RTS

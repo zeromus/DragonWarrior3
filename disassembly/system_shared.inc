@@ -87,9 +87,8 @@ locret_174054:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; u16[X]*=A
-; should be called: _mul16_by_8
 ;
-_mul16_to_8:
+_mul16_by_8:
 		STA		_tmp21
 		LDA		#0
 		STA		_tmp21+1
@@ -119,7 +118,7 @@ loc_17406E:
 ; divides value in (X) by divisor in A. quotient left in (X) and remainder is in A
 ; [X]/=A
 ;
-_div16_to_8:
+_div16_by_8:
 		STA		_tmp21+2
 		TYA
 		PHA
@@ -3974,7 +3973,7 @@ loc_175A81:
 		LDA		(word_6C),Y
 		STA		_mapHeight
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_4
 		SEC
 		SBC		#1
@@ -6286,7 +6285,7 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s7_player_MMP_read					; $28
 		FILE_IDX	$0,_b0_s8_player_MP_add					; $29
 		FILE_IDX	$0,_b0_s9_player_MP_subtract					; $2A
-		FILE_IDX	$0,_b0_sB_player_MP_consume					; $2C
+		FILE_IDX	$0,_b0_sB_player_MP_test					; $2C
 		FILE_IDX	$0,_b0_sC_player_LV_read; $2D
 		FILE_IDX	$0,_b0_sD_tavern_char_LV_read					; $2E
 		FILE_IDX	$0,_b0_sE_player_STATUS_read					; $2F

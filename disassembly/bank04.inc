@@ -673,7 +673,7 @@ loc_68418:
 		PHA
 		LDX		#word_4
 		LDA		byte_46
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		PLA
 		TAY
 		CLC
@@ -1425,7 +1425,7 @@ loc_6886E:
 		STX		byte_11
 		TYA
 		LDX		#byte_11
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		JSR		_rand_ex
 		STA		byte_10
 		LDX		#0
@@ -1619,7 +1619,7 @@ loc_6897F:
 locret_68998:
 		RTS
 .bs_enemy_turn:
-		JSR		sub_68AC6 ; ZING
+		JSR		sub_68AC6
 		BEQ		locret_68998
 		LDX		_bs_curr_actor
 		LDA		byte_566
@@ -1984,7 +1984,7 @@ _bs_emove_stage1_06_attack_maybe_numb:
 		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_6B2E6
-		JSR		sub_68E69
+		JSR		_bs_emove_scorchingbreath_foreach_cb
 		JMP		_b4_s6_wndBTL_STAT
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -2251,7 +2251,7 @@ _bs_emove_stage1_10_sweet_breath:
 		JSR		sub_69096
 		JMP		_bs_action_foreach_live_player
 loc_68DFD:
-		JMP		sub_69C86
+		JMP		_bs_spell_sleep
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_11_toxic_breath:
@@ -2278,13 +2278,13 @@ sub_68E1E:
 		ASL
 		TAX
 		LDA		_players_status+1,X
-		AND		#$20
-		BNE		locret_68E42
+		AND		#PLAYER_STATUS_POISON
+		BNE		locret_68E42 ; skip processing if player isn't poisoned
 		LDA		#$60
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_68E43
 		LDA		_players_status+1,X
-		ORA		#$20
+		ORA		#PLAYER_STATUS_POISON
 		STA		_players_status+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D ; "the poison has effected"
 locret_68E42:
@@ -2307,33 +2307,34 @@ _bs_emove_stage1_12_scorching_breath:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
-		JSR		sub_68E69
+		JSR		_bs_emove_scorchingbreath_foreach_cb
 		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68E69:
+_bs_emove_scorchingbreath_foreach_cb:
 		JSR		sub_6B3D2
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68E8D
 		TYA
 		ASL
 		TAX
-		LDA		_players_status+1,X
-		AND		#$40
-		BNE		locret_68E8D
+		LDA		_players_status+1,X ; test NUMB state
+		AND		#PLAYER_STATUS_NUMB
+		BNE		locret_68E8D ; if player is already numb, don't numb again
 		LDA		#$20
-		JSR		sub_6A84F
-		BCS		loc_68E8E
-		LDA		_players_status+1,X
-		ORA		#$40
+		JSR		_bs_player_luck_test
+		BCS		loc_68E8E ; branch if player was lucky
+		LDA		_players_status+1,X ; set NUMB status for that player
+		ORA		#PLAYER_STATUS_NUMB
 		STA		_players_status+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$34 ; "is numb and unable to move"
 locret_68E8D:
 		RTS
 loc_68E8E:
 		JSR		sub_6B2EF
-		BNE		locret_68E8D
+		BNE		locret_68E8D ; test result of above call
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$35 ; "dodges the gale of breath"
+; uhhhh how can we fall through here? it makes no sense
 
 ; =============== S U B	R O U T	I N E =======================================
 ; enemy chants an offensive spell on a single party member
@@ -2433,7 +2434,7 @@ loc_68F2C:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_68F70
 		STA		byte_CE
-		LDA		#$20
+		LDA		#$20 ; basic probability for luck test
 		STA		byte_47
 loc_68F37:
 		JSR		sub_6B347
@@ -2445,27 +2446,27 @@ loc_68F41:
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_68F6C
 		JSR		_bs_check_sacred_amulet_equpped
-		BEQ		loc_68F6D
+		BEQ		loc_68F6D ; branch down to avoid effect
 		LDA		#ITEM_ANGELS_ROBE ; check for angel's robe equipped
 		JSR		_bs_check_inventory
 		CMP		#ITEM_EANGELS_ROBE
-		BNE		loc_68F59
-		LSR		byte_47
+		BNE		loc_68F59 ; branch down if it isn't equipped
+		LSR		byte_47 ; reduce probability of being effectged
 loc_68F59:
 		LDA		byte_47
-		JSR		sub_6A84F
-		BCS		loc_68F6D
+		JSR		_bs_player_luck_test
+		BCS		loc_68F6D ; branch if player is lucky
 		LDA		#ITEM_STONE_OF_LIGHT ; check for stone of light possessed
 		JSR		_bs_check_inventory
 		CMP		#ITEM_STONE_OF_LIGHT
-		BEQ		sub_68F73
-		JMP		sub_68F86
+		BEQ		sub_68F73 ; branch if we have a stone of life - it will save the player.
+		JMP		sub_68F86 ; TAILCALL to handle death
 locret_68F6C:
 		RTS
 loc_68F6D:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$83 ; "did not die"
 loc_68F70:
-		JMP		loc_6991A
+		JMP		loc_6991A ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68F73:
@@ -2501,15 +2502,15 @@ sub_68F98:
 		JSR		_sram_b0_s2_player_HP_read
 		LDX		#word_4
 		LDA		#4
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		LDA		#$FD
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_4+1
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
 		LDA		#4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#5
 		JSR		_add8_to_16	; A = value
 		JMP		loc_6A582
@@ -2542,7 +2543,7 @@ sub_68FE0:
 		LDA		#SPELL_DEFEAT
 		JSR		_bs_enemy_chant_msg
 		JSR		_bs_extract_target_from_move
-		JMP		sub_6995B
+		JMP		_bs_spell_defeat
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Prints "monster-N chants <spell>"!
@@ -2582,7 +2583,7 @@ loc_6900A:
 		JSR		sub_68F73
 		JMP		sub_69053
 loc_6902C:
-		JSR		sub_6B3D8
+		JSR		_bs_it_has_no_effect_msg
 		JMP		sub_69053
 loc_69032:
 		JSR		_rand_ex
@@ -2643,7 +2644,7 @@ _bs_emove_stage1_22_chant_sleep:
 loc_6908E:
 		LDA		#SPELL_SLEEP
 		JSR		_bs_enemy_chant_msg
-		JMP		sub_69C86 ; TAILCALL
+		JMP		_bs_spell_sleep ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69096:
@@ -2671,7 +2672,7 @@ _bs_emove_stage1_23_chant_stopspell:
 loc_690BD:
 		LDA		#SPELL_STOPSPELL
 		JSR		_bs_enemy_chant_msg
-		JMP		sub_69D60
+		JMP		_bs_spell_stopspell
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_690C7:
@@ -2709,7 +2710,7 @@ _bs_emove_stage1_25_chant_defence:
 loc_690FD:
 		LDA		#SPELL_DEFENCE
 		JSR		_bs_enemy_chant_msg
-		JMP		sub_69F23
+		JMP		_bs_spell_defence
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69107:
@@ -2731,7 +2732,7 @@ _bs_emove_stage1_26_chant_surround:
 loc_69125:
 		LDA		#SPELL_SURROUND
 		JSR		_bs_enemy_chant_msg
-		JMP		sub_69DDF
+		JMP		_bs_spell_surround
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6912F:
@@ -2793,7 +2794,7 @@ loc_6918F:
 		AND		#$40
 		BNE		loc_691BA
 		LDA		#$40
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_691BA
 		LDA		_players_status+1,X
 		AND		#$10
@@ -2804,11 +2805,11 @@ loc_6918F:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46 ; "is confused"
 		JMP		_b4_s6_wndBTL_STAT
 loc_691BA:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 loc_691BD:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$85 ; "becomes even more confused"
 loc_691C0:
-		JMP		sub_69E7F
+		JMP		_bs_spell_chaos
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_29_chant_slow:
@@ -2838,7 +2839,7 @@ loc_691E9:
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_69219 ; branch if dead (I think)
 		LDA		#$C0
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_6921A
 		JSR		_sram_b0_s12_player_EffAGI_calc	; EffAGI calculated to word_4
 		LDA		_players_rAGI,X
@@ -2860,13 +2861,13 @@ loc_6920F:
 locret_69219:
 		RTS
 loc_6921A:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6921D:
 		LDA		#SPELL_SLOW
 		JSR		_bs_enemy_chant_msg
-		JMP		sub_69ABF
+		JMP		_bs_spell_slow
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_2A_chant_limbo:
@@ -2894,7 +2895,7 @@ loc_69244:
 		RTS
 loc_69251:
 		LDA		#$32
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_69264
 		LDX		byte_4C
 		DEX
@@ -2903,7 +2904,7 @@ loc_69251:
 		LDA		word_4
 		BNE		loc_69267
 loc_69264:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 loc_69267:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4F ; "is sent flying far away"
 		LDA		byte_CE
@@ -3032,7 +3033,7 @@ loc_6932C:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6933E:
 		JSR		sub_6B32F
-		JMP		sub_69F64
+		JMP		_bs_spell_increase
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_increases_foreach_cb:
@@ -3245,7 +3246,7 @@ loc_694AD:
 		BNE		loc_6948A
 		RTS
 loc_694B5:
-		JMP		sub_69BE0
+		JMP		_bs_spell_heal_multiple
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_694B8:
@@ -3376,7 +3377,7 @@ loc_6957D:
 ; =============== S U B	R O U T	I N E =======================================
 sub_69580:
 		LDA		byte_568
-		AND		#$FC
+		AND		#$FC ; %11111100 (remove 'NN' from byte_568)
 		STA		byte_568
 		RTS
 
@@ -3463,7 +3464,7 @@ loc_6960C:
 loc_6961A:
 		LDA		byte_CE
 		PHA
-		JSR		sub_6AABA
+		JSR		_bs_some_attack_command
 		PLA
 		STA		byte_CE
 		LDA		word_6
@@ -3566,7 +3567,7 @@ loc_696DF:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_696E8:
-		JSR		sub_6AABA
+		JSR		_bs_some_attack_command
 		LDA		word_6
 		CMP		#$FF
 		BNE		loc_696F4
@@ -3660,22 +3661,22 @@ _bs_pcAction_01_chant:
 ; these entries have two parts, get the bottom 6 bits (must be the MP cost)
 		AND		#$3F
 		FARX	_b0_s67_mysterious_hat_mp_modifier
-		JSR		_sram_b0_sB_player_MP_consume
+		JSR		_sram_b0_sB_player_MP_test
 		BCC		loc_697C5
 		JSR		_sram_b0_s9_player_MP_subtract
 		JSR		_b4_s6_wndBTL_STAT
 		LDA		_msg_directobject_param
 		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A39F
-loc_697AA:
+.bs_player_item_as_chant
 ; the table begins at entry #$12 (or is it #$11?); spells less than that use entry 0
 		LDA		byte_49
 		CMP		#$12
-		BCS		loc_697B4
+		BCS		loc_697B4 ; BCS->JAE - branch if the spell was >= $12, which is odd
 		LDA		#0
 		BEQ		loc_697B6 ; unconditional
 loc_697B4:
-		SBC		#$11
+		SBC		#$11 ; rebase to table offset
 loc_697B6:
 ; shift left for index-to-pointer and reference table
 		ASL
@@ -3736,7 +3737,7 @@ loc_697F9:
 		CMP		#$FF
 		BEQ		loc_6982C
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_4+1
 		STA		word_4
 		LDA		#0
@@ -3766,7 +3767,7 @@ _bs_sfx_enemy_casting:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69840:
+_bs_spell_multiple:
 		LDA		byte_49
 		CMP		#3
 		BCC		loc_69892
@@ -3886,7 +3887,7 @@ locret_6990C:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6990D:
+_bs_spell_beat:
 		JSR		_bs_extract_target_from_move
 		BPL		sub_69955
 		JSR		sub_6A8B3
@@ -3938,7 +3939,7 @@ sub_69955:
 		JMP		loc_68F2C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6995B:
+_bs_spell_defeat:
 		JSR		_bs_extract_target_from_move
 		BPL		sub_69955
 		JSR		sub_69966
@@ -3953,7 +3954,7 @@ sub_69966:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69973:
+_bs_spell_sacrifice:
 		LDA		#0
 		JSR		sub_699A0
 		JSR		_b4_sB
@@ -3991,7 +3992,7 @@ loc_699A4:
 		BCS		loc_699C0
 		JSR		_b4_sB
 		JSR		sub_6B5B7
-		JSR		sub_6B3D8
+		JSR		_bs_it_has_no_effect_msg
 		JMP		loc_699E9
 loc_699C0:
 		LDA		byte_55
@@ -4021,7 +4022,7 @@ loc_699E9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_699F1:
+_bs_spell_expel:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69A03
 		LDA		#<[sub_69A0F]
@@ -4033,7 +4034,7 @@ loc_69A03:
 		STA		byte_CE
 		STA		byte_D2
 		JSR		sub_6B347
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69A0F:
@@ -4049,11 +4050,11 @@ loc_69A18:
 		JSR		sub_6A3D3
 		JMP		sub_6A3CB
 loc_69A28:
-		JSR		sub_6B3D8
+		JSR		_bs_it_has_no_effect_msg
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69A2E:
+_bs_spell_limbo:
 		JSR		_bs_extract_target_from_move
 		BPL		sub_69A7A
 		JSR		sub_6A8B3
@@ -4078,7 +4079,7 @@ loc_69A49:
 		LDA		#$4E
 		BNE		loc_69A63
 loc_69A5E:
-		JSR		sub_6B3D8
+		JSR		_bs_it_has_no_effect_msg
 		PLA
 		RTS
 loc_69A63:
@@ -4101,7 +4102,7 @@ sub_69A7A:
 		JMP		loc_69230
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69A80:
+_bs_spell_robmagic:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_69A99
 		JSR		sub_6A61F
@@ -4134,7 +4135,7 @@ locret_69ABE:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69ABF:
+_bs_spell_slow:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69AD1
 		LDA		#<[sub_69ADB]
@@ -4182,7 +4183,7 @@ loc_69B0E:
 		JSR		_set_msg_number_parameter_F8_equ_A
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3E ; "'s agility goes down"
 loc_69B18:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_spell_speedup:
@@ -4261,7 +4262,7 @@ loc_69B95:
 ; HEALMORE: restore 20*random + 70 ?
 ; HEALALL: restore 40*random + 140 ?
 ;
-_bs_spell_heal_various_single:
+_bs_spell_heal_single:
 		JSR		sub_6BF22
 loc_69BA3:
 		JSR		_bs_extract_target_from_move
@@ -4296,7 +4297,7 @@ _heal_multiplier_tbl:
 		.BYTE	 $A,$14,$28
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69BE0:
+_bs_spell_heal_multiple:
 		JSR		_bs_extract_target_from_move
 		BMI		sub_69C03
 
@@ -4328,7 +4329,7 @@ sub_69C03:
 		JMP		loc_6947E
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69C09:
+_bs_spell_vivify:
 		LDA		#$80
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4347,7 +4348,7 @@ sub_69C0B:
 		LDA		byte_47
 		BEQ		loc_69C2D
 		LDA		#$80
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_69C7E
 loc_69C2D:
 		JSR		sub_69C62
@@ -4397,12 +4398,12 @@ locret_69C7D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69C81:
+_bs_spell_revive:
 		LDA		#0
 		JMP		sub_69C0B
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69C86:
+_bs_spell_sleep:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69C98
 		LDA		#<[sub_69CE7]
@@ -4436,7 +4437,7 @@ sub_69CA7:
 		AND		#8
 		BNE		locret_69D1C
 		LDA		#$60
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_69CDD
 		LDA		_player_battle_order_and_flags,Y
 		ORA		#8
@@ -4522,7 +4523,7 @@ locret_69D5F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69D60:
+_bs_spell_stopspell:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69D72
 		LDA		#<[sub_69DD9]
@@ -4553,7 +4554,7 @@ loc_69D81:
 		AND		#$20
 		BNE		locret_69DAB
 		LDA		#$60
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_69DAC
 		LDA		_players_status,X
 		ORA		#$20
@@ -4562,7 +4563,7 @@ loc_69D81:
 locret_69DAB:
 		RTS
 loc_69DAC:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69DAF:
@@ -4590,7 +4591,7 @@ sub_69DD9:
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69DDF:
+_bs_spell_surround:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69DF1
 		LDA		#<[sub_69E28]
@@ -4619,7 +4620,7 @@ loc_69E00:
 		AND		#$10
 		BNE		locret_69E24
 		LDA		#$A0
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		loc_69E25
 		LDA		_players_status,X
 		ORA		#$10
@@ -4628,7 +4629,7 @@ loc_69E00:
 locret_69E24:
 		RTS
 loc_69E25:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69E28:
@@ -4656,10 +4657,10 @@ loc_69E38:
 locret_69E55:
 		RTS
 loc_69E56:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69E5B:
+_bs_spell_return:
 		LDA		byte_6A6B
 		BNE		loc_69E7C
 		STA		byte_50
@@ -4678,7 +4679,7 @@ loc_69E7C:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens!"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69E7F:
+_bs_spell_chaos:
 		JSR		_bs_extract_target_from_move
 		BPL		sub_69EC5
 		JSR		sub_6A8B3
@@ -4707,7 +4708,7 @@ sub_69E98:
 		STA		byte_530+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$46 ; "is confused"
 loc_69EBE:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 loc_69EC1:
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$85 ; "becomes even more confused"
 locret_69EC4:
@@ -4723,6 +4724,7 @@ sub_69EC5:
 ; ATK: #$12C
 ; DEF: #$C8
 ; AGI: #$64
+;
 _bs_spell_bedragon:
 		JSR		_bs_get_current_actor_number
 		STA		byte_D2
@@ -4743,18 +4745,18 @@ _bs_spell_bedragon:
 		STA		_players_rDEF+1,X
 		LDA		#$C8
 		STA		_players_rDEF,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$47
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$47 ; "assumes the shape of a huge dragon!"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69EF8:
+_bs_spell_ironize:
 		LDA		byte_566
 		AND		#$3F
 		ORA		#$C0
 		STA		byte_566
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$54
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$54 ; "hero's party is ironized!"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F05:
+_bs_spell_sap:
 		LDA		#0
 		STA		byte_47
 		JSR		_bs_extract_target_from_move
@@ -4771,7 +4773,7 @@ loc_69F1D:
 		JMP		sub_690D8
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F23:
+_bs_spell_defence:
 		LDA		#$FF
 		STA		byte_47
 		JSR		_bs_extract_target_from_move
@@ -4787,7 +4789,7 @@ loc_69F39:
 		JMP		sub_6A6DF
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F43:
+_bs_spell_upper:
 		LDA		#0
 		STA		byte_47
 		JSR		_bs_extract_target_from_move
@@ -4806,7 +4808,7 @@ locret_69F63:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F64:
+_bs_spell_increase:
 		LDA		#$FF
 		STA		byte_47
 		JSR		_bs_extract_target_from_move
@@ -4825,7 +4827,7 @@ sub_69F7F:
 		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F85:
+_bs_spell_bounce:
 		JSR		_bs_get_current_actor_number
 		STA		byte_D2
 		ASL
@@ -4836,7 +4838,7 @@ sub_69F85:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48 ; "a wall of light appears before"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69F97:
+_bs_spell_barrier:
 		LDA		#0
 		STA		byte_D2
 		JSR		_b4_sB
@@ -4867,7 +4869,7 @@ locret_69FC4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_69FC5:
+_bs_spell_bikill:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_69FE6
 		STA		byte_CE
@@ -4906,7 +4908,7 @@ loc_6A009:
 		BNE		locret_69FC4
 		ORA		byte_565
 		STA		byte_565
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$4A ; "name's attack power increases!"
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_spell_chance:
@@ -4992,7 +4994,7 @@ loc_6A093:
 		LDX		_bs_curr_actor
 		TYA
 		STA		byte_54C,X
-		JSR		sub_69C81
+		JSR		_bs_spell_revive
 loc_6A0AC:
 		PLA
 		TAY
@@ -5010,7 +5012,7 @@ sub_6A0B4:
 		STA		byte_54C,X
 		LDA		#$1F
 		STA		byte_558,X
-		JMP		_bs_spell_heal_various_single
+		JMP		_bs_spell_heal_single
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A0C9:
@@ -5180,12 +5182,12 @@ sub_6A1E2:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1E8:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5D
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5D ; "departs"
 		JMP		sub_6ADC8
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A1EE:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5B
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$5B ; "the foe is taken off guard"
 		LDA		byte_566
 		AND		#$C3
 		ORA		#8
@@ -5314,12 +5316,12 @@ loc_6A282:
 		RTS
 
 loc_6A2C5:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens"
 loc_6A2C8:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$86
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$86 ; "but alas, it is the same as before"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A2CB:
+_bs_spell_antidote:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6A2F7
 		STA		byte_CE
@@ -5336,7 +5338,7 @@ loc_6A2D9:
 		LDA		_players_status+1,X
 		AND		#$DF
 		STA		_players_status+1,X
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$44
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$44 ; "the poison leaves name's body"
 		JMP		_b4_s6_wndBTL_STAT
 locret_6A2F6:
 		RTS
@@ -5346,7 +5348,7 @@ loc_6A2F7:
 		JMP		loc_6A333
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A2FF:
+_bs_spell_numboff:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6A333
 		STA		byte_CE
@@ -5360,15 +5362,15 @@ sub_6A30D:
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A2F6
 		LDA		_players_status+1,X
-		AND		#$40
+		AND		#PLAYER_STATUS_NUMB
 		BEQ		loc_6A333
 		LDA		_players_status+1,X
-		AND		#$BF
+		AND		#$BF ; ~PLAYER_STATUS_NUMB
 		STA		_players_status+1,X
 		LDX		byte_CE
-		LDA		#$70
+		LDA		#$70 ; turn completed marker (un-numbed player can now act next round but can't have a turn this round)
 		STA		byte_54C,X
-		LDA		#$42
+		LDA		#$42 ; "name's numbness goes away"
 loc_6A32D:
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		JMP		_b4_s6_wndBTL_STAT
@@ -5377,13 +5379,15 @@ loc_6A333:
 		BNE		loc_6A32D
 
 ; =============== S U B	R O U T	I N E =======================================
+; A: ?
+;
 sub_6A337:
 		STA		byte_65
 		LDA		byte_6A6B
 		BNE		loc_6A345
 		LDA		byte_567
 		AND		#$10
-		BNE		loc_6A358
+		BNE		loc_6A358 ; branch if not extra lucky?
 loc_6A345:
 		JSR		sub_6B994
 		BEQ		loc_6A358
@@ -5424,7 +5428,7 @@ sub_6A35F:
 		BCS		.sufficientMP
 ; print "MP is not high enough" and bail out
 		STA		_acting_enemy
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$20
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$20 ; "MP is not high enough"
 		JMP		loc_6A38F
 .sufficientMP: ;ZOOM
 		JSR		_bs_deduct_acting_enemy_MP
@@ -5438,7 +5442,7 @@ sub_6A35F:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A38A:
 		BEQ		loc_6A392
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1E
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$1E ; "but the spell is contained"
 loc_6A38F:
 		PLA
 		PLA
@@ -5447,7 +5451,7 @@ loc_6A392:
 		LDA		byte_568
 		AND		#$10
 		BEQ		locret_6A39E
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$81
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$81 ; "however, the spell is broken"
 		PLA
 		PLA
 locret_6A39E:
@@ -5513,10 +5517,10 @@ sub_6A3D3:
 		LDA		byte_568
 		AND		#1
 		BEQ		loc_6A3F1
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$88
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$88 ; "name disappears into the light"
 		JMP		sub_6ADBF
 loc_6A3F1:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3F
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3F ; "name's life is snuffed out"
 		JSR		sub_6ADB6
 locret_6A3F7:
 		RTS
@@ -5551,7 +5555,7 @@ loc_6A423:
 		JSR		sub_6A337
 		BCS		loc_6A42E
 		JSR		sub_6B5B7
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 loc_6A42E:
 		LDA		_acting_enemy
 		ASL
@@ -5702,7 +5706,7 @@ loc_6A542:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A544:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$27
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$27 ; "name is dead"
 		LDA		byte_CE
 		ASL
 		TAX
@@ -5807,7 +5811,7 @@ loc_6A5E0:
 		STA		byte_66
 		JSR		_b4_s19_heal_enemy
 		JSR		sub_6B5B7
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$14
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$14 ; "name has recovered"
 locret_6A5F6:
 		RTS
 
@@ -5827,7 +5831,7 @@ loc_6A604:
 		LDA		word_4+1
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14 ; "name has recovered"
 		JSR		_b4_s1A_status_pal_adjust_and_update
 		JMP		_b4_s6_wndBTL_STAT
 
@@ -5848,7 +5852,7 @@ loc_6A633:
 		STA		byte_CF
 		JSR		_set_msg_number_parameter_F8_equ_A
 		STA		byte_D0
-		JSR		_sram_b0_sB_player_MP_consume
+		JSR		_sram_b0_sB_player_MP_test
 		BCS		loc_6A650
 		JSR		_sram_b0_s6_player_MP_read
 		LDA		word_4
@@ -5912,7 +5916,7 @@ loc_6A6B5:
 		STA		byte_65
 		JMP		loc_6A659
 loc_6A6BD:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$12
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$12 ; "it has no effect on name"
 loc_6A6C0:
 		LDA		#0
 		STA		byte_65
@@ -5958,12 +5962,12 @@ loc_6A6E9:
 		STA		word_4
 loc_6A708:
 		LDA		#$BE
-		JSR		sub_6A84F
+		JSR		_bs_player_luck_test
 		BCS		sub_6A748
 		JSR		sub_6A823
 		JSR		sub_6A71B
 		JSR		sub_6A82E
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$16
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$16 ; "name's defense power has gone down"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A71B:
@@ -5994,7 +5998,7 @@ locret_6A747:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A748:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A74B:
@@ -6155,18 +6159,23 @@ sub_6A844:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A84F:
-		STA		byte_10
+; Does a probability test controlled by luck
+; A: basic probability argument. low value is 
+; CF: set if the result for lucky people is chosen
+; after calling this, youll always see BCS label, to be read as "if player was lucky, branch"
+;
+_bs_player_luck_test:
+		STA		byte_10 ; stash argument for later restoring
 		TXA
 		PHA
 		TYA
 		PHA
-		LDA		word_4
+		LDA		word_4 ; save u16[4] because _bs_player_luck_test_work clobbers it
 		PHA
 		LDA		word_4+1
 		PHA
 		LDA		byte_10
-		JSR		sub_6A86B
+		JSR		_bs_player_luck_test_work
 		PLA
 		STA		word_4+1
 		PLA
@@ -6178,43 +6187,45 @@ sub_6A84F:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6A86B:
+; does the work for _bs_player_luck_test
+;
+_bs_player_luck_test_work:
 		CMP		#$FF
-		BEQ		loc_6A8B1
-		PHA
+		BEQ		loc_6A8B1 ; return false if the probability was at maximum (player is guaranteed to be unlucky). not really sensible; is it ever used?
+		PHA ; stash A
 		JSR		_sram_b0_s15_player_EffLUCK_calc
-		LDA		word_4
-		PHA
-		LDA		#$80
+		LDA		word_4 ; load result of effective luck calculation (its really only 1 byte)
+		PHA ; stash for later
+		LDA		#$80 ; begin putting $180 in u16[4]
 		STA		word_4
 		LDA		#1
 		STA		word_4+1
 		LDX		#word_4
-		PLA
-		JSR		_sub8_from_16
+		PLA ; unstash EffLUCK
+		JSR		_sub8_from_16 ; u16[4] = $180 - EffLuck
 		LDA		#2
-		JSR		_div16_to_8
-		PLA
-		JSR		_mul16_to_8
+		JSR		_div16_by_8 ; u16[4] = ($180 - EffLuck)/2
+		PLA ; unstash probability argument
+		JSR		_mul16_by_8 ; u16[4] = (($180 - EffLuck)/2) * ProbabilityArg
 		LDA		#$80
-		JSR		_div16_to_8
-		LDA		word_4+1
-		BNE		loc_6A8B1
+		JSR		_div16_by_8 ; u16[4] = ((($180 - EffLuck)/2) * ProbabilityArg) / $80
+		LDA		word_4+1 ; load MSB of result
+		BNE		loc_6A8B1 ; if it's set, return false (did that mean, > 100% chance?)
 		LDA		byte_567
 		AND		#$10
-		BNE		loc_6A8B1
+		BNE		loc_6A8B1 ; test battle flags for an extra-luck bit
 		LDA		byte_567
 		AND		#$40
-		BNE		loc_6A8AB
+		BNE		loc_6A8AB ; test battle flags for another extra-luck bit.... ?? but isnt this for BOUNCE?
 		LDA		byte_566
 		AND		#$10
-		BNE		loc_6A8B1
+		BNE		loc_6A8B1 ; test battle flags for another extra-luck bit...
 loc_6A8AB:
-		JSR		_rand_ex
-		CMP		word_4
-		RTS
+		JSR		_rand_ex ; random roll
+		CMP		word_4 ; compare to computed luck-based probability from earlier
+		RTS ; CF=0 if our roll exceeded the computed probability (in keeping with >100% returning false)
 loc_6A8B1:
-		CLC
+		CLC ; return false
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -6641,7 +6652,7 @@ loc_6AAB1:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AABA:
+_bs_some_attack_command:
 		LDX		#0
 		LDA		#$FF
 loc_6AABE:
@@ -6887,7 +6898,7 @@ sub_6AC36:
 		LSR
 		LSR
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		_acting_enemy
 		ASL
 		TAX
@@ -6935,7 +6946,7 @@ _b4_sF_rand_mul_A:
 		STA		word_3C+1
 		LDX		#word_3C
 		PLA
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		word_3C+1
 		STA		word_3C
 		LDA		#0
@@ -6944,8 +6955,8 @@ _b4_sF_rand_mul_A:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; get the random number after some more additional generating, seems makes
-; the number more random
+; Saves registers and gets the random number after some more additional generating
+; seems used for making the number more random?
 ;
 _rand_ex:
 		TXA
@@ -6964,7 +6975,7 @@ loc_6ACC9:
 		TAY
 		PLA
 		TAX
-		JMP		_rand
+		JMP		_rand ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ACD6:
@@ -7010,10 +7021,10 @@ loc_6AD13:
 		LSR
 		LSR
 ; _AtkAdv*=roll/4:
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#$40
 ; tailcall. after this, something like a damage is left in $4
-		JMP		_div16_to_8
+		JMP		_div16_by_8
 
 loc_6AD1F:
 		JSR		_rand_ex
@@ -7110,9 +7121,9 @@ sub_6ADA4:
 		CLC
 		ADC		#$36
 		LDX		#word_4
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#$40
-		JMP		_div16_to_8 ; TAILCALL
+		JMP		_div16_by_8 ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADB6:
@@ -7240,6 +7251,8 @@ loc_6AE66:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Uhhh I dont understand somethings as well as I might let on
+;
 _bs_pcAction_03_item:
 		JSR		sub_6B2FE
 		JSR		_bs_extract_target_from_move
@@ -7253,21 +7266,33 @@ loc_6AE7D:
 		LDA		byte_558,X
 		STA		_msg_directobject_param
 		STA		word_4
-		CMP		#$70
+		CMP		#$70 ; special handling for fairy flute?
 		BEQ		loc_6AE97
-		CMP		#$5B
+		CMP		#$5B ; special handling for dream ruby?
 		BEQ		loc_6AE92
-		CMP		#$74
-		BNE		loc_6AEA2
+		CMP		#$74 ; special handling for spiders web?
+		BNE		loc_6AEA2 ; branch if not spiders web
+; must be spiders web ?
 loc_6AE92:
 		LDA		#$10
 		JSR		_bs_set_battleflag_567
 loc_6AE97:
 		LDA		word_4
-		CMP		#$70
-		BNE		loc_6AEA2
-		LDA		#$1C
-		JSR		sub_6B0DB
+		CMP		#$70 ; test again for fairy flute?
+		BNE		loc_6AEA2 ; standard handling
+; must be fairy flute (puts enemy to sleep)
+		LDA		#BGM_JINGLE_FAIRY_FLUTE
+		JSR		_bs_play_jingle
+
+; this is some really weird logic
+; Y will be the current index in a table of 'battle item effects'
+; X will be the current index looping through all possible items
+; as we loop through X, each time we find an item useful in battle, we 
+; 1. increment Y
+; 2. check if X == the item we were looking for
+; if it was the item we were looking for, then execute its special effect
+; otherwise keep going, and eventually run out of items and fail (we'll never find our item again once we pass it with X)
+; whats the purpose of all this? to compress 128 byte item tables down to the size of the number of items usable in battle. saves a few hundred bytes I guess.
 loc_6AEA2:
 		LDX		#0
 		LDY		#0
@@ -7278,29 +7303,33 @@ loc_6AEA6:
 		BMI		loc_6AEBA
 loc_6AEAF:
 		INX
-		CPX		#$7F
-		BNE		loc_6AEA6
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$03
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40
+		CPX		#$7F ; some kind of sanity check to stop at the end of the possible items
+		BNE		loc_6AEA6 ; loop back up..
+; the only way "nothing happens" is if we made it through the list completely??
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$03 ; "name uses the item"
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens" BREAK
+
 loc_6AEBA:
 		INY
-		CPX		word_4
-		BNE		loc_6AEAF
+		CPX		word_4 ; did Y = the target item?
+		BNE		loc_6AEAF ; nope, branch up
+; done with loop
+
 		DEY
-		LDA		byte_6B23D,Y
+		LDA		_bs_item_use_msg_tbl,Y ; get a basic message to be displayed for how you wield the item
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 		CPY		#$B
-		BCS		loc_6AED0
-		LDA		byte_6B265,Y
+		BCS		loc_6AED0 ; BCS->JAE - branch if we're >= #$B (the length of _bs_weapon_effect_msg_tbl)
+		LDA		_bs_weapon_effect_msg_tbl,Y
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
 loc_6AED0:
 		CPY		#4
 		BNE		loc_6AED7
 		JSR		_b4_sB
 loc_6AED7:
-		LDA		byte_6B270,Y
-		STA		byte_49
-		LDA		#_b0_d42_item_use_effects_list_fidx
+		LDA		_bs_item_effect_tbl,Y
+		STA		byte_49 ; patch the effect as if it were a fake spell
+		LDA		#_b0_d42_item_use_effects_list_fidx ; load info about the item - is it consumable?
 		JSR		_sys0_byte_read_x
 		AND		#4
 		BEQ		loc_6AEEC
@@ -7308,10 +7337,10 @@ loc_6AED7:
 		JSR		_b4_s20
 		JSR		_sram_b0_s2A_player_inventory_item_remove
 loc_6AEEC:
-		JMP		loc_697AA
+		JMP		.bs_player_item_as_chant ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AEEF:
+_bs_fake_spell_36:
 		LDA		#<[sub_6AEFE]
 		STA		word_3E
 		LDA		#>[sub_6AEFE]
@@ -7324,14 +7353,14 @@ sub_6AEFE:
 		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF04:
+_bs_fake_spell_various:
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		STA		byte_42
 		JMP		sub_6B076
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF0E:
+_bs_fake_spell_wizards_ring:
 		LDA		#$19
 		JSR		_b4_sF_rand_mul_A
 		ADC		#$A
@@ -7343,15 +7372,15 @@ sub_6AF0E:
 		JSR		_rand
 		CMP		#$19
 		BCS		locret_6AF33
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$A6
-		LDA		#$4E
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$A6 ; "the ring silently crumbles into pieces"
+		LDA		#ITEM_WIZARDS_RING
 		JSR		_b4_s20
 		JMP		_sram_b0_s2A_player_inventory_item_remove
 locret_6AF33:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF34:
+_bs_fake_spell_black_pepper:
 		LDA		#<[sub_6AF53]
 		LDX		#>[sub_6AF53]
 		JSR		_store_AX_in_3E
@@ -7366,23 +7395,23 @@ sub_6AF34:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF53:
 		JSR		sub_6B3D2
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C ; "name sneezes!"
 		JMP		.bs_action_foreach_live_player_continue
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6AF5C:
 		JSR		sub_6B5B7
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$9C ; "name sneezes!"
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF65:
+_bs_fake_spell_dream_ruby:
 		JSR		_bs_extract_target_from_move
 		STA		byte_CE
-		JMP		sub_68E69
+		JMP		_bs_emove_scorchingbreath_foreach_cb
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF6D:
+_bs_fake_spell_strength_seed:
 		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_STR,X
@@ -7391,7 +7420,7 @@ sub_6AF6D:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF7B:
+_bs_fake_spell_agility_seed:
 		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_AGI,X
@@ -7400,7 +7429,7 @@ sub_6AF7B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF89:
+_bs_fake_spell_intelligence_seed:
 		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_INT,X
@@ -7409,7 +7438,7 @@ sub_6AF89:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AF97:
+_bs_fake_spell_luck_seed:
 		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_LUCK,X
@@ -7418,7 +7447,7 @@ sub_6AF97:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AFA5:
+_bs_fake_spell_vitality_seed:
 		JSR		_bs_get_current_actor_number
 		TAX
 		LDA		_players_VIT,X
@@ -7448,7 +7477,7 @@ loc_6AFC7:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AFD2:
+_bs_fake_spell_acorns_of_life:
 		JSR		_rand
 		AND		#3
 		CLC
@@ -7466,10 +7495,10 @@ sub_6AFD2:
 loc_6AFEF:
 		LDA		word_4
 		JSR		_set_msg_number_parameter_F8_equ_A
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$A8
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$A8 ; "the maximum HP goes up # points"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6AFF7:
+_bs_fake_spell_medical_herb:
 		LDA		#$F
 		JSR		_b4_sF_rand_mul_A
 		ADC		#$23
@@ -7483,9 +7512,9 @@ nullsub_12:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B008:
-		LDA		#$1B
-		JSR		sub_6B0DB
+_bs_fake_spell_silver_harp:
+		LDA		#BGM_JINGLE_SILVER_HARP
+		JSR		_bs_play_jingle
 		LDA		#<[sub_6B01E]
 		STA		word_40
 		LDA		#>[sub_6B01E]
@@ -7500,7 +7529,7 @@ sub_6B01E:
 		JMP		sub_6A3CB
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B027:
+_bs_fake_spell_sphere_of_light:
 		LDA		byte_6A6F
 		CMP		#$85
 		BNE		loc_6B048
@@ -7517,13 +7546,16 @@ loc_6B048:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "But nothing happens!"
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B04B:
+; Dude, this is amazingly complicated for such a silly thing
+; Ultimately it reads some traits of the target enemy to determine how likely it is to work
+;
+_bs_fake_spell_fairy_water:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_6B071
-		JSR		sub_6AABA
+		JSR		_bs_some_attack_command
 		LDA		#$14
 		JSR		_b4_sF_rand_mul_A
-		ADC		#$E
+		ADC		#$E ; effectively, [14,33]
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
@@ -7531,19 +7563,21 @@ sub_6B04B:
 		STA		_acting_enemy
 		JSR		sub_6B5B7
 		LDA		#$D
-		JSR		sub_6A337
-		BCC		loc_6B073
+		JSR		sub_6A337 ; determines whether it has any effect...
+		BCC		loc_6B073 ; branch
 		JMP		loc_6A42E
 loc_6B071:
 		STA		byte_D2
 loc_6B073:
-		JMP		sub_6B3D8
+		JMP		_bs_it_has_no_effect_msg
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B076:
 		LDA		byte_42
 		STA		_msg_directobject_param
 		JSR		_bs_get_current_actor_number
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1F:
@@ -7567,7 +7601,7 @@ loc_6B092:
 		RTS
 loc_6B098:
 		LDA		_players_inventory_list,X
-		ORA		#$80
+		ORA		#$80 ; equip it?
 		STA		_players_inventory_list,X
 		RTS
 
@@ -7609,12 +7643,12 @@ _bs_pcAction_06_equip_attack:
 		LDA		byte_558,X
 		STA		byte_42
 		JSR		sub_6B076
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$06
+		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$06 ; "name grabs the item"
 		JSR		_b4_sA_clear_chatbox
 		JMP		_bs_pcAction_00_attack
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B0DB:
+_bs_play_jingle
 		FARX	_bB_s3_apu_load
 		FARX	_bB_s7_apu_wait
 		SYSX	_apu_load,BGM_BATTLE
@@ -7750,15 +7784,15 @@ loc_6B1B2:
 loc_6B1C1:
 		LDX		#byte_59
 		LDA		#2
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#3
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		INC		byte_59
 		JMP		loc_6B1DB
 loc_6B1D2:
 		LDX		#byte_59
 		LDA		#4
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 		INC		byte_59
 loc_6B1DB:
 		LDA		byte_59
@@ -7821,16 +7855,113 @@ loc_6B235:
 		LDA		#$20
 		JSR		sub_6B168
 		JMP		loc_6B201
-byte_6B23D:
-		.BYTE	$8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$8E,$94,$8E,$9A,$9F,$9F,$9F,$9F
-		.BYTE	$9F,$A5,$9B,$9A,$9E,  3,  3,  3,  3,  3,$A7,  3,  3,$9B,$AA,$AB
-		.BYTE	$AC,  3,$AE,$AF,  3,$9B,$B3,$9A
-byte_6B265:
-		.BYTE	$8F,$90,$91,$97,$98,$99,$92,$93,$90,$95,$96
-byte_6B270:
-		.BYTE	  0,  5, $A,$24,$30,$27,  7,  4, $F,$2C, $D,$1B,$37,$37,$37,$37
-		.BYTE	$37,$38,$39,$1E,$3A,$3B,$3C,$3D,$3E,$3F,$40,$41,$34,$45,$26,$21
-		.BYTE	$42,$35,$22,$43,$44,$27,$18,$36
+
+; =============== T A B	L E =================================================
+; first pass messages for using items in battle
+; $8E - "<name> raises the <item> overhead.", etc.
+;
+_bs_item_use_msg_tbl:
+		.BYTE	$8E ; ITEM_WIZARDS_WAND
+		.BYTE	$8E ; ITEM_THORS_SWORD
+		.BYTE	$8E ; ITEM_SNOWBLAST_SWORD
+		.BYTE	$8E ; ITEM_STAFF_OF_RAIN
+		.BYTE	$8E ; ITEM_STAFF_OF_REFLECTION
+		.BYTE	$8E ; ITEM_SWORD_OF_ILLUSION
+		.BYTE	$8E ; ITEM_THUNDER_SWORD
+		.BYTE	$8E ; ITEM_STAFF_OF_THUNDER
+		.BYTE	$8E ; ITEM_SWORD_OF_KINGS
+		.BYTE	$94 ; ITEM_OROCHI_SWORD
+		.BYTE	$8E ; ITEM_STAFF_OF_JUDGEMENT
+		.BYTE	$9A ; ITEM_SHIELD_OF_STRENGTH
+		.BYTE	$9F ; ITEM_SACRED_AMULET
+		.BYTE	$9F ; ITEM_RING_OF_LIFE
+		.BYTE	$9F ; ITEM_SHOES_OF_HAPPINESS
+		.BYTE	$9F ; ITEM_GOLDEN_CLAW
+		.BYTE	$9F ; ITEM_METEORITE_ARMBAND
+		.BYTE	$A5 ; ITEM_WIZARDS_RING
+		.BYTE	$9B ; ITEM_BLACK_PEPPER
+		.BYTE	$9A ; ITEM_SAGES_STONE
+		.BYTE	$9E ; ITEM_DREAM_RUBY
+		.BYTE	$03 ; ITEM_STRENGTH_SEED
+		.BYTE	$03 ; ITEM_AGILITY_SEED
+		.BYTE	$03 ; ITEM_VITALITY_SEED
+		.BYTE	$03 ; ITEM_LUCK_SEED
+		.BYTE	$03 ; ITEM_INTELLIGENCE_SEED
+		.BYTE	$A7 ; ITEM_ACORNS_OF_LIFE
+		.BYTE	$03 ; ITEM_MEDICAL_HERB
+		.BYTE	$03 ; ITEM_ANTIDOTE_HERB
+		.BYTE	$9B ; ITEM_FAIRY_WATER
+		.BYTE	$AA ; ITEM_WING_OF_WYVERN
+		.BYTE	$AB ; ITEM_LEAF_OF_WORLD_TREE
+		.BYTE	$AC ; ITEM_BLANK_6A (message dummied out)
+		.BYTE	$03 ; ITEM_FULL_MOON_HERB
+		.BYTE	$AE ; ITEM_FAIRY_FLUTE
+		.BYTE	$AF ; ITEM_SILVER_HARP
+		.BYTE	$03 ; ITEM_SPHERE_OF_LIGHT
+		.BYTE	$9B ; ITEM_POISON_MOTH_POWDER
+		.BYTE	$B3 ; ITEM_SPIDERS_WEB
+		.BYTE	$9A ; ITEM_STONES_OF_SUNLIGHT
+
+; =============== T A B	L E =================================================
+; for some reason we display these messages specially
+;
+_bs_weapon_effect_msg_tbl:
+		.BYTE	$8F ; "Fireballs burst forth from the staff." ITEM_WIZARDS_WAND
+		.BYTE	$90 ; "A deafening thunderclap rips through the air." ITEM_THORS_SWORD
+		.BYTE	$91 ; "A blast of snow storms out from the sword." ITEM_SNOWBLAST_SWORD
+		.BYTE	$97 ; "Black rain clouds engulf your foe." ITEM_STAFF_OF_RAIN
+		.BYTE	$98 ; "Ripples of light form a shining wall." ITEM_STAFF_OF_REFLECTION
+		.BYTE	$99 ; "A pink fog flows out from the sword." ITEM_SWORD_OF_ILLUSION
+		.BYTE	$92 ; "A lightning bolt bursts from the sword." ITEM_THUNDER_SWORD
+		.BYTE	$93 ; "A thunderclap peals from the staff." ITEM_STAFF_OF_THUNDER
+		.BYTE	$90 ; "A deafening thunderclap rips through the air." ITEM_SWORD_OF_KINGS
+		.BYTE	$95 ; "A blue light dances across the ground." ITEM_OROCHI_SWORD
+		.BYTE	$96 ; "The fireballs burst forth and split into pieces." ; ITEM_STAFF_OF_JUDGEMENT
+
+; =============== T A B	L E =================================================
+; for each item usable in battle, an index in the spell effect table, which includes fake spells for this purpose
+;
+_bs_item_effect_tbl:
+		.BYTE	#SPELL_BLAZE ; ITEM_WIZARDS_WAND
+  	.BYTE	#SPELL_FIREVOLT ; ITEM_THORS_SWORD
+		.BYTE	#SPELL_SNOWBLAST ; ITEM_SNOWBLAST_SWORD
+		.BYTE	#SPELL_STOPSPELL ; ITEM_STAFF_OF_RAIN
+		.BYTE	#SPELL_BOUNCE ; ITEM_STAFF_OF_REFLECTION
+		.BYTE	#SPELL_CHAOS ; ITEM_SWORD_OF_ILLUSION
+		.BYTE	#SPELL_BOOM ; ITEM_THUNDER_SWORD
+		.BYTE	#SPELL_FIREBANE ; ITEM_STAFF_OF_THUNDER
+		.BYTE	#SPELL_INFERMOST ; ITEM_SWORD_OF_KINGS
+		.BYTE	#SPELL_DEFENCE ; ITEM_OROCHI_SWORD
+		.BYTE #SPELL_INFERNOS ; ITEM_STAFF_OF_JUDGEMENT
+		.BYTE #SPELL_HEALMORE ; ITEM_SHIELD_OF_STRENGTH
+		.BYTE #ITEM_BATTLE_EFFECT_VARIOUS ; ITEM_SACRED_AMULET
+		.BYTE #ITEM_BATTLE_EFFECT_VARIOUS ; ITEM_RING_OF_LIFE
+		.BYTE #ITEM_BATTLE_EFFECT_VARIOUS ; ITEM_SHOES_OF_HAPPINESS
+		.BYTE #ITEM_BATTLE_EFFECT_VARIOUS ; ITEM_GOLDEN_CLAW
+		.BYTE	#ITEM_BATTLE_EFFECT_VARIOUS ; ITEM_METEORITE_ARMBAND
+		.BYTE	#ITEM_BATTLE_EFFECT_WIZARDS_RING ; ITEM_WIZARDS_RING
+		.BYTE	#ITEM_BATTLE_EFFECT_BLACK_PEPPER ; ITEM_BLACK_PEPPER
+		.BYTE	#SPELL_HEALUS ; ITEM_SAGES_STONE
+		.BYTE	#ITEM_BATTLE_EFFECT_DREAM_RUBY ; ITEM_DREAM_RUBY
+		.BYTE	#ITEM_BATTLE_EFFECT_STRENGTH_SEED ; ITEM_STRENGTH_SEED
+		.BYTE	#ITEM_BATTLE_EFFECT_AGILITY_SEED ; ITEM_AGILITY_SEED
+		.BYTE	#ITEM_BATTLE_EFFECT_VITALITY_SEED ; ITEM_VITALITY_SEED
+		.BYTE	#ITEM_BATTLE_EFFECT_LUCK_SEED ; ITEM_LUCK_SEED
+		.BYTE	#ITEM_BATTLE_EFFECT_INTELLIGENCE_SEED ; ITEM_INTELLIGENCE_SEED
+		.BYTE	#ITEM_BATTLE_EFFECT_ACORNS_OF_LIFE ; ITEM_ACORNS_OF_LIFE
+		.BYTE	#ITEM_BATTLE_EFFECT_MEDICAL_HERB ; ITEM_MEDICAL_HERB
+		.BYTE	#SPELL_ANTIDOTE ; ITEM_ANTIDOTE_HERB
+		.BYTE	#ITEM_BATTLE_EFFECT_FAIRY_WATER ; ITEM_FAIRY_WATER
+		.BYTE	#SPELL_RETURN ; ITEM_WING_OF_WYVERN
+		.BYTE	#SPELL_REVIVE ; ITEM_LEAF_OF_WORLD_TREE
+		.BYTE	#ITEM_BATTLE_EFFECT_DUMMY_42 ; ITEM_BLANK_6A
+		.BYTE	#SPELL_NUMBOFF ; ITEM_FULL_MOON_HERB
+		.BYTE	#SPELL_SLEEP ; ITEM_FAIRY_FLUTE
+		.BYTE	#ITEM_BATTLE_EFFECT_SILVER_HARP ; ITEM_SILVER_HARP
+		.BYTE	#ITEM_BATTLE_EFFECT_SPHERE_OF_LIGHT ; ITEM_SPHERE_OF_LIGHT
+		.BYTE	#SPELL_CHAOS ; ITEM_POISON_MOTH_POWDER
+		.BYTE	#SPELL_SLOW ; ITEM_SPIDERS_WEB
+		.BYTE	#SPELL_CURSEOFF ; ITEM_STONES_OF_SUNLIGHT
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1A_status_pal_adjust_and_update:
@@ -8087,8 +8218,8 @@ sub_6B3D2:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B3D8:
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$12
+_bs_it_has_no_effect_msg:
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$12 ; "it has no effect on name"
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6B3DB:
@@ -8151,6 +8282,7 @@ byte_6B49C:
 		.BYTE	$1A,$1B,$1C
 byte_6B49F:
 		.BYTE	$1E,$1F
+
 ; =============== T A B	L E =================================================
 ; base and multiplier pairs
 word_6B4A1:
@@ -8854,9 +8986,9 @@ loc_6B892:
 		STA		word_4A
 		LDA		#0
 		STA		word_4A+1
-		LDX		#word_4A ; target of _mul16_to_8
+		LDX		#word_4A ; target of _mul16_by_8
 		TYA ; restore multiplication factor
-		JSR		_mul16_to_8
+		JSR		_mul16_by_8
 		LDA		#<[_b0_d43_enemies_lib]
 		CLC
 		ADC		word_4A
@@ -9102,7 +9234,7 @@ loc_6B9C0:
 		STA		byte_59
 		RTS
 byte_6B9CB:
-		.BYTE	$C0,$30, $C
+		.BYTE	$C0,$30, $C ; flags to search for in enemy lib
 byte_6B9CE:
 		.BYTE	  0,$4D,$B3,$FF
 
@@ -9897,63 +10029,64 @@ _bs_pc_action_fptr_tbl:
 		.WORD	nullsub_11 ; bypass the player's action
 
 ; =============== T A B L E =================================================
-; a table of spell effect function pointers for PC spells
+; a table of spell effect function pointers for player spells
 ; it's only a portion of the spells though, starting with "Lightning". Earlier spells (blaze, etc.) are handled by special case code with the same handler as 'Lighting'
 ; note, this is including spell effects for spells you dont expect to do anything in battle, like stepguard..
 _bs_pc_spell_effect_fptr_tbl:
-		.WORD	sub_69840 ; Lightning
-		.WORD	sub_6990D ; Beat
-		.WORD	sub_6995B ; Defeat
-		.WORD	sub_69973
-		.WORD	sub_699F1
-		.WORD	sub_69A2E
-		.WORD	sub_69A80
-		.WORD	sub_69ABF
+		.WORD	_bs_spell_multiple ; this table entry should not be used.
+		.WORD	_bs_spell_beat ; this is the first table entry that can get used
+		.WORD	_bs_spell_defeat
+		.WORD	_bs_spell_sacrifice 
+		.WORD	_bs_spell_expel
+		.WORD	_bs_spell_limbo
+		.WORD	_bs_spell_robmagic
+		.WORD	_bs_spell_slow
 		.WORD	_bs_spell_speedup
-		.WORD	_bs_spell_heal_various_single ; Heal
-		.WORD	_bs_spell_heal_various_single ; Healmore probably
-		.WORD	_bs_spell_heal_various_single ; Healall, I guess?
-		.WORD	sub_69BE0 ; ?
-		.WORD	sub_69BE0 ; Healus
-		.WORD	sub_69BE0 ; Healusall
-		.WORD	sub_69C09
-		.WORD	sub_69C81
-		.WORD	sub_69C86 ; Sleep
+		.WORD	_bs_spell_heal_single ; Heal
+		.WORD	_bs_spell_heal_single ; Healmore
+		.WORD	_bs_spell_heal_single ; Healall
+		.WORD	_bs_spell_heal_multiple ; Dummy
+		.WORD	_bs_spell_heal_multiple ; Healus
+		.WORD	_bs_spell_heal_multiple ; Healusall
+		.WORD	_bs_spell_vivify
+		.WORD	_bs_spell_revive
+		.WORD	_bs_spell_sleep
 		.WORD	_bs_spell_awaken
-		.WORD	sub_69D60
-		.WORD	sub_69DDF
-		.WORD	sub_69E5B
-		.WORD	sub_69E7F
+		.WORD	_bs_spell_stopspell
+		.WORD	_bs_spell_surround
+		.WORD	_bs_spell_return
+		.WORD	_bs_spell_chaos
 		.WORD	_bs_spell_transform
 		.WORD	_bs_spell_bedragon
-		.WORD	sub_69EF8
-		.WORD	sub_69F05
-		.WORD	sub_69F23
-		.WORD	sub_69F43
-		.WORD	sub_69F64
-		.WORD	sub_69840
-		.WORD	sub_69F85
-		.WORD	sub_69F97
-		.WORD	sub_69FC5
-		.WORD	_bs_spell_chance ; chance
-		.WORD	sub_6A2CB
-		.WORD	sub_6A2FF
-		.WORD	sub_6AEEF
-		.WORD	sub_6AF04
-		.WORD	sub_6AF0E
-		.WORD	sub_6AF34
-		.WORD	sub_6AF65
-		.WORD	sub_6AF6D
-		.WORD	sub_6AF7B
-		.WORD	sub_6AFA5
-		.WORD	sub_6AF97
-		.WORD	sub_6AF89
-		.WORD	sub_6AFD2 ; Day-Night "maximum HP goes up by 2!? what?"
-		.WORD	sub_6AFF7 ; Open - "enemy has recovered??"
-		.WORD	nullsub_12 ; X-ray
-		.WORD	sub_6B008
-		.WORD	sub_6B027 ; "but nothing happens..."
-		.WORD	sub_6B04B ; StepGuard
+		.WORD	_bs_spell_ironize
+		.WORD	_bs_spell_sap
+		.WORD	_bs_spell_defence
+		.WORD	_bs_spell_upper
+		.WORD	_bs_spell_increase
+		.WORD	_bs_spell_multiple ; increase2?
+		.WORD	_bs_spell_bounce
+		.WORD	_bs_spell_barrier
+		.WORD	_bs_spell_bikill
+		.WORD	_bs_spell_chance
+		.WORD	_bs_spell_antidote
+		.WORD	_bs_spell_numboff ; $35
+; after here, the item command handler is using the spell command handler via these special 'fake spells'
+		.WORD	_bs_fake_spell_36 ; whats this ? ? not sure. seems to wake people up. It's in about the right order to be 'wake up powder' but that item setup otherwise as usable. Nonetheless the logic is here.
+		.WORD	_bs_fake_spell_various
+		.WORD	_bs_fake_spell_wizards_ring
+		.WORD	_bs_fake_spell_black_pepper
+		.WORD	_bs_fake_spell_dream_ruby
+		.WORD	_bs_fake_spell_strength_seed
+		.WORD	_bs_fake_spell_agility_seed
+		.WORD	_bs_fake_spell_vitality_seed
+		.WORD	_bs_fake_spell_luck_seed
+		.WORD	_bs_fake_spell_intelligence_seed
+		.WORD	_bs_fake_spell_acorns_of_life
+		.WORD	_bs_fake_spell_medical_herb
+		.WORD	nullsub_12 ; the dummied-out ITEM_BLANK_6A
+		.WORD	_bs_fake_spell_silver_harp
+		.WORD	_bs_fake_spell_sphere_of_light
+		.WORD	_bs_fake_spell_fairy_water
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEA4:
@@ -9999,7 +10132,7 @@ loc_6BEC4:
 		ROL		word_4+1
 		LDX		#word_4
 		LDA		#3
-		JSR		_div16_to_8
+		JSR		_div16_by_8
 locret_6BEF4:
 		RTS
 

@@ -236,13 +236,8 @@ _battle_type_fight: ; $62
 byte_63:
 		.BYTE	0
 ;----------------------------------------------
-; u8 _actingEnemy - usually contains the index of the acting enemy. but it must have some other use
-; used by bank01 (why?)
-; used by bank02 (why?)
-; used by bank04 (battlesystem)
-; used by bank0A (why?)
-; used by bank0D (why?)
-; used by bank0E (why?)
+; u8 _actingEnemy - during battle, usually contains the index of the acting enemy. but it must have some other use... maybe the enemy target of a player action?
+;
 _acting_enemy:
 byte_64:
 		.BYTE	0
@@ -700,15 +695,19 @@ byte_565:
 		.BYTE	0
 ;----------------------------------------------
 ; battle flags
-; $566: IIS??????
+; $566: IISPL ????
 ; I - Ironized. why two bits?
 ; S - something that can be removed by receiving an attack??
+; P - Was somehow related to a poison attack, but this probably isn't right
+; L - Luck related somehow
+;
 byte_566:
 		.BYTE	0
 ;----------------------------------------------
 ; battle flags
-; xBSxAAPP  
+; xBSL AAPP  
 ; B - Bounce(?) wall of light that blocks spells is in effect
+; L - Luck related, somehow (extra lucky? unlucky?)
 ; S - Party gains additional attack power
 ; A - %11 = player PP gets 3 free turns (result of chance), the logic to support this is sprawled all over
 ;
@@ -716,7 +715,11 @@ byte_567:
 		.BYTE	0
 ;----------------------------------------------
 ; battle flags
-; #$10 bit is set if spells are broken by the location
+; ???B ?XNN
+; B - Spells are broken by the location
+; X - ?
+; N - Seems to track some logic related to enemy actions
+;
 byte_568:
 		.BYTE	0
 ;----------------------------------------------
@@ -996,17 +999,17 @@ _players_HP: ; $ 71C
 ;----------------------------------------------
 ; u16[4] - MHP for 4 players
 ;
-_players_MHP: ; $ 720
+_players_MHP: ; $ 724
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - MP for 4 players
 ;
-_players_MP: ; $ 724
+_players_MP: ; $ 72C
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[4] - MMP for 4 players
 ;
-_players_MMP: ; $ 728
+_players_MMP: ; $ 734
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u16[] pc.status - Status for 4 players
@@ -1021,12 +1024,12 @@ _players_MMP: ; $ 728
 ; N - "NM" status flag
 ; D - Death flag. Character is dead if clear
 ;
-_players_status: ; $ 72C
+_players_status: ; $ 73C
 		.WORD	0,0,0,0
 ;----------------------------------------------
 ; u24[4] - EXP stat for 4 players
 ;
-_players_EXP:
+_players_EXP: ; $744
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8 returnable_locations[4][3] - a bit vector of locations visited, returnable targets (final few bits are unused)
@@ -1861,7 +1864,7 @@ _sram_b0_s8_player_MP_add:
 		.BYTE	0,0,0,0,0
 _sram_b0_s9_player_MP_subtract:
 		.BYTE	0,0,0,0,0
-_sram_b0_sB_player_MP_consume:
+_sram_b0_sB_player_MP_test:
 		.BYTE	0,0,0,0,0
 _sram_b0_sC_player_LV_read:
 		.BYTE	0,0,0,0,0
