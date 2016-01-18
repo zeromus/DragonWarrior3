@@ -28,7 +28,7 @@
 		PTR_IDX		_b4_s19_heal_enemy
 		PTR_IDX		_b4_s1A_status_pal_adjust_and_update
 		PTR_IDX		_b4_s1B
-		PTR_IDX		_b4_s1E
+		PTR_IDX		_b4_s1E_healing_randrange
 		PTR_IDX		_b4_s1F
 		PTR_IDX		_b4_s20
 		PTR_IDX		_b4_s23
@@ -758,12 +758,12 @@ loc_684A7:
 loc_684B2:
 		LDX		byte_4F
 		CPX		#$13
-		BCC		loc_684F5
-		CPX		#$2B
-		BEQ		loc_684F5
-		CPX		#$3B
-		BCS		loc_684F5
-		LDA		byte_6BD82-$13,X
+		BCC		loc_684F5 ; BCC->JB branch down if we're a move before the spells
+		CPX		#EMOVE_ZOMA_FREEZE_BEAM
+		BEQ		loc_684F5 ; branch if we're zoma's freeze beam
+		CPX		#$3B ; 
+		BCS		loc_684F5 ; BCS->JAE branch if we're a reinforce specific
+		LDA		_bs_enemy_mp_cost-$13,X ; so, we must be a normal spell. rebase the first spell ($13) down to a zero index and load the corresponding MP
 		PHA
 		JSR		_bs_load_acting_enemy_MP
 		PLA
@@ -913,7 +913,7 @@ loc_6859E:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685A0:
+_bs_emove_stage2_spell_robmagic:
 		LDA		#$12
 		JSR		_b4_s23
 		JMP		_b4_s13
@@ -946,7 +946,7 @@ loc_685C8:
 		JMP		sub_686FD
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685CB:
+_bs_emove_stage2_spell_sacrifice:
 		LDA		#2
 		LDX		#$FF
 		JSR		sub_68675
@@ -954,37 +954,37 @@ sub_685CB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685D5:
+_bs_emove_stage2_spell_stopspell:
 		LDA		#5
 		JMP		sub_68643
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685DA:
+_bs_emove_stage2_spell_sap:
 		LDA		#$10
 		JMP		sub_68660
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685DF:
+_bs_emove_stage2_spell_defence:
 		LDA		#$10
 		JMP		sub_68643
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685E4:
+_bs_emove_stage2_spell_surround:
 		LDA		#4
 		JMP		sub_68643
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685E9:
+_bs_emove_stage2_spell_chaos:
 		LDA		#$C
 		JMP		sub_68660
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685EE:
+_bs_emove_stage2_spell_slow:
 		LDA		#$11
 		JMP		sub_68643
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685F3:
+_bs_emove_stage2_spell_limbo:
 		JSR		_sram_b0_s31_get_party_chars_list
 		DEC		word_4
 		BEQ		loc_6863F
@@ -992,19 +992,19 @@ sub_685F3:
 		JMP		sub_68660
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_685FF:
+_bs_emove_stage2_spell_bounce:
 		LDA		#4
 		LDX		#$FF
 		JMP		sub_68675
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68606:
+_bs_emove_stage2_spell_increase:
 		LDA		#3
 		LDX		#$FF
 		JMP		sub_6868C
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6860D:
+_bs_emove_stage2_spell_increase2:
 		JSR		sub_686E1
 		LDA		#3
 		BCS		loc_68616
@@ -1013,29 +1013,29 @@ loc_68616:
 		JMP		sub_68707
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68619:
+_bs_emove_stage2_spell_vivify_and_revive:
 		LDA		#0
 		JMP		sub_68707
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6861E:
+_bs_emove_stage2_heal_single:
 		LDA		#1
 		LDX		#$FF
 		JMP		sub_68675
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68625: ; stage2 heal multi
+_bs_emove_stage2_heal_multi: ; stage2 heal multi
 		LDA		#1
 		LDX		#$FF
 		JMP		sub_6868C ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6862C:
+_bs_emove_stage2_heal_single_2:
 		LDA		#1
 		JMP		sub_686BB ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_68631: ; stage2 multi
+_bs_emove_stage2_heal_multi_2: ; stage2 multi
 		LDA		#1
 		LDX		#0
 		JMP		sub_6868C ; TAILCALL
@@ -2347,7 +2347,7 @@ _bs_emove_stage1_spell_single:
 		SEC
 		SBC		#$13
 		TAX
-		LDA		_bs_labels_attackspell_single_tbl,X
+		LDA		_bs_attackspell_single_tbl,X
 		STA		_msg_directobject_param
 		STA		byte_49
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
@@ -2373,7 +2373,7 @@ _bs_emove_stage1_spell_party:
 		SEC
 		SBC		#$17
 		TAX
-		LDA		_bs_labels_attackspell_multiple_tbl,X
+		LDA		_bs_attackspell_multiple_tbl,X
 		STA		byte_49
 		STA		_msg_directobject_param ; store spell name dialog argument
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants spell"
@@ -3174,19 +3174,19 @@ loc_6942E:
 		SEC
 		SBC		word_4
 		TAX
-		LDA		_bs_labels_heal_single_tbl,X
+		LDA		_bs_heal_single_tbl,X
 		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
 		JSR		sub_6B30E
-		JSR		sub_6BEF5
+		JSR		_bs_espell_heal_randrange
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69443:
 		JSR		_bs_extract_target_from_move
 		BPL		loc_69450
 		STA		_acting_enemy
-		JSR		sub_6BEF5
+		JSR		_bs_espell_heal_randrange
 		JMP		sub_6A5D6
 loc_69450:
 		JMP		loc_69BA3
@@ -3209,7 +3209,7 @@ loc_6946C:
 		SEC
 		SBC		word_4
 		TAX
-		LDA		_bs_labels_heal_multiple_tbl,X
+		LDA		_bs_heal_multiple_tbl,X
 		STA		_msg_directobject_param
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$02 ; "chants <spell>"
 		JSR		sub_6A35F
@@ -3232,10 +3232,10 @@ loc_6948A:
 		LDA		byte_566
 		AND		#$10
 		BNE		loc_694A7
-		JSR		sub_6BEF5
+		JSR		_bs_espell_heal_randrange
 		JMP		loc_694AA
 loc_694A7:
-		JSR		sub_6BF22
+		JSR		_bs_player_heal_randrange
 loc_694AA:
 		JSR		sub_6A5D6
 loc_694AD:
@@ -3802,7 +3802,7 @@ loc_6986C:
 		TYA
 		PHA
 		JSR		_b4_sB
-		JSR		sub_6BEA4
+		JSR		_bs_player_spell_randrange
 		JSR		sub_6A3F8
 		PLA
 		TAY
@@ -3812,7 +3812,7 @@ loc_69886:
 		BNE		loc_6986C
 		RTS
 loc_6988C:
-		JSR		sub_6BEA4
+		JSR		_bs_player_spell_randrange
 		JMP		loc_68EB8
 loc_69892:
 		JSR		_bs_extract_target_from_move
@@ -3828,7 +3828,7 @@ loc_6989F:
 		LDA		byte_530,X
 		AND		byte_530+1,X
 		BPL		locret_698B3
-		JSR		sub_6BEA4
+		JSR		_bs_player_spell_randrange
 		JMP		sub_6A3F8
 locret_698B3:
 		RTS
@@ -3848,7 +3848,7 @@ loc_698BD:
 		JSR		sub_68F16
 		BPL		loc_698D8
 		JSR		_b4_sB
-		JSR		sub_6BEA4
+		JSR		_bs_player_spell_randrange
 		JSR		sub_6A3F8
 loc_698D8:
 		PLA
@@ -3875,7 +3875,7 @@ loc_698F1:
 		TYA
 		PHA
 		JSR		_b4_sB
-		JSR		sub_6BEA4
+		JSR		_bs_player_spell_randrange
 		JSR		sub_6A57F
 		PLA
 		TAY
@@ -4263,7 +4263,7 @@ loc_69B95:
 ; HEALALL: restore 40*random + 140 ?
 ;
 _bs_spell_heal_single:
-		JSR		sub_6BF22
+		JSR		_bs_player_heal_randrange
 loc_69BA3:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_69BAD
@@ -4310,7 +4310,7 @@ loc_69BE7:
 		JSR		_b4_sB
 		JSR		_player_idx_to_X_and_status_check
 		BPL		loc_69BFB
-		JSR		sub_6BF22
+		JSR		_bs_player_heal_randrange
 		PLA
 		STA		byte_CE
 		PHA
@@ -5419,7 +5419,7 @@ sub_6A35F:
 		STA		_acting_enemy
 ; load action
 		LDY		byte_558,X ; moveTable2
-		LDA		byte_6BD82-$13,Y ; tblEnemyAttackCostsAndMisc
+		LDA		_bs_enemy_mp_cost-$13,Y ; tblEnemyAttackCostsAndMisc
 		STA		byte_65 ; actionCost?
 		JSR		_bs_load_acting_enemy_MP
 		LDA		byte_59 ; enemyMiscStats_59
@@ -8348,34 +8348,86 @@ _b4_dD_spells_list:
 		.BYTE	(_SPELL_FLAGS_00|2)  ; SPELL_STEPGUARD		
 
 ; =============== T A B	L E =================================================
-; labels for common spell handling
+; spell operands for common spell handling
 ;
-_bs_labels_attackspell_single_tbl:
-		.BYTE #SPELL_BLAZE, #SPELL_BLAZEMORE, #SPELL_BLAZEMOST, #SPELL_ICEBOLT
-_bs_labels_attackspell_multiple_tbl:
+_bs_attackspell_single_tbl:
+		.BYTE	 #SPELL_BLAZE, #SPELL_BLAZEMORE, #SPELL_BLAZEMOST, #SPELL_ICEBOLT
+_bs_attackspell_multiple_tbl:
 		.BYTE	 #SPELL_FIREBAL, #SPELL_FIREBANE, #SPELL_EXPLODET
 		.BYTE	 #SPELL_SNOWBLAST, #SPELL_SNOWSTORM
 		.BYTE	 #SPELL_INFERNOS, #SPELL_INFERMORE, #SPELL_INFERMOST
-_bs_labels_heal_single_tbl:
-		.BYTE	#SPELL_HEAL, #SPELL_HEALMORE, #SPELL_HEALALL
-_bs_labels_heal_multiple_tbl:
-		.BYTE	#SPELL_HEALUS, #SPELL_HEALUSALL
+_bs_heal_single_tbl:
+		.BYTE	 #SPELL_HEAL, #SPELL_HEALMORE, #SPELL_HEALALL
+_bs_heal_multiple_tbl:
+		.BYTE	 #SPELL_HEALUS, #SPELL_HEALUSALL
 
-; =============== T A B	L E =================================================
-; base and multiplier pairs
-word_6B4A1:
-		.WORD	 $608,$1446,$28A0, $810, $C1E,$1858, $810,$1034
-		.WORD	$2878, $A19,$102A,$1858,$143C,$1008,$1E19,$3C3C
-		.WORD	$1446,$32AF
+; =============== T A B	L E S =================================================
+; struct randrange { u8 base; u8 delta; };
+; delta is sent into the randomizer, and base is added to the result
+;
+_bs_player_spell_randrange_tbl:
+		.BYTE	 $08,$06 ; blaze
+		.BYTE	 $46,$14 ; blazemore
+		.BYTE	 $A0,$28 ; blazemost
+		.BYTE	 $10,$08 ; firebal
+		.BYTE	 $1E,$0C ; firebane
+		.BYTE	 $58,$18 ; firevolt
+		.BYTE	 $10,$08 ; bang
+		.BYTE	 $34,$10 ; boom
+		.BYTE	 $78,$28 ; explodet
+		.BYTE	 $19,$0A ; icebolt
+		.BYTE	 $2A,$10 ; snowblast
+		.BYTE	 $58,$18 ; snowstorm 
+		.BYTE	 $3C,$14 ; icespears
+		.BYTE	 $08,$10 ; infernos
+		.BYTE	 $19,$1E ; infermore
+		.BYTE	 $3C,$3C ; infermost
+ 		.BYTE	 $46,$14 ; zap
+		.BYTE	 $AF,$32 ; lightning
 
+; uhhh something similar, for enemy spells
 word_6B4C5:
-		.WORD	 $507, $A34,$245C, $810, $80A, $C16,$143C, $A20
-		.WORD	 $C37, $C06,$140E,$201E, $406, $A1E,$1450, $C09
-		.WORD	$1428,$2864
-_b4_d15:
-		.WORD	 $A1E,$144B,  $FF, $A1E,$103E,$FFFF
-byte_6B4F5:
-		.BYTE	  0,  1,  2,  4,  5,  0,  1,  2,  4,  5
+		.BYTE	 $07,$05
+		.BYTE	 $34,$0A
+		.BYTE	 $5C,$24
+		.BYTE	 $10,$08
+		.BYTE	 $0A,$08
+		.BYTE	 $16,$0C
+		.BYTE	 $3C,$14
+		.BYTE	 $20,$0A
+		.BYTE	 $37,$0C
+		.BYTE	 $06,$0C
+		.BYTE	 $0E,$14
+		.BYTE	 $1E,$20
+		.BYTE	 $06,$04
+		.BYTE	 $1E,$0A
+		.BYTE	 $50,$14
+		.BYTE	 $09,$0C
+		.BYTE	 $28,$14
+		.BYTE	 $64,$28
+
+; something similar for heal spells?
+_bs_healing_randrange_tbl:
+		.BYTE	 $1E,$0A ; heal
+		.BYTE	 $4B,$14 ; healmore
+		.BYTE	 $FF,$00 ; healall
+		.BYTE	 $1E,$0A ; dummy_1d
+		.BYTE	 $3E,$10 ; healus
+		.BYTE	 $FF,$FF ; healusall
+
+; it looks like this is used for remapping enemy moves (starting at $31, emove_heal_various_single) to healing power randranges
+_bs_espell_heal_lookup_tbl:
+		.BYTE	  0 ; heal $31
+		.BYTE	  1 ; healmore $32
+		.BYTE	  2 ; healall $33
+		.BYTE	  4 ; healus $34
+		.BYTE	  5 ; healusall $35
+; theres a second batch of enemy moves
+		.BYTE	  0 ; heal $36
+		.BYTE	  1 ; healmore $37
+		.BYTE	  2 ; healall $38
+		.BYTE	  4 ; healus $39
+		.BYTE	  5 ; healusall $3A
 
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s1:
@@ -9963,7 +10015,7 @@ _bs_emove_fptr_stage2_tbl:
 		.WORD	_b4_s2B_emove_stage2_02_through_06_attacks
 		.WORD	_bs_emove_stage2_07_try_flee 
 		.WORD	sub_68576
-		.WORD	sub_685A0
+		.WORD	_bs_emove_stage2_spell_robmagic
 		.WORD	_bs_emove_stage2_nothing ; breath attacks
 		.WORD	_bs_emove_stage2_nothing
 		.WORD	_bs_emove_stage2_nothing
@@ -9973,55 +10025,93 @@ _bs_emove_fptr_stage2_tbl:
 		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; sweet breath
 		.WORD	_bs_emove_stage2_toxic_breath
 		.WORD	_bs_emove_stage2_nothing ; scorching breath.. that's weird
-		.WORD	_bs_emove_stage2_spell_single
-		.WORD	_bs_emove_stage2_spell_single
-		.WORD	_bs_emove_stage2_spell_single
-		.WORD	_bs_emove_stage2_spell_single
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_party
-		.WORD	_bs_emove_stage2_spell_single ; beat 1F
-		.WORD	_bs_emove_stage2_spell_party ; beat 20 (maybe it's defeat)
-		.WORD	sub_685CB ; sacrifice
-		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; sleep
-		.WORD	sub_685D5
-		.WORD	sub_685DA
-		.WORD	sub_685DF
-		.WORD	sub_685E4
-		.WORD	sub_685A0
-		.WORD	sub_685E9
-		.WORD	sub_685EE
-		.WORD	sub_685F3
-		.WORD	_bs_emove_stage2_nothing
-		.WORD	sub_685FF
-		.WORD	sub_68606
-		.WORD	sub_6860D
-		.WORD	sub_68619
-		.WORD	sub_68619
-		.WORD	sub_6861E ; heal single
-		.WORD	sub_6861E ; heal single
-		.WORD	sub_6861E ; heal single
-		.WORD	sub_68625 ; heal multi
-		.WORD	sub_68625 ; heal multi
-		.WORD	sub_6862C ; heal single
-		.WORD	sub_6862C ; heal single
-		.WORD	sub_6862C ; heal single
-		.WORD	sub_68631 ; heal multi
-		.WORD	sub_68631 ; heal multi
+		.WORD	_bs_emove_stage2_spell_single ; BLAZE (see _bs_attackspell_single_tbl)
+		.WORD	_bs_emove_stage2_spell_single ; BLAZEMORE
+		.WORD	_bs_emove_stage2_spell_single ; BLAZEMOST
+		.WORD	_bs_emove_stage2_spell_single ; ICEBOLT
+		.WORD	_bs_emove_stage2_spell_party ; FIREBAL
+		.WORD	_bs_emove_stage2_spell_party ; FIREBANE
+		.WORD	_bs_emove_stage2_spell_party ; EXPLODET
+		.WORD	_bs_emove_stage2_spell_party ; SNOWBLAST
+		.WORD	_bs_emove_stage2_spell_party ; SNOWSTORM
+		.WORD	_bs_emove_stage2_spell_party ; INFERNOS
+		.WORD	_bs_emove_stage2_spell_party ; INFERMORE
+		.WORD	_bs_emove_stage2_spell_party ; INFERMOST
+		.WORD	_bs_emove_stage2_spell_single ; BEAT
+		.WORD	_bs_emove_stage2_spell_party ; DEFEAT
+		.WORD	_bs_emove_stage2_spell_sacrifice ; SACRIFICE
+		.WORD	_bs_emove_stage2_sleep_and_sweet_breath ; SLEEP
+		.WORD	_bs_emove_stage2_spell_stopspell ; STOPSPELL
+		.WORD	_bs_emove_stage2_spell_sap ; SAP
+		.WORD	_bs_emove_stage2_spell_defence ; DEFENCE
+		.WORD	_bs_emove_stage2_spell_surround ; SURROUND
+		.WORD	_bs_emove_stage2_spell_robmagic ; ROBMAGIC
+		.WORD	_bs_emove_stage2_spell_chaos ; CHAOS
+		.WORD	_bs_emove_stage2_spell_slow ; SLOW
+		.WORD	_bs_emove_stage2_spell_limbo ; LIMBO
+		.WORD	_bs_emove_stage2_nothing ; ZOMA_FREEZE_BEAM
+		.WORD	_bs_emove_stage2_spell_bounce ; BOUNCE
+		.WORD	_bs_emove_stage2_spell_increase ; INCREASE
+		.WORD	_bs_emove_stage2_spell_increase2 ; INCREASE2
+		.WORD	_bs_emove_stage2_spell_vivify_and_revive ; VIVIFY
+		.WORD	_bs_emove_stage2_spell_vivify_and_revive ; REVIVE
+		.WORD	_bs_emove_stage2_heal_single ; HEAL
+		.WORD	_bs_emove_stage2_heal_single ; HEALMORE
+		.WORD	_bs_emove_stage2_heal_single ; HEALALL
+		.WORD	_bs_emove_stage2_heal_multi ; HEALUS
+		.WORD	_bs_emove_stage2_heal_multi ; HEALUSALL
+		.WORD	_bs_emove_stage2_heal_single_2 ; HEAL (2)
+		.WORD	_bs_emove_stage2_heal_single_2 ; HEALMORE (2)
+		.WORD	_bs_emove_stage2_heal_single_2 ; HEALALL (2)
+		.WORD	_bs_emove_stage2_heal_multi_2 ; HEALUS (2)
+		.WORD	_bs_emove_stage2_heal_multi_2 ; HEALUSALL (2)
 		.WORD	_bs_emove_stage2_reinforce_specific
 		.WORD	_bs_emove_stage2_reinforce_specific
 		.WORD	_bs_emove_stage2_reinforce_specific
 		.WORD	_bs_emove_stage2_reinforce_specific
 		.WORD	_bs_emove_stage2_reinforce_specific
-byte_6BD82:
-		.BYTE	  2,  6, $C,  3,  4,  6,$12,  6, $C,  4,  6,  9,  5,  8,  1,  3
-		.BYTE	  4,  3,  4,  4,  0,  5,  3,  7,  0,  8,  4,  5, $A,$14,  3,  6
-		.BYTE	  7,$12,$3E,  3,  6,  9,$12,$3E
+
+_bs_enemy_mp_cost:
+		.BYTE	2  ; BLAZE
+		.BYTE	6  ; BLAZEMORE
+		.BYTE	12 ; BLAZEMOST
+		.BYTE	3  ; ICEBOLT
+		.BYTE	4  ; FIREBAL
+		.BYTE	6  ; FIREBANE
+		.BYTE	18 ; EXPLODET
+		.BYTE	6  ; SNOWBLAST
+		.BYTE	12 ; SNOWSTORM
+		.BYTE	4  ; INFERNOS
+		.BYTE	6  ; INFERMORE
+		.BYTE	9  ; INFERMOST
+		.BYTE	5  ; BEAT
+		.BYTE	8  ; DEFEAT
+		.BYTE	1  ; SACRIFICE
+		.BYTE	3  ; SLEEP
+		.BYTE	4  ; STOPSPELL
+		.BYTE	3  ; SAP
+		.BYTE	4  ; DEFENCE
+		.BYTE	4  ; SURROUND
+		.BYTE	0  ; ROBMAGIC
+		.BYTE	5  ; CHAOS
+		.BYTE	3  ; SLOW
+		.BYTE	7  ; LIMBO
+		.BYTE	0  ; ZOMA FREEZE BEAM
+		.BYTE	8  ; BOUNCE
+		.BYTE	4  ; INCREASE
+		.BYTE	5  ; INCREASE2
+		.BYTE	10 ; VIVIFY
+		.BYTE	20 ; REVIVE
+		.BYTE	3  ; HEAL
+		.BYTE	6  ; HEALMORE
+		.BYTE	7  ; HEALALL
+		.BYTE	18 ; HEALUS
+		.BYTE	62 ; HEALUSALL
+		.BYTE	3  ; HEAL (2)
+		.BYTE	6  ; HEALMORE (2)
+		.BYTE	9  ; HEALALL (2)
+		.BYTE	18 ; HEALUS (2)
+		.BYTE	62 ; HEALUSALL (2)
 
 ; =============== T A B L E =================================================
 ; a table of function pointers for each type of enemy move
@@ -10048,18 +10138,18 @@ _bs_emove_fptr_stage1_tbl:
 		.WORD	_bs_emove_stage1_10_sweet_breath
 		.WORD	_bs_emove_stage1_11_toxic_breath
 		.WORD	_bs_emove_stage1_12_scorching_breath
-		.WORD	_bs_emove_stage1_spell_single
-		.WORD	_bs_emove_stage1_spell_single
-		.WORD	_bs_emove_stage1_spell_single
-		.WORD	_bs_emove_stage1_spell_single
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
-		.WORD	_bs_emove_stage1_spell_party
+		.WORD	_bs_emove_stage1_spell_single ; BLAZE (see _bs_attackspell_single_tbl)
+		.WORD	_bs_emove_stage1_spell_single ; BLAZEMORE
+		.WORD	_bs_emove_stage1_spell_single ; BLAZEMOST
+		.WORD	_bs_emove_stage1_spell_single ; ICEBOLT
+		.WORD	_bs_emove_stage1_spell_party ; FIREBAL
+		.WORD	_bs_emove_stage1_spell_party ; FIREBANE
+		.WORD	_bs_emove_stage1_spell_party ; EXPLODET
+		.WORD	_bs_emove_stage1_spell_party ; SNOWBLAST
+		.WORD	_bs_emove_stage1_spell_party ; SNOWSTORM
+		.WORD	_bs_emove_stage1_spell_party ; INFERNOS
+		.WORD	_bs_emove_stage1_spell_party ; INFERMORE
+		.WORD	_bs_emove_stage1_spell_party ; INFERMOST
 		.WORD	_bs_emove_stage1_1F_chant_beat ; $12
 		.WORD	_bs_emove_stage1_20_chant_beat ; $13
 		.WORD	_bs_emove_stage1_21_chant_sacrifice ; $14
@@ -10110,8 +10200,9 @@ _bs_pc_action_fptr_tbl:
 ; a table of spell effect function pointers for player spells
 ; it's only a portion of the spells though, starting with "Lightning". Earlier spells (blaze, etc.) are handled by special case code with the same handler as 'Lighting'
 ; note, this is including spell effects for spells you dont expect to do anything in battle, like stepguard..
+;
 _bs_pc_spell_effect_fptr_tbl:
-		.WORD	_bs_spell_multiple ; this table entry should not be used.
+		.WORD	_bs_spell_multiple ; this table entry should not be used, as far as I can tell
 		.WORD	_bs_spell_beat ; this is the first table entry that can get used
 		.WORD	_bs_spell_defeat
 		.WORD	_bs_spell_sacrifice 
@@ -10167,14 +10258,17 @@ _bs_pc_spell_effect_fptr_tbl:
 		.WORD	_bs_fake_spell_fairy_water
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BEA4:
+; Calculates a random damage range value for the player's spell indicated in byte_49
+; returns it in u16[4] (MSB is always 0)
+;
+_bs_player_spell_randrange:
 		LDA		byte_49
 		ASL
 		TAY
-		LDA		word_6B4A1+1,Y
+		LDA		_bs_player_spell_randrange_tbl+1,Y
 		JSR		_b4_sF_rand_mul_A
 		CLC
-		ADC		word_6B4A1,Y
+		ADC		_bs_player_spell_randrange_tbl,Y
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
@@ -10183,13 +10277,13 @@ sub_6BEA4:
 ; =============== S U B	R O U T	I N E =======================================
 sub_6BEB9:
 		LDX		_bs_curr_actor
-		LDA		byte_558,X
-		CMP		#$10
-		BCS		loc_6BEC4
-		ADC		#$15
+		LDA		byte_558,X ; load the current actor's move, or something like that
+		CMP		#$10 ; SWEET_BREATH
+		BCS		loc_6BEC4 ; BCS->JAE - branch down for moves $10 and beyond
+		ADC		#$15 ; otherwise.. rebase the table a bit
 loc_6BEC4:
 		SEC
-		SBC		#$13
+		SBC		#$13 ; and..rebase the table again, this is confusing
 		ASL
 		TAY
 		LDA		word_6B4C5+1,Y
@@ -10199,13 +10293,16 @@ loc_6BEC4:
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
+
+; done with random computation.. now look for modifiers
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		CMP		#$10
 		BCS		locret_6BEF4
-		LDA		_players_status
+		LDA		_players_status ; just the first party member's status, huh?
 		AND		#4
 		BEQ		locret_6BEF4
+; multiply precision multiply by 2 and then divide by 3
 		ASL		word_4
 		ROL		word_4+1
 		LDX		#word_4
@@ -10215,25 +10312,31 @@ locret_6BEF4:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BEF5:
+; Calculates a random healing range for the current enemy actor's healing spell
+; 
+_bs_espell_heal_randrange:
 		LDX		_bs_curr_actor
 		LDA		byte_558,X
 		SEC
-		SBC		#$31
+		SBC		#$31 ; enemy move $31 is first healing spell
 		TAX
-		LDA		byte_6B4F5,X
+		LDA		_bs_espell_heal_lookup_tbl,X
+
+; FALLTHROUGH ;
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s1E:
+; Calculates a  random healing range for the type of healing spell stored in A
+;
+_b4_s1E_healing_randrange:
 		ASL
 		TAY
-		LDA		_b4_d15,Y
+		LDA		_bs_healing_randrange_tbl,Y
 		CMP		#$FF
 		BEQ		loc_6BF1B
-		LDA		_b4_d15+1,Y
+		LDA		_bs_healing_randrange_tbl+1,Y
 		JSR		_b4_sF_rand_mul_A
 		CLC
-		ADC		_b4_d15,Y
+		ADC		_bs_healing_randrange_tbl,Y
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
@@ -10245,16 +10348,21 @@ loc_6BF1B:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6BF22:
+; Calculates a random healing range for the player's spell currently in byte_49
+;
+_bs_player_heal_randrange:
 		LDA		byte_49
-		CMP		#$1D
-		BCS		loc_6BF2E
+		CMP		#SPELL_DUMMY_1D
+		BCS		loc_6BF2E ; BCS->JAE branch down if >= DUMMY_1D
 		SEC
-		SBC		#$1A
-		JMP		_b4_s1E
+		SBC		#SPELL_HEAL ; rebase $1A SPELL_HEAL down to 0
+		JMP		_b4_s1E_healing_randrange
 loc_6BF2E:
-		SBC		#$1D
-		BNE		_b4_s1E
+		SBC		#SPELL_DUMMY_1D ; rebase $1D SPELL_DUMMY_1D down to 0
+		BNE		_b4_s1E_healing_randrange ; UNCONDITIONAL, in practice, only since SPELL_DUMMY_1D should never be used.
+
+
+
 
 		ECHO "bank 04 free space", [SAFE_STUB_ORG-.]
 
