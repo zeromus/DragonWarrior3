@@ -6412,7 +6412,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_s19_heal_enemy					; $D3
 		FILE_IDX	$4,_b4_s1A_status_pal_adjust_and_update					; $D4
 		FILE_IDX	$4,_b4_s1B					; $D5
-		FILE_IDX	$4,_b4_s1E					; $ED
+		FILE_IDX	$4,_b4_s1E_healing_randrange					; $ED
 		FILE_IDX	$4,_b4_s1F					; $EE
 		FILE_IDX	$4,_b4_s20					; $EF
 		FILE_IDX	$4,_b4_s21_message_half_delay_or_wait_for_keypress	; $131

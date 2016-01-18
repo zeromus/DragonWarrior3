@@ -1782,7 +1782,6 @@ loc_931D:
 ; returns player's MP value, player index is in byte_CE, store it in word_4 and
 ; returns indication of whether MP was 0
 ;
-;"sub_PC_SetMP"
 _b0_s6_player_MP_read:
 		LDA		byte_CE
 		ASL
@@ -1798,7 +1797,6 @@ _b0_s6_player_MP_read:
 ; returns player's MAX MP value, player index is in byte_CE, store it in word_4 and
 ; should be used in info screens at least.
 ;
-;"sub_PC_SetMMP"
 _b0_s7_player_MMP_read:
 		LDA		byte_CE
 		ASL
@@ -1883,7 +1881,6 @@ loc_93A9:
 ; not with direct links. if there is such operation somewhere, it
 ; seems performed directly
 ;
-;"sub_PC_ZeroMP"
 _b0_sA_player_MP_set_sero:
 		LDA		byte_CE
 		ASL
@@ -4104,15 +4101,15 @@ loc_9F81:
 		JMP		_wait_for_key
 loc_9F9F:
 		LDA		byte_49
-		CMP		#$26
+		CMP		#SPELL_RETURN
 		BEQ		loc_9FB8
-		CMP		#$3B
+		CMP		#SPELL_OUTSIDE
 		BEQ		loc_9FB8
-		CMP		#$38
+		CMP		#SPELL_DAYNIGHT
 		BEQ		loc_9FB8
-		CMP		#$3C
+		CMP		#SPELL_INVISIBLE
 		BEQ		loc_9FB8
-		CMP		#$39
+		CMP		#SPELL_OPEN
 		BEQ		loc_9FB8
 		JMP		_wait_for_key
 loc_9FB8:
@@ -4128,8 +4125,8 @@ _cmd_spell_heal:
 		BCC		locret_9FE9
 		LDA		byte_49
 		SEC
-		SBC		#$1A
-		FARX	_b4_s1E
+		SBC		#SPELL_HEAL
+		FARX	_b4_s1E_healing_randrange
 
 ;; FALLTHROUGH ;;
 
