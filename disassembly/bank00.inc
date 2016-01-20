@@ -31,7 +31,7 @@
 		PTR_IDX		_b0_s1B_player_gold_read
 		PTR_IDX		_b0_s1B_player_gold_add
 		PTR_IDX		_b0_s1B_player_gold_subtract
-		PTR_IDX		_b0_s1E_player_euipped_item_get
+		PTR_IDX		_b0_s1E_player_equipped_item_get
 		PTR_IDX		_b0_s1F_player_weapon_get
 		PTR_IDX		_b0_s21_player_shield_get
 		PTR_IDX		_b0_s21_player_armor_get
@@ -2093,7 +2093,7 @@ _b0_s14_player_EffINT_calc:
 ; (setting up for a luck-based calculation)
 ;
 _b0_s15_player_EffLUCK_calc:
-		JSR		_b0_s1E_player_euipped_item_get	; scan inventory
+		JSR		_b0_s1E_player_equipped_item_get	; scan inventory
 		LDA		word_6+1					; load helm from inventory
 		CMP		#ITEM_EUNLUCKY_HELMET
 		BEQ		.return_luck_0
@@ -2125,7 +2125,7 @@ loc_94C2:
 _b0_s16_player_EffATK_calc:
 		JSR		_b0_s2C_player_CLASS_read		; fetch the PCs class and stash it
 		PHA
-		JSR		_b0_s1E_player_euipped_item_get							; restore class and stash it elsewhere
+		JSR		_b0_s1E_player_equipped_item_get							; restore class and stash it elsewhere
 		PLA
 		STA		word_6+1
 		LDA		word_4							; fetch A=found weapon
@@ -2204,7 +2204,7 @@ _b0_s17_player_rATK_read:
 ; returns it as u24 in word_4
 ;
 _b0_s18_player_EffDEF_calc:
-		JSR		_b0_s1E_player_euipped_item_get
+		JSR		_b0_s1E_player_equipped_item_get
 		LDA		word_4+1					; push the armor type
 		PHA
 		JSR		_b0_s12_player_EffAGI_calc 	; calculate effective AGI and divide by 2, stashing result
@@ -2379,8 +2379,7 @@ loc_9663:
 ; =============== S U B	R O U T	I N E =======================================
 ; analyzes the targeted player's equipped items; reports them in word_4/word_6
 ;
-;"sub_inv_AnalyzeEquipped"
-_b0_s1E_player_euipped_item_get:
+_b0_s1E_player_equipped_item_get:
 		LDA		byte_CE				; setup PCx8 inventory ptr:
 		ASL							; the desired player's inventory slot 0 is pointed to by X
 		ASL							; initialize itemTypeCounter:
@@ -4409,7 +4408,7 @@ _check_if_player_exist_or_dead:
 ;
 _b0_s67_mysterious_hat_mp_modifier:
 		PHA											; this ended up scanning the inventory for a player...
-		JSR		_b0_s1E_player_euipped_item_get
+		JSR		_b0_s1E_player_equipped_item_get
 		LDA		word_6+1							; fetch the equipped hat from the player inventory scan
 		CMP		#ITEM_EMYSTERIOUS_HAT				; compare to mysterious hat
 		BNE		.no_mp_cost_modifier

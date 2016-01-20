@@ -160,13 +160,19 @@ byte_49:
 ;----------------------------------------------
 word_4A:
 		.BYTE	0,0
-byte_4C:
-		.BYTE	0
 ; 4B - "tileReadingRelatedX"
 ; 4C - "tileReadingRelatedY"
 ;----------------------------------------------
+; # of live players in a battle?
+_bs_num_live_players:
+byte_4C:
+		.BYTE	0
+;----------------------------------------------
+; # of dead players in a battle
+_bs_num_live_enemies:
 byte_4D:
 		.BYTE	0
+;----------------------------------------------
 byte_4E:
 		.BYTE	0
 ;----------------------------------------------
@@ -741,8 +747,17 @@ _enemy_roster_index_list:
 _enemy_group_count:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
-byte_575:
+; Flags for attack buff/debuffs
+; $80 - Poison needle wielded
+; $20 - unknown
+; $10 - Bonus damage? From demon axe, or from (maybe) dragon killer + dragon target.
+; $08 - unknown
+; $04 - Multi-edge sword debuff
+; $02 - Demon Axe debuff
+; 
+_attack_buff_flags:
 		.BYTE	0
+;----------------------------------------------
 byte_576:
 		.BYTE	0
 _prev_pads: ; 578
@@ -1742,10 +1757,15 @@ byte_6A6D:
 		.BYTE	0
 byte_6A6E:
 		.BYTE	0
+;----------------------------------------------
+; seemingly the type of enemy in each group
+;
 byte_6A6F:
 		.BYTE	0,0,0,0
+;----------------------------------------------
 byte_6A73: ; "unk_EnemyStatusPXFieldLookup" - the PX field of enemy status is used to index this table
 		.BYTE	0,0,0,0
+;------------------------------------------
 byte_6A77:
 		.BYTE	0,0,0,0
 ;----------------------------------------------
@@ -1902,7 +1922,7 @@ _sram_b0_s1B_player_gold_add:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1B_player_gold_subtract:
 		.BYTE	0,0,0,0,0
-_sram_b0_s1E_player_euipped_item_get:
+_sram_b0_s1E_player_equipped_item_get:
 		.BYTE	0,0,0,0,0
 _sram_b0_s1F_player_weapon_get:
 		.BYTE	0,0,0,0,0

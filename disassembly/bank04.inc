@@ -131,7 +131,7 @@ loc_680B4:
 		BCS		loc_6810D
 loc_680CD:
 		FARX	_b1_sA
-		LDA		byte_4C
+		LDA		_bs_num_live_players
 		BNE		loc_68080
 		BEQ		.comon_battle_death
 .common_battle_won:							; battle won, restore the location music
@@ -380,7 +380,7 @@ loc_68252:
 		INX
 		CPX		#8
 		BNE		loc_68249
-		STY		byte_4C
+		STY		_bs_num_live_players
 
 ; setup a 4-times loop across each player
 		LDX		#0
@@ -435,7 +435,7 @@ loc_68252:
 ; =============== S U B	R O U T	I N E =======================================
 _b4_s26:
 		LDX		#0
-		STX		byte_4D
+		STX		_bs_num_live_enemies
 		TXA
 loc_682B0:
 		STA		byte_530,X
@@ -454,7 +454,7 @@ loc_682C4:
 		LDA		#0
 		STA		byte_6A77,X
 		LDA		_enemy_roster_index_list,X
-		CMP		#$FF
+		CMP		#ENEMY_NONE
 		BEQ		loc_68308
 		STA		byte_6A6F,X
 		STA		byte_6A73,X
@@ -465,8 +465,8 @@ loc_682C4:
 		LDY		_enemy_group_count,X
 		TYA
 		CLC
-		ADC		byte_4D
-		STA		byte_4D
+		ADC		_bs_num_live_enemies
+		STA		_bs_num_live_enemies
 loc_682EB:
 		TYA
 		PHA
@@ -485,7 +485,7 @@ loc_682F5:
 		JSR		sub_6B3DB
 		JMP		loc_6833E
 loc_68308:
-		LDA		#$FF
+		LDA		#ENEMY_NONE
 		STA		byte_6A6F,X
 		STA		byte_6A73,X
 		BNE		loc_682F5
@@ -884,7 +884,7 @@ _bs_emove_stage2_07_try_flee:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68576:
-		LDA		byte_4D
+		LDA		_bs_num_live_enemies
 		CMP		#8
 		BCS		loc_68588
 		JSR		sub_6B91D
@@ -898,7 +898,7 @@ loc_68588:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage2_reinforce_specific:
-		LDA		byte_4D
+		LDA		_bs_num_live_enemies
 		CMP		#8
 		BCS		loc_68588
 		LDA		byte_4F
@@ -1362,7 +1362,7 @@ locret_6881E:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6881F:
-		LDX		byte_4D
+		LDX		_bs_num_live_enemies
 		DEX
 		BNE		loc_68826
 		CLC
@@ -1528,15 +1528,15 @@ loc_688D8:
 		JSR		sub_68931 ; probably the main action dispatch
 		LDA		_curent_battle_type_flags
 		BEQ		loc_6890E
-		LDX		byte_4D
+		LDX		_bs_num_live_enemies
 		BEQ		loc_6892E
 		DEX
 		BEQ		loc_6892B
 		BNE		.bs_loop_next_turn
 loc_6890E:
-		LDA		byte_4C
+		LDA		_bs_num_live_players
 		BEQ		loc_68925
-		LDA		byte_4D
+		LDA		_bs_num_live_enemies
 		BEQ		loc_68928
 
 ; test whether we're done with turns (theres #$C turns) and return if we are
@@ -1610,8 +1610,8 @@ loc_6897F:
 		JSR		sub_6B2C4 ; affects byte_566
 		LDA		#$EF
 		JSR		sub_6B300 ; affects byte_567
-		LDA		#0
-		STA		byte_575
+		LDA		#ATTACK_BUFF_NONE
+		STA		_attack_buff_flags
 		LDX		_bs_curr_actor ; load actor number for this turn
 		LDA		byte_540,X ; read his action order table for enemy flag
 		BMI		.bs_enemy_turn
@@ -1713,8 +1713,8 @@ loc_68A42:
 sub_68A52:
 		JSR		sub_68AC6
 		BEQ		locret_68A1D
-		LDA		#0
-		STA		byte_575
+		LDA		#ATTACK_BUFF_NONE
+		STA		_attack_buff_flags
 		JSR		sub_69580
 		JSR		sub_6B3C7
 		ASL
@@ -1771,13 +1771,13 @@ locret_68AC5:
 sub_68AC6:
 		LDA		_curent_battle_type_flags
 		BEQ		loc_68AD1
-		LDX		byte_4D
+		LDX		_bs_num_live_enemies
 		BEQ		locret_68AD0
 		DEX
 locret_68AD0:
 		RTS
 loc_68AD1:
-		LDA		byte_4C
+		LDA		_bs_num_live_players
 		BEQ		locret_68AFB
 		JSR		_sram_b0_s33_count_non_dead_party_chars
 		LDX		#0
@@ -1798,9 +1798,9 @@ loc_68AEE:
 		BNE		loc_68ADA
 		LDA		word_4
 		BNE		loc_68AF9
-		STA		byte_4C
+		STA		_bs_num_live_players
 loc_68AF9:
-		LDA		byte_4C
+		LDA		_bs_num_live_players
 locret_68AFB:
 		RTS
 ; =============== T A B	L E =================================================
@@ -1899,13 +1899,14 @@ loc_68B94:
 		BMI		loc_68BAB
 		STA		byte_D2
 		STA		byte_CE
-		LDA		byte_575
+		LDA		_attack_buff_flags
 		AND		#$20
-		BEQ		loc_68BA8
+		BEQ		loc_68BA8 ; branch of $20 flag is set
 		LSR		word_4+1
 		ROR		word_4
 loc_68BA8:
 		JMP		loc_6A58C
+
 loc_68BAB:
 		STA		_acting_enemy
 		JMP		loc_6A42E
@@ -2015,8 +2016,8 @@ _bs_emove_stage1_08_reinforce_own_type:
 		STA		_acting_enemy
 		JSR		sub_6B91D
 		LDX		byte_59
-		LDA		byte_6A6F,X
-		JSR		sub_68D59
+		LDA		byte_6A6F,X ; get the type of enemy in this group
+		JSR		sub_68D59 ; are we testing to see if theres room?
 		BCS		loc_68C7C
 		JMP		loc_68D56
 loc_68C7C:
@@ -2116,7 +2117,7 @@ loc_68CED:
 		LDA		#$70 ; store 'no move' into enemy action table
 		STA		byte_54C,X
 		JSR		sub_6B5B7
-		INC		byte_4D
+		INC		_bs_num_live_enemies
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$4C ; "another one of me appears"
 		JMP		sub_6AA34
 
@@ -2596,7 +2597,7 @@ loc_69032:
 		STA		_players_status+1,X
 		JSR		sub_68F8C
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		DEC		byte_4C
+		DEC		_bs_num_live_players
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$2C ; "shatters into pieces"
 		JMP		sub_69053
 
@@ -2897,7 +2898,7 @@ loc_69251:
 		LDA		#$32
 		JSR		_bs_player_luck_test
 		BCS		loc_69264
-		LDX		byte_4C
+		LDX		_bs_num_live_players
 		DEX
 		BEQ		loc_69264
 		JSR		_sram_b0_s2C_player_CLASS_read
@@ -2930,7 +2931,7 @@ loc_69282:
 		INC		byte_CF
 		JMP		loc_69282
 loc_69295:
-		DEC		byte_4C
+		DEC		_bs_num_live_players
 		JSR		sub_6AA51
 		JSR		_b4_s6_wndBTL_STAT
 		LDA		_player_vehicle
@@ -3125,7 +3126,7 @@ loc_693CB:
 		TAX
 		LDA		#$80
 		STA		byte_6A77,X
-		INC		byte_4D
+		INC		_bs_num_live_enemies
 		JSR		sub_6B5B7
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$3C ; "comes back to life"
 		JMP		sub_6AA34
@@ -3189,7 +3190,7 @@ sub_69443:
 		JSR		_bs_espell_heal_randrange
 		JMP		sub_6A5D6
 loc_69450:
-		JMP		loc_69BA3
+		JMP		.bs_spell_heal_single_precomputed
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_heal_various_multi:
@@ -3429,28 +3430,36 @@ _bs_pcAction_00_attack:
 		LDA		word_4+1
 		STA		_players_rATK+1,X
 loc_695DE:
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4
-		AND		#$7F
-		CMP		#$18
-		BNE		loc_69600
+		AND		#$7F ; mask off equip bit
+		CMP		#ITEM_FALCON_SWORD
+		BNE		loc_69600 ; branch down if falcon sword is not equipped to do only one attack
 		LDA		byte_CE
 		PHA
-		JSR		sub_69604
+		JSR		sub_69604 ; process one attack
 		PLA
+
+; do some repair after prior attack?
 		STA		byte_CE
 		JSR		sub_6B3D2
-		LDA		byte_4C
+
+; skip bonus attack if all enemies or players just died
+		LDA		_bs_num_live_players
 		BEQ		locret_69603
-		LDA		byte_4D
+		LDA		_bs_num_live_enemies
 		BEQ		locret_69603
 		JSR		_b4_sA_clear_chatbox
+
+; fall through and do another attack
 loc_69600:
 		JSR		sub_69604
 locret_69603:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Player attacking logic (one attack)
+;
 sub_69604:
 		JSR		_bs_extract_target_from_move
 		BMI		loc_6960C
@@ -3458,9 +3467,11 @@ sub_69604:
 loc_6960C:
 		SYSX	_apu_load,SFX_PLAYER_ATTACKING
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$01 ; "attacks!"
-		JSR		sub_6B0E5
-		BCC		loc_6961A
+		JSR		sub_6B0E5 ; study buff/debuffs for equipped items
+		BCC		loc_6961A ; branch if we're not immobilized
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$7C ; "can't move because of a curse!"
+		; BREAK RTS
+
 loc_6961A:
 		LDA		byte_CE
 		PHA
@@ -3487,7 +3498,7 @@ loc_6963E:
 		JSR		sub_6B5B7
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$22 ; "missed! no damage to name"
 loc_69647:
-		LDA		byte_575
+		LDA		_attack_buff_flags
 		AND		#8
 		BEQ		loc_69655
 		JSR		_rand_ex
@@ -3500,8 +3511,9 @@ loc_69655:
 		ASL		word_4
 		ROL		word_4+1
 loc_69660:
-		LDA		byte_575
-		BMI		loc_696C9
+		LDA		_attack_buff_flags
+		BMI		loc_696C9 ; branch if ATTACK_BUFF_POISON_NEEDLE is present
+; further processing that's avoided for poison needle
 		LDA		byte_567
 		AND		#$20
 		BNE		loc_696B6
@@ -3524,23 +3536,23 @@ loc_69660:
 loc_6968F:
 		LDX		byte_CE
 		LDA		_players_class_gender,X
-		AND		#7
-		CMP		#6
+		AND		#CLASS_MASK
+		CMP		#CLASS_FIGHTER
 		BNE		loc_696A2
 		JSR		_rand_ex
 		CMP		_players_level,X
-		BCC		loc_696B6
+		BCC		loc_696B6 ; BCC->JB - branch if random roll is less than player's level; otherwise get normal odds?
 loc_696A2:
-		LDX		#4
-		LDA		byte_575
-		AND		#2
-		BEQ		loc_696AD
-		LDX		#$20
+		LDX		#4 ; normal chance of crit
+		LDA		_attack_buff_flags
+		AND		#ATTACK_BUFF_HIGHER_CRIT
+		BEQ		loc_696AD ; skip replacement odds for demon axe
+		LDX		#$20 ; replacement odds for demon axe
 loc_696AD:
 		STX		word_6+1
 		JSR		_rand_ex
 		CMP		word_6+1
-		BCS		loc_696C9
+		BCS		loc_696C9 ; BCS->JAE - branch down to avoid crit if we rolled >= crit odds target (IOW, {0,4})
 loc_696B6:
 		SYSX	_apu_load,SFX_ENEMY_CRIT
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$10 ; "a tremendous hit!"
@@ -3550,12 +3562,12 @@ loc_696B6:
 		LDA		#1
 		JSR		_add8_to_16
 loc_696C9:
-		LDA		byte_575
-		AND		#$10
-		BEQ		loc_696DC
+		LDA		_attack_buff_flags
+		AND		#ATTACK_BUFF_FLAG_RACIAL_WEAKNESS
+		BEQ		loc_696DC ; branch of no bonus
 		JSR		_rand_ex
 		AND		#$F
-		ADC		#$10
+		ADC		#$10 ; result: [0,15] + 16
 		LDX		#word_4
 		JSR		_add8_to_16	; A = value
 loc_696DC:
@@ -3974,7 +3986,7 @@ _bs_spell_sacrifice:
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
 		JSR		_b4_s6_wndBTL_STAT
-		DEC		byte_4C
+		DEC		_bs_num_live_players
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4258,42 +4270,48 @@ loc_69B95:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$45 ; "'s agility goes up"
 
 ; =============== S U B	R O U T	I N E =======================================
-; HEAL: restore 10*random + 25 ?
-; HEALMORE: restore 20*random + 70 ?
-; HEALALL: restore 40*random + 140 ?
+; Genericalized logic for player casting heal (or using a medicinal herb and probably a shield of strength, etc.) 
 ;
 _bs_spell_heal_single:
 		JSR		_bs_player_heal_randrange
-loc_69BA3:
+.bs_spell_heal_single_precomputed:
 		JSR		_bs_extract_target_from_move
-		BMI		loc_69BAD
+		BMI		loc_69BAD ; branch if the target is an enemy
 		STA		byte_CE
-		JMP		sub_6A5F7
+		JMP		sub_6A5F7 ; bypass enemy/zoma handling
+
 loc_69BAD:
-		LDA		byte_6A6F
-		CMP		#$86
-		BNE		loc_69BD7
+		LDA		byte_6A6F ; read the 1st enemy group type
+		CMP		#ENEMY_ZOMA_WEAKENED
+		BNE		loc_69BD7 ; branch for normal handler
+
+; handle zoma specially, since healing him actually causes damage
+; 
 		JSR		sub_6A8B3
 		JSR		_b4_s14
 		AND		#7
 		STA		_acting_enemy
-		LDA		byte_49				; reload spell number
+		LDA		byte_49				; reload spell number ($41 in case its an herb)
 		SEC
-		SBC		#$1A					; subtract #$1A to rebase spells 1A, 1B, 1C down to a 3-entry table
+; subtract #$1A to rebase spells 1A, 1B, 1C down to a 3-entry table
+; Since we've got $41 in case of an herb (resulting in $27), this code is buggy, referencing nearby data which may change during relocation
+		SBC		#$1A					
 		TAY
-		LDA		_heal_multiplier_tbl,Y
+		LDA		_zoma_healhurt_multiplier_tbl,Y ; $DB for medical herb
 		JSR		_b4_sF_rand_mul_A
 		CLC
-		ADC		_heal_base_tbl,Y
+		ADC		_zoma_healhurt_base_tbl,Y ; $E5 for medical herb
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
 		JMP		loc_6A42E			; TAILCALL
+
 loc_69BD7:
 		JMP		sub_69443			; TAILCALL
-_heal_base_tbl:
+
+_zoma_healhurt_base_tbl:
 		.BYTE	$19,$46,$8C
-_heal_multiplier_tbl:
+_zoma_healhurt_multiplier_tbl:
 		.BYTE	 $A,$14,$28
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4388,7 +4406,7 @@ sub_69C62:
 		LDA		_player_battle_order_and_flags,X
 		AND		#$F7
 		STA		_player_battle_order_and_flags,X
-		INC		byte_4C
+		INC		_bs_num_live_players
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$3C ; "comes back to life"
 loc_69C7A:
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$40 ; "but nothing happens!"
@@ -5565,18 +5583,20 @@ loc_6A42E:
 		JSR		sub_68F16
 		BPL		locret_6A3F7
 		JSR		sub_6B5B7
-		LDA		byte_575
-		BPL		loc_6A467
+		LDA		_attack_buff_flags
+		BPL		loc_6A467 ; branch if poison needle isn't being wielded in an attack
+; special processing for poison needle:
 		JSR		_rand_ex
 		CMP		#$20
-		BCS		loc_6A45F
+		BCS		loc_6A45F ; BCS->JAE branch down if rolled >= $20
 		LDA		byte_6A6B
-		BNE		loc_6A45F
+		BNE		loc_6A45F ; skip poison needle under some conditions? boss battles I would assume
 		SYSX	_apu_load,SFX_POISON_NEEDLE
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$7D ; "The Poison Needle penetrates..."
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$0E ; "You have defeated..."
-		JSR		sub_6ADB6
+		JSR		sub_6ADB6 ; probably prints enemy name...
 		JMP		_b4_s5_do_message_speed_delay ; TAILCALL
+
 loc_6A45F:
 		LDA		#1
 		STA		word_4
@@ -5621,7 +5641,7 @@ loc_6A478:
 		STA		word_4+1
 		PLA
 		STA		word_4
-		LDA		byte_575
+		LDA		_attack_buff_flags
 		AND		#4
 		BEQ		locret_6A4C8
 		LSR		word_4+1
@@ -5665,12 +5685,11 @@ loc_6A4EE:
 		JSR		_sram_b0_s2_player_HP_read
 		LDA		word_4
 		ORA		word_4+1
-; check for HP 0
-		BEQ		sub_6A544
-		LDA		byte_575
+		BEQ		sub_6A544 ; branch if HP 0
+		LDA		_attack_buff_flags
 		AND		#1
 		BNE		loc_6A529
-		LDA		byte_575
+		LDA		_attack_buff_flags
 		AND		#$20
 		BEQ		loc_6A542
 		JSR		sub_686F4
@@ -5683,7 +5702,7 @@ loc_6A4EE:
 		PHA
 		JSR		sub_6A56E
 		LDA		#0
-		STA		byte_575
+		STA		_attack_buff_flags
 		PLA
 		STA		byte_CE
 		JSR		_b4_sB
@@ -5696,7 +5715,7 @@ loc_6A529:
 		ROR		word_4
 		INC		word_4
 		LDA		#0
-		STA		byte_575
+		STA		_attack_buff_flags
 ; after this, before counterattack, a line of text was erased
 		JSR		_b4_sB
 		JMP		loc_6A42E
@@ -5715,7 +5734,7 @@ sub_6A544:
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
 		JSR		_b4_s6_wndBTL_STAT
-		DEC		byte_4C
+		DEC		_bs_num_live_players
 		JSR		sub_6A569
 		CLC
 		RTS
@@ -7174,6 +7193,8 @@ sub_6ADEC:
 		LDA		byte_6A73,X
 		STA		_battle_type_fight
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_6ADF9:
 		LDA		_acting_enemy
@@ -7181,7 +7202,7 @@ sub_6ADF9:
 		TAX
 		LDA		#0
 		STA		byte_530+1,X
-		DEC		byte_4D
+		DEC		_bs_num_live_enemies
 		BEQ		loc_6AE31
 		LDA		byte_530,X
 		AND		#$C
@@ -7252,6 +7273,7 @@ loc_6AE66:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Uhhh I dont understand somethings as well as I might let on
+; DING
 ;
 _bs_pcAction_03_item:
 		JSR		sub_6B2FE
@@ -7266,11 +7288,11 @@ loc_6AE7D:
 		LDA		byte_558,X
 		STA		_msg_directobject_param
 		STA		word_4
-		CMP		#$70 ; special handling for fairy flute?
+		CMP		#ITEM_FAIRY_FLUTE ; special handling for fairy flute?
 		BEQ		loc_6AE97
-		CMP		#$5B ; special handling for dream ruby?
+		CMP		#ITEM_DREAM_RUBY ; special handling for dream ruby?
 		BEQ		loc_6AE92
-		CMP		#$74 ; special handling for spiders web?
+		CMP		#ITEM_SPIDERS_WEB ; special handling for spiders web?
 		BNE		loc_6AEA2 ; branch if not spiders web
 ; must be spiders web ?
 loc_6AE92:
@@ -7278,7 +7300,7 @@ loc_6AE92:
 		JSR		_bs_set_battleflag_567
 loc_6AE97:
 		LDA		word_4
-		CMP		#$70 ; test again for fairy flute?
+		CMP		#ITEM_FAIRY_FLUTE ; test again for fairy flute?
 		BNE		loc_6AEA2 ; standard handling
 ; must be fairy flute (puts enemy to sleep)
 		LDA		#BGM_JINGLE_FAIRY_FLUTE
@@ -7328,7 +7350,7 @@ loc_6AED0:
 		JSR		_b4_sB
 loc_6AED7:
 		LDA		_bs_item_effect_tbl,Y
-		STA		byte_49 ; patch the effect as if it were a fake spell
+		STA		byte_49 ; patch the effect as if it were a fake spell (41 for medical herb)
 		LDA		#_b0_d42_item_use_effects_list_fidx ; load info about the item - is it consumable?
 		JSR		_sys0_byte_read_x
 		AND		#4
@@ -7505,7 +7527,7 @@ _bs_fake_spell_medical_herb:
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
-		JMP		loc_69BA3
+		JMP		.bs_spell_heal_single_precomputed
 
 ; =============== S U B	R O U T	I N E =======================================
 nullsub_12:
@@ -7551,20 +7573,20 @@ loc_6B048:
 ;
 _bs_fake_spell_fairy_water:
 		JSR		_bs_extract_target_from_move
-		BPL		loc_6B071
+		BPL		loc_6B071 ; branch if the target is a player (nothing happens)
 		JSR		_bs_some_attack_command
 		LDA		#$14
 		JSR		_b4_sF_rand_mul_A
-		ADC		#$E ; effectively, [14,33]
+		ADC		#$E ; effectively, [0,19] + 14
 		STA		word_4
 		LDA		#0
 		STA		word_4+1
 		LDA		word_6
 		STA		_acting_enemy
 		JSR		sub_6B5B7
-		LDA		#$D
+		LDA		#$D ; seems to be a probability (maybe?)
 		JSR		sub_6A337 ; determines whether it has any effect...
-		BCC		loc_6B073 ; branch
+		BCC		loc_6B073 ; BCC->JB - branch down if we failed the random chance
 		JMP		loc_6A42E
 loc_6B071:
 		STA		byte_D2
@@ -7655,81 +7677,112 @@ _bs_play_jingle
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; seems to return CF=1 if the player is immobilized by a curse debuff
+;
 sub_6B0E5:
-		JSR		_sram_b0_s1E_player_euipped_item_get
-		LDY		#7
+		JSR		_sram_b0_s1E_player_equipped_item_get
+		LDY		#7 ; test for ~7 equipped items?
 loc_6B0EA:
 		DEY
-		BMI		loc_6B145
-		LDA		word_4
+		BMI		.bs_test_armor_of_hades ; bail if we underflowed
+		LDA		word_4 ; load equipped weapon
 		CMP		byte_6B156,Y
-		BNE		loc_6B0EA
-		LDA		byte_6B15D,Y
+		BNE		loc_6B0EA ; loop again
+; found matching weapon:
+		LDA		byte_6B15D,Y ; load buff/debuff flags for that weapon
 		STY		byte_CF
 		DEY
 		STY		byte_D0
-		BPL		loc_6B109
-		JSR		loc_6B142
-		BCS		locret_6B108
+		BPL		loc_6B109 ; branch if we were positive - IOW, matching weapon was not SWORD_OF_DESTRUCTION
+		JSR		loc_6B142 ; store buff/debuff flags and test armor of hades
+		BCS		locret_6B108 ; branch if we were struck by immobilization (and return true for immobilization)
 		JSR		_rand
-		CMP		#$C0
+		CMP		#$C0 ; try a 75% chance for further immobilization ? ?
 locret_6B108:
 		RTS
+
 loc_6B109:
 		BNE		loc_6B118
 		LDA		#3
 		STA		byte_CF
 		JSR		_sram_b0_s9_player_MP_subtract
 		JSR		_b4_s6_wndBTL_STAT
-		JMP		loc_6B145
+		JMP		.bs_test_armor_of_hades
+
 loc_6B118:
 		CPY		#4
 		BCC		loc_6B142
 		JSR		_bs_extract_target_from_move
-		BPL		loc_6B145
+		BPL		.bs_test_armor_of_hades
 		CPY		#4
 		BNE		loc_6B132
 		STA		_acting_enemy
 		LDA		#$D
 		JSR		sub_6A337
 		CMP		#$4E
-		BCS		loc_6B145
-		BCC		loc_6B140
+		BCS		.bs_test_armor_of_hades
+		BCC		loc_6B140 ; UNCONDITIONAL
+
 loc_6B132:
 		TAX
-		LDA		byte_6A73,X
+		LDA		byte_6A73,X ; loads.. what? the enemy type?
+
+; setup a ~6 times loop checking to see if the target enemy is a dragon
 		LDY		#6
 loc_6B138:
 		DEY
-		BMI		loc_6B145
-		CMP		byte_6B162,Y
+		BMI		.bs_test_armor_of_hades ; branch if Y underflowed
+		CMP		_bs_dragon_types_tbl,Y 
 		BNE		loc_6B138
 loc_6B140:
-		LDA		#$10
-loc_6B142:
-		JSR		sub_6B168
-loc_6B145:
-		JSR		_sram_b0_s1E_player_euipped_item_get
-		LDA		word_4+1
-		CMP		#$AD
+		LDA		#ATTACK_BUFF_FLAG_RACIAL_WEAKNESS ; prepare to set flag for bonus damage, I think
+
+loc_6B142: ; <--- subroutine call target!
+		JSR		_bs_incorporate_attackbuff
+.bs_test_armor_of_hades:
+		JSR		_sram_b0_s1E_player_equipped_item_get
+		LDA		word_4+1 ; fetch equipped armor
+		CMP		#ITEM_EARMOR_OF_HADES
 		BNE		loc_6B154
 		JSR		_rand
-		CMP		#$AA
+		CMP		#$AA ; random chance for curse debuff immobilization?
 		RTS
+
 loc_6B154:
 		CLC
 		RTS
+
 byte_6B156:
-		.BYTE	$93,$95,$88,$8F,$94,$97,$9E
+		.BYTE	#ITEM_ESWORD_OF_DESTRUCTION
+		.BYTE	#ITEM_ESTAFF_OF_FORCE
+		.BYTE	#ITEM_EPOISON_NEEDLE
+		.BYTE	#ITEM_EDEMON_AXE
+		.BYTE	#ITEM_EMULTIEDGE_SWORD
+		.BYTE	#ITEM_EZOMBIE_SLASHER
+		.BYTE	#ITEM_EDRAGON_KILLER
+
+; attack passive buff/debuff flags for each (but not all?) of the above
 byte_6B15D:
-		.BYTE	  2,  0,$80, $A,  4
-byte_6B162:
-		.BYTE	$5B,$67,$7C,$3A,$71,$7E
+		.BYTE	 #ATTACK_BUFF_HIGHER_CRIT
+		.BYTE	 #ATTACK_BUFF_NONE
+		.BYTE	 #ATTACK_BUFF_POISON_NEEDLE
+		.BYTE	 (#ATTACK_BUFF_DEMON_AXE | #ATTACK_BUFF_HIGHER_CRIT)
+		.BYTE	 #ATTACK_BUFF_MULTI_EDGE
+    ; zombie slasher? apparently theres other logic to make sure these dont get used. why are they in the buffed weapon list anyway? is it because of monster racial bonuses?
+    ; dragon killer?
+
+_bs_dragon_types_tbl:
+		.BYTE	#ENEMY_SNOW_DRAGON
+		.BYTE	#ENEMY_SALAMANDER
+		.BYTE	#ENEMY_GREEN_DRAGON
+		.BYTE	#ENEMY_SKY_DRAGON
+		.BYTE	#ENEMY_SCALGON
+		.BYTE	#ENEMY_PUTREGON
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_6B168:
-		ORA		byte_575
-		STA		byte_575
+_bs_incorporate_attackbuff:
+		ORA		_attack_buff_flags
+		STA		_attack_buff_flags
 		CLC
 		RTS
 
@@ -7744,33 +7797,33 @@ loc_6B175:
 		STA		byte_5A
 		TYA
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		PLA
 		TAY
-		LDA		word_4+1
+		LDA		word_4+1 ; load equipped armor
 		CPY		#$13
 		BCC		loc_6B18E
-		CMP		#$AD
+		CMP		#ITEM_EARMOR_OF_HADES
 		BEQ		loc_6B1D2
 loc_6B18E:
-		CMP		#$AE
+		CMP		#ITEM_EWATER_FLYING_CLOTH
 		BEQ		loc_6B1B2
-		CMP		#$A8
+		CMP		#ITEM_EARMOR_OF_RADIANCE
 		BEQ		loc_6B1B2
-		CPY		#$13
+		CPY		#$13 ; huh?
 		BCC		loc_6B1A4
-		CMP		#$A6
+		CMP		#ITEM_EMAGIC_ARMOR
 		BEQ		loc_6B1B2
-		CMP		#$AC
+		CMP		#ITEM_ESACRED_ROBE
 		BEQ		loc_6B1B2
 		BNE		loc_6B1DB
 loc_6B1A4:
-		LDX		word_6
-		CPX		#$BB
+		LDX		word_6 ; load equipped shield
+		CPX		#ITEM_ESHIELD_OF_HEROES
 		BEQ		loc_6B1B2
 		CPY		#$D
 		BCS		loc_6B1DB
-		CMP		#$B5
+		CMP		#ITEM_EDRAGON_MAIL
 		BNE		loc_6B1DB
 loc_6B1B2:
 		CPY		#$13
@@ -7812,14 +7865,14 @@ sub_6B1E8:
 		PHA
 		LDA		word_4+1
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
-		CMP		#$A7
+		CMP		#ITEM_ECLOAK_OF_EVASION
 		BEQ		loc_6B209
-		CMP		#$B6
+		CMP		#ITEM_ESWORDEDGE_ARMOR
 		BEQ		loc_6B211
 		LDA		word_6
-		CMP		#$BC
+		CMP		#ITEM_ESHIELD_OF_SORROW
 		BEQ		loc_6B235
 loc_6B201:
 		CLC
@@ -7831,7 +7884,7 @@ loc_6B202:
 		RTS
 loc_6B209:
 		JSR		_rand
-		CMP		#$CC
+		CMP		#$CC ; ~80% chance
 		JMP		loc_6B202
 loc_6B211:
 		JSR		_bs_get_current_actor_number
@@ -7849,11 +7902,11 @@ loc_6B211:
 		CMP		#$FF
 		BEQ		loc_6B201
 		LDA		#1
-		JSR		sub_6B168
+		JSR		_bs_incorporate_attackbuff
 		JMP		loc_6B201
 loc_6B235:
 		LDA		#$20
-		JSR		sub_6B168
+		JSR		_bs_incorporate_attackbuff
 		JMP		loc_6B201
 
 ; =============== T A B	L E =================================================
