@@ -600,7 +600,7 @@ _run_command_equip:
 		JMP		sub_1580A1
 loc_158421:
 		STA		byte_CE
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
 		STA		byte_6AB3
 		SEC
@@ -708,7 +708,7 @@ loc_1584E7:
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_1584ED:
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
 		CMP		byte_6AB3
 		BEQ		loc_158507
@@ -824,7 +824,7 @@ sub_158581:
 ; =============== S U B	R O U T	I N E =======================================
 sub_15858D:
 		PHA
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		PLA
 		TAX
 		LDA		word_4,X
@@ -1593,10 +1593,10 @@ _sys_idx_list1:
 		.BYTE	_b0_s21_player_shield_get_fidx
 		.BYTE	_b0_s22_player_helm_get_fidx
 		.BYTE	_b0_s28_player_inventory_item_get_fidx
-		.BYTE	_b0_s1E_player_euipped_item_get_fidx
-		.BYTE	_b0_s1E_player_euipped_item_get_fidx
-		.BYTE	_b0_s1E_player_euipped_item_get_fidx
-		.BYTE	_b0_s1E_player_euipped_item_get_fidx
+		.BYTE	_b0_s1E_player_equipped_item_get_fidx
+		.BYTE	_b0_s1E_player_equipped_item_get_fidx
+		.BYTE	_b0_s1E_player_equipped_item_get_fidx
+		.BYTE	_b0_s1E_player_equipped_item_get_fidx
 byte_158A76:
 		.BYTE	  5,  5,  5,  5,  5,  4,  5,  6,  7,  4
 
@@ -7568,7 +7568,7 @@ loc_15B957:
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
 		STA		byte_6ABF
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
 		CMP		#$AA
 		BNE		loc_15B976
@@ -7579,7 +7579,7 @@ loc_15B976:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		BEQ		loc_15B99C
-		JSR		_sram_b0_s1E_player_euipped_item_get
+		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
 		CMP		#$B1
 		BEQ		loc_15B98A

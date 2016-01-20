@@ -6304,7 +6304,7 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s1B_player_gold_read					; $3C
 		FILE_IDX	$0,_b0_s1B_player_gold_add					; $3D
 		FILE_IDX	$0,_b0_s1B_player_gold_subtract					; $3E
-		FILE_IDX	$0,_b0_s1E_player_euipped_item_get					; $3F
+		FILE_IDX	$0,_b0_s1E_player_equipped_item_get					; $3F
 		FILE_IDX	$0,_b0_s1F_player_weapon_get					; $40
 		FILE_IDX	$0,_b0_s21_player_shield_get					; $41
 		FILE_IDX	$0,_b0_s21_player_armor_get					; $42

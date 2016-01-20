@@ -1898,12 +1898,16 @@ locret_F9159:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Called when Baramos is defeated
+;
 _bA_s12:
 		LDA		_global_flags_array.byte2
 		AND		#$DF
 		STA		_global_flags_array.byte2
-		MSGX	_msg_m00,$07F
+		MSGX	_msg_m00,$07F ; "A warm light engulfs the area."
 		FARX	_b2_s8_screen_hit_blink
+
+; setup a loop across all 3 players to restore their status and HP/MP and etc.
 		LDX		#3
 		STX		byte_CF
 		STX		byte_D0
@@ -1927,7 +1931,8 @@ loc_F918B:
 		TAX
 		DEX
 		BPL		loc_F9170
-		FARX	_b4_s1A_status_pal_adjust_and_update
+; end loop
+		FARX	_b4_s1A_status_pal_adjust_and_update ; update status since we tweaked HP
 		FARX	_b4_s6_wndBTL_STAT
 		RTS
 

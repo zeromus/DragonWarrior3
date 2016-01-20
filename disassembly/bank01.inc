@@ -1532,7 +1532,7 @@ loc_209FA:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-sub_20A1A:
+_after_beat_baramos:
 		FARX	_bA_s12
 		JSR		_pause_or_skip
 		JSR		_map_music_select_and_load
@@ -1553,7 +1553,7 @@ loc_6B412:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; displays a messages if battle won or fleed, calc and display expirience
+; displays a messages if battle won or fleed, calc and display experience
 ; gained, loot or gold obtained, do more special flags test and set depending
 ; on foe type
 ;
@@ -1586,11 +1586,13 @@ loc_20A5A:
 loc_20A68:
 		FARX	_bB_s7_apu_wait
 		LDA		byte_6A6F
-		CMP		#$84
-		BEQ		sub_20A1A
-		CMP		#$86
-		BNE		loc_20A76
-		JMP		_pause_or_skip
+		CMP		#ENEMY_BARAMOS
+		BEQ		_after_beat_baramos
+		
+		CMP		#ENEMY_ZOMA_WEAKENED
+		BNE		loc_20A76 ; branch immediately down for normal cases
+		JMP		_pause_or_skip ; branch for zoma. where does control go after this?
+
 loc_20A76:
 		JSR		_map_music_select_and_load
 		LDA		byte_5D
@@ -1658,6 +1660,7 @@ loc_20AED:
 		CMP		#$FF
 		BNE		.loot_drop_test
 		JMP		.obtain_money_after_battle
+
 ; ----------------------------------------
 ; loot obtain
 ;
@@ -1808,7 +1811,7 @@ loc_20C36:
 		AND		_players_status+1,Y
 		BPL		loc_20C4A
 		LDA		_players_class_gender,X			; fetch player's class. setting up money multiplier for merchant?
-		AND		#7
+		AND		#CLASS_MASK
 		CMP		#CLASS_MERCHANT
 		BEQ		loc_20C4F
 loc_20C4A:

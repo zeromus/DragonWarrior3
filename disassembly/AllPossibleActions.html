@@ -1,6 +1,10 @@
-here's a concept (an outline) for documenting all possible actions and much of the pseudocode/algorithms in one place. The logic would be as complete as possible; this file would be very, very large.
+Here's a concept (an outline) for documenting all possible actions and much of the pseudocode/algorithms in one place. The logic would be as complete as possible; this file would be very, very large.
 <p>
-It's unclear how to encode things like passive effects of equipment, but it could be done.
+This file constitutes original research. Nothing was written in here without documenting in the disassembly. But, there are probably errors in it.
+<p>
+Definitions:
+[X,Y] - an inclusive range
+<br />{X,Y} - A random chance, if rand() is matching [X,Y]
 
 <ul>
 
@@ -11,9 +15,8 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 
 		<li>Spell<ul>
 			<!--- field spells --->
-			<li>$1A - Heal (HR,PI) [25,34]
-<li>$1A - Heal (HR,PI) [25,34]
-			<li>Antidote (PI)<br />
+			<li>$1A - Heal (HR,PR) 
+			<li>Antidote (PR)<br />
 			Does things
 		</ul> <!--- field spells --->
 	
@@ -24,7 +27,7 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 			<li>$4F - ITEM_BLACK_PEPPER: All living players sneeze (no practical effect)
 			<li>$65 - ITEM_MEDICAL_HERB: Restores [0,15] + 35 HP to target player
 			<li>$66 - ITEM_ANTIDOTE_HERB: Calls the same logic as the Antidote spell; if it was ineffective, prints "But nothing happens"
-			<li>$67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' timer
+			<li>$67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' counter
 		</ul> <!--- battle - player items -->
 
 		<li>Search:
@@ -38,29 +41,46 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 		<li>Player<ul>
 			<!--- battle - player --->
 
-			<li>Fight
+			<li>Fight:
+			<br />If the FALCON_SWORD is equipped, the player will run all the subsequent attack logic twice (>99.9% identical to a single attack), except that processing is terminated if all the enemies or players have died.
+			<br />Fighters get a chance to enable crit which is {0,LV}; All classes get a chance to enable crit of {0,3}. The crit enables don't stack.
+			<br />Passive effects resulting from equipped gear:
+			<ul>
+			<li>SWORD_OF_DESTRUCTION: ATTACK_BUFF_HIGHER_CRIT. Moreover, there's a {192,255} chance that the attacker will be immobilized in place of the attack.
+			<li>STAFF_OF_FORCE: no special effects known, but it's been programmed in as a test
+			<li>POISON_NEEDLE: ATTACK_BUFF_POISON_NEEDLE (TBD)
+			<li>DEMON_AXE: ATTACK_BUFF_DEMON_AXE and ATTACK_BUFF_HIGHER_CRIT
+			<li>MULTIEDGE_SWORD: ATTACK_BUFF_MULTI_EDGE
+			<li>ZOMBIE_SLASHER: Not sure at all what this does. Presumably a racial check gets done later but I dont see it yet.
+			<li>DRAGON_KILLER:  - I think buff flag ATTACK_BUFF_FLAG_RACIAL_WEAKNESS is set if the target enemy is a dragon: (SNOW_DRAGON,SALAMANDER,GREEN_DRAGON,SKY_DRAGON,SCALGON,PUTREGON)
+			<hr />
+			<li>ATTACK_BUFF_HIGHER_CRIT: Normal {0,3} crit chance is replaced with {0,31}
+			<li>ATTACK_BUFF_FLAG_RACIAL_WEAKNESS: [0,15] + 16 additional damage
+			<li>ATTACK_BUFF_POISON_NEEDLE: The attack cannot crit. More enemy traits and defenses may be avoided (uncertain right now). {0,$1F} chance of penetrating the enemy's defenses (instant kill).
+
+			</ul>
 
 			<li>Spell: If the ITEM_MYSTERIOUS_HAT is equipped, MP cost is adjusted to (mp*3/4+1) unless it's 0, in which case it stays 0. (TODO write about blocking logic) If MP is adequate, cost is deducted.
 			<ul>
 				<!--- battle - player spells -->
-				<li>$00 - SPELL_BLAZE
-				<li>$01 - SPELL_BLAZEMORE
-				<li>$02 - SPELL_BLAZEMOST
-				<li>$03 - SPELL_FIREBAL
-				<li>$04 - SPELL_FIREBANE
-				<li>$05 - SPELL_FIREVOLT
-				<li>$06 - SPELL_BANG
-				<li>$07 - SPELL_BOOM
-				<li>$08 - SPELL_EXPLODET
-				<li>$09 - SPELL_ICEBOLT
-				<li>$0A - SPELL_SNOWBLAST
-				<li>$0B - SPELL_SNOWSTORM
-				<li>$0C - SPELL_ICESPEARS
-				<li>$0D - SPELL_INFERNOS
-				<li>$0E - SPELL_INFERMORE
-				<li>$0F - SPELL_INFERMOST
-				<li>$10 - SPELL_ZAP
-				<li>$11 - SPELL_LIGHTNING
+				<li>$00 - SPELL_BLAZE: [0,5] + 8 damage
+				<li>$01 - SPELL_BLAZEMORE: [0,19] + 70 damage
+				<li>$02 - SPELL_BLAZEMOST: [0,39] + 160 damage
+				<li>$03 - SPELL_FIREBAL: [0,7] + 16 damage
+				<li>$04 - SPELL_FIREBANE: [0,11] + 30 damage
+				<li>$05 - SPELL_FIREVOLT: [0,23] + 88 damage
+				<li>$06 - SPELL_BANG: [0,7] + 16 damage
+				<li>$07 - SPELL_BOOM: [0,15] + 52 damage
+				<li>$08 - SPELL_EXPLODET: [0,39] + 120 damage
+				<li>$09 - SPELL_ICEBOLT: [0,9] + 25 damage
+				<li>$0A - SPELL_SNOWBLAST: [0,15] + 42 damage
+				<li>$0B - SPELL_SNOWSTORM: [0,23] + 88 damage
+				<li>$0C - SPELL_ICESPEARS: [0,19] + 60 damage
+				<li>$0D - SPELL_INFERNOS: [0,15] + 8 damage
+				<li>$0E - SPELL_INFERMORE: [0,29] + 25 damage
+				<li>$0F - SPELL_INFERMOST: [0,59] + 60 damage
+				<li>$10 - SPELL_ZAP: [0,19] + 70 damage
+				<li>$11 - SPELL_LIGHTNING: [0,49] + 175 damage
 				<li>$12 - SPELL_BEAT
 				<li>$13 - SPELL_DEFEAT
 				<li>$14 - SPELL_SACRIFICE
@@ -69,13 +89,15 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 				<li>$17 - SPELL_ROBMAGIC
 				<li>$18 - SPELL_SLOW
 				<li>$19 - SPELL_SPEEDUP
-				<li>$1A - SPELL_HEAL (HR,PR)<br />
-				Does things
-				<li>$1B - SPELL_HEALMORE (HR,PR)
-				<li>$1C - SPELL_HEALALL
+				<li>$1A - SPELL_HEAL (HR,PR): [0,9] + 30 HP restored
+				<br />When casting on ENEMY_ZOMA_WEAKENED, instead of being healed, he takes [0,9] + 25 damage.
+				<li>$1B - SPELL_HEALMORE (HR,PR): [0,19] + 75 HP restored
+				<br />When casting on ENEMY_ZOMA_WEAKENED, instead of being healed, he takes [0,19] + 70 damage.
+				<li>$1C - SPELL_HEALALL: 255 HP restored
+				<br />When casting on ENEMY_ZOMA_WEAKENED, instead of being healed, he takes [0,39] + 140 damage.
 				<li>$1D - DUMMY
-				<li>$1E - SPELL_HEALUS
-				<li>$1F - SPELL_HEALUSALL
+				<li>$1E - SPELL_HEALUS: [0,15] + 62 HP restored.
+				<li>$1F - SPELL_HEALUSALL: [0,255] + 255 HP restored. Unclear whether this extreme range could end up mattering.
 				<li>$20 - SPELL_VIVIFY
 				<li>$21 - SPELL_REVIVE
 				<li>$22 - SPELL_SLEEP
@@ -85,7 +107,7 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 				<li>$26 - SPELL_RETURN
 				<li>$27 - SPELL_CHAOS
 				<li>$28 - SPELL_TRANSFORM
-				<li>$29 - SPELL_BEDRAGON: Caster becomes a dragon (for how long?), losing control but having these stats: ATK:300, DEF:200, AGI:200. Other stats remain the same.
+				<li>$29 - SPELL_BEDRAGON: Caster becomes a dragon (for how long?), losing control but having these stats: ATK:300, DEF:200, AGI:100. Other stats remain the same.
 				<li>$2A - SPELL_IRONIZE
 				<li>$2B - SPELL_SAP
 				<li>$2C - SPELL_DEFENCE
@@ -104,9 +126,12 @@ It's unclear how to encode things like passive effects of equipment, but it coul
 			<li>Parry
 			<li>Item<ul>
 				<!--- battle - player items -->
-				<li>$00 - ITEM_CYPRESS_STICK: (no effect)
-				<li>$4F - ITEM_BLACK_PEPPER: All living players and enemies sneeze (no practical effect)
-				<li>$65 - ITEM_MEDICAL_HERB: (see Field::Item entry)
+				<li>$00 - ITEM_CYPRESS_STICK: (can't pick target, no effect)
+				<li>$4F - ITEM_BLACK_PEPPER: All living players and enemies sneeze (no practical effect). The supply of black pepper is limitless, a savvy merchant should be able to parlay this into a business empire.
+				<li>$65 - ITEM_MEDICAL_HERB: When using on players, see Field::Item entry.
+				<br />What about bad guys?
+				<br />Well, vs Zoma, due to his special heal->damage processing, theres a bug in the code resulting in reading outside a table, and this damage: [0,218] + 229
+				<li>$67 - ITEM_FAIRY_WATER: Vs players, always "it has no effect." Vs enemies, rolls a chance approx 13/255 (TBD, enemy traits/buffs seem to be involved) to deal [0,19] + 14 as a spell. Otherwise "it has no effect"
 			</ul> <!--- battle - player items -->
 
 			<li>Antic<ul>
