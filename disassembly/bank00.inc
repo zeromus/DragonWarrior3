@@ -89,11 +89,11 @@
 		PTR_IDX		_b0_s66_byte_6D40_clear
 		PTR_IDX		_b0_s67_mysterious_hat_mp_modifier
 
-		PTR_IDX		_b0_d3F_antics_index
+		PTR_IDX		_b0_d3F_goofoff_antic_level_tvl
 		PTR_IDX		_b0_d42_item_use_effects_list
 		PTR_IDX		_b0_d44_item_effects_list
-		PTR_IDX		_b0_d58_hero_spell_related_data00
-		PTR_IDX		_b0_d59_common_spell_related_data00
+		PTR_IDX		_b0_d58_hero_spells
+		PTR_IDX		_b0_d58_mage_spells
 
 ; -----------------------------------
 ; -- WRAPPERS FOR SYSTEM FUNCTIONS --
@@ -3110,12 +3110,12 @@ _get_spell_related_data_ptr:
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
 		BEQ		.hero_class_spells
-		CMP		#7
+		CMP		#CLASS_GOOFOFF
 		BEQ		.goofoff_class_spells
 		STA		_tmp12+1
 		LDA		byte_D0
 		AND		#3
-		BNE		.other_class_spells
+		BNE		.other_class_spells ; branch for non-hero
 		LDA		_tmp12+1
 		CMP		#4
 		BCS		.goofoff_class_spells	; as well as sorcerer
@@ -3163,9 +3163,9 @@ loc_99F2:
 		CLC
 		ADC		word_4
 		TAX
-		LDA		_common_spell_related_data_ptr_tbl,X
+		LDA		_mage_spells_index,X
 		STA		byte_10
-		LDA		_common_spell_related_data_ptr_tbl+1,X
+		LDA		_mage_spells_index+1,X
 		STA		byte_11
 		RTS
 .goofoff_class_spells:
@@ -3205,9 +3205,9 @@ loc_9A4A:
 		LSR
 		LSR
 		TAX
-		LDA		_hero_spell_related_data_ptr_tbl,X
+		LDA		_hero_spells_index,X
 		STA		byte_10
-		LDA		_hero_spell_related_data_ptr_tbl+1,X
+		LDA		_hero_spells_index+1,X
 		STA		byte_11
 		RTS
 
@@ -3585,24 +3585,25 @@ _b0_s60_get_item_type:
 		LDA		#5
 		RTS
 
-_hero_spell_related_data_ptr_tbl:
-		.WORD	_b0_d58_hero_spell_related_data00
-		.WORD	_hero_spell_related_data01
-		.WORD	_hero_spell_related_data02
-		.WORD	_hero_spell_related_data03
-_common_spell_related_data_ptr_tbl:
-		.WORD	_b0_d59_common_spell_related_data00
-		.WORD	_common_spell_related_data01
-		.WORD	_common_spell_related_data02
-		.WORD	_common_spell_related_data03
-		.WORD	_b0_d5A_common_spell_related_data04
-		.WORD	_common_spell_related_data05
-		.WORD	_common_spell_related_data06
-		.WORD	_common_spell_related_data07
-		.WORD	_common_spell_related_data08
-		.WORD	_common_spell_related_data09
-		.WORD	_common_spell_related_data0A
-		.WORD	_common_spell_related_data0B
+_hero_spells_index:
+		.WORD	_b0_d58_hero_spells
+		.WORD	_b0_d58_hero_spells+$08
+		.WORD	_b0_d58_hero_spells+$10
+		.WORD	_b0_d58_hero_spells+$18
+
+_mage_spells_index: ; wizards & pilgrims processed together
+		.WORD	_b0_d58_mage_spells
+		.WORD	_b0_d58_mage_spells+$08
+		.WORD	_b0_d58_mage_spells+$10
+		.WORD	_b0_d58_mage_spells+$18
+		.WORD	_b0_d5A_pilgrim_spells
+		.WORD	_b0_d5A_pilgrim_spells+$08
+		.WORD	_b0_d5A_pilgrim_spells+$10
+		.WORD	_b0_d5A_pilgrim_spells+$18
+		.WORD	_wizard_spell_level_tbl
+		.WORD	_priest_spell_level_tbl
+		.WORD	_sage_spell_level_tbl
+		.WORD	_hero_spell_level_tbl
 
 ; =============== S U B	R O U T	I N E =======================================
 ; return the number of currently available returnable locations
@@ -4005,7 +4006,7 @@ loc_9EC1:
 		JMP		_wnd3E_msg0xx_wait_key
 loc_9ED3:
 		JSR		_b0_s2C_player_CLASS_read
-		CMP		#7
+		CMP		#CLASS_GOOFOFF
 		BEQ		loc_9EEE
 		LDA		#2
 		STA		byte_D0
@@ -4539,36 +4540,112 @@ loc_A2A0:
 		STA		_world_map_steps_count
 		JMP		_location_palette_and_rand_update
 
-; spell related data
-_b0_d58_hero_spell_related_data00:
-		.BYTE	  0,$1A,$15,$2A,  3,$26,$24,$22
-_hero_spell_related_data01:
-		.BYTE	$10,$1B,  4,$1C,  7,$20,$11,$1F
-_hero_spell_related_data02:
-		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-_hero_spell_related_data03:
-		.BYTE	$1A,$26,$3B,$37,$1B,$1C,$20,$1F
-_b0_d59_common_spell_related_data00:
-		.BYTE	  0,$2D,  9,$2E,  3,$26,  6,$18
-_common_spell_related_data01:
-		.BYTE	  1,$17, $A, $C,  4,$32,  7,$30
-_common_spell_related_data02:
-		.BYTE	  2,$27, $B,$29,  5,$28,  8,$33
-_common_spell_related_data03:
-		.BYTE	$3B,$26,$3A,$3D,$38,$36,$3C,$39
-_b0_d5A_common_spell_related_data04:
-		.BYTE	$2B,$1A,$15,$34, $D,$19,$25,$22
-_common_spell_related_data05:
-		.BYTE	$2C,$1B,$12,$35, $E,$24,$16,$23
-_common_spell_related_data06:
-		.BYTE	$31,$1C,$13,$1E, $F,$20,$14,$21
-_common_spell_related_data07:
-		.BYTE	$1A,$34,$1B,$35,$20,$1C,$1E,$21
-; =============== T A B L E =================================================
-; what a useless table. I guess it would control the selection of antics somehow, but it's non-functional
+; =============== T A B L E S =================================================
+; Ordered list of spells learned by each class
 ;
-_b0_d3F_antics_index:
-		.BYTE	  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, $A, $B, $C, $D, $E, $F
+_b0_d58_hero_spells:
+		.BYTE	#SPELL_BLAZE
+		.BYTE	#SPELL_HEAL
+		.BYTE	#SPELL_EXPEL
+		.BYTE	#SPELL_IRONIZE
+		.BYTE	#SPELL_FIREBAL
+		.BYTE	#SPELL_RETURN
+		.BYTE	#SPELL_STOPSPELL
+		.BYTE	#SPELL_SLEEP
+		.BYTE	#SPELL_ZAP
+		.BYTE	#SPELL_HEALMORE
+		.BYTE	#SPELL_FIREBANE
+		.BYTE	#SPELL_HEALALL
+		.BYTE	#SPELL_BOOM
+		.BYTE	#SPELL_VIVIFY
+		.BYTE	#SPELL_LIGHTNING
+		.BYTE	#SPELL_HEALUSALL
+; unused 3rd page of spells
+		.BYTE	$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+; field spells
+		.BYTE	#SPELL_HEAL
+		.BYTE	#SPELL_RETURN
+		.BYTE	#SPELL_OUTSIDE
+		.BYTE	#SPELL_REPEL
+		.BYTE	#SPELL_HEALMORE
+		.BYTE	#SPELL_HEALALL
+		.BYTE	#SPELL_VIVIFY
+		.BYTE	#SPELL_HEALUSALL
+
+_b0_d58_mage_spells:
+ ; wizard spells
+		.BYTE	#SPELL_BLAZE
+		.BYTE	#SPELL_UPPER
+		.BYTE	#SPELL_ICEBOLT
+		.BYTE	#SPELL_INCREASE
+		.BYTE	#SPELL_FIREBAL
+		.BYTE	#SPELL_RETURN
+		.BYTE	#SPELL_BANG
+		.BYTE	#SPELL_SLOW
+		.BYTE	#SPELL_BLAZEMORE
+		.BYTE	#SPELL_ROBMAGIC
+		.BYTE	#SPELL_SNOWBLAST
+		.BYTE	#SPELL_ICESPEARS
+		.BYTE	#SPELL_FIREBANE
+		.BYTE	#SPELL_BIKILL
+		.BYTE	#SPELL_BOOM
+		.BYTE	#SPELL_BOUNCE
+		.BYTE	#SPELL_BLAZEMOST
+		.BYTE	#SPELL_CHAOS
+		.BYTE	#SPELL_SNOWSTORM
+		.BYTE	#SPELL_BEDRAGON
+		.BYTE	#SPELL_FIREVOLT
+		.BYTE	#SPELL_TRANSFORM
+		.BYTE	#SPELL_EXPLODET
+		.BYTE	#SPELL_CHANCE
+; field spells
+		.BYTE	#SPELL_OUTSIDE
+		.BYTE	#SPELL_RETURN
+		.BYTE	#SPELL_XRAY
+		.BYTE	#SPELL_STEPGUARD
+		.BYTE	#SPELL_DAYNIGHT
+		.BYTE	#SPELL_CURSEOFF
+		.BYTE	#SPELL_INVISIBLE
+		.BYTE	#SPELL_OPEN
+
+_b0_d5A_pilgrim_spells:
+		.BYTE	#SPELL_SAP
+		.BYTE	#SPELL_HEAL
+		.BYTE	#SPELL_EXPEL
+		.BYTE	#SPELL_ANTIDOTE
+		.BYTE	#SPELL_INFERNOS
+		.BYTE	#SPELL_SPEEDUP
+		.BYTE	#SPELL_SURROUND
+		.BYTE	#SPELL_SLEEP
+		.BYTE	#SPELL_DEFENCE
+		.BYTE	#SPELL_HEALMORE
+		.BYTE	#SPELL_BEAT
+		.BYTE	#SPELL_NUMBOFF
+		.BYTE	#SPELL_INFERMORE
+		.BYTE	#SPELL_STOPSPELL
+		.BYTE	#SPELL_LIMBO
+		.BYTE	#SPELL_AWAKE
+		.BYTE	#SPELL_BARRIER
+		.BYTE	#SPELL_HEALALL
+		.BYTE	#SPELL_DEFEAT
+		.BYTE	#SPELL_HEALUS
+		.BYTE	#SPELL_INFERMOST
+		.BYTE	#SPELL_VIVIFY
+		.BYTE	#SPELL_SACRIFICE
+		.BYTE	#SPELL_REVIVE
+; field spells
+		.BYTE	#SPELL_HEAL
+		.BYTE	#SPELL_ANTIDOTE
+		.BYTE	#SPELL_HEALMORE
+		.BYTE	#SPELL_NUMBOFF
+		.BYTE	#SPELL_VIVIFY
+		.BYTE	#SPELL_HEALALL
+		.BYTE	#SPELL_HEALUS
+		.BYTE	#SPELL_REVIVE
+
+; in principle these are the antics a goof-off learns but the table is ineffectual as you can see.
+_b0_d3F_goofoff_antic_level_tvl:
+		.BYTE	$00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F
 		.BYTE	$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1A,$1B,$1C,$1D,$1E,$1F
 		.BYTE	$20,$21,$22,$23
 
@@ -4854,8 +4931,8 @@ loc_A522:
 		JSR		_msg005_msg0xx
 loc_A52C:
 		JSR		_b0_s2C_player_CLASS_read
-		CMP		#4
-		BCS		loc_A58D
+		CMP		#CLASS_SOLDIER
+		BCS		loc_A58D ; BCS->JAE - branch down if >= CLASS_SOLDIER
 		LDX		byte_51
 		LDA		_players_level,X
 		LDX		#5
@@ -4901,16 +4978,17 @@ loc_A583:
 loc_A58D:
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
-		CMP		#7
-		BNE		loc_A59A
-		LDA		#4
-		BNE		loc_A59E
+		CMP		#CLASS_MASK
+		BNE		loc_A59A ; branch if not CLASS_HERO
+		LDA		#4 ; use A = index 4 instead of index 0...
+		BNE		.consider_learn_spell ; UNCONDITIONAL
 loc_A59A:
 		CMP		#4
-		BCS		loc_A5A1
-loc_A59E:
-		JSR		sub_A5B9
-loc_A5A1:
+		BCS		.do_not_consider_learn_spell ; branch if >= CLASS_SOLDIER (not a spellcaster)
+; fallthrough for CLASS_WIZARD, CLASS_PILGRIM, CLASS_SAGE: A=class ID
+.consider_learn_spell:
+		JSR		sub_A5B9 ; consider learning a spell
+.do_not_consider_learn_spell:
 		JMP		_do_levelup
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -4927,6 +5005,8 @@ sub_A5A4:
 		JMP		_add8_to_16
 
 ; =============== S U B	R O U T	I N E =======================================
+; A is a parameter
+;
 sub_A5B9:
 		STA		byte_55
 		ASL
@@ -5099,17 +5179,17 @@ loc_A6E7:
 		LDA		byte_52
 		JMP		loc_A5CD
 off_A6EE:
-		.WORD	_common_spell_related_data0B
-		.WORD	_common_spell_related_data08
-		.WORD	_common_spell_related_data09
-		.WORD	_common_spell_related_data0A
-		.WORD	_antics_index
+		.WORD	_hero_spell_level_tbl
+		.WORD	_wizard_spell_level_tbl
+		.WORD	_priest_spell_level_tbl
+		.WORD	_sage_spell_level_tbl
+		.WORD	_goofoff_antic_level_tvl
 off_A6F8:
-		.WORD	_b0_d58_hero_spell_related_data00
-		.WORD	_b0_d59_common_spell_related_data00
-		.WORD	_b0_d5A_common_spell_related_data04
-		.WORD	_b0_d59_common_spell_related_data00
-		.WORD	_b0_d3F_antics_index
+		.WORD	_b0_d58_hero_spells
+		.WORD	_b0_d58_mage_spells
+		.WORD	_b0_d5A_pilgrim_spells
+		.WORD	_b0_d58_mage_spells
+		.WORD	_b0_d3F_goofoff_antic_level_tvl
 off_A702:
 		.WORD	_players_spell
 		.WORD	_players_spell
@@ -5554,27 +5634,27 @@ _stat_curve_INT_tbl:
 		.BYTE	$82,$43,$00,$00,$FF
 		.BYTE	$00,$05,$4A,$80,$FF
 
-_common_spell_related_data0B:
+_hero_spell_level_tbl:
 		.BYTE	  2,$3F,$3F, $A,$17,$3F,$3F,$1F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F
 		.BYTE	$1A,$29,$3F,$3F,$3F,  6,$3F,$3F,$3F,$3F,  4,$1D,$21,$3F,$3F,$26
 		.BYTE	$23,$3F,$10,$3F,$12,$3F,  7,$3F,$3F,$3F, $C,$3F,$3F,$3F,$3F,$3F
 		.BYTE	$3F,$3F,$3F,$3F,$3F,$3F,$3F,$14,$3F,$3F,$3F, $E,$3F,$3F,$FF
-_common_spell_related_data08:
+_wizard_spell_level_tbl: ; wizard related
 		.BYTE	  1,$11,$24,$87, $E,$1D, $B,$17,$26,  5,$14,$1A,$20,$3F,$3F,$3F
 		.BYTE	$3F,$3F,$3F,$3F,$3F,$3F,$3F,$8F, $C,$3F,$3F,$3F,$3F,$3F,$3F,$3F
 		.BYTE	$3F,$3F,$3F,$3F,$3F,$3F, $D,$9B,$A5,$A2,$3F,$3F,$3F,$84,$89,$3F
 		.BYTE	$98,$3F,$95,$A8,$3F,$3F,$1E,$3F,$19,$23,$12, $A,$21,$13,$FF
-_common_spell_related_data09:
+_priest_spell_level_tbl: ; priest related
 		.BYTE	$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F, $C,$1A,$A4
 		.BYTE	$3F,$3F,$96,$1C,$A9,  2,$94,$3F,$3F,$85,  1, $E,$1E,$3F,$22,$3F
 		.BYTE	$18,$26,  9,$90, $D,$87,$3F,$3F,$3F,$3F,$3F,$88,$12,$3F,$3F,$3F
 		.BYTE	$3F,$20,$3F,$3F, $B, $F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$FF
-_common_spell_related_data0A:
+_sage_spell_level_tbl: ; sage related
 		.BYTE	  1,$11,$24,$87, $E,$1D, $B,$17,$26,  5,$14,$1A,$20, $C,$1A,$A4
 		.BYTE	$3F,$3F,$96,$1C,$A9,  2,$94,$8F, $C,$85,  1, $E,$1E,$3F,$22,$3F
 		.BYTE	$18,$26,  9,$90, $D,$87, $D,$9B,$A5,$A2,$3F,$88,$12,$84,$89,$3F
 		.BYTE	$98,$20,$95,$A8, $B, $F,$1E,$3F,$19,$23,$12, $A,$21,$13,$FF
-_antics_index:
+_goofoff_antic_level_tvl:
 		.BYTE	$1C,$14,$28,$10, $A,  5,$18,$13,  7,$22,$1D,  3, $F,$20,  2,$5F
 		.BYTE	$1F,$2D, $E,$1E,$25,$27,$1A,$15, $B,$32,$46,$55,$21,$3C, $C,$1B
 		.BYTE	$12,$23,$FF
@@ -5628,7 +5708,7 @@ _b0_s5D_run_command_item_use:
 		STA		_msg_directobject_param
 		JSR		_b0_s2C_player_CLASS_read
 		LDA		word_4
-		CMP		#5
+		CMP		#CLASS_MERCHANT
 		BNE		loc_AB3F
 		LDA		#$4C						; merchant item menu (appraise)
 		BNE		loc_AB41

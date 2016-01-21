@@ -1310,7 +1310,7 @@ byte_B27AA:
 _b7_s1A:
 		LDA		_global_flags_array.byte10
 		BPL		locret_B27A9
-		LDA		_playerMapX
+		LDA		_playerMapX ; test position on map
 		CMP		#$A
 		BNE		locret_B27A9
 		LDA		_playerMapY
@@ -1319,7 +1319,7 @@ _b7_s1A:
 		JSR		_wrap_bE_sD_wnd3E
 		FARX	_bB_s4_apu_set_flag0
 		FARX	_bD_sB_get_hero_and_its_gender_and_status
-		MSGX	_msg_m00,$19E
+		MSGX	_msg_m00,$19E ; "thou hast defeated the master archfiend"
 		MSGX	_msg_m00,$19F
 		MSGX	_msg_m00,$1A0
 		FARX	_bC_s2E_sleep_X_sync_50_wait_50_or_skip

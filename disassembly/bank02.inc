@@ -14,7 +14,7 @@
 		PTR_IDX		_b2_sB
 		PTR_IDX		_b2_sC
 		PTR_IDX		_b2_sD
-		PTR_IDX		_b2_sE
+		PTR_IDX		_b2_sE_calc_players_spell_ptr
 
 _pak_data7C:
 		.BYTE	$C8,$50,$1F,$1F,  1,  1,  7,$3F,$66,  1,  1,  7,$3F,$26,$C8,$60
@@ -3355,8 +3355,8 @@ sub_3A6FD:
 		AND		#3
 		STA		byte_CE
 		JSR		_sram_b0_s2C_player_CLASS_read
-		CMP		#7
-		BEQ		loc_3A721
+		CMP		#CLASS_GOOFOFF
+		BEQ		loc_3A721 ; branch if we're goofoff
 		LDA		#1
 		STA		byte_D0
 		JSR		_sram_b0_s39
@@ -3400,7 +3400,7 @@ loc_3A750:
 		CLC
 		RTS
 loc_3A752:
-		JSR		_b2_sE
+		JSR		_b2_sE_calc_players_spell_ptr
 		LDA		#<[byte_3A948] ; store a table pointer for following FARX call 
 		STA		word_3E
 		LDA		#>[byte_3A948]
@@ -3408,7 +3408,7 @@ loc_3A752:
 		FARX	_bA_sB
 		BCC		loc_3A750
 		TAX
-		LDA		#_b0_d3F_antics_index_fidx
+		LDA		#_b0_d3F_goofoff_antic_level_tvl_fidx
 		JSR		_sys0_byte_read_x
 		TAX
 		STA		byte_47 ; selected antic?
@@ -3717,17 +3717,20 @@ loc_3A924:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b2_sE:
+; prepares a pointer into spell bit vector _players_spell at word_3C
+; target player is in byte_CE
+;
+_b2_sE_calc_players_spell_ptr:
 		LDA		#<[_players_spell]
 		STA		word_3C
-		LDA		#>[_players_spell]
+		LDA		#>[_players_spell] ; begin pointing at beginning of bit vector
 		STA		word_3C+1
 		LDA		byte_CE
 		ASL
 		ASL
 		ASL
 		LDX		#word_3C
-		JMP		_add8_to_16	; A = value  .... TAILCALL
+		JMP		_add8_to_16	; TAILCALL - offset from _players_spell to desired 
 
 ; =============== S U B	R O U T	I N E =======================================
 _wrap_msg_mFF_arg0_and_delay:

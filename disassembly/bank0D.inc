@@ -5148,8 +5148,8 @@ loc_1430D3:
 		BMI		loc_1430E0
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
-		BEQ		loc_1430E4
-		BNE		loc_1430D3
+		BEQ		loc_1430E4 ; branch if we're CLASS_HERO
+		BNE		loc_1430D3 ; UNCONDITIONAL: branch if we're not
 loc_1430E0:
 		LDA		#0
 		STA		byte_CE
@@ -5159,7 +5159,7 @@ loc_1430E4:
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
 		STA		word_6+1
-		JMP		_sram_b0_sE_player_STATUS_read
+		JMP		_sram_b0_sE_player_STATUS_read ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
 _day_night_test:
@@ -5965,7 +5965,7 @@ loc_1435C8:
 		BPL		loc_1435DA
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
-		CMP		#5
+		CMP		#CLASS_MERCHANT
 		BEQ		loc_1435E5
 loc_1435DA:
 		INC		byte_CE
@@ -6075,6 +6075,8 @@ _npc_hndlD:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; fortune teller?
+;
 _npc_hndlE:
 		LDA		#0
 		STA		byte_CE
@@ -6089,10 +6091,10 @@ loc_14368E:
 		BNE		loc_14368E
 loc_14369F:
 		JSR		_sram_b0_s2C_player_CLASS_read
-		BEQ		loc_1436AE
+		BEQ		loc_1436AE ; branch if we're CLASS_HERO
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
-		BEQ		loc_1436AE
+		BEQ		loc_1436AE ; branch if we're GENDER_MALE
 		MSGX	_msg_m00_break,$6AB
 loc_1436AE:
 		LDA		_npcs_pos_list+$34
@@ -6102,7 +6104,7 @@ loc_1436AE:
 loc_1436B8:
 		MSGX	_msg_m00,$696
 		FARX	_bE_s1C_yes_or_no_question
-		BEQ		loc_1436C3
+		BEQ		loc_1436C3 ; branch for NO
 		MSGX	_msg_m00_break,$697
 loc_1436C3:
 		MSGX	_msg_m00,$698
@@ -6110,6 +6112,8 @@ loc_1436C3:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; something about dream ruby?
+;
 _npc_hndlF:
 		LDA		_global_flags_array.byte2
 		AND		#4
@@ -6119,6 +6123,8 @@ loc_1436D4:
 		MSGX	_msg_m00_break,$5F6
 
 ; =============== S U B	R O U T	I N E =======================================
+; weapons dealer?
+;
 _npc_hndl10:
 		MSGX	_msg_m00,$5F7
 		FARX	_bE_s1C_yes_or_no_question
@@ -6139,7 +6145,7 @@ _npc_hndl11:
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl12:
-		MSGX	_msg_m00,$5FC
+		MSGX	_msg_m00,$5FC ; "wowie! it's a man! zowie!"
 		JSR		_sram_b0_s31_get_party_chars_list
 		LDA		word_4
 		STA		byte_CE
@@ -6148,10 +6154,10 @@ loc_1436FE:
 		BMI		loc_143711
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
-		BEQ		locret_143710
+		BEQ		locret_143710 ; branch if we're CLASS_HERO
 		JSR		_sram_b0_s2F_player_gender_read
 		LDA		word_4
-		BNE		loc_1436FE
+		BNE		loc_1436FE ; branch if we're GENDER_GEMALE
 locret_143710:
 		RTS
 loc_143711:
@@ -6306,16 +6312,16 @@ loc_1437EA:
 _npc_hndl1D:
 		JSR		_bD_sB_get_hero_and_its_gender_and_status
 		LDA		word_6+1
-		BNE		loc_1437FD
-		LDA		#$14
-		BNE		loc_1437FF
+		BNE		loc_1437FD ; branch if GENDER_FEMALE
+		LDA		#$14 ; string for male, must be
+		BNE		loc_1437FF ; UNCONDITIONAL
 loc_1437FD:
-		LDA		#$2C
+		LDA		#$2C ; string for female, must be
 loc_1437FF:
 		STA		byte_6AD1
 		LDA		#$FF
 		STA		byte_6AD2
-		MSGX	_msg_m00_break,$61E
+		MSGX	_msg_m00_break,$61E ; "are you guys from aliahan by any chance?... " includes "son" or "daughter"
 
 ; =============== S U B	R O U T	I N E =======================================
 _npc_hndl1E:
@@ -7416,6 +7422,9 @@ _bD_s21:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Fetches the merchant mayor's name and prepares it for printing in <merchant> messages
+; Copies 8 bytes 
+;
 _get_merch_town_char_name:
 		LDX		#0
 loc_143F7D:
