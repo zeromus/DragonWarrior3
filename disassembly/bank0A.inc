@@ -196,8 +196,8 @@ _text_lib_ptrs:
 ; =============== S U B	R O U T	I N E =======================================
 _bA_s1:
 		LDA		_location_type
-		AND		#1
-		BEQ		locret_F816D
+		AND		#LOCATION_TYPE_LOCATION
+		BEQ		locret_F816D ; branch if we're a location
 		LDA		byte_176
 		BNE		loc_F816E
 locret_F816D:
@@ -515,12 +515,12 @@ loc_F8361:
 		BNE		loc_F8352
 		LDX		#$12
 loc_F836A:
-		LDA		byte_F8376-1,X
+		LDA		_ball_of_light_palette_tbl-1,X
 		STA		_ram_pal_buf+3,X
 		DEX
 		BNE		loc_F836A
 		JMP		_pal_set_no_fade
-byte_F8376:
+_ball_of_light_palette_tbl:
 		.BYTE	$21,$2C,$1C,  1,$2C,$1C, $F, $F, $F,$3C,$2C,$1C,$3C, $C,$1C,$3C
 		.BYTE	$21,$11
 
@@ -543,7 +543,7 @@ loc_F8398:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-; references a table at (word_3C) and (word_3E)
+; logic related to _players_spell. word_3C contains a pointer to the beginning of the given player's spells
 ;
 _bA_sB:
 		LDA		#0
@@ -607,47 +607,47 @@ loc_F83ED:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bA_sA:
-		JSR		_sram_b0_s33_count_non_dead_party_chars
+		JSR		_sram_b0_s33_count_non_dead_party_chars ; setup a loop over players
 		DEC		word_4
-		BEQ		locret_F8461
+		BEQ		locret_F8461 ; branch if done with loop
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
-		BEQ		loc_F8416
+		BEQ		loc_F8416 ; branch if CLASS_HERO
 		CMP		#7
-		BEQ		loc_F8462
-		LDA		#1
+		BEQ		loc_F8462 ; branch if CLASS_GOOFOFF
+		LDA		#1 ; use 1 for non-hero classes (so.. 0, or 1)
 loc_F8416:
-		ASL
+		ASL ; turn index to offset
 		TAX
 		LDA		off_F847D,X
 		STA		word_3E
 		LDA		off_F847D+1,X
-		STA		word_3E+1
-		FARX	_b2_sE
-		JSR		_bA_sB
+		STA		word_3E+1 ; pointer to proper table is loaded in word_3E
+		FARX	_b2_sE_calc_players_spell_ptr ; incorporates byte_CE into _players_spell
+		JSR		_bA_sB ; 
 		BCC		loc_F8462
 		STA		byte_10
 		JSR		_rand
 		CMP		#$50
-		BCC		loc_F8462
+		BCC		loc_F8462 ; BCC->JB - branch if we rolled under a 50 (branch if {0,49})
 		LDX		byte_CE
 		LDA		_players_class_gender,X
-		LDX		#_b0_d58_hero_spell_related_data00_fidx
-		AND		#7
-		BEQ		loc_F843F
-		LDX		#_b0_d59_common_spell_related_data00_fidx
+		LDX		#_b0_d58_hero_spells_fidx
+		AND		#CLASS_MASK
+		BEQ		loc_F843F ; branch if we're CLASS_HERO
+		LDX		#_b0_d58_mage_spells_fidx
 loc_F843F:
 		TXA
 		LDX		byte_10
-		JSR		_sys0_byte_read_x
+		JSR		_sys0_byte_read_x ; read _temp21[X] into byte_25
 		LDX		byte_51
 		AND		#$1F
-		STA		byte_558,X
+		STA		byte_558,X ; just a temp value...probably
 		JSR		sub_F846B
 		BCC		locret_F8461
 		AND		#3
 		STA		word_4
-		LDA		byte_54C,X
+		LDA		byte_54C,X ; just a temp value...probably
 		AND		#3
 		ORA		word_4
 		ORA		#$10
@@ -671,12 +671,13 @@ sub_F846B:
 		FARX	_b4_s13
 		LDX		byte_51
 		RTS
+
 off_F847D:
-		.WORD	byte_F8481
-		.WORD	byte_F8489
-byte_F8481:
-		.BYTE	$11,$55,  0,  0,  0,  0,  0,  0
-byte_F8489:
+		.WORD	_hero_tbl
+		.WORD	_nonhero_tbl
+_hero_tbl: ; used as bitmasks in spell learning? 
+		.BYTE	$11,$55,  0,  0,  0,  0,  0,  0 ; blaze, firebal, zap, healmore, boom, vivify.... seems to be a meaningless pattern
+_nonhero_tbl:
 		.BYTE	$55,$5D,$55,  0,$10,$10,$10,  0,$9C,  7
 
 ; =============== S U B	R O U T	I N E =======================================

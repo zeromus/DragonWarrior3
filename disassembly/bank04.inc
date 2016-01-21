@@ -914,7 +914,7 @@ loc_6859E:
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage2_spell_robmagic:
-		LDA		#$12
+		LDA		#$12 ; this is the handler for testing the enemy's MP condition
 		JSR		_b4_s23
 		JMP		_b4_s13
 
@@ -9702,7 +9702,7 @@ _bs_prepare_read_enemy_prop_byte:
 		JMP		_far_byte_read_by_ptr ; TAILCALL
 
 ; =============== S U B	R O U T	I N E =======================================
-; References A
+; Safely wraps sub_6BB4D, saving registers
 ;
 _b4_s23:
 		STA		word_4
@@ -9719,7 +9719,9 @@ _b4_s23:
 		LDA		word_6+1
 		RTS
 
-; =============== S U B	R O U T	I N E =======================================
+; =============== S U B	R O U T	I N E =======================================;
+;
+;
 sub_6BB4D:
 		CMP		#2
 		BCS		loc_6BB5E ; BCS->JAE branch down if it's 2 or 3 (not 100% sure)

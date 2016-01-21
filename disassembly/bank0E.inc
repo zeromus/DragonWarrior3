@@ -564,7 +564,7 @@ sub_1583D0:
 		BEQ		loc_1583FC
 		JSR		_sram_b0_s2C_player_CLASS_read
 		LDA		word_4
-		BEQ		loc_1583EA
+		BEQ		loc_1583EA ; branch if we're CLASS_HERO
 		SYSX	_display_window,$0B
 		JMP		loc_1583ED
 loc_1583EA:
@@ -7570,7 +7570,7 @@ loc_15B957:
 		STA		byte_6ABF
 		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
-		CMP		#$AA
+		CMP		#ITEM_EANIMAL_SUIT
 		BNE		loc_15B976
 		LDA		#$1F
 		STA		byte_6ABF
@@ -7581,9 +7581,9 @@ loc_15B976:
 		BEQ		loc_15B99C
 		JSR		_sram_b0_s1E_player_equipped_item_get
 		LDA		word_4+1
-		CMP		#$B1
+		CMP		#ITEM_EREVEALING_SWIMSUIT
 		BEQ		loc_15B98A
-		CMP		#$B2
+		CMP		#ITEM_EMAGIC_BIKINI
 		BNE		loc_15B991
 loc_15B98A:
 		LDA		#$30

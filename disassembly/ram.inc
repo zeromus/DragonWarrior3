@@ -1048,7 +1048,7 @@ _players_EXP: ; $744
 		.BYTE	0,0,0,0,0,0,0,0,0,0,0,0
 ;----------------------------------------------
 ; u8 returnable_locations[4][3] - a bit vector of locations visited, returnable targets (final few bits are unused)
-; for some reason, ,every player has its separate returnable locations list, so, if some
+; for some reason, every player has its separate returnable locations list, so, if some
 ; player were dead if you visit some locations, it can't return to it.
 ; but all locations are synced sometimes, investigate
 ; check _returnable_areas_tbl for meanings

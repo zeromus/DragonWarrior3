@@ -6242,11 +6242,11 @@ _sys_idx_lib:
 ; keep this records within first 256 indexes!
 ; data entries goes first
 ;
-		FILE_IDX	$0,_b0_d3F_antics_index					; $B2
+		FILE_IDX	$0,_b0_d3F_goofoff_antic_level_tvl					; $B2
 		FILE_IDX	$0,_b0_d42_item_use_effects_list	; $90
 		FILE_IDX	$0,_b0_d44_item_effects_list					; $92
-		FILE_IDX	$0,_b0_d58_hero_spell_related_data00					; $DF
-		FILE_IDX	$0,_b0_d59_common_spell_related_data00					; $E0
+		FILE_IDX	$0,_b0_d58_hero_spells					; $DF
+		FILE_IDX	$0,_b0_d58_mage_spells					; $E0
 		FILE_IDX	$4,_b4_dD_spells_list		; $78
 		FILE_IDX	$6,_b6_d9_world_map_step_daytime_list	; $89
 		FILE_IDX	$6,_b6_dA_world_pal_ofs_list	; $8A
@@ -6389,7 +6389,7 @@ _sys_idx_lib:
 		FILE_IDX	$2,_b2_sB					; $79
 		FILE_IDX	$2,_b2_sC					; $A4
 		FILE_IDX	$2,_b2_sD					; $186
-		FILE_IDX	$2,_b2_sE					; $198
+		FILE_IDX	$2,_b2_sE_calc_players_spell_ptr					; $198
 
 		FILE_IDX	$4,_b4_s0_type00_battle_mode_handler					; $6B
 		FILE_IDX	$4,_b4_s1					; $6C
@@ -6651,7 +6651,7 @@ _sys_idx_lib:
 ;		.BYTE	$0,$4C						; $CC, bank 00, idx 4c, empty
 ;		.BYTE	$0,$4D						; $CD _b0_s4D_is_anybody_owns_item, unused copy of $12C
 ;		.BYTE	$0,$51						; $14C _b0_s51_wrapper_for_b1B_s0, not used anymore wrapper
-;		.BYTE	$0,$5A						; $E1 _b0_d5A_common_spell_related_data04, no use here
+;		.BYTE	$0,$5A						; $E1 _b0_d5A_pilgrim_spells, no use here
 ;		.BYTE	$1,  1						; $9E, bank 01, idx 01, empty
 ;		.BYTE	$1, $F						; $91, bank 01, idx 0F, empty
 ;		.BYTE	$1,$13						; $118 _b1_s13, never used
