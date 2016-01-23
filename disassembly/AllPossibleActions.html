@@ -27,7 +27,7 @@ Definitions:
 			<li>$4F - ITEM_BLACK_PEPPER: All living players sneeze (no practical effect)
 			<li>$65 - ITEM_MEDICAL_HERB: Restores [0,15] + 35 HP to target player
 			<li>$66 - ITEM_ANTIDOTE_HERB: Calls the same logic as the Antidote spell; if it was ineffective, prints "But nothing happens"
-			<li>$67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' counter
+			<li>$67 - ITEM_FAIRY_WATER: Stores 127 in the 'repel' counter and makes note of whether repel or fairy water was most recently used for printing later when the timer runs down.
 		</ul> <!--- battle - player items -->
 
 		<li>Search:
@@ -114,8 +114,8 @@ Definitions:
 				<li>$2D - SPELL_UPPER
 				<li>$2E - SPELL_INCREASE
 				<li>$2F - SPELL_INCREASE2
-				<li>$30 - SPELL_BOUNCE
-				<li>$31 - SPELL_BARRIER
+				<li>$30 - SPELL_BOUNCE: Caster gets Bounce status set.
+				<li>$31 - SPELL_BARRIER: All live party members get Barrier status set.
 				<li>$32 - SPELL_BIKILL
 				<li>$33 - SPELL_CHANCE
 				<li>$34 - SPELL_ANTIDOTE

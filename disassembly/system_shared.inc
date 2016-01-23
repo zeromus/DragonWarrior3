@@ -6369,7 +6369,7 @@ _sys_idx_lib:
 		FILE_IDX	$0,_b0_s67_mysterious_hat_mp_modifier					; $199
 
 		FILE_IDX	$1,_b1_s9					; $D8
-		FILE_IDX	$1,_b1_sA					; $D9
+		FILE_IDX	$1,_b1_sA_test_ironize					; $D9
 		FILE_IDX	$1,_b1_sB					; $DA
 		FILE_IDX	$1,_b1_sC					; $DB
 		FILE_IDX	$1,_b1_sD_post_win_battle_handler					; $DC
@@ -6396,7 +6396,7 @@ _sys_idx_lib:
 		FILE_IDX	$4,_b4_s2					; $6D
 		FILE_IDX	$4,_b4_s3					; $6E
 		FILE_IDX	$4,_b4_s5_do_message_speed_delay	; $70
-		FILE_IDX	$4,_b4_s6_wndBTL_STAT					; $71
+		FILE_IDX	$4,_b4_s6_display_bs_status_wnd					; $71
 		FILE_IDX	$4,_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress	; $73
 		FILE_IDX	$4,_b4_sA_clear_chatbox					; $75
 		FILE_IDX	$4,_b4_sC					; $77

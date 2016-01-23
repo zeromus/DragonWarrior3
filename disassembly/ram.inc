@@ -222,6 +222,7 @@ byte_5B:
 byte_5C:
 		.BYTE	0
 ;----------------------------------------------
+; temporary values, large enough for 3 bytes but used for various things
 ; u24 _bs_reward_XP ; XP prop from enemy is _accumulated_ into here when queried
 byte_5D:
 		.BYTE	0
@@ -391,8 +392,14 @@ byte_AB:
 byte_AC:
 		.BYTE	0
 ;----------------------------------------------
-_repel_or_fairy_water_timer:
-		.BYTE	0,0,0
+; Repel/Fairy Water effect memory
+; WTTT TTTT
+; W - Which bit (1 = Repel). Tracks which spell was used last for printing the message when the Timer runs out
+; T - Timer (127 is used when using the spell/item)
+;
+_repel_timer:
+	.BYTE	0,0,0
+;----------------------------------------------
 ;----------------------------------------------
 ; u8 _party_equipment_buffs[4]
 ; Continually re-evaluated from inventory. It's a bitmask of special effects.
@@ -702,7 +709,7 @@ byte_565:
 ;----------------------------------------------
 ; battle flags
 ; $566: IISPL ????
-; I - Ironized. why two bits?
+; I - Ironized counter. When Ironize is cast, both bits are set; they are then counted down.
 ; S - something that can be removed by receiving an attack??
 ; P - Was somehow related to a poison attack, but this probably isn't right
 ; L - Luck related somehow
@@ -1027,17 +1034,19 @@ _players_MP: ; $ 72C
 _players_MMP: ; $ 734
 		.WORD	0,0,0,0
 ;----------------------------------------------
-; u16[] pc.status - Status for 4 players
+; u16[4] - Status for 4 players
 ; first byte is a control bytes, to check is player
 ; actually existst and track status changes
 ;
-; ........ DNP.IR..
+; ....BBBB LNP.IR..
+; B - All 4 bits set when Bounce is cast
 ; I - attack power increased? (from magic spell)
 ; R - Affects enemy spell/breath damage reductions. if set, reductions don't
-;     apply (for spells)? Maybe this prevents double reductions from protection spells.
+;     apply (for spells)? Maybe this prevents double reductions from protection spells. (??) huh?
+;     This is set when Barrier is cast
 ; P - Player is poisoned
 ; N - "NM" status flag
-; D - Death flag. Character is dead if clear
+; L - Live flag. Character is dead if clear. There seems to be a Live flag in the MSB too??
 ;
 _players_status: ; $ 73C
 		.WORD	0,0,0,0
@@ -1747,8 +1756,12 @@ _tmp_rand_adjust:
 byte_6A69:
 		.BYTE	0
 ;----------------------------------------------
+; Used as a temporary variable in handling whether to start random encounter 
+; Also used when running to see how well it works
+;
 byte_6A6A:
 		.BYTE	0
+;----------------------------------------------
 byte_6A6B:
 		.BYTE	0
 _formation_char_index_tmp:

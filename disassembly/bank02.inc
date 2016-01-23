@@ -2850,7 +2850,7 @@ _b2_sB:
 		BEQ		loc_3A355
 		RTS
 loc_3A355:
-		FARX	_b4_s6_wndBTL_STAT
+		FARX	_b4_s6_display_bs_status_wnd
 		LDA		byte_566
 		AND		#$C4
 		BEQ		loc_3A360
@@ -3311,7 +3311,7 @@ loc_3A6A8:
 		LDA		byte_566
 		AND		#8
 		BNE		loc_3A6CC
-		LDA		byte_6A6A
+		LDA		byte_6A6A ; a level difference between player and enemy was stored in here
 		CMP		#$A
 		BCS		loc_3A6CC
 		LDA		byte_566

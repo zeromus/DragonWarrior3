@@ -13,7 +13,7 @@
 		PTR_IDX		_b4_s1
 		PTR_IDX		_b4_s2
 		PTR_IDX		_b4_s3
-		PTR_IDX		_b4_s6_wndBTL_STAT
+		PTR_IDX		_b4_s6_display_bs_status_wnd
 		PTR_IDX		_b4_sA_clear_chatbox
 		PTR_IDX		_b4_sC
 		PTR_IDX		_b4_dD_spells_list
@@ -130,10 +130,11 @@ loc_680B4:
 		CMP		#$A
 		BCS		loc_6810D
 loc_680CD:
-		FARX	_b1_sA
+		FARX	_b1_sA_test_ironize
 		LDA		_bs_num_live_players
-		BNE		loc_68080
-		BEQ		.comon_battle_death
+		BNE		loc_68080 ; branch if we have live players
+		BEQ		.comon_battle_death ; UNCONDITIONAL - branch if no live players
+
 .common_battle_won:							; battle won, restore the location music
 		JSR		_map_music_select_and_load
 .common_battle_won_ex:
@@ -413,7 +414,7 @@ loc_68252:
 		AND		#$80
 		STA		_players_status,X
 		LDA		_players_status+1,X
-		AND		#$E0
+		AND		#$E0 ; %11100000
 		STA		_players_status+1,X
 
 ; calculate EffATK as default rATK
@@ -1973,7 +1974,7 @@ _bs_emove_stage1_05_attack_maybe_poison:
 		JSR		_bs_extract_target_from_move
 		STA		byte_CE
 		JSR		sub_68E1E
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_emove_stage1_06_attack_maybe_numb:
@@ -1986,7 +1987,7 @@ _bs_emove_stage1_06_attack_maybe_numb:
 		STA		byte_CE
 		JSR		sub_6B2E6
 		JSR		_bs_emove_scorchingbreath_foreach_cb
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68C42:
@@ -2263,7 +2264,7 @@ _bs_emove_stage1_11_toxic_breath:
 		LDA		#>[sub_68E18]
 		STA		word_3E+1
 		JSR		_bs_action_foreach_live_player
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E18:
@@ -2279,15 +2280,15 @@ sub_68E1E:
 		ASL
 		TAX
 		LDA		_players_status+1,X
-		AND		#PLAYER_STATUS_POISON
+		AND		#PLAYER_STATUS_B1_POISON
 		BNE		locret_68E42 ; skip processing if player isn't poisoned
 		LDA		#$60
 		JSR		_bs_player_luck_test
 		BCS		loc_68E43
 		LDA		_players_status+1,X
-		ORA		#PLAYER_STATUS_POISON
+		ORA		#PLAYER_STATUS_B1_POISON
 		STA		_players_status+1,X
-		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D ; "the poison has effected"
+		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$1D ; "the poison has affected"
 locret_68E42:
 		RTS
 loc_68E43:
@@ -2304,7 +2305,7 @@ _bs_emove_stage1_12_scorching_breath:
 		LDA		#>[sub_68E63]
 		STA		word_3E+1
 		JSR		_bs_action_foreach_live_player
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_68E63:
@@ -2320,13 +2321,13 @@ _bs_emove_scorchingbreath_foreach_cb:
 		ASL
 		TAX
 		LDA		_players_status+1,X ; test NUMB state
-		AND		#PLAYER_STATUS_NUMB
+		AND		#PLAYER_STATUS_B1_NUMB
 		BNE		locret_68E8D ; if player is already numb, don't numb again
 		LDA		#$20
 		JSR		_bs_player_luck_test
 		BCS		loc_68E8E ; branch if player was lucky
 		LDA		_players_status+1,X ; set NUMB status for that player
-		ORA		#PLAYER_STATUS_NUMB
+		ORA		#PLAYER_STATUS_B1_NUMB
 		STA		_players_status+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$34 ; "is numb and unable to move"
 locret_68E8D:
@@ -2593,7 +2594,7 @@ loc_69032:
 		LDA		byte_CE
 		ASL
 		TAX
-		LDA		#0
+		LDA		#0 ; clear some of player's status, make them dead
 		STA		_players_status+1,X
 		JSR		sub_68F8C
 		JSR		_b4_s1A_status_pal_adjust_and_update
@@ -2605,11 +2606,15 @@ loc_69032:
 sub_69050:
 		JSR		sub_68F98
 
+;; FALLTHROUGH ;;
+
 ; =============== S U B	R O U T	I N E =======================================
 sub_69053:
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		PLA
 		TAY
+
+;; FALLTHROUGH ;;
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_69058:
@@ -2804,7 +2809,7 @@ loc_6918F:
 		ORA		#$10
 		STA		_players_status+1,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$46 ; "is confused"
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 loc_691BA:
 		JMP		_bs_it_has_no_effect_msg
 loc_691BD:
@@ -2933,7 +2938,7 @@ loc_69282:
 loc_69295:
 		DEC		_bs_num_live_players
 		JSR		sub_6AA51
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		LDA		_player_vehicle
 		BNE		locret_692B6
 		LDX		#$C
@@ -3676,7 +3681,7 @@ _bs_pcAction_01_chant:
 		JSR		_sram_b0_sB_player_MP_test
 		BCC		loc_697C5
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		LDA		_msg_directobject_param
 		JSR		_bs_enemy_chant_msg
 		JSR		sub_6A39F
@@ -3985,7 +3990,7 @@ _bs_spell_sacrifice:
 		LDA		#0
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		DEC		_bs_num_live_players
 		RTS
 
@@ -4125,7 +4130,7 @@ loc_69A8E:
 		JSR		_bs_get_current_actor_number
 		STA		byte_CE
 		JSR		_sram_b0_s8_player_MP_add
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 loc_69A99:
 		JSR		sub_6A8B3
 		JSR		_b4_s14
@@ -4382,7 +4387,7 @@ loc_69C3B:
 		STA		byte_D0
 		JSR		_sram_b0_s4_player_HP_add
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 loc_69C4C:
 		JSR		sub_6A900
 		PHA
@@ -4464,7 +4469,7 @@ sub_69CA7:
 		ORA		#3
 		STA		_players_status,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$19 ; "is put to sleep"
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 loc_69CDD:
 		JSR		sub_6B2EF
 		BNE		locret_69D1C
@@ -4851,9 +4856,10 @@ _bs_spell_bounce:
 		ASL
 		TAX
 		LDA		_players_status+1,X
-		ORA		#$F
+		ORA		#PLAYER_STATUS_B1_BOUNCE
 		STA		_players_status+1,X
 		SYSX	_sys10_msg_mFF_arg0_and_delay_or_wait_for_keypress_break,$48 ; "a wall of light appears before"
+		; BREAK
 
 ; =============== S U B	R O U T	I N E =======================================
 _bs_spell_barrier:
@@ -4861,28 +4867,28 @@ _bs_spell_barrier:
 		STA		byte_D2
 		JSR		_b4_sB
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$49 ; "a garment of light, like unto silk, surrounds the hero"
+; setup a 4-times loop across players
 		LDY		#0
-
-; =============== S U B	R O U T	I N E =======================================
 sub_69FA3:
 		TYA
 		PHA
 		STA		byte_CE
 		STA		byte_D2
 		JSR		_player_idx_to_X_and_status_check
-		BPL		loc_69FBD
+		BPL		.barrier_skip_player
+; purposelessly test the barrier flag before setting it.
 		LDA		_players_status,X
 		AND		#4
-		BNE		loc_69FBD
+		BNE		.barrier_skip_player
 		LDA		_players_status,X
 		ORA		#4
 		STA		_players_status,X
-loc_69FBD:
+.barrier_skip_player:
 		PLA
 		TAY
 		INY
 		CPY		#4
-		BNE		sub_69FA3
+		BNE		sub_69FA3 ; branch while not done with 4 players
 locret_69FC4:
 		RTS
 
@@ -5142,7 +5148,7 @@ loc_6A182:
 		LDA		byte_42
 		CMP		#4
 		BNE		loc_6A174
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5357,7 +5363,7 @@ loc_6A2D9:
 		AND		#$DF
 		STA		_players_status+1,X
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$44 ; "the poison leaves name's body"
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 locret_6A2F6:
 		RTS
 loc_6A2F7:
@@ -5380,10 +5386,10 @@ sub_6A30D:
 		JSR		_player_idx_to_X_and_status_check
 		BPL		locret_6A2F6
 		LDA		_players_status+1,X
-		AND		#PLAYER_STATUS_NUMB
+		AND		#PLAYER_STATUS_B1_NUMB
 		BEQ		loc_6A333
 		LDA		_players_status+1,X
-		AND		#$BF ; ~PLAYER_STATUS_NUMB
+		AND		#$BF ; ~PLAYER_STATUS_B1_NUMB
 		STA		_players_status+1,X
 		LDX		byte_CE
 		LDA		#$70 ; turn completed marker (un-numbed player can now act next round but can't have a turn this round)
@@ -5391,7 +5397,7 @@ sub_6A30D:
 		LDA		#$42 ; "name's numbness goes away"
 loc_6A32D:
 		JSR		_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 loc_6A333:
 		LDA		#$40
 		BNE		loc_6A32D
@@ -5681,7 +5687,7 @@ sub_6A4E4:
 		BEQ		loc_6A4EE
 		JSR		_b4_s1A_status_pal_adjust_and_update
 loc_6A4EE:
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		JSR		_sram_b0_s2_player_HP_read
 		LDA		word_4
 		ORA		word_4+1
@@ -5733,7 +5739,7 @@ sub_6A544:
 		AND		_players_status+1,X
 		STA		_players_status+1,X
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		DEC		_bs_num_live_players
 		JSR		sub_6A569
 		CLC
@@ -5852,7 +5858,7 @@ loc_6A604:
 		JSR		_sram_b0_s4_player_HP_add
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$14 ; "name has recovered"
 		JSR		_b4_s1A_status_pal_adjust_and_update
-		JMP		_b4_s6_wndBTL_STAT
+		JMP		_b4_s6_display_bs_status_wnd
 
 ; =============== S U B	R O U T	I N E =======================================
 sub_6A61F:
@@ -5879,7 +5885,7 @@ loc_6A633:
 		STA		_msg_number_parameter_F8
 loc_6A650:
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		JMP		loc_6A659
 loc_6A659:
 		LDY		#$75
@@ -6179,7 +6185,7 @@ sub_6A844:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Does a probability test controlled by luck
-; A: basic probability argument. low value is 
+; A: basic probability argument. an extremely low value is extremely lucky.
 ; CF: set if the result for lucky people is chosen
 ; after calling this, youll always see BCS label, to be read as "if player was lucky, branch"
 ;
@@ -6310,7 +6316,10 @@ loc_6A8ED:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b4_s6_wndBTL_STAT:
+; Sets the status window based on the current number of characters in the party.
+; Possibly needed in order to refresh status/dead state?
+;
+_b4_s6_display_bs_status_wnd:
 ;		PHA					; more pointless registers savings, since this
 ;		TXA					; function used as FARX routine and no code
 ;		PHA					; calling it relays on the XY registers to be safe
@@ -7242,8 +7251,8 @@ loc_6AE38:
 		TAX
 		LDA		_players_status,X
 		AND		_players_status+1,X
-		BMI		loc_6AE4B
-		LDA		byte_54C,Y
+		BMI		loc_6AE4B ; branch if player is ALIVE?
+		LDA		byte_54C,Y ; set the no-action flag
 		ORA		#$70
 		STA		byte_54C,Y
 loc_6AE4B:
@@ -7390,7 +7399,7 @@ _bs_fake_spell_wizards_ring:
 		LDA		#0
 		STA		byte_D0
 		JSR		_sram_b0_s8_player_MP_add
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		JSR		_rand
 		CMP		#$19
 		BCS		locret_6AF33
@@ -7706,7 +7715,7 @@ loc_6B109:
 		LDA		#3
 		STA		byte_CF
 		JSR		_sram_b0_s9_player_MP_subtract
-		JSR		_b4_s6_wndBTL_STAT
+		JSR		_b4_s6_display_bs_status_wnd
 		JMP		.bs_test_armor_of_hades
 
 loc_6B118:
@@ -9021,6 +9030,7 @@ _bs_load_enemy_prop_DEF:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; accumulate the enemy's XP and GP into _bs_reward_XP and _bs_reward_GP
+;
 sub_6B7F2:
 ; first, accumulate enemy GP
 		JSR		sub_6B8F3
