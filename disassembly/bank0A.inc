@@ -1934,7 +1934,7 @@ loc_F918B:
 		BPL		loc_F9170
 ; end loop
 		FARX	_b4_s1A_status_pal_adjust_and_update ; update status since we tweaked HP
-		FARX	_b4_s6_wndBTL_STAT
+		FARX	_b4_s6_display_bs_status_wnd
 		RTS
 
 ; list of u8[2] pairs _MapNumber:LocationChestsCount for 64 different maps

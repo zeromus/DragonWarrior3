@@ -403,17 +403,17 @@ _b0_s53_random_encounter_select:
 _world_map_random_enounter_select:
 		LDA		byte_9A			; tilesetNumber_9A, but that must not be what it really means
 		BNE		loc_828E
-		LDA		_repel_or_fairy_water_timer
+		LDA		_repel_timer
 		AND		#$7F
 		BEQ		loc_828E
-		DEC		_repel_or_fairy_water_timer
-		LDA		_repel_or_fairy_water_timer
+		DEC		_repel_timer
+		LDA		_repel_timer
 		AND		#$7F
 		BNE		loc_828E
 		JSR		_wrap_bE_sD_wnd3E
-		LDA		_repel_or_fairy_water_timer
-		AND		#$80
-		BEQ		loc_8285
+		LDA		_repel_timer
+		AND		#$80 ; test 'Which' bit
+		BEQ		loc_8285 ; branch to "Fairy Water" if it was 0
 		MSGX	_msg_m00,$19B	; "The Effect of Repel has run out"
 		JMP		loc_8288
 loc_8285:
@@ -429,16 +429,19 @@ loc_828E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; this runs each step, to test whether to do a random battle
+;
 _random_enounter_select:
 		LDA		#0
 		STA		byte_4C
 		STA		_battle_type_fight
 		LDA		_location_type
-		AND		#1
-		BNE		_location_is_other
+		AND		#LOCATION_TYPE_LOCATION
+		BNE		.location_is_location
 		LDA		_location_type
-		AND		#2
-		BEQ		_location_is_owerworld		; location_type = not overworld or location, but...? alefgard? ocean?
+		AND		#LOCATION_TYPE_ALEFGARD
+		BEQ		.location_is_overworld
+
+; MUST BE ALEFGARD
 
 ; load overworld tile coordinate X, subtract #F.. that's odd. mask it then by #$7F and shift it down.
 ; result is.. (coord-7)>>4)&7 as far as I can tell FYI, alefgard seems to be 158x135. therefore after
@@ -477,7 +480,7 @@ _random_enounter_select:
 ; (overworld_x>>4)|(overworld_y&0xF0) and reference a table
 ; leave that stashed in u8[4a]
 ;
-_location_is_owerworld:
+.location_is_overworld:
 		LDA		_playerWorldX
 		LSR
 		LSR
@@ -530,7 +533,7 @@ loc_8307:
 ; -- end of overworld specific random encounter checking --
 
 ; =============== S U B	R O U T	I N E =======================================
-_location_is_other:
+.location_is_location:
 		LDA		#8
 		STA		byte_4F
 		LDA		byte_6AE6
@@ -627,7 +630,7 @@ loc_83AE:
 		STA		byte_4E						; some multiple precision clears
 		LDX		byte_4F						; some multiple precision clears
 		LDA		_location_type				; if we're not in a location, check daytime or nighttime. 
-		BNE		loc_83C1
+		BNE		loc_83C1 ; branch if (LOCATION_TYPE_LOCATION, LOCATION_TYPE_ALEFGARD)
 		LDA		_world_map_steps_count
 		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_83C6					; BCS->JAE branch down if nighttime
@@ -895,48 +898,51 @@ loc_857E:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; Y: some value
+;
 sub_8595:
 		LDA		_location_type				; return doing nothing if we're in the overworld map
 		BNE		locret_85AB
 		LDA		_world_map_steps_count
 		CMP		#DAYNIGHT_CYCLE_BEGIN_NIGHT
 		BCS		loc_85AC					; BCS->JAE branch down if it's nighttime
-		CPY		#4
+		CPY		#$04
 		BEQ		locret_85AB
-		CPY		#$A
+		CPY		#$0A
 		BEQ		locret_85AB
-		CPY		#$D
+		CPY		#$0D
 		RTS
 loc_85AC:
-		CPY		#0
+		CPY		#$00
 		BEQ		locret_85AB
-		CPY		#6
+		CPY		#$06
 locret_85AB:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; evaluate player level vs enemies and word_5E somehow..
 ; leave difference in A for storing in 6A6A?
+;
 sub_85B3:
 		JSR		_enemy_roster_get_levels
-		LDA		_players_level
+		LDA		_players_level ; read the PARTY LEADER's LEVEL!
 		SEC
-		SBC		word_5E+1
-		BCS		loc_85C0
-		LDA		#0
+		SBC		word_5E+1 ; enemy's level was in there, I hope
+		BCS		loc_85C0 ; branch if enemy's level was higher ... or do I have it backwards?
+		LDA		#0 ; use 0 as level differential
 loc_85C0:
 		STA		byte_6A6A
-		LDA		_location_type				; 0 in main worldmap...
-		AND		#1
-		BNE		_battle_launch_ex
-		LDA		_repel_or_fairy_water_timer	; run the battle unless we have time remaining on repel/fairy water.
-		AND		#$7F						;  a flag is in MSBit so only test bottom 7
-		BEQ		_battle_launch_ex
-		LDA		word_5E
+		LDA		_location_type
+		AND		#LOCATION_TYPE_LOCATION
+		BNE		_battle_launch_ex ; Repel doesn't work in locations or alefgard!!; branch to the battle
+; In overworld.. 
+		LDA		_repel_timer
+		AND		#$7F ; test only the Repel
+		BEQ		_battle_launch_ex ; branch to battle if we had no repel time left
+		LDA		word_5E ; where did this come from ????
 		BNE		_battle_launch_ex
 		LDA		byte_6A6A
-		CMP		#5
-		BCC		_battle_launch_ex
+		CMP		#5 ; test level differential between enemy and player
+		BCC		_battle_launch_ex ; BCC->JB - branch to battle if differential is less than 5. IOW, repel only works if (enemy-player)<5 or if enemy<5+player or if enemy-5<player
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1302,6 +1308,7 @@ _byteswap_word_at_X:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; related to pre-battle screen wipe, runs multiple times per stage
+;
 sub_8831:
 		LDY		#0
 loc_8833:
@@ -1315,6 +1322,7 @@ loc_8833:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; runs most, but not all, of the pre-battle screen wipe
+;
 sub_8841:
 		LDX		#$10
 		STX		byte_58
@@ -4280,10 +4288,10 @@ _cmd_spell_numboff:
 		JSR		_check_if_player_is_dead
 		BCC		locret_A0D9
 		LDA		_players_status+1,X
-		AND		#$40
+		AND		#PLAYER_STATUS_B1_NUMB
 		BEQ		loc_A0BA		; player not in "NM" state
 		LDA		_players_status+1,X
-		AND		#$BF			; clear "NM state
+		AND		#<~PLAYER_STATUS_B1_NUMB			; clear "NM state
 		STA		_players_status+1,X
 		MSGX	_msg_m00,$042	; "<name>'s numbness goes away"
 		JSR		_wndMINMAX_STAT_pal_adjust
@@ -4292,23 +4300,31 @@ locret_A0D9:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Handles the Repel command
+;
 _cmd_spell_repel:
 		LDA		#$FF
-		STA		_repel_or_fairy_water_timer
+		STA		_repel_timer
 		SEC
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to DayNight handling in another bank
+;
 _cmd_spell_daynight:
 		FARX	_bC_s10_spell_daynight
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to X-Ray handling in another bank
+;
 _cmd_spell_x_ray:
 		FARX	_bC_s1E_spell_x_ray_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to Return handling in another bank... after shuffling around the selected location?
+;
 _cmd_spell_return:
 		LDA		byte_53
 		STA		byte_CE
@@ -4316,26 +4332,33 @@ _cmd_spell_return:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to Outside handling in another bank
+;
 _cmd_spell_outside:
 		FARX	_b6_sC_spell_outside_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to Invisible handling in another bank
+;
 _cmd_spell_invisible:
 		FARX	_b6_sD_spell_invisible_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Dispatches to Stepguard handling in another bank
+;
 _cmd_spell_stepguard:
 		FARX	_b6_sF_spell_stepguard_use
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
 ; sets CF=1 if 
+;
 _b0_s55_test_spell_allow_location:
 		LDA		_location_type
-		AND		#1
-		BEQ		loc_A167
+		AND		#LOCATION_TYPE_LOCATION
+		BEQ		loc_A167 ; branch
 		LDA		_mapNumber
 		CMP		#$38
 		BEQ		loc_A165
@@ -5550,7 +5573,7 @@ _set_u8_in_msg_number_parameter_F8:
 
 ; =============== S U B	R O U T	I N E =======================================
 ; displays the basic battle stat window if battle mode is on, mostly the same
-; as _b4_s6_wndBTL_STAT, but with different flag testing, may be redundant
+; as _b4_s6_display_bs_status_wnd, but with different flag testing, may be redundant
 ;
 _wndBTL_STAT:
 		LDA		byte_CE
@@ -6846,9 +6869,12 @@ _item_antidote_herb_use:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
+; Processing for fairy water use on field.
+; Loads 127, with the Which flag cleared
+;
 _item_fairy_water_use:
-		LDA		#$7F
-		STA		_repel_or_fairy_water_timer
+		LDA		#127
+		STA		_repel_timer
 		SEC
 		RTS
 

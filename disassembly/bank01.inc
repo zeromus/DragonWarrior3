@@ -2,7 +2,7 @@
 		ORG $8000
 
 		PTR_IDX		_b1_s9
-		PTR_IDX		_b1_sA
+		PTR_IDX		_b1_sA_test_ironize
 		PTR_IDX		_b1_sB
 		PTR_IDX		_b1_sC
 		PTR_IDX		_b1_sD_post_win_battle_handler
@@ -1175,24 +1175,26 @@ sub_20775:
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
-_b1_sA:
+_b1_sA_test_ironize:
 		FARX	_b4_sA_clear_chatbox
 		LDA		byte_566
-		AND		#$F3
+		AND		#$F3 ; %11110011
 		STA		byte_566
 		JSR		sub_207B6
 		LDA		byte_566
-		AND		#$C0
-		BEQ		locret_207B5
+		AND		#$C0 ; Test two ironize bits
+		BEQ		locret_207B5 ; branch if zero (ironize not active)
+ ; deduct one ironize tick
 		SEC
 		SBC		#$40
+; reincorporate into battle flags
 		STA		word_4
 		LDA		byte_566
 		AND		#$3F
 		ORA		word_4
 		STA		byte_566
 		AND		#$C0
-		BNE		locret_207B5
+		BNE		locret_207B5 ; test bits again. return if there's any left; otherwise, ironize wears off
 		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55 ; "Ironize is no longer effective."
 locret_207B5:
 		RTS
