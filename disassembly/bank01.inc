@@ -1195,7 +1195,12 @@ _b1_sA_test_ironize:
 		STA		byte_566
 		AND		#$C0
 		BNE		locret_207B5 ; test bits again. return if there's any left; otherwise, ironize wears off
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55 ; "Ironize is no longer effective."
+; -- my bad, this function cannot be called from bank other than 4, need to more work here
+		LDA		#$55
+		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+; --
+;		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$55 ; "Ironize is no longer effective."
+; --
 locret_207B5:
 		RTS
 

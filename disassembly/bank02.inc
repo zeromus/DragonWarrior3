@@ -3328,7 +3328,12 @@ loc_3A6CC:
 		LDA		#$FD
 		RTS
 loc_3A6D7:
-		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$17
+; -- my bad, this function cannot be called from bank other than 4, need to more work here
+		LDA		#$17
+		FARX	_b4_s8_msg_mFF_arg0_and_delay_or_wait_for_keypress
+; --
+;		SYSX	_sys0F_msg_mFF_arg0_and_delay_or_wait_for_keypress,$17
+; --
 		LDA		byte_566
 		CLC
 		ADC		#1
