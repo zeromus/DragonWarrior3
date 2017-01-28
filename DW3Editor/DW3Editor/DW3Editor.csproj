@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7FBB8E66-4933-41BF-BD66-B6023EB72076}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DW3Editor</RootNamespace>
+    <AssemblyName>DW3Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\references\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="ConfigService.cs" />
+    <Compile Include="DW3String.cs" />
+    <Compile Include="EnemyEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnemyEditControl.Designer.cs">
+      <DependentUpon>EnemyEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EnemyEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnemyEditor.Designer.cs">
+      <DependentUpon>EnemyEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EnumExtensions.cs" />
+    <Compile Include="FilesystemBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilesystemBrowser.Designer.cs">
+      <DependentUpon>FilesystemBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameClasses\Enemy.cs" />
+    <Compile Include="GameClasses\FileSystem.cs" />
+    <Compile Include="GameClasses\Mdec.cs" />
+    <Compile Include="GameClasses\Spell.cs" />
+    <Compile Include="GameClasses\Weapon.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="LookupTables\Enums.cs" />
+    <Compile Include="LookupTables\Lookups.cs" />
+    <Compile Include="MapBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapViewer.Designer.cs">
+      <DependentUpon>MapBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NumberExtensions.cs" />
+    <Compile Include="PresetCharacters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PresetCharacters.Designer.cs">
+      <DependentUpon>PresetCharacters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="SpellEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpellEditControl.Designer.cs">
+      <DependentUpon>SpellEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SpellEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpellEditor.Designer.cs">
+      <DependentUpon>SpellEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextViewer.Designer.cs">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WeaponEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WeaponEditControl.Designer.cs">
+      <DependentUpon>WeaponEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WeaponEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WeaponEditor.Designer.cs">
+      <DependentUpon>WeaponEditor.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="EnemyEditControl.resx">
+      <DependentUpon>EnemyEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnemyEditor.resx">
+      <DependentUpon>EnemyEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilesystemBrowser.resx">
+      <DependentUpon>FilesystemBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapViewer.resx">
+      <DependentUpon>MapBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PresetCharacters.resx">
+      <DependentUpon>PresetCharacters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellEditControl.resx">
+      <DependentUpon>SpellEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellEditor.resx">
+      <DependentUpon>SpellEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextViewer.resx">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaponEditControl.resx">
+      <DependentUpon>WeaponEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaponEditor.resx">
+      <DependentUpon>WeaponEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
