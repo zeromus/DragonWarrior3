@@ -1,0 +1,55 @@
+; this subroutine called when the game is waiting for NMI (after the NMI happens)
+ 0F:C90A:48        PHA
+ 0F:C90B:8A        TXA
+ 0F:C90C:48        PHA
+ 0F:C90D:98        TYA
+ 0F:C90E:48        PHA
+ 0F:C90F:A5 32     LDA $0032 = #$00
+ 0F:C911:C9 FD     CMP #$FD
+ 0F:C913:D0 07     BNE $C91C
+ 0F:C915:AD B7 60  LDA $60B7 = #$00
+ 0F:C918:29 20     AND #$20
+ 0F:C91A:D0 03     BNE $C91F
+ 0F:C91C:20 25 C9  JSR $C925
+ 0F:C91F:68        PLA
+ 0F:C920:A8        TAY
+ 0F:C921:68        PLA
+ 0F:C922:AA        TAX
+ 0F:C923:68        PLA
+
+; is replaced with:
+
+ 0F:C90A:48        PHA
+ 0F:C90B:8A        TXA
+ 0F:C90C:48        PHA
+ 0F:C90D:98        TYA
+ 0F:C90E:48        PHA
+ 0F:C90F:20 E0 FF  JSR $FFE0 ; subroutine patch
+ 0F:C912:EA        NOP
+ 0F:C913:D0 07     BNE $C91C
+ 0F:C915:AD B7 60  LDA $60B7 = #$00
+ 0F:C918:29 20     AND #$20
+ 0F:C91A:D0 03     BNE $C91F
+ 0F:C91C:20 25 C9  JSR $C925
+ 0F:C91F:68        PLA
+ 0F:C920:A8        TAY
+ 0F:C921:68        PLA
+ 0F:C922:AA        TAX
+ 0F:C923:68        PLA
+
+
+; and the patch is @ $FFE0 in bank 0F: (same patch could be used in 1F if needed)
+LDX #$01      ; setup a 2-times loop across pads
+JSR $CB86     ; read_pad (to $CA)
+LDA $CA       ; load results
+EOR $1C,X     ; EOR with entropy (Xth byte)
+STA $1C,X     ; store back to entropy  (Xth byte)
+DEX
+BPL $FFE2     ; branch unless we hit FF
+; run the code we patched out:
+LDA $32
+CMP #$FD
+RTS
+
+in principle you can get the exact results you want in one frame.
+begin by checking the current entropy in $1C and $1D. Replicating that on with a value "CLEAR" on pads 1&2 will effectively clear entropy to 0. Now consider the values you want and create a value "SET" which you want. If you now set pads1&2 = CLEAR XOR SET then on the next frame youll have the random seed you want
