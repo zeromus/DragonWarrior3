@@ -7,8 +7,6 @@ Dragon Warrior III Reverse Engineering &amp; Reconstructing
 
 ## Mission
 
-We have two main aims here:
-
 1. Understand the game better and find secrets
 2. Lay the groundwork for a comprehensive romhack.
  * Make the UX more clean (similar to DW4, or improved even)
