@@ -382,7 +382,7 @@ _b0_s0_world_map_random_enounter_test:
 		BEQ		locret_823F
 		LDA		#$FF
 		STA		byte_5C
-		JSR		_world_map_random_enounter_select
+		JSR		_world_map_random_encounter_select
 		LDA		byte_5C
 		BNE		locret_823F
 		JMP		sub_174CBD
@@ -400,7 +400,7 @@ _b0_s53_random_encounter_select:
 ; called once per step, probably evaluating whether there should be a random encounter
 ; special case only for world map to check the repel and fairy water status
 ;
-_world_map_random_enounter_select:
+_world_map_random_encounter_select:
 		LDA		byte_9A			; tilesetNumber_9A, but that must not be what it really means
 		BNE		loc_828E
 		LDA		_repel_timer

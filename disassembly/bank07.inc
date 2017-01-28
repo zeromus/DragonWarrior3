@@ -4001,7 +4001,7 @@ _loc_maps_pal_decode_data5:
 		.BYTE	 $F,$17, $F,  9,  1, $C, $C,  7,$21,  7,  0,$1A, $F,$17, $F,  9
 		.BYTE	 $C,$1A,$1A,$17
 
-; this is a copy of parameters from bank 6, used in fylesystem
+; this is a copy of parameters from bank 6, used in filesystem
 ; may be merged in one bank 06 and used through files
 ; or may be better to move world map palette subroutine to
 ; bank 6 and use the direct reading of data instead.

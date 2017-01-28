@@ -1,7 +1,7 @@
 WISH LIST
 
-1. Change the controls logic to more progressive. Menu should be used only for settings, view and change wearings and statuses. Actions on the locations should be automatic. Better if the game will detect the point of action automatically (A button on door/chest/char should start according behaviour) as well as auto using the items on particular places if they in posession.
-2. When using an item, it applied to the person who owns it by default. But, herbs can be applied to any person choosen. Why would we can do it for any other items, like seeds?
+1. Change the controls logic to more progressive. Menu should be used only for settings, view and change wearings and statuses. Actions on the locations should be automatic. Better if the game will detect the point of action automatically (A button on door/chest/char should start according behaviour) as well as auto using the items on particular places if they in possession.
+2. When using an item, it applied to the person who owns it by default. But, herbs can be applied to any person chosen. Why would we can do it for any other items, like seeds?
 3. Chests states are saved globally, you can't open the same chest twice. But the doors should be opened any time you visit the same location even if you still has the same key you used before. Why just we can't use the same code to keep doors always opened too?
 4. Use features from part 4.
 4.1 Save state on any church, not only on the king's places.
@@ -11,21 +11,21 @@ WISH LIST
 5. Change the tavern characters any time during the game.
 6. Rest in Tents in the Overworld mode, like in FF games.
 7. More chests for money and items in all towns, not only the fixed places (random, probably. currently all chests are predefined and static).
-7.1 Ok, when you leave he Merchant in Newtown, his posession is automatically stored in your chest. But when you remove any char from your party, you can't do it unless you remove all its items first. Why you can't do it automatically aswell? You just can't add and then remove the char, unless you strip it first. This is ridiculous.\
-7.2 Also, sometimes you need to have particular item in the main char posession, but there is a system routine to search the item in all char's inventory's including those in the tavern. Why don't you can use it all the way and noneed to have the item in the inventory of particular char?
+7.1 OK, when you leave the Merchant in Newtown, his possessions are automatically stored in your chest. But when you remove any char from your party, you can't do it unless you remove all its items first. Why you can't do it automatically as well? You just can't add and then remove the char, unless you strip it first. This is ridiculous.\
+7.2 Also, sometimes you need to have particular item in the main char possession, but there is a system routine to search the item in all char's inventory's including those in the tavern. Why don't you can use it all the way and no need to have the item in the inventory of particular char?
 
 TO DO
 
 1. File system
 1.1 Maybe simplify the file system to fetch a data from the external banks (split files from subroutines maybe).
-1.2 All system calls are designed to have 8-bit argument, the higher bits are set depending on the command itsef Все системные функции подразумевают передачу только 8-битного аргумента, старшие биты при этом устанавливаются исходя из номера самой вызываемой функции. Но, после упрощения дешифрации BRK опкодов, имеется возможность иметь как минимум 3 лишних бита для использования в качества старших битов аргумента.
+1.2 All system calls are designed to have 8-bit argument, the higher bits are set depending on the command itself
 2. Quick access SRAM functions shortcuts to the filesystem functions.
-2.1 So, i'd like to get rid of these functions at all, using the BNE calls instead from system bank.
+2.1 So, I'd like to get rid of these functions at all, using the BNE calls instead from system bank.
 
 3. Message fetch/display system.
-3.1 There are two types of message functions. One is calling from bank D, then return there. The others are using the system cals wich assigning the higher part of message index. So as a result we have a mixof of a different output functions with a different indexing, instead of using the global indexing system for all messages.
-3.2 There is a mess with displaying functions in general. Message displaying is assume the opened window on the screen, so sometimes the code does the forced message window generations, sometime uses the custom functions, etc. So we nes somehow unified system for msg display with msg window embedded by default. As well we could save some space then.
-4. System handlers optimization.  Handlers of items, locations and spells are mostly the same: check for a locations or parameters, do things, dialogs, flags and effets. Sometimes, due to lack of the free space, they split some functions to the different banks or with no visible reasons. So to get all thigs up, we must combine all splitted code and functions first together.
+3.1 There are two types of message functions. One is calling from bank D, then return there. The others are using the system calls which assign the higher part of message index. So as a result we have a mix of of a different output functions with a different indexing, instead of using the global indexing system for all messages.
+3.2 There is a mess with displaying functions in general. Message displaying is assume the opened window on the screen, so sometimes the code does the forced message window generations, sometime uses the custom functions, etc. So we need somehow unified system for msg display with msg window embedded by default. As well we could save some space then.
+4. System handlers optimization.  Handlers of items, locations and spells are mostly the same: check for a locations or parameters, do things, dialogs, flags and effects. Sometimes, due to lack of the free space, they split some functions to the different banks or with no visible reasons. So to get all things up, we must combine all split code and functions first together.
 
 
 WHAT IS DONE
@@ -36,24 +36,24 @@ WHAT IS DONE
 4. File system.
 4.1 No need anymore to indirect reading for the static offsets using the file system, now all static offsets are direct linking, reducing the code size. All unused functions are removed too.
 4.2 The whole functions automatic indexing, removing from unused or dupes links.
-4.3 The BRK opcodes macrofication with automatic file index calculation. All constants now ar mnemonic, so you can move it as you wish any time any place.
-4.4 The PRG bank tabels indexes are now 8-bit instead of 4-bit, so you could use more than 265K or PRG ROM in your code.\
+4.3 The BRK opcodes macrofication with automatic file index calculation. All constants now are mnemonic, so you can move it as you wish any time any place.
+4.4 The PRG bank table indexes are now 8-bit instead of 4-bit, so you could use more than 265K or PRG ROM in your code.\
 4.5 Unified calling system for banks in higher 256K bank, no more special BRK opcodes are needed.
 4.6 Removed FAR/SYS calling division, they are always calling the same system functions with it's own arguments and functional. Simplifying the function indexing.
 4.7 Bank numbers and function indexes now are in the same table, no need to resort if separately.
 4.8 Data files moved to the beginning of the file system to make sure they aren't exceeded the 256-byte index range, because they are currently calculated as 8-bit integers.
-4.9 Thw whole optimization of the fyle systems indexing.
+4.9 Comprehensive optimization of the file systems indexing.
 
 5. A Quick file access SRAM shortcuts.
-5.1 Redone the quick SRAm functions format without parametric indexing. Removed unused handlers.
+5.1 Redo the quick SRAM functions format without parametric indexing. Removed unused handlers.
 5.2 The special quick link function for index _sys_safe_select moced to system bank and simplified (166 and 167 indexes are never used).
 5.3 Quick call function _sys_safe_select now always using the files from lower file table, removed redundant check.
 
 6. Message fetch and calling system.
-6.1 BRK system for messages mostly redone, the msg indexes range are now mostly unified to 10-bit instead of 8-bin. Now mesages can be addressed with a full index, instead of using the short one with an additional option to select a bank. Message system macrofication.
+6.1 BRK system for messages mostly redone, the msg indexes range are now mostly unified to 10-bit instead of 8-bin. Now messages can be addressed with a full index, instead of using the short one with an additional option to select a bank. Message system macrofication.
 
 7. Functions indexing.
-7.1 All indexes now are separated by classes: file system indexes, system calls and external procedures indexes. So each macros uses its own type of indexes and throw an error if you try to use the wrong mnemonig name. So it will protect from inappropriate using of mnemonics. You still need to watch this when using the indexed manually.
+7.1 All indexes now are separated by classes: file system indexes, system calls and external procedures indexes. So each macros uses its own type of indexes and throw an error if you try to use the wrong mnemonic name. So it will protect from inappropriate using of mnemonics. You still need to watch this when using the indexed manually.
 
 NEW BUGS
 

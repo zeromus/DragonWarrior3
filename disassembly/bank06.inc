@@ -2130,7 +2130,7 @@ loc_9BAB9:
 		BEQ		loc_9BADD
 		MSGX	_msg_m00,$27F	; "You can't drop a person who has an item"
 		LDA		byte_C4			; why not? merchant sends all stuff to Vault if you leave him in newtown!
-		STA		byte_630F		; use function _player_items_flush_to_vault in bank D (fylesystem or direct)
+		STA		byte_630F		; use function _player_items_flush_to_vault in bank D (filesystem or direct)
 		FARX	_b7_s14
 		MSGX	_msg_m00,$718	; Wait
 		JMP		_register_back_again
