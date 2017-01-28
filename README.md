@@ -32,9 +32,12 @@ It is easy to accidentally change the ROM when cleaning up. Then again, sometime
 
 I've begun an attempt to document the game mechanics succinctly in AllPossibleActions.html. It's a bit risky (error-prone) to decouple it from the code, but it really needs a digestation step before it's useful to anyone.
 
+There is also a c#-based editor for the ORIGINAL ROM (it has hardcoded ROM offsets). It can crack area maps (calls it "mdec").
+
 Some noteworthy findings (noteworthy to me, anyway):
 * There is hardly any unused data
 * The game is 'scripted' 100% in hand-coded asm
+* Area maps are encoded in a bit-packed "LOGO"-like programming language (set current tile, fill boxes, move and turn). I think it's possible these were written by hand (it is daunting to think of an algorithm that creates this format economically from raw data)
 
 ## Future Work
 
