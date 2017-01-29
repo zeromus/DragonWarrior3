@@ -18,7 +18,7 @@ TO DO
 
 1. File system
 1.1 Maybe simplify the file system to fetch a data from the external banks (split files from subroutines maybe).
-1.2 All system calls are designed to have 8-bit argument, the higher bits are set depending on the command itself
+1.2 All system calls are designed to have 8-bit argument, the higher bits are set depending on the command itself. But, after simplify and optimizaion of BRK opcodes system we have at least 3 more free bits to use it as a higher bits of the argument.
 2. Quick access SRAM functions shortcuts to the filesystem functions.
 2.1 So, I'd like to get rid of these functions at all, using the BNE calls instead from system bank.
 
