@@ -1,0 +1,13 @@
+comments without labels   https://sourceforge.net/p/fceultra/bugs/641/
+allow multi line comments
+add icons for some windows
+make limits longer
+remove limitation on use of # symbol? (by escaping it)
+make ESC work in hex editor find dialog
+
+
+DONE:
+combine banks 1F and 0F (hack)
+disassemble BRK as BRK NN MM (hack)
+  study whether 1F and 0F hack was dangerous due to internal tracking getting scrambled
+make initial entry of labels not allow too-long stuff

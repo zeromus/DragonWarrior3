@@ -1,0 +1,179 @@
+DW3 2.0 ideas and notes:
+
+
+Change classes:
+
+Hero 
+	start with Ironize
+	Will learn zap, Healusall, Lightening and other hero only spells at an appropriate level
+	Will not learn the others, (level 99)
+	Have him learn the rest on the fly when talking to a particular character (Sages)
+	Greatly increased xp needed to go up levels, party should get to Romaly and he is still level 3!
+
+Goof-off
+	Rename to Jester
+	Learn chance at Level 2
+	Learn Invisibility at Level 18 (enough that you will likely have it before ditching him at the hall of registration)
+	Learn Open at 34? (Something likely to be around the time of getting a final key
+	Make XP for levels even lower (especially lower levels)
+	Flashy Clothes have evasion effect of Cloak of evasion, find a better armor than that as their highest (water flying cloth?)
+	Add MP growth
+
+Wizards - 
+	Will NOT learn Invisibility, Chance, Open
+
+Merchants -
+	Better HP gains, more weapon usage, no cap on HP at absurdly high levels (make him get up to 600 or so hp)
+	Ideally: higher the level, the better he can haggle at the haggling shops!
+	If possible, increase amount of gold they find
+
+Fighters -
+	More armor choices, for instance make Magic Bikini into Magic Suit or something
+	Golden Claw doesn't increase attack rate, Call it "Steel Claw"
+
+Soliders -
+	Slightly better Agility
+	Can equip ALL weapons no matter what (even wands and claws) except Sword of King's
+	Can equip All Armor/Shields/Helmet's except for the Hero's equipment
+Pilgram -
+	Start with S
+
+
+**********************************************************************
+Continent of Aliahan:
+**********************************************************************
+Block off stairs to hall of registration with Final Key door
+
+Rename Goof-off to Jester
+
+Change character 1 to Male Jester
+Change all 4 possible names to Panon
+Have the soldier sitting at Luisa's place say something like: 
+was: "If you're going to take anyone along, you'd best take a soldier, a Pilgram and a wizard. Hiccup"
+new: "Panon once was the King's jester but wants to save the world.  I'm skills though are terrible"
+His starting eqiupment: Jester's Staff (will have same effect as staff of transform), Wayfarer's Clothes (Flashy Clothes?)
+Make Jester's staff only equippable and useable by Jester, make stats of Jester's staff comparable to thorn whip in cost and attack
+Make Level 3
+
+Change character 2 to Male Merchant
+Change all 4 character names to Giovanni
+Make Level 5, start Merchant with Thorn Whip, and Turban, and Wayfarer's Clothes
+
+Have Girl walking around at Luisa's place entrace say:
+was: 
+"This is the castle town of Aliahan."
+"If you go north, you'll come to the village of Reeve"
+"My husband Giovanni and I came here from Reeve"
+new: 
+"This is the castle town of Aliahan."
+"My husband Giovanni and I came here from Reeve"
+
+Change character 3 to Female Fighter
+Give names:  Dagny, Cammy, Chun Li, ????
+Level 7-ish
+
+Do Hero class changes (don't need to decide on levels for spells other than Ironize)
+
+Do Goof-off changes (first 15 levels or so)
+
+Change chance to use 2 mp
+
+Slime - can call reinforcements (themselves), slight increase in stats
+Black Raven - can attack twice per turn, more attack
+Horned Rabbit - attacks can put to sleep, more increase in stats
+Anteater - ability to gang up and can hit any character
+
+Your Grand Father will say:
+old: "Your father, Ortega, was a great hero,  And my son!"
+new: "Ortega traveled the world and learned from sages"
+
+Turn guy standing in door entrace to Sage, talk to him to learn expel
+
+Block off overworld passage to Reeve.
+Remove door in Castle that leads to cave (so you dont' need key to get in)
+
+In locked door room in cave (that has the first seed of the game), Put a sage, and a boss fight
+
+Add Spider's web and Poison moth powder to item shop in reeve
+
+TODO: figure out a good boss fight that requires poison moth powder (two tough low Agility enemies that are not chaos resitant, and way too powerful)
+
+Add Sledge Hammer to Alalian Weapon shop
+Make Sledge Hammer able to be equipped by Merchants too
+
+Magic Ball has golden claw effect
+
+Boss fight to get into cave that needs Magic ball
+
+Upon Entering Reeve, Fighter becomes available at Luisa's place
+Have boy in upstairs in, say something like "My momma is a great fighter, she went to Aliahn to look for the hero"
+
+Make Wing of Wyvern very expensive, 3000gp!
+Make Medical herb 50gp
+
+Remove Wing of Wyvern as a drop from all enemies on the continent
+Remove Medical herb from most enemies on continent (replace with SOMETHING at least slightly useful)
+
+Rename Cypress Stick to Twig make attack power 1
+
+
+**********************************************************************
+To Figure out
+decide what weapon will be turned into Jester's Staff
+Can we start default characters at a higher level than 1?
+Start a class with more than 2 items?
+Ability to hide default character at Luisa's place or add one on the fly
+How to make an enemy set to Gang up on enemies, and equal chances of hitting any character
+Add spells to Goof-off
+Set "Golden Claw" effect on another item
+"Fix" the parry fight glitch
+How to set the effect of an item to be used in battle, and what classes can use item in battle
+**********************************************************************
+**********************************************************************
+
+Misc plans:
+Every non-hero-only spell will need to be learned from a Sage
+One will be in noeniels (requiring that side quest to be completed)
+One will be in romaly, but only talks to the king he can say "I only have audience with the King! Begone!"
+
+Dhama has Registration hall, but can't register Merchant, Soldier, or Sage.
+Remove book of Satoria from that tower
+
+In assaram, have the wife of a merchant at the bar at night.  
+During day she is next to shop, Have her say something like "My husband's brother has a shop in Alalian"
+AT night she says "To be honest, his brother is the better merchant.  He gives twice the blade at half the price tee hee" (this reminds you to trek back to Aliahan to get that expensive weapon)
+
+Multi-edge sword - not cursed but does hurt attacker, make attack power even higher, best sword for Solider but must consider that side effect
+Unlucky Helmet - not cursed but still luck = 0, potentially best helmet for soldier but sonsider side effect
+
+Remove invisibility herb as random drop and from item chops
+
+At dhama hall, have someone say "Jesters are more useful than you think"
+
+Jipang sage teaches firebane, and is hiding from Orochi (until orochi is beaten)
+
+**********************************************************************
+Alefgard
+**********************************************************************
+
+Add Registration Hall in Cantlin, can register Merchant, Solider, and Sage (with needing the book!)
+WHen falling into Black Hole, you lose all your characters, show animation of Hero "being ironized", implying that's why he survived.
+Now he is solo hero, make towns folk in Tantegel allude to a place in Hauskness to get a party
+In Hauksness allude to Cantlin similarly
+Boss fight to get into cantlin? (Stone hulk?)
+A Solider at this new hall will say something like ("I would take a solider and two sages")
+
+
+**********************************************************************
+**********************************************************************
+
+
+
+To Figure out, but not required for first Continent:
+Allow Merchants to better haggle
+Allow Merchants to find more gold
+Make an item not cursed but keep the negative effects
+Remove the "Golden Claw" effect from Golden claw
+Increase cost of leaving invaluable item in Vault (from 1 to 100 or something)
+Remaining bits for enemies
+How enemy HP regen works

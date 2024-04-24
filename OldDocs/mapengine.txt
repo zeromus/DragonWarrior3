@@ -1,0 +1,60 @@
+$110 (and nearby) seems to contain logic controlling the positioning and wandering of entities
+in $113: 1A makes the king wander. 9A makes the king present face south and stand still (animated). 82 makes the king invisible (offscreen)
+
+struct EntityControl
+{
+ u8 tile_x, tile_y;
+ u8 character; //also seems to store temp values during movement?
+ struct {
+   u8 facing : 2; //0=up, 1=right, 2=down, 3=left
+   u8 unknown: 4; //makes glitches easily
+   u8 stillOrMoving : 1; //maybe? 0x40
+   u8 unknown: 1; //makes glitches easily
+ } control;
+};
+
+  (TODO - Maybe I should rename this Map, and stick with Tilemap for the physical data. That'll be a big renaming job)
+the MapDirectory file contains a list of information about each MapState (sometimes known as MapEntityState) in the game. There are more of these than there are actual maps.
+struct MapDirectoryEntry
+{
+	u16 mapTilemapPointer;
+	u8 mapTilemapNumber; //this is important at least because different mapTilemapPointer point to different banks, via a few little hardcoded "choose bank 6 or bank 7" points
+};
+
+struct MapTilemap
+{
+  u8 width, height;
+  u8 OOBTile : 5;
+  u8 unknown : 1;
+  u8 tileSizeBits : 2; //the size of tile in the bitstream (less 2) (starting; it can get changed later)
+  u8 bitstream[];
+};
+and the bitstream is:
+{clear tile}, {mdec data}, {finalizing info TBD}, {mdec data (maybe)}
+fields are stored with MSB first.
+bits are stored with first bit in MSB of byte.
+a pointer size for mdec is calculated roughly as the log2 of the total size. Examples as follows.
+let's say the (total size - 1) was $FFFF. then we'd choose ptrsize=16
+if the (total size - 1) was 7FFF then we'd choose ptrsize=15.
+So, we actually we find 1 + (highest bit index set)
+
+------------
+MapStateBlob:
+This contains a series of records (of some sort) each terminated by 0xFF. There should be one for every MapDirectoryEntry. You can find this beginning at 06:804A (see MapStateBlobPointer)
+I think you can view it as the compiled output of all the map entity, zone, trigger etc.
+
+------------
+Tilemap Decoding "mdec"
+This includes everything done with the bitstream.
+Area maps tilemaps are decoded to $7400.
+After the clear tile is handled, the main loop begins. Check the c# sources for the algorithm, having it in pseudocode now is redundant.
+
+after this is done, more code is run:
+void sub_mdec_prepareOrPass()
+{
+	ormode = true;
+	operator = read2();
+	if(operator==0) return; //truly done
+	bitspertile = operator; //change to the smaller 
+	sub_mdec_Run(); //run mdec again
+}

@@ -1,0 +1,121 @@
+This file is provided to give a general overview of the contents of the game, so you can see spatial groupings to better understand logical groupings.
+NOTE: It may be obsolete, now that I've discovered the filesystem concept. many of the banks may just be containing filesystem stuff.
+
+===================
+
+bank $00
+general game engine logic subroutines
+ . management of character stats and inventory
+
+===================
+
+bank $04
+mostly battle-system related programming.
+
+===================
+
+bank $05
+
+
+===================
+
+bank $06
+Some other things
+Area mdec bitstreams (up to #$0B)
+
+===================
+
+bank $07
+Area mdec bitstreams (from #$0C)
+
+===================
+
+bank $09
+pattern data (tiles, at least) N.B. 1 bank could contain 256 tiles.
+They are optimized so complete metatiles arent stored, only raw 8x8 tiles
+I think the capability for multiple banks of tile pattern data exists in the engine, not sure where the remainder is stored.
+
+===================
+
+bank $0F
+mirror of bank $1F
+
+===================
+
+bank $10
+begins dialog data.. should be going through about bank $15
+
+===================
+
+bank $1F
+always mounted to $C000-$FFFF. contains important subroutines of general use which should be available to any other bank.
+1F:C000 - sub_InitSomeDisplaySystems
+1F:C020 - sub_ReadAndIncrementPointer
+1F:C029 - sub_SUB_u16[X]-=Y:A
+1F:C035 - sub_SUB_u16[X]-=A
+1F:C041 - sub_ADD_u16[X]+=Y:A
+1F:C04B - sub_ADD_u16[X]+=A
+1F:C055 - sub_MUL_u16[X]*=A
+1F:C07F - sub_DIV_u16[X]/=A
+...
+1F:C456 - sub_WaitForVblAndDisableScrn
+1F:C468 - sub_ExecFileHighFromDel
+1F:C46B - sub_ExecFile_High?? (pretty sure)
+1F:C47F - sub_UncurryExecDel
+1F:C4A0 - sub_ExecFileFromDel
+1F:C4A3 - sub_ExecFile
+1F:C4CC - sub_UNK_ConvolutedFileTesting
+1F:C4F7 - sub_OpenFile_High
+1F:C518 - sub_OpenFile
+1F:C549 - sub_GetFilePointer
+1F:C585 - sub_LoadByteYFromFile
+1F:C5A2 - sub_LoadByteXFromFile
+1F:C5C1 - sub_LoadByte0FromFile
+1F:C5E0 - sub_LoadByte1FromFile
+1F:C5FF - sub_ReadFarBuffer
+1F:C625 - sub_UNK (very similar to the above)
+1F:C64E - sub_MMC1_Set_Control_9FFF
+1F:C665 - sub_MMC1_Set_CHR0_BFFF
+1F:C67C - sub_MMC1_Set_CHR1_DFFF
+...
+1F:CB53 - sub_ReadPads
+1F:CB86 - sub_readPadRaw
+...
+1F:E7E8 - sub_Reset
+...
+1F:E917 - GlobalFileTable_Banks (0xD6 bytes)
+1F:E9ED - GlobalFileTable (0x1AC bytes)
+...
+1F:F960 - sub_mdec_Load
+1F:F966 - sub_mdec_Run
+1F:F981 - sub_mdec_PrepareOrPass
+1F:F994 - sub_mdec_InitReadingBitstream
+1F:F9A8 - sub_mdec_ReadClearTileAndFill
+1F:F9CD - sub_mdec_ReadBits_Tile
+1F:F9D2 - sub_mdec_ReadSetPtr
+1F:F9E7 - sub_map_ReadBitstream_2
+1F:F9EB - sub_map_ReadBitstream_ptr
+1F:F9ED - sub_mdec_ReadBits_A
+1F:FA01 - sub_mdec_ReadBits_1
+1F:FA2C - (a lot of mdec main process related code)
+1F:FB25 - sub_mdec_boxlogic_incrpointerH
+1F:FB2C - sub_mdec_decX_ptr$b
+1F:FB38 - sub_mdec_incY_ptr$b
+1F:FB3A - sub_mdec_add_A_to_ptr$b
+1F:FBC3 - sub_mdec_applyDelta_mdec_dptr
+1F:FBF4 - sub_mdec_decrY:
+1F:FC00 - sub_mdec_incrX:
+1F:FC07 - sub_mdec_incrY
+1F:FC13 - sub_mdec_decrX
+1F:FC1F - sub_mdec_ReadSetDeltaDir
+1F:FC27 - sub_mdec_emitBigMT_temp16
+1F:FC46 - sub_mdec_emitSmallMT_temp16
+1F:FC46 - sub_mdec_emitSmallMT_temp16
+1F:FC62 - sub_mdec_emitBigMT_mdec_ptr
+1F:FC7D - sub_mdec_emitSmallMT_mdec_ptr
+1F:FC99 - sub_mdec_pushContext:
+1F:FCB0 - sub_map_incPtrY_$6c
+1F:FCBC - sub_map_decPtrY_$6c
+...
+1F:FFD8 - sub_ResetHandler
+...

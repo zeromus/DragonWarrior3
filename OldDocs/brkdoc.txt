@@ -1,0 +1,83 @@
+known BRK calls:
+
+01 0F - prints "Enemy attacks!" and waits .. bank 4.. 
+
+BRK NN 07 - runs sub_ExecFile NN
+BRK NN 17 - runs Sub_ExecFile_High NN
+BRK NN F7 - prints a string NN from dialog table $10
+BRK NN 2F - plays a SFX or BGM. Interrupts BGM as necessary, but BGM doesnt pause. unless another BGM plays, I guess
+
+BRK 03 EF // called internally, very deeply, from other BRKS
+
+
+miscellaneous BRK processing notes:
+
+brk_table_hi:
+labeled as sub_BRK_hicalls[N]
+0xC4A3, 0xC46B, 0xBFCC, 0xBFCF, 0xBFD2, 0xBFD5, 0xEBDD, 0xEBE1,
+0xEBE5, 0xEBF5, 0xEBF9, 0xEBFD, 0xEBF1, 0xEBD3, 0xEBD8, 0xBFD2,
+//...
+0xBFD5, 0xEBED, 0xEC01, 0xEBE9, 
+
+BRK processing:
+			bool scenarioI = (MM & 0x0F) != 0x0F;
+			bool scenarioII = (MM & 0xF0) < 0x40;
+			if (scenarioI || scenarioII)
+			{
+				//0F_E89F
+				//I. BRK NN MM for all MX but MF. ex. 00, 04, 10, 14, F0, F4
+				//II. BRK NN MM for MM in (3F, 2F, 1F, 0F)
+				//pseudocode: BRK NN MM -> jump high_prg_funcs[MM>>4](P,A,X,NN) //i.e. NN is passed in Y
+				//branches to one of 16 subroutine pointers in the high PRG. these subroutines are all in high PRG except for one, 0xBFD2.. hmm..
+				//the subroutines can (and probably do) return to the code that issued the BRK since it is remaining on the stack
+				int table_index = MM >> 4;
+
+				if (scenarioI)
+					Console.WriteLine("  I: high_prg_syscalls[{0}](P,A,X,${1:X2}) ; -> ${2:X4}", table_index, NN, brk_table_0[table_index]);
+				else
+				{
+					table_index += 16;
+					Console.WriteLine("  II: high_prg_syscalls[{0}](P,A,X,${1:X2}) ; -> ${2:X4}", table_index, NN, brk_table_0[table_index]);
+				}
+
+
+"FILESYSTEM":
+sub_OpenFile at 1F:C518 is used to do something best viewed as "opening files". One reason I viewed it this way is that some operations open files basically just to read one byte from them.. the programmers were viewing them very abstractedly.
+A GlobalFileID is passed in Y. 
+GlobalFileTable_Banks (1F:E917) (is referenced to identify which bank a file is located in. The banks are only one nybble each, so they can't be above 0x0F. The odd file IDs are in the low nybble (so when you look at the table in a hex editor, they are ordered properly)
+This code calculates the bank for a file ID:
+int bank = (GlobalFileTable_Banks[GlobalFileID>>1]>>((1-(GlobalFileID&1))*4)) & 0xF
+Next, GlobalFileTable (1F:E9ED) is referenced to find out the BankFileId (bank-local filesystem ID) for the given GlobalFileID. It works like this:
+int BankFileID = GlobalFileTable[GlobalFileID];
+Now, we switch to the target bank. The target bank must have a BankFileTable located at $8000. This consists merely of pointers within the bank ($8000-based) of each file. So, we have:
+int LocalBankOffset = read_u16(bank,2*BankFileID);
+Finally, all this information is stored in ram as follows: ram[X],ram[X+1] receive LocalBankOffset; ram[X+2] receives the bank number.
+There are 0x1AC (428) entries total (and 0xD6 bytes of GlobalFileTable_Banks). I might be off by one or two, it isn't clear where they end.
+Now, you may wonder, how do we access files >= 256, since the GlobalFileID is passed as Y? We have sub_OpenFile_High which deals with that.
+Check the rommap.txt for a view of the table layout
+
+FileID descriptions:
+0x01 - sub_MainLoopCheckAButton
+0x0F - sub_Unknown0F
+0x19 - sub_SaveDataRelated
+0x1E - MapDirectoryPointer - I think this is a pointer relative to bank 7, the offset of the MapDirectory
+0xAC - sub_MapLoadingRelated
+0xAE - sub_map_DecodePointer6CToXY 0E:AF43
+0x65 - sub_ScreenShakeForDamage
+0x66 - sub_ScreenBlinkForSpell
+0x6A - EnemyInfoRecs
+0x7D - MapStateBlobPointer - Likely only two bytes, containing 0x804A. I think this pointer is relative to bank 6. This points to the MapStateBlob
+0x7E - LocationEntryTablePointer - Likely only two bytes, containing 0x84CD. Relative to bank ???. Used while zoning between maps. Each entry is 3 bytes: X,Y,Facing(in bottom 2 bits.. +other?)
+0xC3 - sub_MainLoopXX
+0xF9 - run near map loading
+
+-------------------------------------------------------------------------
+open file during map loop (	1F:CD56 )
+sub_ExecFile $01 //BRK 01 07
+sub_ExecFile $0A //BRK 0A 07
+sub_ExecFile $157 //BRK 57 17
+sub_ExecFile $12 //BRK 12 07
+sub_ExecFile $11 //BRK 11 07
+sub_ExecFile $0E //BRK 0E 07
+sub_ExecFile $10 //BRK 10 07
+(repeat)

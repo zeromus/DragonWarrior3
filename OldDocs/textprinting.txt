@@ -1,0 +1,13 @@
+Dialog String Fetching:
+$7C contains the target bank for string operations, it seems
+0F:EB98 is the beginning of a lot of the code that extracts a requested string
+the string tables seem to be referenced with a bank, and then a low (in A) and high (in X) byte of a string index.
+0A:8030 is the code which understands the structure of the string table, across several banks.
+It references a "stringMetaTable" at 0A:8156 which contains pointers to indexes 0A:8070, 0A:80A4, etc., one for each bank
+Each of those indexes contains pointers within the target string table banks which let us seek ahead 16 at a time. After that, strings are scanned through and null terminators counted.
+The whole thing works like this:
+stringRef = (bank,hi,lo)
+stringBank = stringRef.bank
+stringNum = (hi<<8)+lo
+stringOfs = u16[stringMetaTable[bank]+(stringNum>>4)*2]
+stringNum &= 15; //since the offset has skipped to the nearest 16

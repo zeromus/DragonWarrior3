@@ -1,0 +1,207 @@
+	
+
+//$14, $16, $18: some joypad related fields I dont understand. check 0F:CB79 for how those get setup. I think they're 'pressed', 'justpressed', unpress masks and such. normal things.
+//$01B: vbl_status
+//bit #$04 is maybe used as a flag by user code to wait for vblanks. the user code will wait for it to clear, and then OR it again when done
+//maybe its used to flush the $300 NT queue (set that bit to make it flush, wait for bit clear to know that there is no flush pending)
+//bit #$10 is set after the screen is disabled for map loads. maybe it disables the vblank routine? see 0F:C42A and 
+
+//$032: used by dialog wait loop, checked against $FD
+
+//$51 - this controls what the enemy does, but it could be a variety of irrational things.
+//or, seems to be the current character taking an action? 0..3 is PC and 4+ is enemy
+
+//$300.. text printing operations are queued here? they have the structure:
+struct NTJob
+{
+ u16 nt_ppuaddr;
+ u8 byte;
+};
+//and $6D9 says how many entries are there. $6D8 keeps a counter of the current offset into $300, to avoid mul*3 i guess?
+
+//$530 affects the strength of enemy attacks.. not sure how though
+//$530 contains what seems to be enemy status, two bytes per enemy? one copy seems to be the round starting state and another is the current state, or something like that
+//$530 - LASCXP??
+//S - sleep
+//L - alive? clear this bit and it will be kind of like enemies are dead.
+//P - "protecting itself". interferes with counting live enemies
+//X - same as P?
+//A - parrying or otherwise defense-boosted?
+//C - confused
+//are the PX bits the enemy type? like, there can be 4 enemy types per battle?
+
+//$54C a table indicating the moves selected for each character "movetable"
+//perhaps we have 4 entries for player action and then entries for each enemy (0x00 is either 0th action entry, or action type 0)	
+//these are cleared to 0 after the action is taken
+//for the hero, I had: 
+//80 - attack
+//81 - attack (missing target?)
+//84 - attack
+//90 - chant bang
+//A0 - protect myself
+//B0 - use item
+//so, I think the top nybble is basically the general action, and maybe the low nybble is a parameter?
+//0x - attack party, 1x - cast on party?, etc.
+//8x - attack, 9x - cast, Ax - parry, Bx - item, Cx - nonsense, Dx - nonsense, Ex - equip+attack, Fx - bypassed
+//(0x70 was used or uninitialized for missing characters, and this makes sense for Fx bypassed) 
+
+//$558 - this is a movetable which maps to exact enemy actions. Dont completely understand how the previous one is used, then.
+
+//$566: IIS??????
+//I - Ironized. why two bits?
+//S - something that can be removed by receiving an attack??
+
+//not sure this is all actually textsys-related. maybe its more like screensys.
+struct textsys //: $6D0
+{
+u8 ntxscroll; //$6D0 //tied to map engine. textsys uses it to draw screen-aligned text to the right spot on the NT
+u8 ntyscroll; //$6D1
+u8 framecounter; //$6D2 //constantly incremented, used for messagebox timing
+//$6D3: easy to gfxglitch and freeze the battle
+//...?
+//$6d8: used to index array at $300 where PPU addresses are stored while writing text
+//$6DD: seems to be (battle) message speed. if a #$07 is here, messages will prompt you to wait between each print. I think 00 is fast and 06 is slow (and 07 is slowest, ofc.)
+u8 messagespeed;
+
+struct pc_status
+{
+//$71C:
+u16 hp[4];
+u16 mhp[4];
+u16 mp[4]; //72C
+u16 mmp[4];
+u16 status[4]; //73C
+  ........ .....R..
+  R - Affects enemy spell/breath damage reductions. if set, reductions don't apply (for spells)? Maybe this prevents double reductions from protection spells.
+u24 exp[4];
+u24 returnlist[4]; //?
+struct namerec {
+  u8 char[8]
+} names[4];
+struct inventory {
+  u8 slots[8];
+} inventories[4];
+};
+
+//60b7: used by dialog wait loop.. some kind of battle special logic maybe
+//60b7.0 seems to change class to Erdrick
+
+6a33 can be frozen to alter what prints in a battle. so, it is a staging ground for messages that are being printed.
+or, put another way, it is possibly just the action text which is being printed.
+there seems to be a string A2 05 0C which must mean "[enemy] [attacks] [??]"
+changing the first digit freaks things out. I think the arguments (the name of the enemy) are baked into the action strings as control codes.
+examples:
+00 - \xF5\xF2\x60is assessing the situation.
+01 - \xF5\xF2\x60attacks!
+02 - \xF5\xF2\x60chants\x60\xF3.
+arguments must be:
+2 - enemy letter
+3 - spell target
+5 - enemy name
+9 - hero's name (found elsewhere)
+
+//6A6F contains an enemy type number. not sure what follows it. but, 6A73 is referenced depending on an enemy's PX field
+//6a73 contains something useful during an enemy attack
+
+struct pc_status_more
+{
+u8 stuff[4]; //6a9b:
+  //stuff.$20 - parrying, or defense++'d? battle order?
+u8 effective_AGI??[4]; //6A9F
+u16 effective_DEF[4]; //6AA3
+u8 effective_ATK[4]; //6AAB
+};
+
+
+//attacks >= 0x40 when used by enemy. these relate to the values in the 0x54C movetable
+40 - some kind of attack, targeting player
+41 - chant nonsense magic
+42 - Protect itsself
+43 - Use item
+44 - Emit gales of flaming breath (attacking self)
+45 - Emit gales of flaming breath (attacking self)
+46 - Equip-attack?
+47 - bypass
+
+6b2F contains a 'delegate list'. This is truly mystifying. Is it the main game sequence or battle system script?
+It is initialized (by a BRK 19 07?) when the savedata initializes, and contains $35 entries.
+Each entry is 5 bytes. Each entry works out to this code fragment:
+20 A0 C4 JSR
+i+#$23 (delegate parameter)
+60 RTS
+the subroutine at C4A0 knows how to extract the delegate parameter and store it in Y.
+Maybe this was implemented as some form of compression for calling functions in some unused WRAM memory?
+Maybe there's some way these can get patched later?
+
+6C33 contains another delegate list. $7 entries, as follows:
+Each entry is 5 bytes. Each entry works out to this code fragment:
+20 A0 C4 JSR
+i+#$57 (delegate parameter)
+60 RTS
+
+Finally, after this last delegate list, there is one more piece of code stored (at $6C51). 
+This time, it's a whole subroutine, of length $20. It's copied from 00:A26E and contains:
+ C9 66     CMP #$66
+ B0 0F     BCS $A281
+ 18        CLC
+ 69 23     ADC #$23
+ A8        TAY
+ A9 00     LDA #$00
+ 85 04     STA temp16{0} = #$05
+ 85 05     STA temp16{1} = #$00
+ 85 06     STA $0006 = #$00
+ 4C A3 C4  JMP $C4A3 "sub_BRK_hicalls[0]"
+ C9 67     CMP #$67
+ F0 04     BEQ $A289
+ 00        BRK 66 17
+ 60        RTS -----------------------------------------
+ 00        BRK 67 17
+ 60        RTS -----------------------------------------
+
+
+
+...
+check what $6F0 contains?
+
+...
+possible map data: 08:8DC0
+possible map tileset: 05:A4E1
+map tile data begins at ppu:18D0 probably (before it in righthand bank is textbox tiles)
+loading tileset chunks from 00F0, 0000, 0108, 0018
+
+
+Terminology for map loading: 
+HWTile: an 8x8 physical PPU tile
+Tile: a 16x16 metatile, but that's too long to type
+TileTable: Large table of definitions for tiles. Each is 3 bytes.
+Tilegroup: A group of 8 (or 1, for roof) (or maybe 32?) tiles that are referenced by a map and loaded together. There's no particular reason for them to be 8, except maybe just to make the TilegroupList smaller.
+TilegroupList: the list of Tilesets used by a map
+TileList: All of the tiles available to a map after introducing the referenced TileGroups
+
+//example location: 07:8115
+struct SomeMapHeader
+{
+  u8 stored_in_tileListToLoad_9a;
+  u8 stored_in_6c, stored_in_6d;
+};
+
+//example location: 05:B438
+struct SomeMapTileListHeader
+{
+  u8 PPUADDR_HIGH, PPUADDR_LOW; //the starting PPUADDR for DMAing tiles
+  u8 stored_in_24, stored_in_23, stored_in_56; //values used later during tile list loading
+};
+
+struct MapListFile //file $1E
+{
+	u8 unknown;
+	u8 stored_to_25;
+};
+
+at some point $6E gets set with a pointer to some map info. example:
+8112 for aliahan castle ground floor
+8115 for aliahan throne room
+
+$8B gets: an index controlling the entities (and zones/events?) in the current (or pending) map load
+  - $46 for aliahan castle ground floor
+  - $47 for aliahan throne room

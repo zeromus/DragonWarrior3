@@ -1,0 +1,88 @@
+//EFFECTIVE STATS CALCULATION
+
+effective_agi = min(255,base_agi * equipped_armband?2:1)
+effective_def = (effective_agi>>1) + armor.power + shield.power
+
+effective_atk = base_str;
+if(isFighter)
+ if(equipped_claw)
+   effective_atk += weapon.power;
+ else if(equipped_goldenclaw)
+   effective_atk += 55; //this is hardcoded for some reason
+ else if(equipped_nothing) {}
+ else 
+  effective_atk = max(0,effective_atk - (weapon.power>>1));
+else effective_atk += weapon.power;
+//synopsis:
+if the fighter is equipped with a claw, he gains its power. if he is equipped with a golden claw, he gains 55 ATK. if he is equipped with anything else, he loses half its power. other classes gain the weapon's power.
+
+//-------------------------------
+
+void EnemyAttack()
+{
+	//04:AD37
+	u16 atk_advantage = max(0,eATK-pEffDEF/2);
+	//04:AD5C
+	s16 atk_reduced = eATK>>3;
+	//04:AD68
+	if(atk_advantage > atk_reduced)
+	{
+	 //normal codepath
+	 //04:AD00
+	 u8 roll = max(0x66,min(0x99,rand())); //clamps roll to between [40%,60%]
+	 roll >>= 2; //drop precision to avoid overflow
+	 atk_advantage *= roll;
+	 damage = atk_advantage/0x40; //theoretically fixed point shift by 8 bits, less 2 for the roll reduced precision. this is truly a divide (less code to call it than to shift)
+	 //synopsis: damage = (eATK-pEffDEF/2)*roll[40%,60%]
+	}
+	else
+	{
+		//04:AD79
+	 	//havent debugged this yet
+	}
+}
+
+void PlayerCastSpell() {
+int mpcost;
+if(IsEquipped(player,mysterioushat))
+  mpcost = (mpcost*3)/4+1;
+//...
+}
+
+//RANDOMIZING:
+There is a table at 04:B4C5 which is indexed by code which is mapping enemy actions to table entries. I MAY HAVE JACKED THIS ALL UP
+ 04:BEBE:C9 10     CMP #$10
+ 04:BEC0:B0 02     BCS $BEC4
+ 04:BEC2:69 15     ADC #$15
+ 04:BEC4:38        SEC
+ 04:BEC5:E9 13     SBC #$13
+these entries seem to be random parameters. the bytes are in pairs NN MM: a base damage NN, and a random range parameter, where an extra 0 <= rand < MM will be rolled.
+example for blaze: 07 + rand(5) -> [7,11]
+so, N < $10 goes N+$15; 
+ and N >= $10 goes to $N-$13 (starting at blaze; $10,$11,$12 arent used here); so $15 from blaze should be at the beginning of the table
+the table order would seem to be
+blaze, blazemore, blazemost, icebolt, 
+firebal, firebane, explodet, snowblast, 
+snowstorm, infernos, infermore, infermost,
+beat, defeat, sacrifice, sleep, //$10 done
+stopspell, sap, defence, surround, //$14 done
+robmagic //$15 done
+assessing, protect, attack, attack+crit //$4 done
+attack+sleep, attack+poison, attack+numb, flee, //$8 done
+reinforcements, curiousdance, flamingbreath10-20, flamingbreath30-50,  //$C done
+flamingbreath80-100, blizzardbreath10-20, blizzardbreath40-60, blizzardbreath100-140 //$10 done
+as a spot check, $10+$15-1 = $24 index ($48 offset, therefore at $B4C5+48 = B50D) should contain 100-140. and it contains: AA A9 -> 170 + 169
+
+//EQUIPMENT BONUSES
+Mysterious Hat: see PlayerCastSpell() pseudocode
+Definitions: 
+ Spells: eAction >= blaze (#$13)
+ Breaths: eAction < blaze (#$13) 
+ Flame Breaths: eAction < #$0D
+ Heavy Reduction: damage = damage/4 + 1
+ Light Reduction: damage = (damage * 2) / 3 + 1
+Armor of Hades: Heavy Reduction to spells
+Water Flying Cloth, Armor Of Radiance: Light Reduction to Breaths and Spells
+Sacred Robe, Magic Armor: Light Reduction to magic
+Dragon Mail: Light reduction to flame breaths
+Shield of Heroes: Light reduction to breaths
